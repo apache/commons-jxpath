@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.5 2002/06/08 22:47:25 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/06/08 22:47:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.6 2002/08/10 01:37:12 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/08/10 01:37:12 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import java.util.Collection;
  * like "position()" or "number()".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/06/08 22:47:25 $
+ * @version $Revision: 1.6 $ $Date: 2002/08/10 01:37:12 $
  */
 public class CoreFunction extends Operation {
 
@@ -322,8 +322,8 @@ public class CoreFunction extends Operation {
         if (set instanceof EvalContext){
             EvalContext ctx = (EvalContext)set;
             if (ctx.hasNext()){
-                ctx.next();
-                String str = ctx.getCurrentNodePointer().getNamespaceURI();
+                NodePointer ptr = (NodePointer)ctx.next();
+                String str = ptr.getNamespaceURI();
                 return str == null ? "" : str;
             }
         }
@@ -339,8 +339,8 @@ public class CoreFunction extends Operation {
         if (set instanceof EvalContext){
             EvalContext ctx = (EvalContext)set;
             if (ctx.hasNext()){
-                ctx.next();
-                return ctx.getCurrentNodePointer().getName().getName();
+                NodePointer ptr = (NodePointer)ctx.next();
+                return ptr.getName().getName();
             }
         }
         return "";
@@ -355,8 +355,8 @@ public class CoreFunction extends Operation {
         if (set instanceof EvalContext){
             EvalContext ctx = (EvalContext)set;
             if (ctx.hasNext()){
-                ctx.next();
-                return ctx.getCurrentNodePointer().getExpandedName().toString();
+                NodePointer ptr = (NodePointer)ctx.next();
+                return ptr.getExpandedName().toString();
             }
         }
         return "";
@@ -570,10 +570,9 @@ public class CoreFunction extends Operation {
         else if (v instanceof EvalContext){
             double sum = 0.0;
             EvalContext ctx = (EvalContext)v;
-            while (ctx.nextSet()){
-                while (ctx.nextNode()){
-                    sum += InfoSetUtil.doubleValue(ctx.getCurrentNodePointer());
-                }
+            while (ctx.hasNext()){
+                NodePointer ptr = (NodePointer)ctx.next();
+                sum += InfoSetUtil.doubleValue(ptr);
             }
             return new Double(sum);
         }
