@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.18 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.18 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.19 2002/05/14 23:08:25 dmitri Exp $
+ * $Revision: 1.19 $
+ * $Date: 2002/05/14 23:08:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,11 +81,6 @@ import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.ri.compiler.Expression;
 import java.beans.*;
 
-//import org.apache.xpath.XPath;
-//import org.apache.xpath.XPathContext;
-//import org.apache.xml.utils.PrefixResolver;
-//import org.apache.xml.utils.PrefixResolverDefault;
-
 /**
  * <p>
  *  Test Case for the JXPath class.  The majority of these tests use
@@ -100,7 +95,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.18 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.19 $ $Date: 2002/05/14 23:08:25 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -285,6 +280,7 @@ public class JXPathTestCase extends TestCase
         testGetValue(context, "2 + 3",                  "5.0", String.class);
         testGetValue(context, "2 + 3",                  Boolean.TRUE, boolean.class);
         testGetValue(context, "'true'",                 Boolean.TRUE, Boolean.class);
+
         boolean exception = false;
         try {
             testGetValue(context, "'foo'",              null, Date.class);
@@ -430,50 +426,57 @@ public class JXPathTestCase extends TestCase
      * Test JXPath.setValue() with various arguments
      */
     public void testSetValue(){
-        if (enabled){
-            TestBean tBean = new TestBean();
-            JXPathContext context = JXPathContext.newContext(tBean);
-            context.getVariables().declareVariable("x", null);
-
-            context.setValue("$x", new Integer(1));
-            assertEquals("Modified <" + "$x" + ">", new Integer(1), context.getValue("$x"));
-
-            boolean exception = false;
-            try {
-                context.setValue("$y", new Integer(1));
-            }
-            catch (Exception ex){
-                exception = true;
-            }
-            assertTrue("Setting '$y = 1', expected exception - did not get it", exception);
-
-            context.setValue("int", new Integer(3));
-            assertEquals("Modified <" + "int" + ">", new Integer(3), context.getValue("int"));
-
-            context.setValue("int", new int[]{4});
-            assertEquals("Modified <" + "int" + ">", new Integer(4), context.getValue("int"));
-
-            context.setValue("integers[2]", new Integer(5));
-            assertEquals("Modified <" + "integers[2]" + ">", new Integer(5), context.getValue("integers[2]"));
-
-            context.setValue("integers[2]", new int[]{6});
-            assertEquals("Modified <" + "integers[2]" + ">", new Integer(6), context.getValue("integers[2]"));
-
-            NestedTestBean nBean = new NestedTestBean("Name 9");
-            tBean.getBeans()[1] = null;
-            context.setValue("beans[2]", nBean);
-            assertEquals("Modified <" + "beans[2]" + ">", nBean, context.getValue("beans[2]"));
-
-            context.setValue("map/Key1", new Integer(6));
-            assertEquals("Modified <" + "map/Key1" + ">", new Integer(6), context.getValue("map/Key1"));
-
-            context.setValue("map/Key1", new Integer[]{new Integer(7), new Integer(8)});
-            context.setValue("map/Key1[1]", new Integer(9));
-            assertEquals("Modified <" + "map/Key1[1]" + ">", new Integer(9), context.getValue("map/Key1[1]"));
-
-            context.setValue("map/Key4", new Integer(7));
-            assertEquals("Modified <" + "map/Key4" + ">", new Integer(7), context.getValue("map/Key4"));
+        if (!enabled){
+            return;
         }
+        TestBean tBean = new TestBean();
+        JXPathContext context = JXPathContext.newContext(tBean);
+        context.getVariables().declareVariable("x", null);
+
+        context.setValue("$x", new Integer(1));
+        assertEquals("Modified <" + "$x" + ">", new Integer(1), context.getValue("$x"));
+
+        boolean exception = false;
+        try {
+            context.setValue("$y", new Integer(1));
+        }
+        catch (Exception ex){
+            exception = true;
+        }
+        assertTrue("Setting '$y = 1', expected exception - did not get it", exception);
+
+        context.setValue("int", new Integer(3));
+        assertEquals("Modified <" + "int" + ">", new Integer(3), context.getValue("int"));
+
+        context.setValue("int", new int[]{4});
+        assertEquals("Modified <" + "int" + ">", new Integer(4), context.getValue("int"));
+
+        context.setValue("integers[2]", new Integer(5));
+        assertEquals("Modified <" + "integers[2]" + ">", new Integer(5), context.getValue("integers[2]"));
+
+        context.setValue("integers[2]", new int[]{6});
+        assertEquals("Modified <" + "integers[2]" + ">", new Integer(6), context.getValue("integers[2]"));
+
+        NestedTestBean nBean = new NestedTestBean("Name 9");
+        tBean.getBeans()[1] = null;
+        context.setValue("beans[2]", nBean);
+        assertEquals("Modified <" + "beans[2]" + ">", nBean, context.getValue("beans[2]"));
+
+        context.setValue("map/Key1", new Integer(6));
+        assertEquals("Modified <" + "map/Key1" + ">", new Integer(6), context.getValue("map/Key1"));
+
+        context.setValue("map/Key1", new Integer[]{new Integer(7), new Integer(8)});
+        context.setValue("map/Key1[1]", new Integer(9));
+        assertEquals("Modified <" + "map/Key1[1]" + ">", new Integer(9), context.getValue("map/Key1[1]"));
+
+        context.setValue("map/Key4", new Integer(7));
+        assertEquals("Modified <" + "map/Key4" + ">", new Integer(7), context.getValue("map/Key4"));
+
+        context.setValue("integers[. = 6]", new Integer(8));
+        assertEquals("Modified <" + "integers[. = 6]" + ">", new Integer(8), context.getValue("integers[2]"));
+
+        context.setValue("beans[name = 'Name 9']/int", new Integer(9));
+        assertEquals("Modified <" + "beans[name = 'Name 9']/int" + ">", new Integer(9), context.getValue("beans[name = 'Name 9']/int"));
     }
 
     /**

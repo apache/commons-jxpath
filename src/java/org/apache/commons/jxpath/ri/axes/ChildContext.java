@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.8 2002/04/28 04:35:48 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/04/28 04:35:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.9 2002/05/14 23:08:26 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/05/14 23:08:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * "preceding-sibling::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/04/28 04:35:48 $
+ * @version $Revision: 1.9 $ $Date: 2002/05/14 23:08:26 $
  */
 public class ChildContext extends EvalContext {
     private NodeTest nodeTest;
@@ -116,8 +116,9 @@ public class ChildContext extends EvalContext {
                     return null;
                 }
                 // See if there is a property there, singular or collection
-                if (iterator.getNodePointer() != null){
-                    break;
+                NodePointer pointer = iterator.getNodePointer();
+                if (pointer != null){
+                    return pointer;
                 }
             }
         }
