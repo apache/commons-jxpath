@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.8 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.9 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -77,7 +77,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * as the parent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.9 $ $Date: 2002/10/20 03:47:17 $
  */
 public class NullElementPointer extends PropertyOwnerPointer {
 
@@ -96,6 +96,14 @@ public class NullElementPointer extends PropertyOwnerPointer {
 
     public Object getNode(){
         return null;
+    }
+    
+    public boolean isLeaf() {
+        return true;
+    }    
+    
+    public boolean isCollection(){
+        return false;
     }
 
     public PropertyPointer getPropertyPointer(){

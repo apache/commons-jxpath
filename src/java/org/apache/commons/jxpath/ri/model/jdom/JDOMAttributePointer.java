@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributePointer.java,v 1.1 2002/08/26 22:29:48 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/08/26 22:29:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributePointer.java,v 1.2 2002/10/20 03:47:18 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/10/20 03:47:18 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.jdom.Attribute;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/26 22:29:48 $
+ * @version $Revision: 1.2 $ $Date: 2002/10/20 03:47:18 $
  */
 public class JDOMAttributePointer extends NodePointer {
     private Attribute attr;
@@ -97,25 +97,25 @@ public class JDOMAttributePointer extends NodePointer {
             uri = null;
         }
         return uri;
-//        String prefix = DOMNodePointer.getPrefix(attr);
-//        if (prefix == null){
-//            return null;
-//        }
-//        return parent.getNamespaceURI(prefix);
     }
 
     public Object getBaseValue(){
         return attr;
     }
+    
+    public boolean isCollection(){
+        return false;
+    }
+
+    public int getLength(){
+        return 1;
+    }    
 
     public Object getNode(){
         String value = attr.getValue();
         if (value == null){
             return null;
         }
-//        if (value.equals("") && !attr.getSpecified()){
-//            return null;
-//        }
         return value;
     }
 
@@ -150,7 +150,10 @@ public class JDOMAttributePointer extends NodePointer {
         StringBuffer buffer = new StringBuffer();
         if (parent != null){
             buffer.append(parent.asPath());
-            buffer.append('/');
+            if (buffer.length() == 0 ||
+                    buffer.charAt(buffer.length()-1) != '/'){
+            	buffer.append('/');
+            }
         }
         buffer.append('@');
         buffer.append(getName());

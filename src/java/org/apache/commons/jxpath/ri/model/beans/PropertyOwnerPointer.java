@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.8 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.9 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,13 +73,12 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
-
 /**
  * A pointer describing a node that has properties, each of which could be
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.9 $ $Date: 2002/10/20 03:47:17 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -121,11 +120,6 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         super(parent);
     }
 
-    public boolean isCollection(){
-        Object value = getBaseValue();
-        return value != null && ValueUtils.isCollection(value);
-    }
-
     public void setIndex(int index){
         if (this.index != index){
             super.setIndex(index);
@@ -149,8 +143,41 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     public abstract QName getName();
+
+    /**
+     * Throws an exception if you try to change the root element, otherwise
+     * forwards the call to the parent pointer.
+     */
     public void setValue(Object value){
         this.value = value;
+        if (parent instanceof PropertyPointer){
+            parent.setValue(value);
+        }
+        else if (parent != null){
+            throw new UnsupportedOperationException(
+                "Cannot setValue of an object that is not " +
+                "some other object's property");
+        }
+        else {
+            throw new UnsupportedOperationException(
+                "Cannot replace the root object");
+        }
+    }
+
+    /**
+     * If this is a root node pointer, throws an exception; otherwise
+     * forwards the call to the parent node.
+     */
+    public void remove(){
+        this.value = null;
+        if (parent != null){
+            parent.remove();
+        }
+        else {
+            throw new UnsupportedOperationException(
+                "Cannot remove an object that is not " +
+                "some other object's property or a collection element");
+        }
     }
 
     public abstract PropertyPointer getPropertyPointer();

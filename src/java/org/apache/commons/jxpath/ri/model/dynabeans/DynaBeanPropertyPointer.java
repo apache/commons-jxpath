@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPropertyPointer.java,v 1.1 2002/10/20 03:44:18 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:44:18 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPropertyPointer.java,v 1.2 2002/10/20 03:47:18 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/10/20 03:47:18 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -82,7 +82,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a DynaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:44:18 $
+ * @version $Revision: 1.2 $ $Date: 2002/10/20 03:47:18 $
  */
 public class DynaBeanPropertyPointer extends PropertyPointer {
     private DynaBean dynaBean;
@@ -134,7 +134,6 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
                 }
             }
             Arrays.sort(names);
-//            System.err.println("D.PROPERTIES: " + Arrays.asList(names));
         }
         return names;
     }

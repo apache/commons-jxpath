@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPointer.java,v 1.5 2002/08/10 01:49:46 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/08/10 01:49:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPointer.java,v 1.6 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,16 +64,16 @@ package org.apache.commons.jxpath.ri.model.beans;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.DynamicPropertyHandler;
+import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * A Pointer that points to an object with Dynamic Properties. It is used
  * for the first element of a path; following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/08/10 01:49:46 $
+ * @version $Revision: 1.6 $ $Date: 2002/10/20 03:47:17 $
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;
@@ -81,14 +81,18 @@ public class DynamicPointer extends PropertyOwnerPointer {
     private DynamicPropertyHandler handler;
     private String[] names;
 
-    public DynamicPointer(QName name, Object bean, DynamicPropertyHandler handler, Locale locale){
+    public DynamicPointer(QName name, Object bean,
+            DynamicPropertyHandler handler, Locale locale)
+    {
         super(null, locale);
         this.name = name;
         this.bean = bean;
         this.handler = handler;
     }
 
-    public DynamicPointer(NodePointer parent, QName name, Object bean, DynamicPropertyHandler handler){
+    public DynamicPointer(NodePointer parent, QName name,
+            Object bean, DynamicPropertyHandler handler)
+    {
         super(parent);
         this.name = name;
         this.bean = bean;
@@ -109,36 +113,29 @@ public class DynamicPointer extends PropertyOwnerPointer {
     public Object getBaseValue(){
         return bean;
     }
-
-    public void setValue(Object value){
-        super.setValue(value);
-        if (parent instanceof PropertyPointer){
-            parent.setValue(value);
-        }
-        else if (parent != null){
-            throw new UnsupportedOperationException("Cannot setValue of an object that is not some other object's property");
-        }
-        else {
-            throw new UnsupportedOperationException("Cannot replace the root object");
-        }
+    
+    public boolean isLeaf() {
+        Object value = getNode();
+        return value == null
+            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
+    }    
+    
+    public boolean isCollection(){
+    	return false;
     }
 
     /**
-     * If the bean is a collection, returns the length of that collection,
-     * otherwise returns 1.
+     * Returns 1.
      */
     public int getLength(){
-        return ValueUtils.getLength(getBaseValue());
+    	return 1;
     }
 
-    /**
-     * Empty string
-     */
     public String asPath(){
         if (parent != null){
             return super.asPath();
         }
-        return "";
+        return "/";
     }
 
     public int hashCode(){

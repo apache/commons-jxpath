@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/LangAttributePointer.java,v 1.4 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/LangAttributePointer.java,v 1.5 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of the attribute is based on the locale supplied to it in the constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.5 $ $Date: 2002/10/20 03:47:17 $
  */
 public class LangAttributePointer extends NodePointer {
     public LangAttributePointer(NodePointer parent){
@@ -88,6 +88,14 @@ public class LangAttributePointer extends NodePointer {
     public String getNamespaceURI(){
         return null;
     }
+
+    public boolean isCollection(){
+        return false;
+    }
+    
+    public int getLength(){
+        return 1;
+    }    
 
     public Object getBaseValue(){
         return parent.getLocale().toString().replace('_', '-');
@@ -114,7 +122,10 @@ public class LangAttributePointer extends NodePointer {
         StringBuffer buffer = new StringBuffer();
         if (parent != null){
             buffer.append(parent.asPath());
-            buffer.append('/');
+            if (buffer.length() == 0 ||
+                    buffer.charAt(buffer.length()-1) != '/'){
+            	buffer.append('/');
+            }
         }
         buffer.append("@xml:lang");
         return buffer.toString();

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.6 2002/08/10 01:49:46 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/08/10 01:49:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.7 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,23 +65,24 @@ import java.beans.PropertyDescriptor;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathBeanInfo;
+import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
- * A Pointer that points to a JavaBean or a collection. It is the first element of
- * a path, following elements will by of type PropertyPointer.
+ * A Pointer that points to a JavaBean or a collection. It is either
+ * the first element of a path or a pointer for a property value.
+ * Typically there is a BeanPropertyPointer between two BeanPointers
+ * in the chain.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/08/10 01:49:46 $
+ * @version $Revision: 1.7 $ $Date: 2002/10/20 03:47:17 $
  */
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;
     private Object bean;
     private JXPathBeanInfo beanInfo;
-    private PropertyDescriptor propertyDescriptors[];
-    private String[] names;
 
     public BeanPointer(QName name, Object bean, JXPathBeanInfo beanInfo, Locale locale){
         super(null, locale);
@@ -116,39 +117,23 @@ public class BeanPointer extends PropertyOwnerPointer {
     }
 
     /**
-     * Throws an exception if you try to change the root element.
+     * Returns false
      */
-    public void setValue(Object value){
-        super.setValue(value);
-        if (parent instanceof PropertyPointer){
-            parent.setValue(value);
-        }
-        else if (parent != null){
-            throw new UnsupportedOperationException("Cannot setValue of an object that is not some other object's property");
-        }
-        else {
-            throw new UnsupportedOperationException("Cannot replace the root object");
-        }
-    }
-
-    public void remove(){
-        super.setValue(null);
-        if (parent != null){
-            parent.remove();
-        }
-        else {
-            throw new UnsupportedOperationException(
-                "Cannot remove an object that is not " +
-                "some other object's property or a collection element");
-        }
+    public boolean isCollection(){
+        return false;
     }
 
     /**
-     * If the bean is a collection, returns the length of that collection,
-     * otherwise returns 1.
+     * Returns 1.
      */
     public int getLength(){
-        return ValueUtils.getLength(getBaseValue());
+        return 1;
+    }
+
+    public boolean isLeaf() {
+        Object value = getNode();
+        return value == null
+            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
     public int hashCode(){
@@ -189,7 +174,10 @@ public class BeanPointer extends PropertyOwnerPointer {
     }
 
     /**
-     * Empty string
+     * If the pointer has a parent, then parent's path.
+     * If the bean is null, "null()".
+     * If the bean is a primitive value, the value itself.
+     * Otherwise - an empty string.
      */
     public String asPath(){
         if (parent != null){
@@ -211,6 +199,6 @@ public class BeanPointer extends PropertyOwnerPointer {
         else if (bean instanceof String){
             return "'" + bean + "'";
         }
-        return "";
+        return "/";
     }
 }

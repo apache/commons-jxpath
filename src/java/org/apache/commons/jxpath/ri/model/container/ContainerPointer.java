@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.4 2002/08/26 22:29:22 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/08/26 22:29:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.5 2002/10/20 03:47:18 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/10/20 03:47:18 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/08/26 22:29:22 $
+ * @version $Revision: 1.5 $ $Date: 2002/10/20 03:47:18 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
@@ -106,6 +106,23 @@ public class ContainerPointer extends NodePointer {
     public Object getBaseValue(){
         return container.getValue();
     }
+    
+    public boolean isCollection(){
+        Object value = getBaseValue();
+        return value != null && ValueUtils.isCollection(value);
+    }
+    
+    public int getLength(){
+        Object value = getBaseValue();
+        if (value == null) {
+            return 1;
+        }
+        return ValueUtils.getLength(value);
+    }    
+
+    public boolean isLeaf() {
+        return getValuePointer().isLeaf();
+    }    
 
     public Object getNode(){
         Object value = getBaseValue();
@@ -178,6 +195,6 @@ public class ContainerPointer extends NodePointer {
         if (parent != null){
             return parent.asPath();
         }
-        return "";
+        return "/";
     }
  }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPointer.java,v 1.6 2002/08/10 01:49:46 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/08/10 01:49:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPointer.java,v 1.7 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/08/10 01:49:46 $
+ * @version $Revision: 1.7 $ $Date: 2002/10/20 03:47:17 $
  */
 public class NullPointer extends PropertyOwnerPointer {
     private QName name;
@@ -100,16 +100,14 @@ public class NullPointer extends PropertyOwnerPointer {
     public Object getBaseValue(){
         return null;
     }
-
-    public void setValue(Object value){
-        super.setValue(value);
-        if (parent instanceof PropertyPointer){
-            parent.setValue(value);
-        }
-        else {
-            throw new UnsupportedOperationException("Cannot setValue of an object that is not some other object's property/child");
-        }
+    
+    public boolean isCollection(){
+        return false;
     }
+
+    public boolean isLeaf() {
+        return true;
+    }        
 
     public boolean isActual(){
         return false;

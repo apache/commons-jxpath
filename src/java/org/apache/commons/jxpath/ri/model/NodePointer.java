@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.11 2002/10/13 02:59:01 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2002/10/13 02:59:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.12 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,6 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.beans.NullElementPointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
-import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Common superclass for Pointers of all kinds.  A NodePointer maps to
@@ -84,7 +83,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2002/10/13 02:59:01 $
+ * @version $Revision: 1.12 $ $Date: 2002/10/20 03:47:17 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
@@ -178,11 +177,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
     /**
      * If true, this node does not have children
      */
-    public boolean isLeaf() {
-        Object value = getNode();
-        return value == null
-            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
-    }
+    public abstract boolean isLeaf();
 
     /**
      * If false, this node is axiliary and can only be used as an intermediate
@@ -211,23 +206,14 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * Returns <code>true</code> if the value of the pointer is an array or
      * a Collection.
      */
-    public boolean isCollection() {
-        Object value = getBaseValue();
-        return value != null && ValueUtils.isCollection(value);
-    }
+    public abstract boolean isCollection();
 
     /**
      * If the pointer represents a collection (or collection element),
      * returns the length of the collection.
      * Otherwise returns 1 (even if the value is null).
      */
-    public int getLength() {
-        Object value = getBaseValue();
-        if (value == null) {
-            return 1;
-        }
-        return ValueUtils.getLength(value);
-    }
+    public abstract int getLength();
 
     /**
      * By default, returns <code>getNodeValue()</code>, can be overridden to
@@ -564,7 +550,10 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
             if (getParent().isNode() || (parent instanceof NullElementPointer)){
                 QName name = getName();
                 if (name != null) {
-                    buffer.append('/');
+                    if (buffer.length() == 0 ||
+                            buffer.charAt(buffer.length()-1) != '/'){
+                        buffer.append('/');
+                    }
                     if (attribute){
                         buffer.append('@');
                     }

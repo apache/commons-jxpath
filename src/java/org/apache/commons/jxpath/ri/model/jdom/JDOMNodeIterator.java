@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodeIterator.java,v 1.1 2002/08/26 22:29:48 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/08/26 22:29:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodeIterator.java,v 1.2 2002/10/20 03:47:18 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/10/20 03:47:18 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.jdom.Element;
  * An iterator of children of a JDOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/26 22:29:48 $
+ * @version $Revision: 1.2 $ $Date: 2002/10/20 03:47:18 $
  */
 public class JDOMNodeIterator implements NodeIterator {
     private NodePointer parent;
@@ -83,12 +83,11 @@ public class JDOMNodeIterator implements NodeIterator {
     private boolean reverse;
     private int position = 0;
     private int index = 0;
-//    private Element node;
     private List children;
     private Object child;
 
     public JDOMNodeIterator(
-            NodePointer parent, NodeTest nodeTest, 
+            NodePointer parent, NodeTest nodeTest,
             boolean reverse, NodePointer startWith)
     {
         this.parent = parent;
@@ -139,22 +138,30 @@ public class JDOMNodeIterator implements NodeIterator {
         return true;
     }
 
+    /**
+     * This is actually never invoked during the normal evaluation
+     * of xpaths - an iterator is always going forward, never backwards.
+     * So, this is implemented only for completeness and perhaps for
+     * those who use these iterators outside of XPath evaluation.
+     */
     private boolean previous(){
-        System.err.println("PREVIOUS");     // TBD
-//        position--;
-//        if (!reverse){
-//            child = child.getPreviousSibling();
-//            while (child != null && !testChild()){
-//                child = child.getPreviousSibling();
-//            }
-//        }
-//        else {
-//            child = child.getNextSibling();
-//            while (child != null && !testChild()){
-//                child = child.getNextSibling();
-//            }
-//        }
-//        return child != null;
+        position--;
+        if (!reverse){
+            while (--index >= 0){
+                child = children.get(index);
+                if (testChild()){
+                    return true;
+                }
+            }
+        }
+        else {
+            for (;index < children.size(); index++){
+                child = children.get(index);
+                if (testChild()){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

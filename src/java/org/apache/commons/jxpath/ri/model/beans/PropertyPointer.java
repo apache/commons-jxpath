@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.5 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.6 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,7 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
+import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
@@ -70,7 +71,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a property of the parent object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.6 $ $Date: 2002/10/20 03:47:17 $
  */
 public abstract class PropertyPointer extends NodePointer {
     public static int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
@@ -84,11 +85,6 @@ public abstract class PropertyPointer extends NodePointer {
      */
     public PropertyPointer(NodePointer parent){
         super(parent);
-    }
-
-    public boolean isCollection(){
-        Object value = getBaseValue();
-        return value != null && ValueUtils.isCollection(value);
     }
 
     public int getPropertyIndex(){
@@ -143,6 +139,26 @@ public abstract class PropertyPointer extends NodePointer {
         }
         return value;
     }
+    
+    public boolean isCollection(){
+        Object value = getBaseValue();
+        return value != null && ValueUtils.isCollection(value);
+    }
+    
+    public boolean isLeaf() {
+        Object value = getNode();
+        return value == null
+            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
+    }    
+
+    /**
+     * If the property contains a collection, then the length of that
+     * collection, otherwise - 1.
+     */
+    public int getLength(){
+        return ValueUtils.getLength(getBaseValue());
+    }
+
 
     /**
      * Returns a NodePointer that can be used to access the currently

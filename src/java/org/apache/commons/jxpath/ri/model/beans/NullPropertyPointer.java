@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.8 2002/10/13 02:59:01 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/10/13 02:59:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.9 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/10/13 02:59:01 $
+ * @version $Revision: 1.9 $ $Date: 2002/10/20 03:47:17 $
  */
 public class NullPropertyPointer extends PropertyPointer {
 
@@ -100,6 +100,10 @@ public class NullPropertyPointer extends PropertyPointer {
         return null;
     }
 
+    public boolean isLeaf() {
+        return true;
+    }    
+
     public NodePointer getValuePointer(){
         return new NullPointer(this,  new QName(getPropertyName()));
     }
@@ -117,8 +121,14 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     public void setValue(Object value){
-        throw new JXPathException("Cannot set property " + asPath() +
-            ", the target object is null");
+        if (parent == null || !parent.isNode()){
+            throw new JXPathException("Cannot set property " + asPath() +
+                ", the target object is null");
+        }
+        else {
+            throw new JXPathException("Cannot set property " + asPath() +
+                ", path does not match a changeable location");
+        }
     }
 
     public NodePointer createPath(JXPathContext context){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.8 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.9 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,6 +67,7 @@ import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
@@ -75,7 +76,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.9 $ $Date: 2002/10/20 03:47:17 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -186,14 +187,6 @@ public class DynamicPropertyPointer extends PropertyPointer {
             super.setPropertyIndex(index);
             name = null;
         }
-    }
-
-    /**
-     * If the property contains a collection, then the length of that
-     * collection, otherwise - 1.
-     */
-    public int getLength(){
-        return ValueUtils.getLength(getBaseValue());
     }
 
     /**

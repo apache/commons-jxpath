@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNamespacePointer.java,v 1.1 2002/08/26 22:29:48 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/08/26 22:29:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNamespacePointer.java,v 1.2 2002/10/20 03:47:18 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/10/20 03:47:18 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/26 22:29:48 $
+ * @version $Revision: 1.2 $ $Date: 2002/10/20 03:47:18 $
  */
 public class JDOMNamespacePointer extends NodePointer {
     private String prefix;
@@ -95,6 +95,14 @@ public class JDOMNamespacePointer extends NodePointer {
     public Object getBaseValue(){
         return null;
     }
+    
+    public boolean isCollection(){
+        return false;
+    }
+    
+    public int getLength(){
+        return 1;
+    }    
 
     public Object getNode(){
         return getNamespaceURI();
@@ -129,7 +137,10 @@ public class JDOMNamespacePointer extends NodePointer {
         StringBuffer buffer = new StringBuffer();
         if (parent != null){
             buffer.append(parent.asPath());
-            buffer.append('/');
+            if (buffer.length() == 0 ||
+                    buffer.charAt(buffer.length()-1) != '/'){
+            	buffer.append('/');
+            }
         }
         buffer.append("namespace::");
         buffer.append(prefix);

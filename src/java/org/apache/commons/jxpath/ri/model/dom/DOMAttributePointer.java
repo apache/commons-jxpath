@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributePointer.java,v 1.6 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributePointer.java,v 1.7 2002/10/20 03:47:18 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/10/20 03:47:18 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.w3c.dom.Attr;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.7 $ $Date: 2002/10/20 03:47:18 $
  */
 public class DOMAttributePointer extends NodePointer {
     private Attr attr;
@@ -102,6 +102,14 @@ public class DOMAttributePointer extends NodePointer {
     public Object getBaseValue(){
         return attr;
     }
+    
+    public boolean isCollection(){
+        return false;
+    }
+    
+    public int getLength(){
+        return 1;
+    }    
 
     public Object getNode(){
         String value = attr.getValue();
@@ -145,7 +153,10 @@ public class DOMAttributePointer extends NodePointer {
         StringBuffer buffer = new StringBuffer();
         if (parent != null){
             buffer.append(parent.asPath());
-            buffer.append('/');
+            if (buffer.length() == 0 ||
+                    buffer.charAt(buffer.length()-1) != '/'){
+            	buffer.append('/');
+            }
         }
         buffer.append('@');
         buffer.append(getName());

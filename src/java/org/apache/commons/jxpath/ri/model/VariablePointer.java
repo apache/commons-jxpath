@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.6 2002/08/10 16:13:03 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/08/10 16:13:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.7 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,6 +64,7 @@ package org.apache.commons.jxpath.ri.model;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
@@ -73,7 +74,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/08/10 16:13:03 $
+ * @version $Revision: 1.7 $ $Date: 2002/10/20 03:47:17 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
@@ -107,6 +108,17 @@ public class VariablePointer extends NodePointer {
             throw new JXPathException("Undefined variable: " + name);
         }
         return variables.getVariable(name.getName());
+    }
+    
+    public boolean isLeaf() {
+        Object value = getNode();
+        return value == null
+            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
+    }
+    
+    public boolean isCollection(){
+        Object value = getBaseValue();
+        return value != null && ValueUtils.isCollection(value);
     }
 
     public Object getNode(){
@@ -148,7 +160,11 @@ public class VariablePointer extends NodePointer {
 
     public int getLength(){
         if (actual){
-            return super.getLength();
+            Object value = getBaseValue();
+            if (value == null) {
+                return 1;
+            }
+            return ValueUtils.getLength(value);
         }
         return 0;
     }

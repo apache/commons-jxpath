@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.6 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.7 2002/10/20 03:47:17 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/10/20 03:47:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,6 +64,7 @@ package org.apache.commons.jxpath.ri.model.beans;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
@@ -74,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.7 $ $Date: 2002/10/20 03:47:17 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -96,6 +97,20 @@ public class CollectionPointer extends NodePointer {
 
     public Object getBaseValue(){
         return collection;
+    }
+
+    public boolean isCollection(){
+    	return true;
+    }
+
+    public int getLength(){
+        return ValueUtils.getLength(getBaseValue());
+    }
+
+    public boolean isLeaf() {
+        Object value = getNode();
+        return value == null
+            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
     public boolean isNode(){
@@ -130,13 +145,16 @@ public class CollectionPointer extends NodePointer {
             }
             else {
                 Object value = getNode();
-                valuePointer = NodePointer.newChildNodePointer(this, getName(), value);
+                valuePointer = NodePointer.
+                			newChildNodePointer(this, getName(), value);
             }
         }
         return valuePointer;
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
+    public NodePointer createChild(JXPathContext context, 
+    			QName name, int index, Object value)
+    {
         if (parent instanceof PropertyPointer){
             return parent.createChild(context, name, index, value);
         }
@@ -165,7 +183,9 @@ public class CollectionPointer extends NodePointer {
         }
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index){
+    public NodePointer createChild(JXPathContext context, 
+    			QName name, int index)
+    {
         if (parent instanceof PropertyPointer){
             return parent.createChild(context, name, index);
         }
@@ -196,7 +216,9 @@ public class CollectionPointer extends NodePointer {
                 index == other.index;
     }
 
-    public NodeIterator childIterator(NodeTest test, boolean reverse, NodePointer startWith){
+    public NodeIterator childIterator(NodeTest test, 
+    			boolean reverse, NodePointer startWith)
+    {
         if (index == WHOLE_COLLECTION){
             return null;
         }
@@ -225,10 +247,35 @@ public class CollectionPointer extends NodePointer {
     }
 
     public boolean testNode(NodeTest nodeTest){
+//        if (index
+        /** @todo: infinite loop here */
         return getValuePointer().testNode(nodeTest);
     }
 
-    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+    public int compareChildNodePointers(
+    			NodePointer pointer1, NodePointer pointer2)
+    {
         return pointer1.getIndex() - pointer2.getIndex();
+    }
+
+    /**
+     * Returns an XPath that maps to this Pointer.
+     */
+    public String asPath() {
+        StringBuffer buffer = new StringBuffer();
+        NodePointer parent = getParent();
+        if (parent != null) {
+            buffer.append(parent.asPath());
+        }
+        if (index != WHOLE_COLLECTION) {
+            // Address the list[1][2] case
+            if (parent != null && !parent.isNode() &&
+                    parent.getIndex() != WHOLE_COLLECTION){
+                buffer.append("/.");
+            }
+            buffer.append("[").append(index + 1).append(']');
+        }
+
+        return buffer.toString();
     }
 }
