@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.17 2002/05/08 23:19:31 dmitri Exp $
- * $Revision: 1.17 $
- * $Date: 2002/05/08 23:19:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.18 2002/05/29 00:41:53 dmitri Exp $
+ * $Revision: 1.18 $
+ * $Date: 2002/05/29 00:41:53 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -77,14 +77,13 @@ import org.apache.commons.jxpath.ri.model.beans.BeanPointerFactory;
 import org.apache.commons.jxpath.ri.model.beans.CollectionPointerFactory;
 import org.apache.commons.jxpath.ri.model.beans.DynamicPointerFactory;
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
-import org.apache.commons.jxpath.ri.model.dom.DOMPointerFactory;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2002/05/08 23:19:31 $
+ * @version $Revision: 1.18 $ $Date: 2002/05/29 00:41:53 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -100,7 +99,12 @@ public class JXPathContextReferenceImpl extends JXPathContext
         nodeFactories.add(new CollectionPointerFactory());
         nodeFactories.add(new BeanPointerFactory());
         nodeFactories.add(new DynamicPointerFactory());
-        nodeFactories.add(new DOMPointerFactory());
+        Object domFactory = allocateConditionally(
+                "org.apache.commons.jxpath.ri.model.dom.DOMPointerFactory",
+                "org.w3c.dom.Node");
+        if (domFactory != null){
+            nodeFactories.add(domFactory);
+        }
         nodeFactories.add(new ContainerPointerFactory());
         createNodeFactoryArray();
     }
@@ -458,5 +462,29 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
         throw new JXPathException(
             "Undefined function: " + functionName.toString());
+    }
+
+    /**
+     * Checks if existenceCheckClass exists on the class path. If so,
+     * allocates an instance of the specified class, otherwise
+     * returns null.
+     */
+    public static Object allocateConditionally(
+            String className,
+            String existenceCheckClassName){
+        try {
+            try {
+                Class.forName(existenceCheckClassName);
+            }
+            catch (ClassNotFoundException ex){
+                return null;
+            }
+
+            Class cls = Class.forName(className);
+            return cls.newInstance();
+        }
+        catch (Exception ex){
+            throw new JXPathException("Cannot allocate " + className, ex);
+        }
     }
 }
