@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.13 2003/01/25 01:50:36 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2003/01/25 01:50:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.14 2003/01/29 18:15:17 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2003/01/29 18:15:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -418,7 +418,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2003/01/25 01:50:36 $
+ * @version $Revision: 1.14 $ $Date: 2003/01/29 18:15:17 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -586,7 +586,7 @@ public abstract class JXPathContext {
     }
 
     /**
-     * @see #setDecimalFormat(String, DecimalFormatS)
+     * @see #setDecimalFormatSymbols(String, DecimalFormatSymbols)
      */
     public DecimalFormatSymbols getDecimalFormatSymbols(String name) {
         if (decimalFormats == null) {
