@@ -64,10 +64,7 @@
   <build>
     <unitTest>
       <includes>
-        <include>**/*TestCase.java</include>
-        <include>**/DOMModelTest.java</include>
-        <include>**/JDOMModelTest.java</include>
-        <include>**/*InterpreterTest.java</include>
+        <include>**/*Test.java</include>
       </includes>
     </unitTest>
   </build>
