@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.6 2002/06/16 03:22:21 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/06/16 03:22:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.7 2002/08/10 01:19:09 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/08/10 01:19:09 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * Collection and property access utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/06/16 03:22:21 $
+ * @version $Revision: 1.7 $ $Date: 2002/08/10 01:19:09 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -309,7 +309,6 @@ public class ValueUtils {
             value = method.invoke(bean, new Object[]{value});
         }
         catch (Exception ex){
-            ex.printStackTrace();
             throw new JXPathException(
                 "Cannot modify property: " + propertyDescriptor.getName(), ex);
         }
