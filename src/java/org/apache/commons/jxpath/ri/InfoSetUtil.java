@@ -17,12 +17,13 @@ package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.model.VariablePointer;
 
 /**
  * Type conversions, XPath style.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/05/08 20:07:09 $
+ * @version $Revision: 1.11 $ $Date: 2004/07/16 22:49:33 $
  */
 public class InfoSetUtil {
 
@@ -151,13 +152,22 @@ public class InfoSetUtil {
         }
         else if (object instanceof EvalContext) {
             EvalContext ctx = (EvalContext) object;
-            return ctx.nextSet() && ctx.nextNode();
+            Pointer ptr = ctx.getSingleNodePointer();
+            if (ptr == null) {
+                return false;
+            }
+            return booleanValue(ptr);
         }
         else if (object instanceof String) {
             return ((String) object).length() != 0;
         }
         else if (object instanceof NodePointer) {
-            return ((NodePointer) object).isActual();
+            NodePointer pointer = (NodePointer) object;
+            if (pointer instanceof VariablePointer) {
+                return booleanValue(pointer.getNode());
+            }
+            pointer = pointer.getValuePointer();
+            return pointer.isActual();
         }
         else if (object == null) {
             return false;
