@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/XMLParser2.java,v 1.1 2004/01/18 01:42:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2004/01/18 01:42:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/XMLParser2.java,v 1.2 2004/01/19 22:17:02 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2004/01/19 22:17:02 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,12 +68,12 @@ import java.io.InputStream;
  * The features have the same defaults as DocumentBuilderFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2004/01/18 01:42:58 $
+ * @version $Revision: 1.2 $ $Date: 2004/01/19 22:17:02 $
  */
 public abstract class XMLParser2 implements XMLParser 
 {
     private boolean validating = false;
-    private boolean namespaceAware = false;
+    private boolean namespaceAware = true;
     private boolean whitespace = false;
     private boolean expandEntityRef = true;
     private boolean ignoreComments = false;

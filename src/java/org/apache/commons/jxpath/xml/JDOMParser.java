@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/JDOMParser.java,v 1.6 2004/01/19 20:44:52 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2004/01/19 20:44:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/JDOMParser.java,v 1.7 2004/01/19 22:17:02 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2004/01/19 22:17:02 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,35 +70,25 @@ import org.jdom.input.SAXBuilder;
  * An implementation of the XMLParser interface that produces a JDOM Document.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/01/19 20:44:52 $
+ * @version $Revision: 1.7 $ $Date: 2004/01/19 22:17:02 $
  */
 public class JDOMParser extends XMLParser2 {
     
-    /**
-     * Temporary fix for JDOM problem - JDOM B9 does not properly handle
-     * isNamespaceAware = false
-     */
-    public boolean isNamespaceAware() {
-        return true;
-    }
-    
     public Object parseXML(InputStream stream) {
+        if (!isNamespaceAware()) {
+            throw new JXPathException("JDOM parser configuration error. JDOM "
+                    + "does not support the namespaceAware=false setting.");
+        }
+        
         try {
             SAXBuilder builder = new SAXBuilder();
             builder.setExpandEntities(isExpandEntityReferences());
             builder.setIgnoringElementContentWhitespace(
                     isIgnoringElementContentWhitespace());
             builder.setValidation(isValidating());
-            builder.setFeature(
-                    "http://xml.org/sax/features/namespaces",
-                    isNamespaceAware());
-            builder.setFeature(
-                    "http://xml.org/sax/features/namespace-prefixes",
-                    false);
             return builder.build(stream);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
             throw new JXPathException("JDOM parser error", ex);
         }
     }
