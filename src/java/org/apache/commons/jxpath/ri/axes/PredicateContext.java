@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.13 2002/08/10 16:13:03 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2002/08/10 16:13:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.14 2002/10/12 21:02:24 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2002/10/12 21:02:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,7 +61,7 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-
+import java.util.Iterator;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.CoreOperation;
 import org.apache.commons.jxpath.ri.compiler.Expression;
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2002/08/10 16:13:03 $
+ * @version $Revision: 1.14 $ $Date: 2002/10/12 21:02:24 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -109,9 +109,17 @@ public class PredicateContext extends EvalContext {
             }
             else {
                 Object pred = expression.computeValue(parentContext);
+                if (pred instanceof Iterator){
+                    if (!((Iterator)pred).hasNext()){
+                        return false;
+                    }
+                    pred = ((Iterator)pred).next();
+                }
+
                 if (pred instanceof NodePointer){
                     pred = ((NodePointer)pred).getNode();
                 }
+
                 if (pred instanceof Number){
                     int pos = (int)InfoSetUtil.doubleValue(pred);
                     position++;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.7 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.8 2002/10/12 21:02:24 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/10/12 21:02:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.8 $ $Date: 2002/10/12 21:02:24 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
@@ -165,8 +165,12 @@ public class BeanPropertyPointer extends PropertyPointer {
 
     public void setIndex(int index){
         if (this.index != index){
-            super.setIndex(index);
-            value = UNINITIALIZED;
+            // When dealing with a scalar, index == 0 is equivalent to
+            // WHOLE_COLLECTION, so do not change it.
+            if (this.index != WHOLE_COLLECTION || index != 0 || isCollection()){
+                super.setIndex(index);
+                value = UNINITIALIZED;
+            }
         }
     }
 
@@ -178,20 +182,15 @@ public class BeanPropertyPointer extends PropertyPointer {
      */
     public Object getNode(){
         if (value == UNINITIALIZED){
-            PropertyDescriptor pd = getPropertyDescriptor();
-            if (pd == null){
-                value = null;
+            Object baseValue = getBaseValue();
+            if (index == WHOLE_COLLECTION){
+                value = baseValue;
+            }
+            else if (value != null && index >= 0 && index < getLength()){
+                value = ValueUtils.getValue(baseValue, index);
             }
             else {
-                if (index == WHOLE_COLLECTION){
-                    value = ValueUtils.getValue(getBean(), pd);
-                }
-                else if (index >= 0 && index < getLength()){
-                    value = ValueUtils.getValue(getBean(), pd, index);
-                }
-                else {
-                    value = null;
-                }
+                value = null;
             }
         }
         return value;

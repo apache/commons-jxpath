@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.4 2002/06/16 03:22:22 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/06/16 03:22:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.5 2002/10/12 21:02:24 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/10/12 21:02:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Examples of such objects are JavaBeans and objects with Dynamic Properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/06/16 03:22:22 $
+ * @version $Revision: 1.5 $ $Date: 2002/10/12 21:02:24 $
  */
 public class PropertyIterator implements NodeIterator {
     private boolean empty = false;
@@ -104,6 +104,9 @@ public class PropertyIterator implements NodeIterator {
             }
             this.startPropertyIndex = ((PropertyPointer)startWith).getPropertyIndex();
             this.startIndex = startWith.getIndex();
+            if (this.startIndex == NodePointer.WHOLE_COLLECTION){
+                this.startIndex = 0;
+            }
             this.includeStart = false;
             if (reverse && startIndex == -1){
                 this.includeStart = true;
