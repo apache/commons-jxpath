@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/QName.java,v 1.3 2002/06/16 03:22:21 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/06/16 03:22:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/QName.java,v 1.4 2002/10/13 02:25:36 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/10/13 02:25:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,20 +61,37 @@
  */
 package org.apache.commons.jxpath.ri;
 
+import org.apache.commons.jxpath.JXPathException;
+
 /**
  * A qualified name: a combination of an optional namespace prefix
  * and an local name.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/06/16 03:22:21 $
+ * @version $Revision: 1.4 $ $Date: 2002/10/13 02:25:36 $
  */
 public class QName {
     private String prefix;
     private String name;
 
-    public QName(String prefix, String name){
+    public QName(String qualifiedName){
+        int index = qualifiedName.indexOf(':');
+        if (index == -1){
+            prefix = null;
+            name = qualifiedName;
+        }
+        else {
+            prefix = qualifiedName.substring(0, index);
+            name = qualifiedName.substring(index + 1);
+        }
+    }
+
+    public QName(String prefix, String localName){
+        if (localName.indexOf(':') != -1){
+            throw new JXPathException("The 'localName' part of a QName cannot contain colons");
+        }
         this.prefix = prefix;
-        this.name = name;
+        this.name = localName;
     }
 
     public String getPrefix(){
