@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.19 2002/06/08 22:47:25 dmitri Exp $
- * $Revision: 1.19 $
- * $Date: 2002/06/08 22:47:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.20 2002/08/10 01:30:39 dmitri Exp $
+ * $Revision: 1.20 $
+ * $Date: 2002/08/10 01:30:39 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,7 +83,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.19 $ $Date: 2002/06/08 22:47:25 $
+ * @version $Revision: 1.20 $ $Date: 2002/08/10 01:30:39 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -99,12 +99,21 @@ public class JXPathContextReferenceImpl extends JXPathContext
         nodeFactories.add(new CollectionPointerFactory());
         nodeFactories.add(new BeanPointerFactory());
         nodeFactories.add(new DynamicPointerFactory());
+
         Object domFactory = allocateConditionally(
                 "org.apache.commons.jxpath.ri.model.dom.DOMPointerFactory",
                 "org.w3c.dom.Node");
         if (domFactory != null){
             nodeFactories.add(domFactory);
         }
+/* TBD
+        Object jdomFactory = allocateConditionally(
+                "org.apache.commons.jxpath.ri.model.jdom.JDOMPointerFactory",
+                "org.jdom.Document");
+        if (jdomFactory != null){
+            nodeFactories.add(jdomFactory);
+        }
+*/
         nodeFactories.add(new ContainerPointerFactory());
         createNodeFactoryArray();
     }
@@ -261,6 +270,9 @@ public class JXPathContextReferenceImpl extends JXPathContext
             result = ((EvalContext)result).getSingleNodePointer();
         }
         if (result instanceof Pointer){
+            if (!lenient && !((NodePointer)result).isActual()){
+                throw new JXPathException("No pointer for xpath: " + xpath);
+            }
             return (Pointer)result;
         }
         else {
