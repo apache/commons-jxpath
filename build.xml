@@ -3,7 +3,7 @@
 
 <!--
         "JXPath" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.1 2001/08/23 00:46:57 dmitri Exp $
+        $Id: build.xml,v 1.2 2001/09/08 21:01:00 dmitri Exp $
 -->
 
 
@@ -61,6 +61,7 @@
     <pathelement location="${build.home}/classes"/>
     <pathelement location="${jaxp.jaxp.jar}"/>
     <pathelement location="${jaxp.xslt.jar}"/>
+    <pathelement location="${j2ee.jar}"/>
     <pathelement location="${junit.jar}"/>
   </path>
 
@@ -74,6 +75,7 @@
     <pathelement location="${build.home}/tests"/>
     <pathelement location="${jaxp.jaxp.jar}"/>
     <pathelement location="${jaxp.xslt.jar}"/>
+    <pathelement location="${j2ee.jar}"/>
     <pathelement location="${junit.jar}"/>
   </path>
 
@@ -104,6 +106,13 @@
       property="jaxp.xslt.present"
       classpathref="compile.classpath"
     />
+
+    <available 
+      classname="javax.servlet.ServletRequest"
+      property="j2ee.present"
+      classpathref="compile.classpath"
+    />
+
   </target>
 
   <target name="init"
@@ -116,6 +125,7 @@
     <echo message="junit.jar = ${junit.jar}"/>
     <echo message="jaxp.jaxp.jar = ${jaxp.jaxp.jar}"/>
     <echo message="jaxp.xslt.jar = ${jaxp.xslt.jar}"/>
+    <echo message="j2ee.jar = ${j2ee.jar}"/>
   </target>
 
   <target name="check.junit" unless="junit.present">
@@ -139,6 +149,13 @@
     </antcall>
   </target>
 
+  <target name="check.j2ee" unless="j2ee.present">
+    <antcall target="property-warning">
+      <param name="name" value="j2ee.jar"/>
+      <param name="value" value="${j2ee.jar}"/>
+    </antcall>
+  </target>
+
   <target name="property-warning">
     <echo>
       +----------------------------------------------------------------+
@@ -158,7 +175,7 @@
   </target>
 
   <target name="prepare" depends="init, 
-                         check.junit,check.jaxp.jaxp,check.jaxp.xslt"
+                         check.junit,check.jaxp.jaxp,check.jaxp.xslt,check.j2ee"
    description="Prepare build directory">
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>
@@ -222,6 +239,7 @@
     <mkdir      dir="${dist.home}/docs"/>
     <mkdir      dir="${dist.home}/docs/api"/>
     <javadoc sourcepath="${source.home}"
+           classpathref="compile.classpath"
                 destdir="${dist.home}/docs/api"
            packagenames="org.apache.commons.*"
                  author="true"

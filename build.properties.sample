@@ -6,7 +6,7 @@
 # Make any changes you need, and rename this file to 
 # "build.properties" 
 #
-# $Id: build.properties.sample,v 1.1 2001/08/23 00:46:57 dmitri Exp $
+# $Id: build.properties.sample,v 1.2 2001/09/08 21:01:00 dmitri Exp $
 # -------------------------------------------------------------------
 
 
@@ -18,3 +18,8 @@ junit.jar=${lib.repo}/junit-3.7.jar
 
 jaxp.jaxp.jar=${lib.repo}/jaxp-1.1.jar
 jaxp.xslt.jar=${lib.repo}/xalan-2.1.0.jar
+
+# The Servlet API (See http://java.sun.com/products/servlet)
+
+servlet.jar=${lib.repo}/servlet.jar
+
