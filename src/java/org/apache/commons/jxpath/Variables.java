@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Variables.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Variables.java,v 1.2 2002/04/24 03:30:17 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 03:30:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,8 +61,6 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
-
 /**
  * Variables provide access to a global set of values accessible via XPath.
  * XPath can reference variables using the "$varname" syntax. To use a custom
@@ -72,7 +70,7 @@ import java.util.*;
  * @see JXPathContext#setVariables
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 03:30:17 $
  */
 public interface Variables {
 

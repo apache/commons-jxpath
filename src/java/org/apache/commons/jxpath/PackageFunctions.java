@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/PackageFunctions.java,v 1.3 2002/04/21 21:52:31 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/21 21:52:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/PackageFunctions.java,v 1.4 2002/04/24 03:29:33 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/24 03:29:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,10 +61,14 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
-import java.lang.reflect.*;
-import org.apache.commons.jxpath.functions.*;
-import org.apache.commons.jxpath.util.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.Set;
+
+import org.apache.commons.jxpath.functions.ConstructorFunction;
+import org.apache.commons.jxpath.functions.MethodFunction;
+import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * Extension functions provided by Java classes.  The class prefix specified
@@ -104,42 +108,60 @@ import org.apache.commons.jxpath.util.*;
 
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/21 21:52:31 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/24 03:29:33 $
  */
 public class PackageFunctions implements Functions {
     private String classPrefix;
     private String namespace;
     private static final Object[] EMPTY_ARRAY = new Object[0];
 
-    public PackageFunctions(String classPrefix, String namespace){
+    public PackageFunctions(String classPrefix, String namespace) {
         this.classPrefix = classPrefix;
         this.namespace = namespace;
     }
 
-    public Set getUsedNamespaces(){
+    /**
+     * Returns the namespace specified in the constructor
+     */
+    public Set getUsedNamespaces() {
         return Collections.singleton(namespace);
     }
 
     /**
      * Returns a Function, if any, for the specified namespace,
      * name and parameter types.
+     * <p>
+     * @param namespace - if it is not the same as specified in the construction,
+     *      this method returns null
+     * @param name - name of the method, which can one these forms:
+     * <ul>
+     * <li><b>methodname</b>, if invoking a method on an object passed as the first parameter</li>
+     * <li><b>Classname.new</b>, if looking for a constructor</li>
+     * <li><b>subpackage.subpackage.Classname.new</b>, if looking for a constructor in
+     *      a subpackage</li>
+     * <li><b>Classname.methodname</b>, if looking for a static method</li>
+     * <li><b>subpackage.subpackage.Classname.methodname</b>, if looking for a 
+     *      static method of a class in a subpackage</li>
+     * </ul>
+     * 
+     * @return a MethodFunction, a ConstructorFunction or null if no function is found
      */
-    public Function getFunction(String namespace, String name, Object[] parameters){
-        if ((namespace == null && this.namespace != null) ||
-                (namespace != null && !namespace.equals(this.namespace))){
+    public Function getFunction(String namespace, String name, Object[] parameters) {
+        if ((namespace == null && this.namespace != null)
+            || (namespace != null && !namespace.equals(this.namespace))) {
             return null;
         }
 
-        if (parameters == null){
+        if (parameters == null) {
             parameters = EMPTY_ARRAY;
         }
 
-        if (parameters.length >= 1){
+        if (parameters.length >= 1) {
             Object target = parameters[0];
-            if (target != null){
-                if (target instanceof ExpressionContext){
-                    Pointer pointer = ((ExpressionContext)target).getContextNodePointer();
-                    if (pointer != null){
+            if (target != null) {
+                if (target instanceof ExpressionContext) {
+                    Pointer pointer = ((ExpressionContext) target).getContextNodePointer();
+                    if (pointer != null) {
                         target = pointer.getValue();
                     }
                     else {
@@ -147,9 +169,9 @@ public class PackageFunctions implements Functions {
                     }
                 }
             }
-            if (target != null){
+            if (target != null) {
                 Method method = TypeUtils.lookupMethod(target.getClass(), name, parameters);
-                if (method != null){
+                if (method != null) {
                     return new MethodFunction(method);
                 }
             }
@@ -157,7 +179,7 @@ public class PackageFunctions implements Functions {
 
         String fullName = classPrefix + name;
         int inx = fullName.lastIndexOf('.');
-        if (inx == -1){
+        if (inx == -1) {
             return null;
         }
 
@@ -168,19 +190,21 @@ public class PackageFunctions implements Functions {
         try {
             functionClass = Class.forName(className);
         }
-        catch (ClassNotFoundException ex){
+        catch (ClassNotFoundException ex) {
             throw new RuntimeException("Class not found: " + ex);
         }
 
-        if (methodName.endsWith("new")){
-            Constructor constructor = TypeUtils.lookupConstructor(functionClass, parameters);
-            if (constructor != null){
+        if (methodName.endsWith("new")) {
+            Constructor constructor =
+                TypeUtils.lookupConstructor(functionClass, parameters);
+            if (constructor != null) {
                 return new ConstructorFunction(constructor);
             }
         }
         else {
-            Method method = TypeUtils.lookupStaticMethod(functionClass, methodName, parameters);
-            if (method != null){
+            Method method =
+                TypeUtils.lookupStaticMethod(functionClass, methodName, parameters);
+            if (method != null) {
                 return new MethodFunction(method);
             }
         }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/BasicVariables.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/BasicVariables.java,v 1.2 2002/04/24 03:29:33 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 03:29:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,21 +61,28 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
+import java.util.HashMap;
 
 /**
  * A basic implementation of the Variables interface that uses a HashMap.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 03:29:33 $
  */
 public class BasicVariables implements Variables {
 
+    /**
+     * Contains the values of declared variables
+     */
     private HashMap vars = new HashMap();
 
     /**
      * Returns true if the variable has been defined, even if the
      * value of the variable is null.
+     * 
+     * @param varName is a variable name without the "$" sign
+     * 
+     * @return true if the variable is declared
      */
     public boolean isDeclaredVariable(String varName){
         return vars.containsKey(varName);
@@ -84,6 +91,10 @@ public class BasicVariables implements Variables {
     /**
      * Returns the value of the variable if it is defined,
      * otherwise, throws IllegalArgumentException
+     * 
+     * @param varName is a variable name without the "$" sign
+     * 
+     * @return the value of the variable
      */
     public Object getVariable(String varName){
         // Note that a variable may be defined with a null value
@@ -98,6 +109,9 @@ public class BasicVariables implements Variables {
     /**
      * Defines a new variable with the specified value or modifies
      * the value of an existing variable.
+     * 
+     * @param varName is a variable name without the "$" sign
+     * @param value is the new value for the variable, which can be null
      */
     public void declareVariable(String varName, Object value){
         vars.put(varName, value);

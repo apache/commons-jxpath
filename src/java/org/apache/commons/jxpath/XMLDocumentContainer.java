@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/XMLDocumentContainer.java,v 1.2 2002/04/11 03:00:11 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/11 03:00:11 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/XMLDocumentContainer.java,v 1.3 2002/04/24 03:30:17 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/24 03:30:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,15 +61,16 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
+import java.io.InputStream;
+import java.net.URL;
+
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.dom.DOMResult;
-import java.net.URL;
-import org.w3c.dom.*;
-import java.io.InputStream;
+import javax.xml.transform.stream.StreamSource;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * An XML document container reads and parses XML only when it is
@@ -82,7 +83,7 @@ import java.io.InputStream;
  * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/11 03:00:11 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/24 03:30:17 $
  */
 public class XMLDocumentContainer implements Container {
 
@@ -90,6 +91,10 @@ public class XMLDocumentContainer implements Container {
     private URL xmlURL;
     private Source source;
 
+    /**
+     * @param URL is a URL for an XML file. Use getClass().getResource(resourceName)
+     * to load XML from a resource file.
+     */
     public XMLDocumentContainer(URL xmlURL){
         this.xmlURL = xmlURL;
         if (xmlURL == null){
@@ -104,6 +109,9 @@ public class XMLDocumentContainer implements Container {
         }
     }
 
+    /**
+     * Reads XML, caches it internally and returns the Document.
+     */
     public Object getValue(){
         if (document == null){
             try {
@@ -116,7 +124,7 @@ public class XMLDocumentContainer implements Container {
                     DOMResult result = new DOMResult();
                     Transformer trans = TransformerFactory.newInstance().newTransformer();
                     trans.transform(source, result);
-                    document = (Document)result.getNode();
+                    document = (Document) result.getNode();
                 }
                 finally {
                     if (stream != null){
@@ -133,6 +141,9 @@ public class XMLDocumentContainer implements Container {
         return document;
     }
 
+    /**
+     * Throws an UnsupportedOperationException
+     */
     public void setValue(Object value){
         throw new UnsupportedOperationException();
     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContextFactoryConfigurationError.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContextFactoryConfigurationError.java,v 1.2 2002/04/24 03:29:33 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 03:29:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,8 +61,6 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
-
 /**
  * Thrown when a problem with configuration with the JXPathContextFactories
  * exists. This error will typically be thrown when the class of a
@@ -70,7 +68,7 @@ import java.util.*;
  * or instantiated.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 03:29:33 $
  */
 
 public class JXPathContextFactoryConfigurationError extends Error {
@@ -121,7 +119,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
      * @param e The exception to be encapsulated in a
      * JXPathContextFactoryConfigurationError
      * @param msg The detail message.
-     * @param e The exception to be wrapped in a JXPathContextFactoryConfigurationError
      */
 
     public JXPathContextFactoryConfigurationError(Exception e, String msg) {

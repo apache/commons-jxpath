@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/MapDynamicPropertyHandler.java,v 1.1 2001/09/11 23:34:26 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/11 23:34:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/MapDynamicPropertyHandler.java,v 1.2 2002/04/24 03:29:33 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 03:29:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,13 +61,14 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Implements the DynamicPropertyHandler interface for java.util.Map.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/11 23:34:26 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 03:29:33 $
  */
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
@@ -77,7 +78,7 @@ public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
      * Returns string representations of all keys in the map.
      */
     public String[] getPropertyNames(Object object){
-        Map map = (Map)object;
+        Map map = (Map) object;
         String names[] = new String[map.size()];
         Iterator it = map.keySet().iterator();
         for (int i = 0; i < names.length; i++){
@@ -89,8 +90,8 @@ public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
     /**
      * Returns the value for the specified key.
      */
-    public Object getProperty(Object object, String propertyName){
-        return ((Map)object).get(propertyName);
+    public Object getProperty(Object object, String propertyName) {
+        return ((Map) object).get(propertyName);
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/AbstractFactory.java,v 1.2 2002/04/21 21:52:31 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/21 21:52:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/AbstractFactory.java,v 1.3 2002/04/24 03:29:33 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/24 03:29:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,11 +61,9 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
-
 /**
- * The {@link JXPathContext#createPath JXPathContext.createPath()} method of JXPathContext can create
- * missing objects as it traverses an XPath; it utilizes an AbstractFactory for that purpose.
+ * The {@link JXPathContext#createPath JXPathContext.createPath()} method of JXPathContext can 
+ * create missing objects as it traverses an XPath; it utilizes an AbstractFactory for that purpose.
  * Install a factory on JXPathContext by calling {@link JXPathContext#setFactory
  * JXPathContext.setFactory()}.
  * <p>
@@ -73,7 +71,7 @@ import java.util.*;
  * return true to indicate that the factory has successfully created the described object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/21 21:52:31 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/24 03:29:33 $
  */
 public abstract class AbstractFactory {
 
@@ -84,18 +82,30 @@ public abstract class AbstractFactory {
      * the collection. Then it should create the index'th element of the collection
      * and return true.
      * <p>
-     * If the parameters describe an individual object, the factory should only
-     * create an object if index == 0.
-     * <p>
-     * Return the created object or <b>null</b> if this factory cannot create
-     * the requested object.
+     * 
+     * @param context can be used to evaluate other XPaths, get to variables etc.
+     * @param pointer describes the location of the node to be created
+     * @param parent is the object that will server as a parent of the new object
+     * @param name is the name of the child of the parent that needs to be created. 
+     *        In the case of DOM may be qualified.
+     * @param index is used if the pointer represents a collection element. You may
+     *        need to expand or even create the collection to accomodate the new element.
+     * 
+     * @return true if the object was successfully created
      */
-    public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index){
+    public boolean createObject(JXPathContext context, Pointer pointer, 
+                                Object parent, String name, int index){
         return false;
     }
 
     /**
      * Create a new object and set it on the specified variable
+     * 
+     * @param context hosts variable pools. See {@link JXPathContext#getVariables() 
+     *        JXPathContext.getVariables()}
+     * @param name is the name of the variable without the "$" sign
+     * 
+     * @return true if the variable was successfully defined
      */
     public boolean declareVariable(JXPathContext context, String name){
         return false;

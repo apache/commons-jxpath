@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Pointer.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Pointer.java,v 1.2 2002/04/24 03:29:33 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 03:29:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,8 +61,6 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
-
 /**
  * Pointers represent locations of objects and their properties
  * in Java object graphs. JXPathContext has methods
@@ -77,7 +75,7 @@ import java.util.*;
  * the map, which is the value of the property "aMap" of the root object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 03:29:33 $
  */
 public interface Pointer {
 

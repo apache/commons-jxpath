@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ClassFunctions.java,v 1.3 2002/04/21 21:52:31 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/21 21:52:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ClassFunctions.java,v 1.4 2002/04/24 03:29:33 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/24 03:29:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,10 +61,14 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
-import java.lang.reflect.*;
-import org.apache.commons.jxpath.functions.*;
-import org.apache.commons.jxpath.util.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.Set;
+
+import org.apache.commons.jxpath.functions.ConstructorFunction;
+import org.apache.commons.jxpath.functions.MethodFunction;
+import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * Extension functions provided by a Java class.
@@ -90,7 +94,7 @@ import org.apache.commons.jxpath.util.*;
  * the method.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/21 21:52:31 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/24 03:29:33 $
  */
 public class ClassFunctions implements Functions {
     private Class functionClass;
@@ -102,6 +106,11 @@ public class ClassFunctions implements Functions {
         this.namespace = namespace;
     }
 
+    /**
+     * Returns a set of one namespace - the one specified in the constructor.
+     * 
+     * @returns a singleton
+     */
     public Set getUsedNamespaces(){
         return Collections.singleton(namespace);
     }
@@ -109,30 +118,38 @@ public class ClassFunctions implements Functions {
     /**
      * Returns a Function, if any, for the specified namespace,
      * name and parameter types.
+     * 
+     * @param namespace if it is not the namespace specified in the constructor,
+     *     the method returns null
+     * @param name is a function name or "new" for a constructor.
+     * 
+     * @return a MethodFunction, a ConstructorFunction or null if there is no
+     *      such function.
      */
-    public Function getFunction(String namespace, String name, Object[] parameters){
-        if (!namespace.equals(this.namespace)){
+    public Function getFunction(String namespace, String name, Object[] parameters) {
+        if (!namespace.equals(this.namespace)) {
             return null;
         }
 
-        if (parameters == null){
+        if (parameters == null) {
             parameters = EMPTY_ARRAY;
         }
 
-        if (name.equals("new")){
-            Constructor constructor = TypeUtils.lookupConstructor(functionClass, parameters);
-            if (constructor != null){
+        if (name.equals("new")) {
+            Constructor constructor =
+                TypeUtils.lookupConstructor(functionClass, parameters);
+            if (constructor != null) {
                 return new ConstructorFunction(constructor);
             }
         }
         else {
             Method method = TypeUtils.lookupStaticMethod(functionClass, name, parameters);
-            if (method != null){
+            if (method != null) {
                 return new MethodFunction(method);
             }
 
             method = TypeUtils.lookupMethod(functionClass, name, parameters);
-            if (method != null){
+            if (method != null) {
                 return new MethodFunction(method);
             }
         }

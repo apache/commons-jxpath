@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.2 2001/09/11 23:34:26 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/11 23:34:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.3 2002/04/24 03:29:33 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/24 03:29:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,15 +61,17 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
-import org.apache.commons.jxpath.MapDynamicPropertyHandler;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Properties;
+import java.util.WeakHashMap;
 
 /**
  * JXPathIntrospector maintains a registry of {@link JXPathBeanInfo JXPathBeanInfo} objects
  * for Java classes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/11 23:34:26 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/24 03:29:33 $
  */
 public class JXPathIntrospector {
 
@@ -132,10 +134,10 @@ public class JXPathIntrospector {
      * </ul>
      */
     public static JXPathBeanInfo getBeanInfo(Class beanClass) {
-        JXPathBeanInfo beanInfo = (JXPathBeanInfo)byClass.get(beanClass);
-        if (beanInfo == null){
+        JXPathBeanInfo beanInfo = (JXPathBeanInfo) byClass.get(beanClass);
+        if (beanInfo == null) {
             beanInfo = findInformant(beanClass);
-            if (beanInfo == null){
+            if (beanInfo == null) {
                 beanInfo = new JXPathBasicBeanInfo(beanClass);
             }
             byClass.put(beanClass, beanInfo);
@@ -146,17 +148,19 @@ public class JXPathIntrospector {
     private static synchronized JXPathBeanInfo findInformant(Class beanClass) {
         String name = beanClass.getName() + "XBeanInfo";
         try {
-            return (JXPathBeanInfo)instantiate(beanClass, name);
-        } catch (Exception ex) {
+            return (JXPathBeanInfo) instantiate(beanClass, name);
+        }
+        catch (Exception ex) {
             // Just drop through
         }
 
         // Now try checking if the bean is its own JXPathBeanInfo.
         try {
             if (JXPathBeanInfo.class.isAssignableFrom(beanClass)) {
-                return (JXPathBeanInfo)beanClass.newInstance();
+                return (JXPathBeanInfo) beanClass.newInstance();
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             // Just drop through
         }
 
@@ -169,7 +173,7 @@ public class JXPathIntrospector {
      * classloader.
      */
     private static Object instantiate(Class sibling, String className)
-                 throws Exception {
+        throws Exception {
 
         // First check with sibling's classloader (if any).
         ClassLoader cl = sibling.getClassLoader();
@@ -177,7 +181,8 @@ public class JXPathIntrospector {
             try {
                 Class cls = cl.loadClass(className);
                 return cls.newInstance();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 // Just drop through and try the system classloader.
             }
         }

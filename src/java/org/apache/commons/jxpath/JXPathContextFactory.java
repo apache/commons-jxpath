@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContextFactory.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContextFactory.java,v 1.2 2002/04/24 03:29:33 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 03:29:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -80,7 +80,7 @@ import javax.xml.transform.TransformerFactory;
  * @see JXPathContext#newContext(JXPathContext,Object)
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 03:29:33 $
  */
 public abstract class JXPathContextFactory {
 
@@ -173,106 +173,116 @@ public abstract class JXPathContextFactory {
         method is called the second time ( cache the result of
         finding the default impl )
     */
-    private static String foundFactory=null;
+    private static String foundFactory = null;
 
     /** Temp debug code - this will be removed after we test everything
      */
-    private static boolean debug=false;
+    private static boolean debug = false;
     static {
-    try {
-        debug=System.getProperty( "jxpath.debug" ) != null;
-    } catch(SecurityException se ) {}
+        try {
+            debug = System.getProperty("jxpath.debug") != null;
+        }
+        catch (SecurityException se) {
+        }
     }
 
     /** Private implementation method - will find the implementation
         class in the specified order.
         @param property    Property name
-        @param factoryId   Qualified property name
         @param defaultFactory Default implementation, if nothing else is found
+        
+        @return class name of the JXPathContextFactory
     */
-    private static String findFactory(String property, String defaultFactory)
-    {
+    private static String findFactory(String property, String defaultFactory) {
         // Use the system property first
         try {
-            String systemProp = System.getProperty( property );
-            if( systemProp!=null) {
-                if( debug )
-                    System.err.println("JXPath: found system property" +
-                                       systemProp );
+            String systemProp = System.getProperty(property);
+            if (systemProp != null) {
+                if (debug){
+                    System.err.println("JXPath: found system property" + systemProp);
+                }
                 return systemProp;
             }
 
-        }catch (SecurityException se) {
+        }
+        catch (SecurityException se) {
         }
 
-        if( foundFactory!=null)
+        if (foundFactory != null){
             return foundFactory;
+        }
 
         // Use the factory ID system property first
         try {
-            String systemProp =
-                System.getProperty( property );
-            if( systemProp!=null) {
-                if( debug )
-                    System.err.println("JXPath: found system property" +
-                                       systemProp );
+            String systemProp = System.getProperty(property);
+            if (systemProp != null) {
+                if (debug){
+                    System.err.println("JXPath: found system property" + systemProp);
+                }
                 return systemProp;
             }
 
-        }catch (SecurityException se) {
+        }
+        catch (SecurityException se) {
         }
 
         // try to read from $java.home/lib/xml.properties
         try {
-            String javah=System.getProperty( "java.home" );
-            String configFile = javah + File.separator +
-                "lib" + File.separator + "jxpath.properties";
-            File f=new File( configFile );
-            if( f.exists()) {
-                Properties props=new Properties();
-                props.load( new FileInputStream(f));
-                foundFactory=props.getProperty( property );
-                if( debug )
-                    System.err.println("JXPath: found java.home property " +
-                                       foundFactory );
-                if(foundFactory!=null )
+            String javah = System.getProperty("java.home");
+            String configFile =
+                javah + File.separator + "lib" + File.separator + "jxpath.properties";
+            File f = new File(configFile);
+            if (f.exists()) {
+                Properties props = new Properties();
+                props.load(new FileInputStream(f));
+                foundFactory = props.getProperty(property);
+                if (debug){
+                    System.err.println("JXPath: found java.home property " + foundFactory);
+                }
+                if (foundFactory != null){
                     return foundFactory;
+                }
             }
-        } catch(Exception ex ) {
-            if( debug ) ex.printStackTrace();
+        }
+        catch (Exception ex) {
+            if (debug){
+                ex.printStackTrace();
+            }
         }
 
         String serviceId = "META-INF/services/" + property;
         // try to find services in CLASSPATH
         try {
-            ClassLoader cl=JXPathContextFactory.class.getClassLoader();
-            InputStream is=null;
-            if( cl == null ) {
-                is=ClassLoader.getSystemResourceAsStream( serviceId );
-            } else {
-                is=cl.getResourceAsStream( serviceId );
+            ClassLoader cl = JXPathContextFactory.class.getClassLoader();
+            InputStream is = null;
+            if (cl == null) {
+                is = ClassLoader.getSystemResourceAsStream(serviceId);
+            }
+            else {
+                is = cl.getResourceAsStream(serviceId);
             }
 
-            if( is!=null ) {
-                if( debug )
-                    System.err.println("JXPath: found  " +
-                                       serviceId);
-                BufferedReader rd=new BufferedReader( new
-                    InputStreamReader(is));
+            if (is != null) {
+                if (debug){
+                    System.err.println("JXPath: found  " + serviceId);
+                }
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 
-                foundFactory=rd.readLine();
+                foundFactory = rd.readLine();
                 rd.close();
 
-                if( debug )
-                    System.err.println("JXPath: loaded from services: " +
-                                       foundFactory );
-                if( foundFactory != null &&
-                    !  "".equals( foundFactory) ) {
+                if (debug){
+                    System.err.println("JXPath: loaded from services: " + foundFactory);
+                }
+                if (foundFactory != null && !"".equals(foundFactory)) {
                     return foundFactory;
                 }
             }
-        } catch( Exception ex ) {
-            if( debug ) ex.printStackTrace();
+        }
+        catch (Exception ex) {
+            if (debug){
+                ex.printStackTrace();
+            }
         }
 
         return defaultFactory;
