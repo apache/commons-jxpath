@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.1 2001/08/23 00:47:02 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:02 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.2 2001/08/23 03:38:00 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/08/23 03:38:00 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -94,7 +94,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:02 $
+ * @version $Revision: 1.2 $ $Date: 2001/08/23 03:38:00 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -298,7 +298,7 @@ public class JXPathTestCase extends TestCase
             catch (Exception ex){
                 exception = true;
             }
-            assert("Evaluating '$none', expected exception - did not get it", exception);
+            assertTrue("Evaluating '$none', expected exception - did not get it", exception);
 
             testGetValue(context, "$z/int",  new Integer(1));
             testGetValue(context, "$z/integers[$x - 5]",  new Integer(2));
@@ -370,7 +370,7 @@ public class JXPathTestCase extends TestCase
             catch (Exception ex){
                 exception = true;
             }
-            assert("Setting '$y = 1', expected exception - did not get it", exception);
+            assertTrue("Setting '$y = 1', expected exception - did not get it", exception);
 
             context.setValue("int", new Integer(3));
             assertEquals("Modified <" + "int" + ">", new Integer(3), context.getValue("int"));
