@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/MethodLookupUtils.java,v 1.5 2003/10/09 21:31:42 rdonkin Exp $
- * $Revision: 1.5 $
- * $Date: 2003/10/09 21:31:42 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/MethodLookupUtils.java,v 1.6 2004/01/17 03:25:51 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2004/01/17 03:25:51 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.JXPathException;
  * as constructors based on a name and list of parameters.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/10/09 21:31:42 $
+ * @version $Revision: 1.6 $ $Date: 2004/01/17 03:25:51 $
  */
 public class MethodLookupUtils {
 
@@ -88,7 +88,7 @@ public class MethodLookupUtils {
         Object[] parameters) 
      {
         boolean tryExact = true;
-        int count = parameters.length;
+        int count = parameters == null ? 0 : parameters.length;
         Class types[] = new Class[count];
         for (int i = 0; i < count; i++) {
             Object param = parameters[i];
@@ -150,7 +150,7 @@ public class MethodLookupUtils {
         Object[] parameters) 
     {
         boolean tryExact = true;
-        int count = parameters.length;
+        int count = parameters == null ? 0 : parameters.length;
         Class types[] = new Class[count];
         for (int i = 0; i < count; i++) {
             Object param = parameters[i];
@@ -214,7 +214,9 @@ public class MethodLookupUtils {
         String name,
         Object[] parameters) 
     {
-        if (parameters.length < 1 || parameters[0] == null) {
+        if (parameters == null
+            || parameters.length < 1
+            || parameters[0] == null) {
             return null;
         }
 
@@ -295,11 +297,12 @@ public class MethodLookupUtils {
             && ExpressionContext.class.isAssignableFrom(types[0])) {
             pi++;
         }
-        if (types.length != parameters.length + pi) {
+        int length = parameters == null ? 0 : parameters.length;
+        if (types.length != length + pi) {
             return NO_MATCH;
         }
         int totalMatch = EXACT_MATCH;
-        for (int i = 0; i < parameters.length; i++) {
+        for (int i = 0; i < length; i++) {
             int match = matchType(types[i + pi], parameters[i]);
             if (match == NO_MATCH) {
                 return NO_MATCH;
