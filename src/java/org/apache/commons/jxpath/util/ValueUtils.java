@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.12 2003/01/11 05:41:27 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2003/01/11 05:41:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.13 2003/01/17 02:02:57 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2003/01/17 02:02:57 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,6 +74,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.apache.commons.jxpath.JXPathException;
 
@@ -81,7 +82,7 @@ import org.apache.commons.jxpath.JXPathException;
  * Collection and property access utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2003/01/11 05:41:27 $
+ * @version $Revision: 1.13 $ $Date: 2003/01/17 02:02:57 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -218,6 +219,7 @@ public class ValueUtils {
      * Returns the index'th element from the supplied collection.
      */
     public static Object remove(Object collection, int index) {
+        collection = openContainers(collection);
         if (collection == null) {
             return null;
         }
@@ -275,6 +277,7 @@ public class ValueUtils {
      * Returns the index'th element of the supplied collection.
      */
     public static Object getValue(Object collection, int index) {
+        collection = openContainers(collection);
         Object value = collection;
         if (collection != null) {
             if (collection.getClass().isArray()) {
@@ -311,6 +314,7 @@ public class ValueUtils {
      * Converts the value to the required type if necessary.
      */
     public static void setValue(Object collection, int index, Object value) {
+        collection = openContainers(collection);
         if (collection != null) {
             if (collection.getClass().isArray()) {
                 Array.set(
@@ -467,7 +471,7 @@ public class ValueUtils {
         }
         // We will fall through if there is no indexed read
         Object collection = getValue(bean, propertyDescriptor);
-        if (isCollection(collection)) {
+        if (isCollection(openContainers(collection))) {
             setValue(collection, index, value);
         }
         else if (index == 0) {
@@ -479,6 +483,17 @@ public class ValueUtils {
         }
     }
 
+    /**
+     * If the parameter is a container, opens the container and
+     * return the contents.  The method is recursive.
+     */
+    private static Object openContainers(Object collection) {
+        while (collection instanceof Container) {
+            collection = ((Container) collection).getValue();
+        }
+        return collection;
+    }
+    
     /**
      * Returns a shared instance of the dynamic property handler class
      * returned by <code>getDynamicPropertyHandlerClass()</code>.
