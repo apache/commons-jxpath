@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.9 2002/05/14 23:08:26 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/05/14 23:08:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.10 2002/08/10 01:31:37 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/08/10 01:31:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * "preceding-sibling::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/05/14 23:08:26 $
+ * @version $Revision: 1.10 $ $Date: 2002/08/10 01:31:37 $
  */
 public class ChildContext extends EvalContext {
     private NodeTest nodeTest;
@@ -121,6 +121,7 @@ public class ChildContext extends EvalContext {
                     return pointer;
                 }
             }
+            return null;
         }
         return getCurrentNodePointer();
     }
