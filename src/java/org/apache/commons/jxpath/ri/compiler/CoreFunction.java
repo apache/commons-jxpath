@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.13 2003/10/09 21:31:39 rdonkin Exp $
- * $Revision: 1.13 $
- * $Date: 2003/10/09 21:31:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.14 2004/02/05 00:22:30 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2004/02/05 00:22:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * like "position()" or "number()".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2003/10/09 21:31:39 $
+ * @version $Revision: 1.14 $ $Date: 2004/02/05 00:22:30 $
  */
 public class CoreFunction extends Operation {
 
@@ -398,7 +398,9 @@ public class CoreFunction extends Operation {
 
     protected Object functionNamespaceURI(EvalContext context) {
         if (getArgumentCount() == 0) {
-            return context.getCurrentNodePointer();
+            NodePointer ptr = context.getCurrentNodePointer();
+            String str = ptr.getNamespaceURI();
+            return str == null ? "" : str;
         }
         assertArgCount(1);
         Object set = getArg1().compute(context);
@@ -415,7 +417,8 @@ public class CoreFunction extends Operation {
 
     protected Object functionLocalName(EvalContext context) {
         if (getArgumentCount() == 0) {
-            return context.getCurrentNodePointer();
+            NodePointer ptr = context.getCurrentNodePointer();
+            return ptr.getName().getName();
         }
         assertArgCount(1);
         Object set = getArg1().compute(context);
@@ -431,7 +434,8 @@ public class CoreFunction extends Operation {
 
     protected Object functionName(EvalContext context) {
         if (getArgumentCount() == 0) {
-            return context.getCurrentNodePointer();
+            NodePointer ptr = context.getCurrentNodePointer();
+            return ptr.getExpandedName().toString();
         }
         assertArgCount(1);
         Object set = getArg1().compute(context);
