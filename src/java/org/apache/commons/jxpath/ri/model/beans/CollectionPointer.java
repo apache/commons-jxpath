@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.18 $ $Date: 2004/03/25 03:49:50 $
+ * @version $Revision: 1.19 $ $Date: 2004/04/04 22:06:35 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -75,7 +75,9 @@ public class CollectionPointer extends NodePointer {
         if (index != WHOLE_COLLECTION) {
             return ValueUtils.getValue(collection, index);
         }
-        return collection;
+        else {
+            return ValueUtils.getValue(collection);
+        }
     }
 
     public void setValue(Object value) {

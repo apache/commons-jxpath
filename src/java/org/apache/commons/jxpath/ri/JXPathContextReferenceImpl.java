@@ -54,7 +54,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.41 $ $Date: 2004/04/01 02:55:32 $
+ * @version $Revision: 1.42 $ $Date: 2004/04/04 22:06:36 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -622,6 +622,9 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             return new VariablePointer(vars, name);
         }
         else {
+            // The variable is not declared, but we will create
+            // a pointer anyway in case the user want to set, rather
+            // than get, the value of the variable.
             return new VariablePointer(name);
         }
     }

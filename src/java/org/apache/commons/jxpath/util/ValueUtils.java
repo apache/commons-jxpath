@@ -37,7 +37,7 @@ import org.apache.commons.jxpath.JXPathException;
  * Collection and property access utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.18 $ $Date: 2004/02/29 14:17:43 $
+ * @version $Revision: 1.19 $ $Date: 2004/04/04 22:06:36 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -50,7 +50,8 @@ public class ValueUtils {
         if (value == null) {
             return false;
         }
-        else if (value.getClass().isArray()) {
+        value = getValue(value);
+        if (value.getClass().isArray()) {
             return true;
         }
         else if (value instanceof Collection) {
@@ -132,7 +133,8 @@ public class ValueUtils {
         if (collection == null) {
             return 0;
         }
-        else if (collection.getClass().isArray()) {
+        collection = getValue(collection);
+        if (collection.getClass().isArray()) {
             return Array.getLength(collection);
         }
         else if (collection instanceof Collection) {
@@ -211,7 +213,7 @@ public class ValueUtils {
      * Returns the index'th element from the supplied collection.
      */
     public static Object remove(Object collection, int index) {
-        collection = openContainers(collection);
+        collection = getValue(collection);
         if (collection == null) {
             return null;
         }
@@ -269,7 +271,7 @@ public class ValueUtils {
      * Returns the index'th element of the supplied collection.
      */
     public static Object getValue(Object collection, int index) {
-        collection = openContainers(collection);
+        collection = getValue(collection);
         Object value = collection;
         if (collection != null) {
             if (collection.getClass().isArray()) {
@@ -306,7 +308,7 @@ public class ValueUtils {
      * Converts the value to the required type if necessary.
      */
     public static void setValue(Object collection, int index, Object value) {
-        collection = openContainers(collection);
+        collection = getValue(collection);
         if (collection != null) {
             if (collection.getClass().isArray()) {
                 Array.set(
@@ -473,7 +475,7 @@ public class ValueUtils {
         }
         // We will fall through if there is no indexed read
         Object collection = getValue(bean, propertyDescriptor);
-        if (isCollection(openContainers(collection))) {
+        if (isCollection(collection)) {
             setValue(collection, index, value);
         }
         else if (index == 0) {
@@ -489,11 +491,11 @@ public class ValueUtils {
      * If the parameter is a container, opens the container and
      * return the contents.  The method is recursive.
      */
-    private static Object openContainers(Object collection) {
-        while (collection instanceof Container) {
-            collection = ((Container) collection).getValue();
+    public static Object getValue(Object object) {
+        while (object instanceof Container) {
+            object = ((Container) object).getValue();
         }
-        return collection;
+        return object;
     }
     
     /**

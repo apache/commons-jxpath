@@ -30,6 +30,7 @@ import org.apache.commons.jxpath.ri.compiler.ExtensionFunctionTest;
 import org.apache.commons.jxpath.ri.compiler.VariableTest;
 import org.apache.commons.jxpath.ri.model.MixedModelTest;
 import org.apache.commons.jxpath.ri.model.beans.BeanModelTest;
+import org.apache.commons.jxpath.ri.model.container.ContainerModelTest;
 import org.apache.commons.jxpath.ri.model.dom.DOMModelTest;
 import org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanModelTest;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertiesModelTest;
@@ -50,7 +51,7 @@ import org.apache.commons.jxpath.util.BasicTypeConverterTest;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.7 $ $Date: 2004/04/04 22:06:35 $
  */
 
 public class JXPathTestSuite extends TestCase {
@@ -79,6 +80,7 @@ public class JXPathTestSuite extends TestCase {
         suite.addTestSuite(CoreOperationTest.class);
         suite.addTestSuite(ExtensionFunctionTest.class);
         suite.addTestSuite(VariableTest.class);
+        suite.addTestSuite(ContainerModelTest.class);
         suite.addTestSuite(BeanModelTest.class);
         suite.addTestSuite(DynamicPropertiesModelTest.class);
         suite.addTestSuite(DOMModelTest.class);

@@ -26,6 +26,7 @@ import java.util.Vector;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
@@ -39,7 +40,7 @@ import org.apache.commons.jxpath.Variables;
  * Tests JXPath with mixed model: beans, maps, DOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision: 1.9 $ $Date: 2004/04/04 22:06:36 $
  */
 
 public class MixedModelTest extends JXPathTestCase {
@@ -54,6 +55,10 @@ public class MixedModelTest extends JXPathTestCase {
         super(name);
     }
 
+    public static void main(String[] args) {
+        TestRunner.run(new MixedModelTest("testContainerWithCollection"));
+    }
+    
     /**
      * Return the tests included in this test suite.
      */

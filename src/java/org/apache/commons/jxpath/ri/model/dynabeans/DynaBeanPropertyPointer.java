@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a DynaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.12 $ $Date: 2004/04/04 22:06:35 $
  */
 public class DynaBeanPropertyPointer extends PropertyPointer {
     private DynaBean dynaBean;
@@ -154,7 +154,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
         Object value;
         if (index == WHOLE_COLLECTION) {
-            value = dynaBean.get(name);
+            value = ValueUtils.getValue(dynaBean.get(name));
         }
         else if (isIndexedProperty()) {
             // DynaClass at this point is not based on whether
@@ -162,7 +162,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
             // whether it is an array or List. Therefore
             // the indexed set may fail.
             try {
-                value = dynaBean.get(name, index);
+                value = ValueUtils.getValue(dynaBean.get(name, index));
             }
             catch (ArrayIndexOutOfBoundsException ex) {
                 value = null;

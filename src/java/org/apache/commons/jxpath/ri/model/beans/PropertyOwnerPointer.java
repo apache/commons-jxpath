@@ -32,7 +32,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.18 $ $Date: 2004/03/25 05:41:29 $
+ * @version $Revision: 1.19 $ $Date: 2004/04/04 22:06:36 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -101,7 +101,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
             if (index == WHOLE_COLLECTION) {
-                value = getBaseValue();
+                value = ValueUtils.getValue(getBaseValue());
             }
             else {
                 value = ValueUtils.getValue(getBaseValue(), index);

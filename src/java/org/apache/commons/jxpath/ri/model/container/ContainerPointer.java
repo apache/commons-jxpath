@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/04/01 02:55:32 $
+ * @version $Revision: 1.13 $ $Date: 2004/04/04 22:06:36 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
@@ -58,7 +58,7 @@ public class ContainerPointer extends NodePointer {
     }
 
     public Object getBaseValue() {
-        return container.getValue();
+        return container;
     }
     
     public boolean isCollection() {
@@ -88,10 +88,13 @@ public class ContainerPointer extends NodePointer {
                 return null;
             }
         }
-        return value;
+        else {
+            return ValueUtils.getValue(value);
+        }
     }
 
     public void setValue(Object value) {
+        // TODO: what if this is a collection?
         container.setValue(value);
     }
 

@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2004/02/29 14:17:41 $
+ * @version $Revision: 1.17 $ $Date: 2004/04/04 22:06:36 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
@@ -132,7 +132,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
             if (index == WHOLE_COLLECTION) {
-                value = getBaseValue();
+                value = ValueUtils.getValue(getBaseValue());
             }
             else {
                 PropertyDescriptor pd = getPropertyDescriptor();
