@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.24 2003/03/25 02:41:33 dmitri Exp $
- * $Revision: 1.24 $
- * $Date: 2003/03/25 02:41:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.25 2003/06/26 02:18:46 dmitri Exp $
+ * $Revision: 1.25 $
+ * $Date: 2003/06/26 02:18:46 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,6 +75,9 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.axes.*;
+import org.apache.commons.jxpath.ri.axes.AncestorContext;
+import org.apache.commons.jxpath.ri.axes.DescendantContext;
 import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
@@ -86,7 +89,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.24 $ $Date: 2003/03/25 02:41:33 $
+ * @version $Revision: 1.25 $ $Date: 2003/06/26 02:18:46 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
@@ -128,12 +131,24 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      *  0 - does not require ordering
      */
     public int getDocumentOrder() {
-        // Default behavior: if the parent needs to be ordered,
-        // this one needs to be ordered too
-        if (parentContext != null && parentContext.getDocumentOrder() != 0) {
+        if (parentContext != null && parentContext.isChildOrderingRequired()) {
             return 1;
         }
         return 0;
+    }
+    
+    /**
+     * Even if this context has the natural ordering and therefore does
+     * not require collecting and sorting all nodes prior to returning them,
+     * such operation may be required for any child context.
+     */
+    public boolean isChildOrderingRequired() {
+        // Default behavior: if this context needs to be ordered,
+        // the children need to be ordered too
+        if (getDocumentOrder() != 0) {
+            return true;
+        }
+        return false;
     }
 
     /**
