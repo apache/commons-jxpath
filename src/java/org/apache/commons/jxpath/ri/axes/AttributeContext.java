@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AttributeContext.java,v 1.5 2002/04/24 04:06:46 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/24 04:06:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AttributeContext.java,v 1.6 2002/04/28 04:35:48 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/04/28 04:35:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "attribute::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/24 04:06:46 $
+ * @version $Revision: 1.6 $ $Date: 2002/04/28 04:35:48 $
  */
 public class AttributeContext extends EvalContext {
     private NodeTest nodeTest;
@@ -105,14 +105,14 @@ public class AttributeContext extends EvalContext {
         }
 
         while (getCurrentPosition() < position){
-            if (!next()){
+            if (!nextNode()){
                 return false;
             }
         }
         return true;
     }
 
-    public boolean next(){
+    public boolean nextNode(){
         super.setPosition(getCurrentPosition() + 1);
         if (!setStarted){
             setStarted = true;

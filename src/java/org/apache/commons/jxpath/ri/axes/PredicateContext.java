@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.7 2002/04/26 01:00:37 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/04/26 01:00:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.8 2002/04/28 04:35:48 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/04/28 04:35:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/04/26 01:00:37 $
+ * @version $Revision: 1.8 $ $Date: 2002/04/28 04:35:48 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -88,11 +88,11 @@ public class PredicateContext extends EvalContext {
             getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT);
     }
 
-    public boolean next(){
+    public boolean nextNode(){
         if (done){
             return false;
         }
-        while (parentContext.next()){
+        while (parentContext.nextNode()){
             if (setupDynamicPropertyPointer()){
                 Object pred = parentContext.eval(dynamicPropertyNameExpression);
                 if (pred instanceof NodePointer){
@@ -169,7 +169,7 @@ public class PredicateContext extends EvalContext {
         }
 
         while (this.position < position){
-            if (!next()){
+            if (!nextNode()){
                 return false;
             }
         }

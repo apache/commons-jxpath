@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.6 2002/04/24 04:05:39 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/04/24 04:05:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.7 2002/04/28 04:35:48 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/04/28 04:35:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that is used to hold the root node for the path traversal.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.7 $ $Date: 2002/04/28 04:35:48 $
  */
 public class RootContext extends EvalContext {
     private boolean startedSet = false;
@@ -106,7 +106,7 @@ public class RootContext extends EvalContext {
         return 1;
     }
 
-    public boolean next(){
+    public boolean nextNode(){
         if (started){
             return false;
         }

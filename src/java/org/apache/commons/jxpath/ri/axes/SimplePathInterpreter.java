@@ -269,7 +269,7 @@ public class SimplePathInterpreter {
     }
 
     private static int indexFromPredicate(EvalContext context, Expression predicate){
-        Object value = context.eval(predicate, true);
+        Object value = context.eval(predicate);
         if (value instanceof EvalContext){
             value = ((EvalContext)value).getSingleNodePointer();
         }

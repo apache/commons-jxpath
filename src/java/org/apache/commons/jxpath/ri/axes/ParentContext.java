@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.5 2002/04/24 04:05:39 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/24 04:05:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.6 2002/04/28 04:35:48 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/04/28 04:35:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "parent::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.6 $ $Date: 2002/04/28 04:35:48 $
  */
 public class ParentContext extends EvalContext {
     private NodeTest nodeTest;
@@ -102,7 +102,7 @@ public class ParentContext extends EvalContext {
         return position == 1;
     }
 
-    public boolean next(){
+    public boolean nextNode(){
         while (nextIgnoreDuplicates()){
             NodePointer location = getCurrentNodePointer();
             if (!visitedNodes.contains(location)){

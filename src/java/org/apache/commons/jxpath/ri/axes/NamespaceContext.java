@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/NamespaceContext.java,v 1.4 2002/04/24 04:05:39 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/24 04:05:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/NamespaceContext.java,v 1.5 2002/04/28 04:35:48 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/28 04:35:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "namespace::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/28 04:35:48 $
  */
 public class NamespaceContext extends EvalContext {
     private NodeTest nodeTest;
@@ -105,14 +105,14 @@ public class NamespaceContext extends EvalContext {
         }
 
         while (getCurrentPosition() < position){
-            if (!next()){
+            if (!nextNode()){
                 return false;
             }
         }
         return true;
     }
 
-    public boolean next(){
+    public boolean nextNode(){
         super.setPosition(getCurrentPosition() + 1);
         if (!setStarted){
             setStarted = true;

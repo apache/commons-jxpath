@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java,v 1.5 2002/04/24 04:05:39 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/24 04:05:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java,v 1.6 2002/04/28 04:35:48 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/04/28 04:35:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of a union operation like (a | b)
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.6 $ $Date: 2002/04/28 04:35:48 $
  */
 public class UnionContext extends EvalContext {
     private boolean startedSet = false;
@@ -110,7 +110,7 @@ public class UnionContext extends EvalContext {
         return true;
     }
 
-    public boolean next(){
+    public boolean nextNode(){
         return setPosition(position + 1);
     }
 
@@ -120,7 +120,7 @@ public class UnionContext extends EvalContext {
         for (int i = 0; i < contexts.length; i++){
             EvalContext ctx = (EvalContext)contexts[i];
             while (ctx.nextSet()){
-                while (ctx.next()){
+                while (ctx.nextNode()){
                     NodePointer ptr = ctx.getCurrentNodePointer();
                     if (!set.contains(ptr)){
                         ptr = (NodePointer)ptr.clone();

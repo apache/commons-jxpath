@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.6 2002/04/24 04:06:46 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/04/24 04:06:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.7 2002/04/28 04:35:48 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/04/28 04:35:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/04/24 04:06:46 $
+ * @version $Revision: 1.7 $ $Date: 2002/04/28 04:35:48 $
  */
 public class AncestorContext extends EvalContext {
     private NodeTest nodeTest;
@@ -106,14 +106,14 @@ public class AncestorContext extends EvalContext {
         }
 
         while (getCurrentPosition() < position){
-            if (!next()){
+            if (!nextNode()){
                 return false;
             }
         }
         return true;
     }
 
-    public boolean next(){
+    public boolean nextNode(){
         while (nextIgnoreDuplicates()){
             NodePointer location = getCurrentNodePointer();
             if (!visitedNodes.contains(location)){
