@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions.java,v 1.3 2003/01/20 00:00:27 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2003/01/20 00:00:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions.java,v 1.4 2003/02/07 00:51:40 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/02/07 00:51:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,14 +62,16 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.NodeSet;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/01/20 00:00:27 $
+ * @version $Revision: 1.4 $ $Date: 2003/02/07 00:51:40 $
  */
 public class TestFunctions {
 
@@ -147,6 +149,16 @@ public class TestFunctions {
      * the first argument.
      */
     public static int count(ExpressionContext context, Collection col) {
+        for (Iterator iter = col.iterator(); iter.hasNext();) {
+            Object element = iter.next();
+            if (!(element instanceof String)) {
+                throw new RuntimeException("Invalid argument");
+            }
+        };
         return col.size();
+    }
+    
+    public static int countPointers(NodeSet nodeSet) {
+        return nodeSet.getPointers().size();
     }
 }

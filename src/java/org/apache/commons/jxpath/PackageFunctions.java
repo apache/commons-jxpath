@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/PackageFunctions.java,v 1.8 2003/01/29 17:55:00 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2003/01/29 17:55:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/PackageFunctions.java,v 1.9 2003/02/07 00:51:40 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/02/07 00:51:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,9 +63,9 @@ package org.apache.commons.jxpath;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.jxpath.functions.ConstructorFunction;
@@ -110,7 +110,7 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
 
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2003/01/29 17:55:00 $
+ * @version $Revision: 1.9 $ $Date: 2003/02/07 00:51:40 $
  */
 public class PackageFunctions implements Functions {
     private String classPrefix;
@@ -167,6 +167,28 @@ public class PackageFunctions implements Functions {
         if (parameters.length >= 1) {
             Object target = parameters[0];
             if (target != null) {
+                Method method =
+                    MethodLookupUtils.lookupMethod(
+                        target.getClass(),
+                        name,
+                        parameters);
+                if (method != null) {
+                    return new MethodFunction(method);
+                }
+                    
+                if (target instanceof NodeSet) {
+                    target = ((NodeSet) target).getPointers();
+                }
+                
+                method =
+                    MethodLookupUtils.lookupMethod(
+                        target.getClass(),
+                        name,
+                        parameters);
+                if (method != null) {
+                    return new MethodFunction(method);
+                }
+                
                 if (target instanceof Collection) {
                     Iterator iter = ((Collection) target).iterator();
                     if (iter.hasNext()) {

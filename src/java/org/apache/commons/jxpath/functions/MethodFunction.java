@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.7 2003/01/11 05:41:22 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/01/11 05:41:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.8 2003/02/07 00:51:41 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/02/07 00:51:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,7 @@
  */
 package org.apache.commons.jxpath.functions;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -68,12 +69,13 @@ import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.util.TypeUtils;
+import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * An XPath extension function implemented as an individual Java method.
  * 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/01/11 05:41:22 $
+ * @version $Revision: 1.8 $ $Date: 2003/02/07 00:51:41 $
  */
 public class MethodFunction implements Function {
 
@@ -81,7 +83,7 @@ public class MethodFunction implements Function {
     private static final Object EMPTY_ARRAY[] = new Object[0];
 
     public MethodFunction(Method method) {
-        this.method = method;
+        this.method = ValueUtils.getAccessibleMethod(method);
     }
 
     public Object invoke(ExpressionContext context, Object[] parameters) {
@@ -131,8 +133,15 @@ public class MethodFunction implements Function {
 
             return method.invoke(target, args);
         }
-        catch (Exception exception) {
-            throw new JXPathException("Cannot invoke " + method, exception);
+        catch (Throwable ex) {
+            if (ex instanceof InvocationTargetException) {
+                ex = ((InvocationTargetException) ex).getTargetException();
+            }
+            throw new JXPathException("Cannot invoke " + method, ex);
         }
+    }
+    
+    public String toString() {
+        return method.toString();
     }
 }

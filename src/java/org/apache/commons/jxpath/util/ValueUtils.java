@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.13 2003/01/17 02:02:57 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2003/01/17 02:02:57 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.14 2003/02/07 00:51:40 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2003/02/07 00:51:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -82,7 +82,7 @@ import org.apache.commons.jxpath.JXPathException;
  * Collection and property access utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2003/01/17 02:02:57 $
+ * @version $Revision: 1.14 $ $Date: 2003/02/07 00:51:40 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -531,7 +531,7 @@ public class ValueUtils {
      *
      * @param method The method that we wish to call
      */
-    private static Method getAccessibleMethod(Method method) {
+    public static Method getAccessibleMethod(Method method) {
 
         // Make sure we have a method to check
         if (method == null) {

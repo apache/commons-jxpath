@@ -112,6 +112,8 @@
             </li>
             <li><a href="#Expression Context">Expression Context</a>
             </li>
+            <li><a href="#Collections as Arguments">Collections as Arguments</a>
+            </li>
           </ul>
         </li>
         <li><a href="#Type Conversions">Type Conversions</a>
@@ -1142,26 +1144,38 @@ public class MyExtenstionFunctions {
           This expression will find all nodes of the graph that are
           dates.
         </p>
-        <p>
-          The current context is passed to an extension function by
-          default. Any other context can be passed as an explicit
-          argument declared as ExpressionContext. Note, that if the
-          first argument is ExpressionContext, it is always passed
-          the current context. Therefore, you may need to declare two
-          ExpressionContext arguments- one for the current and one
-          for the parameter context. For example,
-        </p>
+      </subsection>
+      
+      <subsection name="Collections as Arguments">
+         There are two ways a collection can be passed to an extension function:
+         as a <a href="apidocs/org/apache/commons/jxpath/NodeSet.html"><code>NodeSet</code></a>
+         or as a Collection proper.  If the argument type is declared
+         as NodeSet, JXPath will pass a NodeSet object, otherwise it will take values
+         out of the node set and pass those to the function as a regular collection.
+         Note that a collection is always passed to an extension function by value -
+         it cannot be modified.
 
 <!--============================ + SOURCE + ============================-->
 <source>
                                                                        <b/>
 public class MyExtenstionFunctions {
    ...
-   public static boolean contains(ExpressionContext current,
-                            ExpressionContext context, Object value){
-      Iterator iter = context.getContextNodeList().iterator();
+   public static boolean contains(NodeSet nodeSet, Object value){
+      Iterator iter = nodeSet.getPointers().iterator();
       while (iter.hasNext()) {
           Pointer item = (Pointer)iter.next();
+          if (item.getValue().equals(value)){
+            return true;
+          }
+      }
+      return false;
+   }
+   
+   // Alternative implementation
+   public static boolean contains(List list, Object value){
+      Iterator iter = list.iterator();
+      while (iter.hasNext()) {
+          Object item = iter.next();
           if (item.getValue().equals(value)){
             return true;
           }

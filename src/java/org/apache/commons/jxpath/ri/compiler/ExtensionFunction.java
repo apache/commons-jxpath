@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExtensionFunction.java,v 1.8 2003/01/29 17:55:00 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2003/01/29 17:55:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExtensionFunction.java,v 1.9 2003/02/07 00:51:41 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/02/07 00:51:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,21 +61,19 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import java.util.Arrays;
+
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.EvalContext;
-
-import java.util.Arrays;
-import java.util.List;
+import org.apache.commons.jxpath.ri.QName;
 
 /**
  * Represents  an element of the parse tree representing an extension function
  * call.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2003/01/29 17:55:00 $
+ * @version $Revision: 1.9 $ $Date: 2003/02/07 00:51:41 $
  */
 public class ExtensionFunction extends Operation {
 
@@ -127,6 +125,7 @@ public class ExtensionFunction extends Operation {
                 parameters[i] = convert(args[i].compute(context));
             }
         }
+
         Function function =
             context.getRootContext().getFunction(functionName, parameters);
         if (function == null) {
@@ -141,10 +140,8 @@ public class ExtensionFunction extends Operation {
     
     private Object convert(Object object) {
         if (object instanceof EvalContext) {
-            return ((EvalContext) object).getPointerList();
+            return ((EvalContext) object).getNodeSet();
         }
         return object;
-    }
-    
-    
+    }  
 }

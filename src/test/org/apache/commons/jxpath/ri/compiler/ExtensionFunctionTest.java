@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.5 2003/01/29 17:55:00 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/01/29 17:55:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.6 2003/02/07 00:51:40 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/02/07 00:51:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,6 +62,7 @@
 
 package org.apache.commons.jxpath.ri.compiler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -82,7 +83,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/01/29 17:55:00 $
+ * @version $Revision: 1.6 $ $Date: 2003/02/07 00:51:40 $
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase {
@@ -238,6 +239,34 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             "string(test:setFooAndBar($test, 7, 'biz'))",
             "foo=7; bar=biz");
     }
+    
+    public void testCollectionMethodCall() {
+        
+        List list = new ArrayList();
+        list.add("foo");
+        context.getVariables().declareVariable("myList", list);
+
+        assertXPathValue(
+            context, 
+            "size($myList)", 
+            new Integer(1));
+    
+        assertXPathValue(
+            context, 
+            "size(beans)", 
+            new Integer(2));
+            
+        boolean exception = false;
+        try {
+            assertXPathValue(context, "add($myList, 'hello')", Boolean.TRUE);
+        }
+        catch (Exception ex) {
+            exception = true;
+        }
+        assertTrue(
+            "Exception trying to add to an unmodifiable list",
+            exception);
+    }
 
     public void testStaticMethodCall() {
 
@@ -273,19 +302,28 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             "//.[test:isMap()]/Key1", 
             "Value 1");
 
-        // The function uses ExpressionContext to get to all
-        // nodes in the context that is passed to it.
+        // The function gets all
+        // nodes in the context that match the pattern.
         assertXPathValue(
             context,
             "count(//.[test:count(strings) = 3])",
             new Double(7));
 
-        // Another example of the same            
+        // The function receives a collection of strings
+        // and checks their type for testing purposes            
         assertXPathValue(
             context,
             "test:count(//strings)",
             new Integer(21));
 
+        
+        // The function receives a collection of pointers
+        // and checks their type for testing purposes            
+        assertXPathValue(
+            context,
+            "test:countPointers(//strings)",
+            new Integer(21));
+            
         // The function uses ExpressionContext to get to the current
         // pointer and returns its path.
         assertXPathValue(

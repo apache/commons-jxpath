@@ -21,7 +21,7 @@
            <item name="Client API&amp;nbsp;Documentation"   href="/apidocs/org/apache/commons/jxpath/package-summary.html"/>
            <item name="Complete API&amp;nbsp;Docs"        href="/apidocs/index.html"/>
            <item name="User's Guide"                  href="/users-guide.html"/>
-           <item name="Release Notes"                 href="/release-notes-1.1.html"/>
+           <!-- item name="JXPath Design"                 href="/design.html"/ -->
        </menu>
        <menu name="Project Files">
            <item name="Status"                        href="http://cvs.apache.org/viewcvs/~checkout~/jakarta-commons/jxpath/STATUS.html?content-type=text/html"/>

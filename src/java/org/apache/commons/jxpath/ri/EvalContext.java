@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.21 2003/01/29 17:55:00 dmitri Exp $
- * $Revision: 1.21 $
- * $Date: 2003/01/29 17:55:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.22 2003/02/07 00:51:41 dmitri Exp $
+ * $Revision: 1.22 $
+ * $Date: 2003/02/07 00:51:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,9 +69,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
@@ -84,7 +85,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.21 $ $Date: 2003/01/29 17:55:00 $
+ * @version $Revision: 1.22 $ $Date: 2003/02/07 00:51:41 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
@@ -260,7 +261,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * of the parent contexts.  If there was an ongoing iteration over
      * this context, the method should not be called.
      */
-    public List getPointerList() {
+    public NodeSet getNodeSet() {
         if (position != 0) {
             throw new JXPathException(
                 "Simultaneous operations: "
@@ -268,13 +269,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
                     + "iterating over an EvalContext");
         }
         
-        List list = new ArrayList();
-        while (nextSet()) {
-            while (nextNode()) {
-                list.add(getCurrentNodePointer());
-            }
-        }
-        return list;
+        return new SimpleNodeSet();
     }
 
     public String toString() {
@@ -381,4 +376,50 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         this.position = position;
         return true;
     }
+    
+    class SimpleNodeSet implements NodeSet {
+        private List pointers;
+        private List nodes;
+        private List values;
+
+        public SimpleNodeSet() {
+            pointers = new ArrayList();
+            while (nextSet()) {
+                while (nextNode()) {
+                    pointers.add(getCurrentNodePointer());
+                }
+            }
+        }
+
+        public List getPointers() {
+            return Collections.unmodifiableList(pointers);
+        }
+
+        public List getNodes() {
+            if (nodes == null) {
+                List pointers = getPointers();
+                nodes = new ArrayList();
+                for (int i = 0; i < pointers.size(); i++) {
+                    Pointer pointer = (Pointer) pointers.get(i);
+                    nodes.add(pointer.getValue());
+                }
+                nodes = Collections.unmodifiableList(nodes);
+            }
+            return nodes;
+        }
+
+        public List getValues() {
+            if (values == null) {
+                List pointers = getPointers();
+                values = new ArrayList();
+                for (int i = 0; i < pointers.size(); i++) {
+                    Pointer pointer = (Pointer) pointers.get(i);
+                    values.add(pointer.getValue());
+                }
+                values = Collections.unmodifiableList(values);
+            }
+            return values;
+        }
+    }
+    
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.4 2003/01/29 17:55:01 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2003/01/29 17:55:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.5 2003/02/07 00:51:40 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/02/07 00:51:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,16 +63,23 @@ package org.apache.commons.jxpath.util;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.NodeSet;
 
 /**
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2003/01/29 17:55:01 $
+ * @version $Revision: 1.5 $ $Date: 2003/02/07 00:51:40 $
  */
 public class BasicTypeConverter implements TypeConverter {
 
@@ -183,6 +190,9 @@ public class BasicTypeConverter implements TypeConverter {
                 return canConvert(value, toType);
             }
         }
+        else if (object instanceof NodeSet) {
+            return canConvert(((NodeSet) object).getValues(), toType);
+        }
         else if (object instanceof Pointer) {
             return canConvert(((Pointer) object).getValue(), toType);
         }
@@ -259,7 +269,7 @@ public class BasicTypeConverter implements TypeConverter {
                 for (int i = 0; i < length; i++) {
                     collection.add(Array.get(object, i));
                 }
-                return collection;
+                return unmodifiableCollection(collection);
             }
             else if (length == 1) {
                 Object value = Array.get(object, 0);
@@ -281,7 +291,7 @@ public class BasicTypeConverter implements TypeConverter {
             else if (Collection.class.isAssignableFrom(toType)) {
                 Collection collection = allocateCollection(toType);
                 collection.addAll((Collection) object);
-                return collection;
+                return unmodifiableCollection(collection);
             }
             else if (length == 1) {
                 Object value;
@@ -302,6 +312,9 @@ public class BasicTypeConverter implements TypeConverter {
                         + length
                         + " elements");
             }
+        }
+        else if (object instanceof NodeSet) {
+            return convert(((NodeSet) object).getValues(), toType);
         }
         else if (object instanceof Pointer) {
             return convert(((Pointer) object).getValue(), toType);
@@ -425,5 +438,84 @@ public class BasicTypeConverter implements TypeConverter {
             return new HashSet();
         }
         throw new RuntimeException("Cannot create collection of type: " + type);
+    }
+    
+    private Collection unmodifiableCollection(Collection collection) {
+        if (collection instanceof List) {
+            return Collections.unmodifiableList((List) collection);
+        }
+        else if (collection instanceof Set) {
+            return Collections.unmodifiableSet((Set) collection);
+        }
+        // Cannot wrap it into a proper unmodifiable collection, 
+        // so we just return the original collection itself
+        return collection;
+    }
+    
+    static class ValueNodeSet implements NodeSet {
+        private List values;
+        private List pointers;
+
+        public ValueNodeSet(List values) {
+           this.values = values;
+        }
+        
+        public List getValues() {
+            return Collections.unmodifiableList(values);
+        }
+        
+        public List getNodes() {
+            return Collections.unmodifiableList(values);
+        }
+        
+        public List getPointers() {
+            if (pointers == null) {
+                pointers = new ArrayList();
+                for (int i = 0; i < values.size(); i++) {
+                    pointers.add(new ValuePointer(values.get(i)));
+                }
+                pointers = Collections.unmodifiableList(pointers);
+            }
+            return pointers;
+        }
+    }
+    
+    static final class ValuePointer implements Pointer {
+        private Object bean;
+
+        public ValuePointer(Object object) {
+            this.bean = object;
+        }
+        
+        public Object getValue() {
+            return bean;
+        }
+        
+        public Object getNode() {
+            return bean;
+        }
+        public void setValue(Object value) {
+            throw new UnsupportedOperationException();
+        }
+        
+        public String asPath() {
+            if (bean == null) {
+                return "null()";
+            }
+            else if (bean instanceof Number) {
+                String string = bean.toString();
+                if (string.endsWith(".0")) {
+                    string = string.substring(0, string.length() - 2);
+                }
+                return string;
+            }
+            else if (bean instanceof Boolean) {
+                return ((Boolean) bean).booleanValue() ? "true()" : "false()";
+            }
+            else if (bean instanceof String) {
+                return "'" + bean + "'";
+            }
+            return "{object of type " + bean.getClass().getName() + "}";
+        }
     }
 }
