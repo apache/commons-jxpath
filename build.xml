@@ -20,7 +20,7 @@
   </property>
   <property name="javadocdir" value="${basedir}/dist/docs/api">
   </property>
-  <property name="final.name" value="commons-jxpath-1.2">
+  <property name="final.name" value="commons-jxpath">
   </property>
   <target name="init" description="o Initializes some properties">
     <mkdir dir="${libdir}">
