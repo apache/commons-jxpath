@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertiesModelTest.java,v 1.3 2003/03/11 00:59:39 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2003/03/11 00:59:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertiesModelTest.java,v 1.4 2003/05/06 02:13:27 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/05/06 02:13:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,6 +62,11 @@
 
 package org.apache.commons.jxpath.ri.model.dynamic;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.TestBean;
@@ -70,7 +75,7 @@ import org.apache.commons.jxpath.TestBean;
  * @todo more iterator testing with maps
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/03/11 00:59:39 $
+ * @version $Revision: 1.4 $ $Date: 2003/05/06 02:13:27 $
  */
 
 public class DynamicPropertiesModelTest extends JXPathTestCase {
@@ -322,5 +327,34 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
             "Remove dynamic property collection element",
             "temp2",
             context.getValue("map[@name = 'TestKey2'][1]"));
+    }
+    
+    public void testCollectionOfMaps() {
+        TestBean bean = (TestBean) context.getContextBean();
+        List list = new ArrayList();
+
+        bean.getMap().put("stuff", list);        
+
+        Map m = new HashMap();
+        m.put("fruit", "apple");
+        list.add(m);
+
+        m = new HashMap();
+        m.put("berry", "watermelon");
+        list.add(m);
+
+        m = new HashMap();
+        m.put("fruit", "banana");
+        list.add(m);
+
+        assertXPathValueIterator(
+            context,
+            "/map/stuff/fruit",
+            list("apple", "banana"));
+
+        assertXPathValueIterator(
+            context,
+            "/map/stuff[@name='fruit']",
+            list("apple", "banana"));
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.19 2003/03/25 02:41:34 dmitri Exp $
- * $Revision: 1.19 $
- * $Date: 2003/03/25 02:41:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.20 2003/05/06 02:13:26 dmitri Exp $
+ * $Revision: 1.20 $
+ * $Date: 2003/05/06 02:13:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.19 $ $Date: 2003/03/25 02:41:34 $
+ * @version $Revision: 1.20 $ $Date: 2003/05/06 02:13:26 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -99,14 +99,29 @@ public class PredicateContext extends EvalContext {
         while (parentContext.nextNode()) {
             if (setupDynamicPropertyPointer()) {
                 Object pred = nameTestExpression.computeValue(parentContext);
-                if (pred instanceof NodePointer) {
-                    pred = ((NodePointer) pred).getValue();
+                String propertyName = InfoSetUtil.stringValue(pred);
+
+                // At this point it would be nice to say: 
+                // dynamicPropertyPointer.setPropertyName(propertyName)
+                // and then: dynamicPropertyPointer.isActual().
+                // However some PropertyPointers, e.g. DynamicPropertyPointer
+                // will declare that any property you ask for is actual.
+                // That's not acceptable for us: we really need to know
+                // if the property is currently declared. Thus,
+                // we'll need to perform a search.
+                boolean ok = false;
+                String names[] = dynamicPropertyPointer.getPropertyNames();
+                for (int i = 0; i < names.length; i++) {
+                    if (names[i].equals(propertyName)) {
+                        ok = true;
+                        break;
+                    }
                 }
-                dynamicPropertyPointer.setPropertyName(
-                    InfoSetUtil.stringValue(pred));
-                position = 1;
-                done = true;
-                return true;
+                if (ok) {
+                    dynamicPropertyPointer.setPropertyName(propertyName);
+                    position++;
+                    return true;
+                }
             }
             else {
                 Object pred = expression.computeValue(parentContext);
