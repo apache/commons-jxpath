@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.Converter;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
@@ -34,7 +35,7 @@ import org.apache.commons.jxpath.Pointer;
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2004/06/29 21:50:02 $
+ * @version $Revision: 1.15 $ $Date: 2004/07/25 13:16:04 $
  */
 public class BasicTypeConverter implements TypeConverter {
 
@@ -293,9 +294,10 @@ public class BasicTypeConverter implements TypeConverter {
             }
         }
         
-        if (ConvertUtils.lookup(toType) != null) {
-			return ConvertUtils.convert(object.toString(), toType);
-		}
+        Converter converter = ConvertUtils.lookup(toType);
+        if (converter != null) {
+            return converter.convert(toType, object);
+        }
 
         throw new RuntimeException(
             "Cannot convert " + object.getClass() + " to " + toType);
