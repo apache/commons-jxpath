@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Function.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Function.java,v 1.3 2002/04/24 04:05:41 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/24 04:05:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,8 +61,6 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
-
 /**
  * Extension function interface. Extension functions are grouped into
  * {@link Functions Functions} objects, which are installed on
@@ -74,7 +72,7 @@ import java.util.*;
  * See {@link ClassFunctions ClassFunctions} and {@link PackageFunctions PackageFunctions}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:41 $
  */
 public interface Function {
 

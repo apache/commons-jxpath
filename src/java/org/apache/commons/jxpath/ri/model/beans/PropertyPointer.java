@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.1 2002/04/21 21:52:33 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/21 21:52:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 04:05:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,21 +61,16 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.*;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.model.*;
+import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.apache.commons.jxpath.util.*;
-
-import java.util.*;
+import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * A pointer allocated by a PropertyOwnerPointer to represent the value of
  * a property of the parent object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/21 21:52:33 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
  */
 public abstract class PropertyPointer extends NodePointer {
     public static int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;

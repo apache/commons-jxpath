@@ -55,16 +55,14 @@
 
 package org.apache.commons.jxpath.servlet;
 
-import org.apache.commons.jxpath.*;
-import javax.servlet.ServletContext;
-import java.util.*;
+import org.apache.commons.jxpath.Variables;
 
 /**
  * Implementation of the Variables interface that provides access
  * to a single object using a reserved name (keyword).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/08 21:01:00 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
  */
 public class KeywordVariables implements Variables {
 

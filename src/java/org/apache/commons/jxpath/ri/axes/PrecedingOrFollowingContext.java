@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.5 2002/04/21 21:52:32 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/21 21:52:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.6 2002/04/24 04:05:39 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/04/24 04:05:39 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,21 +61,19 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.model.*;
-import org.apache.commons.jxpath.ri.model.beans.*;
+import java.util.Stack;
+
 import org.apache.commons.jxpath.ri.EvalContext;
-import java.lang.reflect.*;
-import java.util.*;
-import java.beans.*;
+import org.apache.commons.jxpath.ri.compiler.NodeTest;
+import org.apache.commons.jxpath.ri.model.NodeIterator;
+import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.model.beans.PropertyIterator;
 
 /**
  * EvalContext that walks the "preceding::" and "following::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/21 21:52:32 $
+ * @version $Revision: 1.6 $ $Date: 2002/04/24 04:05:39 $
  */
 public class PrecedingOrFollowingContext extends EvalContext {
     private NodeTest nodeTest;

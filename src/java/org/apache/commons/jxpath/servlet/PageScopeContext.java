@@ -55,9 +55,9 @@
 
 package org.apache.commons.jxpath.servlet;
 
-import org.apache.commons.jxpath.*;
-import javax.servlet.jsp.*;
-import java.util.*;
+import java.util.Enumeration;
+
+import javax.servlet.jsp.PageContext;
 
 /**
  * A lightweight wrapper for PageContext that restricts access
@@ -66,7 +66,7 @@ import java.util.*;
  * "$page/foo" would only look in the "page" scope.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/08 21:01:00 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
  */
 public class PageScopeContext {
     private PageContext pageContext;

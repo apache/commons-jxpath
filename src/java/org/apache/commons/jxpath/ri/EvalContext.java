@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.9 2002/04/24 03:32:48 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/04/24 03:32:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.10 2002/04/24 04:05:40 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/04/24 04:05:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,15 +61,14 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.model.*;
-import org.apache.commons.jxpath.ri.model.beans.*;
-import org.apache.commons.jxpath.ri.axes.*;
-import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.Pointer;
 import java.util.*;
+
+import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.ri.axes.*;
+import org.apache.commons.jxpath.ri.compiler.*;
+import org.apache.commons.jxpath.ri.model.NodeIterator;
+import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.model.beans.*;
 
 /**
  * An XPath evaluation context.
@@ -79,7 +78,7 @@ import java.util.*;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/04/24 03:32:48 $
+ * @version $Revision: 1.10 $ $Date: 2002/04/24 04:05:40 $
  */
 public abstract class EvalContext implements ExpressionContext {
     protected EvalContext parentContext;

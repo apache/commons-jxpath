@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.6 2002/04/24 03:32:48 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/04/24 03:32:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.7 2002/04/24 04:05:39 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/04/24 04:05:39 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,22 +61,18 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.model.*;
+import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.EvalContext;
-
-import java.lang.reflect.*;
-import java.util.*;
-import java.beans.*;
+import org.apache.commons.jxpath.ri.compiler.NodeTest;
+import org.apache.commons.jxpath.ri.model.NodeIterator;
+import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * EvalContext that can walk the "child::", "following-sibling::" and
  * "preceding-sibling::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/04/24 03:32:48 $
+ * @version $Revision: 1.7 $ $Date: 2002/04/24 04:05:39 $
  */
 public class ChildContext extends EvalContext {
     private NodeTest nodeTest;

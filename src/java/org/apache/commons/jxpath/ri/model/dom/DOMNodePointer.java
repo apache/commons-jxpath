@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.1 2002/04/21 21:52:33 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/21 21:52:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 04:05:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,24 +61,33 @@
  */
 package org.apache.commons.jxpath.ri.model.dom;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.compiler.*;
+import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
+import org.apache.commons.jxpath.ri.compiler.NodeTest;
+import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
+import org.apache.commons.jxpath.ri.compiler.ProcessingInstructionTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-
-import java.lang.reflect.*;
-import java.util.*;
-import java.beans.*;
-import org.w3c.dom.*;
 import org.apache.commons.jxpath.util.TypeUtils;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ProcessingInstruction;
 
 /**
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/21 21:52:33 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;

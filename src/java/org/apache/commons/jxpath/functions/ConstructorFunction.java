@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/ConstructorFunction.java,v 1.3 2002/04/21 21:52:31 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/21 21:52:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/ConstructorFunction.java,v 1.4 2002/04/24 04:05:41 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/24 04:05:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,16 +61,17 @@
  */
 package org.apache.commons.jxpath.functions;
 
-import java.util.*;
-import java.lang.reflect.*;
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.util.*;
+import java.lang.reflect.Constructor;
+
+import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.Function;
+import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * An extension function that creates an instance using a constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/21 21:52:31 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/24 04:05:41 $
  */
 public class ConstructorFunction implements Function {
 

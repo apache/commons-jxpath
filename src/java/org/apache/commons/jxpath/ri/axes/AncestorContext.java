@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.5 2002/04/21 21:52:32 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/21 21:52:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.6 2002/04/24 04:06:46 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/04/24 04:06:46 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,19 +61,17 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.model.*;
+import java.util.HashSet;
 
-import java.util.*;
+import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.ri.compiler.NodeTest;
+import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/21 21:52:32 $
+ * @version $Revision: 1.6 $ $Date: 2002/04/24 04:06:46 $
  */
 public class AncestorContext extends EvalContext {
     private NodeTest nodeTest;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AttributeContext.java,v 1.4 2002/04/21 21:52:32 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/21 21:52:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AttributeContext.java,v 1.5 2002/04/24 04:06:46 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/24 04:06:46 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,18 +61,18 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-import org.apache.commons.jxpath.ri.*;
 import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.model.*;
-
-import java.util.*;
+import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
+import org.apache.commons.jxpath.ri.compiler.NodeTest;
+import org.apache.commons.jxpath.ri.model.NodeIterator;
+import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * EvalContext that walks the "attribute::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/21 21:52:32 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/24 04:06:46 $
  */
 public class AttributeContext extends EvalContext {
     private NodeTest nodeTest;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Functions.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Functions.java,v 1.2 2002/04/24 04:05:41 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 04:05:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,7 +61,7 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
+import java.util.Set;
 
 /**
  * A group of Function objects sharing a common namespace. Use classes
@@ -69,7 +69,7 @@ import java.util.*;
  * to register extension functions implemented as Java methods.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:41 $
  */
 public interface Functions {
 

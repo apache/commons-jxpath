@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ExpressionContext.java,v 1.3 2002/04/12 02:28:06 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/12 02:28:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ExpressionContext.java,v 1.4 2002/04/24 04:05:41 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/24 04:05:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,7 +61,7 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * If an extenstion function has an argument of type ExpressionContext,

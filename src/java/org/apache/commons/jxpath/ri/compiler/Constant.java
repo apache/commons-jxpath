@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Constant.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Constant.java,v 1.2 2002/04/24 04:05:38 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 04:05:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,13 +61,11 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import java.util.*;
-
 /**
  * A compile tree element containing a constant number or string.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:38 $
  */
 public class Constant extends Expression {
 

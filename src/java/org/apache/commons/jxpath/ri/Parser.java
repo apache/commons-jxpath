@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/Parser.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/Parser.java,v 1.3 2002/04/24 04:05:40 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/24 04:05:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,15 +61,16 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.parser.XPathParser;
-import org.apache.commons.jxpath.ri.parser.ParseException;
-import java.util.*;
 import java.io.StringReader;
 
+import org.apache.commons.jxpath.ri.parser.ParseException;
+import org.apache.commons.jxpath.ri.parser.XPathParser;
+
 /**
+ * XPath parser
+ * 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:40 $
  */
 public class Parser {
 

@@ -55,12 +55,14 @@
 
 package org.apache.commons.jxpath.servlet;
 
-import org.apache.commons.jxpath.*;
-import javax.servlet.ServletRequest;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathContextFactory;
+import org.apache.commons.jxpath.JXPathIntrospector;
 
 /**
  * Static methods that allocate and cache JXPathContexts bound to PageContext,
@@ -100,7 +102,7 @@ import javax.servlet.jsp.PageContext;
  * JXPath does not automatically create sessions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/08 21:01:00 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
  */
 public final class JXPathServletContexts {
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.1 2002/04/21 21:52:33 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/21 21:52:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.2 2002/04/24 04:06:46 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 04:06:46 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,24 +61,20 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.*;
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.model.*;
-import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.apache.commons.jxpath.util.*;
+import java.beans.PropertyDescriptor;
+import java.util.Locale;
 
-import java.lang.reflect.*;
-import java.util.*;
-import java.beans.*;
+import org.apache.commons.jxpath.JXPathBeanInfo;
+import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * A Pointer that points to a JavaBean or a collection. It is the first element of
  * a path, following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/21 21:52:33 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:06:46 $
  */
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;

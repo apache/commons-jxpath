@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/VariableReference.java,v 1.2 2002/04/21 21:52:32 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/21 21:52:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/VariableReference.java,v 1.3 2002/04/24 04:05:38 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/24 04:05:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,15 +61,13 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import java.util.*;
-
-import org.apache.commons.jxpath.ri.*;
+import org.apache.commons.jxpath.ri.QName;
 
 /**
  * An element of the compile tree holding a variable reference.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/21 21:52:32 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:38 $
  */
 public class VariableReference extends Expression {
 

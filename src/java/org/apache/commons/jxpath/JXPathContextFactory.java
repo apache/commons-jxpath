@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContextFactory.java,v 1.2 2002/04/24 03:29:33 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 03:29:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContextFactory.java,v 1.3 2002/04/24 04:05:41 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/24 04:05:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,7 +64,6 @@ package org.apache.commons.jxpath;
 
 import java.util.*;
 import java.io.*;
-import javax.xml.transform.TransformerFactory;
 
 /**
  * Defines a factory API that enables applications to obtain a
@@ -80,7 +79,7 @@ import javax.xml.transform.TransformerFactory;
  * @see JXPathContext#newContext(JXPathContext,Object)
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 03:29:33 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:41 $
  */
 public abstract class JXPathContextFactory {
 

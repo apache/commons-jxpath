@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.10 2002/04/24 03:32:48 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/04/24 03:32:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.11 2002/04/24 04:05:40 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/04/24 04:05:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,12 +65,7 @@ package org.apache.commons.jxpath.ri;
 import java.lang.ref.SoftReference;
 import java.util.*;
 
-import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.Functions;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.PackageFunctions;
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.Variables;
+import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.compiler.Expression;
 import org.apache.commons.jxpath.ri.compiler.TreeCompiler;
@@ -86,7 +81,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/04/24 03:32:48 $
+ * @version $Revision: 1.11 $ $Date: 2002/04/24 04:05:40 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -238,8 +233,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
         List list = new ArrayList();
         if (result instanceof EvalContext){
             EvalContext context = (EvalContext)result;
-            while(context.nextSet()){
-                while(context.next()){
+            while (context.nextSet()){
+                while (context.next()){
                     Pointer pointer = context.getCurrentNodePointer();
                     list.add(pointer.getValue());
                 }
@@ -323,8 +318,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
         List list = new ArrayList();
         if (result instanceof EvalContext){
             EvalContext context = (EvalContext)result;
-            while(context.nextSet()){
-                while(context.next()){
+            while (context.nextSet()){
+                while (context.next()){
                     Pointer pointer = context.getCurrentNodePointer();
                     list.add(pointer);
                 }

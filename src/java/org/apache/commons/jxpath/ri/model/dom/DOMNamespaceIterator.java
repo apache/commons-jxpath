@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNamespaceIterator.java,v 1.1 2002/04/21 21:52:33 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/21 21:52:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNamespaceIterator.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 04:05:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,22 +61,20 @@
  */
 package org.apache.commons.jxpath.ri.model.dom;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.compiler.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-
-import java.lang.reflect.*;
-import java.util.*;
-import java.beans.*;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 /**
  * An iterator of namespaces of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/21 21:52:33 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
  */
 public class DOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;

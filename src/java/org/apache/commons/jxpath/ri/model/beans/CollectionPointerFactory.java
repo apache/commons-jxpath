@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointerFactory.java,v 1.1 2002/04/21 21:52:33 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/21 21:52:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointerFactory.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/24 04:05:40 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,20 +61,18 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
-import org.apache.commons.jxpath.Container;
+import java.util.Locale;
+
 import org.apache.commons.jxpath.ri.QName;
-import org.apache.commons.jxpath.ri.model.*;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
-import org.apache.commons.jxpath.util.*;
-
-import java.util.*;
+import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Implements NodePointerFactory for stand-alone collections.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/21 21:52:33 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
  */
 public class CollectionPointerFactory implements NodePointerFactory {
 

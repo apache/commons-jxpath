@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.5 2002/04/24 03:32:48 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/24 03:32:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.6 2002/04/24 04:05:39 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/04/24 04:05:39 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,11 +62,8 @@
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.model.*;
 import org.apache.commons.jxpath.ri.EvalContext;
-import java.util.*;
+import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * A single-set EvalContext that provides access to the current node of
@@ -74,7 +71,7 @@ import java.util.*;
  * on to the parent context.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/24 03:32:48 $
+ * @version $Revision: 1.6 $ $Date: 2002/04/24 04:05:39 $
  */
 public class InitialContext extends EvalContext {
     private boolean startedSet = false;

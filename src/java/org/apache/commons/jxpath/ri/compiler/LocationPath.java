@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/LocationPath.java,v 1.3 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/LocationPath.java,v 1.4 2002/04/24 04:05:38 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/24 04:05:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,11 +61,9 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import java.util.*;
-
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/24 04:05:38 $
  */
 public class LocationPath extends Path {
 

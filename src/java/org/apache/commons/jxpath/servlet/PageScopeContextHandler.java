@@ -55,16 +55,16 @@
 
 package org.apache.commons.jxpath.servlet;
 
-import org.apache.commons.jxpath.*;
-import javax.servlet.jsp.*;
-import java.util.*;
+import java.util.Enumeration;
+
+import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
  * Implementation of the DynamicPropertyHandler interface that provides
  * access to attributes of a PageScopeContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/08 21:01:00 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
  */
 public class PageScopeContextHandler implements DynamicPropertyHandler {
 

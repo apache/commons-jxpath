@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.2 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.3 2002/04/24 04:05:38 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/24 04:05:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,14 +61,12 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import java.util.*;
-
 /**
  * An element of the parse tree that represents an expression path, which is
  * a path that starts with an expression like a function call: <code>getFoo(.)/bar</code>.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:38 $
  */
 public class ExpressionPath extends Path {
 
