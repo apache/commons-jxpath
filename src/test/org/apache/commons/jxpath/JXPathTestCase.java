@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -31,7 +32,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Abstract superclass for various JXPath tests.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.35 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.36 $ $Date: 2004/07/16 22:52:32 $
  */
 
 public abstract class JXPathTestCase extends TestCase {
@@ -42,6 +43,7 @@ public abstract class JXPathTestCase extends TestCase {
      */
     public JXPathTestCase(String name) {
         super(name);
+        Locale.setDefault(Locale.US);
     }
     
     protected void assertXPathValue(JXPathContext ctx,
