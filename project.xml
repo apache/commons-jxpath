@@ -4,16 +4,16 @@
   <extend>../project.xml</extend>
   <name>JXPath</name>
   <id>commons-jxpath</id>
-  <currentVersion>1.1-alpha</currentVersion>
+  <currentVersion>1.1b2</currentVersion>
   <inceptionYear>2001</inceptionYear>
   <shortDescription>XPath for Java Objects</shortDescription>
   <description>A package of Java utility methods for accessing and modifying object properties</description>
 
   <versions>
     <version>
-      <id>b1</id>
-      <name>1.1-a1</name>
-      <tag>JXPATH_1_1_A1</tag>
+      <id>b2</id>
+      <name>1.1-b2</name>
+      <tag>JXPATH_1_1_B2</tag>
     </version>
   </versions>
 
@@ -43,12 +43,12 @@
     </dependency>
     <dependency>
       <id>junit</id>
-      <type>required</type>
-      <version>3.7</version>
+      <!-- type>required</type-->
+      <version>3.8</version>
     </dependency>
     <dependency>
       <id>ant+optional</id>
-      <version>1.4.1</version>
+      <version>1.5.1</version>
     </dependency>
     <dependency>
       <id>xml-apis</id>

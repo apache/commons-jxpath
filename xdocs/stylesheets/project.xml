@@ -10,7 +10,7 @@
     -->
     <body>
        <menu name="Home">
-           <item name="Jakarta&amp;nbsp;Commons"          href="http://jakarta.apache.org/commons/index.html" />
+           <item name="Jakarta Commons"          href="http://jakarta.apache.org/commons/index.html" />
            <item name="JXPath"                        href="/index.html" />
        </menu>
        <menu name="Information">
@@ -18,15 +18,15 @@
            <item name="Overview"                      href="/overview.html"/>
            <item name="News"                          href="http://jakarta.apache.org/commons/pool/news.html"/>
 -->
-           <item name="Client API&amp;nbsp;Documentation"   href="/apidocs/org/apache/commons/jxpath/package-summary.html"/>
-           <item name="Complete API&amp;nbsp;Docs"        href="/apidocs/index.html"/>
+           <item name="Client API Documentation"   href="/apidocs/org/apache/commons/jxpath/package-summary.html"/>
+           <item name="Complete API Docs"        href="/apidocs/index.html"/>
            <item name="User's Guide"                  href="/users-guide.html"/>
            <!-- item name="JXPath Design"                 href="/design.html"/ -->
        </menu>
        <menu name="Project Files">
            <item name="Status"                        href="http://cvs.apache.org/viewcvs/~checkout~/jakarta-commons/jxpath/STATUS.html?content-type=text/html"/>
            <item name="CVS"                           href="http://cvs.apache.org/viewcvs/jakarta-commons/jxpath/"/>
-           <item name="Original&amp;nbsp;Proposal"        href="http://cvs.apache.org/viewcvs/~checkout~/jakarta-commons/jxpath/PROPOSAL.html?content-type=text/html"/>
+           <item name="Original Proposal"        href="http://cvs.apache.org/viewcvs/~checkout~/jakarta-commons/jxpath/PROPOSAL.html?content-type=text/html"/>
        </menu>
        <menu name="Downloads">
            <item name="Release"                       href="http://jakarta.apache.org/builds/jakarta-commons/release/commons-jxpath/"/>
@@ -37,9 +37,9 @@
            <item name="License"                       href="http://jakarta.apache.org/commons/license.html"/>
        </menu>
        <menu name="Jakarta Community">
-           <item name="Get&amp;nbsp;Involved"             href="http://jakarta.apache.org/site/getinvolved.html"/>
-           <item name="Mailing&amp;nbsp;Lists"            href="http://jakarta.apache.org/site/mail.html"/>
-           <item name="CVS&amp;nbsp;Repositories"         href="http://jakarta.apache.org/site/cvsindex.html"/>
+           <item name="Get Involved"             href="http://jakarta.apache.org/site/getinvolved.html"/>
+           <item name="Mailing Lists"            href="http://jakarta.apache.org/site/mail.html"/>
+           <item name="CVS Repositories"         href="http://jakarta.apache.org/site/cvsindex.html"/>
        </menu>
     </body>
 </project>

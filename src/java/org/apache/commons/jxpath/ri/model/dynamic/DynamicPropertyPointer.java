@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertyPointer.java,v 1.2 2003/01/11 05:41:26 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2003/01/11 05:41:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertyPointer.java,v 1.3 2003/02/26 01:45:01 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/02/26 01:45:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,6 +62,7 @@
 package org.apache.commons.jxpath.ri.model.dynamic;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
@@ -75,7 +76,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2003/01/11 05:41:26 $
+ * @version $Revision: 1.3 $ $Date: 2003/02/26 01:45:01 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -289,17 +290,27 @@ public class DynamicPropertyPointer extends PropertyPointer {
 
     public void remove() {
         if (index == WHOLE_COLLECTION) {
-            handler.setProperty(getBean(), getPropertyName(), null);
+            removeKey();
         }
         else if (isCollection()) {
             Object collection = ValueUtils.remove(getBaseValue(), index);
             handler.setProperty(getBean(), getPropertyName(), collection);
         }
         else if (index == 0) {
-            handler.setProperty(getBean(), getPropertyName(), null);
+            removeKey();
         }
     }
 
+    private void removeKey() {
+        Object bean = getBean();
+        if (bean instanceof Map) {
+            ((Map) bean).remove(getPropertyName());
+        }
+        else {
+            handler.setProperty(bean, getPropertyName(), null);
+        }
+    }
+    
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(getParent().asPath());
