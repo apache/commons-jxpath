@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.3 2002/04/24 03:29:33 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/24 03:29:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.4 2002/08/10 01:27:38 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/08/10 01:27:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,20 +62,21 @@
 package org.apache.commons.jxpath;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.HashMap;
-import java.util.Properties;
-import java.util.WeakHashMap;
 
 /**
  * JXPathIntrospector maintains a registry of {@link JXPathBeanInfo JXPathBeanInfo} objects
  * for Java classes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/24 03:29:33 $
+ * @version $Revision: 1.4 $ $Date: 2002/08/10 01:27:38 $
  */
 public class JXPathIntrospector {
 
     private static HashMap byClass = new HashMap();
+    private static HashMap byInterface = new HashMap();
+
     static {
         registerAtomicClass(Boolean.TYPE);
         registerAtomicClass(Boolean.class);
@@ -99,9 +100,7 @@ public class JXPathIntrospector {
         registerAtomicClass(java.sql.Time.class);
         registerAtomicClass(java.sql.Timestamp.class);
 
-        registerDynamicClass(HashMap.class, MapDynamicPropertyHandler.class);
-        registerDynamicClass(Properties.class, MapDynamicPropertyHandler.class);
-        registerDynamicClass(WeakHashMap.class, MapDynamicPropertyHandler.class);
+        registerDynamicClass(Map.class, MapDynamicPropertyHandler.class);
     }
 
     /**
@@ -116,8 +115,16 @@ public class JXPathIntrospector {
      * Automatically creates and registers a JXPathBeanInfo object
      * for the specified class. That object returns true to isDynamic().
      */
-    public static void registerDynamicClass(Class beanClass, Class dynamicPropertyHandlerClass) {
-        byClass.put(beanClass, new JXPathBasicBeanInfo(beanClass, dynamicPropertyHandlerClass));
+    public static void registerDynamicClass(
+            Class beanClass, Class dynamicPropertyHandlerClass) {
+        JXPathBasicBeanInfo bi =
+            new JXPathBasicBeanInfo(beanClass, dynamicPropertyHandlerClass);
+        if (beanClass.isInterface()){
+            byInterface.put(beanClass, bi);
+        }
+        else {
+            byClass.put(beanClass, bi);
+        }
     }
 
     /**
@@ -136,13 +143,46 @@ public class JXPathIntrospector {
     public static JXPathBeanInfo getBeanInfo(Class beanClass) {
         JXPathBeanInfo beanInfo = (JXPathBeanInfo) byClass.get(beanClass);
         if (beanInfo == null) {
-            beanInfo = findInformant(beanClass);
-            if (beanInfo == null) {
-                beanInfo = new JXPathBasicBeanInfo(beanClass);
+            beanInfo = findDynamicBeanInfo(beanClass);
+            if (beanInfo == null){
+                beanInfo = findInformant(beanClass);
+                if (beanInfo == null) {
+                    beanInfo = new JXPathBasicBeanInfo(beanClass);
+                }
             }
             byClass.put(beanClass, beanInfo);
         }
         return beanInfo;
+    }
+
+    /**
+     * Find a dynamic bean info if available for any superclasses or
+     * interfaces.
+     */
+    private static JXPathBeanInfo findDynamicBeanInfo(Class beanClass){
+        JXPathBeanInfo beanInfo;
+        if (beanClass.isInterface()){
+            beanInfo = (JXPathBeanInfo) byInterface.get(beanClass);
+            if (beanInfo != null){
+                return beanInfo;
+            }
+        }
+
+        Class interfaces[] = beanClass.getInterfaces();
+        if (interfaces != null){
+            for (int i = 0; i < interfaces.length; i++){
+                beanInfo = findDynamicBeanInfo(interfaces[i]);
+                if (beanInfo != null){
+                    return beanInfo;
+                }
+            }
+        }
+
+        Class sup = beanClass.getSuperclass();
+        if (sup != null){
+            return findDynamicBeanInfo(sup);
+        }
+        return null;
     }
 
     private static synchronized JXPathBeanInfo findInformant(Class beanClass) {
