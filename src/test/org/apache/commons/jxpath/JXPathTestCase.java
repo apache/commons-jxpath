@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.24 2002/06/18 00:01:16 dmitri Exp $
- * $Revision: 1.24 $
- * $Date: 2002/06/18 00:01:16 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.25 2002/07/03 21:12:36 dmitri Exp $
+ * $Revision: 1.25 $
+ * $Date: 2002/07/03 21:12:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -95,7 +95,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.24 $ $Date: 2002/06/18 00:01:16 $
+ * @version $Revision: 1.25 $ $Date: 2002/07/03 21:12:36 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -320,8 +320,35 @@ public class JXPathTestCase extends TestCase
         for (int i = 0; i < 4; i++){
             actual.add(it.next().toString());
         }
-        assertEquals("Iterating <" + "/integers" + ">",
+        assertEquals("Iterating 'next'<" + "/integers" + ">",
             list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"),
+            actual);
+
+        it = context.iteratePointers("/integers");
+        actual = new ArrayList();
+        while(it.hasNext()){
+            actual.add(((Pointer)it.next()).asPath());
+        }
+
+        assertEquals("Iterating 'hasNext'/'next'<" + "/integers" + ">",
+            list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"),
+            actual);
+
+        map = new HashMap();
+        Vector vec = new Vector();
+        vec.add(new HashMap());
+        vec.add(new HashMap());
+
+        map.put("vec", vec);
+        context = JXPathContext.newContext(map);
+        it = context.iteratePointers("/vec");
+        actual = new ArrayList();
+        while(it.hasNext()){
+            actual.add(((Pointer)it.next()).asPath());
+        }
+
+        assertEquals("Iterating 'hasNext'/'next'<" + "/vec" + ">",
+            list("/.[@name='vec'][1]", "/.[@name='vec'][2]"),
             actual);
     }
 
@@ -924,9 +951,9 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testParserReferenceImpl() throws Exception {
-//        if (!enabled){
-//            return;
-//        }
+        if (!enabled){
+            return;
+        }
         System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
                 "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
         testParser(JXPathContextFactory.newInstance().newContext(null, bean), false);
@@ -1521,5 +1548,11 @@ public class JXPathTestCase extends TestCase
 
         new TypeConversionTest(list(new Integer(1), new Integer(2)), String[].class,
                 list("1", "2")),
+
+//        new TypeConversionTest(new Object(){
+//              public String toString(){
+//                  return "42";
+//              }
+//          }, Integer.class, new Integer(42)),
     };
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.16 2002/06/16 03:22:21 dmitri Exp $
- * $Revision: 1.16 $
- * $Date: 2002/06/16 03:22:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.17 2002/07/03 21:12:36 dmitri Exp $
+ * $Revision: 1.17 $
+ * $Date: 2002/07/03 21:12:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2002/06/16 03:22:21 $
+ * @version $Revision: 1.17 $ $Date: 2002/07/03 21:12:36 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
@@ -173,7 +173,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             if (done || (position == 0 && !hasNext())){
                 throw new NoSuchElementException();
             }
-            NodePointer pointer = getCurrentNodePointer();
+            NodePointer pointer = (NodePointer)getCurrentNodePointer().clone();
             if (!nextNode()){
                 done = true;
                 while (nextSet()){

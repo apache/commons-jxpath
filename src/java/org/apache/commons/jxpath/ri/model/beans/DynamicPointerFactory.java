@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPointerFactory.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPointerFactory.java,v 1.3 2002/07/03 21:12:36 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/07/03 21:12:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Implements NodePointerFactory for Dynamic classes like Map.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2002/07/03 21:12:36 $
  */
 public class DynamicPointerFactory implements NodePointerFactory {
 
@@ -95,16 +95,6 @@ public class DynamicPointerFactory implements NodePointerFactory {
     }
 
     public NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
-//        if (bean == null){
-//            return new NullPropertyPointer(parent);
-//        }
-//
-//        JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
-//        if (bi.isDynamic()){
-//            DynamicPropertyHandler handler = ValueUtils.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
-//            return new DynamicPropertyPointer(parent, handler);
-//        }
-//        parent = (NodePointer)parent.clone();
         if (bean == null){
             return new NullPointer(parent, name);
         }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/SelfContext.java,v 1.7 2002/04/28 04:35:48 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/04/28 04:35:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/SelfContext.java,v 1.8 2002/07/03 21:12:36 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/07/03 21:12:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,12 +70,11 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that returns the current node from the parent context if the test succeeds.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/04/28 04:35:48 $
+ * @version $Revision: 1.8 $ $Date: 2002/07/03 21:12:36 $
  */
 public class SelfContext extends EvalContext {
     private NodeTest nodeTest;
     private boolean startedSet = false;
-    private NodePointer contextNodePointer;
     private NodePointer nodePointer;
 
     public SelfContext(EvalContext parentContext, NodeTest nodeTest){
@@ -112,14 +111,13 @@ public class SelfContext extends EvalContext {
         super.setPosition(position);
         if (!startedSet){
             startedSet = true;
-            contextNodePointer = (NodePointer)parentContext.getCurrentNodePointer();
+            nodePointer = (NodePointer)parentContext.getCurrentNodePointer();
         }
 
-        if (contextNodePointer == null){
+        if (nodePointer == null){
             return false;
         }
 
-        nodePointer = (NodePointer)contextNodePointer.clone();
         return nodeTest == null || nodePointer.testNode(nodeTest);
     }
 }

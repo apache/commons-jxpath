@@ -94,7 +94,7 @@ public class SimplePathInterpreter {
             return null;
         }
 
-        NodePointer pointer = (NodePointer)parentPointer.clone();
+        NodePointer pointer = (NodePointer)parentPointer;
         while (pointer != null && !pointer.isNode()){
             pointer = pointer.getValuePointer();
         }

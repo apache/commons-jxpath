@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.7 2002/06/18 00:01:15 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/06/18 00:01:15 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.8 2002/07/03 21:12:36 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/07/03 21:12:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -84,7 +84,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/06/18 00:01:15 $
+ * @version $Revision: 1.8 $ $Date: 2002/07/03 21:12:36 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
@@ -528,9 +528,15 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
         return buffer.toString();
     }
 
+    public static int count = 0;
     public Object clone() {
+        count ++;
         try {
-            return super.clone();
+            NodePointer ptr = (NodePointer)super.clone();
+            if (parent != null){
+                ptr.parent = (NodePointer)parent.clone();
+            }
+            return ptr;
         }
         catch (CloneNotSupportedException ex) {
             // Of course it is supported
