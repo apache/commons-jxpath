@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNamespaceIterator.java,v 1.4 2003/03/11 00:59:33 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2003/03/11 00:59:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNamespaceIterator.java,v 1.5 2003/06/17 01:30:21 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/06/17 01:30:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.jdom.Namespace;
  * An iterator of namespaces of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2003/03/11 00:59:33 $
+ * @version $Revision: 1.5 $ $Date: 2003/06/17 01:30:21 $
  */
 public class JDOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;
@@ -107,7 +107,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
                 prefixes.add(ns.getPrefix());
             }
         }
-        Element parent = element.getParent();
+        Element parent = (Element) element.getParent();
         if (parent != null) {
             collectNamespaces(parent);
         }

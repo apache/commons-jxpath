@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.8 2003/03/11 00:59:33 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2003/03/11 00:59:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.9 2003/06/17 01:30:21 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/06/17 01:30:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -90,7 +90,7 @@ import org.jdom.Text;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2003/03/11 00:59:33 $
+ * @version $Revision: 1.9 $ $Date: 2003/06/17 01:30:21 $
  */
 public class JDOMNodePointer extends NodePointer {
     private Object node;
@@ -508,19 +508,19 @@ public class JDOMNodePointer extends NodePointer {
     
     private Element nodeParent(Object node) {
         if (node instanceof Element) {
-            return ((Element) node).getParent();
+            return (Element) ((Element) node).getParent();
         }
         else if (node instanceof Text) {
-            return ((Text) node).getParent();
+            return (Element) ((Text) node).getParent();
         }
         else if (node instanceof CDATA) {
-            return ((CDATA) node).getParent();
+            return (Element) ((CDATA) node).getParent();
         }
         else if (node instanceof ProcessingInstruction) {
-            return ((ProcessingInstruction) node).getParent();
+            return (Element) ((ProcessingInstruction) node).getParent();
         }
         else if (node instanceof Comment) {
-            return ((Comment) node).getParent();
+            return (Element) ((Comment) node).getParent();
         }
         return null;
     }
@@ -664,7 +664,7 @@ public class JDOMNodePointer extends NodePointer {
 
     private int getRelativePositionByName() {
         if (node instanceof Element) {
-            Element parent = ((Element) node).getParent();
+            Element parent = (Element)((Element) node).getParent();
             if (parent == null) {
                 return 1;
             }
@@ -689,10 +689,10 @@ public class JDOMNodePointer extends NodePointer {
     private int getRelativePositionOfTextNode() {
         Element parent;
         if (node instanceof Text) {
-            parent = ((Text) node).getParent();
+            parent = (Element) ((Text) node).getParent();
         }
         else {
-            parent = ((CDATA) node).getParent();
+            parent = (Element) ((CDATA) node).getParent();
         }
         if (parent == null) {
             return 1;
@@ -712,7 +712,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     private int getRelativePositionOfPI(String target) {
-        Element parent = ((ProcessingInstruction) node).getParent();
+        Element parent = (Element) ((ProcessingInstruction) node).getParent();
         if (parent == null) {
             return 1;
         }
