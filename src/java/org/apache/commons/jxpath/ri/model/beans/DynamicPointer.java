@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPointer.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPointer.java,v 1.3 2002/05/30 02:04:57 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/05/30 02:04:57 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * for the first element of a path; following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/30 02:04:57 $
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;
@@ -150,10 +150,5 @@ public class DynamicPointer extends PropertyOwnerPointer {
 
         DynamicPointer other = (DynamicPointer)object;
         return bean == other.bean && name.equals(other.name);
-    }
-
-    public String toString(){
-        return bean.getClass().getName() + "@" + System.identityHashCode(bean) +
-            "(" + name + ")";
     }
 }
