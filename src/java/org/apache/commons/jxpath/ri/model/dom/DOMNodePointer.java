@@ -46,7 +46,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.22 $ $Date: 2004/03/25 05:41:29 $
+ * @version $Revision: 1.23 $ $Date: 2004/04/01 02:55:32 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -74,14 +74,12 @@ public class DOMNodePointer extends NodePointer {
         super(parent);
         this.node = node;
     }
-
+    
     public boolean testNode(NodeTest test) {
-        return testNode(this, node, test);
+        return testNode(node, test);
     }
 
-    public static boolean testNode(
-            NodePointer pointer, Node node, NodeTest test)
-    {
+    public static boolean testNode(Node node, NodeTest test) {
         if (test == null) {
             return true;
         }
@@ -92,6 +90,7 @@ public class DOMNodePointer extends NodePointer {
 
             NodeNameTest nodeNameTest = (NodeNameTest) test;
             QName testName = nodeNameTest.getNodeName();
+            String namespaceURI = nodeNameTest.getNamespaceURI();
             boolean wildcard = nodeNameTest.isWildcard();
             String testPrefix = testName.getPrefix();
             if (wildcard && testPrefix == null) {
@@ -101,14 +100,8 @@ public class DOMNodePointer extends NodePointer {
             if (wildcard
                 || testName.getName()
                         .equals(DOMNodePointer.getLocalName(node))) {
-                String nodePrefix = DOMNodePointer.getPrefix(node);
-                if (equalStrings(testPrefix, nodePrefix)) {
-                    return true;
-                }
-
-                String testNS = pointer.getNamespaceURI(testPrefix);
-                String nodeNS = pointer.getNamespaceURI(nodePrefix);
-                return equalStrings(testNS, nodeNS);
+                String nodeNS = DOMNodePointer.getNamespaceURI(node);
+                return equalStrings(namespaceURI, nodeNS);
             }
         }
         else if (test instanceof NodeTypeTest) {
@@ -166,14 +159,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     public String getNamespaceURI() {
-        if (node.getNodeType() == Node.ELEMENT_NODE) {
-            return getNamespaceURI(getName().getPrefix());
-        }
-        return null;
-    }
-
-    public QName getExpandedName() {
-        return new QName(getNamespaceURI(), getName().getName());
+        return getNamespaceURI(node);
     }
 
     public NodeIterator childIterator(
@@ -220,6 +206,9 @@ public class DOMNodePointer extends NodePointer {
         if (namespace == null) {
             String qname = "xmlns:" + prefix;
             Node aNode = node;
+            if (aNode instanceof Document) {
+                aNode = ((Document)aNode).getDocumentElement();
+            }
             while (aNode != null) {
                 if (aNode.getNodeType() == Node.ELEMENT_NODE) {
                     Attr attr = ((Element) aNode).getAttributeNode(qname);
@@ -230,12 +219,6 @@ public class DOMNodePointer extends NodePointer {
                 }
                 aNode = aNode.getParentNode();
             }
-//            if (namespace == null) {
-//                NamespaceManager manager = getNamespaceManager();
-//                if (manager != null) {
-//                    namespace = manager.getNamespaceURI(prefix, this);
-//                }
-//            }
             if (namespace == null || namespace.equals("")) {
                 namespace = NodePointer.UNKNOWN_NAMESPACE;
             }
@@ -243,6 +226,25 @@ public class DOMNodePointer extends NodePointer {
 
         namespaces.put(prefix, namespace);
         // TBD: We are supposed to resolve relative URIs to absolute ones.
+        return namespace;
+    }
+
+    private String getNamespaceURI(String prefix, String namespace) {
+        String qname = "xmlns:" + prefix;
+        Node aNode = node;
+        if (aNode instanceof Document) {
+            aNode = ((Document)aNode).getDocumentElement();
+        }
+        while (aNode != null) {
+            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+                Attr attr = ((Element) aNode).getAttributeNode(qname);
+                if (attr != null) {
+                    namespace = attr.getValue();
+                    break;
+                }
+            }
+            aNode = aNode.getParentNode();
+        }
         return namespace;
     }
 
@@ -457,14 +459,36 @@ public class DOMNodePointer extends NodePointer {
                 // of the path
                 if (parent instanceof DOMNodePointer) {
                     if (buffer.length() == 0
-                        || buffer.charAt(buffer.length() - 1) != '/') {
+                            || buffer.charAt(buffer.length() - 1) != '/') {
                         buffer.append('/');
                     }
-                    buffer.append(getName());
-                    buffer.append('[');
-                    buffer.append(getRelativePositionByName()).append(']');
+                    String nsURI = getNamespaceURI();
+                    String ln = DOMNodePointer.getLocalName(node);
+                    
+                    if (nsURI == null) {
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName()).append(']');
+                    }
+                    else {
+                        String prefix = getNamespaceResolver().getPrefix(nsURI);
+                        if (prefix != null) {
+                            buffer.append(prefix);
+                            buffer.append(':');
+                            buffer.append(ln);
+                            buffer.append('[');
+                            buffer.append(getRelativePositionByName());
+                            buffer.append(']');
+                        }
+                        else {
+                            buffer.append("node()");
+                            buffer.append('[');
+                            buffer.append(getRelativePositionOfElement());
+                            buffer.append(']');
+                        }
+                    }
                 }
-                break;
+            break;
             case Node.TEXT_NODE :
             case Node.CDATA_SECTION_NODE :
                 buffer.append("/text()");
@@ -513,6 +537,18 @@ public class DOMNodePointer extends NodePointer {
                 if (nm.equals(node.getNodeName())) {
                     count++;
                 }
+            }
+            n = n.getPreviousSibling();
+        }
+        return count;
+    }
+    
+    private int getRelativePositionOfElement() {
+        int count = 1;
+        Node n = node.getPreviousSibling();
+        while (n != null) {
+            if (n.getNodeType() == Node.ELEMENT_NODE) {
+                count++;
             }
             n = n.getPreviousSibling();
         }
@@ -590,6 +626,40 @@ public class DOMNodePointer extends NodePointer {
         }
 
         return name.substring(index + 1);
+    }
+    
+    public static String getNamespaceURI(Node node) {
+        if (node instanceof Document) {
+            node = ((Document) node).getDocumentElement();
+        }
+
+        Element element = (Element) node;
+
+        String uri = element.getNamespaceURI();
+        if (uri != null) {
+            return uri;
+        }
+
+        String qname;
+        String prefix = getPrefix(node);
+        if (prefix == null) {
+            qname = "xmlns";
+        }
+        else {
+            qname = "xmlns:" + prefix;
+        }
+
+        Node aNode = node;
+        while (aNode != null) {
+            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+                Attr attr = ((Element) aNode).getAttributeNode(qname);
+                if (attr != null) {
+                    return attr.getValue();
+                }
+            }
+            aNode = aNode.getParentNode();
+        }
+        return null;
     }
 
     public Object getValue() {

@@ -54,7 +54,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.40 $ $Date: 2004/03/25 03:49:50 $
+ * @version $Revision: 1.41 $ $Date: 2004/04/01 02:55:32 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -109,6 +109,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     private Pointer rootPointer;
     private Pointer contextPointer;
+    
+    protected NamespaceResolver namespaceResolver;
 
     // The frequency of the cache cleanup
     private static final int CLEANUP_THRESHOLD = 500;
@@ -146,6 +148,10 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                     getLocale());
             this.rootPointer = this.contextPointer;
         }
+        
+        namespaceResolver = new NamespaceResolver();
+        namespaceResolver
+                .setNamespaceContextPointer((NodePointer) this.contextPointer);
     }
 
     private static void createNodeFactoryArray() {
@@ -591,13 +597,13 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     private EvalContext getEvalContext() {
-        return new InitialContext(
-            new RootContext(this, (NodePointer) getContextPointer()));
+        return new InitialContext(new RootContext(this,
+                (NodePointer) getContextPointer()));
     }
 
     public EvalContext getAbsoluteRootContext() {
-        return new InitialContext(
-            new RootContext(this, getAbsoluteRootPointer()));
+        return new InitialContext(new RootContext(this,
+                getAbsoluteRootPointer()));
     }
 
     public NodePointer getVariablePointer(QName name) {
@@ -643,11 +649,37 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         throw new JXPathException(
             "Undefined function: " + functionName.toString());
     }
+    
+    public void registerNamespace(String prefix, String namespaceURI) {
+        if (namespaceResolver.isSealed()) {            
+            namespaceResolver = (NamespaceResolver) namespaceResolver.clone();
+        }
+        namespaceResolver.registerNamespace(prefix, namespaceURI);
+    }
+    
+    public String getNamespaceURI(String prefix) {
+        return namespaceResolver.getNamespaceURI(prefix);
+    }
+    
+    public void setNamespaceContextPointer(Pointer pointer) {
+        if (namespaceResolver.isSealed()) {
+            namespaceResolver = (NamespaceResolver) namespaceResolver.clone();
+        }
+        namespaceResolver.setNamespaceContextPointer((NodePointer) pointer);
+    }
+    
+    public Pointer getNamespaceContextPointer() {
+        return namespaceResolver.getNamespaceContextPointer();
+    }
 
+    public NamespaceResolver getNamespaceResolver() {
+        namespaceResolver.seal();
+        return namespaceResolver;
+    }
+    
     /**
-     * Checks if existenceCheckClass exists on the class path. If so,
-     * allocates an instance of the specified class, otherwise
-     * returns null.
+     * Checks if existenceCheckClass exists on the class path. If so, allocates
+     * an instance of the specified class, otherwise returns null.
      */
     public static Object allocateConditionally(
             String className,

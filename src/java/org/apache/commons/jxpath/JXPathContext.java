@@ -372,7 +372,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.22 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision: 1.23 $ $Date: 2004/04/01 02:55:31 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -386,7 +386,6 @@ public abstract class JXPathContext {
     protected IdentityManager idManager;
     protected KeyManager keyManager;
     protected HashMap decimalFormats;
-//    protected NamespaceManager namespaceManager;
 
     private static JXPathContextFactory contextFactory;
     private static JXPathContext compilationContext;
@@ -765,28 +764,55 @@ public abstract class JXPathContext {
         }
     }
 
-// TODO: either remove these methods or complete the functionality
-//    /**
-//     * Install a namespace manager that will be used by the context
-//     * to look up namespace URI's for prefixes.
-//     */
-//    public void setNamespaceManager(NamespaceManager namespaceManager) {
-//        this.namespaceManager = namespaceManager;
-//    }
-//
-//    /**
-//     * Returns this context's namespace manager. If none has been installed,
-//     * returns the key manager of the parent context, or the default
-//     * namespace manager.
-//     */
-//    public NamespaceManager getNamespaceManager() {
-//        if (keyManager == null && parentContext != null) {
-//            return parentContext.getNamespaceManager();
-//        }
-//        if (namespaceManager == null) {
-//            namespaceManager = new BasicNamespaceManager();
-//        }
-//        return namespaceManager;
-//    }
-
+    /**
+     * Registers a namespace prefix.
+     * 
+     * @param prefix A namespace prefix
+     * @param namespaceURI A URI for that prefix
+     */
+    public void registerNamespace(String prefix, String namespaceURI) {
+        throw new UnsupportedOperationException(
+                "Namespace registration is not implemented by " + getClass());
+    }
+    
+    /**
+     * Given a prefix, returns a registered namespace URI. If the requested
+     * prefix was not defined explicitly using the registerNamespace method,
+     * JXPathContext will then check the context node to see if the prefix is
+     * defined there. See
+     * {@link #setNamespaceContextPointer(Pointer) setNamespaceContextPointer}.
+     * 
+     * @param prefix The namespace prefix to look up
+     * @return namespace URI or null if the prefix is undefined.
+     */
+    public String getNamespaceURI(String prefix) {
+        throw new UnsupportedOperationException(
+                "Namespace registration is not implemented by " + getClass());
+    }
+    
+    /**
+     * Namespace prefixes can be defined implicitly by specifying a pointer to a
+     * context where the namespaces are defined. By default,
+     * NamespaceContextPointer is the same as the Context Pointer, see
+     * {@link #getContextPointer() getContextPointer()}
+     * 
+     * @param contextPointer The pointer to the context where prefixes used in
+     *        XPath expressions should be resolved.
+     */
+    public void setNamespaceContextPointer(Pointer namespaceContextPointer) {
+        throw new UnsupportedOperationException(
+                "Namespace registration is not implemented by " + getClass());
+    }
+    
+    /**
+     * Returns the namespace context pointer set with
+     * {@link #setNamespaceContextPointer(Pointer) setNamespaceContextPointer()}
+     * or, if none has been specified, the context pointer otherwise.
+     * 
+     * @return The namespace context pointer.
+     */
+    public Pointer getNamespaceContextPointer() {
+        throw new UnsupportedOperationException(
+                "Namespace registration is not implemented by " + getClass());
+    }
 }

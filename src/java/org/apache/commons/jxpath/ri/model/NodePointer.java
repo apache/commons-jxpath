@@ -22,6 +22,7 @@ import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
+import org.apache.commons.jxpath.ri.NamespaceResolver;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
@@ -35,7 +36,7 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * attribute and only simple, context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.24 $ $Date: 2004/03/25 05:41:29 $
+ * @version $Revision: 1.25 $ $Date: 2004/04/01 02:55:32 $
  */
 public abstract class NodePointer implements Pointer {
 
@@ -44,7 +45,8 @@ public abstract class NodePointer implements Pointer {
     public static final String UNKNOWN_NAMESPACE = "<<unknown namespace>>";
     private boolean attribute = false;
     private transient Object rootNode;
-
+    private NamespaceResolver namespaceResolver;
+    
     /**
      * Allocates an entirely new NodePointer by iterating through all installed
      * NodePointerFactories until it finds one that can create a pointer.
@@ -109,6 +111,17 @@ public abstract class NodePointer implements Pointer {
         this.locale = locale;
     }
 
+    public NamespaceResolver getNamespaceResolver() {
+        if (namespaceResolver == null && parent != null) {
+            namespaceResolver = parent.getNamespaceResolver();
+        }
+        return namespaceResolver;
+    }
+    
+    public void setNamespaceResolver(NamespaceResolver namespaceResolver) {
+        this.namespaceResolver = namespaceResolver;
+    }
+    
     public NodePointer getParent() {
         NodePointer pointer = parent;
         while (pointer != null && pointer.isContainer()) {
@@ -580,14 +593,6 @@ public abstract class NodePointer implements Pointer {
 
     protected String getDefaultNamespaceURI() {
         return null;
-    }
-
-    /**
-     * Returns a name that consists of the namespaceURI and the local name
-     * of the node.  For non-XML pointers, returns the Pointer's qualified name.
-     */
-    public QName getExpandedName() {
-        return getName();
     }
 
     /**

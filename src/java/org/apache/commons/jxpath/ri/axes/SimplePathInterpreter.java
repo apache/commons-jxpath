@@ -27,6 +27,7 @@ import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.Expression;
 import org.apache.commons.jxpath.ri.compiler.NameAttributeTest;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
+import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.compiler.Step;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
@@ -252,7 +253,7 @@ public class SimplePathInterpreter {
 
         int bestQuality = 0;
         NodePointer bestMatch = null;
-        NodeIterator it = getNodeIterator(parentPointer, step);
+        NodeIterator it = getNodeIterator(context, parentPointer, step);
         if (it != null) {
             for (int i = 1; it.setPosition(i); i++) {
                 NodePointer childPointer = it.getNodePointer();
@@ -368,7 +369,7 @@ public class SimplePathInterpreter {
         // It is a very common use case, so it deserves individual
         // attention
         if (predicates.length == 1) {
-            NodeIterator it = getNodeIterator(parent, step);
+            NodeIterator it = getNodeIterator(context, parent, step);
             NodePointer pointer = null;
             if (it != null) {
                 if (predicate instanceof NameAttributeTest) { // [@name = key]
@@ -393,7 +394,7 @@ public class SimplePathInterpreter {
             }
         }
         else {
-            NodeIterator it = getNodeIterator(parent, step);
+            NodeIterator it = getNodeIterator(context, parent, step);
             if (it != null) {
                 List list = new ArrayList();
                 for (int i = 1; it.setPosition(i); i++) {
@@ -806,11 +807,21 @@ public class SimplePathInterpreter {
     }
 
     private static NodeIterator getNodeIterator(
+        EvalContext context,
         NodePointer pointer,
         Step step) 
     {
         if (step.getAxis() == Compiler.AXIS_CHILD) {
-            return pointer.childIterator(step.getNodeTest(), false, null);
+            NodeTest nodeTest = step.getNodeTest();
+            QName qname = ((NodeNameTest) nodeTest).getNodeName();
+            String prefix = qname.getPrefix();
+            if (prefix != null) {
+                String namespaceURI = context.getJXPathContext()
+                        .getNamespaceURI(prefix);
+                nodeTest = new NodeNameTest(qname, namespaceURI);
+
+            }
+            return pointer.childIterator(nodeTest, false, null);
         }
         else { // Compiler.AXIS_ATTRIBUTE
             if (!(step.getNodeTest() instanceof NodeNameTest)) {

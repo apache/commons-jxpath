@@ -24,7 +24,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of the attribute is based on the locale supplied to it in the constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/02/29 14:17:41 $
+ * @version $Revision: 1.13 $ $Date: 2004/04/01 02:55:32 $
  */
 public class LangAttributePointer extends NodePointer {
     public LangAttributePointer(NodePointer parent) {
@@ -33,10 +33,6 @@ public class LangAttributePointer extends NodePointer {
 
     public QName getName() {
         return new QName("xml", "lang");
-    }
-
-    public QName getExpandedName() {
-        return getName();
     }
 
     public String getNamespaceURI() {

@@ -24,7 +24,7 @@ import org.jdom.Attribute;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.10 $ $Date: 2004/04/01 02:55:31 $
  */
 public class JDOMAttributePointer extends NodePointer {
     private Attribute attr;
@@ -38,10 +38,6 @@ public class JDOMAttributePointer extends NodePointer {
         return new QName(
             JDOMNodePointer.getPrefix(attr),
             JDOMNodePointer.getLocalName(attr));
-    }
-
-    public QName getExpandedName() {
-        return new QName(getNamespaceURI(),  attr.getName());
     }
 
     public String getNamespaceURI() {

@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 
@@ -29,7 +30,7 @@ import org.jdom.Namespace;
  * An iterator of namespaces of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2004/03/04 01:01:27 $
+ * @version $Revision: 1.9 $ $Date: 2004/04/01 02:55:31 $
  */
 public class JDOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;
@@ -40,10 +41,13 @@ public class JDOMNamespaceIterator implements NodeIterator {
     public JDOMNamespaceIterator(NodePointer parent) {
         this.parent = parent;
         Object node = parent.getNode();
+        if (node instanceof Document) {
+            node = ((Document)node).getRootElement();
+        }
         if (node instanceof Element) {
             namespaces = new ArrayList();
             prefixes = new HashSet();
-            collectNamespaces((Element) parent.getNode());
+            collectNamespaces((Element) node);
         }
     }
 
@@ -87,6 +91,9 @@ public class JDOMNamespaceIterator implements NodeIterator {
     }
 
     public boolean setPosition(int position) {
+        if (namespaces == null) {
+            return false;
+        }
         this.position = position;
         return position >= 1 && position <= namespaces.size();
     }

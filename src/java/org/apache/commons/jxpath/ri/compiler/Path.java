@@ -18,6 +18,7 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.axes.AncestorContext;
 import org.apache.commons.jxpath.ri.axes.AttributeContext;
 import org.apache.commons.jxpath.ri.axes.ChildContext;
@@ -33,7 +34,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2004/03/25 05:41:29 $
+ * @version $Revision: 1.14 $ $Date: 2004/04/01 02:55:32 $
  */
 public abstract class Path extends Expression {
 
@@ -253,6 +254,16 @@ public abstract class Path extends Expression {
         int axis,
         NodeTest nodeTest) 
     {
+        if (nodeTest instanceof NodeNameTest) {
+            QName qname = ((NodeNameTest) nodeTest).getNodeName();
+            String prefix = qname.getPrefix();
+            if (prefix != null) {
+                String namespaceURI = context.getJXPathContext()
+                        .getNamespaceURI(prefix);
+                nodeTest = new NodeNameTest(qname, namespaceURI);
+            }
+        }
+        
         switch (axis) {
         case Compiler.AXIS_ANCESTOR :
             return new AncestorContext(context, false, nodeTest);

@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.20 $ $Date: 2004/03/02 01:32:20 $
+ * @version $Revision: 1.21 $ $Date: 2004/04/01 02:55:32 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {
@@ -72,6 +72,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         JXPathContext context =
             JXPathContext.newContext(createDocumentContainer());
         context.setFactory(getAbstractFactory());
+        context.registerNamespace("product", "productNS");
         return context;
     }
 
@@ -231,9 +232,9 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         
         assertXPathCreatePathAndSetValue(
             context,
-            "vendor/product/name/attribute::price:language",
+            "vendor/product/product:name/attribute::price:language",
             "English",
-            "/vendor[1]/product[1]/name[1]/@price:language");
+            "/vendor[1]/product[1]/product:name[1]/@price:language");
     }
 
     /**
@@ -306,7 +307,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "name(vendor/product/price:amount)",
-            "priceNS:amount");
+            "value:amount");
 
         // name (non-qualified)
         assertXPathValue(
@@ -349,12 +350,6 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "count(vendor/product/price:*)",
-            new Double(2));
-
-        // child:: with a namespace and wildcard
-        assertXPathValue(
-            context,
-            "count(vendor/product/value:*)",
             new Double(2));
 
         // child:: with the default namespace
@@ -467,11 +462,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             context,
             "vendor/product/price:amount/@price:discount",
             "10%");
-        assertXPathValue(
-            context,
-            "vendor/product/value:amount/@value:discount",
-            "10%");
-
+        
         // namespace uri for an attribute
         assertXPathValue(
             context,
@@ -488,7 +479,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "name(vendor/product/price:amount/@price:discount)",
-            "priceNS:discount");
+            "price:discount");
 
         // attribute:: with the default namespace
         assertXPathValue(
@@ -566,7 +557,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "name(vendor/product/prix/namespace::price)",
-            "priceNS:price");
+            "price");
 
         // local name of namespace
         assertXPathValue(
@@ -760,10 +751,29 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
                 "/vendor[1]/location[2]");
     }
 
-// TODO: either complete the external namespace functionality, or get rid of
-// this test.
-//
-//    public void testExternalNamespace() {
+    public void testNamespaceMapping() {
+        context.registerNamespace("rate", "priceNS");
+        context.registerNamespace("goods", "productNS");
+
+        assertEquals("Context node namespace resolution", 
+                "priceNS", 
+                context.getNamespaceURI("price"));        
+        
+        assertEquals("Registered namespace resolution", 
+                "priceNS", 
+                context.getNamespaceURI("rate"));
+
+        // child:: with a namespace and wildcard
+        assertXPathValue(context, 
+                "count(vendor/product/rate:*)", 
+                new Double(2));
+
+        // Preference for externally registered namespace prefix
+        assertXPathValueAndPointer(context,
+                "//product:name",
+                "Box of oranges",
+                "/vendor[1]/product[1]/goods:name[1]");
+        
 //        if (isExternalNamespaceSupported()) {
 //             DocumentContainer container = new DocumentContainer(
 //                    XMLModelTestCase.class.getResource("ExternalNamespaceTest.xml"),
@@ -802,5 +812,5 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
 //                    "namespace-uri(vendor/product/value:price)",
 //                    "priceNS");
 //        }
-//    }
+    }
 }

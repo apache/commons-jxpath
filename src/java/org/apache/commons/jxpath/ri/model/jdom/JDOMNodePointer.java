@@ -44,7 +44,7 @@ import org.jdom.Text;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2004/03/25 05:41:29 $
+ * @version $Revision: 1.16 $ $Date: 2004/04/01 02:55:31 $
  */
 public class JDOMNodePointer extends NodePointer {
     private Object node;
@@ -94,6 +94,10 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     public String getNamespaceURI() {
+        return getNamespaceURI(node);
+    }
+    
+    private static String getNamespaceURI(Object node) {
         if (node instanceof Element) {
             Element element = (Element) node;
             String ns = element.getNamespaceURI();
@@ -106,18 +110,19 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     public String getNamespaceURI(String prefix) {
-        if (node instanceof Element) {
+        if (node instanceof Document) {
+            Element element = ((Document)node).getRootElement(); 
+            Namespace ns = element.getNamespace(prefix);
+            if (ns != null) {
+                return ns.getURI();
+            }
+        }        
+        else if (node instanceof Element) {
             Element element = (Element) node;
             Namespace ns = element.getNamespace(prefix);
-            if (ns == null) {
-//                NamespaceManager manager = getNamespaceManager();
-//                if (manager != null) {
-//                    return manager.getNamespaceURI(prefix, this);
-//                }
-
-                return null;
+            if (ns != null) {
+                return ns.getURI();
             }
-            return ns.getURI();
         }
         return null;
     }
@@ -220,10 +225,6 @@ public class JDOMNodePointer extends NodePointer {
             ln = ((ProcessingInstruction) node).getTarget();
         }
         return new QName(ns, ln);
-    }
-
-    public QName getExpandedName() {
-        return new QName(getNamespaceURI(), getName().getName());
     }
 
     /**
@@ -353,27 +354,20 @@ public class JDOMNodePointer extends NodePointer {
 
             NodeNameTest nodeNameTest = (NodeNameTest) test;
             QName testName = nodeNameTest.getNodeName();
+            String namespaceURI = nodeNameTest.getNamespaceURI();
             boolean wildcard = nodeNameTest.isWildcard();
-            if (wildcard && testName.getPrefix() == null) {
+            String testPrefix = testName.getPrefix();
+            if (wildcard && testPrefix == null) {
                 return true;
             }
 
             if (wildcard
-                || testName.getName().equals(
-                    JDOMNodePointer.getLocalName((Element) node))) {
-                String testPrefix = testName.getPrefix();
-                String nodePrefix = JDOMNodePointer.getPrefix((Element) node);
-                if (equalStrings(testPrefix, nodePrefix)) {
-                    return true;
-                }
-
-                String testNS = pointer.getNamespaceURI(testPrefix);
-                if (testNS == null) {
-                    return false;
-                }
-                String nodeNS = pointer.getNamespaceURI(nodePrefix);
-                return equalStrings(testNS, nodeNS);
+                || testName.getName()
+                        .equals(JDOMNodePointer.getLocalName(node))) {
+                String nodeNS = JDOMNodePointer.getNamespaceURI(node);
+                return equalStrings(namespaceURI, nodeNS);
             }
+
         }
         else if (test instanceof NodeTypeTest) {
             switch (((NodeTypeTest) test).getNodeType()) {
@@ -583,10 +577,32 @@ public class JDOMNodePointer extends NodePointer {
                     || buffer.charAt(buffer.length() - 1) != '/') {
                     buffer.append('/');
                 }
-                buffer.append(getName());
-                buffer.append('[');
-                buffer.append(getRelativePositionByName());
-                buffer.append(']');
+                String nsURI = getNamespaceURI();
+                String ln = JDOMNodePointer.getLocalName(node);
+                
+                if (nsURI == null) {
+                    buffer.append(ln);
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
+                }
+                else {
+                    String prefix = getNamespaceResolver().getPrefix(nsURI);
+                    if (prefix != null) {
+                        buffer.append(prefix);
+                        buffer.append(':');
+                        buffer.append(ln);
+                        buffer.append('[');
+                        buffer.append(getRelativePositionByName());
+                        buffer.append(']');
+                    }
+                    else {
+                        buffer.append("node()");
+                        buffer.append('[');
+                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(']');
+                    }
+                }
+
             }
         }
         else if (node instanceof Text || node instanceof CDATA) {
@@ -647,6 +663,25 @@ public class JDOMNodePointer extends NodePointer {
             return count;
         }
         return 1;
+    }
+    
+    private int getRelativePositionOfElement() {
+        Element parent = (Element) ((Element) node).getParent();
+        if (parent == null) {
+            return 1;
+        }
+        List children = parent.getContent();
+        int count = 0;
+        for (int i = 0; i < children.size(); i++) {
+            Object child = children.get(i);
+            if (child instanceof Element) {
+                count++;
+            }
+            if (child == node) {
+                break;
+            }
+        }
+        return count;
     }
 
     private int getRelativePositionOfTextNode() {

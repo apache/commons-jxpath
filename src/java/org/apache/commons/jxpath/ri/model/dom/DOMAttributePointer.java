@@ -27,7 +27,7 @@ import org.w3c.dom.Attr;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2004/02/29 14:17:44 $
+ * @version $Revision: 1.15 $ $Date: 2004/04/01 02:55:32 $
  */
 public class DOMAttributePointer extends NodePointer {
     private Attr attr;
@@ -41,10 +41,6 @@ public class DOMAttributePointer extends NodePointer {
         return new QName(
             DOMNodePointer.getPrefix(attr),
             DOMNodePointer.getLocalName(attr));
-    }
-
-    public QName getExpandedName() {
-        return new QName(getNamespaceURI(),  DOMNodePointer.getLocalName(attr));
     }
 
     public String getNamespaceURI() {

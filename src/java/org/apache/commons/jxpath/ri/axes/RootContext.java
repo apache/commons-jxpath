@@ -20,6 +20,7 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
+import org.apache.commons.jxpath.ri.NamespaceResolver;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
@@ -27,13 +28,14 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that is used to hold the root node for the path traversal.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2004/03/25 05:42:01 $
+ * @version $Revision: 1.18 $ $Date: 2004/04/01 02:55:31 $
  */
 public class RootContext extends EvalContext {
     private JXPathContextReferenceImpl jxpathContext;
     private NodePointer pointer;
     private Object registers[];
     private int availableRegister = 0;
+    private NamespaceResolver namespaceResolver;
     public static final Object UNKNOWN_VALUE = new Object();
     private static final int MAX_REGISTER = 4;
 
@@ -44,6 +46,9 @@ public class RootContext extends EvalContext {
         super(null);
         this.jxpathContext = jxpathContext;
         this.pointer = pointer;
+        if (pointer != null) {
+            pointer.setNamespaceResolver(jxpathContext.getNamespaceResolver());
+        }
     }
 
     public JXPathContext getJXPathContext() {

@@ -24,12 +24,11 @@ import org.w3c.dom.Node;
  * An iterator of children of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/02/29 14:17:44 $
+ * @version $Revision: 1.11 $ $Date: 2004/04/01 02:55:32 $
  */
 public class DOMNodeIterator implements NodeIterator {
     private NodePointer parent;
     private NodeTest nodeTest;
-    private String namespaceURI;
     private Node node;
     private Node child = null;
     private boolean reverse;
@@ -141,6 +140,6 @@ public class DOMNodeIterator implements NodeIterator {
     }
 
     private boolean testChild() {
-        return DOMNodePointer.testNode(parent, child, nodeTest);
+        return DOMNodePointer.testNode(child, nodeTest);
     }
 }

@@ -12,7 +12,7 @@
   <!ELEMENT product ANY>
 ]>
 
-<vendor name="fruitco">
+<vendor name="fruitco" xmlns:price="priceNS">
   <contact>John</contact>
   <contact name='jack'>Jack</contact>
   <contact name='jim'>Jim</contact>
@@ -33,11 +33,11 @@
     Text after address.
   </location>
 
-  <product xmlns="productNS" xmlns:price="priceNS" xmlns:value="priceNS">
-     <name>Box of oranges</name>
+  <product xmlns:value="priceNS">
+     <name xmlns="productNS">Box of oranges</name>
      We love this product.
      <!-- We are not buying this product, ever -->
-     <price:amount price:discount="10%" discount="20%">45.95</price:amount>
+     <value:amount price:discount="10%" discount="20%">45.95</value:amount>
      <prix xml:lang="fr">934.99</prix>
      <price:sale stores="all">
         <saleEnds>never</saleEnds>

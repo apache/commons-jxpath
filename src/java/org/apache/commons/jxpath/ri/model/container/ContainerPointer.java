@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision: 1.12 $ $Date: 2004/04/01 02:55:32 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
@@ -151,7 +151,11 @@ public class ContainerPointer extends NodePointer {
     {
         return pointer1.getIndex() - pointer2.getIndex();
     }
-
+    
+    public String getNamespaceURI(String prefix) {
+        return getValuePointer().getNamespaceURI(prefix);
+    }
+    
     public String asPath() {
         if (parent != null) {
             return parent.asPath();

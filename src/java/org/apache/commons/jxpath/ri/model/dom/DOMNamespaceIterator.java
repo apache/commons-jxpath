@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -28,7 +29,7 @@ import org.w3c.dom.Node;
  * An iterator of namespaces of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2004/02/29 14:17:44 $
+ * @version $Revision: 1.9 $ $Date: 2004/04/01 02:55:32 $
  */
 public class DOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;
@@ -45,6 +46,9 @@ public class DOMNamespaceIterator implements NodeIterator {
         Node parent = node.getParentNode();
         if (parent != null) {
             collectNamespaces(attributes, parent);
+        }
+        if (node.getNodeType() == Node.DOCUMENT_NODE) {
+            node = ((Document) node).getDocumentElement();
         }
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             NamedNodeMap map = node.getAttributes();

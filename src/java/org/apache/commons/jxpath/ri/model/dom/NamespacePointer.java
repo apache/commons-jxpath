@@ -25,7 +25,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/02/29 14:17:44 $
+ * @version $Revision: 1.13 $ $Date: 2004/04/01 02:55:32 $
  */
 public class NamespacePointer extends NodePointer {
     private String prefix;
@@ -47,7 +47,7 @@ public class NamespacePointer extends NodePointer {
     }
 
     public QName getName() {
-        return new QName(getNamespaceURI(), prefix);
+        return new QName(prefix);
     }
 
     public Object getBaseValue() {

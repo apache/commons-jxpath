@@ -19,17 +19,27 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/03/25 05:41:29 $
+ * @version $Revision: 1.11 $ $Date: 2004/04/01 02:55:32 $
  */
 public class NodeNameTest extends NodeTest {
     private QName qname;
+    private String namespaceURI;
 
     public NodeNameTest(QName qname) {
         this.qname = qname;
     }
+    
+    public NodeNameTest(QName qname, String namespaceURI) {
+        this.qname = qname;
+        this.namespaceURI = namespaceURI;
+    }
 
     public QName getNodeName() {
         return qname;
+    }
+    
+    public String getNamespaceURI() {
+        return namespaceURI;
     }
     
     public boolean isWildcard() {
