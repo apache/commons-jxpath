@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.8 2002/04/21 21:52:31 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/04/21 21:52:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.9 2002/04/24 03:32:48 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/04/24 03:32:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,72 +79,60 @@ import java.util.*;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/04/21 21:52:31 $
+ * @version $Revision: 1.9 $ $Date: 2002/04/24 03:32:48 $
  */
-public abstract class EvalContext {
+public abstract class EvalContext implements ExpressionContext {
     protected EvalContext parentContext;
     protected RootContext rootContext;
     protected int position = 0;
     private boolean startedSetIteration = false;
-    private EvalExpressionContext expressionContext;
 
     public EvalContext(EvalContext parentContext){
         this.parentContext = parentContext;
     }
 
-    public class EvalExpressionContext implements ExpressionContext {
-        public Pointer getContextNodePointer(){
-            return getCurrentNodePointer();
-        }
+    public Pointer getContextNodePointer(){
+        return getCurrentNodePointer();
+    }
 
-        public JXPathContext getJXPathContext(){
-            return getRootContext().getJXPathContext();
-        }
+    public JXPathContext getJXPathContext(){
+        return getRootContext().getJXPathContext();
+    }
 
-        public int getPosition(){
-            return position;
-        }
-
-        public List getContextNodeList(){
-            int pos = position;
-            if (pos != 0){
-                reset();
-            }
-            List list = new ArrayList();
-            while(next()){
-                list.add(getCurrentNodePointer());
-            }
-            if (pos != 0){
-                setPosition(pos);
-            }
-            else {
-                reset();
-            }
-            return list;
-        }
-
-        public String toString(){
-            Pointer ptr = getContextNodePointer();
-            if (ptr == null){
-                return "Empty expression context";
-            }
-            else {
-                return "Expression context [" + getPosition() + "] " + ptr.asPath();
-            }
-        }
+    public int getPosition(){
+        return position;
     }
 
     /**
-     * Produces an ExpressionContext that when it needs to pass one to
-     * an extenstion function.
+     * Returns the list of all Pointers in this context
      */
-    public ExpressionContext getExpressionContext(){
-        if (expressionContext == null){
-            expressionContext = new EvalExpressionContext();
+    public List getContextNodeList() {
+        int pos = position;
+        if (pos != 0) {
+            reset();
         }
-        return expressionContext;
+        List list = new ArrayList();
+        while (next()) {
+            list.add(getCurrentNodePointer());
+        }
+        if (pos != 0) {
+            setPosition(pos);
+        }
+        else {
+            reset();
+        }
+        return list;
     }
 
+    public String toString() {
+        Pointer ptr = getContextNodePointer();
+        if (ptr == null) {
+            return "Empty expression context";
+        }
+        else {
+            return "Expression context [" + getPosition() + "] " + ptr.asPath();
+        }
+    }
     /**
      * Returns the root context of the path, which provides easy
      * access to variables and functions.
@@ -172,7 +160,7 @@ public abstract class EvalContext {
      * returns the first encountered Pointer that matches the current
      * step's criteria.  Otherwise, returns the current pointer.
      */
-    public Pointer getContextNodePointer(){
+    public Pointer getSingleNodePointer(){
         reset();
         while(nextSet()){
             if (next()){
@@ -180,20 +168,6 @@ public abstract class EvalContext {
             }
         }
         return null;
-    }
-
-    /**
-     * Iterates through the current context collecting
-     * pointers to all elements.
-     */
-    public List getContextNodeList(){
-        List list = new ArrayList();
-        while(nextSet()){
-            while(next()){
-                list.add(getCurrentNodePointer());
-            }
-        }
-        return list;
     }
 
     /**
@@ -206,16 +180,16 @@ public abstract class EvalContext {
      * Returns true if there is another sets of objects to interate over.
      * Resets the current position and node.
      */
-    public boolean nextSet(){
-        reset();     // Restart iteration within the set
+    public boolean nextSet() {
+        reset(); // Restart iteration within the set
 
         // Most of the time you have one set per parent node
         // First time this method is called, we should look for
         // the first parent set that contains at least one node.
-        if (!startedSetIteration){
+        if (!startedSetIteration) {
             startedSetIteration = true;
-            while (parentContext.nextSet()){
-                if (parentContext.next()){
+            while (parentContext.nextSet()) {
+                if (parentContext.next()) {
                     return true;
                 }
             }
@@ -224,20 +198,19 @@ public abstract class EvalContext {
 
         // In subsequent calls, we see if the parent context
         // has any nodes left in the current set
-        if (parentContext.next()){
+        if (parentContext.next()) {
             return true;
         }
 
         // If not, we look for the next set that contains
         // at least one node
-        while (parentContext.nextSet()){
-            if (parentContext.next()){
+        while (parentContext.nextSet()) {
+            if (parentContext.next()) {
                 return true;
             }
         }
         return false;
     }
-
     /**
      * Returns true if there is another object in the current set.
      * Switches the current position and node to the next object.
@@ -533,10 +506,10 @@ public abstract class EvalContext {
         }
 
         if (l instanceof EvalContext){
-            l = ((EvalContext)l).getContextNodePointer();
+            l = ((EvalContext)l).getSingleNodePointer();
         }
         if (r instanceof EvalContext){
-            r = ((EvalContext)r).getContextNodePointer();
+            r = ((EvalContext)r).getSingleNodePointer();
         }
 
         if (l instanceof Pointer && r instanceof Pointer){
@@ -629,7 +602,7 @@ public abstract class EvalContext {
         }
         else if (object instanceof EvalContext){
             EvalContext ctx = (EvalContext)object;
-            Pointer ptr = ctx.getContextNodePointer();
+            Pointer ptr = ctx.getSingleNodePointer();
             if (ptr != null){
                 return stringValue(ptr);
             }
@@ -933,7 +906,7 @@ public abstract class EvalContext {
     private int indexFromPredicate(Expression predicate){
         Object value = eval(predicate, true);
         if (value instanceof EvalContext){
-            value = ((EvalContext)value).getContextNodePointer();
+            value = ((EvalContext)value).getSingleNodePointer();
         }
         if (value instanceof NodePointer){
             value = ((NodePointer)value).getCanonicalValue();
@@ -985,7 +958,7 @@ public abstract class EvalContext {
                 path.getEvaluationHint(ExpressionPath.BASIC_PREDICATES_HINT).equals(Boolean.TRUE) &&
                 !(context instanceof UnionContext)){
             EvalContext ctx = context;
-            NodePointer ptr = (NodePointer)ctx.getContextNodePointer();
+            NodePointer ptr = (NodePointer)ctx.getSingleNodePointer();
             if (ptr != null &&
                     (ptr.getIndex() == NodePointer.WHOLE_COLLECTION ||
                      predicates == null || predicates.length == 0)){
@@ -1012,7 +985,7 @@ public abstract class EvalContext {
         if (firstMatch && steps.length != 0){
             boolean basic = path.getEvaluationHint(Path.BASIC_PATH_HINT).equals(Boolean.TRUE);
             if (basic){
-                NodePointer ptr = (NodePointer)context.getContextNodePointer();
+                NodePointer ptr = (NodePointer)context.getSingleNodePointer();
                 return interpretBasicPath(ptr, steps);
             }
         }
@@ -1028,7 +1001,7 @@ public abstract class EvalContext {
         }
 
         if (firstMatch){
-            Pointer ptr = context.getContextNodePointer();
+            Pointer ptr = context.getSingleNodePointer();
 //            System.err.println("GETTING CTX POINTER: " + context + " " + ptr);
             return ptr;
         }
@@ -1082,9 +1055,6 @@ public abstract class EvalContext {
             parameters = new Object[arguments.length];
             for (int i = 0; i < arguments.length; i++){
                 Object param = eval(arguments[i], false);
-                if (param instanceof EvalContext){
-                    param = ((EvalContext)param).getExpressionContext();
-                }
                 parameters[i] = param;
             }
         }
@@ -1094,7 +1064,7 @@ public abstract class EvalContext {
                  Arrays.asList(parameters));
         }
 
-        return function.invoke(getExpressionContext(), parameters);
+        return function.invoke(this, parameters);
     }
 
     /**
@@ -1195,7 +1165,7 @@ public abstract class EvalContext {
     protected Object functionLang(CoreFunction function){
         assertArgCount(function, 1);
         String lang = stringValue(eval(function.getArg1()));
-        NodePointer pointer = (NodePointer)getContextNodePointer();
+        NodePointer pointer = (NodePointer)getSingleNodePointer();
         if (pointer == null){
             return Boolean.FALSE;
         }

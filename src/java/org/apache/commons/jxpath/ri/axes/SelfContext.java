@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/SelfContext.java,v 1.4 2002/04/21 21:52:32 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/21 21:52:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/SelfContext.java,v 1.5 2002/04/24 03:32:48 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/24 03:32:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import java.util.*;
  * EvalContext that returns the current node from the parent context if the test succeeds.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/21 21:52:32 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/24 03:32:48 $
  */
 public class SelfContext extends EvalContext {
     private NodeTest nodeTest;
@@ -87,12 +87,8 @@ public class SelfContext extends EvalContext {
         this.nodeTest = nodeTest;
     }
 
-    public ExpressionContext getExpressionContext(){
-        return parentContext.getExpressionContext();
-    }
-
-    public Pointer getContextNodePointer(){
-        return parentContext.getContextNodePointer();
+    public Pointer getSingleNodePointer(){
+        return parentContext.getSingleNodePointer();
     }
 
     public NodePointer getCurrentNodePointer(){

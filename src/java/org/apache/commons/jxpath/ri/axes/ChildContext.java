@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.5 2002/04/21 21:52:32 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/21 21:52:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.6 2002/04/24 03:32:48 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/04/24 03:32:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import java.beans.*;
  * "preceding-sibling::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/21 21:52:32 $
+ * @version $Revision: 1.6 $ $Date: 2002/04/24 03:32:48 $
  */
 public class ChildContext extends EvalContext {
     private NodeTest nodeTest;
@@ -112,7 +112,7 @@ public class ChildContext extends EvalContext {
      * of the collection.  For example, "books" will return the collection
      * of books rather than the first book from that collection.
      */
-    public Pointer getContextNodePointer(){
+    public Pointer getSingleNodePointer(){
         if (position == 0){
             while(nextSet()){
                 prepare();

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.9 2002/04/21 21:52:32 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/04/21 21:52:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.10 2002/04/24 03:32:48 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/04/24 03:32:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -86,7 +86,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/04/21 21:52:32 $
+ * @version $Revision: 1.10 $ $Date: 2002/04/24 03:32:48 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -117,13 +117,14 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
     }
 
-    private static void createNodeFactoryArray(){
-        if (nodeFactoryArray == null){
-            nodeFactoryArray = (NodePointerFactory[])nodeFactories.toArray(new NodePointerFactory[0]);
-            Arrays.sort(nodeFactoryArray, new Comparator(){
-                public int compare(Object a, Object b){
-                    int orderA = ((NodePointerFactory)a).getOrder();
-                    int orderB = ((NodePointerFactory)b).getOrder();
+    private static void createNodeFactoryArray() {
+        if (nodeFactoryArray == null) {
+            nodeFactoryArray =
+                (NodePointerFactory[]) nodeFactories.toArray(new NodePointerFactory[0]);
+            Arrays.sort(nodeFactoryArray, new Comparator() {
+                public int compare(Object a, Object b) {
+                    int orderA = ((NodePointerFactory) a).getOrder();
+                    int orderB = ((NodePointerFactory) b).getOrder();
                     return orderA - orderB;
                 }
             });
@@ -200,7 +201,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
 
         if (result instanceof EvalContext){
             EvalContext ctx = (EvalContext)result;
-            result = ctx.getContextNodePointer();
+            result = ctx.getSingleNodePointer();
         }
         if (result instanceof NodePointer){
             result = ((NodePointer)result).getCanonicalValue();
@@ -257,7 +258,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
 //        System.err.println("XPATH: " + xpath);
         Object result = eval(xpath, true);
         if (result instanceof EvalContext){
-            result = ((EvalContext)result).getContextNodePointer();
+            result = ((EvalContext)result).getSingleNodePointer();
         }
         if (result instanceof Pointer){
             return (Pointer)result;
@@ -303,7 +304,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
         else if (result instanceof EvalContext){
             EvalContext ctx = (EvalContext)result;
-            pointer = ctx.getContextNodePointer();
+            pointer = ctx.getSingleNodePointer();
         }
         else {
             // This should never happen
