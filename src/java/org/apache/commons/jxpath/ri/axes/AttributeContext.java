@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
- * $Revision: 1.2 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AttributeContext.java,v 1.1 2001/09/03 01:22:30 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2001/09/03 01:22:30 $
  *
  * ====================================================================
@@ -61,88 +61,56 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.Compiler;
+import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.ri.pointers.*;
-import org.apache.commons.jxpath.ri.EvalContext;
 
-import java.lang.reflect.*;
 import java.util.*;
-import java.beans.*;
 
 /**
- * EvalContext that can walk the "child::", "following-sibling::" and
- * "preceding-sibling::" axes.
+ * EvalContext that walks the "attribute::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:30 $
  */
-public class ChildContext extends EvalContext {
+public class AttributeContext extends EvalContext {
+    private QName nameTest;
+    private boolean setStarted = false;
     private boolean started = false;
-    private QName property;
-    private boolean startFromParentLocation;
-    private boolean reverse;
-    private NodeIterator iterator;
-    private boolean firstIteration = true;
-    private int parentCount;
-    private NodePointer singleParentPointer;
+    private DOMAttributeIterator iterator;
+    private NodePointer currentNodePointer;
 
-    public ChildContext(EvalContext parentContext, QName property, boolean startFromParentLocation, boolean reverse){
+    /**
+     * @param parentContext represents the previous step on the path
+     * @param nameTest is the name of the attribute we are looking for
+     */
+    public AttributeContext(EvalContext parentContext, QName nameTest){
         super(parentContext);
-        this.property = property;
-        this.startFromParentLocation = startFromParentLocation;
-        this.reverse = reverse;
+        if (nameTest != null && !nameTest.getName().equals("*")){
+            this.nameTest = nameTest;
+        }
+        reset();
     }
 
     public NodePointer getCurrentNodePointer(){
-        return iterator.getNodePointer();
-    }
-
-    /**
-     * This method is called on the last context on the path when only
-     * one value is needed.  Note that this will return the whole property,
-     * even if it is a collection. It will not extract the first element
-     * of the collection.  For example, "books" will return the collection
-     * of books rather than the first book from that collection.
-     */
-    public Pointer getContextNodePointer(){
-        Pointer ptr = super.getContextNodePointer();
-        if (parentCount != 1){
-            return ptr;
-        }
-        else {
-            if (startFromParentLocation){
-                // TBD: check type
-                iterator = singleParentPointer.siblingIterator(property, reverse);
-            }
-            else {
-                iterator = singleParentPointer.childIterator(property, reverse);
-            }
-            return iterator.getNodePointer();
-        }
-    }
-
-    public boolean next(){
-        if (iterator == null){
-            prepare();
-        }
-        return iterator.setPosition(iterator.getPosition() + 1);
+        return currentNodePointer;
     }
 
     public boolean setPosition(int position){
-        if (iterator == null){
-            prepare();
+        if (position < this.position){
+            reset();
         }
-        return iterator.setPosition(position);
-    }
 
-    public int getCurrentPosition(){
-        return iterator.getPosition();
+        while (this.position < position){
+            if (!next()){
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean nextSet(){
-        iterator = null;
+        reset();
 
         // First time this method is called, we should look for
         // the first parent set that contains at least one node.
@@ -150,8 +118,6 @@ public class ChildContext extends EvalContext {
             started = true;
             while (parentContext.nextSet()){
                 if (parentContext.next()){
-                    parentCount++;
-                    singleParentPointer = parentContext.getCurrentNodePointer();
                     return true;
                 }
             }
@@ -161,8 +127,6 @@ public class ChildContext extends EvalContext {
         // In subsequent calls, we see if the parent context
         // has any nodes left in the current set
         if (parentContext.next()){
-                    parentCount++;
-                    singleParentPointer = parentContext.getCurrentNodePointer();
             return true;
         }
 
@@ -170,25 +134,40 @@ public class ChildContext extends EvalContext {
         // at least one node
         while (parentContext.nextSet()){
             if (parentContext.next()){
-                    parentCount++;
-                    singleParentPointer = parentContext.getCurrentNodePointer();
                 return true;
             }
         }
         return false;
     }
 
+    public boolean next(){
+        if (!setStarted){
+            setStarted = true;
+            if (nameTest != null){
+                currentNodePointer = parentContext.getCurrentNodePointer().attributePointer(nameTest);
+                return currentNodePointer != null;
+            }
+            else {
+                iterator = new DOMAttributeIterator(parentContext.getCurrentNodePointer());
+            }
+        }
+
+        if (iterator == null){
+            return false;
+        }
+        if (!iterator.setPosition(iterator.getPosition() + 1)){
+            return false;
+        }
+        currentNodePointer = iterator.getNodePointer();
+        return true;
+    }
+
     /**
-     * Allocates a PropertyIterator.
+     * Back to position=0
      */
-    private void prepare(){
-        NodePointer parent = parentContext.getCurrentNodePointer();
-        if (startFromParentLocation){
-            // TBD: check type
-            iterator = parent.siblingIterator(property, reverse);
-        }
-        else {
-            iterator = parent.childIterator(property, reverse);
-        }
+    protected void reset(){
+        super.reset();
+        setStarted = false;
+        iterator = null;
     }
 }

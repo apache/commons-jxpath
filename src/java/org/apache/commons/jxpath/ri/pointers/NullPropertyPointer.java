@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NullPropertyPointer.java,v 1.1 2001/08/23 00:47:00 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NullPropertyPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import java.beans.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:00 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
  */
 public class NullPropertyPointer extends PropertyPointer {
 
@@ -90,7 +90,7 @@ public class NullPropertyPointer extends PropertyPointer {
         return 0;
     }
 
-    public Object getPropertyValue(){
+    public Object getBaseValue(){
         return null;
     }
 
@@ -119,13 +119,9 @@ public class NullPropertyPointer extends PropertyPointer {
         return new String[0];
     }
 
-    public PropertyPointer copy(){
+    public Object clone(){
         NullPropertyPointer newHolder = new NullPropertyPointer(getParent());
         newHolder.propertyName = propertyName;
         return newHolder;
-    }
-
-    public Object clone(){
-        return copy();
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,6 +69,7 @@ import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Pointer;
 import java.util.*;
+import org.w3c.dom.*;
 
 /**
  * An XPath evaluation context.
@@ -78,7 +79,7 @@ import java.util.*;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
  */
 public abstract class EvalContext implements ExpressionContext {
     protected EvalContext parentContext;
@@ -543,7 +544,7 @@ public abstract class EvalContext implements ExpressionContext {
     /**
      * Converts the supplied object to String
      */
-    protected String stringValue(Object object){
+    public static String stringValue(Object object){
         if (object instanceof String){
             return (String)object;
         }
@@ -555,6 +556,20 @@ public abstract class EvalContext implements ExpressionContext {
         }
         else if (object == null){
             return "";
+        }
+        else if (object instanceof Node){
+            NodeList list = ((Node)object).getChildNodes();
+            StringBuffer buf = new StringBuffer(16);
+            for(int i = 0; i < list.getLength();i++) {
+                Node child = list.item(i);
+                if (child.getNodeType() == Node.TEXT_NODE){
+                    buf.append(child.getNodeValue());
+                }
+                else {
+                    buf.append(stringValue(child));
+                }
+            }
+            return buf.toString().trim();
         }
         else if (object instanceof NodePointer){
             return stringValue(((NodePointer)object).getValue());
@@ -590,6 +605,9 @@ public abstract class EvalContext implements ExpressionContext {
             }
             return value;
         }
+        else if (object instanceof Node){
+            return number(stringValue(object));
+        }
         else if (object instanceof EvalContext){
             return number(stringValue(object));
         }
@@ -602,7 +620,7 @@ public abstract class EvalContext implements ExpressionContext {
     /**
      * Converts the supplied object to double
      */
-    protected double doubleValue(Object object){
+    public static double doubleValue(Object object){
         if (object instanceof Number){
             return ((Number)object).doubleValue();
         }
@@ -623,6 +641,9 @@ public abstract class EvalContext implements ExpressionContext {
             }
             return value;
         }
+        else if (object instanceof Node){
+            return doubleValue(stringValue(object));
+        }
         else if (object instanceof NodePointer){
             return doubleValue(((NodePointer)object).getValue());
         }
@@ -635,7 +656,7 @@ public abstract class EvalContext implements ExpressionContext {
     /**
      * Converts the supplied object to boolean
      */
-    protected boolean booleanValue(Object object){
+    public static boolean booleanValue(Object object){
         if (object instanceof Number){
             double value = ((Number)object).doubleValue();
             return value != 0 && value != -0 && !Double.isNaN(value);
@@ -649,6 +670,9 @@ public abstract class EvalContext implements ExpressionContext {
         }
         else if (object instanceof String){
             return ((String)object).length() != 0;
+        }
+        else if (object instanceof Node){
+            return stringValue(object).length() != 0;
         }
         else if (object instanceof NodePointer){
             return booleanValue(((NodePointer)object).getValue());
@@ -673,8 +697,7 @@ public abstract class EvalContext implements ExpressionContext {
         if (firstMatch){
             boolean basic = path.getEvaluationHint(LocationPath.BASIC_PATH_HINT) == Boolean.TRUE;
             if (basic){
-//                System.err.println("EVALUATING BASIC PATH: " + path);
-                Object result = tryBasicPath(rootContext, steps);
+                Object result = tryBasicPath(new InitialContext(rootContext), steps);
                 if (result != FAILURE){
                     return result;
                 }
@@ -686,8 +709,20 @@ public abstract class EvalContext implements ExpressionContext {
 
 
     private static final Object FAILURE = new Object();
+
+    /**
+     * Attempts to evaluate a simple path without traversing contexts -
+     * straight from a NodePointer to a NodePointer. This only works
+     * in some cases though. Specifically, it works with JavaBeans
+     * and objects with Dynamic Properties, but does not work with
+     * DOM objects.
+     */
     private Object tryBasicPath(EvalContext context, Step steps[]){
-        NodePointer pointer = (NodePointer)((NodePointer)context.getContextNodePointer()).clone();
+        NodePointer ptr = (NodePointer)context.getContextNodePointer();
+        if (ptr == null || !(ptr instanceof PropertyOwnerPointer)){
+            return FAILURE;
+        }
+        PropertyOwnerPointer pointer = (PropertyOwnerPointer)ptr.clone();
         for (int i = 0; i < steps.length; i++){
             String propertyName = ((NodeNameTest)steps[i]).getNodeName().getName();
             pointer = pointer.getPropertyPointer();
@@ -730,7 +765,6 @@ public abstract class EvalContext implements ExpressionContext {
             else {
                 return FAILURE;
             }
-//            pointer = ptr;
         }
         return pointer;
     }
@@ -797,7 +831,7 @@ public abstract class EvalContext implements ExpressionContext {
                 case Compiler.AXIS_ANCESTOR_OR_SELF:
                     return new AncestorContext(context, true, name);
                 case Compiler.AXIS_ATTRIBUTE:
-                    break;
+                    return new AttributeContext(context, name);
                 case Compiler.AXIS_CHILD:
                     return new ChildContext(context, name, false, false);
                 case Compiler.AXIS_DESCENDANT:
@@ -827,7 +861,7 @@ public abstract class EvalContext implements ExpressionContext {
                 case Compiler.AXIS_ANCESTOR_OR_SELF:
                     return new AncestorContext(context, true, null);
                 case Compiler.AXIS_ATTRIBUTE:
-                    break;
+                    return new AttributeContext(context, null);
                 case Compiler.AXIS_CHILD:
                     return new ChildContext(context, null, false, false);
                 case Compiler.AXIS_DESCENDANT:

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMNodeIterator.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,124 +59,138 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.axes;
+package org.apache.commons.jxpath.ri.pointers;
 
+import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.pointers.*;
-import org.apache.commons.jxpath.ri.EvalContext;
+
+import java.lang.reflect.*;
 import java.util.*;
+import java.beans.*;
+import org.w3c.dom.*;
 
 /**
- * An EvalContext that walks the "descendant::" and "descendant-or-self::"
- * axes.
+ * An iterator of children of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
  */
-public class DescendantContext extends EvalContext {
-    private QName nameTest;
-    private boolean setStarted = false;
-    private boolean started = false;
-    private Stack stack;
-    private NodePointer currentNodePointer;
-    private boolean includeSelf;
+public class DOMNodeIterator implements NodeIterator {
+    private NodePointer parent;
+    private QName name;
+    private Node node;
+    private Node child = null;
+    private boolean children;
+    private boolean reverse;
+    private int position = 0;
 
-    public DescendantContext(EvalContext parentContext, boolean includeSelf, QName nameTest){
-        super(parentContext);
-        this.includeSelf = includeSelf;
-        if (nameTest != null && !nameTest.getName().equals("*")){
-            this.nameTest = nameTest;
-        }
-        reset();
+    public DOMNodeIterator(NodePointer parent, boolean children, QName name, boolean reverse){
+        this.parent = parent;
+        this.children = children;
+        this.node = (Node)parent.getValue();
+        this.name = name;
+        this.reverse = reverse;
     }
 
-    public NodePointer getCurrentNodePointer(){
-        return currentNodePointer;
+    public NodePointer getNodePointer(){
+        if (child == null){
+            if (!setPosition(1)){
+                return null;
+            }
+            position = 0;
+        }
+
+        if (children){
+            return new DOMNodePointer(parent, child);
+        }
+        else {
+            return new DOMNodePointer(parent.getParent(), child);
+        }
+    }
+
+    public int getPosition(){
+        return position;
     }
 
     public boolean setPosition(int position){
-        if (position < this.position){
-            reset();
-        }
-
         while (this.position < position){
             if (!next()){
                 return false;
             }
         }
+        while (this.position > position){
+            if (!previous()){
+                return false;
+            }
+        }
+//        System.err.println(getNodePointer().asPath() + " SET POSITION: " + position);
         return true;
     }
 
-    public boolean nextSet(){
-        reset();
-        // First time this method is called, we should look for
-        // the first parent set that contains at least one node.
-        if (!started){
-            started = true;
-            while (parentContext.nextSet()){
-                if (parentContext.next()){
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        // In subsequent calls, we see if the parent context
-        // has any nodes left in the current set
-        if (parentContext.next()){
-            return true;
-        }
-
-        // If not, we look for the next set that contains
-        // at least one node
-        while (parentContext.nextSet()){
-            if (parentContext.next()){
-                return true;
+    private boolean previous(){
+        position--;
+        if (!reverse){
+            child = child.getPreviousSibling();
+            while (child != null && !testChild()){
+                child = child.getPreviousSibling();
             }
         }
-        return false;
+        else {
+            child = child.getNextSibling();
+            while (child != null && !testChild()){
+                child = child.getNextSibling();
+            }
+        }
+        return child != null;
     }
 
-    public boolean next(){
-        if (!setStarted){
-            setStarted = true;
-            currentNodePointer = parentContext.getCurrentNodePointer();
-            if (!currentNodePointer.isLeaf()){
-                stack.push(currentNodePointer.childIterator(null, false));
-            }
-            if (includeSelf){
-                if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
-                    position++;
-                    return true;
+    private boolean next(){
+        position++;
+        if (!reverse){
+            if (position == 1){
+                if (children){
+                    child = node.getFirstChild();
                 }
-            }
-        }
-
-        while (!stack.isEmpty()){
-            NodeIterator it = (NodeIterator)stack.peek();
-            if (it.setPosition(it.getPosition() + 1)){
-                currentNodePointer = it.getNodePointer();
-                if (!currentNodePointer.isLeaf()){
-                    stack.push(currentNodePointer.childIterator(null, false));
-                }
-                if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
-                    position++;
-                    return true;
+                else {
+                    child = node.getNextSibling();
                 }
             }
             else {
-                // We get here only if the name test failed and the iterator ended
-                stack.pop();
+                child = child.getNextSibling();
+            }
+            while (child != null && !testChild()){
+                child = child.getNextSibling();
             }
         }
-        return false;
+        else {
+            if (position == 1){
+                if (children){
+                    child = node.getLastChild();
+                }
+                else {
+                    child = node.getPreviousSibling();
+                }
+            }
+            else {
+                child = child.getPreviousSibling();
+            }
+            while (child != null && !testChild()){
+                child = child.getPreviousSibling();
+            }
+        }
+        return child != null;
     }
 
-    protected void reset(){
-        super.reset();
-        stack = new Stack();
-        setStarted = false;
+    private boolean testChild(){
+        if (name == null){
+            return true;
+        }
+        String ns = child.getNamespaceURI();
+        String nodeName = child.getNodeName();
+        if (nodeName != null && nodeName.equals(name.getName())){
+            return true;
+        }
+        return false;
     }
 }

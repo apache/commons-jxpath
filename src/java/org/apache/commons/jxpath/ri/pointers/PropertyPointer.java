@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyPointer.java,v 1.1 2001/08/23 00:47:00 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,13 +68,14 @@ import org.apache.commons.jxpath.ri.compiler.*;
 import java.lang.reflect.*;
 import java.util.*;
 import java.beans.*;
+import org.w3c.dom.Node;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:00 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
  */
-public abstract class PropertyPointer extends NodePointer {
-    protected int propertyIndex = UNSPECIFIED;
+public abstract class PropertyPointer extends PropertyOwnerPointer {
+    protected int propertyIndex = UNSPECIFIED_PROPERTY;
     protected Object bean;
 
     /**
@@ -113,10 +114,21 @@ public abstract class PropertyPointer extends NodePointer {
 
     public abstract String[] getPropertyNames();
 
-    public abstract PropertyPointer copy();
+    /**
+     * Returns a NodePointer that can be used to access the currently
+     * selected property value.
+     */
+    public NodePointer childNodePointer(){
+        Object bean = getValue();
 
-    public Object clone(){
-        return copy();
+        if (bean instanceof Node){
+            return new DOMNodePointer(this, (Node)bean);
+        }
+        else if (bean instanceof Container){
+            return new ContainerPointer(this, (Container)bean);
+        }
+
+        return (NodePointer)clone();
     }
 
     public int hashCode(){
@@ -149,19 +161,6 @@ public abstract class PropertyPointer extends NodePointer {
             buffer.append('[').append(index).append(']');
         }
         buffer.append(" = ").append(getValue());
-        return buffer.toString();
-    }
-
-    public String asPath(){
-        StringBuffer buffer = new StringBuffer();
-        if (getParent() != null){
-            buffer.append(getParent().asPath());
-            buffer.append('/');
-        }
-        buffer.append(getPropertyName());
-        if (index != WHOLE_COLLECTION && isCollection()){
-            buffer.append('[').append(index + 1).append(']');
-        }
         return buffer.toString();
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPropertyPointer.java,v 1.1 2001/08/23 00:47:00 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPropertyPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import java.beans.*;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:00 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -143,7 +143,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * value, call setValue().
      */
     public void setPropertyName(String propertyName){
-        setPropertyIndex(UNSPECIFIED);
+        setPropertyIndex(UNSPECIFIED_PROPERTY);
         this.name = propertyName;
         requiredPropertyName = propertyName;
         if (names != null && Arrays.binarySearch(names, propertyName) < 0){
@@ -156,7 +156,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * properties sorted alphabetically.
      */
     public int getPropertyIndex(){
-        if (propertyIndex == UNSPECIFIED){
+        if (propertyIndex == UNSPECIFIED_PROPERTY){
             String names[] = getPropertyNames();
             for (int i = 0; i < names.length; i++){
                 if (names[i].equals(name)){
@@ -176,7 +176,6 @@ public class DynamicPropertyPointer extends PropertyPointer {
         if (propertyIndex != index){
             super.setPropertyIndex(index);
             name = null;
-            value = UNKNOWN;
         }
     }
 
@@ -192,7 +191,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * Returns the value of the property, not an element of the collection
      * represented by the property, if any.
      */
-    public Object getPropertyValue(){
+    public Object getBaseValue(){
         return handler.getProperty(getBean(), getPropertyName());
     }
 
@@ -203,13 +202,12 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * and the value will be the property itself.
      */
     public Object getValue(){
-        if (value == UNKNOWN){
-            if (index == WHOLE_COLLECTION){
-                value = handler.getProperty(getBean(), getPropertyName());
-            }
-            else {
-                value = PropertyAccessHelper.getValue(handler.getProperty(getBean(), getPropertyName()), index);
-            }
+        Object value;
+        if (index == WHOLE_COLLECTION){
+            value = handler.getProperty(getBean(), getPropertyName());
+        }
+        else {
+            value = PropertyAccessHelper.getValue(handler.getProperty(getBean(), getPropertyName()), index);
         }
         return value;
     }
@@ -220,7 +218,6 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * represented by the property.
      */
     public void setValue(Object value){
-        this.value = value;
         if (index == WHOLE_COLLECTION){
             handler.setProperty(getBean(), getPropertyName(), value);
         }
@@ -229,19 +226,14 @@ public class DynamicPropertyPointer extends PropertyPointer {
         }
     }
 
-    public PropertyPointer copy(){
+    public Object clone(){
         DynamicPropertyPointer newHolder = new DynamicPropertyPointer(getParent(), handler);
         newHolder.propertyIndex = propertyIndex;
         newHolder.name = name;
         newHolder.names = names;
         newHolder.bean = bean;
-        newHolder.value = value;
         newHolder.index = index;
         return newHolder;
-    }
-
-    public Object clone(){
-        return copy();
     }
 
     public String asPath(){

@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.2 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMAttributePointer.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
@@ -68,69 +68,75 @@ import org.apache.commons.jxpath.ri.compiler.*;
 import java.lang.reflect.*;
 import java.util.*;
 import java.beans.*;
+import org.w3c.dom.*;
 
 /**
- * A Pointer that points to an object with Dynamic Properties. It is used
- * for the first element of a path; following elements will by of type PropertyPointer.
+ * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
  */
-public class DynamicPointer extends PropertyOwnerPointer {
-    private QName name;
-    private Object bean;
-    private DynamicPropertyHandler handler;
-    private String[] names;
+public class DOMAttributePointer extends NodePointer {
+    private Attr attr;
 
-    public DynamicPointer(QName name, Object bean, DynamicPropertyHandler handler){
-        this(null, name, bean, handler);
-    }
-
-    public DynamicPointer(NodePointer parent, QName name, Object bean, DynamicPropertyHandler handler){
+    public DOMAttributePointer(NodePointer parent, Attr attr){
         super(parent);
-        this.name = name;
-        this.bean = bean;
-        this.handler = handler;
+        this.attr = attr;
     }
 
     public QName getName(){
-        return name;
+        return new QName(attr.getNamespaceURI(), attr.getNodeName());
     }
 
-    /**
-     * Returns the DP object iself.
-     */
+    public NodeIterator childIterator(QName name, boolean reverse){
+        return null;
+    }
+
+    public NodeIterator siblingIterator(QName name, boolean reverse){
+        return null;
+    }
+
     public Object getBaseValue(){
-        return bean;
+        return attr;
+    }
+
+    public Object getValue(){
+        String value = attr.getValue();
+        if (value == null){
+            return null;
+        }
+        if (value.equals("") && !attr.getSpecified()){
+            return null;
+        }
+        return value;
+    }
+
+    public boolean isLeaf(){
+        return true;
     }
 
     /**
      * Throws UnsupportedOperationException.
      */
     public void setValue(Object value){
-        throw new UnsupportedOperationException("Cannot replace the root object");
+        throw new UnsupportedOperationException("Cannot modify DOM trees");
     }
 
     /**
-     * If the bean is a collection, returns the length of that collection,
-     * otherwise returns 1.
-     */
-    public int getLength(){
-        return PropertyAccessHelper.getLength(getBaseValue());
-    }
-
-    /**
-     * Empty string
      */
     public String asPath(){
+        StringBuffer buffer = new StringBuffer();
         if (parent != null){
-            return super.asPath();
+            buffer.append(parent.asPath());
+            buffer.append('/');
         }
-        return "";
+        buffer.append('@');
+        buffer.append(getName().asString());
+        return buffer.toString();
     }
 
     public int hashCode(){
-        return System.identityHashCode(bean) + name.hashCode();
+        return System.identityHashCode(attr);
     }
 
     public boolean equals(Object object){
@@ -138,23 +144,20 @@ public class DynamicPointer extends PropertyOwnerPointer {
             return true;
         }
 
-        if (!(object instanceof DynamicPointer)){
+        if (!(object instanceof DOMAttributePointer)){
             return false;
         }
 
-        DynamicPointer other = (DynamicPointer)object;
-        return bean == other.bean && name.equals(other.name);
+        DOMAttributePointer other = (DOMAttributePointer)object;
+        return attr == other.attr;
     }
 
     public String toString(){
-        return bean.getClass().getName() + "@" + System.identityHashCode(bean) +
-            "(" + name + ")";
+        return attr.toString();
     }
 
     public Object clone(){
-        DynamicPointer pointer = new DynamicPointer(name, bean, handler);
-        pointer.index = index;
-        pointer.names = names;
+        DOMAttributePointer pointer = new DOMAttributePointer(parent, attr);
         return pointer;
     }
 }

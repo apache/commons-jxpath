@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanPointer.java,v 1.1 2001/08/23 00:47:00 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,20 +74,24 @@ import java.beans.*;
  * a path, following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:00 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
  */
-public class BeanPointer extends NodePointer {
+public class BeanPointer extends PropertyOwnerPointer {
     private QName name;
     private Object bean;
     private JXPathBeanInfo beanInfo;
     private PropertyDescriptor propertyDescriptors[];
     private String[] names;
 
+    public BeanPointer(QName name, Object bean, JXPathBeanInfo beanInfo){
+        this(null, name, bean, beanInfo);
+    }
+
     /**
      * @param name is the name given to the first node
      */
-    public BeanPointer(QName name, Object bean, JXPathBeanInfo beanInfo){
-        super(null);
+    public BeanPointer(NodePointer parent, QName name, Object bean, JXPathBeanInfo beanInfo){
+        super(parent);
         this.name = name;
         this.bean = bean;
         this.beanInfo = beanInfo;
@@ -100,7 +104,7 @@ public class BeanPointer extends NodePointer {
     /**
      * Returns the bean itself
      */
-    public Object getPropertyValue(){
+    public Object getBaseValue(){
         return bean;
     }
 
@@ -116,7 +120,7 @@ public class BeanPointer extends NodePointer {
      * otherwise returns 1.
      */
     public int getLength(){
-        return PropertyAccessHelper.getLength(getPropertyValue());
+        return PropertyAccessHelper.getLength(getBaseValue());
     }
 
     public int hashCode(){
@@ -141,6 +145,9 @@ public class BeanPointer extends NodePointer {
      * Empty string
      */
     public String asPath(){
+        if (parent != null){
+            return super.asPath();
+        }
         return "";
     }
 
@@ -152,7 +159,7 @@ public class BeanPointer extends NodePointer {
     public Object clone(){
         BeanPointer pointer = new BeanPointer(name, bean, beanInfo);
         pointer.index = index;
-        pointer.value = value;
+//        pointer.value = value;
         pointer.propertyDescriptors = propertyDescriptors;
         pointer.names = names;
         return pointer;

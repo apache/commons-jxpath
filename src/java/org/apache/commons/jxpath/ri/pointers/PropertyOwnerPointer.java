@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.2 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyOwnerPointer.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
@@ -68,93 +68,81 @@ import org.apache.commons.jxpath.ri.compiler.*;
 import java.lang.reflect.*;
 import java.util.*;
 import java.beans.*;
+import org.w3c.dom.*;
 
 /**
- * A Pointer that points to an object with Dynamic Properties. It is used
- * for the first element of a path; following elements will by of type PropertyPointer.
+ * A pointer describing a node that has properties, each of which could be
+ * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
  */
-public class DynamicPointer extends PropertyOwnerPointer {
-    private QName name;
-    private Object bean;
-    private DynamicPropertyHandler handler;
-    private String[] names;
+public abstract class PropertyOwnerPointer extends NodePointer {
 
-    public DynamicPointer(QName name, Object bean, DynamicPropertyHandler handler){
-        this(null, name, bean, handler);
+    public NodeIterator childIterator(QName name, boolean reverse){
+        String property;
+        if (name == null || name.getName().equals("*")){
+            property = null;
+        }
+        else {
+            property = name.getName();
+        }
+        // TBD: qname
+        return new PropertyIterator(this, true, property, reverse);
     }
 
-    public DynamicPointer(NodePointer parent, QName name, Object bean, DynamicPropertyHandler handler){
+    public NodeIterator siblingIterator(QName name, boolean reverse){
+        String property;
+        if (name == null || name.getName().equals("*")){
+            property = null;
+        }
+        else {
+            property = name.getName();
+        }
+        // TBD: qname
+        return new PropertyIterator(this, false, property, reverse);
+    }
+
+
+    public static int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
+
+    protected PropertyOwnerPointer(NodePointer parent){
         super(parent);
-        this.name = name;
-        this.bean = bean;
-        this.handler = handler;
     }
 
-    public QName getName(){
-        return name;
+    public boolean isCollection(){
+        Object value = getBaseValue();
+        return value != null && PropertyAccessHelper.isCollection(value);
     }
 
-    /**
-     * Returns the DP object iself.
-     */
-    public Object getBaseValue(){
-        return bean;
-    }
-
-    /**
-     * Throws UnsupportedOperationException.
-     */
-    public void setValue(Object value){
-        throw new UnsupportedOperationException("Cannot replace the root object");
-    }
-
-    /**
-     * If the bean is a collection, returns the length of that collection,
-     * otherwise returns 1.
-     */
-    public int getLength(){
-        return PropertyAccessHelper.getLength(getBaseValue());
-    }
-
-    /**
-     * Empty string
-     */
-    public String asPath(){
-        if (parent != null){
-            return super.asPath();
+    public Object getValue(){
+        Object value;
+        if (index == WHOLE_COLLECTION){
+            value = getBaseValue();
         }
-        return "";
+        else {
+            value = PropertyAccessHelper.getValue(getBaseValue(), index);
+        }
+        return value;
     }
 
-    public int hashCode(){
-        return System.identityHashCode(bean) + name.hashCode();
-    }
+    public abstract QName getName();
+    public abstract void setValue(Object value);
+    public abstract Object clone();
 
-    public boolean equals(Object object){
-        if (object == this){
-            return true;
+    public PropertyPointer getPropertyPointer(){
+        Object value = getValue();
+        if (value == null){
+            return new NullPropertyPointer(this);
         }
 
-        if (!(object instanceof DynamicPointer)){
-            return false;
+        JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(value.getClass());
+        if (bi.isDynamic()){
+            DynamicPropertyHandler handler = PropertyAccessHelper.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
+            return new DynamicPropertyPointer(this, handler);
         }
-
-        DynamicPointer other = (DynamicPointer)object;
-        return bean == other.bean && name.equals(other.name);
-    }
-
-    public String toString(){
-        return bean.getClass().getName() + "@" + System.identityHashCode(bean) +
-            "(" + name + ")";
-    }
-
-    public Object clone(){
-        DynamicPointer pointer = new DynamicPointer(name, bean, handler);
-        pointer.index = index;
-        pointer.names = names;
-        return pointer;
+        else {
+            return new BeanPropertyPointer(this, bi);
+        }
     }
 }

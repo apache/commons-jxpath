@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointer.java,v 1.1 2001/08/23 00:47:00 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,16 +68,28 @@ import org.apache.commons.jxpath.ri.compiler.*;
 import java.lang.reflect.*;
 import java.util.*;
 import java.beans.*;
+import org.w3c.dom.Node;
 
 /**
+ * Common superclass for Poitners of all kinds.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:00 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
  */
 public abstract class NodePointer implements Pointer, Cloneable {
+
+    public static int WHOLE_COLLECTION = Integer.MIN_VALUE;
+    protected int index = WHOLE_COLLECTION;
 
     public static NodePointer createNodePointer(QName name, Object bean){
         if (bean == null){
             return new NullPointer(name);
+        }
+        if (bean instanceof Node){
+            return new DOMNodePointer((Node)bean);
+        }
+        if (bean instanceof Container){
+            return new ContainerPointer((Container)bean);
         }
 
         JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
@@ -90,13 +102,58 @@ public abstract class NodePointer implements Pointer, Cloneable {
         }
     }
 
-    public static int WHOLE_COLLECTION = Integer.MIN_VALUE;
-    public static int UNSPECIFIED = Integer.MIN_VALUE;
-    protected static Object UNKNOWN = new Object();
+    public static NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
+        if (bean == null){
+            return new NullPointer(parent, name);
+        }
+        if (bean instanceof Node){
+            return new DOMNodePointer(parent, (Node)bean);
+        }
+        if (bean instanceof Container){
+            return new ContainerPointer(parent, (Container)bean);
+        }
+
+        JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
+        if (bi.isDynamic()){
+            DynamicPropertyHandler handler = PropertyAccessHelper.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
+            return new DynamicPointer(parent, name, bean, handler);
+        }
+        else {
+            return new BeanPointer(parent, name, bean, bi);
+        }
+    }
+
+    /**
+     * Returns a NodeIterator that iterates over all children or all children
+     * with the given name.
+     */
+    public abstract NodeIterator childIterator(QName name, boolean reverse);
+
+    /**
+     * Returns a NodeIterator that iterates over all siblings or all siblings
+     * with the given name starting with this pointer and excluding the value
+     * currently pointed at.
+     */
+    public abstract NodeIterator siblingIterator(QName name, boolean reverse);
+
+    /**
+     * Returns a NodeIterator that iterates over all attributes of the value
+     * currently pointed at.
+     * May return null if the object does not support the attributes.
+     */
+    public NodeIterator attributeIterator(){
+        return null;
+    }
+
+    /**
+     * Returns a NodePointer for the specified attribute. May return null
+     * if attributes are not supported or if there is no such attribute.
+     */
+    public NodePointer attributePointer(QName attribute){
+        return null;
+    }
 
     protected NodePointer parent;
-    protected int index = WHOLE_COLLECTION;
-    protected Object value = UNKNOWN;
 
     protected NodePointer(NodePointer parent){
         this.parent = parent;
@@ -106,67 +163,59 @@ public abstract class NodePointer implements Pointer, Cloneable {
         return parent;
     }
 
+    public boolean isRoot(){
+        return parent == null;
+    }
+
+    /**
+     * If true, this node does not have children
+     */
+    public boolean isLeaf(){
+        Object value = getValue();
+        return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
+    }
+
     public int getIndex(){
         return index;
     }
 
     public void setIndex(int index){
         this.index = index;
-        this.value = UNKNOWN;
-    }
-
-    public boolean isRoot(){
-        return parent == null;
-    }
-
-    public boolean isAtomic(){
-        Object value = getValue();
-        return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
-    }
-
-    public boolean isDynamic(){
-        Object value = getValue();
-        return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isDynamic();
     }
 
     public boolean isCollection(){
-        Object value = getPropertyValue();
+        Object value = getBaseValue();
         return value != null && PropertyAccessHelper.isCollection(value);
     }
 
-    public Object getValue(){
-        if (value == UNKNOWN){
-            if (index == WHOLE_COLLECTION){
-                value = getPropertyValue();
-            }
-            else {
-                value = PropertyAccessHelper.getValue(getPropertyValue(), index);
-            }
+    public int getLength(){
+        Object value = getBaseValue();
+        if (value == null){
+            return 1;
         }
-        return value;
+        return PropertyAccessHelper.getLength(value);
     }
 
     public abstract QName getName();
+    public abstract Object getBaseValue();
     public abstract void setValue(Object value);
-    public abstract String asPath();
     public abstract Object clone();
 
-    public PropertyPointer getPropertyPointer(){
-        Object value = getValue();
-        if (value == null){
-            return new NullPropertyPointer(this);
+    public String asPath(){
+        StringBuffer buffer = new StringBuffer();
+        if (getParent() != null){
+            buffer.append(getParent().asPath());
         }
-
-        JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(value.getClass());
-        if (bi.isDynamic()){
-            DynamicPropertyHandler handler = PropertyAccessHelper.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
-            return new DynamicPropertyPointer(this, handler);
+        QName name = getName();
+        if (name != null){
+            if (getParent() != null){
+                buffer.append('/');
+            }
+            buffer.append(name.asString());
         }
-        else {
-            return new BeanPropertyPointer(this, bi);
+        if (index != WHOLE_COLLECTION && isCollection()){
+            buffer.append('[').append(index + 1).append(']');
         }
+        return buffer.toString();
     }
-
-    public abstract Object getPropertyValue();
-    public abstract int getLength();
 }

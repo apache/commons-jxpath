@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/XMLDocumentContainer.java,v 1.1 2001/09/03 01:22:30 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2001/09/03 01:22:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,102 +59,74 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.pointers;
+package org.apache.commons.jxpath;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.compiler.*;
-
-import java.lang.reflect.*;
 import java.util.*;
-import java.beans.*;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.dom.DOMResult;
+import java.net.URL;
+import org.w3c.dom.*;
+import java.io.InputStream;
 
 /**
- * A Pointer that points to an object with Dynamic Properties. It is used
- * for the first element of a path; following elements will by of type PropertyPointer.
+ * An XML document container reads and parses XML only when it is
+ * accessed.  JXPath traverses Containers transparently -
+ * you use the same paths to access objects in containers as you
+ * do to access those objects directly.  You can create
+ * XMLDocumentContainers for various XML documents that may or
+ * may not be accessed by XPaths.  If they are, they will be automatically
+ * read, parsed and traversed. If they are not - they won't be
+ * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:30 $
  */
-public class DynamicPointer extends PropertyOwnerPointer {
-    private QName name;
-    private Object bean;
-    private DynamicPropertyHandler handler;
-    private String[] names;
+public class XMLDocumentContainer implements Container {
 
-    public DynamicPointer(QName name, Object bean, DynamicPropertyHandler handler){
-        this(null, name, bean, handler);
+    private Node document;
+    private URL xmlURL;
+    private Source source;
+
+    public XMLDocumentContainer(URL xmlURL){
+        this.xmlURL = xmlURL;
     }
 
-    public DynamicPointer(NodePointer parent, QName name, Object bean, DynamicPropertyHandler handler){
-        super(parent);
-        this.name = name;
-        this.bean = bean;
-        this.handler = handler;
+    public XMLDocumentContainer(Source source){
+        this.source = source;
     }
 
-    public QName getName(){
-        return name;
+    public Object getValue(){
+        if (document == null){
+            try {
+                InputStream stream = null;
+                try {
+                    if (xmlURL != null){
+                        stream = xmlURL.openStream();
+                        source = new StreamSource(stream);
+                    }
+                    DOMResult result = new DOMResult();
+                    Transformer trans = TransformerFactory.newInstance().newTransformer();
+                    trans.transform(source, result);
+                    document = (Document)result.getNode();
+                }
+                finally {
+                    if (stream != null){
+                        stream.close();
+                    }
+                }
+            }
+            catch (Exception ex){
+                throw new RuntimeException("Cannot read XML from: " +
+                    (xmlURL != null ? xmlURL.toString() : source.getSystemId()) + "\n" + ex);
+            }
+        }
+        return document;
     }
 
-    /**
-     * Returns the DP object iself.
-     */
-    public Object getBaseValue(){
-        return bean;
-    }
-
-    /**
-     * Throws UnsupportedOperationException.
-     */
     public void setValue(Object value){
-        throw new UnsupportedOperationException("Cannot replace the root object");
-    }
-
-    /**
-     * If the bean is a collection, returns the length of that collection,
-     * otherwise returns 1.
-     */
-    public int getLength(){
-        return PropertyAccessHelper.getLength(getBaseValue());
-    }
-
-    /**
-     * Empty string
-     */
-    public String asPath(){
-        if (parent != null){
-            return super.asPath();
-        }
-        return "";
-    }
-
-    public int hashCode(){
-        return System.identityHashCode(bean) + name.hashCode();
-    }
-
-    public boolean equals(Object object){
-        if (object == this){
-            return true;
-        }
-
-        if (!(object instanceof DynamicPointer)){
-            return false;
-        }
-
-        DynamicPointer other = (DynamicPointer)object;
-        return bean == other.bean && name.equals(other.name);
-    }
-
-    public String toString(){
-        return bean.getClass().getName() + "@" + System.identityHashCode(bean) +
-            "(" + name + ")";
-    }
-
-    public Object clone(){
-        DynamicPointer pointer = new DynamicPointer(name, bean, handler);
-        pointer.index = index;
-        pointer.names = names;
-        return pointer;
+        throw new UnsupportedOperationException();
     }
 }

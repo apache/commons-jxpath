@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.ri.EvalContext;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -95,8 +95,7 @@ public class PredicateContext extends EvalContext {
             return false;
         }
         while (parentContext.next()){
-            if (dynamicPropertyNameExpression != null){
-                dynamicPropertyPointer = parentContext.getCurrentNodePointer().getPropertyPointer();
+            if (setupDynamicPropertyPointer()){
                 Object pred = parentContext.eval(dynamicPropertyNameExpression);
                 if (pred instanceof NodePointer){
                     pred = ((NodePointer)pred).getValue();
@@ -123,6 +122,23 @@ public class PredicateContext extends EvalContext {
             }
         }
         return false;
+    }
+
+    /**
+     * Used for an optimized access to dynamic properties using the
+     * "map[@name = 'name']" syntax
+     */
+    private boolean setupDynamicPropertyPointer(){
+        if (dynamicPropertyNameExpression == null){
+            return false;
+        }
+
+        NodePointer parent = parentContext.getCurrentNodePointer();
+        if (!(parent instanceof PropertyOwnerPointer)){
+            return false;
+        }
+        dynamicPropertyPointer = ((PropertyOwnerPointer)parentContext.getCurrentNodePointer()).getPropertyPointer();
+        return true;
     }
 
     public NodePointer getCurrentNodePointer(){

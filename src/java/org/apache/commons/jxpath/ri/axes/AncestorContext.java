@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import java.util.*;
  * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
  */
 public class AncestorContext extends EvalContext {
     private QName nameTest;
@@ -147,7 +147,7 @@ public class AncestorContext extends EvalContext {
     public boolean nextIgnoreDuplicates(){
         if (!setStarted){
             setStarted = true;
-            currentNodePointer = (NodePointer)parentContext.getContextNodePointer();
+            currentNodePointer = parentContext.getCurrentNodePointer();
             if (includeSelf){
                 if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
                     return true;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.2 2001/08/23 03:38:00 craigmcc Exp $
- * $Revision: 1.2 $
- * $Date: 2001/08/23 03:38:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.3 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.w3c.dom.Node;
+import org.w3c.dom.*;
 import java.util.*;
 
 import org.apache.commons.jxpath.ri.*;
@@ -94,7 +94,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/08/23 03:38:00 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/03 01:22:31 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -182,21 +182,22 @@ public class JXPathTestCase extends TestCase
     }
 
     private void testIndividual(int relativePropertyIndex, int offset, boolean useStartLocation, boolean reverse, int expected){
-        NodePointer root = NodePointer.createNodePointer(new QName(null, "root"), bean);
-        PropertyIterator it;
+        PropertyOwnerPointer root = (PropertyOwnerPointer)NodePointer.createNodePointer(new QName(null, "root"), bean);
+        NodeIterator it;
 
         if (useStartLocation){
             PropertyPointer holder = root.getPropertyPointer();
             holder.setPropertyIndex(relativeProperty(holder, relativePropertyIndex));
             holder.setIndex(offset);
-            it = PropertyIterator.iteratorStartingAt(holder, "integers", reverse);
+            it = holder.siblingIterator(new QName(null, "integers"), reverse);
         }
         else {
-            it = PropertyIterator.iterator(root, "integers", reverse);
+//            it = PropertyIterator.iterator(root, "integers", reverse);
+            it = root.childIterator(new QName(null, "integers"), reverse);
         }
 
         int size = 0;
-        while(it.next()){
+        while(it.setPosition(it.getPosition() + 1)){
             size++;
         }
         assertEquals("ITERATIONS: Individual, relativePropertyIndex=" + relativePropertyIndex +
@@ -220,21 +221,21 @@ public class JXPathTestCase extends TestCase
     }
 
     private void testMultiple(int propertyIndex, int offset, boolean useStartLocation, boolean reverse, int expected){
-        NodePointer root = NodePointer.createNodePointer(new QName(null, "root"), bean);
-        PropertyIterator it;
+        PropertyOwnerPointer root = (PropertyOwnerPointer)NodePointer.createNodePointer(new QName(null, "root"), bean);
+        NodeIterator it;
 
         if (useStartLocation){
             PropertyPointer holder = root.getPropertyPointer();
             holder.setPropertyIndex(propertyIndex);
             holder.setIndex(offset);
-            it = PropertyIterator.iteratorStartingAt(holder, null, reverse);
+            it = holder.siblingIterator(null, reverse);
         }
         else {
-            it = PropertyIterator.iterator(root, null, reverse);
+            it = root.childIterator(null, reverse);
         }
 
         int size = 0;
-        while(it.next()){
+        while(it.setPosition(it.getPosition() + 1)){
 //            System.err.println("LOC: " + it.getCurrentNodePointer());
             size++;
         }
@@ -494,7 +495,10 @@ public class JXPathTestCase extends TestCase
         lib.addFunctions(new PackageFunctions("", "call"));
         lib.addFunctions(new PackageFunctions("org.apache.commons.jxpath.", "jxpathtest"));
         ctx.setFunctions(lib);
+        testXPaths(ctx, xpath_tests, ignorePath);
+    }
 
+    private void testXPaths(JXPathContext ctx, XP xpath_tests[], boolean ignorePath){
         for  (int i=0; i < xpath_tests.length; i++) {
             try {
                 Object actual;
@@ -602,6 +606,7 @@ public class JXPathTestCase extends TestCase
         // Traversal
         // ancestor::
         test("int/ancestor::root = /", Boolean.TRUE),
+//        testEval("beans/name/ancestor-or-self::node()", new Double(5)),
         test("count(beans/name/ancestor-or-self::node())", new Double(5)),
         test("beans/name/ancestor-or-self::node()[3] = /", Boolean.TRUE),
 
@@ -635,6 +640,7 @@ public class JXPathTestCase extends TestCase
 
         // descendant-or-self::
         testEval("//name", list("Name 1", "Name 2", "Name 3", "Name 6", "Name 0", "Name 5", "Name 4")),
+        test("//Key1", "Value 1"),
         testEval("//self::node()[name = 'Name 0']/name", list("Name 0")),
         testEval("//self::node()[name(.) = concat('n', 'a', 'm', 'e')]",
                 list("Name 1", "Name 2", "Name 3", "Name 6", "Name 0", "Name 5", "Name 4")),
@@ -837,5 +843,56 @@ public class JXPathTestCase extends TestCase
         list.add(o7);
         return list;
     }
+
+    public void testDOM(){
+        System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
+                "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
+        try {
+            XMLDocumentContainer docCtr = new XMLDocumentContainer(getClass().getResource("Test.properties"));
+            Document doc = (Document)docCtr.getValue();
+            JXPathContext ctx = JXPathContextFactory.newInstance().newContext(null, doc);
+            ctx.getVariables().declareVariable("dom", doc);
+            ctx.getVariables().declareVariable("object", docCtr);
+            TestBeanWithDOM tbwdom = new TestBeanWithDOM();
+            tbwdom.setVendor(doc.getDocumentElement());
+            tbwdom.setObject(docCtr);
+            ctx.getVariables().declareVariable("test", tbwdom);
+            testXPaths(ctx, dom_tests, false);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            throw new RuntimeException("Test failed");
+        }
+    }
+
+    static final XP[] dom_tests = new XP[]{
+        // Numbers
+        test("vendor/location/address/street", "Some street"),
+        test("vendor/location[2]/address/street", "Other street"),
+        test("//street", "Some street"),
+        test("name(//street/..)", "address"),
+        test("number(vendor/location/employeeCount)", new Double(10)),
+        test("vendor/location/employeeCount + 1", new Double(11)),
+        test("vendor/location/employeeCount and true()", Boolean.TRUE),
+        test("vendor/location[.//employeeCount = 10]/following-sibling::location//street", "Other street"),
+        testPath("vendor/location[.//employeeCount = 10]/following-sibling::location//street",
+                "/vendor[1]/location[2]/address[1]/street[1]"),
+        testPath("//location[2]/preceding-sibling::location//street",
+                "/vendor[1]/location[1]/address[1]/street[1]"),
+        test("vendor/location/@id", "100"),
+        testPath("vendor/location/@id", "/vendor[1]/location[1]/@id"),
+        testEval("vendor/location/@id", list("100", "101")),
+        test("vendor/location/@blank", ""),
+        test("vendor/location/@missing", null),
+        test("count(vendor/location[1]/@*)", new Double(3)),
+        test("vendor/location[@id='101']//street", "Other street"),
+        test("$test/int", new Integer(1)),
+        test("$test/vendor/location[1]//street", "Some street"),
+        test("$dom/vendor//street", "Some street"),
+        test("$test/object/vendor/location[1]//street", "Some street"),
+        testPath("$test/object/vendor/location[1]//street", "$test/object/vendor[1]/location[1]/address[1]/street[1]"),
+        test("$object//street", "Some street"),
+        testPath("$object//street", "$object/vendor[1]/location[1]/address[1]/street[1]"),
+    };
 }
 

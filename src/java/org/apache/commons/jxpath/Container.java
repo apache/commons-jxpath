@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Container.java,v 1.1 2001/09/03 01:22:30 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2001/09/03 01:22:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,102 +59,30 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.pointers;
+package org.apache.commons.jxpath;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.compiler.*;
-
-import java.lang.reflect.*;
 import java.util.*;
-import java.beans.*;
 
 /**
- * A Pointer that points to an object with Dynamic Properties. It is used
- * for the first element of a path; following elements will by of type PropertyPointer.
+ * A Container is an object implementing an indirection
+ * mechanism transparent to JXPath.  For example, if property
+ * "foo" of the context node has a Container as its value,
+ * the XPath "foo" will produce the contents of that Container,
+ * not the container itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:30 $
  */
-public class DynamicPointer extends PropertyOwnerPointer {
-    private QName name;
-    private Object bean;
-    private DynamicPropertyHandler handler;
-    private String[] names;
-
-    public DynamicPointer(QName name, Object bean, DynamicPropertyHandler handler){
-        this(null, name, bean, handler);
-    }
-
-    public DynamicPointer(NodePointer parent, QName name, Object bean, DynamicPropertyHandler handler){
-        super(parent);
-        this.name = name;
-        this.bean = bean;
-        this.handler = handler;
-    }
-
-    public QName getName(){
-        return name;
-    }
+public interface Container {
 
     /**
-     * Returns the DP object iself.
+     * Returns the contained value.
      */
-    public Object getBaseValue(){
-        return bean;
-    }
+    Object getValue();
 
     /**
-     * Throws UnsupportedOperationException.
+     * Modifies the value contained by this container.  May throw
+     * UnsupportedOperationException.
      */
-    public void setValue(Object value){
-        throw new UnsupportedOperationException("Cannot replace the root object");
-    }
-
-    /**
-     * If the bean is a collection, returns the length of that collection,
-     * otherwise returns 1.
-     */
-    public int getLength(){
-        return PropertyAccessHelper.getLength(getBaseValue());
-    }
-
-    /**
-     * Empty string
-     */
-    public String asPath(){
-        if (parent != null){
-            return super.asPath();
-        }
-        return "";
-    }
-
-    public int hashCode(){
-        return System.identityHashCode(bean) + name.hashCode();
-    }
-
-    public boolean equals(Object object){
-        if (object == this){
-            return true;
-        }
-
-        if (!(object instanceof DynamicPointer)){
-            return false;
-        }
-
-        DynamicPointer other = (DynamicPointer)object;
-        return bean == other.bean && name.equals(other.name);
-    }
-
-    public String toString(){
-        return bean.getClass().getName() + "@" + System.identityHashCode(bean) +
-            "(" + name + ")";
-    }
-
-    public Object clone(){
-        DynamicPointer pointer = new DynamicPointer(name, bean, handler);
-        pointer.index = index;
-        pointer.names = names;
-        return pointer;
-    }
+    void setValue(Object value);
 }

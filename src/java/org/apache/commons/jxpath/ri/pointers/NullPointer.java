@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NullPointer.java,v 1.1 2001/08/23 00:47:00 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NullPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,16 +71,20 @@ import java.beans.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:00 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
  */
-public class NullPointer extends NodePointer {
+public class NullPointer extends PropertyOwnerPointer {
     private QName name;
+
+    public NullPointer(QName name){
+        this(null, name);
+    }
 
     /**
      * Used for the root node
      */
-    public NullPointer(QName name){
-        super(null);
+    public NullPointer(NodePointer parent, QName name){
+        super(parent);
         this.name = name;
     }
 
@@ -88,7 +92,7 @@ public class NullPointer extends NodePointer {
         return name;
     }
 
-    public Object getPropertyValue(){
+    public Object getBaseValue(){
         return null;
     }
 
@@ -118,7 +122,9 @@ public class NullPointer extends NodePointer {
     }
 
     public String asPath(){
-        System.err.println("NULL POINTER");
+        if (parent != null){
+            return super.asPath();
+        }
         return "";
     }
 

@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.2 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/ContainerPointer.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
@@ -68,69 +68,59 @@ import org.apache.commons.jxpath.ri.compiler.*;
 import java.lang.reflect.*;
 import java.util.*;
 import java.beans.*;
+import org.w3c.dom.Node;
 
 /**
- * A Pointer that points to an object with Dynamic Properties. It is used
- * for the first element of a path; following elements will by of type PropertyPointer.
+ * Transparent pointer to a Container. The getValue() method
+ * returns the contents of the container, rather than the container
+ * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
  */
-public class DynamicPointer extends PropertyOwnerPointer {
-    private QName name;
-    private Object bean;
-    private DynamicPropertyHandler handler;
-    private String[] names;
+public class ContainerPointer extends NodePointer {
+    private Container container;
+    private NodePointer valuePointer;
 
-    public DynamicPointer(QName name, Object bean, DynamicPropertyHandler handler){
-        this(null, name, bean, handler);
+    public ContainerPointer(Container container){
+        this(null, container);
     }
 
-    public DynamicPointer(NodePointer parent, QName name, Object bean, DynamicPropertyHandler handler){
+    public ContainerPointer(NodePointer parent, Container container){
         super(parent);
-        this.name = name;
-        this.bean = bean;
-        this.handler = handler;
+        this.container = container;
     }
 
     public QName getName(){
-        return name;
+        return null;
     }
 
-    /**
-     * Returns the DP object iself.
-     */
     public Object getBaseValue(){
-        return bean;
+        return container.getValue();
     }
 
-    /**
-     * Throws UnsupportedOperationException.
-     */
-    public void setValue(Object value){
-        throw new UnsupportedOperationException("Cannot replace the root object");
-    }
-
-    /**
-     * If the bean is a collection, returns the length of that collection,
-     * otherwise returns 1.
-     */
-    public int getLength(){
-        return PropertyAccessHelper.getLength(getBaseValue());
-    }
-
-    /**
-     * Empty string
-     */
-    public String asPath(){
-        if (parent != null){
-            return super.asPath();
+    public Object getValue(){
+        Object value = getBaseValue();
+        if (index != WHOLE_COLLECTION){
+            return PropertyAccessHelper.getValue(value, index);
         }
-        return "";
+        return value;
+    }
+
+    public void setValue(Object value){
+        container.setValue(value);
+    }
+
+    private NodePointer getValuePointer(){
+        if (valuePointer == null){
+            Object value = getValue();
+            valuePointer = NodePointer.createNodePointer(this, null, value);
+        }
+        return valuePointer;
     }
 
     public int hashCode(){
-        return System.identityHashCode(bean) + name.hashCode();
+        return System.identityHashCode(container) + index;
     }
 
     public boolean equals(Object object){
@@ -138,23 +128,37 @@ public class DynamicPointer extends PropertyOwnerPointer {
             return true;
         }
 
-        if (!(object instanceof DynamicPointer)){
+        if (!(object instanceof ContainerPointer)){
             return false;
         }
 
-        DynamicPointer other = (DynamicPointer)object;
-        return bean == other.bean && name.equals(other.name);
+        ContainerPointer other = (ContainerPointer)object;
+        return container == other.container &&
+                index == other.index;
     }
 
     public String toString(){
-        return bean.getClass().getName() + "@" + System.identityHashCode(bean) +
-            "(" + name + ")";
+        return asPath();
     }
 
     public Object clone(){
-        DynamicPointer pointer = new DynamicPointer(name, bean, handler);
-        pointer.index = index;
-        pointer.names = names;
+        ContainerPointer pointer = new ContainerPointer(parent, container);
         return pointer;
+    }
+
+    public NodeIterator childIterator(QName name, boolean reverse){
+        return getValuePointer().childIterator(name, reverse);
+    }
+
+    public NodeIterator siblingIterator(QName name, boolean reverse){
+        return getValuePointer().siblingIterator(name, reverse);
+    }
+
+    public NodeIterator attributeIterator(){
+        return getValuePointer().attributeIterator();
+    }
+
+    public NodePointer attributePointer(QName name){
+        return getValuePointer().attributePointer(name);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanPropertyPointer.java,v 1.1 2001/08/23 00:47:00 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanPropertyPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import java.beans.*;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:00 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private JXPathBeanInfo beanInfo;
@@ -111,7 +111,7 @@ public class BeanPropertyPointer extends PropertyPointer {
      * Select a property by name
      */
     public void setPropertyName(String propertyName){
-        setPropertyIndex(UNSPECIFIED);
+        setPropertyIndex(UNSPECIFIED_PROPERTY);
         String[] names = getPropertyNames();
         for (int i = 0; i < names.length; i++){
             if (names[i].equals(propertyName)){
@@ -128,7 +128,6 @@ public class BeanPropertyPointer extends PropertyPointer {
         if (propertyIndex != index){
             super.setPropertyIndex(index);
             propertyDescriptor = null;
-            value = UNKNOWN;
         }
     }
 
@@ -147,7 +146,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     /**
      * The value of the currently selected property.
      */
-    public Object getPropertyValue(){
+    public Object getBaseValue(){
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null){
             return null;
@@ -162,18 +161,17 @@ public class BeanPropertyPointer extends PropertyPointer {
      * and the value will be the property itself.
      */
     public Object getValue(){
-        if (value == UNKNOWN){
-            PropertyDescriptor pd = getPropertyDescriptor();
-            if (pd == null){
-                value = null;
+        Object value;
+        PropertyDescriptor pd = getPropertyDescriptor();
+        if (pd == null){
+            value = null;
+        }
+        else {
+            if (index == WHOLE_COLLECTION){
+                value = PropertyAccessHelper.getValue(getBean(), getPropertyDescriptor());
             }
             else {
-                if (index == WHOLE_COLLECTION){
-                    value = PropertyAccessHelper.getValue(getBean(), getPropertyDescriptor());
-                }
-                else {
-                    value = PropertyAccessHelper.getValue(getBean(), getPropertyDescriptor(), index);
-                }
+                value = PropertyAccessHelper.getValue(getBean(), getPropertyDescriptor(), index);
             }
         }
         return value;
@@ -185,7 +183,6 @@ public class BeanPropertyPointer extends PropertyPointer {
      * represented by the property.
      */
     public void setValue(Object value){
-        this.value = value;
         if (index == WHOLE_COLLECTION){
             PropertyAccessHelper.setValue(getBean(), getPropertyDescriptor(), value);
         }
@@ -205,20 +202,15 @@ public class BeanPropertyPointer extends PropertyPointer {
         return pd.getName();
     }
 
-    public PropertyPointer copy(){
+    public Object clone(){
         BeanPropertyPointer newHolder = new BeanPropertyPointer(getParent(), beanInfo);
         newHolder.propertyIndex = propertyIndex;
         newHolder.propertyDescriptors = propertyDescriptors;
         newHolder.propertyDescriptor = propertyDescriptor;
         newHolder.names = names;
         newHolder.bean = bean;
-        newHolder.value = value;
         newHolder.index = index;
         return newHolder;
-    }
-
-    public Object clone(){
-        return copy();
     }
 
     /**

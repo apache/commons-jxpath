@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/VariablePointer.java,v 1.1 2001/08/23 00:47:00 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/VariablePointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,14 +68,16 @@ import org.apache.commons.jxpath.ri.compiler.*;
 import java.lang.reflect.*;
 import java.util.*;
 import java.beans.*;
+import org.w3c.dom.Node;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:00 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
     private QName name;
+    private NodePointer valuePointer;
 
     /**
      * Used for the root node
@@ -90,20 +92,29 @@ public class VariablePointer extends NodePointer {
         return name;
     }
 
-    public Object getPropertyValue(){
+    public Object getBaseValue(){
         return variables.getVariable(name.getName());
     }
 
+    public Object getValue(){
+        Object value = getBaseValue();
+        if (index != WHOLE_COLLECTION){
+            return PropertyAccessHelper.getValue(value, index);
+        }
+        return value;
+    }
+
     public void setValue(Object value){
+        valuePointer = null;
         variables.declareVariable(name.getName(), value);
     }
 
-    public int getLength(){
-        Object value = getPropertyValue();
-        if (value == null){
-            return 1;
+    private NodePointer getValuePointer(){
+        if (valuePointer == null){
+            Object value = getValue();
+            valuePointer = NodePointer.createNodePointer(this, null, value);
         }
-        return PropertyAccessHelper.getLength(value);
+        return valuePointer;
     }
 
     public int hashCode(){
@@ -142,7 +153,24 @@ public class VariablePointer extends NodePointer {
     public Object clone(){
         VariablePointer pointer = new VariablePointer(variables, name);
         pointer.index = index;
-        pointer.value = value;
         return pointer;
+    }
+
+//    private
+
+    public NodeIterator childIterator(QName name, boolean reverse){
+        return getValuePointer().childIterator(name, reverse);
+    }
+
+    public NodeIterator siblingIterator(QName name, boolean reverse){
+        return getValuePointer().siblingIterator(name, reverse);
+    }
+
+    public NodeIterator attributeIterator(){
+        return getValuePointer().attributeIterator();
+    }
+
+    public NodePointer attributePointer(QName name){
+        return getValuePointer().attributePointer(name);
     }
 }

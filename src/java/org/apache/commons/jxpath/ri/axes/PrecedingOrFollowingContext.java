@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import java.beans.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
  */
 public class PrecedingOrFollowingContext extends EvalContext {
     private QName nameTest;
@@ -153,7 +153,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
             setStarted = true;
             currentRootLocation = parentContext.getCurrentNodePointer();
             // TBD: check type
-            stack.push(PropertyIterator.iteratorStartingAt((PropertyPointer)currentRootLocation, null, reverse));
+            stack.push(currentRootLocation.siblingIterator(null, reverse));
         }
 
         while (true){
@@ -164,16 +164,16 @@ public class PrecedingOrFollowingContext extends EvalContext {
                 }
 //                System.err.println("PUSHING: " + currentRootLocation);
                 // TBD: check type
-                stack.push(PropertyIterator.iteratorStartingAt((PropertyPointer)currentRootLocation, null, reverse));
+                stack.push(currentRootLocation.siblingIterator(null, reverse));
             }
 
             while (!stack.isEmpty()){
                 if (!reverse){
                     PropertyIterator it = (PropertyIterator)stack.peek();
-                    if (it.next()){
-                        currentNodePointer = it.getCurrentNodePointer();
-                        if (!currentNodePointer.isAtomic()){
-                            stack.push(PropertyIterator.iterator(currentNodePointer, null, reverse));
+                    if (it.setPosition(it.getPosition() + 1)){
+                        currentNodePointer = it.getNodePointer();
+                        if (!currentNodePointer.isLeaf()){
+                            stack.push(currentNodePointer.childIterator(null, reverse));
                         }
                         if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
                             position++;
@@ -187,10 +187,10 @@ public class PrecedingOrFollowingContext extends EvalContext {
                 }
                 else {
                     PropertyIterator it = (PropertyIterator)stack.peek();
-                    if (it.next()){
-                        currentNodePointer = it.getCurrentNodePointer();
-                        if (!currentNodePointer.isAtomic()){
-                            stack.push(PropertyIterator.iterator(currentNodePointer, null, reverse));
+                    if (it.setPosition(it.getPosition() + 1)){
+                        currentNodePointer = it.getNodePointer();
+                        if (!currentNodePointer.isLeaf()){
+                            stack.push(currentNodePointer.childIterator(null, reverse));
                         }
                         else if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
                             position++;
@@ -201,7 +201,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
                         stack.pop();
                         if (!stack.isEmpty()){
                             it = (PropertyIterator)stack.peek();
-                            currentNodePointer = it.getCurrentNodePointer();
+                            currentNodePointer = it.getNodePointer();
                             if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
                                 position++;
                                 return true;

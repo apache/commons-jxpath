@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/03 01:22:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,10 +76,11 @@ import org.apache.commons.jxpath.ri.pointers.*;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.axes.*;
 import java.lang.ref.SoftReference;
+import org.w3c.dom.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -154,6 +155,9 @@ public class JXPathContextReferenceImpl extends JXPathContext
                     break;
                 }
             }
+        }
+        if (result instanceof Node){
+            result = EvalContext.stringValue((Node)result);
         }
         return result;
     }
@@ -287,12 +291,17 @@ public class JXPathContextReferenceImpl extends JXPathContext
         Functions funcs;
         while (funcCtx != null){
             funcs = funcCtx.getFunctions();
-            func = funcs.getFunction(namespace, name, parameters);
-            if (func != null){
-                return func;
-            }
+            if (funcs != null){
+                func = funcs.getFunction(namespace, name, parameters);
+                if (func != null){
+                    return func;
+                }
 
-            funcCtx = funcCtx.getParentContext();
+                funcCtx = funcCtx.getParentContext();
+            }
+            else {
+                break;
+            }
         }
         func = genericFunctions.getFunction(namespace, name, parameters);
         if (func != null){
