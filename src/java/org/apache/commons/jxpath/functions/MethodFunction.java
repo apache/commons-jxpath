@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.3 2002/04/21 21:52:31 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/21 21:52:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,10 +64,11 @@ package org.apache.commons.jxpath.functions;
 import java.util.*;
 import java.lang.reflect.*;
 import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.util.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/21 21:52:31 $
  */
 public class MethodFunction implements Function {
 
@@ -97,7 +98,7 @@ public class MethodFunction implements Function {
                     args[0] = context;
                 }
                 for (int i = 0; i < parameters.length; i++){
-                    args[i + pi] = Types.convert(parameters[i], types[i + pi]);
+                    args[i + pi] = TypeUtils.convert(parameters[i], types[i + pi]);
                 }
             }
             else {
@@ -106,13 +107,13 @@ public class MethodFunction implements Function {
                 if (types.length >= 1 && ExpressionContext.class.isAssignableFrom(types[0])){
                     pi = 1;
                 }
-                target = Types.convert(parameters[0], method.getDeclaringClass());
+                target = TypeUtils.convert(parameters[0], method.getDeclaringClass());
                 args = new Object[parameters.length - 1 + pi];
                 if (pi == 1){
                     args[0] = context;
                 }
                 for (int i = 1; i < parameters.length; i++){
-                    args[pi + i - 1] = Types.convert(parameters[i], types[i - 1]);
+                    args[pi + i - 1] = TypeUtils.convert(parameters[i], types[i - 1]);
                 }
             }
 

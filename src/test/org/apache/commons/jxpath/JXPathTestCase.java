@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.11 2002/04/11 02:57:41 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2002/04/11 02:57:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.12 2002/04/21 21:52:34 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2002/04/21 21:52:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,11 +73,17 @@ import java.util.*;
 
 import org.apache.commons.jxpath.ri.*;
 import org.apache.commons.jxpath.ri.parser.*;
-import org.apache.commons.jxpath.ri.pointers.*;
+import org.apache.commons.jxpath.ri.model.*;
+import org.apache.commons.jxpath.ri.model.beans.*;
 import org.apache.commons.jxpath.ri.axes.*;
 import org.apache.commons.jxpath.ri.compiler.*;
+import org.apache.commons.jxpath.ri.compiler.Expression;
 import java.beans.*;
 
+import org.apache.xpath.XPath;
+import org.apache.xpath.XPathContext;
+import org.apache.xml.utils.PrefixResolver;
+import org.apache.xml.utils.PrefixResolverDefault;
 
 /**
  * <p>
@@ -89,11 +95,11 @@ import java.beans.*;
  * <p>
  *   Note that the tests are dependant upon the static aspects
  *   (such as array sizes...) of the TestBean.java class, so ensure
- *   than all changes to TestBean are reflected here.
+ *   that all changes to TestBean are reflected here.
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2002/04/11 02:57:41 $
+ * @version $Revision: 1.12 $ $Date: 2002/04/21 21:52:34 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -163,7 +169,7 @@ public class JXPathTestCase extends TestCase
      * Test property iterators, the core of the graph traversal engine
      */
     public void testIndividualIterators(){
-        if (enabled){
+        if (true){
 //        testIndividual(0, 0, true, false, 3);
             testIndividual(+1, 0, true, false, 0);
             testIndividual(-1, 0, true, false, 4);
@@ -181,17 +187,17 @@ public class JXPathTestCase extends TestCase
     }
 
     private void testIndividual(int relativePropertyIndex, int offset, boolean useStartLocation, boolean reverse, int expected){
-        PropertyOwnerPointer root = (PropertyOwnerPointer)NodePointer.createNodePointer(new QName(null, "root"), bean, Locale.getDefault());
+        PropertyOwnerPointer root = (PropertyOwnerPointer)NodePointer.newNodePointer(new QName(null, "root"), bean, Locale.getDefault());
         NodeIterator it;
 
         if (useStartLocation){
             PropertyPointer holder = root.getPropertyPointer();
             holder.setPropertyIndex(relativeProperty(holder, relativePropertyIndex));
             holder.setIndex(offset);
-            it = holder.siblingIterator(new NodeNameTest(new QName(null, "integers")), reverse);
+            it = root.childIterator(new NodeNameTest(new QName(null, "integers")), reverse, holder);
         }
         else {
-            it = root.childIterator(new NodeNameTest(new QName(null, "integers")), reverse);
+            it = root.childIterator(new NodeNameTest(new QName(null, "integers")), reverse, null);
         }
 
         int size = 0;
@@ -204,7 +210,7 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testMultipleIterators(){
-        if (enabled){
+        if (true){
             testMultiple(0, 0, true, false, 20);
 
             testMultiple(3, 0, true, false, 16);
@@ -219,17 +225,17 @@ public class JXPathTestCase extends TestCase
     }
 
     private void testMultiple(int propertyIndex, int offset, boolean useStartLocation, boolean reverse, int expected){
-        PropertyOwnerPointer root = (PropertyOwnerPointer)NodePointer.createNodePointer(new QName(null, "root"), bean, Locale.getDefault());
+        PropertyOwnerPointer root = (PropertyOwnerPointer)NodePointer.newNodePointer(new QName(null, "root"), bean, Locale.getDefault());
         NodeIterator it;
 
         if (useStartLocation){
             PropertyPointer holder = root.getPropertyPointer();
             holder.setPropertyIndex(propertyIndex);
             holder.setIndex(offset);
-            it = holder.siblingIterator(null, reverse);
+            it = root.childIterator(null, reverse, holder);
         }
         else {
-            it = root.childIterator(null, reverse);
+            it = root.childIterator(null, reverse, null);
         }
 
         int size = 0;
@@ -256,34 +262,35 @@ public class JXPathTestCase extends TestCase
      * Test JXPath.getValue() with various arguments
      */
     public void testGetValue(){
-        if (enabled){
-            JXPathContext context = JXPathContext.newContext(bean);
-            testGetValue(context, "2+2",                     new Double(4.0));
-            testGetValue(context, "boolean",                 Boolean.FALSE);
-            testGetValue(context, "substring(boolean, 1,2)", "fa"); // 'fa'lse
-            testGetValue(context, "int*2",                   new Double(2.0));
-            testGetValue(context, "integers[1]",             new Integer(1));
-            testGetValue(context, "nestedBean",              bean.getNestedBean());
-            testGetValue(context, "nestedBean/boolean",      Boolean.FALSE);
-            testGetValue(context, "object/name",             "Name 5");
-            testGetValue(context, "objects[1]",              new Integer(1));
-            testGetValue(context, "map/Key1",                "Value 1");
-            testGetValue(context, "beans[name = 'Name 1']",  bean.getBeans()[0]);
-            testGetValue(context, ".[1]/int",                new Integer(1));
+        if (!enabled){
+            return;
+        }
+        JXPathContext context = JXPathContext.newContext(bean);
+        testGetValue(context, "2+2",                     new Double(4.0));
+        testGetValue(context, "boolean",                 Boolean.FALSE);
+        testGetValue(context, "substring(boolean, 1,2)", "fa"); // 'fa'lse
+        testGetValue(context, "int*2",                   new Double(2.0));
+        testGetValue(context, "integers[1]",             new Integer(1));
+        testGetValue(context, "nestedBean",              bean.getNestedBean());
+        testGetValue(context, "nestedBean/boolean",      Boolean.FALSE);
+        testGetValue(context, "object/name",             "Name 5");
+        testGetValue(context, "objects[1]",              new Integer(1));
+        testGetValue(context, "map/Key1",                "Value 1");
+        testGetValue(context, "beans[name = 'Name 1']",  bean.getBeans()[0]);
+        testGetValue(context, ".[1]/int",                new Integer(1));
 //        testGetValue(context, "id('foo')",               new Integer(1));
 //        testGetValue(context, "key('foo', 'bar')",               new Integer(1));
-            testGetValue(context, "integers[1]",            new Double(1), Double.class);
-            testGetValue(context, "2 + 3",                  "5.0", String.class);
-            testGetValue(context, "2 + 3",                  Boolean.TRUE, boolean.class);
-            boolean exception = false;
-            try {
-                testGetValue(context, "'foo'",                  null, Date.class);
-            }
-            catch(Exception ex){
-                exception = true;
-            }
-            assertTrue("Type conversion exception", exception);
+        testGetValue(context, "integers[1]",            new Double(1), Double.class);
+        testGetValue(context, "2 + 3",                  "5.0", String.class);
+        testGetValue(context, "2 + 3",                  Boolean.TRUE, boolean.class);
+        boolean exception = false;
+        try {
+            testGetValue(context, "'foo'",                  null, Date.class);
         }
+        catch(Exception ex){
+            exception = true;
+        }
+        assertTrue("Type conversion exception", exception);
     }
 
     /**
@@ -419,72 +426,89 @@ public class JXPathTestCase extends TestCase
      * Test JXPath.createPath() with various arguments
      */
     public void testCreatePath(){
-        if (enabled){
-            TestBean tBean = new TestBean();
-            tBean.setNestedBean(null);
-            tBean.setBeans(null);
-            tBean.setMap(null);
-            JXPathContext context = JXPathContext.newContext(tBean);
-            context.setFactory(new TestFactory());
+//        if (!enabled){
+//            return;
+//        }
+        TestBean tBean = createTestBeanWithDOM();
+        tBean.setNestedBean(null);
+        tBean.setBeans(null);
+        tBean.setMap(null);
+        JXPathContext context = JXPathContext.newContext(tBean);
+        context.setFactory(new TestFactory());
 
-            // Calls factory.declareVariable("string")
-            testCreatePath(context, "$string", "Value");
+        // Calls factory.declareVariable("string")
+        testCreatePath(context, "$string", "Value");
 
-            // Calls factory.declareVariable("stringArray"). The factory needs to create a collection
-            testCreatePath(context, "$stringArray[2]", "Value2");
-            assertEquals("Created <" + "$stringArray[1]" + ">", "Value1", context.getValue("$stringArray[1]"));
+        // Calls factory.declareVariable("stringArray"). The factory needs to create a collection
+        testCreatePath(context, "$stringArray[2]", "Value2");
+        assertEquals("Created <" + "$stringArray[1]" + ">", "Value1", context.getValue("$stringArray[1]"));
 
-            context.getVariables().declareVariable("array", new String[]{"Value1"});
+        context.getVariables().declareVariable("array", new String[]{"Value1"});
 
-            // Does not involve factory at all - just expands the collection
-            testCreatePath(context, "$array[2]", "Value2");
-            assertEquals("Created <" + "$array[1]" + ">", "Value1", context.getValue("$array[1]"));
+        // Does not involve factory at all - just expands the collection
+        testCreatePath(context, "$array[2]", "Value2");
 
-            // Calls factory.declareVariable("test"). The factory should create a TestBean
-            testCreatePath(context, "$test/boolean", Boolean.TRUE);
+        // Make sure it is still the same array
+        assertEquals("Created <" + "$array[1]" + ">", "Value1", context.getValue("$array[1]"));
 
-            // Calls factory.declareVariable("testArray").
-            // The factory should create a collection of TestBeans.
-            // Then calls factory.createObject(..., collection, "testArray", 1).
-            // That one should produce an instance of TestBean and put it in the collection
-            // at index 1.
-            testCreatePath(context, "$testArray[2]/boolean", Boolean.TRUE);
+        // Calls factory.declareVariable("test"). The factory should create a TestBean
+        testCreatePath(context, "$test/boolean", Boolean.TRUE);
 
-            // Calls factory.createObject(..., TestBean, "nestedBean")
-            testCreatePath(context, "nestedBean/int", new Integer(1));
+        // Calls factory.declareVariable("testArray").
+        // The factory should create a collection of TestBeans.
+        // Then calls factory.createObject(..., collection, "testArray", 1).
+        // That one should produce an instance of TestBean and put it in the collection
+        // at index 1.
+        testCreatePath(context, "$testArray[2]/boolean", Boolean.TRUE);
 
-            // Calls factory.expandCollection(..., testBean, "beans", 2), then
-            // factory.createObject(..., testBean, "beans", 2)
-            testCreatePath(context, "beans[2]/int", new Integer(2));
+        // Calls factory.createObject(..., TestBean, "nestedBean")
+        testCreatePath(context, "nestedBean/int", new Integer(1));
 
-            // Another, but the collection already exists
-            testCreatePath(context, "beans[3]/int", new Integer(3));
+        // Calls factory.expandCollection(..., testBean, "beans", 2), then
+        // factory.createObject(..., testBean, "beans", 2)
+        testCreatePath(context, "beans[2]/int", new Integer(2));
 
-            // Calls factory.expandCollection(..., testBean, "beans", 2), then
-            // sets the value
-            testCreatePath(context, "nestedBean/strings[2]", "Test");
+        // Another, but the collection already exists
+        testCreatePath(context, "beans[3]/int", new Integer(3));
 
-            // Calls factory.createObject(..., testBean, "map"), then
-            // sets the value
-            testCreatePath(context, "map[@name = 'TestKey1']", "Test");
+        // Calls factory.expandCollection(..., testBean, "beans", 2), then
+        // sets the value
+        testCreatePath(context, "nestedBean/strings[2]", "Test");
 
-            // Calls factory.createObject(..., testBean, "map"), then
-            // then factory.createObject(..., map, "TestKey2"), then
-            // sets the value
-            testCreatePath(context, "map[@name = 'TestKey2']/int", new Integer(4));
+        // Calls factory.createObject(..., testBean, "map"), then
+        // sets the value
+        testCreatePath(context, "map[@name = 'TestKey1']", "Test");
 
-            // Calls factory.expandCollection(..., map, "TestKey3", 2), then
-            testCreatePath(context, "map/TestKey3[2]", "Test");
+        // Calls factory.createObject(..., testBean, "map"), then
+        // then factory.createObject(..., map, "TestKey2"), then
+        // sets the value
+        testCreatePath(context, "map[@name = 'TestKey2']/int", new Integer(4));
 
-            // Should be the same as the one before
-            testCreatePath(context, "map[@name='TestKey3'][3]", "Test");
+        // Calls factory.expandCollection(..., map, "TestKey3", 2)
+        testCreatePath(context, "map/TestKey3[2]", "Test");
 
-            // Comprehensive tests: map & bean
-            tBean.setMap(null);
-            testCreatePath(context, "map[@name = 'TestKey5']/nestedBean/int", new Integer(5));
-            tBean.setMap(null);
-            testCreatePath(context, "map[@name = 'TestKey5']/beans[2]/int", new Integer(6));
-        }
+        // Should be the same as the one before
+        testCreatePath(context, "map[@name='TestKey3'][3]", "Test");
+
+        // Create an element of a dynamic map element, which is a collection
+        testCreatePath(context, "map/TestKey4[1]/int", new Integer(5));
+
+        tBean.getMap().remove("TestKey4");
+
+        // Should be the same as the one before
+        testCreatePath(context, "map[@name = 'TestKey4'][1]/int", new Integer(5));
+
+        // Create a DOM element
+        testCreatePath(context, "vendor/location[3]", "");
+
+        // Create a DOM element with contents
+        testCreatePath(context, "vendor/location[3]/address/street", "Lemon Circle");
+
+        // Comprehensive tests: map & bean
+        tBean.setMap(null);
+        testCreatePath(context, "map[@name = 'TestKey5']/nestedBean/int", new Integer(6));
+        tBean.setMap(null);
+        testCreatePath(context, "map[@name = 'TestKey5']/beans[2]/int", new Integer(7));
     }
 
     private void testCreatePath(JXPathContext context, String path, Object value){
@@ -493,15 +517,16 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testNull(){
-        if (enabled){
-            JXPathContext context = JXPathContext.newContext(new TestNull());
-            testGetValue(context, "nothing", null);
-            testGetValue(context, "child/nothing", null);
-            testGetValue(context, "array[2]", null);
-            context.setLenient(true);
-            testGetValue(context, "nothing/something", null);
-            testGetValue(context, "array[2]/something", null);
+        if (!enabled){
+            return;
         }
+        JXPathContext context = JXPathContext.newContext(new TestNull());
+        testGetValue(context, "nothing", null);
+        testGetValue(context, "child/nothing", null);
+        testGetValue(context, "array[2]", null);
+        context.setLenient(true);
+        testGetValue(context, "nothing/something", null);
+        testGetValue(context, "array[2]/something", null);
     }
 
     /**
@@ -526,7 +551,7 @@ public class JXPathTestCase extends TestCase
         }
 
         public Pointer getContextNodePointer(){
-            return NodePointer.createNodePointer(null, object, Locale.getDefault());
+            return NodePointer.newNodePointer(null, object, Locale.getDefault());
         }
 
         public List getContextNodeList(){
@@ -703,6 +728,7 @@ public class JXPathTestCase extends TestCase
     }
 
     static final XP[] xpath_tests = new XP[]{
+
         // Numbers
         test("1", new Double(1.0)),
         testEval("1", list(new Double(1.0))),
@@ -741,7 +767,6 @@ public class JXPathTestCase extends TestCase
         // Traversal
         // ancestor::
         test("int/ancestor::root = /", Boolean.TRUE),
-//        testEval("beans/name/ancestor-or-self::node()", new Double(5)),
         test("count(beans/name/ancestor-or-self::node())", new Double(5)),
         test("beans/name/ancestor-or-self::node()[3] = /", Boolean.TRUE),
 
@@ -756,6 +781,7 @@ public class JXPathTestCase extends TestCase
         test("nestedBean/name", "Name 0"),
         testPath("nestedBean/name", "/nestedBean/name"),
         testEvalPath("nestedBean/name", list("/nestedBean/name")),
+
         testEval("integers", list(new Integer(1), new Integer(2), new Integer(3), new Integer(4))),
         testPath("integers", "/integers"),
         testEvalPath("integers", list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]")),
@@ -767,6 +793,8 @@ public class JXPathTestCase extends TestCase
         testEval("beans[1]/strings", list("String 1", "String 2", "String 3")),
         testEval("beans/strings[2]", list("String 2", "String 2")),
         test("beans/strings[2]", "String 2"),
+
+        test("beans/strings[name(.)='strings'][2]", "String 2"),
         test("(beans/strings[2])[1]", "String 2"),
         test("count(*)", new Double(21)),
         test("count(child::node())", new Double(21)),
@@ -829,14 +857,14 @@ public class JXPathTestCase extends TestCase
         test("count((integers | beans[1]/strings)[name(.) = 'strings'])", new Double(3)),
 
         // Note that the following is different from "integer[2]" - it is a filter expression
-        test("(integers)[2]", new Integer(2)),
+        test("(integers)[2]", new Integer(2)),        // TBD
 
         // Core functions
         test("integers[last()]", new Integer(4)),
         test("integers[position() = last() - 1]", new Integer(3)),
         testEval("integers[position() < 3]", list(new Integer(1), new Integer(2))),
         test("count(beans/strings)", new Double(6)),
-//        test("integers[string() = '2.0']", new Integer(2)),  // Incorrect -- TBD
+        test("integers[string() = '2.0']", new Integer(2)),
 
         test("name(integers)", "integers"),
         testEval("*[name(.) = 'integers']", list(new Integer(1), new Integer(2), new Integer(3), new Integer(4))),
@@ -926,7 +954,11 @@ public class JXPathTestCase extends TestCase
         test("/beans[contains(test:path(), '[2]')]/name", "Name 2"),
 
         // null
+        testPath("$null", "$null"),
+        testPath("$null[3]", "$null[3]"),
         testPath("$testnull/nothing", "$testnull/nothing"),
+        testPath("$testnull/nothing[2]", "$testnull/nothing[2]"),
+        testPath("beans[8]/int", "/beans[8]/int"),
         testEval("$testnull/nothing[1]", Collections.EMPTY_LIST),
     };
 
@@ -1102,9 +1134,5 @@ public class JXPathTestCase extends TestCase
         testPath("$test/object/vendor/location[1]//street", "$test/object/vendor[1]/location[1]/address[1]/street[1]"),
         test("$object//street", "Orchard Road"),
         testPath("$object//street", "$object/vendor[1]/location[1]/address[1]/street[1]"),
-
-        testPath("$null", "$null"),
-//        testPath("$null[3]", "$null[3]"),
     };
 }
-

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestBeanWithDOM.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestBeanWithDOM.java,v 1.2 2002/04/21 21:52:34 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/21 21:52:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import org.w3c.dom.*;
  * General purpose test bean for JUnit tests for the "jxpath" component.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/21 21:52:34 $
  */
 public class TestBeanWithDOM extends TestBean {
     private Node node;
@@ -77,6 +77,10 @@ public class TestBeanWithDOM extends TestBean {
 
     public Node getVendor(){
         return node;
+    }
+
+    public Node[] getVendors(){
+        return new Node[]{node};
     }
 
     public void setVendor(Node node){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.3 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.4 2002/04/21 21:52:32 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/21 21:52:32 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,7 +64,7 @@ package org.apache.commons.jxpath.ri.axes;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.pointers.*;
+import org.apache.commons.jxpath.ri.model.*;
 import org.apache.commons.jxpath.ri.EvalContext;
 
 import java.util.*;
@@ -73,7 +73,7 @@ import java.util.*;
  * EvalContext that walks the "parent::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/21 21:52:32 $
  */
 public class ParentContext extends EvalContext {
     private NodeTest nodeTest;
@@ -128,6 +128,9 @@ public class ParentContext extends EvalContext {
         setStarted = true;
         NodePointer thisLocation = parentContext.getCurrentNodePointer();
         currentNodePointer = thisLocation.getParent();
+        while (currentNodePointer != null && !currentNodePointer.isNode()){
+            currentNodePointer = currentNodePointer.getParent();
+        }
         return currentNodePointer != null && currentNodePointer.testNode(nodeTest);
     }
 }

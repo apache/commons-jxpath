@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.5 2002/04/21 21:52:32 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/21 21:52:32 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,7 +64,7 @@ package org.apache.commons.jxpath.ri.axes;
 import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.pointers.*;
+import org.apache.commons.jxpath.ri.model.*;
 import org.apache.commons.jxpath.ri.EvalContext;
 
 import java.lang.reflect.*;
@@ -76,7 +76,7 @@ import java.beans.*;
  * "preceding-sibling::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/21 21:52:32 $
  */
 public class ChildContext extends EvalContext {
     private NodeTest nodeTest;
@@ -158,10 +158,15 @@ public class ChildContext extends EvalContext {
             return;
         }
         if (startFromParentLocation){
-            iterator = parent.siblingIterator(nodeTest, reverse);
+            NodePointer pointer = parent.getParent();
+            while (pointer != null && !pointer.isNode()){
+                pointer = pointer.getParent();
+            }
+
+            iterator = pointer.childIterator(nodeTest, reverse, parent);
         }
         else {
-            iterator = parent.childIterator(nodeTest, reverse);
+            iterator = parent.childIterator(nodeTest, reverse, null);
         }
     }
 }

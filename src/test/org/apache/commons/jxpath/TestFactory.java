@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFactory.java,v 1.1 2002/04/10 03:40:21 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/10 03:40:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFactory.java,v 1.2 2002/04/21 21:52:34 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/21 21:52:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,12 +63,13 @@
 package org.apache.commons.jxpath;
 
 import java.util.*;
+import org.w3c.dom.*;
 
 /**
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/10 03:40:21 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/21 21:52:34 $
  */
 public class TestFactory extends AbstractFactory {
 
@@ -82,11 +83,21 @@ public class TestFactory extends AbstractFactory {
             ((TestBean[])parent)[index] = new TestBean();
             return true;
         }
+        else if (name.equals("strings")){
+            NestedTestBean bean = (NestedTestBean)parent;
+            bean.setStrings(new String[index + 1]);
+            bean.getStrings()[index] = "";
+            return true;
+        }
         else if (name.equals("nestedBean")){
             ((TestBean)parent).setNestedBean(new NestedTestBean("newName"));
             return true;
         }
         else if (name.equals("beans")){
+            TestBean bean = (TestBean)parent;
+            if (bean.getBeans() == null || index >= bean.getBeans().length){
+                bean.setBeans(new NestedTestBean[index + 1]);
+            }
             ((TestBean)parent).getBeans()[index] = new NestedTestBean("newName");
             return true;
         }
@@ -102,6 +113,10 @@ public class TestFactory extends AbstractFactory {
             ((Map)parent).put(name, new Vector());
             return true;
         }
+        else if (name.equals("TestKey4")){
+            ((Map)parent).put(name, new Object[]{new TestBean()});
+            return true;
+        }
         else if (name.equals("TestKey5")){
             TestBean tb = new TestBean();
             tb.setNestedBean(null);
@@ -109,7 +124,39 @@ public class TestFactory extends AbstractFactory {
             ((Map)parent).put(name, tb);
             return true;
         }
+        else if (name.equals("location") || name.equals("address") || name.equals("street")){
+            addElement((Node)parent, index, name);
+            return true;
+        }
         return false;
+    }
+
+    private void addElement(Node parent, int index, String tag){
+        boolean repeat = true;
+        while(repeat){
+            Node child = parent.getFirstChild();
+            int count = 0;
+            while (child != null){
+                if (child.getNodeName().equals(tag)){
+                    if (count == index){
+                        repeat = false;
+                        break;
+                    }
+                    count++;
+                }
+                child = child.getNextSibling();
+            }
+            if (child != null){
+                child = child.getNextSibling();
+            }
+            Node newElement = parent.getOwnerDocument().createElement(tag);
+            if (child != null){
+                parent.insertBefore(newElement, child);
+            }
+            else {
+                parent.appendChild(newElement);
+            }
+        }
     }
 
     /**
@@ -130,19 +177,5 @@ public class TestFactory extends AbstractFactory {
         }
         context.getVariables().declareVariable(name, null);
         return true;
-    }
-
-    public boolean expandCollection(JXPathContext context, Pointer pointer, Object parent, String name, int size){
-        if (name.equals("beans")){
-            TestBean bean = (TestBean)parent;
-            bean.setBeans(new NestedTestBean[size]);
-            return true;
-        }
-        else if (name.equals("strings")){
-            NestedTestBean bean = (NestedTestBean)parent;
-            bean.setStrings(new String[size]);
-            return true;
-        }
-        return false;
     }
 }

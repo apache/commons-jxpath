@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.5 2002/04/21 21:52:32 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/21 21:52:32 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,7 +65,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.pointers.*;
+import org.apache.commons.jxpath.ri.model.*;
 
 import java.util.*;
 
@@ -73,7 +73,7 @@ import java.util.*;
  * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/21 21:52:32 $
  */
 public class AncestorContext extends EvalContext {
     private NodeTest nodeTest;
@@ -142,8 +142,16 @@ public class AncestorContext extends EvalContext {
             }
         }
 
-        currentNodePointer = currentNodePointer.getParent();
+        while(true){
+            currentNodePointer = currentNodePointer.getParent();
 
-        return currentNodePointer != null && currentNodePointer.testNode(nodeTest);
+            if (currentNodePointer == null){
+                return false;
+            }
+
+            if (currentNodePointer.testNode(nodeTest)){
+                return true;
+            }
+        }
     }
 }

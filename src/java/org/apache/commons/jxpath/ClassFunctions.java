@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ClassFunctions.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ClassFunctions.java,v 1.3 2002/04/21 21:52:31 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/21 21:52:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,6 +64,7 @@ package org.apache.commons.jxpath;
 import java.util.*;
 import java.lang.reflect.*;
 import org.apache.commons.jxpath.functions.*;
+import org.apache.commons.jxpath.util.*;
 
 /**
  * Extension functions provided by a Java class.
@@ -89,7 +90,7 @@ import org.apache.commons.jxpath.functions.*;
  * the method.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/21 21:52:31 $
  */
 public class ClassFunctions implements Functions {
     private Class functionClass;
@@ -119,18 +120,18 @@ public class ClassFunctions implements Functions {
         }
 
         if (name.equals("new")){
-            Constructor constructor = Types.lookupConstructor(functionClass, parameters);
+            Constructor constructor = TypeUtils.lookupConstructor(functionClass, parameters);
             if (constructor != null){
                 return new ConstructorFunction(constructor);
             }
         }
         else {
-            Method method = Types.lookupStaticMethod(functionClass, name, parameters);
+            Method method = TypeUtils.lookupStaticMethod(functionClass, name, parameters);
             if (method != null){
                 return new MethodFunction(method);
             }
 
-            method = Types.lookupMethod(functionClass, name, parameters);
+            method = TypeUtils.lookupMethod(functionClass, name, parameters);
             if (method != null){
                 return new MethodFunction(method);
             }

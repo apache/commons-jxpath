@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.8 2002/04/12 02:28:06 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/04/12 02:28:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.9 2002/04/21 21:52:32 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/04/21 21:52:32 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,25 +62,31 @@
 package org.apache.commons.jxpath.ri;
 
 
+import java.lang.ref.SoftReference;
 import java.util.*;
 
-import org.apache.commons.jxpath.Variables;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.Function;
+import org.apache.commons.jxpath.Functions;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.PackageFunctions;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.pointers.*;
-import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.axes.*;
-import org.apache.commons.jxpath.functions.Types;
-import java.lang.ref.SoftReference;
+import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.Variables;
+import org.apache.commons.jxpath.ri.axes.RootContext;
+import org.apache.commons.jxpath.ri.compiler.Expression;
+import org.apache.commons.jxpath.ri.compiler.TreeCompiler;
+import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.model.NodePointerFactory;
+import org.apache.commons.jxpath.ri.model.VariablePointer;
+import org.apache.commons.jxpath.ri.model.beans.BeanPointerFactory;
+import org.apache.commons.jxpath.ri.model.beans.CollectionPointerFactory;
+import org.apache.commons.jxpath.ri.model.beans.DynamicPointerFactory;
+import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
+import org.apache.commons.jxpath.ri.model.dom.DOMPointerFactory;
+import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/04/12 02:28:06 $
+ * @version $Revision: 1.9 $ $Date: 2002/04/21 21:52:32 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -92,12 +98,14 @@ public class JXPathContextReferenceImpl extends JXPathContext
     private static Vector nodeFactories = new Vector();
     private static NodePointerFactory nodeFactoryArray[] = null;
     static {
+        nodeFactories.add(new CollectionPointerFactory());
         nodeFactories.add(new BeanPointerFactory());
         nodeFactories.add(new DynamicPointerFactory());
         nodeFactories.add(new DOMPointerFactory());
         nodeFactories.add(new ContainerPointerFactory());
         createNodeFactoryArray();
     }
+    private NodePointer rootPointer;
 
     // The frequency of the cache cleanup
     private static final int CLEANUP_THRESHOLD = 500;
@@ -168,7 +176,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
     }
 
     private static void cleanupCache(){
-        System.gc();
+//        System.gc();
         Iterator it = compiled.entrySet().iterator();
         while (it.hasNext()){
             Map.Entry me = (Map.Entry)it.next();
@@ -194,12 +202,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
             EvalContext ctx = (EvalContext)result;
             result = ctx.getContextNodePointer();
         }
-
-//        if (result instanceof DOMNodePointer){
-//            result = ((DOMNodePointer)result).stringValue();
-//        }
         if (result instanceof NodePointer){
-            result = ((NodePointer)result).getPrimitiveValue();
+            result = ((NodePointer)result).getCanonicalValue();
         }
         return result;
     }
@@ -211,12 +215,12 @@ public class JXPathContextReferenceImpl extends JXPathContext
     public Object getValue(String xpath, Class requiredType){
         Object value = getValue(xpath);
         if (value != null && requiredType != null){
-            if (!Types.canConvert(value, requiredType)){
+            if (!TypeUtils.canConvert(value, requiredType)){
                 throw new RuntimeException("Invalid expression type. '" + xpath +
                     "' returns " + value.getClass().getName() +
                     ". It cannot be converted to " + requiredType.getName());
             }
-            value = Types.convert(value, requiredType);
+            value = TypeUtils.convert(value, requiredType);
         }
         return value;
     }
@@ -259,7 +263,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
             return (Pointer)result;
         }
         else {
-            return NodePointer.createNodePointer(null, result, getLocale());
+            return NodePointer.newNodePointer(null, result, getLocale());
         }
     }
 
@@ -283,6 +287,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
             setValue(xpath, value, true);
         }
         catch (Throwable ex){
+            ex.printStackTrace();
             throw new RuntimeException("Exception trying to create xpath " +
                     xpath + ". " + ex.getMessage());
         }
@@ -301,15 +306,9 @@ public class JXPathContextReferenceImpl extends JXPathContext
             pointer = ctx.getContextNodePointer();
         }
         else {
+            // This should never happen
             throw new RuntimeException("Cannot set value for xpath: " + xpath);
         }
-//        Pointer p = pointer;
-//        while (p != null){
-//            System.err.println("PTR: " + p.getClass() + " " + p.asPath());
-//            if (p instanceof NodePointer){
-//                p = ((NodePointer)p).getParent();
-//            }
-//        }
         if (create){
             ((NodePointer)pointer).createPath(this, value);
         }
@@ -334,16 +333,36 @@ public class JXPathContextReferenceImpl extends JXPathContext
             list.add((Pointer)result);
         }
         else {
-            list.add(NodePointer.createNodePointer(null, result, getLocale()));
+            list.add(NodePointer.newNodePointer(null, result, getLocale()));
         }
         return list;
     }
 
     private Object eval(String xpath, boolean firstMatchLookup) {
         Expression expr = compile(xpath);
-        NodePointer pointer = NodePointer.createNodePointer(new QName(null, "root"), getContextBean(), getLocale());
-        EvalContext ctx = new RootContext(this, pointer);
-        return ctx.eval(expr, firstMatchLookup);
+        return getRootContext().eval(expr, firstMatchLookup);
+    }
+
+    private void printPointer(NodePointer pointer){
+        Pointer p = pointer;
+        while (p != null){
+            System.err.println((p == pointer ? "POINTER: " : " PARENT: ") + p.getClass() + " " + p.asPath());
+            if (p instanceof NodePointer){
+                p = ((NodePointer)p).getParent();
+            }
+        }
+    }
+
+    private synchronized NodePointer getRootPointer(){
+        if (rootPointer == null){
+            rootPointer = NodePointer.newNodePointer(new QName(null, "root"),
+                getContextBean(), getLocale());
+        }
+        return rootPointer;
+    }
+
+    private EvalContext getRootContext(){
+        return new RootContext(this, getRootPointer());
     }
 
     private List resolveNodeSet(List list){

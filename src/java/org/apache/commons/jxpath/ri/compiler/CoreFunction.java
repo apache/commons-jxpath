@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.2 2002/04/21 21:52:32 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/21 21:52:32 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.ri.Compiler;
  * like "position()" or "number()".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/21 21:52:32 $
  */
 public class CoreFunction extends Operation {
 
@@ -126,7 +126,7 @@ public class CoreFunction extends Operation {
             case Compiler.FUNCTION_STRING:
             case Compiler.FUNCTION_LANG:
             case Compiler.FUNCTION_NUMBER:
-                return args.length == 0;
+                return args == null || args.length == 0;
 
             case Compiler.FUNCTION_COUNT:
             case Compiler.FUNCTION_ID:

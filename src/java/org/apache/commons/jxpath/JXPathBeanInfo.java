@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathBeanInfo.java,v 1.2 2002/04/12 02:28:06 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/12 02:28:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathBeanInfo.java,v 1.3 2002/04/21 21:52:31 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/21 21:52:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import java.beans.PropertyDescriptor;
  * "com.foo.BarXBeanInfo" and make it implement the JXPathBeanInfo interface.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/12 02:28:06 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/21 21:52:31 $
  */
 public interface JXPathBeanInfo  {
 
@@ -100,6 +100,12 @@ public interface JXPathBeanInfo  {
      * bean info object.  Returns null for atomic beans.
      */
     PropertyDescriptor[] getPropertyDescriptors();
+
+    /**
+     * Returns a PropertyDescriptor for the specified name or null if there
+     * is no such property.
+     */
+    PropertyDescriptor getPropertyDescriptor(String propertyName);
 
     /**
      * For dynamic objects, returns the class implementing

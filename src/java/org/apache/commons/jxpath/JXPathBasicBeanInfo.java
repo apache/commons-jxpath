@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathBasicBeanInfo.java,v 1.2 2002/04/12 02:28:06 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/12 02:28:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathBasicBeanInfo.java,v 1.3 2002/04/21 21:52:31 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/21 21:52:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,12 +72,13 @@ import java.util.*;
  * See java.beans.BeanInfo, java.beans.Introspector
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/12 02:28:06 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/21 21:52:31 $
  */
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private boolean atomic = false;
     private Class clazz;
     private PropertyDescriptor propertyDescriptors[];
+    private String[] propertyNames;
     private Class dynamicPropertyHandlerClass;
 
     public JXPathBasicBeanInfo(Class clazz){
@@ -135,6 +136,32 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
             }
         }
         return propertyDescriptors;
+    }
+
+    public PropertyDescriptor getPropertyDescriptor(String propertyName){
+        if (propertyNames == null){
+            PropertyDescriptor[] pds = getPropertyDescriptors();
+            propertyNames = new String[pds.length];
+            for (int i = 0; i < pds.length; i++){
+                propertyNames[i] = pds[i].getName();
+            }
+        }
+//        int inx = Arrays.binarySearch(propertyNames, propertyName);
+//        if (inx < 0){
+//            return null;
+//        }
+        for (int i = 0; i < propertyNames.length; i++){
+            if (propertyNames[i] == propertyName){
+                return propertyDescriptors[i];
+            }
+        }
+
+        for (int i = 0; i < propertyNames.length; i++){
+            if (propertyNames[i].equals(propertyName)){
+                return propertyDescriptors[i];
+            }
+        }
+        return null;
     }
 
     /**

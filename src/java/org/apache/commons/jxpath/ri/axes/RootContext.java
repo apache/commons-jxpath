@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.5 2002/04/21 21:52:32 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/21 21:52:32 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,7 +64,8 @@ package org.apache.commons.jxpath.ri.axes;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.pointers.*;
+import org.apache.commons.jxpath.ri.model.*;
+import org.apache.commons.jxpath.ri.*;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.Function;
@@ -74,7 +75,7 @@ import java.util.*;
  * EvalContext that is used to hold the root node for the path traversal.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/21 21:52:32 $
  */
 public class RootContext extends EvalContext {
     private boolean startedSet = false;
@@ -129,7 +130,7 @@ public class RootContext extends EvalContext {
     }
 
     public EvalContext getConstantContext(Object constant){
-        NodePointer pointer = NodePointer.createNodePointer(new QName(null, ""), constant, null);
+        NodePointer pointer = NodePointer.newNodePointer(new QName(null, ""), constant, null);
         return new InitialContext(new RootContext(parent, pointer));
     }
 

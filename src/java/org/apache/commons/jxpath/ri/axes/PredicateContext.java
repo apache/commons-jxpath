@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.5 2002/04/21 21:52:32 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/21 21:52:32 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,14 +66,15 @@ import java.util.*;
 
 import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.pointers.*;
+import org.apache.commons.jxpath.ri.model.*;
+import org.apache.commons.jxpath.ri.model.beans.*;
 import org.apache.commons.jxpath.ri.EvalContext;
 
 /**
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/21 21:52:32 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -96,9 +97,9 @@ public class PredicateContext extends EvalContext {
             if (setupDynamicPropertyPointer()){
                 Object pred = parentContext.eval(dynamicPropertyNameExpression);
                 if (pred instanceof NodePointer){
-                    pred = ((NodePointer)pred).getValue();
+                    pred = ((NodePointer)pred).getCanonicalValue();
                 }
-                dynamicPropertyPointer.setPropertyName(String.valueOf(pred));
+                dynamicPropertyPointer.setPropertyName(stringValue(pred));
                 done = true;
                 return true;
             }
@@ -135,7 +136,7 @@ public class PredicateContext extends EvalContext {
         if (!(parent instanceof PropertyOwnerPointer)){
             return false;
         }
-        dynamicPropertyPointer = ((PropertyOwnerPointer)parentContext.getCurrentNodePointer()).getPropertyPointer();
+        dynamicPropertyPointer = ((PropertyOwnerPointer)parent).getPropertyPointer();
         return true;
     }
 
@@ -164,6 +165,15 @@ public class PredicateContext extends EvalContext {
     }
 
     public boolean setPosition(int position){
-        return false;
+        if (this.position > position){
+            reset();
+        }
+
+        while (this.position < position){
+            if (!next()){
+                return false;
+            }
+        }
+        return true;
     }
 }

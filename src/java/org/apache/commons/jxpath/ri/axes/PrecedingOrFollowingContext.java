@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.5 2002/04/21 21:52:32 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/21 21:52:32 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,7 +64,8 @@ package org.apache.commons.jxpath.ri.axes;
 import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.pointers.*;
+import org.apache.commons.jxpath.ri.model.*;
+import org.apache.commons.jxpath.ri.model.beans.*;
 import org.apache.commons.jxpath.ri.EvalContext;
 import java.lang.reflect.*;
 import java.util.*;
@@ -74,7 +75,7 @@ import java.beans.*;
  * EvalContext that walks the "preceding::" and "following::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/21 21:52:32 $
  */
 public class PrecedingOrFollowingContext extends EvalContext {
     private NodeTest nodeTest;
@@ -121,18 +122,25 @@ public class PrecedingOrFollowingContext extends EvalContext {
         if (!setStarted){
             setStarted = true;
             currentRootLocation = parentContext.getCurrentNodePointer();
-            // TBD: check type
-            stack.push(currentRootLocation.siblingIterator(null, reverse));
+            NodePointer parent = getMaterialPointer(currentRootLocation.getParent());
+            if (parent != null){
+                // TBD: check type
+                stack.push(parent.childIterator(null, reverse, currentRootLocation));
+            }
         }
 
         while (true){
             if (stack.isEmpty()){
-                currentRootLocation = currentRootLocation.getParent();
+                currentRootLocation = getMaterialPointer(currentRootLocation.getParent());
+
                 if (currentRootLocation == null || currentRootLocation.isRoot()){
                     break;
                 }
-                // TBD: check type
-                stack.push(currentRootLocation.siblingIterator(null, reverse));
+
+                NodePointer parent = getMaterialPointer(currentRootLocation.getParent());
+                if (parent != null){
+                    stack.push(parent.childIterator(null, reverse, currentRootLocation));
+                }
             }
 
             while (!stack.isEmpty()){
@@ -141,7 +149,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
                     if (it.setPosition(it.getPosition() + 1)){
                         currentNodePointer = it.getNodePointer();
                         if (!currentNodePointer.isLeaf()){
-                            stack.push(currentNodePointer.childIterator(null, reverse));
+                            stack.push(currentNodePointer.childIterator(null, reverse, null));
                         }
                         if (currentNodePointer.testNode(nodeTest)){
                             super.setPosition(getCurrentPosition() + 1);
@@ -158,7 +166,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
                     if (it.setPosition(it.getPosition() + 1)){
                         currentNodePointer = it.getNodePointer();
                         if (!currentNodePointer.isLeaf()){
-                            stack.push(currentNodePointer.childIterator(null, reverse));
+                            stack.push(currentNodePointer.childIterator(null, reverse, null));
                         }
                         else if (currentNodePointer.testNode(nodeTest)){
                             super.setPosition(getCurrentPosition() + 1);
@@ -180,5 +188,15 @@ public class PrecedingOrFollowingContext extends EvalContext {
             }
         }
         return false;
+    }
+
+    /**
+     * If the pointer is auxiliary, return the parent; otherwise - the pointer itself
+     */
+    private NodePointer getMaterialPointer(NodePointer pointer){
+        while (pointer != null && !pointer.isNode()){
+            pointer = pointer.getParent();
+        }
+        return pointer;
     }
 }

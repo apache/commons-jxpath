@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.5 2002/04/21 21:52:32 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/21 21:52:32 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,7 +64,7 @@ package org.apache.commons.jxpath.ri.axes;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.pointers.*;
+import org.apache.commons.jxpath.ri.model.*;
 import org.apache.commons.jxpath.ri.EvalContext;
 import java.util.*;
 
@@ -73,7 +73,7 @@ import java.util.*;
  * axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/21 21:52:32 $
  */
 public class DescendantContext extends EvalContext {
     private NodeTest nodeTest;
@@ -123,7 +123,7 @@ public class DescendantContext extends EvalContext {
             currentNodePointer = parentContext.getCurrentNodePointer();
             if (currentNodePointer != null){
                 if (!currentNodePointer.isLeaf()){
-                    stack.push(currentNodePointer.childIterator(null, false));
+                    stack.push(currentNodePointer.childIterator(null, false, null));
                 }
                 if (includeSelf){
                     if (currentNodePointer.testNode(nodeTest)){
@@ -139,7 +139,7 @@ public class DescendantContext extends EvalContext {
             if (it.setPosition(it.getPosition() + 1)){
                 currentNodePointer = it.getNodePointer();
                 if (!currentNodePointer.isLeaf()){
-                    stack.push(currentNodePointer.childIterator(null, false));
+                    stack.push(currentNodePointer.childIterator(null, false, null));
                 }
                 if (currentNodePointer.testNode(nodeTest)){
                     position++;

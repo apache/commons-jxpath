@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/AbstractFactory.java,v 1.1 2002/04/10 03:40:19 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/10 03:40:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/AbstractFactory.java,v 1.2 2002/04/21 21:52:31 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/21 21:52:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import java.util.*;
  * return true to indicate that the factory has successfully created the described object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/10 03:40:19 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/21 21:52:31 $
  */
 public abstract class AbstractFactory {
 
@@ -82,7 +82,7 @@ public abstract class AbstractFactory {
      * to the factory to infer which one it is. If it is a collection, the
      * factory should check if the collection exists.  If not, it should create
      * the collection. Then it should create the index'th element of the collection
-     * and return it.
+     * and return true.
      * <p>
      * If the parameters describe an individual object, the factory should only
      * create an object if index == 0.
@@ -91,14 +91,6 @@ public abstract class AbstractFactory {
      * the requested object.
      */
     public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index){
-        return false;
-    }
-
-    /**
-     * The factory should expand the collection to the specified size and return true. If
-     * it cannot expand the collection, it should return false.
-     */
-    public boolean expandCollection(JXPathContext context, Pointer pointer, Object parent, String name, int size){
         return false;
     }
 
