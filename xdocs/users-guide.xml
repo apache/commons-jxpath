@@ -38,7 +38,7 @@
       </p>
       <p>
         The central class in the JXPath architecture is
-        <a href="api/org/apache/commons/jxpath/JXPathContext.html"><code>JXPathContext</code></a>.
+        <a href="apidocs/org/apache/commons/jxpath/JXPathContext.html"><code>JXPathContext</code></a>.
         Most of the APIs discussed in this document have to do with the
         JXPathContext class.
       </p>
@@ -356,7 +356,7 @@ String fName = (String)context.getValue("firstName");
         <p><b>Note:</b>  JXPath supports the extended notion of Map: any
           object with dynamic properties can be handled by JXPath
           provided that its class is registered with the
-          <a href="api/org/apache/commons/jxpath/JXPathIntrospector.html"><code>JXPathIntrospector</code></a>.
+          <a href="apidocs/org/apache/commons/jxpath/JXPathIntrospector.html"><code>JXPathIntrospector</code></a>.
         </p>
       </subsection>
 
@@ -383,7 +383,7 @@ String fName = (String)context.getValue("firstName");
       <subsection name="Containers">
         <p>
           A
-          <a href="api/org/apache/commons/jxpath/Container.html">Container</a>
+          <a href="apidocs/org/apache/commons/jxpath/Container.html">Container</a>
           is an object implementing an indirection mechanism
           transparent to JXPath.
         </p>
@@ -395,7 +395,7 @@ String fName = (String)context.getValue("firstName");
         </p>
         <p>
           An example of a useful container is
-          <a href="api/org/apache/commons/jxpath/XMLDocumentContainer.html">XMLDocumentContainer</a>.
+          <a href="apidocs/org/apache/commons/jxpath/XMLDocumentContainer.html">XMLDocumentContainer</a>.
           When you create an XMLDocumentContainer, you give it a
           pointer to an XML file (a <code>URL</code>  or a
           <code>javax.xml.transform.Source</code>. It will read
@@ -479,13 +479,13 @@ String fName = (String)context.getValue("firstName");
           In order to evaluate the <code>id()</code> function, JXPath
           calls a delegate object that should be implemented and installed
           on the JXPathContext.  The object should implement the
-          <a href="api/org/apache/commons/jxpath/IdentityManager.html">IdentityManager</a>
+          <a href="apidocs/org/apache/commons/jxpath/IdentityManager.html">IdentityManager</a>
           interface.
         </p>
         <p>
           Similarly, the <code>key()</code> function relies on a custom
           implementation of the
-          <a href="api/org/apache/commons/jxpath/KeyManager.html">KeyManager</a>
+          <a href="apidocs/org/apache/commons/jxpath/KeyManager.html">KeyManager</a>
           interface.
         </p>
       </subsection>
@@ -543,7 +543,7 @@ String fName = (String)context.getValue("firstName");
         <p>
           JXPath can be used to create new objects. First, create a
           subclass of
-          <a href="api/org/apache/commons/jxpath/AbstractFactory.html"><code>AbstractFactory</code></a>
+          <a href="apidocs/org/apache/commons/jxpath/AbstractFactory.html"><code>AbstractFactory</code></a>
           and install it on the JXPathContext. Then call
           <code>jxPathContext.createPath(xpath)</code>.
           JXPathContext will invoke your AbstractFactory when it
@@ -689,7 +689,7 @@ String fName = (String)context.getValue("firstName");
         </p>
         <p>
           See the
-          <a href="api/org/apache/commons/jxpath/servlet/package-summary.html">org.apache.commons.jxpath.servlet</a>
+          <a href="apidocs/org/apache/commons/jxpath/servlet/package-summary.html">org.apache.commons.jxpath.servlet</a>
           package for an example of just that.
         </p>
       </subsection>
@@ -704,7 +704,7 @@ String fName = (String)context.getValue("firstName");
       </p>
       <p>
         See static methods of the class
-        <a href="api/org/apache/commons/jxpath/servlet/JXPathServletContexts.html"><code>JXPathServletContexts</code></a>.
+        <a href="apidocs/org/apache/commons/jxpath/servlet/JXPathServletContexts.html"><code>JXPathServletContexts</code></a>.
         They allocate various servlet-related JXPathContexts.
       </p>
 
@@ -888,7 +888,7 @@ List homeAddresses = context.getPointer("//employee/address[@name='home']");
         <p>
           Collections of custom extension functions can be
           implemented as
-          <a href="api/org/apache/commons/jxpath/Functions.html"><code>Functions</code></a>
+          <a href="apidocs/org/apache/commons/jxpath/Functions.html"><code>Functions</code></a>
           objects or as Java classes, whose methods become extenstion
           functions.
         </p>
@@ -931,7 +931,7 @@ List homeAddresses = context.getPointer("//employee/address[@name='home']");
         </p>
         <p>
           Also, see
-          <a href="api/org/apache/commons/jxpath/FunctionLibrary.html"><code>FunctionLibrary</code></a>,
+          <a href="apidocs/org/apache/commons/jxpath/FunctionLibrary.html"><code>FunctionLibrary</code></a>,
           which is a class that allows you to register multiple sets
           of extension functions with the same JXPathContext.
         </p>
@@ -943,7 +943,7 @@ List homeAddresses = context.getPointer("//employee/address[@name='home']");
           A custom function can get access to the context in which it
           is being evaluated. ClassFunctions and PackageFunctions
           have special support for methods and constructors that have
-          <a href="api/org/apache/commons/jxpath/ExpressionContext.html"><code>ExpressionContext</code></a>
+          <a href="apidocs/org/apache/commons/jxpath/ExpressionContext.html"><code>ExpressionContext</code></a>
           as the first argument. When such extension function is
           invoked, it is given an object that implements the
           ExpressionContext interface. The function can then gain
@@ -1224,7 +1224,7 @@ public class MyExtenstionFunctions {
         The <code>"lang"</code>  boolean function is supported for
         non-DOM objects as well. It tests the Locale set on the
         JXPathContext (or the default locale). See
-        <a href="api/org/apache/commons/jxpath/JXPathContext.html#setLocale">JXPathContext.setLocale()</a>.
+        <a href="apidocs/org/apache/commons/jxpath/JXPathContext.html#setLocale">JXPathContext.setLocale()</a>.
       </p>
       <p>
         You can also utilize the <code>xml:lang</code>  attribute,
@@ -1349,7 +1349,7 @@ public class MyExtenstionFunctions {
           JXPath uses JavaBeans introspection to discover properties
           of JavaBeans. You can provide alternative property lists by
           supplying custom JXPathBeanInfo classes (see
-          <A HREF="api/org/apache/commons/jxpath/JXPathBeanInfo.html"><CODE>JXPathBeanInfo</CODE></A>).
+          <A HREF="apidocs/org/apache/commons/jxpath/JXPathBeanInfo.html"><CODE>JXPathBeanInfo</CODE></A>).
         </p>
       </subsection>
 
@@ -1372,9 +1372,9 @@ public class MyExtenstionFunctions {
         <p>
           Architecturally, multiple model support is made possible by
           the notions of a
-          <a href="api/org/apache/commons/jxpath/ri/model/NodePointer.html">NodePointer</a>
+          <a href="apidocs/org/apache/commons/jxpath/ri/model/NodePointer.html">NodePointer</a>
           and
-          <a href="api/org/apache/commons/jxpath/ri/model/NodeIterator.html">NodeIterator</a>,
+          <a href="apidocs/org/apache/commons/jxpath/ri/model/NodeIterator.html">NodeIterator</a>,
           which are simple abstract classes that are extended in
           different ways to traverse graphs of objects of different
           kinds. The NodePointer/NodeIterator APIs are designed with
@@ -1392,9 +1392,9 @@ public class MyExtenstionFunctions {
         <p>
           To add support for a new object model, build custom
           implementations of NodePointer and NodeIterator as well as
-          <a href="api/org/apache/commons/jxpath/ri/model/NodePointerFactory.html">NodePointerFactory</a>.
+          <a href="apidocs/org/apache/commons/jxpath/ri/model/NodePointerFactory.html">NodePointerFactory</a>.
           Then register the new factory with
-          <a href="api/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.html">JXPathContextReferenceImpl</a>.
+          <a href="apidocs/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.html">JXPathContextReferenceImpl</a>.
         </p>
         <p>
           See existing NodePointerFactories for examples of how

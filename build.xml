@@ -3,7 +3,7 @@
 
 <!--
         "JXPath" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.16 2002/10/20 04:00:34 dmitri Exp $
+        $Id: build.xml,v 1.17 2003/01/11 06:22:53 dmitri Exp $
 -->
 
 
@@ -256,10 +256,10 @@
    description="Create component Javadoc documentation">
     <mkdir      dir="${dist.home}"/>
     <mkdir      dir="${dist.home}/docs"/>
-    <mkdir      dir="${dist.home}/docs/api"/>
+    <mkdir      dir="${dist.home}/docs/apidocs"/>
     <javadoc sourcepath="${source.home}"
            classpathref="compile.classpath"
-                destdir="${dist.home}/docs/api"
+                destdir="${dist.home}/docs/apidocs"
            packagenames="org.apache.commons.*"
                  author="true"
                 private="false"
