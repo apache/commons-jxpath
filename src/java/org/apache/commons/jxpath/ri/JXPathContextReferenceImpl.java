@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.20 2002/08/10 01:30:39 dmitri Exp $
- * $Revision: 1.20 $
- * $Date: 2002/08/10 01:30:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.21 2002/08/26 22:29:49 dmitri Exp $
+ * $Revision: 1.21 $
+ * $Date: 2002/08/26 22:29:49 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,7 +83,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.20 $ $Date: 2002/08/10 01:30:39 $
+ * @version $Revision: 1.21 $ $Date: 2002/08/26 22:29:49 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -106,14 +106,14 @@ public class JXPathContextReferenceImpl extends JXPathContext
         if (domFactory != null){
             nodeFactories.add(domFactory);
         }
-/* TBD
+
         Object jdomFactory = allocateConditionally(
                 "org.apache.commons.jxpath.ri.model.jdom.JDOMPointerFactory",
                 "org.jdom.Document");
         if (jdomFactory != null){
             nodeFactories.add(jdomFactory);
         }
-*/
+
         nodeFactories.add(new ContainerPointerFactory());
         createNodeFactoryArray();
     }

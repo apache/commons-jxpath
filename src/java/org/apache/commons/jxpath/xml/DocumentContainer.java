@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DocumentContainer.java,v 1.1 2002/08/10 01:28:49 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/08/10 01:28:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DocumentContainer.java,v 1.2 2002/08/26 22:29:49 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/08/26 22:29:49 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,35 +79,36 @@ import org.apache.commons.jxpath.JXPathException;
  * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/10 01:28:49 $
+ * @version $Revision: 1.2 $ $Date: 2002/08/26 22:29:49 $
  */
 public class DocumentContainer implements Container {
 
     public static final String MODEL_DOM = "DOM";
-//    public static final String MODEL_JDOM = "JDOM";
+    public static final String MODEL_JDOM = "JDOM";
 
     private Object document;
     private URL xmlURL;
     private String model;
-    
+
     private static HashMap parserClasses = new HashMap();
     static {
-        parserClasses.put(MODEL_DOM, 
+        parserClasses.put(MODEL_DOM,
                           "org.apache.commons.jxpath.xml.DOMParser");
-//        parserClasses.put(MODEL_JDOM, 
-//                          "org.apache.commons.jxpath.xml.JDOMParser");
+        parserClasses.put(MODEL_JDOM,
+                          "org.apache.commons.jxpath.xml.JDOMParser");
     }
+
     private static HashMap parsers = new HashMap();
 
     /**
      * Use this constructor if the desired model is DOM.
-     * 
-     * @param URL is a URL for an XML file. 
-     * Use getClass().getResource(resourceName) to load XML from a 
+     *
+     * @param URL is a URL for an XML file.
+     * Use getClass().getResource(resourceName) to load XML from a
      * resource file.
      */
     public DocumentContainer(URL xmlURL){
-        this(xmlURL, MODEL_DOM);
+        this(xmlURL, MODEL_JDOM);
     }
 
     /**
@@ -159,7 +160,7 @@ public class DocumentContainer implements Container {
     public void setValue(Object value){
         throw new UnsupportedOperationException();
     }
-    
+
     /**
      * Maps a model type to a parser.
      */
