@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/axes/TestBeanWithNode.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/axes/TestBeanWithNode.java,v 1.2 2003/01/20 00:00:27 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/20 00:00:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,36 +71,37 @@ import org.w3c.dom.Document;
  * Test bean for mixed model JUnit tests.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/20 00:00:27 $
  */
 public class TestBeanWithNode extends TestBean {
     private Object node;
     private Object object;
 
-    public Object getVendor(){
+    public Object getVendor() {
         return node;
     }
 
-    public Object[] getVendors(){
-        return new Object[]{node};
+    public Object[] getVendors() {
+        return new Object[] { node };
     }
 
-    public void setVendor(Object node){
+    public void setVendor(Object node) {
         this.node = node;
     }
 
-    public Object getObject(){
+    public Object getObject() {
         return object;
     }
 
-    public void setObject(Object object){
+    public void setObject(Object object) {
         this.object = object;
     }
 
-    public static TestBeanWithNode createTestBeanWithDOM(){
-        DocumentContainer docCtr = new DocumentContainer(
+    public static TestBeanWithNode createTestBeanWithDOM() {
+        DocumentContainer docCtr =
+            new DocumentContainer(
                 JXPathTestCase.class.getResource("Vendor.xml"));
-        Document doc = (Document)docCtr.getValue();
+        Document doc = (Document) docCtr.getValue();
         TestBeanWithNode tbwdom = new TestBeanWithNode();
         tbwdom.setVendor(doc.getDocumentElement());
         tbwdom.setObject(docCtr);

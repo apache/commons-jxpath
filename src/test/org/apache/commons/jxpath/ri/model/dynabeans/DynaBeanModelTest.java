@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanModelTest.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanModelTest.java,v 1.2 2003/01/20 00:00:29 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/20 00:00:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,39 +62,37 @@
 
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
+import junit.framework.TestSuite;
+
 import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.TestBean;
 import org.apache.commons.jxpath.ri.model.BeanModelTestCase;
 
-import junit.framework.*;
-
 /**
  * Test for support of DynaBeans (see BeanUtils)
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/20 00:00:29 $
  */
 
-public class DynaBeanModelTest extends BeanModelTestCase
-{
-    public DynaBeanModelTest(String name)
-    {
+public class DynaBeanModelTest extends BeanModelTestCase {
+    public DynaBeanModelTest(String name) {
         super(name);
     }
 
-    public static TestSuite suite(){
-//        return (new TestSuite(BeanModelTest.class));
-        TestSuite s = new TestSuite();
-        s.addTest(new DynaBeanModelTest("testAxisParent"));
-        return s;
+    public static TestSuite suite() {
+        return new TestSuite(DynaBeanModelTest.class);
+//        TestSuite s = new TestSuite();
+//        s.addTest(new DynaBeanModelTest("testAxisParent"));
+//        return s;
     }
 
-    protected Object createContextBean(){
+    protected Object createContextBean() {
         return new WrapDynaBean(new TestBean());
     }
 
-    protected AbstractFactory getAbstractFactory(){
+    protected AbstractFactory getAbstractFactory() {
         return new TestDynaBeanFactory();
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestSuite.java,v 1.2 2002/11/28 01:02:05 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/11/28 01:02:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestSuite.java,v 1.3 2003/01/20 00:00:26 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/20 00:00:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,6 +67,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.apache.commons.jxpath.ri.JXPathCompiledExpressionTest;
 import org.apache.commons.jxpath.ri.axes.SimplePathInterpreterTest;
 import org.apache.commons.jxpath.ri.compiler.ContextDependencyTest;
 import org.apache.commons.jxpath.ri.compiler.CoreFunctionTest;
@@ -95,11 +96,10 @@ import org.apache.commons.jxpath.util.BasicTypeConverterTest;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/11/28 01:02:05 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/20 00:00:26 $
  */
 
-public class JXPathTestSuite extends TestCase
-{
+public class JXPathTestSuite extends TestCase {
     private static boolean enabled = true;
 
     /**
@@ -109,16 +109,16 @@ public class JXPathTestSuite extends TestCase
         TestRunner.run(suite());
     }
 
-    public JXPathTestSuite(String name){
+    public JXPathTestSuite(String name) {
         super(name);
     }
 
     /**
      * Return the tests included in this test suite.
      */
-    public static Test suite()
-    {
+    public static Test suite() {
         TestSuite suite = new TestSuite();
+        suite.addTestSuite(JXPathCompiledExpressionTest.class);
         suite.addTestSuite(SimplePathInterpreterTest.class);
         suite.addTestSuite(ContextDependencyTest.class);
         suite.addTestSuite(CoreFunctionTest.class);

@@ -46,29 +46,4 @@
      <?security do not show anybody ?>
      <?report average only ?>
   </product>
-
-  <inventory>
-    <name>Watermelon</name>
-    <department>
-      <name>Fruit</name>
-      <count>20</count>
-    </department>
-    <department>
-      <name>Vegetables</name>
-      <count>3</count>
-    </department>
-  </inventory>
-
-  <inventory>
-    <name>Cantaloupe</name>
-    <department>
-      <name>Fruit</name>
-      <count>10</count>
-    </department>
-    <department>
-      <name>Vegetables</name>
-      <count>100</count>
-    </department>
-  </inventory>
-
 </vendor>

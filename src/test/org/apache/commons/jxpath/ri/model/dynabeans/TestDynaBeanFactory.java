@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynabeans/TestDynaBeanFactory.java,v 1.4 2003/01/11 05:41:27 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2003/01/11 05:41:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynabeans/TestDynaBeanFactory.java,v 1.5 2003/01/20 00:00:29 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/20 00:00:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,24 +63,27 @@
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
 import org.apache.commons.beanutils.DynaBean;
-import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.NestedTestBean;
+import org.apache.commons.jxpath.Pointer;
 
 /**
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:27 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/20 00:00:29 $
  */
 public class TestDynaBeanFactory extends AbstractFactory {
 
     /**
      */
     public boolean createObject(
-            JXPathContext context,
-            Pointer pointer,
-            Object parent,
-            String name,
-            int index) 
+        JXPathContext context,
+        Pointer pointer,
+        Object parent,
+        String name,
+        int index) 
     {
         if (name.equals("nestedBean")) {
             ((DynaBean) parent).set(
@@ -106,10 +109,9 @@ public class TestDynaBeanFactory extends AbstractFactory {
         return false;
     }
 
-
     /**
      */
-    public boolean declareVariable(JXPathContext context, String name){
+    public boolean declareVariable(JXPathContext context, String name) {
         context.getVariables().declareVariable(name, null);
         return true;
     }

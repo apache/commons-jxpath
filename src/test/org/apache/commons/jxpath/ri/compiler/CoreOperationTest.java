@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/CoreOperationTest.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/CoreOperationTest.java,v 1.2 2003/01/20 00:00:27 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/20 00:00:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,11 +71,10 @@ import org.apache.commons.jxpath.Variables;
  * operations.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/20 00:00:27 $
  */
 
-public class CoreOperationTest extends JXPathTestCase
-{
+public class CoreOperationTest extends JXPathTestCase {
     private JXPathContext context;
 
     /**
@@ -83,74 +82,62 @@ public class CoreOperationTest extends JXPathTestCase
      *
      * @param name Name of the test case
      */
-    public CoreOperationTest(String name){
+    public CoreOperationTest(String name) {
         super(name);
     }
 
-    public void setUp(){
-        if (context == null){
+    public void setUp() {
+        if (context == null) {
             context = JXPathContext.newContext(null);
             Variables vars = context.getVariables();
             vars.declareVariable("integer", new Integer(1));
         }
     }
 
-    public void testInfoSetTypes(){
+    public void testInfoSetTypes() {
 
         // Numbers
-        assertXPathValue(context, "1",  new Double(1.0));
+        assertXPathValue(context, "1", new Double(1.0));
         assertXPathPointer(context, "1", "1");
-        assertXPathValueIterator(context,"1", list(new Double(1.0)));
+        assertXPathValueIterator(context, "1", list(new Double(1.0)));
 
         assertXPathPointerIterator(context, "1", list("1"));
 
-        assertXPathValue(context,"-1", new Double(-1.0));
-        assertXPathValue(context,"2 + 2", new Double(4.0));
-        assertXPathValue(context,"3 - 2", new Double(1.0));
-        assertXPathValue(context,"1 + 2 + 3 - 4 + 5", new Double(7.0));
-        assertXPathValue(context,"3 * 2", new Double(3.0*2.0));
-        assertXPathValue(context,"3 div 2", new Double(3.0/2.0));
-        assertXPathValue(context,"5 mod 2", new Double(1.0));
+        assertXPathValue(context, "-1", new Double(-1.0));
+        assertXPathValue(context, "2 + 2", new Double(4.0));
+        assertXPathValue(context, "3 - 2", new Double(1.0));
+        assertXPathValue(context, "1 + 2 + 3 - 4 + 5", new Double(7.0));
+        assertXPathValue(context, "3 * 2", new Double(3.0 * 2.0));
+        assertXPathValue(context, "3 div 2", new Double(3.0 / 2.0));
+        assertXPathValue(context, "5 mod 2", new Double(1.0));
 
         // This test produces a different result with Xalan?
-        assertXPathValue(context,"5.9 mod 2.1", new Double(1.0));
+        assertXPathValue(context, "5.9 mod 2.1", new Double(1.0));
 
-        assertXPathValue(context,"5 mod -2", new Double(1.0));
-        assertXPathValue(context,"-5 mod 2", new Double(-1.0));
-        assertXPathValue(context,"-5 mod -2", new Double(-1.0));
-        assertXPathValue(context,"1 < 2", Boolean.TRUE);
-        assertXPathValue(context,"1 > 2", Boolean.FALSE);
-        assertXPathValue(context,"1 <= 1", Boolean.TRUE);
-        assertXPathValue(context,"1 >= 2", Boolean.FALSE);
-        assertXPathValue(context,"3 > 2 > 1", Boolean.FALSE);
-        assertXPathValue(context,"3 > 2 and 2 > 1", Boolean.TRUE);
-        assertXPathValue(context,"3 > 2 and 2 < 1", Boolean.FALSE);
-        assertXPathValue(context,"3 < 2 or 2 > 1", Boolean.TRUE);
-        assertXPathValue(context,"3 < 2 or 2 < 1", Boolean.FALSE);
-        assertXPathValue(context,"1 = 1", Boolean.TRUE);
-        assertXPathValue(context,"1 = '1'", Boolean.TRUE);
-        assertXPathValue(context,"1 > 2 = 2 > 3", Boolean.TRUE);
-        assertXPathValue(context,"1 > 2 = 0", Boolean.TRUE);
-        assertXPathValue(context,"1 = 2", Boolean.FALSE);
+        assertXPathValue(context, "5 mod -2", new Double(1.0));
+        assertXPathValue(context, "-5 mod 2", new Double(-1.0));
+        assertXPathValue(context, "-5 mod -2", new Double(-1.0));
+        assertXPathValue(context, "1 < 2", Boolean.TRUE);
+        assertXPathValue(context, "1 > 2", Boolean.FALSE);
+        assertXPathValue(context, "1 <= 1", Boolean.TRUE);
+        assertXPathValue(context, "1 >= 2", Boolean.FALSE);
+        assertXPathValue(context, "3 > 2 > 1", Boolean.FALSE);
+        assertXPathValue(context, "3 > 2 and 2 > 1", Boolean.TRUE);
+        assertXPathValue(context, "3 > 2 and 2 < 1", Boolean.FALSE);
+        assertXPathValue(context, "3 < 2 or 2 > 1", Boolean.TRUE);
+        assertXPathValue(context, "3 < 2 or 2 < 1", Boolean.FALSE);
+        assertXPathValue(context, "1 = 1", Boolean.TRUE);
+        assertXPathValue(context, "1 = '1'", Boolean.TRUE);
+        assertXPathValue(context, "1 > 2 = 2 > 3", Boolean.TRUE);
+        assertXPathValue(context, "1 > 2 = 0", Boolean.TRUE);
+        assertXPathValue(context, "1 = 2", Boolean.FALSE);
 
-        assertXPathValue(context, 
-                "$integer",
-                new Double(1), 
-                Double.class);
-                
-        assertXPathValue(context, 
-                "2 + 3",
-                "5.0",
-                String.class);
-                
-        assertXPathValue(context, 
-                "2 + 3",
-                Boolean.TRUE, 
-                boolean.class);
-                
-        assertXPathValue(context, 
-                "'true'",
-                Boolean.TRUE, 
-                Boolean.class);
+        assertXPathValue(context, "$integer", new Double(1), Double.class);
+
+        assertXPathValue(context, "2 + 3", "5.0", String.class);
+
+        assertXPathValue(context, "2 + 3", Boolean.TRUE, boolean.class);
+
+        assertXPathValue(context, "'true'", Boolean.TRUE, Boolean.class);
     }
 }

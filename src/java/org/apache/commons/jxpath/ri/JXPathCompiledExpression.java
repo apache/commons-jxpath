@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/01/11 05:41:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.6 2003/01/20 00:00:26 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/20 00:00:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.Pointer;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:22 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/20 00:00:26 $
  */
 public class JXPathCompiledExpression implements CompiledExpression {
 
@@ -82,6 +82,18 @@ public class JXPathCompiledExpression implements CompiledExpression {
         this.expression = expression;
     }
 
+    protected String getXPath() {
+        return xpath;
+    }
+
+    protected Expression getExpression() {
+        return expression;
+    }
+
+    public String toString() {
+        return xpath;
+    }
+    
     /**
      * @see CompiledExpression#getValue(JXPathContext)
      */

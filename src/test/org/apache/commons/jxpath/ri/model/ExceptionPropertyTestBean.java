@@ -58,19 +58,19 @@ import org.apache.commons.jxpath.TestBean;
 /**
  * 
  * @author <a href="mailto:dmitri@apache.org">Dmitri Plotnikov</a>
- * @version $Id: ExceptionPropertyTestBean.java,v 1.1 2002/11/28 01:02:05 dmitri Exp $
+ * @version $Id: ExceptionPropertyTestBean.java,v 1.2 2003/01/20 00:00:28 dmitri Exp $
  */
 public class ExceptionPropertyTestBean {
 
-    public String getErrorString(){
+    public String getErrorString() {
         throw new RuntimeException("errorString");
     }
-    
-    public String[] getErrorStringArray(){
+
+    public String[] getErrorStringArray() {
         throw new RuntimeException("errorStringArray");
     }
 
-    public TestBean getErrorBean(){
+    public TestBean getErrorBean() {
         throw new RuntimeException("errorBean");
     }
 }

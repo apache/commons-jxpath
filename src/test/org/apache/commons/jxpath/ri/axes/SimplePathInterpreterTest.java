@@ -1,17 +1,25 @@
 package org.apache.commons.jxpath.ri.axes;
 
+import java.util.HashMap;
+
 import junit.framework.TestCase;
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.NestedTestBean;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.TestNull;
-import org.apache.commons.jxpath.NestedTestBean;
-import org.apache.commons.jxpath.ri.model.*;
-import org.apache.commons.jxpath.ri.model.beans.*;
-import org.apache.commons.jxpath.ri.model.dom.*;
-import org.apache.commons.jxpath.ri.model.dynamic.*;
-
-import java.util.*;
+import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.model.VariablePointer;
+import org.apache.commons.jxpath.ri.model.beans.BeanPointer;
+import org.apache.commons.jxpath.ri.model.beans.BeanPropertyPointer;
+import org.apache.commons.jxpath.ri.model.beans.CollectionPointer;
+import org.apache.commons.jxpath.ri.model.beans.NullElementPointer;
+import org.apache.commons.jxpath.ri.model.beans.NullPointer;
+import org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer;
+import org.apache.commons.jxpath.ri.model.beans.TestBeanFactory;
+import org.apache.commons.jxpath.ri.model.dom.DOMNodePointer;
+import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointer;
+import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
 
 public class SimplePathInterpreterTest extends TestCase {
 
@@ -55,7 +63,7 @@ public class SimplePathInterpreterTest extends TestCase {
         context.setFactory(new TestBeanFactory());
     }
 
-    public void test_doStep_noPredicates_propertyOwner(){
+    public void testDoStepNoPredicatesPropertyOwner() {
         // Existing scalar property
         assertValueAndPointer("/int",
                 new Integer(1),
@@ -146,7 +154,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbC");
     }
 
-    public void test_doStep_noPredicates_standard(){
+    public void testDoStepNoPredicatesStandard() {
         // Existing DOM node
         assertValueAndPointer("/vendor/location/address/city",
                 "Fruit Market",
@@ -169,7 +177,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbMMMMn");
     }
 
-    public void test_doStep_predicates_propertyOwner(){
+    public void testDoStepPredicatesPropertyOwner() {
         // missingProperty[@name=foo]
         assertNullPointer("/foo[@name='foo']",
                 "/foo[@name='foo']",
@@ -181,7 +189,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "Bn");
     }
 
-    public void test_doStep_predicates_standard(){
+    public void testDoStepPredicatesStandard() {
         // Looking for an actual XML attribute called "name"
         // nodeProperty/name[@name=value]
         assertValueAndPointer("/vendor/contact[@name='jack']",
@@ -213,7 +221,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbMM");
     }
 
-    public void test_doPredicate_name(){
+    public void testDoPredicateName() {
         // existingProperty[@name=existingProperty]
         assertValueAndPointer("/nestedBean[@name='int']",
                 new Integer(1),
@@ -349,7 +357,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbDdM");
     }
 
-    public void test_doPredicates_standard(){
+    public void testDoPredicatesStandard() {
         // bean/map/collection/node
         assertValueAndPointer("map[@name='Key3'][@name='fruitco']",
                 context.getValue("/vendor"),
@@ -390,7 +398,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbMM");
     }
 
-    public void test_doPredicate_index(){
+    public void testDoPredicateIndex() {
         // Existing dynamic property + existing property + index
         assertValueAndPointer("/map[@name='Key2'][@name='strings'][2]",
                 "String 2",
@@ -536,7 +544,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbB");
     }
 
-    public void testInterpretExpressionPath(){
+    public void testInterpretExpressionPath() {
         context.getVariables().declareVariable("array", new String[]{"Value1"});
         context.getVariables().declareVariable("testnull", new TestNull());
 
@@ -571,7 +579,7 @@ public class SimplePathInterpreterTest extends TestCase {
         assertEquals("Checking signature: " + path,
                 expectedSignature, pointerSignature(pointer));
         
-        Pointer vPointer = ((NodePointer)pointer).getValuePointer();
+        Pointer vPointer = ((NodePointer) pointer).getValuePointer();
         assertEquals("Checking value pointer signature: " + path,
                 expectedValueSignature, pointerSignature(vPointer));
     }
@@ -587,9 +595,9 @@ public class SimplePathInterpreterTest extends TestCase {
         assertEquals("Checking Signature: " + path,
                     expectedSignature, pointerSignature(pointer));
                 
-        Pointer vPointer = ((NodePointer)pointer).getValuePointer();
+        Pointer vPointer = ((NodePointer) pointer).getValuePointer();
         assertTrue("Null path is null: " + path,
-                    !((NodePointer)vPointer).isActual());
+                    !((NodePointer) vPointer).isActual());
         assertEquals("Checking value pointer signature: " + path,
                     expectedSignature + "N", pointerSignature(vPointer));
     }
@@ -599,26 +607,26 @@ public class SimplePathInterpreterTest extends TestCase {
      * we will get a signature which will contain a single character
      * per pointer in the chain, representing that pointer's type.
      */
-    private String pointerSignature(Pointer pointer){
-        if (pointer == null){
+    private String pointerSignature(Pointer pointer) {
+        if (pointer == null) {
             return "";
         }
 
         char type = '?';
-        if (pointer instanceof NullPointer){                 type = 'N'; }
-        else if (pointer instanceof NullPropertyPointer){    type = 'n'; }
-        else if (pointer instanceof NullElementPointer){     type = 'E'; }
-        else if (pointer instanceof VariablePointer){        type = 'V'; }
-        else if (pointer instanceof CollectionPointer){      type = 'C'; }
-        else if (pointer instanceof BeanPointer){            type = 'B'; }
-        else if (pointer instanceof BeanPropertyPointer){    type = 'b'; }
-        else if (pointer instanceof DynamicPointer){         type = 'D'; }
-        else if (pointer instanceof DynamicPropertyPointer){ type = 'd'; }
-        else if (pointer instanceof DOMNodePointer){         type = 'M'; }
+        if (pointer instanceof NullPointer) {                 type = 'N'; }
+        else if (pointer instanceof NullPropertyPointer) {    type = 'n'; }
+        else if (pointer instanceof NullElementPointer) {     type = 'E'; }
+        else if (pointer instanceof VariablePointer) {        type = 'V'; }
+        else if (pointer instanceof CollectionPointer) {      type = 'C'; }
+        else if (pointer instanceof BeanPointer) {            type = 'B'; }
+        else if (pointer instanceof BeanPropertyPointer) {    type = 'b'; }
+        else if (pointer instanceof DynamicPointer) {         type = 'D'; }
+        else if (pointer instanceof DynamicPropertyPointer) { type = 'd'; }
+        else if (pointer instanceof DOMNodePointer) {         type = 'M'; }
         else {
             System.err.println("UNKNOWN TYPE: " + pointer.getClass());
         }
-        return pointerSignature(((NodePointer)pointer).getParent()) + type;
+        return pointerSignature(((NodePointer) pointer).getParent()) + type;
     }
 }
 

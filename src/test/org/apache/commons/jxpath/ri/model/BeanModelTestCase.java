@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.7 2003/01/12 01:52:57 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/01/12 01:52:57 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.8 2003/01/20 00:00:28 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/01/20 00:00:28 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,9 +62,16 @@
 
 package org.apache.commons.jxpath.ri.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
-import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.NestedTestBean;
+import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
@@ -74,11 +81,10 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/01/12 01:52:57 $
+ * @version $Revision: 1.8 $ $Date: 2003/01/20 00:00:28 $
  */
 
-public abstract class BeanModelTestCase extends JXPathTestCase
-{
+public abstract class BeanModelTestCase extends JXPathTestCase {
     private JXPathContext context;
 
     /**
@@ -86,12 +92,12 @@ public abstract class BeanModelTestCase extends JXPathTestCase
      *
      * @param name Name of the test case
      */
-    public BeanModelTestCase(String name){
+    public BeanModelTestCase(String name) {
         super(name);
     }
 
-    public void setUp(){
-        if (context == null){
+    public void setUp() {
+        if (context == null) {
             context = JXPathContext.newContext(createContextBean());
             context.setLocale(Locale.US);
             context.setFactory(getAbstractFactory());
@@ -104,7 +110,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase
     /**
      * Test property iterators, the core of the graph traversal engine
      */
-    public void testIndividualIterators(){
+    public void testIndividualIterators() {
         testIndividual(+1, 0, true, false, 0);
         testIndividual(-1, 0, true, false, 4);
 
@@ -119,8 +125,12 @@ public abstract class BeanModelTestCase extends JXPathTestCase
         testIndividual(0, 0, false, true, 4);
     }
 
-    private void testIndividual(int relativePropertyIndex, int offset,
-                boolean useStartLocation, boolean reverse, int expected)
+    private void testIndividual(
+        int relativePropertyIndex,
+        int offset,
+        boolean useStartLocation,
+        boolean reverse,
+        int expected) 
     {
         PropertyOwnerPointer root =
             (PropertyOwnerPointer) NodePointer.newNodePointer(
@@ -164,7 +174,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase
     /**
      * Test property iterators with multiple properties returned
      */
-    public void testMultipleIterators(){
+    public void testMultipleIterators() {
         testMultiple(0, 0, true, false, 20);
 
         testMultiple(3, 0, true, false, 16);
@@ -177,18 +187,23 @@ public abstract class BeanModelTestCase extends JXPathTestCase
         testMultiple(3, 3, true, false, 13);
     }
 
-    private void testMultiple(int propertyIndex, int offset,
-                boolean useStartLocation, boolean reverse, int expected)
+    private void testMultiple(
+        int propertyIndex,
+        int offset,
+        boolean useStartLocation,
+        boolean reverse,
+        int expected) 
     {
         PropertyOwnerPointer root =
-                (PropertyOwnerPointer)NodePointer.newNodePointer(
-                        new QName(null, "root"), createContextBean(),
-                        Locale.getDefault());
+            (PropertyOwnerPointer) NodePointer.newNodePointer(
+                new QName(null, "root"),
+                createContextBean(),
+                Locale.getDefault());
         NodeIterator it;
 
         PropertyPointer start = null;
 
-        if (useStartLocation){
+        if (useStartLocation) {
             start = root.getPropertyPointer();
             start.setPropertyIndex(propertyIndex);
             start.setIndex(offset);
@@ -196,26 +211,34 @@ public abstract class BeanModelTestCase extends JXPathTestCase
         it = root.childIterator(null, reverse, start);
 
         int size = 0;
-        while(it.setPosition(it.getPosition() + 1)){
+        while (it.setPosition(it.getPosition() + 1)) {
 //            System.err.println("LOC: " + it.getCurrentNodePointer());
             size++;
         }
-        assertEquals("ITERATIONS: Multiple, propertyIndex=" + propertyIndex +
-            ", offset=" + offset + ", useStartLocation=" + useStartLocation +
-            ", reverse=" + reverse, expected, size);
+        assertEquals(
+            "ITERATIONS: Multiple, propertyIndex="
+                + propertyIndex
+                + ", offset="
+                + offset
+                + ", useStartLocation="
+                + useStartLocation
+                + ", reverse="
+                + reverse,
+            expected,
+            size);
     }
 
-    private int relativeProperty(PropertyPointer holder, int offset){
+    private int relativeProperty(PropertyPointer holder, int offset) {
         String[] names = holder.getPropertyNames();
-        for (int i = 0; i < names.length; i++){
-            if (names[i].equals("integers")){
+        for (int i = 0; i < names.length; i++) {
+            if (names[i].equals("integers")) {
                 return i + offset;
             }
         }
         return -1;
     }
 
-    public void testIteratePropertyArrayWithHasNext(){
+    public void testIteratePropertyArrayWithHasNext() {
         JXPathContext context = JXPathContext.newContext(createContextBean());
         Iterator it = context.iteratePointers("/integers");
         List actual = new ArrayList();
@@ -249,23 +272,25 @@ public abstract class BeanModelTestCase extends JXPathTestCase
             actual);
     }
 
-    public void testIterateAndSet(){
+    public void testIterateAndSet() {
         JXPathContext context = JXPathContext.newContext(createContextBean());
 
         Iterator it = context.iteratePointers("beans/int");
         int i = 5;
-        while (it.hasNext()){
-            NodePointer pointer = (NodePointer)it.next();
+        while (it.hasNext()) {
+            NodePointer pointer = (NodePointer) it.next();
             pointer.setValue(new Integer(i++));
         }
 
         it = context.iteratePointers("beans/int");
         List actual = new ArrayList();
-        while (it.hasNext()){
-            actual.add(((Pointer)it.next()).getValue());
+        while (it.hasNext()) {
+            actual.add(((Pointer) it.next()).getValue());
         }
-        assertEquals("Iterating <" + "beans/int" + ">",
-                list(new Integer(5), new Integer(6)), actual);
+        assertEquals(
+            "Iterating <" + "beans/int" + ">",
+            list(new Integer(5), new Integer(6)),
+            actual);
     }
 
     /**
@@ -285,10 +310,10 @@ public abstract class BeanModelTestCase extends JXPathTestCase
         context.setValue("/beans[2]/name", "Name 2");
         assertXPathValue(context, "/beans[2]/name", "Name 2");
 
-        int iter_count = 0;
+        int iterCount = 0;
         Iterator iter = context.iteratePointers("/beans/name");
         while (iter.hasNext()) {
-            iter_count++;
+            iterCount++;
             Pointer pointer = (Pointer) iter.next();
             String s = (String) pointer.getValue();
             s = s + "suffix";
@@ -300,406 +325,382 @@ public abstract class BeanModelTestCase extends JXPathTestCase
                 s,
                 context.getValue(pointer.asPath()));
         }
-        assertEquals("Iteration count", 2, iter_count);
+        assertEquals("Iteration count", 2, iterCount);
 
         assertXPathValue(context, "/beans[1]/name", "Name 1suffix");
         assertXPathValue(context, "/beans[2]/name", "Name 2suffix");
     }
 
-    public void testRoot(){
-        assertXPathValueAndPointer(context,
-                "/",
-                context.getContextBean(),
-                "/");
+    public void testRoot() {
+        assertXPathValueAndPointer(context, "/", context.getContextBean(), "/");
     }
 
-    public void testAxisAncestor(){
+    public void testAxisAncestor() {
         // ancestor::
-        assertXPathValue(context,
-                "int/ancestor::root = /",
-                Boolean.TRUE);
+        assertXPathValue(context, "int/ancestor::root = /", Boolean.TRUE);
 
-        assertXPathValue(context,
-                "count(beans/name/ancestor-or-self::node())",
-                new Double(5));
+        assertXPathValue(
+            context,
+            "count(beans/name/ancestor-or-self::node())",
+            new Double(5));
 
-        assertXPathValue(context,
-                "beans/name/ancestor-or-self::node()[3] = /",
-                Boolean.TRUE);
+        assertXPathValue(
+            context,
+            "beans/name/ancestor-or-self::node()[3] = /",
+            Boolean.TRUE);
     }
 
-    public void testAxisChild(){
-        assertXPathValue(context,
-                "boolean",
-                Boolean.FALSE);
+    public void testAxisChild() {
+        assertXPathValue(context, "boolean", Boolean.FALSE);
 
-        assertXPathPointer(context,
-                "boolean",
-                "/boolean");
+        assertXPathPointer(context, "boolean", "/boolean");
 
-        assertXPathPointerIterator(context,
-                "boolean",
-                list("/boolean"));
+        assertXPathPointerIterator(context, "boolean", list("/boolean"));
 
         // Count elements in a child collection
-        assertXPathValue(context,
-                "count(set)",
-                new Double(3));
+        assertXPathValue(context, "count(set)", new Double(3));
 
 //        assertXPathValue(context,"boolean/class/name", "java.lang.Boolean");
 
         // Child with namespace - should not find any
-        assertXPathValueIterator(context,
-                "foo:boolean",
-                list());
+        assertXPathValueIterator(context, "foo:boolean", list());
 
         // Count all children with a wildcard
-        assertXPathValue(context,
-                "count(*)",
-                new Double(21));
+        assertXPathValue(context, "count(*)", new Double(21));
 
         // Same, constrained by node type = node()
-        assertXPathValue(context,
-                "count(child::node())",
-                new Double(21));
+        assertXPathValue(context, "count(child::node())", new Double(21));
     }
 
-    public void testAxisChildNestedBean(){
+    public void testAxisChildNestedBean() {
         // Nested bean
-        assertXPathValue(context,
-                "nestedBean/name",
-                "Name 0");
+        assertXPathValue(context, "nestedBean/name", "Name 0");
 
-        assertXPathPointer(context,
-                "nestedBean/name",
-                "/nestedBean/name");
+        assertXPathPointer(context, "nestedBean/name", "/nestedBean/name");
 
-        assertXPathPointerIterator(context,
-                "nestedBean/name",
-                list("/nestedBean/name"));
+        assertXPathPointerIterator(
+            context,
+            "nestedBean/name",
+            list("/nestedBean/name"));
     }
 
-    public void testAxisChildNestedCollection(){
-        assertXPathValueIterator(context,
-                "integers",
-                list(new Integer(1), new Integer(2),
-                     new Integer(3), new Integer(4)));
+    public void testAxisChildNestedCollection() {
+        assertXPathValueIterator(
+            context,
+            "integers",
+            list(
+                new Integer(1),
+                new Integer(2),
+                new Integer(3),
+                new Integer(4)));
 
-        assertXPathPointer(context,
-                "integers",
-                "/integers");
+        assertXPathPointer(context, "integers", "/integers");
 
-        assertXPathPointerIterator(context,
-                "integers",
-                list("/integers[1]", "/integers[2]",
-                     "/integers[3]", "/integers[4]"));
+        assertXPathPointerIterator(
+            context,
+            "integers",
+            list(
+                "/integers[1]",
+                "/integers[2]",
+                "/integers[3]",
+                "/integers[4]"));
     }
 
-    public void testIndexPredicate(){
-        assertXPathValue(context,
-                "integers[2]",
-                new Integer(2));
+    public void testIndexPredicate() {
+        assertXPathValue(context, "integers[2]", new Integer(2));
 
-        assertXPathPointer(context,
-                "integers[2]",
-                "/integers[2]");
+        assertXPathPointer(context, "integers[2]", "/integers[2]");
 
-        assertXPathPointerIterator(context,
-                "integers[2]",
-                list("/integers[2]"));
+        assertXPathPointerIterator(
+            context,
+            "integers[2]",
+            list("/integers[2]"));
 
-        assertXPathValue(context,
-                "beans[1]/name",
-                "Name 1");
+        assertXPathValue(context, "beans[1]/name", "Name 1");
 
-        assertXPathPointer(context,
-                "beans[1]/name",
-                "/beans[1]/name");
+        assertXPathPointer(context, "beans[1]/name", "/beans[1]/name");
 
-        assertXPathValueIterator(context,
-                "beans[1]/strings",
-                list("String 1", "String 2", "String 3"));
+        assertXPathValueIterator(
+            context,
+            "beans[1]/strings",
+            list("String 1", "String 2", "String 3"));
 
-        assertXPathValueIterator(context,
-                "beans/strings[2]",
-                list("String 2", "String 2"));
+        assertXPathValueIterator(
+            context,
+            "beans/strings[2]",
+            list("String 2", "String 2"));
 
         // Find the first match
-        assertXPathValue(context,
-                "beans/strings[2]",
-                "String 2");
+        assertXPathValue(context, "beans/strings[2]", "String 2");
 
         // Indexing in a set collected from a UnionContext
-        assertXPathValue(context,
-                "(beans/strings[2])[1]",
-                "String 2");
+        assertXPathValue(context, "(beans/strings[2])[1]", "String 2");
     }
 
-    public void testAxisDescendant(){
-       // descendant::
-        assertXPathValue(context,
-                "count(descendant::node())",
-                new Double(65));
+    public void testAxisDescendant() {
+        // descendant::
+        assertXPathValue(context, "count(descendant::node())", new Double(65));
 
         // Should not find any descendants with name root
-        assertXPathValue(context,
-                "count(descendant::root)",
-                new Double(0));
+        assertXPathValue(context, "count(descendant::root)", new Double(0));
 
-        assertXPathValue(context,
-                "count(descendant::name)",
-                new Double(7));
+        assertXPathValue(context, "count(descendant::name)", new Double(7));
     }
 
-    public void testAxisDescendantOrSelf(){
+    public void testAxisDescendantOrSelf() {
         // descendant-or-self::
-        assertXPathValueIterator(context,
-                "descendant-or-self::name",
-                set("Name 1", "Name 2", "Name 3", "Name 6",
-                     "Name 0", "Name 5", "Name 4"));
+        assertXPathValueIterator(
+            context,
+            "descendant-or-self::name",
+            set(
+                "Name 1",
+                "Name 2",
+                "Name 3",
+                "Name 6",
+                "Name 0",
+                "Name 5",
+                "Name 4"));
 
         // Same - abbreviated syntax
-        assertXPathValueIterator(context,
-                "//name",
-                set("Name 1", "Name 2", "Name 3", "Name 6",
-                     "Name 0", "Name 5", "Name 4"));
+        assertXPathValueIterator(
+            context,
+            "//name",
+            set(
+                "Name 1",
+                "Name 2",
+                "Name 3",
+                "Name 6",
+                "Name 0",
+                "Name 5",
+                "Name 4"));
 
         // See that it actually finds self
-        assertXPathValue(context,
-                "count(descendant-or-self::root)",
-                new Double(1));
+        assertXPathValue(
+            context,
+            "count(descendant-or-self::root)",
+            new Double(1));
 
         // Combine descendant-or-self:: and and self::
-        assertXPathValue(context,
-                "count(nestedBean//.)",
-                new Double(7));
+        assertXPathValue(context, "count(nestedBean//.)", new Double(7));
 
         // Combine descendant-or-self:: and and self::name
-        assertXPathValue(context,
-                "count(//self::beans)",
-                new Double(2));
+        assertXPathValue(context, "count(//self::beans)", new Double(2));
 
         // Count all nodes in the tree
-        assertXPathValue(context,
-                "count(descendant-or-self::node())",
-                new Double(66));
+        assertXPathValue(
+            context,
+            "count(descendant-or-self::node())",
+            new Double(66));
 
     }
 
-    public void testAxisFollowing(){
+    public void testAxisFollowing() {
         // following::
-        assertXPathValue(context,
-                "count(nestedBean/strings[2]/following::node())",
-                new Double(21));
+        assertXPathValue(
+            context,
+            "count(nestedBean/strings[2]/following::node())",
+            new Double(21));
 
-        assertXPathValue(context,
-                "count(nestedBean/strings[2]/following::strings)",
-                new Double(7));
+        assertXPathValue(
+            context,
+            "count(nestedBean/strings[2]/following::strings)",
+            new Double(7));
     }
 
-    public void testAxisFollowingSibling(){
+    public void testAxisFollowingSibling() {
         // following-sibling::
-        assertXPathValue(context,
-                "count(/nestedBean/following-sibling::node())",
-                new Double(8));
+        assertXPathValue(
+            context,
+            "count(/nestedBean/following-sibling::node())",
+            new Double(8));
 
-        assertXPathValue(context,
-                "count(/nestedBean/following-sibling::object)",
-                new Double(1));
+        assertXPathValue(
+            context,
+            "count(/nestedBean/following-sibling::object)",
+            new Double(1));
 
         // Combine parent:: and following-sibling::
-        assertXPathValue(context,
-                "count(/nestedBean/boolean/../following-sibling::node())",
-                new Double(8));
+        assertXPathValue(
+            context,
+            "count(/nestedBean/boolean/../following-sibling::node())",
+            new Double(8));
 
-        assertXPathValue(context,
-                "count(/nestedBean/boolean/../following-sibling::object)",
-                new Double(1));
+        assertXPathValue(
+            context,
+            "count(/nestedBean/boolean/../following-sibling::object)",
+            new Double(1));
 
         // Combine descendant:: and following-sibling::
-        assertXPathValue(context,
-                "count(/descendant::boolean/following-sibling::node())",
-                new Double(53));
+        assertXPathValue(
+            context,
+            "count(/descendant::boolean/following-sibling::node())",
+            new Double(53));
 
-        assertXPathValue(context,
-                "count(/descendant::boolean/following-sibling::name)",
-                new Double(7));
+        assertXPathValue(
+            context,
+            "count(/descendant::boolean/following-sibling::name)",
+            new Double(7));
     }
 
-    public void testAxisParent(){
+    public void testAxisParent() {
         // parent::
-        assertXPathValue(context,
-                "count(/beans/..)",
-                new Double(1));
+        assertXPathValue(context, "count(/beans/..)", new Double(1));
 
-        assertXPathValue(context,
-                "count(//..)",
-                new Double(9));
+        assertXPathValue(context, "count(//..)", new Double(9));
 
-        assertXPathValue(context,
-                "count(//../..)",
-                new Double(2));
+        assertXPathValue(context, "count(//../..)", new Double(2));
 
-        assertXPathValueIterator(context,
-                "//parent::beans/name",
-                list("Name 1", "Name 2"));
+        assertXPathValueIterator(
+            context,
+            "//parent::beans/name",
+            list("Name 1", "Name 2"));
     }
 
-    public void testAxisPreceding(){
+    public void testAxisPreceding() {
         // preceding::
-        assertXPathValue(context,
-                "count(beans[2]/int/preceding::node())",
-                new Double(8));
+        assertXPathValue(
+            context,
+            "count(beans[2]/int/preceding::node())",
+            new Double(8));
 
-        assertXPathValue(context,
-                "count(beans[2]/int/preceding::boolean)",
-                new Double(2));
+        assertXPathValue(
+            context,
+            "count(beans[2]/int/preceding::boolean)",
+            new Double(2));
     }
 
-    public void testAxisPrecedingSibling(){
+    public void testAxisPrecedingSibling() {
         // preceding-sibling::
-        assertXPathValue(context,
-                "count(/boolean/preceding-sibling::node())",
-                new Double(2));
+        assertXPathValue(
+            context,
+            "count(/boolean/preceding-sibling::node())",
+            new Double(2));
 
-        assertXPathValue(context,
-                "count(/nestedBean/int/../preceding-sibling::node())",
-                new Double(12));
+        assertXPathValue(
+            context,
+            "count(/nestedBean/int/../preceding-sibling::node())",
+            new Double(12));
 
-        assertXPathValue(context,
-                "count(/descendant::int/preceding-sibling::node())",
-                new Double(10));
+        assertXPathValue(
+            context,
+            "count(/descendant::int/preceding-sibling::node())",
+            new Double(10));
     }
 
-    public void testAxisSelf(){
+    public void testAxisSelf() {
         // self::
-        assertXPathValue(context,
-                "self::node() = /",
-                Boolean.TRUE);
+        assertXPathValue(context, "self::node() = /", Boolean.TRUE);
 
-        assertXPathValue(context,
-                "self::root = /",
-                Boolean.TRUE);
+        assertXPathValue(context, "self::root = /", Boolean.TRUE);
     }
 
-    public void testUnion(){
+    public void testUnion() {
         // Union - note corrected document order
-        assertXPathValueIterator(context,
-                "integers | beans[1]/strings",
-                list("String 1", "String 2", "String 3",
-                     new Integer(1), new Integer(2),
-                     new Integer(3), new Integer(4)));
+        assertXPathValueIterator(
+            context,
+            "integers | beans[1]/strings",
+            list(
+                "String 1",
+                "String 2",
+                "String 3",
+                new Integer(1),
+                new Integer(2),
+                new Integer(3),
+                new Integer(4)));
 
-        assertXPathValue(context,
-                "count((integers | beans[1]/strings)[contains(., '1')])",
-                new Double(2));
+        assertXPathValue(
+            context,
+            "count((integers | beans[1]/strings)[contains(., '1')])",
+            new Double(2));
 
-        assertXPathValue(context,
-                "count((integers | beans[1]/strings)[name(.) = 'strings'])",
-                new Double(3));
+        assertXPathValue(
+            context,
+            "count((integers | beans[1]/strings)[name(.) = 'strings'])",
+            new Double(3));
 
         // Note that the following is different from "integer[2]" -
         // it is a filter expression
-        assertXPathValue(context,
-                "(integers)[2]",
-                new Integer(2));
-     }
+        assertXPathValue(context, "(integers)[2]", new Integer(2));
+    }
 
-    public void testAxisAttribute(){
+    public void testAxisAttribute() {
         // Attributes are just like children to beans
-        assertXPathValue(context,
-                "count(@*)",
-                new Double(21.0));
+        assertXPathValue(context, "count(@*)", new Double(21.0));
 
         // Unknown attribute
-        assertXPathValueLenient(context,
-                "@foo",
-                null);
+        assertXPathValueLenient(context, "@foo", null);
     }
 
     /**
      * Testing the pseudo-attribute "name" that java beans
      * objects appear to have.
      */
-    public void testAttributeName(){
-        assertXPathValue(context,
-                "nestedBean[@name = 'int']",
-                new Integer(1));
+    public void testAttributeName() {
+        assertXPathValue(context, "nestedBean[@name = 'int']", new Integer(1));
 
-        assertXPathPointer(context,
-                "nestedBean[@name = 'int']",
-                "/nestedBean/int");
+        assertXPathPointer(
+            context,
+            "nestedBean[@name = 'int']",
+            "/nestedBean/int");
     }
 
     public void testAttributeLang() {
 
-        assertXPathValue(context, 
-            "@xml:lang", 
-            "en-US");
+        assertXPathValue(context, "@xml:lang", "en-US");
 
-        assertXPathValue(context, 
-            "count(@xml:*)", 
-            new Double(1));
+        assertXPathValue(context, "count(@xml:*)", new Double(1));
 
-        assertXPathValue(context, 
-            "lang('en')", 
-            Boolean.TRUE);
-            
-        assertXPathValue(context, 
-            "lang('fr')", 
-            Boolean.FALSE);
+        assertXPathValue(context, "lang('en')", Boolean.TRUE);
+
+        assertXPathValue(context, "lang('fr')", Boolean.FALSE);
     }
-    
-    public void testCoreFunctions(){
-            
-        assertXPathValue(context, 
-            "boolean(boolean)", 
-            Boolean.TRUE);
 
-        assertXPathValue(context,
-            "boolean(boolean = false())",
-            Boolean.TRUE);
-            
+    public void testCoreFunctions() {
+
+        assertXPathValue(context, "boolean(boolean)", Boolean.TRUE);
+
+        assertXPathValue(context, "boolean(boolean = false())", Boolean.TRUE);
+
         assertXPathValue(
             context,
             "boolean(integers[position() < 3])",
             Boolean.TRUE);
-            
+
         assertXPathValue(
             context,
             "boolean(integers[position() > 4])",
             Boolean.FALSE);
-            
-        assertXPathValue(context, 
-            "sum(integers)", 
-            new Double(10));
+
+        assertXPathValue(context, "sum(integers)", new Double(10));
     }
 
-    public void testBooleanPredicate(){
+    public void testBooleanPredicate() {
         // use child axis
-        
+
         // bean[1]/int = 1
         // bean[2]/int = 3
-        
-        assertXPathValue(context,
-                "beans[int > 2]/name",
-                "Name 2");
 
-        assertXPathValueIterator(context,
-                "beans[int > 2]/name",
-                list("Name 2"));
+        assertXPathValue(context, "beans[int > 2]/name", "Name 2");
 
-        assertXPathValueIterator(context,
-                "beans[int >= 1]/name",
-                list("Name 1", "Name 2"));
-                
-        assertXPathValueIterator(context,
-                "beans[int < 2]/name",
-                list("Name 1"));
-                
-        assertXPathValueIterator(context,
-                "beans[int <= 3]/name",
-                list("Name 1", "Name 2"));
+        assertXPathValueIterator(
+            context,
+            "beans[int > 2]/name",
+            list("Name 2"));
+
+        assertXPathValueIterator(
+            context,
+            "beans[int >= 1]/name",
+            list("Name 1", "Name 2"));
+
+        assertXPathValueIterator(
+            context,
+            "beans[int < 2]/name",
+            list("Name 1"));
+
+        assertXPathValueIterator(
+            context,
+            "beans[int <= 3]/name",
+            list("Name 1", "Name 2"));
 
         assertXPathValueIterator(
             context,
@@ -707,282 +708,236 @@ public abstract class BeanModelTestCase extends JXPathTestCase
             list("String 1", "String 2", "String 3"));
 
         // use some fancy axis and the child axis in the predicate
-        assertXPathValueIterator(context,
-                "//self::node()[name = 'Name 0']/name",
-                list("Name 0"));
+        assertXPathValueIterator(
+            context,
+            "//self::node()[name = 'Name 0']/name",
+            list("Name 0"));
 
         // use context-dependent function in the predicate
-        assertXPathValue(context,
-                "beans/strings[name(.)='strings'][2]",
-                "String 2");
+        assertXPathValue(
+            context,
+            "beans/strings[name(.)='strings'][2]",
+            "String 2");
 
         // use context-independent function in the predicate
-        assertXPathValueIterator(context,
-                "//self::node()[name(.) = concat('n', 'a', 'm', 'e')]",
-                list("Name 1", "Name 2", "Name 3", "Name 6",
-                     "Name 0", "Name 5", "Name 4"));
+        assertXPathValueIterator(
+            context,
+            "//self::node()[name(.) = concat('n', 'a', 'm', 'e')]",
+            list(
+                "Name 1",
+                "Name 2",
+                "Name 3",
+                "Name 6",
+                "Name 0",
+                "Name 5",
+                "Name 4"));
 
-        assertXPathValueIterator(context,
-                "integers[position()<3]",
-                list(new Integer(1), new Integer(2)));
-    }
-
-    public void testBooleanPredicateWithSearch(){
-        context.getVariables().declareVariable(
-            "numbers",
-            new String[] { "2", "3" });
-
-        context.setValue("/beans[1]/strings", new String[] { "1", "2" });
-        context.setValue("/beans[2]/strings", new String[] { "3", "4" });
-
-        // Find beans with any string == 2        
-        assertXPathValueIterator(context,
-            "/beans[strings = '2']/name",
-            list("Name 1")
-        );
-
-        // Find beans with any string in the variable $numbers
-        assertXPathValueIterator(context,
-            "/beans[strings = $numbers]/name",
-            list("Name 1", "Name 2")
-        );
-
-        // Find beans without any strings == 2
-        assertXPathValueIterator(context,
-            "/beans[strings != '2']/name",
-            list("Name 2")
-        );
-
-        assertXPathValueIterator(context,
-            "/beans[strings > '1']/name",
-            list("Name 1", "Name 2")
-        );
-
-        assertXPathValueIterator(context,
-            "/beans[strings > $numbers]/name",
-            list("Name 2")
-        );
-
-        assertXPathValueIterator(context,
-            "/beans[strings >= '2']/name",
-            list("Name 1", "Name 2")
-        );
-
-        assertXPathValueIterator(context,
-            "/beans[strings >= '3']/name",
-            list("Name 2")
-        );
+        assertXPathValueIterator(
+            context,
+            "integers[position()<3]",
+            list(new Integer(1), new Integer(2)));
+            
+        context.getVariables().declareVariable("temp", context.getValue("beans"));
         
-        assertXPathValueIterator(context,
-            "/beans[strings < '4']/name",
-            list("Name 1", "Name 2")
-        );
-
-        assertXPathValueIterator(context,
-            "/beans[strings < 3]/name",
-            list("Name 1")
-        );
-
-        assertXPathValueIterator(context,
-            "/beans[strings <= '3']/name",
-            list("Name 1", "Name 2")
-        );
-
-        assertXPathValueIterator(context,
-            "/beans[strings <= '2']/name",
-            list("Name 1")
-        );
-    }
-    
-    public void testDocumentOrder(){
-        assertDocumentOrder(context,
-                "boolean", "int", -1);
-
-        assertDocumentOrder(context,
-                "integers[1]", "integers[2]", -1);
-
-        assertDocumentOrder(context,
-                "integers[1]", "integers[1]", 0);
-
-        assertDocumentOrder(context,
-                "nestedBean/int", "nestedBean", 1);
-
-        assertDocumentOrder(context,
-                "nestedBean/int", "nestedBean/strings", -1);
-
-        assertDocumentOrder(context,
-                "nestedBean/int", "object/int", -1);
+        assertXPathValueIterator(
+            context,
+            "$temp[int < 2]/int",
+            list(new Integer(1)));
     }
 
-    public void testSetPropertyValue(){
+    public void testDocumentOrder() {
+        assertDocumentOrder(context, "boolean", "int", -1);
+
+        assertDocumentOrder(context, "integers[1]", "integers[2]", -1);
+
+        assertDocumentOrder(context, "integers[1]", "integers[1]", 0);
+
+        assertDocumentOrder(context, "nestedBean/int", "nestedBean", 1);
+
+        assertDocumentOrder(
+            context,
+            "nestedBean/int",
+            "nestedBean/strings",
+            -1);
+
+        assertDocumentOrder(context, "nestedBean/int", "object/int", -1);
+    }
+
+    public void testSetPropertyValue() {
         // Simple property
-        assertXPathSetValue(context,
-                "int",
-                new Integer(2));
+        assertXPathSetValue(context, "int", new Integer(2));
 
         // Simple property with conversion from string
-        assertXPathSetValue(context,
-                "int",
-                "3",
-                new Integer(3));
+        assertXPathSetValue(context, "int", "3", new Integer(3));
 
         // Simple property with conversion from array
-        assertXPathSetValue(context,
-                "int",
-                new int[]{4},
-                new Integer(4));
+        assertXPathSetValue(context, "int", new int[] { 4 }, new Integer(4));
 
         // Attribute (which is the same as a child for beans
-        assertXPathSetValue(context,
-                "@int",
-                new Integer(10));
+        assertXPathSetValue(context, "@int", new Integer(10));
     }
 
-    public void testSetCollectionElement(){
+    public void testSetCollectionElement() {
         // Collection element
-        assertXPathSetValue(context,
-                "integers[2]",
-                new Integer(5));
+        assertXPathSetValue(context, "integers[2]", new Integer(5));
 
         // Collection element with conversion
-        assertXPathSetValue(context,
-                "integers[2]",
-                new int[]{6},
-                new Integer(6));
+        assertXPathSetValue(
+            context,
+            "integers[2]",
+            new int[] { 6 },
+            new Integer(6));
     }
 
-    public void testSetContextDependentNode(){
+    public void testSetContextDependentNode() {
         // Find node without using SimplePathInterpreter
-        assertXPathSetValue(context,
-                "integers[position() = 1]",
-                new Integer(8));
+        assertXPathSetValue(
+            context,
+            "integers[position() = 1]",
+            new Integer(8));
 
         // Find node without using SimplePathInterpreter and set its property
-        assertXPathSetValue(context,
-                "beans[name = 'Name 1']/int",
-                new Integer(9));
+        assertXPathSetValue(
+            context,
+            "beans[name = 'Name 1']/int",
+            new Integer(9));
 
     }
 
-    public void testSetNonPrimitiveValue(){
+    public void testSetNonPrimitiveValue() {
         // First, let's see if we can set a collection element to null
-        assertXPathSetValue(context,
-                "beans[2]",
-                null);
+        assertXPathSetValue(context, "beans[2]", null);
 
         // Now, assign it a whole bean
         context.setValue("beans[2]", new NestedTestBean("Name 9"));
 
-        assertEquals("Modified <" + "beans[2]/name" + ">",
-            "Name 9", context.getValue("beans[2]/name"));
+        assertEquals(
+            "Modified <" + "beans[2]/name" + ">",
+            "Name 9",
+            context.getValue("beans[2]/name"));
     }
 
-    public void testCreatePath(){
+    public void testCreatePath() {
         context.setValue("nestedBean", null);
 
         // Calls factory.createObject(..., TestBean, "nestedBean")
-        assertXPathCreatePath(context,
-                "/nestedBean/int",
-                new Integer(1),
-                "/nestedBean/int");
+        assertXPathCreatePath(
+            context,
+            "/nestedBean/int",
+            new Integer(1),
+            "/nestedBean/int");
     }
 
-    public void testCreatePathAndSetValue(){
+    public void testCreatePathAndSetValue() {
         context.setValue("nestedBean", null);
 
         // Calls factory.createObject(..., TestBean, "nestedBean")
-        assertXPathCreatePathAndSetValue(context,
-                "/nestedBean/int",
-                new Integer(2),
-                "/nestedBean/int");
+        assertXPathCreatePathAndSetValue(
+            context,
+            "/nestedBean/int",
+            new Integer(2),
+            "/nestedBean/int");
     }
 
-    public void testCreatePathExpandNewCollection(){
+    public void testCreatePathExpandNewCollection() {
         context.setValue("beans", null);
 
         // Calls factory.createObject(..., testBean, "beans", 2), 
         // then  factory.createObject(..., testBean, "beans", 2)
-        assertXPathCreatePath(context,
-                "/beans[2]/int",
-                new Integer(1),
-                "/beans[2]/int");
+        assertXPathCreatePath(
+            context,
+            "/beans[2]/int",
+            new Integer(1),
+            "/beans[2]/int");
     }
 
-    public void testCreatePathAndSetValueExpandNewCollection(){
+    public void testCreatePathAndSetValueExpandNewCollection() {
         context.setValue("beans", null);
 
         // Calls factory.createObject(..., testBean, "beans", 2), 
         // then factory.createObject(..., testBean, "beans", 2)
-        assertXPathCreatePathAndSetValue(context,
-                "/beans[2]/int",
-                new Integer(2),
-                "/beans[2]/int");
+        assertXPathCreatePathAndSetValue(
+            context,
+            "/beans[2]/int",
+            new Integer(2),
+            "/beans[2]/int");
     }
 
-    public void testCreatePathExpandExistingCollection(){
+    public void testCreatePathExpandExistingCollection() {
         // Calls factory.createObject(..., TestBean, "integers", 5)
         // to expand collection
-        assertXPathCreatePathAndSetValue(context,
+        assertXPathCreatePathAndSetValue(
+            context,
             "/integers[5]",
             new Integer(3),
-            "/integers[5]");     
-    }
-    
-    public void testCreatePathExpandExistingCollectionAndSetProperty(){
-        // Another, but the collection already exists
-        assertXPathCreatePath(context,
-                "/beans[3]/int",
-                new Integer(1),
-                "/beans[3]/int");
+            "/integers[5]");
     }
 
-    public void testCreatePathAndSetValueExpandExistingCollection(){
+    public void testCreatePathExpandExistingCollectionAndSetProperty() {
         // Another, but the collection already exists
-        assertXPathCreatePathAndSetValue(context,
-                "/beans[3]/int",
-                new Integer(2),
-                "/beans[3]/int");
+        assertXPathCreatePath(
+            context,
+            "/beans[3]/int",
+            new Integer(1),
+            "/beans[3]/int");
     }
 
-    public void testCreatePathCreateBeanExpandCollection(){
+    public void testCreatePathAndSetValueExpandExistingCollection() {
+        // Another, but the collection already exists
+        assertXPathCreatePathAndSetValue(
+            context,
+            "/beans[3]/int",
+            new Integer(2),
+            "/beans[3]/int");
+    }
+
+    public void testCreatePathCreateBeanExpandCollection() {
         context.setValue("nestedBean", null);
 
         // Calls factory.createObject(..., TestBean, "nestedBean")
         // Calls factory.createObject(..., nestedBean, "strings", 2)
-        assertXPathCreatePath(context,
-                "/nestedBean/strings[2]",
-                "String 2",
-                "/nestedBean/strings[2]");
+        assertXPathCreatePath(
+            context,
+            "/nestedBean/strings[2]",
+            "String 2",
+            "/nestedBean/strings[2]");
     }
 
-    public void testCreatePathAndSetValueCreateBeanExpandCollection(){
+    public void testCreatePathAndSetValueCreateBeanExpandCollection() {
         context.setValue("nestedBean", null);
 
         // Calls factory.createObject(..., TestBean, "nestedBean")
         // Calls factory.createObject(..., nestedBean, "strings", 2)
-        assertXPathCreatePathAndSetValue(context,
-                "/nestedBean/strings[2]",
-                "Test",
-                "/nestedBean/strings[2]");
+        assertXPathCreatePathAndSetValue(
+            context,
+            "/nestedBean/strings[2]",
+            "Test",
+            "/nestedBean/strings[2]");
     }
-        
-    public void testRemovePathPropertyValue(){
+
+    public void testRemovePathPropertyValue() {
         // Remove property value
         context.removePath("nestedBean/int");
-        assertEquals("Remove property value", new Integer(0),
-                    context.getValue("nestedBean/int"));
+        assertEquals(
+            "Remove property value",
+            new Integer(0),
+            context.getValue("nestedBean/int"));
     }
 
-    public void testRemovePathArrayElement(){
+    public void testRemovePathArrayElement() {
         // Assigns a new array to the property
         context.removePath("nestedBean/strings[1]");
-        assertEquals("Remove array element", "String 2",
-                    context.getValue("nestedBean/strings[1]"));
+        assertEquals(
+            "Remove array element",
+            "String 2",
+            context.getValue("nestedBean/strings[1]"));
     }
 
-    public void testRemovePathBeanValue(){
+    public void testRemovePathBeanValue() {
         context.removePath("nestedBean");
-        assertEquals("Remove collection element", null,
-                    context.getValue("nestedBean"));
+        assertEquals(
+            "Remove collection element",
+            null,
+            context.getValue("nestedBean"));
     }
 }

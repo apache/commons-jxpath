@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/NestedTestBean.java,v 1.4 2002/10/13 03:25:48 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/10/13 03:25:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/NestedTestBean.java,v 1.5 2003/01/20 00:00:26 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/20 00:00:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,59 +65,60 @@ package org.apache.commons.jxpath;
  * A general purpose JavaBean for JUnit tests for the "jxpath" component.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/10/13 03:25:48 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/20 00:00:26 $
  */
 public class NestedTestBean {
     private String name = "Name 0";
     private int integer = 1;
 
-    public NestedTestBean(){
+    public NestedTestBean() {
     }
 
-    public NestedTestBean(String name){
+    public NestedTestBean(String name) {
         this.name = name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
     /**
      * A read-only boolean property
      */
-    public boolean isBoolean(){
+    public boolean isBoolean() {
         return false;
     }
 
     /**
      * A read-only int property
      */
-    public int getInt(){
+    public int getInt() {
         return integer;
     }
 
-    public void setInt(int value){
+    public void setInt(int value) {
         this.integer = value;
     }
 
     /**
      * A read-only String property
      */
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    private String[] strings = new String[]{"String 1", "String 2", "String 3"};
+    private String[] strings =
+        new String[] { "String 1", "String 2", "String 3" };
 
-    public String[] getStrings(){
+    public String[] getStrings() {
         return strings;
     }
 
-    public void setStrings(String[] array){
+    public void setStrings(String[] array) {
         strings = array;
     }
 
-    public String toString(){
+    public String toString() {
         return "Nested: " + name;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestNull.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/11/26 01:20:08 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestNull.java,v 1.3 2003/01/20 00:00:27 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/20 00:00:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,30 +67,30 @@ package org.apache.commons.jxpath;
  * General purpose test bean for JUnit tests for the "jxpath" component.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/20 00:00:27 $
  */
 public class TestNull {
 
     private Object nothing = null;
-    public Object getNothing(){
+    public Object getNothing() {
         return nothing;
     }
 
-    public void setNothing(Object something){
+    public void setNothing(Object something) {
         this.nothing = something;
     }
 
     /**
      */
-    private static String[] array = {"a", null, "b"};
-    public String[] getArray(){
+    private static String[] array = { "a", null, "b" };
+    public String[] getArray() {
         return array;
     }
 
     private TestNull child;
 
-    public TestNull getChild(){
-        if (child == null){
+    public TestNull getChild() {
+        if (child == null) {
             child = new TestNull();
         }
         return child;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.5 2002/11/26 01:33:35 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/11/26 01:33:35 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.6 2003/01/20 00:00:29 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/20 00:00:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,69 +76,89 @@ import org.w3c.dom.NodeList;
  * Tests JXPath with DOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/11/26 01:33:35 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/20 00:00:29 $
  */
 
-public class DOMModelTest extends XMLModelTestCase
-{
+public class DOMModelTest extends XMLModelTestCase {
     /**
      * Construct a new instance of this test case.
      *
      * @param name Name of the test case
      */
-    public DOMModelTest(String name){
+    public DOMModelTest(String name) {
         super(name);
     }
-    
+
     /**
      * Return the tests included in this test suite.
      */
-    public static Test suite(){
+    public static Test suite() {
         return (new TestSuite(DOMModelTest.class));
     }
 
-    protected String getModel(){
+    protected String getModel() {
         return DocumentContainer.MODEL_DOM;
     }
-    
-    protected AbstractFactory getAbstractFactory(){
+
+    protected AbstractFactory getAbstractFactory() {
         return new TestDOMFactory();
     }
-    
-    protected String getXMLSignature(Object node, 
-            boolean elements, boolean attributes, boolean text, boolean pi){
+
+    protected String getXMLSignature(
+        Object node,
+        boolean elements,
+        boolean attributes,
+        boolean text,
+        boolean pi) 
+    {
         StringBuffer buffer = new StringBuffer();
         appendXMLSignature(buffer, node, elements, attributes, text, pi);
         return buffer.toString();
     }
-    
-    private void appendXMLSignature(StringBuffer buffer, Object object, 
-            boolean elements, boolean attributes, boolean text, boolean pi){
-        Node node = (Node)object;
+
+    private void appendXMLSignature(
+        StringBuffer buffer,
+        Object object,
+        boolean elements,
+        boolean attributes,
+        boolean text,
+        boolean pi) 
+    {
+        Node node = (Node) object;
         int type = node.getNodeType();
-        switch (type){
-            case Node.DOCUMENT_NODE:
+        switch (type) {
+            case Node.DOCUMENT_NODE :
                 buffer.append("<D>");
-                appendXMLSignature(buffer, node.getChildNodes(), 
-                        elements, attributes, text, pi);
+                appendXMLSignature(
+                    buffer,
+                    node.getChildNodes(),
+                    elements,
+                    attributes,
+                    text,
+                    pi);
                 buffer.append("</D");
                 break;
-                
-            case Node.ELEMENT_NODE:
-                String tag = elements ? ((Element)node).getTagName() : "E";
+
+            case Node.ELEMENT_NODE :
+                String tag = elements ? ((Element) node).getTagName() : "E";
                 buffer.append("<");
                 buffer.append(tag);
                 buffer.append(">");
-                appendXMLSignature(buffer, node.getChildNodes(), 
-                        elements, attributes, text, pi);
+                appendXMLSignature(
+                    buffer,
+                    node.getChildNodes(),
+                    elements,
+                    attributes,
+                    text,
+                    pi);
                 buffer.append("</");
                 buffer.append(tag);
-                buffer.append(">");                    
+                buffer.append(">");
                 break;
-                
-            case Node.TEXT_NODE:
-            case Node.CDATA_SECTION_NODE:
-                if (text){
+
+            case Node.TEXT_NODE :
+            case Node.CDATA_SECTION_NODE :
+                if (text) {
                     String string = node.getNodeValue();
                     string = string.replace('\n', '=');
                     buffer.append(string);
@@ -146,13 +166,23 @@ public class DOMModelTest extends XMLModelTestCase
                 break;
         }
     }
-    
-    private void appendXMLSignature(StringBuffer buffer, NodeList children, 
-            boolean elements, boolean attributes, boolean text, boolean pi)
+
+    private void appendXMLSignature(
+        StringBuffer buffer,
+        NodeList children,
+        boolean elements,
+        boolean attributes,
+        boolean text,
+        boolean pi) 
     {
-        for (int i = 0; i < children.getLength(); i++){
-            appendXMLSignature(buffer, children.item(i), 
-                    elements, attributes, text, pi);
+        for (int i = 0; i < children.getLength(); i++) {
+            appendXMLSignature(
+                buffer,
+                children.item(i),
+                elements,
+                attributes,
+                text,
+                pi);
         }
     }
 }

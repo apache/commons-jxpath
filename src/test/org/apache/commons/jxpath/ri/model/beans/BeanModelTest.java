@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/BeanModelTest.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/11/26 01:20:08 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/BeanModelTest.java,v 1.3 2003/01/20 00:00:28 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/20 00:00:28 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,32 +72,31 @@ import org.apache.commons.jxpath.ri.model.BeanModelTestCase;
  * Tests JXPath with JavaBeans
 *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/20 00:00:28 $
  */
 
-public class BeanModelTest extends BeanModelTestCase
-{
+public class BeanModelTest extends BeanModelTestCase {
     /**
      * Construct a new instance of this test case.
      *
      * @param name Name of the test case
      */
-    public BeanModelTest(String name){
+    public BeanModelTest(String name) {
         super(name);
     }
 
     /**
      * Return the tests included in this test suite.
      */
-    public static TestSuite suite(){
+    public static TestSuite suite() {
         return (new TestSuite(BeanModelTest.class));
     }
 
-    protected Object createContextBean(){
+    protected Object createContextBean() {
         return new TestBean();
     }
 
-    protected AbstractFactory getAbstractFactory(){
+    protected AbstractFactory getAbstractFactory() {
         return new TestBeanFactory();
     }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/TestDOMFactory.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/TestDOMFactory.java,v 1.2 2003/01/20 00:00:29 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/20 00:00:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,44 +71,48 @@ import org.w3c.dom.Node;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/20 00:00:29 $
  */
 public class TestDOMFactory extends AbstractFactory {
 
     /**
      * Return <b>false</b> if this factory cannot create the requested object.
      */
-    public boolean createObject(JXPathContext context, 
-                Pointer pointer, Object parent, String name, int index)
+    public boolean createObject(
+        JXPathContext context,
+        Pointer pointer,
+        Object parent,
+        String name,
+        int index) 
     {
-        if (name.equals("location") || 
-                name.equals("address") || 
-                name.equals("street")){
-            addDOMElement((Node)parent, index, name);
+        if (name.equals("location")
+            || name.equals("address")
+            || name.equals("street")) {
+            addDOMElement((Node) parent, index, name);
             return true;
         }
         return false;
     }
 
-    private void addDOMElement(Node parent, int index, String tag){
+    private void addDOMElement(Node parent, int index, String tag) {
         Node child = parent.getFirstChild();
         int count = 0;
-        while (child != null){
-            if (child.getNodeName().equals(tag)){
+        while (child != null) {
+            if (child.getNodeName().equals(tag)) {
                 count++;
             }
             child = child.getNextSibling();
         }
 
         // Keep inserting new elements until we have index + 1 of them
-        while (count <= index){
+        while (count <= index) {
             Node newElement = parent.getOwnerDocument().createElement(tag);
             parent.appendChild(newElement);
             count++;
         }
     }
 
-    public boolean declareVariable(JXPathContext context, String name){
+    public boolean declareVariable(JXPathContext context, String name) {
         return false;
     }
 }

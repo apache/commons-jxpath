@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynamic/TestDynamicPropertyFactory.java,v 1.1 2002/11/28 01:02:05 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/11/28 01:02:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynamic/TestDynamicPropertyFactory.java,v 1.2 2003/01/20 00:00:29 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/20 00:00:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,13 +66,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.NestedTestBean;
+import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.TestBean;
 
 /**
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/11/28 01:02:05 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/20 00:00:29 $
  */
 public class TestDynamicPropertyFactory extends AbstractFactory {
 
@@ -81,36 +85,40 @@ public class TestDynamicPropertyFactory extends AbstractFactory {
      * Return <b>false</b> if this factory cannot create the requested object.
      */
     public boolean createObject(
-            JXPathContext context,
-            Pointer pointer,
-            Object parent,
-            String name,
-            int index) 
+        JXPathContext context,
+        Pointer pointer,
+        Object parent,
+        String name,
+        int index) 
     {
         if (name.equals("map")) {
             ((TestBean) parent).setMap(new HashMap());
             return true;
-        } else if (name.equals("TestKey1")) {
+        }
+        else if (name.equals("TestKey1")) {
             ((Map) parent).put(name, "");
             return true;
-        } else if (name.equals("TestKey2")) {
+        }
+        else if (name.equals("TestKey2")) {
             ((Map) parent).put(name, new NestedTestBean("newName"));
             return true;
-        } else if (name.equals("TestKey3")) {
+        }
+        else if (name.equals("TestKey3")) {
             Vector v = new Vector();
             for (int i = 0; i <= index; i++) {
                 v.add(null);
             }
             ((Map) parent).put(name, v);
             return true;
-        } else if (name.equals("TestKey4")) {
+        }
+        else if (name.equals("TestKey4")) {
             ((Map) parent).put(name, new Object[] { new TestBean()});
             return true;
         }
         return false;
     }
 
-    public boolean declareVariable(JXPathContext context, String name){
+    public boolean declareVariable(JXPathContext context, String name) {
         return false;
     }
 }

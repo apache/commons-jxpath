@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/util/BasicTypeConverterTest.java,v 1.1 2002/10/20 03:48:23 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/util/BasicTypeConverterTest.java,v 1.2 2003/01/20 00:00:29 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/20 00:00:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,80 +74,74 @@ import junit.framework.TestCase;
  * Tests BasicTypeConverter
  * 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:23 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/20 00:00:29 $
  */
 
-public class BasicTypeConverterTest extends TestCase
-{
+public class BasicTypeConverterTest extends TestCase {
     /**
      * Construct a new instance of this test case.
      *
      * @param name Name of the test case
      */
-    public BasicTypeConverterTest(String name)
-    {
+    public BasicTypeConverterTest(String name) {
         super(name);
     }
-    
-    public void testPrimitiveToString(){
-        assertConversion(
-                new Integer(1), 
-                String.class, 
-                "1");
+
+    public void testPrimitiveToString() {
+        assertConversion(new Integer(1), String.class, "1");
     }
-    
-    public void testArrayToList(){
+
+    public void testArrayToList() {
         assertConversion(
-                new int[]{1, 2}, 
-                List.class,
-                Arrays.asList(new Object[]{new Integer(1), new Integer(2)}));
+            new int[] { 1, 2 },
+            List.class,
+            Arrays.asList(new Object[] { new Integer(1), new Integer(2)}));
     }
-    
-    public void testArrayToArray(){
+
+    public void testArrayToArray() {
         assertConversion(
-                new int[]{1, 2}, 
-                String[].class,
-                Arrays.asList(new String[]{"1", "2"}));
+            new int[] { 1, 2 },
+            String[].class,
+            Arrays.asList(new String[] { "1", "2" }));
     }
-    
-    public void testListToArray(){
+
+    public void testListToArray() {
         assertConversion(
-                Arrays.asList(new Integer[]{new Integer(1), new Integer(2)}),
-                String[].class,
-                Arrays.asList(new String[]{"1", "2"}));
-                
+            Arrays.asList(new Integer[] { new Integer(1), new Integer(2)}),
+            String[].class,
+            Arrays.asList(new String[] { "1", "2" }));
+
         assertConversion(
-                Arrays.asList(new String[]{"1", "2"}),
-                int[].class,
-                Arrays.asList(new Integer[]{new Integer(1), new Integer(2)}));
+            Arrays.asList(new String[] { "1", "2" }),
+            int[].class,
+            Arrays.asList(new Integer[] { new Integer(1), new Integer(2)}));
     }
-    
-    public void testInvalidConversion(){
+
+    public void testInvalidConversion() {
         boolean exception = false;
         try {
-            TypeUtils.convert(
-                    "'foo'",
-                    Date.class);
+            TypeUtils.convert("'foo'", Date.class);
         }
-        catch (Throwable ex){
+        catch (Throwable ex) {
             exception = true;
         }
         assertTrue("Type conversion exception", exception);
     }
-    
+
     public void assertConversion(Object from, Class toType, Object expected) {
         boolean can = TypeUtils.canConvert(from, toType);
-        assertTrue("Can convert: " + from.getClass() + 
-                " to " + toType, can);
+        assertTrue("Can convert: " + from.getClass() + " to " + toType, can);
         Object result = TypeUtils.convert(from, toType);
-        if (result.getClass().isArray()){
+        if (result.getClass().isArray()) {
             ArrayList list = new ArrayList();
-            for (int j = 0; j < Array.getLength(result); j++){
+            for (int j = 0; j < Array.getLength(result); j++) {
                 list.add(Array.get(result, j));
             }
             result = list;
         }
-        assertEquals("Convert: " + from.getClass() + 
-                " to " + toType, expected, result);
+        assertEquals(
+            "Convert: " + from.getClass() + " to " + toType,
+            expected,
+            result);
     }
 }

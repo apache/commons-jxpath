@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/VariableFactory.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/VariableFactory.java,v 1.2 2003/01/20 00:00:27 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/20 00:00:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,42 +71,50 @@ import org.apache.commons.jxpath.TestBean;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/20 00:00:27 $
  */
 public class VariableFactory extends AbstractFactory {
 
     /**
      */
-    public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index){
-        if (name.equals("testArray")){
-            ((TestBean[])parent)[index] = new TestBean();
+    public boolean createObject(
+        JXPathContext context,
+        Pointer pointer,
+        Object parent,
+        String name,
+        int index) 
+    {
+        if (name.equals("testArray")) {
+            ((TestBean[]) parent)[index] = new TestBean();
             return true;
         }
-        else if (name.equals("stringArray")){
-            ((String[])parent)[index] = "";
+        else if (name.equals("stringArray")) {
+            ((String[]) parent)[index] = "";
             return true;
         }
-        else if (name.equals("array")){
-            ((String[])parent)[index] = "";
+        else if (name.equals("array")) {
+            ((String[]) parent)[index] = "";
             return true;
         }
         return false;
     }
-    
+
     /**
      * Create a new object and set it on the specified variable
      */
-    public boolean declareVariable(JXPathContext context, String name){
-        if (name.equals("test")){
+    public boolean declareVariable(JXPathContext context, String name) {
+        if (name.equals("test")) {
             context.getVariables().declareVariable(name, new TestBean());
             return true;
         }
-        else if (name.equals("testArray")){
+        else if (name.equals("testArray")) {
             context.getVariables().declareVariable(name, new TestBean[0]);
             return true;
         }
-        else if (name.equals("stringArray")){
-            context.getVariables().declareVariable(name, new String[]{"Value1"});
+        else if (name.equals("stringArray")) {
+            context.getVariables().declareVariable(
+                name,
+                new String[] { "Value1" });
             return true;
         }
         context.getVariables().declareVariable(name, null);

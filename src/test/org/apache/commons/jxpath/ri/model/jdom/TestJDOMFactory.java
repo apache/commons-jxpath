@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/TestJDOMFactory.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/TestJDOMFactory.java,v 1.2 2003/01/20 00:00:29 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/20 00:00:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.jdom.Element;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/20 00:00:29 $
  */
 public class TestJDOMFactory extends AbstractFactory {
 
@@ -81,30 +81,35 @@ public class TestJDOMFactory extends AbstractFactory {
      * Create a new instance and put it in the collection on the parent object.
      * Return <b>false</b> if this factory cannot create the requested object.
      */
-    public boolean createObject(JXPathContext context, 
-                Pointer pointer, Object parent, String name, int index)
+    public boolean createObject(
+        JXPathContext context,
+        Pointer pointer,
+        Object parent,
+        String name,
+        int index) 
     {
-        if (name.equals("location") || 
-                name.equals("address") || name.equals("street")){
-            addJDOMElement((Element)parent, index, name);
+        if (name.equals("location")
+            || name.equals("address")
+            || name.equals("street")) {
+            addJDOMElement((Element) parent, index, name);
             return true;
         }
         return false;
     }
 
-    private void addJDOMElement(Element parent, int index, String tag){
+    private void addJDOMElement(Element parent, int index, String tag) {
         List children = parent.getContent();
         int count = 0;
-        for (int i = 0; i < children.size(); i++){
+        for (int i = 0; i < children.size(); i++) {
             Object child = children.get(i);
-            if (child instanceof Element &&
-                    ((Element)child).getQualifiedName().equals(tag)){
+            if (child instanceof Element
+                && ((Element) child).getQualifiedName().equals(tag)) {
                 count++;
             }
         }
 
         // Keep inserting new elements until we have index + 1 of them
-        while (count <= index){
+        while (count <= index) {
             // In a real factory we would need to do the right thing with
             // the namespace prefix.
             Element newElement = new Element(tag);
@@ -113,7 +118,7 @@ public class TestJDOMFactory extends AbstractFactory {
         }
     }
 
-    public boolean declareVariable(JXPathContext context, String name){
+    public boolean declareVariable(JXPathContext context, String name) {
         return false;
     }
 }

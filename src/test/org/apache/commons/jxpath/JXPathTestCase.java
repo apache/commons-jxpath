@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.30 2002/11/26 01:20:08 dmitri Exp $
- * $Revision: 1.30 $
- * $Date: 2002/11/26 01:20:08 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.31 2003/01/20 00:00:26 dmitri Exp $
+ * $Revision: 1.31 $
+ * $Date: 2003/01/20 00:00:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,7 +62,13 @@
 
 package org.apache.commons.jxpath;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -72,18 +78,16 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Abstract superclass for various JXPath tests.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.30 $ $Date: 2002/11/26 01:20:08 $
+ * @version $Revision: 1.31 $ $Date: 2003/01/20 00:00:26 $
  */
 
-public abstract class JXPathTestCase extends TestCase
-{
+public abstract class JXPathTestCase extends TestCase {
     /**
      * Construct a new instance of this test case.
      *
      * @param name Name of the test case
      */
-    public JXPathTestCase(String name)
-    {
+    public JXPathTestCase(String name) {
         super(name);
     }
     
@@ -185,73 +189,82 @@ public abstract class JXPathTestCase extends TestCase
                 String xpath, Collection expected)
     {
         Collection actual;
-        if (expected instanceof List){
+        if (expected instanceof List) {
             actual = new ArrayList();
         }
         else {
             actual = new HashSet();
         }
         Iterator it = ctx.iterate(xpath);
-        while (it.hasNext()){
+        while (it.hasNext()) {
             actual.add(it.next());
         }
         assertEquals("Evaluating value iterator <" + xpath + ">",
                 expected, actual);
     }
 
-    protected void assertXPathPointerIterator(JXPathContext ctx,
-                String xpath, Collection expected)
+    protected void assertXPathPointerIterator(
+        JXPathContext ctx,
+        String xpath,
+        Collection expected) 
     {
         Collection actual;
-        if (expected instanceof List){
+        if (expected instanceof List) {
             actual = new ArrayList();
         }
         else {
             actual = new HashSet();
         }
         Iterator it = ctx.iteratePointers(xpath);
-        while (it.hasNext()){
-            Pointer pointer = (Pointer)it.next();
+        while (it.hasNext()) {
+            Pointer pointer = (Pointer) it.next();
             actual.add(pointer.toString());
         }
-        assertEquals("Evaluating pointer iterator <" + xpath + ">",
-                expected, actual);
+        assertEquals(
+            "Evaluating pointer iterator <" + xpath + ">",
+            expected,
+            actual);
     }
 
-    protected void assertDocumentOrder(JXPathContext context, 
-            String path1, String path2, int expected)
+    protected void assertDocumentOrder(
+        JXPathContext context,
+        String path1,
+        String path2,
+        int expected) 
     {
-        NodePointer np1 = (NodePointer)context.getPointer(path1);
-        NodePointer np2 = (NodePointer)context.getPointer(path2);
+        NodePointer np1 = (NodePointer) context.getPointer(path1);
+        NodePointer np2 = (NodePointer) context.getPointer(path2);
         int res = np1.compareTo(np2);
-        if (res < 0){
+        if (res < 0) {
             res = -1;
         }
-        else if (res > 0){
+        else if (res > 0) {
             res = 1;
         }
-        assertEquals("Comparing paths '" + path1 + "' and '" + path2 + "'", 
-                expected, res);
-    }    
+        assertEquals(
+            "Comparing paths '" + path1 + "' and '" + path2 + "'",
+            expected,
+            res);
+    }
 
-    protected static List list(){
+    protected static List list() {
         return Collections.EMPTY_LIST;
     }
 
-    protected static List list(Object o1){
+    protected static List list(Object o1) {
         List list = new ArrayList();
         list.add(o1);
         return list;
     }
 
-    protected static List list(Object o1, Object o2){
+    protected static List list(Object o1, Object o2) {
         List list = new ArrayList();
         list.add(o1);
         list.add(o2);
         return list;
     }
 
-    protected static List list(Object o1, Object o2, Object o3){
+    protected static List list(Object o1, Object o2, Object o3) {
         List list = new ArrayList();
         list.add(o1);
         list.add(o2);
@@ -259,7 +272,7 @@ public abstract class JXPathTestCase extends TestCase
         return list;
     }
 
-    protected static Set set(Object o1, Object o2, Object o3){
+    protected static Set set(Object o1, Object o2, Object o3) {
         Set list = new HashSet();
         list.add(o1);
         list.add(o2);
@@ -267,7 +280,7 @@ public abstract class JXPathTestCase extends TestCase
         return list;
     }
 
-    protected static List list(Object o1, Object o2, Object o3, Object o4){
+    protected static List list(Object o1, Object o2, Object o3, Object o4) {
         List list = new ArrayList();
         list.add(o1);
         list.add(o2);
@@ -276,7 +289,7 @@ public abstract class JXPathTestCase extends TestCase
         return list;
     }
 
-    protected static Set set(Object o1, Object o2, Object o3, Object o4){
+    protected static Set set(Object o1, Object o2, Object o3, Object o4) {
         Set list = new HashSet();
         list.add(o1);
         list.add(o2);
@@ -298,7 +311,8 @@ public abstract class JXPathTestCase extends TestCase
     }
 
     protected static Set set(Object o1, Object o2, Object o3, 
-                Object o4, Object o5){
+                Object o4, Object o5) 
+    {
         Set list = new HashSet();
         list.add(o1);
         list.add(o2);

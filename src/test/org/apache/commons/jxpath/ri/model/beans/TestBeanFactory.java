@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/TestBeanFactory.java,v 1.4 2003/01/11 05:41:27 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2003/01/11 05:41:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/TestBeanFactory.java,v 1.5 2003/01/20 00:00:28 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/20 00:00:28 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,21 +62,29 @@
 
 package org.apache.commons.jxpath.ri.model.beans;
 
-import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.NestedTestBean;
+import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.TestBean;
 
 /**
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:27 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/20 00:00:28 $
  */
 public class TestBeanFactory extends AbstractFactory {
 
     /**
      * Return <b>false</b> if this factory cannot create the requested object.
      */
-    public boolean createObject(JXPathContext context, 
-                Pointer pointer, Object parent, String name, int index)
+    public boolean createObject(
+        JXPathContext context,
+        Pointer pointer,
+        Object parent,
+        String name,
+        int index) 
     {
         if (name.equals("nestedBean")) {
             ((TestBean) parent).setNestedBean(new NestedTestBean("newName"));
@@ -90,9 +98,9 @@ public class TestBeanFactory extends AbstractFactory {
             bean.getBeans()[index] = new NestedTestBean("newName");
             return true;
         }
-        else if (name.equals("integers")){    
+        else if (name.equals("integers")) {
             // This will implicitly expand the collection        
-            ((TestBean)parent).setIntegers(index, 0);
+             ((TestBean) parent).setIntegers(index, 0);
             return true;
         }
         return false;
@@ -101,7 +109,7 @@ public class TestBeanFactory extends AbstractFactory {
     /**
      * Create a new object and set it on the specified variable
      */
-    public boolean declareVariable(JXPathContext context, String name){
+    public boolean declareVariable(JXPathContext context, String name) {
         return false;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/CoreFunctionTest.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/11/26 01:20:08 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/CoreFunctionTest.java,v 1.3 2003/01/20 00:00:27 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/20 00:00:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,11 +75,10 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test basic functionality of JXPath - core functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/20 00:00:27 $
  */
 
-public class CoreFunctionTest extends JXPathTestCase
-{
+public class CoreFunctionTest extends JXPathTestCase {
     private JXPathContext context;
 
     /**
@@ -87,92 +86,101 @@ public class CoreFunctionTest extends JXPathTestCase
      *
      * @param name Name of the test case
      */
-    public CoreFunctionTest(String name){
+    public CoreFunctionTest(String name) {
         super(name);
     }
 
-    public void setUp(){
-        if (context == null){
+    public void setUp() {
+        if (context == null) {
             context = JXPathContext.newContext(new TestMixedModelBean());
             Variables vars = context.getVariables();
             vars.declareVariable("nan", new Double(Double.NaN));
         }
     }
 
-    public void testCoreFunctions(){
-        assertXPathValue(context,"string(2)", "2");
-        assertXPathValue(context,"string($nan)", "NaN");
-        assertXPathValue(context,"string(-$nan)", "NaN");
-        assertXPathValue(context,"string(-2 div 0)", "-Infinity");
-        assertXPathValue(context,"string(2 div 0)", "Infinity");
-        assertXPathValue(context,"concat('a', 'b', 'c')", "abc");
-        assertXPathValue(context,"starts-with('abc', 'ab')", Boolean.TRUE);
-        assertXPathValue(context,"starts-with('xabc', 'ab')", Boolean.FALSE);
-        assertXPathValue(context,"contains('xabc', 'ab')", Boolean.TRUE);
-        assertXPathValue(context,"contains('xabc', 'ba')", Boolean.FALSE);
-        assertXPathValue(context,"substring-before('1999/04/01', '/')", "1999");
-        assertXPathValue(context,"substring-after('1999/04/01', '/')", "04/01");
-        assertXPathValue(context,"substring('12345', 2, 3)", "234");
-        assertXPathValue(context,"substring('12345', 2)", "2345");
-        assertXPathValue(context,"substring('12345', 1.5, 2.6)", "234");
-        assertXPathValue(context,"substring('12345', 0, 3)", "12");
-        assertXPathValue(context,"substring('12345', 0 div 0, 3)", "");
-        assertXPathValue(context,"substring('12345', 1, 0 div 0)", "");
-        assertXPathValue(context,"substring('12345', -42, 1 div 0)", "12345");
-        assertXPathValue(context,"substring('12345', -1 div 0, 1 div 0)", "");
-        assertXPathValue(context,"string-length('12345')", new Double(5));
-        assertXPathValue(context,"normalize-space(' abc  def  ')", "abc def");
-        assertXPathValue(context,"normalize-space('abc def')", "abc def");
-        assertXPathValue(context,"normalize-space('   ')", "");
-        assertXPathValue(context,"translate('--aaa--', 'abc-', 'ABC')", "AAA");
-        assertXPathValue(context,"boolean(1)", Boolean.TRUE);
-        assertXPathValue(context,"boolean(0)", Boolean.FALSE);
-        assertXPathValue(context,"boolean('x')", Boolean.TRUE);
-        assertXPathValue(context,"boolean('')", Boolean.FALSE);
-        
-        assertXPathValue(context,"true()", Boolean.TRUE);
-        assertXPathValue(context,"false()", Boolean.FALSE);
-        assertXPathValue(context,"not(false())", Boolean.TRUE);
-        assertXPathValue(context,"not(true())", Boolean.FALSE);
-        assertXPathValue(context,"number('1')", new Double(1));
-        assertXPathValue(context,"floor(1.5)", new Double(1));
-        assertXPathValue(context,"floor(-1.5)", new Double(-2));
-        assertXPathValue(context,"ceiling(1.5)", new Double(2));
-        assertXPathValue(context,"ceiling(-1.5)", new Double(-1));
-        assertXPathValue(context,"round(1.5)", new Double(2));
-        assertXPathValue(context,"round(-1.5)", new Double(-1));
-        assertXPathValue(context,"null()", null);
+    public void testCoreFunctions() {
+        assertXPathValue(context, "string(2)", "2");
+        assertXPathValue(context, "string($nan)", "NaN");
+        assertXPathValue(context, "string(-$nan)", "NaN");
+        assertXPathValue(context, "string(-2 div 0)", "-Infinity");
+        assertXPathValue(context, "string(2 div 0)", "Infinity");
+        assertXPathValue(context, "concat('a', 'b', 'c')", "abc");
+        assertXPathValue(context, "starts-with('abc', 'ab')", Boolean.TRUE);
+        assertXPathValue(context, "starts-with('xabc', 'ab')", Boolean.FALSE);
+        assertXPathValue(context, "contains('xabc', 'ab')", Boolean.TRUE);
+        assertXPathValue(context, "contains('xabc', 'ba')", Boolean.FALSE);
+        assertXPathValue(
+            context,
+            "substring-before('1999/04/01', '/')",
+            "1999");
+        assertXPathValue(
+            context,
+            "substring-after('1999/04/01', '/')",
+            "04/01");
+        assertXPathValue(context, "substring('12345', 2, 3)", "234");
+        assertXPathValue(context, "substring('12345', 2)", "2345");
+        assertXPathValue(context, "substring('12345', 1.5, 2.6)", "234");
+        assertXPathValue(context, "substring('12345', 0, 3)", "12");
+        assertXPathValue(context, "substring('12345', 0 div 0, 3)", "");
+        assertXPathValue(context, "substring('12345', 1, 0 div 0)", "");
+        assertXPathValue(context, "substring('12345', -42, 1 div 0)", "12345");
+        assertXPathValue(context, "substring('12345', -1 div 0, 1 div 0)", "");
+        assertXPathValue(context, "string-length('12345')", new Double(5));
+        assertXPathValue(context, "normalize-space(' abc  def  ')", "abc def");
+        assertXPathValue(context, "normalize-space('abc def')", "abc def");
+        assertXPathValue(context, "normalize-space('   ')", "");
+        assertXPathValue(context, "translate('--aaa--', 'abc-', 'ABC')", "AAA");
+        assertXPathValue(context, "boolean(1)", Boolean.TRUE);
+        assertXPathValue(context, "boolean(0)", Boolean.FALSE);
+        assertXPathValue(context, "boolean('x')", Boolean.TRUE);
+        assertXPathValue(context, "boolean('')", Boolean.FALSE);
+
+        assertXPathValue(context, "true()", Boolean.TRUE);
+        assertXPathValue(context, "false()", Boolean.FALSE);
+        assertXPathValue(context, "not(false())", Boolean.TRUE);
+        assertXPathValue(context, "not(true())", Boolean.FALSE);
+        assertXPathValue(context, "number('1')", new Double(1));
+        assertXPathValue(context, "floor(1.5)", new Double(1));
+        assertXPathValue(context, "floor(-1.5)", new Double(-2));
+        assertXPathValue(context, "ceiling(1.5)", new Double(2));
+        assertXPathValue(context, "ceiling(-1.5)", new Double(-1));
+        assertXPathValue(context, "round(1.5)", new Double(2));
+        assertXPathValue(context, "round(-1.5)", new Double(-1));
+        assertXPathValue(context, "null()", null);
     }
 
-    public void testIDFunction(){
-        context.setIdentityManager(new IdentityManager(){
-            public Pointer getPointerByID(JXPathContext context, String id){
-                NodePointer ptr = (NodePointer)context.
-                        getPointer("/document");
+    public void testIDFunction() {
+        context.setIdentityManager(new IdentityManager() {
+            public Pointer getPointerByID(JXPathContext context, String id) {
+                NodePointer ptr = (NodePointer) context.getPointer("/document");
                 ptr = ptr.getValuePointer();
                 return ptr.getPointerByID(context, id);
             }
         });
 
-        assertXPathValueAndPointer(context,
-                "id(101)//street",
-                "Tangerine Drive",
-                "id('101')/address[1]/street[1]");
+        assertXPathValueAndPointer(
+            context,
+            "id(101)//street",
+            "Tangerine Drive",
+            "id('101')/address[1]/street[1]");
 
-        assertXPathPointerLenient(context,
-                "id(105)/address/street",
-                "id(105)/address/street");
+        assertXPathPointerLenient(
+            context,
+            "id(105)/address/street",
+            "id(105)/address/street");
     }
-    
-    public void testKeyFunction(){
-        context.setKeyManager(new KeyManager(){
-            public Pointer getPointerByKey(JXPathContext context,
-                                            String key, String value){
+
+    public void testKeyFunction() {
+        context.setKeyManager(new KeyManager() {
+            public Pointer getPointerByKey(
+                JXPathContext context,
+                String key,
+                String value) 
+            {
                 return NodePointer.newNodePointer(null, "42", null);
             }
         });
-        
-        assertEquals("Test key", "42",
-            context.getValue("key('a', 'b')"));
+
+        assertEquals("Test key", "42", context.getValue("key('a', 'b')"));
     }
 }

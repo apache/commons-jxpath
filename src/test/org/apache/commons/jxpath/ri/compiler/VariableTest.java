@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/VariableTest.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/VariableTest.java,v 1.2 2003/01/20 00:00:27 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/20 00:00:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,11 +71,10 @@ import org.apache.commons.jxpath.Variables;
  * operations.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/20 00:00:27 $
  */
 
-public class VariableTest extends JXPathTestCase
-{
+public class VariableTest extends JXPathTestCase {
     private JXPathContext context;
 
     /**
@@ -83,237 +82,234 @@ public class VariableTest extends JXPathTestCase
      *
      * @param name Name of the test case
      */
-    public VariableTest(String name){
+    public VariableTest(String name) {
         super(name);
     }
 
-    public void setUp(){
-        if (context == null){
+    public void setUp() {
+        if (context == null) {
             context = JXPathContext.newContext(null);
             context.setFactory(new VariableFactory());
-        
+
             Variables vars = context.getVariables();
             vars.declareVariable("a", new Double(1));
             vars.declareVariable("b", new Double(1));
-            vars.declareVariable("c", null);            
-            vars.declareVariable("d", new String[]{"a", "b"});
+            vars.declareVariable("c", null);
+            vars.declareVariable("d", new String[] { "a", "b" });
             vars.declareVariable("integer", new Integer(1));
             vars.declareVariable("nan", new Double(Double.NaN));
             vars.declareVariable("x", null);
         }
     }
 
-    public void testVariables(){
+    public void testVariables() {
         // Variables
-        assertXPathValueAndPointer(context,
-                "$a", 
-                new Double(1),
-                "$a");
+        assertXPathValueAndPointer(context, "$a", new Double(1), "$a");
     }
-    
-    public void testVariablesInExpressions(){
-        assertXPathValue(context,
-                "$a = $b", 
-                Boolean.TRUE);
-                
-        assertXPathValue(context,
-                "$a = $nan", 
-                Boolean.FALSE);
 
-        assertXPathValue(context,
-                "$a + 1", 
-                new Double(2));
+    public void testVariablesInExpressions() {
+        assertXPathValue(context, "$a = $b", Boolean.TRUE);
 
-        assertXPathValue(context,
-                "$c", 
-                null);
-                
-        assertXPathValue(context, 
-                "$d[2]",  
-                "b");
+        assertXPathValue(context, "$a = $nan", Boolean.FALSE);
+
+        assertXPathValue(context, "$a + 1", new Double(2));
+
+        assertXPathValue(context, "$c", null);
+
+        assertXPathValue(context, "$d[2]", "b");
     }
-    
-    public void testInvalidVariableName(){                
+
+    public void testInvalidVariableName() {
         boolean exception = false;
         try {
             context.getValue("$none");
         }
-        catch (Exception ex){
+        catch (Exception ex) {
             exception = true;
         }
-        assertTrue("Evaluating '$none', expected exception - did not get it", 
-                exception);
+        assertTrue(
+            "Evaluating '$none', expected exception - did not get it",
+            exception);
 
         exception = false;
         try {
             context.setValue("$none", new Integer(1));
         }
-        catch (Exception ex){
+        catch (Exception ex) {
             exception = true;
         }
-        assertTrue("Setting '$none = 1', expected exception - did not get it", 
+        assertTrue(
+            "Setting '$none = 1', expected exception - did not get it",
             exception);
     }
-    
-    public void testNestedContext(){
-        JXPathContext nestedContext = 
-                JXPathContext.newContext(context, null);
 
-        assertXPathValue(nestedContext, 
-                "$a",  
-                new Double(1));
-    }    
-    
-    public void testSetValue(){        
-        assertXPathSetValue(context, 
-                "$x",
-                new Integer(1));
+    public void testNestedContext() {
+        JXPathContext nestedContext = JXPathContext.newContext(context, null);
+
+        assertXPathValue(nestedContext, "$a", new Double(1));
     }
-    
-    public void testCreatePathDeclareVariable(){
+
+    public void testSetValue() {
+        assertXPathSetValue(context, "$x", new Integer(1));
+    }
+
+    public void testCreatePathDeclareVariable() {
         // Calls factory.declareVariable("string")
-        assertXPathCreatePath(context, 
-                "$string", 
-                null,
-                "$string");
+        assertXPathCreatePath(context, "$string", null, "$string");
     }
-    
-    public void testCreatePathAndSetValueDeclareVariable(){
+
+    public void testCreatePathAndSetValueDeclareVariable() {
         // Calls factory.declareVariable("string")
-        assertXPathCreatePathAndSetValue(context, 
-                "$string", 
-                "Value",
-                "$string");
+        assertXPathCreatePathAndSetValue(
+            context,
+            "$string",
+            "Value",
+            "$string");
     }
-    
-    public void testCreatePathDeclareVariableSetCollectionElement(){
+
+    public void testCreatePathDeclareVariableSetCollectionElement() {
         // Calls factory.declareVariable("stringArray"). 
         // The factory needs to create a collection
-        assertXPathCreatePath(context, 
-                "$stringArray[2]", 
-                "",
-                "$stringArray[2]");
-        
+        assertXPathCreatePath(
+            context,
+            "$stringArray[2]",
+            "",
+            "$stringArray[2]");
+
         // See if the factory populated the first element as well
-        assertEquals("Created <" + "$stringArray[1]" + ">", 
-                "Value1", 
-                context.getValue("$stringArray[1]"));
+        assertEquals(
+            "Created <" + "$stringArray[1]" + ">",
+            "Value1",
+            context.getValue("$stringArray[1]"));
     }
 
-    public void testCreateAndSetValuePathDeclareVariableSetCollectionElement(){
+    public void testCreateAndSetValuePathDeclareVariableSetCollectionElement() {
         // Calls factory.declareVariable("stringArray"). 
         // The factory needs to create a collection
-        assertXPathCreatePathAndSetValue(context, 
-                "$stringArray[2]", 
-                "Value2",
-                "$stringArray[2]");
-        
+        assertXPathCreatePathAndSetValue(
+            context,
+            "$stringArray[2]",
+            "Value2",
+            "$stringArray[2]");
+
         // See if the factory populated the first element as well
-        assertEquals("Created <" + "$stringArray[1]" + ">", 
-                "Value1", 
-                context.getValue("$stringArray[1]"));
+        assertEquals(
+            "Created <" + "$stringArray[1]" + ">",
+            "Value1",
+            context.getValue("$stringArray[1]"));
     }
 
-    public void testCreatePathExpandCollection(){
-        context.getVariables().
-            declareVariable("array", new String[]{"Value1"});
+    public void testCreatePathExpandCollection() {
+        context.getVariables().declareVariable(
+            "array",
+            new String[] { "Value1" });
 
         // Does not involve factory at all - just expands the collection
-        assertXPathCreatePath(context, 
-                "$array[2]", 
-                "", 
-                "$array[2]");
+        assertXPathCreatePath(context, "$array[2]", "", "$array[2]");
 
         // Make sure it is still the same array
-        assertEquals("Created <" + "$array[1]" + ">", 
-                "Value1", 
-                context.getValue("$array[1]"));
+        assertEquals(
+            "Created <" + "$array[1]" + ">",
+            "Value1",
+            context.getValue("$array[1]"));
     }
 
-    public void testCreatePathAndSetValueExpandCollection(){
-        context.getVariables().
-            declareVariable("array", new String[]{"Value1"});
+    public void testCreatePathAndSetValueExpandCollection() {
+        context.getVariables().declareVariable(
+            "array",
+            new String[] { "Value1" });
 
         // Does not involve factory at all - just expands the collection
-        assertXPathCreatePathAndSetValue(context, 
-                "$array[2]", 
-                "Value2", 
-                "$array[2]");
+        assertXPathCreatePathAndSetValue(
+            context,
+            "$array[2]",
+            "Value2",
+            "$array[2]");
 
         // Make sure it is still the same array
-        assertEquals("Created <" + "$array[1]" + ">", 
-                "Value1", 
-                context.getValue("$array[1]"));
+        assertEquals(
+            "Created <" + "$array[1]" + ">",
+            "Value1",
+            context.getValue("$array[1]"));
     }
 
-    public void testCreatePathDeclareVariableSetProperty(){
+    public void testCreatePathDeclareVariableSetProperty() {
         // Calls factory.declareVariable("test"). 
         // The factory should create a TestBean
-        assertXPathCreatePath(context, 
-                "$test/boolean", 
-                Boolean.FALSE, 
-                "$test/boolean");
+        assertXPathCreatePath(
+            context,
+            "$test/boolean",
+            Boolean.FALSE,
+            "$test/boolean");
 
     }
 
-    public void testCreatePathAndSetValueDeclareVariableSetProperty(){
+    public void testCreatePathAndSetValueDeclareVariableSetProperty() {
         // Calls factory.declareVariable("test"). 
         // The factory should create a TestBean
-        assertXPathCreatePathAndSetValue(context, 
-                "$test/boolean", 
-                Boolean.TRUE, 
-                "$test/boolean");
+        assertXPathCreatePathAndSetValue(
+            context,
+            "$test/boolean",
+            Boolean.TRUE,
+            "$test/boolean");
 
     }
 
-    public void testCreatePathDeclareVariableSetCollectionElementProperty(){
+    public void testCreatePathDeclareVariableSetCollectionElementProperty() {
         // Calls factory.declareVariable("testArray").
         // The factory should create a collection of TestBeans.
         // Then calls factory.createObject(..., collection, "testArray", 1).
         // That one should produce an instance of TestBean and 
         // put it in the collection at index 1.
-        assertXPathCreatePath(context, 
-                "$testArray[2]/boolean", 
-                Boolean.FALSE, 
-                "$testArray[2]/boolean");
+        assertXPathCreatePath(
+            context,
+            "$testArray[2]/boolean",
+            Boolean.FALSE,
+            "$testArray[2]/boolean");
     }
-    
-    public void testCreatePathAndSetValueDeclVarSetCollectionElementProperty(){
+
+    public void testCreatePathAndSetValueDeclVarSetCollectionElementProperty() {
         // Calls factory.declareVariable("testArray").
         // The factory should create a collection of TestBeans.
         // Then calls factory.createObject(..., collection, "testArray", 1).
         // That one should produce an instance of TestBean and 
         // put it in the collection at index 1.
-        assertXPathCreatePathAndSetValue(context, 
-                "$testArray[2]/boolean", 
-                Boolean.TRUE, 
-                "$testArray[2]/boolean");
+        assertXPathCreatePathAndSetValue(
+            context,
+            "$testArray[2]/boolean",
+            Boolean.TRUE,
+            "$testArray[2]/boolean");
     }
-    
-    public void testRemovePathUndeclareVariable(){
+
+    public void testRemovePathUndeclareVariable() {
         // Undeclare variable
         context.getVariables().declareVariable("temp", "temp");
         context.removePath("$temp");
-        assertTrue("Undeclare variable",
-                !context.getVariables().isDeclaredVariable("temp"));
+        assertTrue(
+            "Undeclare variable",
+            !context.getVariables().isDeclaredVariable("temp"));
 
     }
-    
-    public void testRemovePathArrayElement(){
+
+    public void testRemovePathArrayElement() {
         // Remove array element - reassigns the new array to the var
-        context.getVariables().
-                declareVariable("temp", new String[]{"temp1", "temp2"});
+        context.getVariables().declareVariable(
+            "temp",
+            new String[] { "temp1", "temp2" });
         context.removePath("$temp[1]");
-        assertEquals("Remove array element", "temp2",
-                    context.getValue("$temp[1]"));
+        assertEquals(
+            "Remove array element",
+            "temp2",
+            context.getValue("$temp[1]"));
     }
-    
-    public void testRemovePathCollectionElement(){
+
+    public void testRemovePathCollectionElement() {
         // Remove list element - does not create a new list
-        context.getVariables().
-                declareVariable("temp", list("temp1", "temp2"));
+        context.getVariables().declareVariable("temp", list("temp1", "temp2"));
         context.removePath("$temp[1]");
-        assertEquals("Remove collection element", "temp2",
-                    context.getValue("$temp[1]"));
+        assertEquals(
+            "Remove collection element",
+            "temp2",
+            context.getValue("$temp[1]"));
     }
 }

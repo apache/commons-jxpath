@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestMixedModelBean.java,v 1.3 2003/01/11 05:41:27 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2003/01/11 05:41:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestMixedModelBean.java,v 1.4 2003/01/20 00:00:27 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/20 00:00:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,7 +62,11 @@
 
 package org.apache.commons.jxpath;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.jxpath.xml.DocumentContainer;
 import org.w3c.dom.Document;
@@ -72,7 +76,7 @@ import org.w3c.dom.Element;
  * Mixed model test bean: Java, collections, map, DOM, Container.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:27 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/20 00:00:27 $
  */
 public class TestMixedModelBean {
     private String string;
@@ -86,14 +90,14 @@ public class TestMixedModelBean {
     private List list;
     private int[][] matrix;
 
-    public TestMixedModelBean(){
+    public TestMixedModelBean() {
         string = "string";
         bean = new TestBean();
         map = new HashMap();
         list = new ArrayList();
 
         container = new DocumentContainer(getClass().getResource("Vendor.xml"));
-        document = (Document)container.getValue();
+        document = (Document) container.getValue();
         element = document.getDocumentElement();
 
         map.put("string", string);
@@ -111,45 +115,45 @@ public class TestMixedModelBean {
         list.add(document);
         list.add(element);
         list.add(container);
-        
+
         matrix = new int[1][];
         matrix[0] = new int[1];
         matrix[0][0] = 3;
     }
 
-    public String getString(){
+    public String getString() {
         return string;
     }
-    
+
     public TestBean getBean() {
         return bean;
     }
-    
-    public Map getMap(){
+
+    public Map getMap() {
         return map;
     }
 
     public List getList() {
         return list;
     }
-        
+
     public Document getDocument() {
         return document;
     }
-    
+
     public Element getElement() {
         return element;
     }
-    
-    public Container getContainer(){
+
+    public Container getContainer() {
         return container;
     }
-    
-    public int[][] getMatrix(){
+
+    public int[][] getMatrix() {
         return matrix;
     }
-    
-    public void setMatrix(int[][] matrix){
+
+    public void setMatrix(int[][] matrix) {
         this.matrix = matrix;
     }
 }
