@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.3 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/26 01:21:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.4 2001/09/26 23:37:39 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2001/09/26 23:37:39 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -384,7 +384,7 @@ import java.util.Locale;
  * See <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.4 $ $Date: 2001/09/26 23:37:39 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -392,6 +392,7 @@ public abstract class JXPathContext {
     protected Variables vars;
     protected Functions functions;
     protected Locale locale;
+    protected boolean lenient = false;
 
     /**
      * Creates a new JXPathContext with the specified bean as the root node.
@@ -476,6 +477,26 @@ public abstract class JXPathContext {
             locale = Locale.getDefault();
         }
         return locale;
+    }
+
+    /**
+     * If the context is in the lenient mode, then getValue() returns null
+     * for inexistent paths.  Otherwise, a path that does not map to
+     * an existing property will throw an exception.  Note that if the
+     * property exists, but its value is null, the exception is <i>not</i>
+     * thrown.
+     * <p>
+     * By default, lenient = false
+     */
+    public void setLenient(boolean lenient){
+        this.lenient = lenient;
+    }
+
+    /**
+     * @see #setLenient(boolean)
+     */
+    public boolean isLenient(){
+        return lenient;
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.4 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2001/09/26 01:21:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.5 2001/09/26 23:37:38 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2001/09/26 23:37:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.w3c.dom.*;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.5 $ $Date: 2001/09/26 23:37:38 $
  */
 public abstract class EvalContext implements ExpressionContext {
     protected EvalContext parentContext;
@@ -1027,7 +1027,8 @@ public abstract class EvalContext implements ExpressionContext {
         if (set instanceof EvalContext){
             EvalContext ctx = (EvalContext)set;
             if (ctx.nextSet() && ctx.next()){
-                return ctx.getCurrentNodePointer().getNamespaceURI();
+                String str = ctx.getCurrentNodePointer().getNamespaceURI();
+                return str == null ? "" : str;
             }
         }
         return "";
@@ -1251,7 +1252,7 @@ public abstract class EvalContext implements ExpressionContext {
 
     protected Object functionNull(CoreFunction function){
         assertArgCount(function, 0);
-        return null;
+        return new NullPointer(null, getRootContext().getCurrentNodePointer().getLocale());
     }
 
     protected Object functionNumber(CoreFunction function){

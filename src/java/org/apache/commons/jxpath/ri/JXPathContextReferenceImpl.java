@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.5 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2001/09/26 01:21:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.6 2001/09/26 23:37:38 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2001/09/26 23:37:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,7 +81,7 @@ import org.w3c.dom.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.6 $ $Date: 2001/09/26 23:37:38 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -145,6 +145,10 @@ public class JXPathContextReferenceImpl extends JXPathContext
      */
     public Object getValue(String xpath){
         Object result = eval(xpath, true);
+        if (result == null && !lenient){
+            throw new RuntimeException("No value for xpath: " + xpath);
+        }
+
         if (result instanceof EvalContext){
             EvalContext ctx = (EvalContext)result;
             result = ctx.getContextNodePointer();
@@ -225,16 +229,15 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
         else if (result instanceof EvalContext){
             EvalContext ctx = (EvalContext)result;
-            while(ctx.nextSet()){
-                if (ctx.next()){
-                    ctx.getCurrentNodePointer().setValue(value);
-                    return;
-                }
+            Pointer ptr = ctx.getContextNodePointer();
+            if (ptr != null){
+                ptr.setValue(value);
             }
-            throw new RuntimeException("Cannot set value for xpath: " + xpath + ": no such property");
+            else {
+                throw new RuntimeException("Cannot set value for xpath: " + xpath + ": no such property");
+            }
         }
         else {
-            System.err.println("RESULT: " + result);
             throw new RuntimeException("Cannot set value for xpath: " + xpath);
         }
     }

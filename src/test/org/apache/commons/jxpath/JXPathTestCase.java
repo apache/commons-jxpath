@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.8 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2001/09/26 01:21:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.9 2001/09/26 23:37:38 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2001/09/26 23:37:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -93,7 +93,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.9 $ $Date: 2001/09/26 23:37:38 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -415,8 +415,9 @@ public class JXPathTestCase extends TestCase
             JXPathContext context = JXPathContext.newContext(new TestNull());
             testGetValue(context, "nothing", null);
             testGetValue(context, "child/nothing", null);
-            testGetValue(context, "nothing/something", null);
             testGetValue(context, "array[2]", null);
+            context.setLenient(true);
+            testGetValue(context, "nothing/something", null);
             testGetValue(context, "array[2]/something", null);
         }
     }
@@ -514,7 +515,9 @@ public class JXPathTestCase extends TestCase
                         actual = ctx.eval(xpath_tests[i].xpath);
                     }
                     else {
+                        ctx.setLenient(xpath_tests[i].lenient);
                         actual = ctx.getValue(xpath_tests[i].xpath);
+                        ctx.setLenient(false);
                     }
                 }
                 assertEquals("Evaluating <" + xpath_tests[i].xpath + ">", xpath_tests[i].expected, actual);
@@ -547,29 +550,35 @@ public class JXPathTestCase extends TestCase
         public Object expected;
         public boolean eval;
         public boolean path;
+        public boolean lenient;
 
-        public XP(String xpath,  Object expected, boolean eval, boolean path){
+        public XP(String xpath,  Object expected, boolean eval, boolean path, boolean lenient){
             this.xpath = xpath;
             this.expected = expected;
             this.eval = eval;
             this.path = path;
+            this.lenient = lenient;
         }
     }
 
     private static XP test(String xpath, Object expected){
-        return new XP(xpath, expected, false, false);
+        return new XP(xpath, expected, false, false, false);
+    }
+
+    private static XP testLenient(String xpath, Object expected){
+        return new XP(xpath, expected, false, false, true);
     }
 
     private static XP testEval(String xpath, Object expected){
-        return new XP(xpath, expected, true, false);
+        return new XP(xpath, expected, true, false, false);
     }
 
     private static XP testPath(String xpath, Object expected){
-        return new XP(xpath, expected, false, true);
+        return new XP(xpath, expected, false, true, false);
     }
 
     private static XP testEvalPath(String xpath, Object expected){
-        return new XP(xpath, expected, true, true);
+        return new XP(xpath, expected, true, true, false);
     }
 
     static final XP[] xpath_tests = new XP[]{
@@ -767,7 +776,7 @@ public class JXPathTestCase extends TestCase
         test("null()", null),
         test("@xml:lang", "en-US"),
         test("count(@xml:*)", new Double(1)),
-        test("@foo", null),
+        testLenient("@foo", null),
         test("lang('en')", Boolean.TRUE),
         test("lang('fr')", Boolean.FALSE),
 
@@ -919,7 +928,7 @@ public class JXPathTestCase extends TestCase
         test("local-name(vendor/nsnode/foo:bar/@foo:attr)", "attr"),
         test("name(vendor/nsnode/foo:bar/@foo:attr)", "foonamespace:attr"),
         test("vendor/nsnode/foo:bar/@attr", "B"),
-        test("namespace-uri(vendor/nsnode/foo:bar/@attr)", null),
+        test("namespace-uri(vendor/nsnode/foo:bar/@attr)", ""),
         test("local-name(vendor/nsnode/foo:bar/@attr)", "attr"),
         test("name(vendor/nsnode/foo:bar/@attr)", "attr"),
         test("vendor/nsnode/foo:x/y/ancestor::foo:x/y", "why"),
@@ -934,7 +943,7 @@ public class JXPathTestCase extends TestCase
         test("vendor/nsnode/foo:x/y/parent::foo:*" + "/y", "why"),
         test("//location/following::foo:x/y", "why"),
         test("//foo:x/self::foo:x/y", "why"),
-        test("//foo:x/self::x/y", null),
+        testLenient("//foo:x/self::x/y", null),
 
         test("//nsnode/comment()", "z"),
         test("//nsnode/text()", "text"),
@@ -948,7 +957,7 @@ public class JXPathTestCase extends TestCase
         test("//nsnode/baz[lang('fr')]", "BAZ"),
         test("//nsnode/foo:x[lang('en')]/y", "why"),
         test("vendor/location/@blank", ""),
-        test("vendor/location/@missing", null),
+        testLenient("vendor/location/@missing", null),
         test("count(vendor/location[1]/@*)", new Double(3)),
         test("vendor/location[@id='101']//street", "Other street"),
         test("$test/int", new Integer(1)),
