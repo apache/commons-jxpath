@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.28 2003/02/19 00:59:52 dmitri Exp $
- * $Revision: 1.28 $
- * $Date: 2003/02/19 00:59:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.29 2003/02/21 00:37:26 dmitri Exp $
+ * $Revision: 1.29 $
+ * $Date: 2003/02/21 00:37:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -98,7 +98,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.28 $ $Date: 2003/02/19 00:59:52 $
+ * @version $Revision: 1.29 $ $Date: 2003/02/21 00:37:26 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -522,7 +522,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     public void removeAll(String xpath, Expression expr) {
         try {
             ArrayList list = new ArrayList();
-            Iterator it = expr.iterate(getEvalContext());
+            Iterator it = expr.iteratePointers(getEvalContext());
             while (it.hasNext()) {
                 list.add(it.next());
             }
