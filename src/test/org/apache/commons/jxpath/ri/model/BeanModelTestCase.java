@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.6 2003/01/11 05:41:27 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2003/01/11 05:41:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.7 2003/01/12 01:52:57 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/01/12 01:52:57 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:27 $
+ * @version $Revision: 1.7 $ $Date: 2003/01/12 01:52:57 $
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase
@@ -727,6 +727,73 @@ public abstract class BeanModelTestCase extends JXPathTestCase
                 list(new Integer(1), new Integer(2)));
     }
 
+    public void testBooleanPredicateWithSearch(){
+        context.getVariables().declareVariable(
+            "numbers",
+            new String[] { "2", "3" });
+
+        context.setValue("/beans[1]/strings", new String[] { "1", "2" });
+        context.setValue("/beans[2]/strings", new String[] { "3", "4" });
+
+        // Find beans with any string == 2        
+        assertXPathValueIterator(context,
+            "/beans[strings = '2']/name",
+            list("Name 1")
+        );
+
+        // Find beans with any string in the variable $numbers
+        assertXPathValueIterator(context,
+            "/beans[strings = $numbers]/name",
+            list("Name 1", "Name 2")
+        );
+
+        // Find beans without any strings == 2
+        assertXPathValueIterator(context,
+            "/beans[strings != '2']/name",
+            list("Name 2")
+        );
+
+        assertXPathValueIterator(context,
+            "/beans[strings > '1']/name",
+            list("Name 1", "Name 2")
+        );
+
+        assertXPathValueIterator(context,
+            "/beans[strings > $numbers]/name",
+            list("Name 2")
+        );
+
+        assertXPathValueIterator(context,
+            "/beans[strings >= '2']/name",
+            list("Name 1", "Name 2")
+        );
+
+        assertXPathValueIterator(context,
+            "/beans[strings >= '3']/name",
+            list("Name 2")
+        );
+        
+        assertXPathValueIterator(context,
+            "/beans[strings < '4']/name",
+            list("Name 1", "Name 2")
+        );
+
+        assertXPathValueIterator(context,
+            "/beans[strings < 3]/name",
+            list("Name 1")
+        );
+
+        assertXPathValueIterator(context,
+            "/beans[strings <= '3']/name",
+            list("Name 1", "Name 2")
+        );
+
+        assertXPathValueIterator(context,
+            "/beans[strings <= '2']/name",
+            list("Name 1")
+        );
+    }
+    
     public void testDocumentOrder(){
         assertDocumentOrder(context,
                 "boolean", "int", -1);

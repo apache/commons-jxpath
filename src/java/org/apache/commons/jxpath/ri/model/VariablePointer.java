@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.10 2003/01/11 05:41:24 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2003/01/11 05:41:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.11 2003/01/12 01:52:56 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/01/12 01:52:56 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,13 +68,14 @@ import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
+import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2003/01/11 05:41:24 $
+ * @version $Revision: 1.11 $ $Date: 2003/01/12 01:52:56 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
@@ -128,7 +129,7 @@ public class VariablePointer extends NodePointer {
         }
         return value;
     }
-
+    
     public void setValue(Object value) {
         if (!actual) {
             throw new JXPathException("Cannot set undefined variable: " + name);
@@ -152,8 +153,17 @@ public class VariablePointer extends NodePointer {
             Object value = null;
             if (actual) {
                 value = getImmediateNode();
+                valuePointer =
+                    NodePointer.newChildNodePointer(this, null, value);
             }
-            valuePointer = NodePointer.newChildNodePointer(this, null, value);
+            else {
+                return new NullPointer(this, getName()) {
+                    public Object getImmediateNode() {
+                        throw new JXPathException(
+                            "Undefined variable: " + name);
+                    }
+                };
+            }
         }
         return valuePointer;
     }

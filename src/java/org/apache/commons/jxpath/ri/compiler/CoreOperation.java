@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperation.java,v 1.8 2003/01/11 05:41:23 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2003/01/11 05:41:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperation.java,v 1.9 2003/01/12 01:52:57 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/01/12 01:52:57 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,10 +61,8 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.EvalContext;
@@ -72,14 +70,14 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 import org.apache.commons.jxpath.ri.axes.InitialContext;
 import org.apache.commons.jxpath.ri.axes.SelfContext;
 import org.apache.commons.jxpath.ri.axes.UnionContext;
-import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * A compile tree element representing one of the core operations like "+",
  * "-", "*" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.9 $ $Date: 2003/01/12 01:52:57 $
  */
 public class CoreOperation extends Operation {
     public CoreOperation(int code, Expression args[]) {
@@ -264,9 +262,9 @@ public class CoreOperation extends Operation {
         Expression left,
         Expression right) 
     {
-        double l = InfoSetUtil.doubleValue(left.computeValue(context));
-        double r = InfoSetUtil.doubleValue(right.computeValue(context));
-        return l < r ? Boolean.TRUE : Boolean.FALSE;
+        return test(context, left, right, LT_TEST)
+            ? Boolean.TRUE
+            : Boolean.FALSE;
     }
 
     /**
@@ -277,9 +275,9 @@ public class CoreOperation extends Operation {
         Expression left,
         Expression right) 
     {
-        double l = InfoSetUtil.doubleValue(left.computeValue(context));
-        double r = InfoSetUtil.doubleValue(right.computeValue(context));
-        return l > r ? Boolean.TRUE : Boolean.FALSE;
+        return test(context, left, right, GT_TEST)
+            ? Boolean.TRUE
+            : Boolean.FALSE;
     }
 
     /**
@@ -290,9 +288,9 @@ public class CoreOperation extends Operation {
         Expression left,
         Expression right) 
     {
-        double l = InfoSetUtil.doubleValue(left.computeValue(context));
-        double r = InfoSetUtil.doubleValue(right.computeValue(context));
-        return l <= r ? Boolean.TRUE : Boolean.FALSE;
+        return test(context, left, right, LTE_TEST)
+            ? Boolean.TRUE
+            : Boolean.FALSE;
     }
 
     /**
@@ -303,9 +301,9 @@ public class CoreOperation extends Operation {
         Expression left,
         Expression right) 
     {
-        double l = InfoSetUtil.doubleValue(left.computeValue(context));
-        double r = InfoSetUtil.doubleValue(right.computeValue(context));
-        return l >= r ? Boolean.TRUE : Boolean.FALSE;
+        return test(context, left, right, GTE_TEST)
+            ? Boolean.TRUE
+            : Boolean.FALSE;
     }
 
     /**
@@ -316,7 +314,9 @@ public class CoreOperation extends Operation {
         Expression left,
         Expression right) 
     {
-        return equal(context, left, right) ? Boolean.TRUE : Boolean.FALSE;
+        return test(context, left, right, EQUAL_TEST)
+            ? Boolean.TRUE
+            : Boolean.FALSE;
     }
 
     /**
@@ -327,16 +327,22 @@ public class CoreOperation extends Operation {
         Expression left,
         Expression right) 
     {
-        return equal(context, left, right) ? Boolean.FALSE : Boolean.TRUE;
+        return test(context, left, right, EQUAL_TEST)
+            ? Boolean.FALSE
+            : Boolean.TRUE;
     }
-
+    
     /**
-     * Compares two values
+     * When the left and/or right side of a comparisons like =, &lt;, &gt;, 
+     * &lt;= and &gt;= is a NodeSet (i.e. a collection), we are supposed to
+     * perform a search for a pair of matching nodes. That's exactly what this
+     * method does.  It takes a "PairTest" static object that implements the
+     * comparison of two nodes.
      */
-    protected boolean equal(
-        EvalContext context,
-        Expression left,
-        Expression right) 
+    protected boolean test(EvalContext context,
+            Expression left,
+            Expression right,
+            NodeComparator pairTest)
     {
         Object l = left.compute(context);
         Object r = right.compute(context);
@@ -346,105 +352,151 @@ public class CoreOperation extends Operation {
 //            (r == null ? "null" : r.getClass().getName()));
 
         if (l instanceof InitialContext || l instanceof SelfContext) {
-            l = ((EvalContext) l).getSingleNodePointer();
+            l = ((EvalContext) l).getSingleNodePointer().getValue();
         }
 
         if (r instanceof InitialContext || r instanceof SelfContext) {
-            r = ((EvalContext) r).getSingleNodePointer();
+            r = ((EvalContext) r).getSingleNodePointer().getValue();
         }
 
-        if (l instanceof Collection) {
-            l = ((Collection) l).iterator();
+        if (ValueUtils.isCollection(l)) {
+            l = ValueUtils.iterate(l);
         }
 
-        if (r instanceof Collection) {
-            r = ((Collection) r).iterator();
+        if (ValueUtils.isCollection(r)) {
+            r = ValueUtils.iterate(r);
         }
 
         if ((l instanceof Iterator) && !(r instanceof Iterator)) {
-            return contains((Iterator) l, r);
+            return contains((Iterator) l, r, pairTest);
         }
         else if (!(l instanceof Iterator) && (r instanceof Iterator)) {
-            return contains((Iterator) r, l);
+            Iterator it = (Iterator) r;
+            while (it.hasNext()) {
+                Object element = it.next();
+                if (pairTest.isTrue(element, l)) {
+                    return true;
+                }
+            }
+            return false;
         }
         else if (l instanceof Iterator && r instanceof Iterator) {
-            return findMatch((Iterator) l, (Iterator) r);
+            return findMatch((Iterator) l, (Iterator) r, pairTest);
         }
 
-        return equal(l, r);
+        return pairTest.isTrue(l, r);
     }
 
-    protected boolean contains(Iterator it, Object value) {
+    protected boolean contains(
+        Iterator it,
+        Object value,
+        NodeComparator pairTest) 
+    {
         while (it.hasNext()) {
             Object element = it.next();
-            if (equal(element, value)) {
+            if (pairTest.isTrue(element, value)) {
                 return true;
             }
         }
         return false;
     }
 
-    protected boolean findMatch(Iterator lit, Iterator rit) {
+    protected boolean findMatch(Iterator lit, Iterator rit, NodeComparator pairTest) {
         HashSet left = new HashSet();
         while (lit.hasNext()) {
             left.add(lit.next());
         }
         while (rit.hasNext()) {
-            if (contains(left.iterator(), rit.next())) {
+            if (contains(left.iterator(), rit.next(), pairTest)) {
                 return true;
             }
         }
         return false;
     }
 
-    protected boolean equal(Object l, Object r) {
-        if (l instanceof Pointer && r instanceof Pointer) {
-            if (l.equals(r)) {
+    private static abstract class NodeComparator {
+        abstract boolean compare(Object left, Object right);
+
+        boolean isTrue(Object left, Object right){
+            if (left instanceof Pointer) {
+                left = ((Pointer) left).getValue();
+            }
+
+            if (right instanceof Pointer) {
+                right = ((Pointer) right).getValue();
+            }
+            return compare(left, right);
+        }
+    }
+    
+    private static final NodeComparator EQUAL_TEST = new NodeComparator() {
+        public boolean isTrue(Object l, Object r) {
+            if (l instanceof Pointer && r instanceof Pointer) {
+                if (l.equals(r)) {
+                    return true;
+                }
+            }
+
+            if (l instanceof Pointer) {
+                l = ((Pointer) l).getValue();
+            }
+
+            if (r instanceof Pointer) {
+                r = ((Pointer) r).getValue();
+            }
+
+            if (l == r) {
                 return true;
             }
-        }
 
-        if (l instanceof Pointer) {
-            l = ((Pointer) l).getValue();
+            if (l instanceof Boolean || r instanceof Boolean) {
+                return (
+                    InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r));
+            }
+            else if (l instanceof Number || r instanceof Number) {
+                return (
+                    InfoSetUtil.doubleValue(l) == InfoSetUtil.doubleValue(r));
+            }
+            else if (l instanceof String || r instanceof String) {
+                return (
+                    InfoSetUtil.stringValue(l).equals(
+                        InfoSetUtil.stringValue(r)));
+            }
+            else if (l == null) {
+                return r == null;
+            }
+            return l.equals(r);
         }
+        
+        boolean compare(Object left, Object right){
+            // Not used
+            return false;
+        }
+    };
 
-        if (r instanceof Pointer) {
-            r = ((Pointer) r).getValue();
+    private static final NodeComparator LT_TEST = new NodeComparator() {
+        public boolean compare(Object l, Object r) {
+            return InfoSetUtil.doubleValue(l) < InfoSetUtil.doubleValue(r);
         }
+    };
+    
+    private static final NodeComparator GT_TEST = new NodeComparator() {
+        public boolean compare(Object l, Object r) {
+            return InfoSetUtil.doubleValue(l) > InfoSetUtil.doubleValue(r);
+        }
+    };
+    
+    private static final NodeComparator LTE_TEST = new NodeComparator() {
+        public boolean compare(Object l, Object r) {
+            return InfoSetUtil.doubleValue(l) <= InfoSetUtil.doubleValue(r);
+        }
+    };
 
-        if (l == r) {
-            return true;
+    private static final NodeComparator GTE_TEST = new NodeComparator() {
+        public boolean compare(Object l, Object r) {
+            return InfoSetUtil.doubleValue(l) >= InfoSetUtil.doubleValue(r);
         }
-
-//        System.err.println("COMPARING VALUES: " + l + " " + r);
-        if (l instanceof Boolean || r instanceof Boolean) {
-            return (InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r));
-        }
-        else if (l instanceof Number || r instanceof Number) {
-            return (InfoSetUtil.doubleValue(l) == InfoSetUtil.doubleValue(r));
-        }
-        else if (l instanceof String || r instanceof String) {
-            return (
-                InfoSetUtil.stringValue(l).equals(InfoSetUtil.stringValue(r)));
-        }
-        else if (l == null) {
-            return r == null;
-        }
-        return l.equals(r);
-    }
-
-    /**
-     * Extracts all values from a context
-     */
-    private Set valueSet(EvalContext context) {
-        HashSet set = new HashSet();
-        while (context.hasNext()) {
-            context.next();
-            NodePointer pointer = context.getCurrentNodePointer();
-            set.add(pointer.getValue());
-        }
-        return set;
-    }
+    };
 
     /**
      * Computes <code>"left and right"<code>
@@ -469,4 +521,5 @@ public class CoreOperation extends Operation {
         }
         return Boolean.FALSE;
     }
+    
 }
