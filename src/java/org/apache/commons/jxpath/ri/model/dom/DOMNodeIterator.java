@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodeIterator.java,v 1.3 2002/04/26 01:00:38 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodeIterator.java,v 1.4 2002/08/10 01:48:36 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/08/10 01:48:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.w3c.dom.Node;
  * An iterator of children of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:38 $
+ * @version $Revision: 1.4 $ $Date: 2002/08/10 01:48:36 $
  */
 public class DOMNodeIterator implements NodeIterator {
     private NodePointer parent;
@@ -178,98 +178,4 @@ public class DOMNodeIterator implements NodeIterator {
     private boolean testChild(){
         return DOMNodePointer.testNode(parent, child, nodeTest);
     }
-/*
-    public NodePointer getNodePointer(){
-        if (child == null){
-            if (!setPosition(1)){
-                return null;
-            }
-            position = 0;
-        }
-
-        if (children){
-            return new DOMNodePointer(parent, child);
-        }
-        else {
-            return new DOMNodePointer(parent.getParent(), child);
-        }
-    }
-
-    public int getPosition(){
-        return position;
-    }
-
-    public boolean setPosition(int position){
-        while (this.position < position){
-            if (!next()){
-                return false;
-            }
-        }
-        while (this.position > position){
-            if (!previous()){
-                return false;
-            }
-        }
-//        System.err.println(getNodePointer().asPath() + " SET POSITION: " + position);
-        return true;
-    }
-
-    private boolean previous(){
-        position--;
-        if (!reverse){
-            child = child.getPreviousSibling();
-            while (child != null && !testChild()){
-                child = child.getPreviousSibling();
-            }
-        }
-        else {
-            child = child.getNextSibling();
-            while (child != null && !testChild()){
-                child = child.getNextSibling();
-            }
-        }
-        return child != null;
-    }
-
-    private boolean next(){
-        position++;
-        if (!reverse){
-            if (position == 1){
-                if (children){
-                    child = node.getFirstChild();
-                }
-                else {
-                    child = node.getNextSibling();
-                }
-            }
-            else {
-                child = child.getNextSibling();
-            }
-            while (child != null && !testChild()){
-                child = child.getNextSibling();
-            }
-        }
-        else {
-            if (position == 1){
-                if (children){
-                    child = node.getLastChild();
-                }
-                else {
-                    child = node.getPreviousSibling();
-                }
-            }
-            else {
-                child = child.getPreviousSibling();
-            }
-            while (child != null && !testChild()){
-                child = child.getPreviousSibling();
-            }
-        }
-        return child != null;
-    }
-
-    private boolean testChild(){
-        return DOMNodePointer.testNode(parent, child, nodeTest);
-    }
-    */
 }
