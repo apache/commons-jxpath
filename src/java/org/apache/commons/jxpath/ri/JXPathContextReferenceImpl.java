@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.16 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.16 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.17 2002/05/08 23:19:31 dmitri Exp $
+ * $Revision: 1.17 $
+ * $Date: 2002/05/08 23:19:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -84,7 +84,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.17 $ $Date: 2002/05/08 23:19:31 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -147,7 +147,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
         return nodeFactoryArray;
     }
 
-    public CompiledExpression compile(String xpath){
+    protected CompiledExpression compilePath(String xpath){
         return new JXPathCompiledExpression(xpath, compileExpression(xpath));
     }
 

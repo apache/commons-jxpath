@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.8 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.9 2002/05/08 23:19:31 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/05/08 23:19:31 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -404,7 +404,7 @@ import java.util.*;
  * Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.9 $ $Date: 2002/05/08 23:19:31 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -414,6 +414,8 @@ public abstract class JXPathContext {
     protected AbstractFactory factory;
     protected Locale locale;
     protected boolean lenient = false;
+
+    private static JXPathContext compilationContext;
 
     /**
      * Creates a new JXPathContext with the specified bean as the root node.
@@ -543,7 +545,18 @@ public abstract class JXPathContext {
      * and there is a convenient place to cache CompiledExpression
      * between invocations.
      */
-    public abstract CompiledExpression compile(String xpath);
+    public static CompiledExpression compile(String xpath){
+        if (compilationContext == null){
+            compilationContext = JXPathContext.newContext(null);
+        }
+        return compilationContext.compilePath(xpath);
+    }
+
+    /**
+     * Overridden by each concrete implementation of JXPathContext
+     * to perform compilation.
+     */
+    protected abstract CompiledExpression compilePath(String xpath);
 
     /**
      * Evaluates the xpath and returns the resulting object. Primitive
