@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Variables.java,v 1.2 2002/04/24 03:30:17 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 03:30:17 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Variables.java,v 1.3 2002/05/08 23:02:42 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/05/08 23:02:42 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,14 +63,12 @@ package org.apache.commons.jxpath;
 
 /**
  * Variables provide access to a global set of values accessible via XPath.
- * XPath can reference variables using the "$varname" syntax. To use a custom
- * implementation of this interface, pass it to a newContext method of
- * JXPathContext.
- *
- * @see JXPathContext#setVariables
+ * XPath can reference variables using the <code>"$varname"</code> syntax.
+ * To use a custom implementation of this interface, pass it to
+ * {@link JXPathContext#setVariables JXPathContext.setVariables()}
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 03:30:17 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/08 23:02:42 $
  */
 public interface Variables {
 
@@ -87,7 +85,15 @@ public interface Variables {
 
     /**
      * Defines a new variable with the specified value or modifies
-     * the value of an existing variable. May throw UnsupportedOperationException.
+     * the value of an existing variable.
+     * May throw UnsupportedOperationException.
      */
     void declareVariable(String varName, Object value);
+
+    /**
+     * Removes an existing variable. May throw UnsupportedOperationException.
+     *
+     * @param varName is a variable name without the "$" sign
+     */
+    void undeclareVariable(String varName);
 }
