@@ -46,7 +46,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.26 $ $Date: 2004/12/30 21:59:36 $
+ * @version $Revision: 1.26 $ $Date$
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -256,6 +256,9 @@ public class DOMNodePointer extends NodePointer {
     public String getDefaultNamespaceURI() {
         if (defaultNamespace == null) {
             Node aNode = node;
+            if (aNode instanceof Document) {
+                aNode = ((Document) aNode).getDocumentElement();
+            }
             while (aNode != null) {
                 if (aNode.getNodeType() == Node.ELEMENT_NODE) {
                     Attr attr = ((Element) aNode).getAttributeNode("xmlns");
