@@ -34,8 +34,8 @@
   
   <dependencies>
     <dependency>
-      <id>xalan</id>
-      <version>2.1.0</version>
+      <id>xerces</id>
+      <version>1.2.3</version>
     </dependency>
     <dependency>
       <id>servletapi</id>
