@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.11 2004/01/19 20:44:52 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2004/01/19 20:44:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.12 2004/01/24 02:16:51 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2004/01/24 02:16:51 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,7 +83,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2004/01/19 20:44:52 $
+ * @version $Revision: 1.12 $ $Date: 2004/01/24 02:16:51 $
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase {
@@ -353,7 +353,15 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         assertXPathValue(
             context,
             "test:collection()/@name",
-            "foo");        
+            "foo");   
+        
+        List list = new ArrayList();
+        list.add("foo");
+        list.add("bar");
+        context.getVariables().declareVariable("myList", list); 
+        Object
+        values = context.getValue("test:items($myList)");
+        System.err.println("Values: " + values);
     }
 
     public void testNodeSetReturn() {
