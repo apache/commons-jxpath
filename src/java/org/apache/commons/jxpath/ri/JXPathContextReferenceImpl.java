@@ -39,6 +39,7 @@ import org.apache.commons.jxpath.ri.axes.InitialContext;
 import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.compiler.Expression;
 import org.apache.commons.jxpath.ri.compiler.LocationPath;
+import org.apache.commons.jxpath.ri.compiler.Path;
 import org.apache.commons.jxpath.ri.compiler.TreeCompiler;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
@@ -53,7 +54,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.38 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision: 1.39 $ $Date: 2004/03/02 01:32:20 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -240,11 +241,82 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * types are wrapped into objects.
      */
     public Object getValue(String xpath) {
-        return getValue(xpath, compileExpression(xpath));
+        Expression expression = compileExpression(xpath);
+// TODO: (work in progress) - trying to integrate with Xalan
+//        Object ctxNode = getNativeContextNode(expression);
+//        if (ctxNode != null) {
+//            System.err.println("WILL USE XALAN: " + xpath);
+//            CachedXPathAPI api = new CachedXPathAPI();
+//            try {
+//                if (expression instanceof Path) {
+//                    Node node = api.selectSingleNode((Node)ctxNode, xpath);
+//                    System.err.println("NODE: " + node);
+//                    if (node == null) {
+//                        return null;
+//                    }
+//                    return new DOMNodePointer(node, null).getValue();
+//                }
+//                else {
+//                    XObject object = api.eval((Node)ctxNode, xpath);
+//                    switch (object.getType()) {
+//                    case XObject.CLASS_STRING: return object.str();
+//                    case XObject.CLASS_NUMBER: return new Double(object.num());
+//                    case XObject.CLASS_BOOLEAN: return new Boolean(object.bool());
+//                    default:
+//                        System.err.println("OTHER TYPE: " + object.getTypeString());
+//                    }
+//                }
+//            }
+//            catch (TransformerException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//            return
+//        }
+        
+        return getValue(xpath, expression);
     }
+
+//    private Object getNativeContextNode(Expression expression) {
+//        Object node = getNativeContextNode(getContextBean());
+//        if (node == null) {
+//            return null;
+//        }
+//        
+//        List vars = expression.getUsedVariables();
+//        if (vars != null) {
+//            return null;
+//        }
+//        
+//        return node;
+//    }
+
+//    private Object getNativeContextNode(Object bean) {
+//        if (bean instanceof Number || bean instanceof String || bean instanceof Boolean) {
+//            return bean;
+//        }
+//        if (bean instanceof Node) {
+//            return (Node)bean;            
+//        }
+//        
+//        if (bean instanceof Container) {
+//            bean = ((Container)bean).getValue();
+//            return getNativeContextNode(bean);
+//        }
+//        
+//        return null;
+//    }
 
     public Object getValue(String xpath, Expression expr) {
         Object result = expr.computeValue(getEvalContext());
+        if (result == null) {
+            if (expr instanceof Path) {
+                if (!isLenient()) {
+                    throw new JXPathException("No value for xpath: " + xpath);
+                }
+            }
+            return null;
+        }
         if (result instanceof EvalContext) {
             EvalContext ctx = (EvalContext) result;
             result = ctx.getSingleNodePointer();

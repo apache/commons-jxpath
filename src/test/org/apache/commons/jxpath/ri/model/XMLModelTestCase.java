@@ -18,6 +18,7 @@ package org.apache.commons.jxpath.ri.model;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.IdentityManager;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.Variables;
@@ -29,7 +30,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.19 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision: 1.20 $ $Date: 2004/03/02 01:32:20 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {
@@ -321,6 +322,28 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
 
         // default namespace does not affect search
         assertXPathValue(context, "vendor/product/prix", "934.99");
+        
+        assertXPathValue(context, "/vendor/contact[@name='jim']", "Jim");
+        
+        boolean nsv = false;
+        try {
+            context.setLenient(false);
+            context.getValue("/vendor/contact[@name='jane']");
+        }
+        catch (JXPathException ex) {
+            nsv = true;
+        }
+        assertTrue("No such value: /vendor/contact[@name='jim']", nsv);
+                
+        nsv = false;
+        try {
+            context.setLenient(false);
+            context.getValue("/vendor/contact[@name='jane']/*");
+        }
+        catch (JXPathException ex) {
+            nsv = true;
+        }
+        assertTrue("No such value: /vendor/contact[@name='jane']/*", nsv);
         
         // child:: with a wildcard
         assertXPathValue(

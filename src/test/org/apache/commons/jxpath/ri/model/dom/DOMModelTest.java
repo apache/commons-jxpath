@@ -19,7 +19,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 import org.w3c.dom.Attr;
@@ -32,7 +31,7 @@ import org.w3c.dom.NodeList;
  * Tests JXPath with DOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/02/29 14:17:46 $
+ * @version $Revision: 1.13 $ $Date: 2004/03/02 01:32:20 $
  */
 
 public class DOMModelTest extends XMLModelTestCase {
