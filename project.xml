@@ -6,7 +6,7 @@
   <id>jakarta-commons-jxpath</id>
   <currentVersion>1.0-beta1-dev</currentVersion>
   <organization>Apache Software Foundation</organization>
-  <inceptionYear>2002</inceptionYear>
+  <inceptionYear>2001</inceptionYear>
   <package>org.apache.commons.jxpath</package>
   
   <shortDescription>XPath for Java Objects</shortDescription>

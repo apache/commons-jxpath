@@ -41,6 +41,61 @@
      <a href="api/org/apache/commons/jxpath/JXPathContext.html"><code>JXPathContext</code></a>. Most of the
      APIs discussed in this document have to do with the JXPathContext class.
     </p>
+<ul>
+  <li><a href="#Object Graph Traversal">Object Graph Traversal</a>
+     <ul>
+       <li><a href="#JavaBean Property Access">JavaBean Property Access</a></li>
+       <li><a href="#Lenient Mode">Lenient Mode</a></li>
+       <li><a href="#Nested Bean Property Access">Nested Bean Property Access</a></li>
+       <li><a href="#Collection Subscripts">Collection Subscripts</a></li>
+       <li><a href="#Retrieving Multiple Results">Retrieving Multiple Results</a></li>
+       <li><a href="#Map Element Access">Map Element Access</a></li>
+       <li><a href="#DOM Document Access">DOM Document Access</a></li>
+       <li><a href="#Containers">Containers</a></li>
+     </ul>
+  </li>
+  <li><a href="#Modifying Object Graphs">Modifying Object Graphs</a>
+     <ul>
+       <li><a href="#Setting Properties">Setting Properties</a></li>
+       <li><a href="#Creating Objects">Creating Objects</a></li>
+     </ul>
+  </li>
+  <li><a href="#Variables">Variables</a>
+     <ul>
+       <li><a href="#Custom Variable Pools">Custom Variable Pools</a></li>
+     </ul>
+  </li>
+  <li><a href="#Servlet Contexts">Servlet Contexts</a>
+     <ul>
+       <li><a href="#JSP Page Context">JSP Page Context</a></li>
+       <li><a href="#Servlet Request Context">Servlet Request Context</a></li>
+       <li><a href="#HttpSession Context">HttpSession Context</a></li>
+       <li><a href="#ServletContext Context">ServletContext Context</a></li>
+     </ul>
+  </li>
+  <li><a href="#Pointers">Pointers</a></li>
+  <li><a href="#Extension Functions">Extension Functions</a>
+     <ul>
+       <li><a href="#Standard Extension Functions">Standard Extension Functions</a></li>
+       <li><a href="#Custom Extension Functions">Custom Extension Functions</a></li>
+       <li><a href="#Expression Context">Expression Context</a></li>
+     </ul>
+  </li>
+  <li><a href="#Type Conversions">Type Conversions</a></li>
+  <li><a href="#Internationalization">Internationalization</a></li>
+  <li><a href="#Nested Contexts">Nested Contexts</a></li>
+  <li><a href="#Compiled Expressions">Compiled Expressions</a></li>
+  <li><a href="#Customizing JXPath">Customizing JXPath</a>
+     <ul>
+       <li><a href="#Custom JXPathBeanInfo">Custom JXPathBeanInfo</a></li>
+       <li><a href="#Custom DynamicPropertyHandler">Custom DynamicPropertyHandler</a></li>
+       <li><a href="#Custom Pointers and Iterators">Custom Pointers and Iterators</a></li>
+       <li><a href="#Alternative JXPath Implementation">Alternative JXPath Implementation</a></li>
+     </ul>
+  </li>
+  <li><a href="#Miscellaneous">Miscellaneous</a></li>
+</ul>
+
 </section>
 
 <section name="Object Graph Traversal">
@@ -59,7 +114,7 @@
     JXPath can be used to access properties of a JavaBean.
  </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
 public class Employee {
     public String getFirstName(){
        ...
@@ -94,7 +149,7 @@ In the lenient mode the method merely returns null if the path maps to nothing.
  JXPath can traverse object graphs:
  </p>
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  public class Employee {
     public Address getHomeAddress(){
        ...
@@ -120,7 +175,7 @@ In the lenient mode the method merely returns null if the path maps to nothing.
  For instance, we can extract the whole Address object in above example:
  </p>
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
     Address addr = (Address)context.getValue("homeAddress");
  </source>
  </subsection>
@@ -130,7 +185,7 @@ In the lenient mode the method merely returns null if the path maps to nothing.
   JXPath can extract elements from arrays and collections.
  </p>
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  public class Integers {
     public int[] getNumbers(){
        ...
@@ -157,7 +212,7 @@ In the lenient mode the method merely returns null if the path maps to nothing.
  called in this case is not <code>getValue</code>, but <code>iterate</code>.
  </p>
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  public class Author {
     public Book[] getBooks(){
        ...
@@ -181,7 +236,7 @@ In the lenient mode the method merely returns null if the path maps to nothing.
   JXPath supports maps. To get a value use its key.
  </p>
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  public class Employee {
     private Map addressMap = new HashMap();
     {
@@ -206,7 +261,7 @@ In the lenient mode the method merely returns null if the path maps to nothing.
  elements:
  </p>
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  String homeZipCode = (String)context.
         getValue("addresses[@name='home']/zipCode");
  </source>
@@ -274,7 +329,7 @@ DOM objects, even though it is not applicable to JavaBeans.
 Let's say we have the the following XML file, which is stored as a Java resource.
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
     &lt;?xml version="1.0" ?&gt;
     &lt;vendor&gt;
       &lt;location id="store101"&gt;
@@ -294,7 +349,7 @@ Let's say we have the the following XML file, which is stored as a Java resource
 Here's the code that makes use of XMLDocumentContainer.
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  class Company {
     private Container locations = null;
 
@@ -338,7 +393,7 @@ nodes in object graphs.
  JXPath can be used to modify property values.
  </p>
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  public class Employee {
     public Address getAddress() {
        ...
@@ -370,7 +425,7 @@ nodes in object graphs.
  nodes.
 </p>
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  public class AddressFactory extends AbstractFactory {
     public boolean createObject(JXPathContext context, Pointer pointer,
                                 Object parent, String name, int index){
@@ -410,7 +465,7 @@ nodes in object graphs.
  </p>
 
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  public class Author {
     public Book[] getBooks(){
        ...
@@ -431,7 +486,7 @@ nodes in object graphs.
  </p>
 
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  context.setValue("$index", new Integer(3));
  </source>
 
@@ -448,7 +503,7 @@ nodes in object graphs.
  </p>
 
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  ...
  context.getVariables().declareVariable("book", myBook);
  String title = (String)context.getValue("$book/title);
@@ -542,7 +597,7 @@ object that represents a location of a node in an object graph.
 For example, you can call
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
 Pointer ptr = context.getPointer("employees[$i]/addresses[$j]")
 </source>
 <p>
@@ -557,7 +612,7 @@ get JXPath to produce a collection of pointers for all of those
 found locations:
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
 List homeAddresses = context.locate("//employee/address[@name='home']");
 </source>
 <p>
@@ -596,7 +651,7 @@ than many other types of XPaths.
  Here's how you can create new objects:
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  Book book = (Book)context.
    getValue("com.myco.books.Book.new('John Updike')");
 </source>
@@ -605,7 +660,7 @@ than many other types of XPaths.
  Here's how you can call static methods:
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  Book book = (Book)context.
    getValue("com.myco.books.Book.getBestBook('John Updike')");
 </source>
@@ -614,7 +669,7 @@ than many other types of XPaths.
  Here's how you can call regular methods:
 </p>
  <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  String firstName = (String)context.
    getValue("getAuthorsFirstName($book)");
  </source>
@@ -634,7 +689,7 @@ than many other types of XPaths.
  Let's say the following class implements various formatting operations:
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  public class Formats {
     public static String date(Date d, String pattern){
         return new SimpleDateFormat(pattern).format(d);
@@ -647,7 +702,7 @@ than many other types of XPaths.
  We can register this class with a JXPathContext:
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  context.setFunctions(new ClassFunctions(Formats.class, "format"));
  ...
 
@@ -676,7 +731,7 @@ than many other types of XPaths.
   gain access to the "current" object in the currently evaluated context.
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
 public class MyExtenstionFunctions {
    public static boolean isDate(ExpressionContext context){
       Pointer pointer = context.getContextNodePointer();
@@ -694,7 +749,7 @@ You can then register this extension function using ClassFunctions and
 call it like this:
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
   "//.[myext:isDate()]"
 </source>
 <p>
@@ -709,7 +764,7 @@ arguments - one for the current and one for the parameter context.
 For example,
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
 public class MyExtenstionFunctions {
    ...
    public static boolean contains(ExpressionContext current,
@@ -729,7 +784,7 @@ public class MyExtenstionFunctions {
 You can call this function to find all people who have a certain phone number:
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
   "/addressBook/contact[myext:contains(phoneNumbers, '555-5555']"
 </source>
 
@@ -774,7 +829,7 @@ For DOM Documents JXPathContext supports internationalization XPath-style.
 A locale can be declared on an XML Element like this:
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
      &lt;book xml:lang="fr"&gt;Les Miserables&lt;/book&gt;
 </source>
 <p>
@@ -782,7 +837,7 @@ You can then use the <code>lang</code> function in XPath to find nodes
 for a specific language:
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
      "//book[lang('fr')]
 </source>
 <p>
@@ -809,7 +864,7 @@ the Locale set on the JXPathContext (or the default locale).  See
  </p>
 
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
  JXPathContext sharedContext = JXPathContext.newContext(null);
  sharedContext.getVariables().declareVariable("title", "Java");
  sharedContext.setFunctions(new MyExtensionFunctions());
@@ -838,7 +893,7 @@ limited size and they are cleared once in a while.
 Here's how you can precompile an XPath expression:
 </p>
 <source>
-                                                                       &#xA0;
+                                                                       <b></b>
      CompiledExpression expr = context.compile(xpath);
      ...
      Object value = expr.getValue(context);

@@ -27,6 +27,7 @@
            <item name="Original&amp;nbsp;Proposal"        href="http://cvs.apache.org/viewcvs/~checkout~/jakarta-commons/jxpath/PROPOSAL.html?content-type=text/html"/>
        </menu>
        <menu name="Downloads">
+           <item name="Release"                       href="http://jakarta.apache.org/builds/jakarta-commons/release/commons-jxpath/"/>
            <item name="Nightly Build"                 href="http://jakarta.apache.org/builds/jakarta-commons/nightly/commons-jxpath/"/>
        </menu>
        <menu name="About Us">
