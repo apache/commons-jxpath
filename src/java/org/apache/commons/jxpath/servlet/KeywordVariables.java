@@ -62,7 +62,7 @@ import org.apache.commons.jxpath.Variables;
  * to a single object using a reserved name (keyword).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/08 23:19:09 $
  */
 public class KeywordVariables implements Variables {
 
@@ -86,6 +86,10 @@ public class KeywordVariables implements Variables {
     }
 
     public void declareVariable(String variable, Object value){
+        throw new UnsupportedOperationException("Cannot declare new keyword variables.");
+    }
+
+    public void undeclareVariable(String variable){
         throw new UnsupportedOperationException("Cannot declare new keyword variables.");
     }
 }
