@@ -4,7 +4,7 @@
   <extend>../project.xml</extend>
   <name>JXPath</name>
   <id>commons-jxpath</id>
-  <currentVersion>1.0-beta1-dev</currentVersion>
+  <currentVersion>1.1-alpha</currentVersion>
   <inceptionYear>2001</inceptionYear>
   <shortDescription>XPath for Java Objects</shortDescription>
   <description>A package of Java utility methods for accessing and modifying object properties</description>
@@ -12,8 +12,8 @@
   <versions>
     <version>
       <id>b1</id>
-      <name>1.0-b1</name>
-      <tag>JXPATH_1_0_B1</tag>
+      <name>1.1-a1</name>
+      <tag>JXPATH_1_1_A1</tag>
     </version>
   </versions>
 
@@ -54,12 +54,20 @@
       <id>xml-apis</id>
       <version>2.0.2</version>
     </dependency>
+    <dependency>
+      <id>jdom</id>
+      <version>b8</version>
+      <url>http://www.jdom.org</url> 
+    </dependency>
   </dependencies>
   
   <build>
     <unitTest>
       <includes>
         <include>**/*TestCase.java</include>
+        <include>**/DOMModelTest.java</include>
+        <include>**/JDOMModelTest.java</include>
+        <include>**/*InterpreterTest.java</include>
       </includes>
     </unitTest>
   </build>
