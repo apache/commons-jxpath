@@ -77,9 +77,9 @@ PARSER_END(XPathParser)
 
 
 /* [39]    ExprWhitespace    ::=    S  */
-SPECIAL_TOKEN :
+SKIP :
 {
-    <S: ( [" ", "\t", "\n", "\r"] )+>
+   " " | "\t" | "\n" | "\r" | "\f"
 }
 
 /*-----------------*/
@@ -89,18 +89,18 @@ SPECIAL_TOKEN :
 
 TOKEN:
 {
-          <SLASH:        "/"    >
-    |     <SLASHSLASH:    "//"    >
-    |     <UNION:        "|"    >
-    |     <PLUS:        "+"    >
-    |     <MINUS:        "-"    >
-    |     <EQ:        "="    >
-    |     <NEQ:        "!="    >
-    |     <LT:        "<"    >
-    |     <LTE:        "<="    >
-    |     <GT:        ">"    >
-    |     <GTE:        ">="    >
-    |     <VARIABLE:    "$"    >
+          <SLASH:      "/"    >
+    |     <SLASHSLASH: "//"   >
+    |     <UNION:      "|"    >
+    |     <PLUS:       "+"    >
+    |     <MINUS:      "-"    >
+    |     <EQ:         "="    >
+    |     <NEQ:        "!="   >
+    |     <LT:         "<"    >
+    |     <LTE:        "<="   >
+    |     <GT:         ">"    >
+    |     <GTE:        ">="   >
+    |     <VARIABLE:   "$"    >
 }
 
 

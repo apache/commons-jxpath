@@ -308,8 +308,8 @@
  String nc1, nc2 = null;
     nc1 = NCName();
     switch (jj_nt.kind) {
-    case 75:
-      jj_consume_token(75);
+    case 79:
+      jj_consume_token(79);
       nc2 = NCName();
       break;
     default:
@@ -329,7 +329,7 @@
     String nc1, nc2 = null;
     if (jj_2_1(2147483647)) {
       nc1 = NCName();
-      jj_consume_token(75);
+      jj_consume_token(79);
       nc2 = NCName();
     } else {
       switch (jj_nt.kind) {
@@ -489,10 +489,10 @@
     case FUNCTION_ROUND:
     case FUNCTION_FORMAT_NUMBER:
     case NCName:
-    case 78:
-    case 79:
     case 82:
-    case 84:
+    case 83:
+    case 86:
+    case 88:
       ex = RelativeLocationPath();
       break;
     case SLASH:
@@ -655,19 +655,19 @@
     case FUNCTION_ROUND:
     case FUNCTION_FORMAT_NUMBER:
     case NCName:
-    case 82:
-    case 84:
+    case 86:
+    case 88:
       axis = AxisSpecifier();
       if (jj_2_3(2147483647)) {
         type = NodeType();
-        jj_consume_token(76);
-        jj_consume_token(77);
+        jj_consume_token(80);
+        jj_consume_token(81);
       } else if (jj_2_4(2147483647)) {
         jj_consume_token(PI);
-        jj_consume_token(76);
+        jj_consume_token(80);
         jj_consume_token(Literal);
                     instruction = unescape(token.image.substring(1, token.image.length() - 1));
-        jj_consume_token(77);
+        jj_consume_token(81);
       } else {
         switch (jj_nt.kind) {
         case OR:
@@ -709,7 +709,7 @@
         case FUNCTION_ROUND:
         case FUNCTION_FORMAT_NUMBER:
         case NCName:
-        case 84:
+        case 88:
           name = WildcardName();
           break;
         default:
@@ -719,13 +719,13 @@
         }
       }
       break;
-    case 78:
-      jj_consume_token(78);
+    case 82:
+      jj_consume_token(82);
                     axis = Compiler.AXIS_SELF;
                     type = Compiler.NODE_TYPE_NODE;
       break;
-    case 79:
-      jj_consume_token(79);
+    case 83:
+      jj_consume_token(83);
                     axis = Compiler.AXIS_PARENT;
                     type = Compiler.NODE_TYPE_NODE;
       break;
@@ -737,7 +737,7 @@
     label_3:
     while (true) {
       switch (jj_nt.kind) {
-      case 80:
+      case 84:
         ;
         break;
       default:
@@ -870,9 +870,9 @@
 /* [9] PredicateExpr ::=  Expr  */
   final public Object Predicate() throws ParseException {
     Object ex;
-    jj_consume_token(80);
+    jj_consume_token(84);
     ex = Expression();
-    jj_consume_token(81);
+    jj_consume_token(85);
         {if (true) return ex;}
     throw new Error("Missing return statement in function");
   }
@@ -883,8 +883,8 @@
   final public int AbbreviatedAxisSpecifier() throws ParseException {
     int axis = Compiler.AXIS_CHILD;
     switch (jj_nt.kind) {
-    case 82:
-      jj_consume_token(82);
+    case 86:
+      jj_consume_token(86);
            axis = Compiler.AXIS_ATTRIBUTE;
       break;
     default:
@@ -928,10 +928,10 @@ For example, 3 > 2 > 1 is equivalent to (3 > 2) > 1, which evaluates to false.
     case VARIABLE:
       ex = VariableReference();
       break;
-    case 76:
-      jj_consume_token(76);
+    case 80:
+      jj_consume_token(80);
       ex = Expression();
-      jj_consume_token(77);
+      jj_consume_token(81);
       break;
     case Literal:
       jj_consume_token(Literal);
@@ -1035,7 +1035,7 @@ For example, 3 > 2 > 1 is equivalent to (3 > 2) > 1, which evaluates to false.
   final public ArrayList ArgumentList() throws ParseException {
     ArrayList args = null;
     Object arg;
-    jj_consume_token(76);
+    jj_consume_token(80);
     switch (jj_nt.kind) {
     case SLASH:
     case SLASHSLASH:
@@ -1095,24 +1095,24 @@ For example, 3 > 2 > 1 is equivalent to (3 > 2) > 1, which evaluates to false.
     case FUNCTION_ROUND:
     case FUNCTION_FORMAT_NUMBER:
     case NCName:
-    case 76:
-    case 78:
-    case 79:
+    case 80:
     case 82:
-    case 84:
+    case 83:
+    case 86:
+    case 88:
       arg = Argument();
                                 args = new ArrayList(); args.add(arg);
       label_4:
       while (true) {
         switch (jj_nt.kind) {
-        case 83:
+        case 87:
           ;
           break;
         default:
           jj_la1[18] = jj_gen;
           break label_4;
         }
-        jj_consume_token(83);
+        jj_consume_token(87);
         arg = Argument();
                                        args.add(arg);
       }
@@ -1121,7 +1121,7 @@ For example, 3 > 2 > 1 is equivalent to (3 > 2) > 1, which evaluates to false.
       jj_la1[19] = jj_gen;
       ;
     }
-    jj_consume_token(77);
+    jj_consume_token(81);
         {if (true) return args;}
     throw new Error("Missing return statement in function");
   }
@@ -1230,10 +1230,10 @@ For example, 3 > 2 > 1 is equivalent to (3 > 2) > 1, which evaluates to false.
       case FUNCTION_ROUND:
       case FUNCTION_FORMAT_NUMBER:
       case NCName:
-      case 78:
-      case 79:
       case 82:
-      case 84:
+      case 83:
+      case 86:
+      case 88:
         ex = LocationPath();
         break;
       default:
@@ -1256,7 +1256,7 @@ For example, 3 > 2 > 1 is equivalent to (3 > 2) > 1, which evaluates to false.
     label_6:
     while (true) {
       switch (jj_nt.kind) {
-      case 80:
+      case 84:
         ;
         break;
       default:
@@ -1504,7 +1504,7 @@ For example, 3 > 2 > 1 is equivalent to (3 > 2) > 1, which evaluates to false.
       switch (jj_nt.kind) {
       case MOD:
       case DIV:
-      case 84:
+      case 88:
         ;
         break;
       default:
@@ -1512,8 +1512,8 @@ For example, 3 > 2 > 1 is equivalent to (3 > 2) > 1, which evaluates to false.
         break label_14;
       }
       switch (jj_nt.kind) {
-      case 84:
-        jj_consume_token(84);
+      case 88:
+        jj_consume_token(88);
         r = UnaryExpr();
                                     ex = compiler.multiply(ex, r);
         break;
@@ -1598,11 +1598,11 @@ For example, 3 > 2 > 1 is equivalent to (3 > 2) > 1, which evaluates to false.
     case FUNCTION_ROUND:
     case FUNCTION_FORMAT_NUMBER:
     case NCName:
-    case 76:
-    case 78:
-    case 79:
+    case 80:
     case 82:
-    case 84:
+    case 83:
+    case 86:
+    case 88:
       ex = UnionExpr();
       break;
     case MINUS:
@@ -1674,8 +1674,8 @@ specified to disambiguate the grammar:
     Object qn;
     String nc1, nc2 = null;
     switch (jj_nt.kind) {
-    case 84:
-      jj_consume_token(84);
+    case 88:
+      jj_consume_token(88);
       break;
     case OR:
     case AND:
@@ -1725,11 +1725,11 @@ specified to disambiguate the grammar:
     }
                            nc1 = token.image;
     switch (jj_nt.kind) {
-    case 75:
-      jj_consume_token(75);
+    case 79:
+      jj_consume_token(79);
       switch (jj_nt.kind) {
-      case 84:
-        jj_consume_token(84);
+      case 88:
+        jj_consume_token(88);
         break;
       case OR:
       case AND:
@@ -1864,14 +1864,20 @@ specified to disambiguate the grammar:
     return retval;
   }
 
-  final private boolean jj_3R_64() {
-    if (jj_scan_token(FUNCTION_COUNT)) return true;
+  final private boolean jj_3R_65() {
+    if (jj_scan_token(FUNCTION_ID)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
 
   final private boolean jj_3R_104() {
     if (jj_3R_118()) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
+  final private boolean jj_3R_64() {
+    if (jj_scan_token(FUNCTION_COUNT)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -2062,7 +2068,7 @@ specified to disambiguate the grammar:
   }
 
   final private boolean jj_3R_153() {
-    if (jj_scan_token(82)) return true;
+    if (jj_scan_token(86)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -2157,7 +2163,7 @@ specified to disambiguate the grammar:
   }
 
   final private boolean jj_3R_174() {
-    if (jj_scan_token(84)) return true;
+    if (jj_scan_token(88)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_3R_170()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -2195,11 +2201,11 @@ specified to disambiguate the grammar:
   }
 
   final private boolean jj_3R_116() {
-    if (jj_scan_token(80)) return true;
+    if (jj_scan_token(84)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_3R_104()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(81)) return true;
+    if (jj_scan_token(85)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -2740,21 +2746,21 @@ specified to disambiguate the grammar:
   final private boolean jj_3_3() {
     if (jj_3R_17()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(76)) return true;
+    if (jj_scan_token(80)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(77)) return true;
+    if (jj_scan_token(81)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
 
   final private boolean jj_3R_101() {
-    if (jj_scan_token(79)) return true;
+    if (jj_scan_token(83)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
 
   final private boolean jj_3R_100() {
-    if (jj_scan_token(78)) return true;
+    if (jj_scan_token(82)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -2780,11 +2786,11 @@ specified to disambiguate the grammar:
   final private boolean jj_3R_114() {
     if (jj_scan_token(PI)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(76)) return true;
+    if (jj_scan_token(80)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_scan_token(Literal)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(77)) return true;
+    if (jj_scan_token(81)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -2792,9 +2798,9 @@ specified to disambiguate the grammar:
   final private boolean jj_3R_113() {
     if (jj_3R_17()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(76)) return true;
+    if (jj_scan_token(80)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(77)) return true;
+    if (jj_scan_token(81)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -3066,7 +3072,7 @@ specified to disambiguate the grammar:
   }
 
   final private boolean jj_3R_137() {
-    if (jj_scan_token(83)) return true;
+    if (jj_scan_token(87)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_3R_136()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -3086,13 +3092,13 @@ specified to disambiguate the grammar:
   }
 
   final private boolean jj_3R_119() {
-    if (jj_scan_token(76)) return true;
+    if (jj_scan_token(80)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_127()) jj_scanpos = xsp;
     else if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(77)) return true;
+    if (jj_scan_token(81)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -3124,7 +3130,7 @@ specified to disambiguate the grammar:
   final private boolean jj_3_1() {
     if (jj_3R_15()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(75)) return true;
+    if (jj_scan_token(79)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -3161,7 +3167,7 @@ specified to disambiguate the grammar:
   final private boolean jj_3R_138() {
     if (jj_3R_15()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(75)) return true;
+    if (jj_scan_token(79)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_3R_15()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -3169,7 +3175,7 @@ specified to disambiguate the grammar:
   }
 
   final private boolean jj_3R_154() {
-    if (jj_scan_token(84)) return true;
+    if (jj_scan_token(88)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -3189,7 +3195,7 @@ specified to disambiguate the grammar:
   }
 
   final private boolean jj_3R_124() {
-    if (jj_scan_token(75)) return true;
+    if (jj_scan_token(79)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_3R_15()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -3197,7 +3203,7 @@ specified to disambiguate the grammar:
   }
 
   final private boolean jj_3R_133() {
-    if (jj_scan_token(75)) return true;
+    if (jj_scan_token(79)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     Token xsp;
     xsp = jj_scanpos;
@@ -3221,7 +3227,7 @@ specified to disambiguate the grammar:
   }
 
   final private boolean jj_3R_131() {
-    if (jj_scan_token(84)) return true;
+    if (jj_scan_token(88)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -3261,7 +3267,7 @@ specified to disambiguate the grammar:
   final private boolean jj_3_5() {
     if (jj_3R_18()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(76)) return true;
+    if (jj_scan_token(80)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -3347,11 +3353,11 @@ specified to disambiguate the grammar:
   }
 
   final private boolean jj_3R_93() {
-    if (jj_scan_token(76)) return true;
+    if (jj_scan_token(80)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_3R_104()) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(77)) return true;
+    if (jj_scan_token(81)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
@@ -3499,12 +3505,6 @@ specified to disambiguate the grammar:
     return false;
   }
 
-  final private boolean jj_3R_65() {
-    if (jj_scan_token(FUNCTION_ID)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
   public XPathParserTokenManager token_source;
   JavaCharStream jj_input_stream;
   public Token token, jj_nt;
@@ -3514,9 +3514,9 @@ specified to disambiguate the grammar:
   private boolean jj_semLA;
   private int jj_gen;
   final private int[] jj_la1 = new int[39];
-  final private int[] jj_la1_0 = {0x7f800000,0x7800000,0x0,0x0,0x7800000,0xff80000c,0xc,0x4,0xc,0xc,0x7f800000,0xff800000,0x0,0x80000000,0x80000000,0x0,0x16000,0x7f800000,0x0,0xff81604c,0x10,0xff80000c,0x0,0xc,0x800000,0x1000000,0x180,0x180,0x1e00,0x1e00,0x20,0x40,0x6000000,0x6000000,0xff81604c,0x7f800000,0x7f800000,0x0,0x78000000,};
-  final private int[] jj_la1_1 = {0xfffff000,0x0,0xfffff000,0x0,0x0,0xffffffff,0x0,0x0,0x0,0x0,0xfffff000,0xffffffff,0x0,0xfff,0xfff,0x0,0x0,0xfffff000,0x0,0xffffffff,0x0,0xffffffff,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xffffffff,0xfffff000,0xfffff000,0x0,0x0,};
-  final private int[] jj_la1_2 = {0x7ff,0x400,0x3ff,0x800,0x400,0x14c7ff,0x0,0x0,0x0,0x0,0x1007ff,0x14c7ff,0x10000,0x0,0x0,0x40000,0x1000,0x7ff,0x80000,0x14d7ff,0x0,0x14c7ff,0x10000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x100000,0x100000,0x14d7ff,0x1007ff,0x1007ff,0x800,0x0,};
+  final private int[] jj_la1_0 = {0xf8000000,0x78000000,0x0,0x0,0x78000000,0xf80000c0,0xc0,0x40,0xc0,0xc0,0xf8000000,0xf8000000,0x0,0x0,0x0,0x0,0x160000,0xf8000000,0x0,0xf81604c0,0x100,0xf80000c0,0x0,0xc0,0x8000000,0x10000000,0x1800,0x1800,0x1e000,0x1e000,0x200,0x400,0x60000000,0x60000000,0xf81604c0,0xf8000000,0xf8000000,0x0,0x80000000,};
+  final private int[] jj_la1_1 = {0xffff0007,0x0,0xffff0000,0x0,0x0,0xffffffff,0x0,0x0,0x0,0x0,0xffff0007,0xffffffff,0x0,0xfff8,0xfff8,0x0,0x0,0xffff0007,0x0,0xffffffff,0x0,0xffffffff,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xffffffff,0xffff0007,0xffff0007,0x0,0x7,};
+  final private int[] jj_la1_2 = {0x7fff,0x4000,0x3fff,0x8000,0x4000,0x14c7fff,0x0,0x0,0x0,0x0,0x1007fff,0x14c7fff,0x100000,0x0,0x0,0x400000,0x10000,0x7fff,0x800000,0x14d7fff,0x0,0x14c7fff,0x100000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1000000,0x1000000,0x14d7fff,0x1007fff,0x1007fff,0x8000,0x0,};
   final private JJCalls[] jj_2_rtns = new JJCalls[6];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
@@ -3674,8 +3674,8 @@ specified to disambiguate the grammar:
 
   final public ParseException generateParseException() {
     jj_expentries.removeAllElements();
-    boolean[] la1tokens = new boolean[85];
-    for (int i = 0; i < 85; i++) {
+    boolean[] la1tokens = new boolean[89];
+    for (int i = 0; i < 89; i++) {
       la1tokens[i] = false;
     }
     if (jj_kind >= 0) {
@@ -3697,7 +3697,7 @@ specified to disambiguate the grammar:
         }
       }
     }
-    for (int i = 0; i < 85; i++) {
+    for (int i = 0; i < 89; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
