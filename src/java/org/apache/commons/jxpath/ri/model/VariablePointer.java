@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.11 2003/01/12 01:52:56 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2003/01/12 01:52:56 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.12 2003/01/19 23:58:27 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2003/01/19 23:58:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,14 +68,13 @@ import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
-import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2003/01/12 01:52:56 $
+ * @version $Revision: 1.12 $ $Date: 2003/01/19 23:58:27 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
@@ -108,7 +107,7 @@ public class VariablePointer extends NodePointer {
         if (!actual) {
             throw new JXPathException("Undefined variable: " + name);
         }
-        return variables.getVariable(name.getName());
+        return variables.getVariable(name.toString());
     }
     
     public boolean isLeaf() {
@@ -129,7 +128,7 @@ public class VariablePointer extends NodePointer {
         }
         return value;
     }
-    
+
     public void setValue(Object value) {
         if (!actual) {
             throw new JXPathException("Cannot set undefined variable: " + name);
@@ -140,12 +139,17 @@ public class VariablePointer extends NodePointer {
             ValueUtils.setValue(collection, index, value);
         }
         else {
-            variables.declareVariable(name.getName(), value);
+            variables.declareVariable(name.toString(), value);
         }
     }
 
     public boolean isActual() {
         return actual;
+    }
+    
+    public void setIndex(int index) {
+        super.setIndex(index);
+        valuePointer = null;
     }
 
     public NodePointer getImmediateValuePointer() {
@@ -153,17 +157,8 @@ public class VariablePointer extends NodePointer {
             Object value = null;
             if (actual) {
                 value = getImmediateNode();
-                valuePointer =
-                    NodePointer.newChildNodePointer(this, null, value);
             }
-            else {
-                return new NullPointer(this, getName()) {
-                    public Object getImmediateNode() {
-                        throw new JXPathException(
-                            "Undefined variable: " + name);
-                    }
-                };
-            }
+            valuePointer = NodePointer.newChildNodePointer(this, null, value);
         }
         return valuePointer;
     }
