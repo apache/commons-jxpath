@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.5 2002/05/08 00:38:19 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 00:38:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.Pointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 00:38:19 $
  */
 public class TypeUtils {
 
@@ -363,21 +363,51 @@ public class TypeUtils {
             }
         }
         else if (fromType.isArray()){
-            if (Array.getLength(object) == 1){
+            // Collection -> array
+            if (toType.isArray()){
+                Class cType = toType.getComponentType();
+                int length = Array.getLength(object);
+                for (int i = 0; i < length; i++){
+                    Object value = Array.get(object, i);
+                    if (!canConvert(value, cType)){
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if (Collection.class.isAssignableFrom(toType)){
+                return canCreateCollection(toType);
+            }
+            else if (Array.getLength(object) == 1){
                 Object value = Array.get(object, 0);
                 return canConvert(value, toType);
             }
         }
-        else if (object instanceof List){
-            if (((List)object).size() == 1){
-                Object value = ((List)object).get(0);
-                return canConvert(value, toType);
-            }
-        }
         else if (object instanceof Collection){
-            if (!((Collection)object).isEmpty()){
+            // Collection -> array
+            if (toType.isArray()){
+                Class cType = toType.getComponentType();
                 Iterator it = ((Collection)object).iterator();
-                Object value = it.next();
+                while (it.hasNext()){
+                    Object value = it.next();
+                    if (!canConvert(value, cType)){
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if (Collection.class.isAssignableFrom(toType)){
+                return canCreateCollection(toType);
+            }
+            else if (((Collection)object).size() == 1){
+                Object value;
+                if (object instanceof List){
+                    value = ((List)object).get(0);
+                }
+                else {
+                    Iterator it = ((Collection)object).iterator();
+                    value = it.next();
+                }
                 return canConvert(value, toType);
             }
         }
@@ -479,19 +509,60 @@ public class TypeUtils {
             }
         }
         else if (fromType.isArray()){
-            Object value = Array.get(object, 0);
-            return convert(value, toType);
-        }
-        else if (object instanceof List){
-            Object value = ((List)object).get(0);
-            return convert(value, toType);
+            int length = Array.getLength(object);
+            if (toType.isArray()){
+                Class cType = toType.getComponentType();
+
+                Object array = Array.newInstance(cType, length);
+                for (int i = 0; i < length; i++){
+                    Object value = Array.get(object, i);
+                    Array.set(array, i, convert(value, cType));
+                }
+                return array;
+            }
+            else if (Collection.class.isAssignableFrom(toType)){
+                Collection collection = allocateCollection(toType);
+                for (int i = 0; i < length; i++){
+                    collection.add(Array.get(object, i));
+                }
+                return collection;
+            }
+            else if (length == 1){
+                Object value = Array.get(object, 0);
+                return convert(value, toType);
+            }
         }
         else if (object instanceof Collection){
-            Iterator it = ((Collection)object).iterator();
-            Object value = it.next();
-            return convert(value, toType);
+            int length = ((Collection) object).size();
+            if (toType.isArray()){
+                Class cType = toType.getComponentType();
+                Object array = Array.newInstance(cType, length);
+                Iterator it = ((Collection) object).iterator();
+                for (int i = 0; i < length; i++){
+                    Object value = it.next();
+                    Array.set(array, i, convert(value, cType));
+                }
+                return array;
+            }
+            else if (Collection.class.isAssignableFrom(toType)){
+                Collection collection = allocateCollection(toType);
+                collection.addAll((Collection) object);
+                return collection;
+            }
+            else if (length == 1){
+                Object value;
+                if (object instanceof List){
+                    value = ((List)object).get(0);
+                }
+                else {
+                    Iterator it = ((Collection)object).iterator();
+                    value = it.next();
+                }
+                return convert(value, toType);
+            }
         }
-        return object;
+        throw new RuntimeException("Cannot convert " + object.getClass() +
+                " to " + toType);
     }
 
     private static Number allocateNumber(Class type, double value){
@@ -514,5 +585,41 @@ public class TypeUtils {
             return new Double(value);
         }
         return null;
+    }
+
+    private static boolean canCreateCollection(Class type){
+        if (!type.isInterface() && ((type.getModifiers() | Modifier.ABSTRACT) == 0)){
+            return true;
+        }
+
+        if (type == List.class){
+            return true;
+        }
+
+        if (type == Set.class){
+            return true;
+        }
+        return false;
+    }
+
+    private static Collection allocateCollection(Class type){
+        if (!type.isInterface() &&
+                ((type.getModifiers() | Modifier.ABSTRACT) == 0)){
+            try {
+                return (Collection)type.newInstance();
+            }
+            catch(Exception ex){
+                throw new JXPathException("Cannot create collection of type: "
+                        + type, ex);
+            }
+        }
+
+        if (type == List.class){
+            return new ArrayList();
+        }
+        if (type == Set.class){
+            return new HashSet();
+        }
+        throw new RuntimeException("Cannot create collection of type: " + type);
     }
 }

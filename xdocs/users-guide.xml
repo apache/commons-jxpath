@@ -814,6 +814,17 @@ You can call this function to find all people who have a certain phone number:
         <td>Takes the single element of the array <br/>and (recursively) converts it to the needed type</td></tr>
   <tr><td><i>collection of size 1</i></td><td><i>any</i></td>
         <td>Takes the single element of the array <br/>and (recursively) converts it to the needed type</td></tr>
+  <tr><td><i>array</i></td><td><i>array</i></td>
+        <td>Creates a new array of the same size and converts every element</td></tr>
+  <tr><td><i>array</i></td><td><i>Collection</i></td>
+        <td>Creates a collection and adds to it all elements of the array. Note that it will only 
+            know how to create the collection if the type is a concrete class, List or Set</td></tr>
+  <tr><td><i>Collection</i></td><td><i>array</i></td>
+        <td>Creates a new array the same size as the collection, converts and copies every element
+            of the collection into the array.</td></tr>
+  <tr><td><i>Collection</i></td><td><i>Collection</i></td>
+        <td>Creates a collection and copies the source collection into the new collection. Note that it will only 
+            know how to create the collection if the type is a concrete class, List or Set</td></tr>
   <tr><td>ExpressionContext</td><td>Collection, List, Vector, Set</td>
         <td>Creates a collection of type ArrayList, <br/>
             ArrayList, Vector, HashSet respectively and <br/>
