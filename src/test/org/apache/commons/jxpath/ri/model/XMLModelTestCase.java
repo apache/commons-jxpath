@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.4 2002/11/26 01:33:35 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/11/26 01:33:35 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.5 2002/11/29 06:44:15 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/11/29 06:44:15 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/11/26 01:33:35 $
+ * @version $Revision: 1.5 $ $Date: 2002/11/29 06:44:15 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase
@@ -328,7 +328,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase
         // child:: with the default namespace
         assertXPathValue(context,
                 "count(vendor/product/*)",
-                new Double(2));
+                new Double(4));
 
         // child:: with a qualified name
         assertXPathValue(context,
@@ -352,6 +352,22 @@ public abstract class XMLModelTestCase extends JXPathTestCase
         assertXPathValue(context,
                 "count(//price:*)",
                 new Double(2));
+                
+        assertXPathValueIterator(context,
+                "vendor//saleEnds",
+                list("never"));
+
+        assertXPathValueIterator(context,
+                "vendor//promotion",
+                list(""));
+
+        assertXPathValueIterator(context,
+                "vendor//saleEnds[../@stores = 'all']",
+                list("never"));
+
+        assertXPathValueIterator(context,
+                "vendor//promotion[../@stores = 'all']",
+                list(""));
     }
 
     public void testAxisParent() {
@@ -484,16 +500,12 @@ public abstract class XMLModelTestCase extends JXPathTestCase
                 "vendor/location[@id='101']//street",
                 "Tangerine Drive");
     }
-
+    
     public void testAxisNamespace() {
         // namespace::
-        assertXPathValue(context,
+        assertXPathValueAndPointer(context,
                 "vendor/product/prix/namespace::price",
-                "priceNS");
-
-        // namespace:: pointer
-        assertXPathPointer(context,
-                "vendor/product/prix/namespace::price",
+                "priceNS",
                 "/vendor[1]/product[1]/prix[1]/namespace::price");
 
         // namespace::*

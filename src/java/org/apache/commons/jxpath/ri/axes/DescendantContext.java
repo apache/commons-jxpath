@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.9 2002/10/20 03:43:38 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/10/20 03:43:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.10 2002/11/29 06:44:16 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/11/29 06:44:16 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,10 +63,10 @@ package org.apache.commons.jxpath.ri.axes;
 
 import java.util.Stack;
 
+import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.QName;
-import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
+import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/10/20 03:43:38 $
+ * @version $Revision: 1.10 $ $Date: 2002/11/29 06:44:16 $
  */
 public class DescendantContext extends EvalContext {
     private NodeTest nodeTest;
@@ -84,9 +84,13 @@ public class DescendantContext extends EvalContext {
     private NodePointer currentNodePointer;
     private boolean includeSelf;
     private final static NodeTest elementNodeTest =
-            new NodeNameTest(new QName(null, "*"));
+            new NodeTypeTest(Compiler.NODE_TYPE_NODE);
 
-    public DescendantContext(EvalContext parentContext, boolean includeSelf, NodeTest nodeTest){
+    public DescendantContext(
+            EvalContext parentContext,
+            boolean includeSelf,
+            NodeTest nodeTest) 
+    {
         super(parentContext);
         this.includeSelf = includeSelf;
         this.nodeTest = nodeTest;
@@ -107,7 +111,6 @@ public class DescendantContext extends EvalContext {
     }
 
     public boolean setPosition(int position){
-//        System.err.println("POSITION: " + position + " this.position=" + this.position);
         if (position < this.position){
             reset();
         }
@@ -121,17 +124,20 @@ public class DescendantContext extends EvalContext {
     }
 
     public boolean nextNode(){
-        if (!setStarted){
+        if (!setStarted) {
             setStarted = true;
             stack = new Stack();
             currentNodePointer = parentContext.getCurrentNodePointer();
-            if (currentNodePointer != null){
-                if (!currentNodePointer.isLeaf()){
-                    stack.push(currentNodePointer.childIterator(
-                            elementNodeTest, false, null));
+            if (currentNodePointer != null) {
+                if (!currentNodePointer.isLeaf()) {
+                    stack.push(
+                        currentNodePointer.childIterator(
+                            elementNodeTest,
+                            false,
+                            null));
                 }
-                if (includeSelf){
-                    if (currentNodePointer.testNode(nodeTest)){
+                if (includeSelf) {
+                    if (currentNodePointer.testNode(nodeTest)) {
                         position++;
                         return true;
                     }
@@ -139,21 +145,25 @@ public class DescendantContext extends EvalContext {
             }
         }
 
-        while (!stack.isEmpty()){
-            NodeIterator it = (NodeIterator)stack.peek();
-            if (it.setPosition(it.getPosition() + 1)){
+        while (!stack.isEmpty()) {
+            NodeIterator it = (NodeIterator) stack.peek();
+            if (it.setPosition(it.getPosition() + 1)) {
                 currentNodePointer = it.getNodePointer();
-                if (!currentNodePointer.isLeaf()){
-                    stack.push(currentNodePointer.childIterator(
-                        elementNodeTest, false, null));
+                if (!currentNodePointer.isLeaf()) {
+                    stack.push(
+                        currentNodePointer.childIterator(
+                            elementNodeTest,
+                            false,
+                            null));
                 }
-                if (currentNodePointer.testNode(nodeTest)){
+                if (currentNodePointer.testNode(nodeTest)) {
                     position++;
                     return true;
                 }
             }
             else {
-                // We get here only if the name test failed and the iterator ended
+                // We get here only if the name test failed 
+                // and the iterator ended
                 stack.pop();
             }
         }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.5 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.6 2002/11/29 06:44:16 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/11/29 06:44:16 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -80,7 +80,7 @@ import org.jdom.*;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.6 $ $Date: 2002/11/29 06:44:16 $
  */
 public class JDOMNodePointer extends NodePointer {
     private Object node;
@@ -412,7 +412,12 @@ public class JDOMNodePointer extends NodePointer {
 
             QName testName = ((NodeNameTest)test).getNodeName();
             String testLocalName = testName.getName();
-            if (testLocalName.equals("*") ||
+            boolean wildcard = testLocalName.equals("*");
+            if (wildcard && testName.getPrefix() == null){
+                return true;
+            }
+             
+            if (wildcard ||
                     testLocalName.equals(
                             JDOMNodePointer.getLocalName((Element)node))){
                 String testPrefix = testName.getPrefix();

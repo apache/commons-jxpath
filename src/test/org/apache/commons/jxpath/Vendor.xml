@@ -39,8 +39,9 @@
      <!-- We are not buying this product, ever -->
      <price:amount price:discount="10%" discount="20%">45.95</price:amount>
      <prix xml:lang="fr">934.99</prix>
-     <price:sale>
+     <price:sale stores="all">
         <saleEnds>never</saleEnds>
+        <promotion></promotion>
      </price:sale>
      <?security do not show anybody ?>
      <?report average only ?>

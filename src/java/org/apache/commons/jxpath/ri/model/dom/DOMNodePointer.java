@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.13 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.14 2002/11/29 06:44:16 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2002/11/29 06:44:16 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -92,7 +92,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.14 $ $Date: 2002/11/29 06:44:16 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -135,12 +135,18 @@ public class DOMNodePointer extends NodePointer {
             if (node.getNodeType() != Node.ELEMENT_NODE){
                 return false;
             }
+//            System.err.println("Testing: " + ((Element)node).getTagName());
 
             QName testName = ((NodeNameTest)test).getNodeName();
             String testLocalName = testName.getName();
-            if (testLocalName.equals("*") || 
+            boolean wildcard = testLocalName.equals("*"); 
+            String testPrefix = testName.getPrefix();
+            if (wildcard && testPrefix == null){
+                return true;
+            }
+            
+            if (wildcard || 
                     testLocalName.equals(DOMNodePointer.getLocalName(node))){
-                String testPrefix = testName.getPrefix();
                 String nodePrefix = DOMNodePointer.getPrefix(node);
                 if (equalStrings(testPrefix, nodePrefix)){
                     return true;
@@ -318,6 +324,9 @@ public class DOMNodePointer extends NodePointer {
     }
 
     public boolean isLeaf(){
+        if (node instanceof Element){
+//            System.err.println("HAS CHILD NODES: " + ((Element)node).getTagName() + " " + !node.hasChildNodes());
+        }
         return !node.hasChildNodes();
     }
 
