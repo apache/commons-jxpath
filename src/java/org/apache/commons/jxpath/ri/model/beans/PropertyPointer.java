@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.9 2003/03/11 00:59:25 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2003/03/11 00:59:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.10 2003/06/26 02:17:59 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2003/06/26 02:17:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a property of the parent object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2003/03/11 00:59:25 $
+ * @version $Revision: 1.10 $ $Date: 2003/06/26 02:17:59 $
  */
 public abstract class PropertyPointer extends NodePointer {
     public static final int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
@@ -95,8 +95,10 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     public void setPropertyIndex(int index) {
-        propertyIndex = index;
-        index = WHOLE_COLLECTION;
+        if (propertyIndex != index) {
+            propertyIndex = index;
+            setIndex(WHOLE_COLLECTION);
+        }
     }
 
     public Object getBean() {
