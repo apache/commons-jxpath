@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.32 2003/05/04 23:51:59 dmitri Exp $
- * $Revision: 1.32 $
- * $Date: 2003/05/04 23:51:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.33 2003/08/24 01:52:09 dmitri Exp $
+ * $Revision: 1.33 $
+ * $Date: 2003/08/24 01:52:09 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,6 +71,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import org.apache.commons.jxpath.CompiledExpression;
 import org.apache.commons.jxpath.Function;
@@ -98,7 +99,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.32 $ $Date: 2003/05/04 23:51:59 $
+ * @version $Revision: 1.33 $ $Date: 2003/08/24 01:52:09 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -238,45 +239,46 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     private Expression compileExpression(String xpath) {
         Expression expr;
-        if (USE_SOFT_CACHE) {
-            expr = null;
-            SoftReference ref = (SoftReference) compiled.get(xpath);
-            if (ref != null) {
-                expr = (Expression) ref.get();
+
+        synchronized (compiled) {
+            if (USE_SOFT_CACHE) {
+                expr = null;
+                SoftReference ref = (SoftReference) compiled.get(xpath);
+                if (ref != null) {
+                    expr = (Expression) ref.get();
+                }
             }
-            if (expr == null) {
-                expr =
-                    (Expression) Parser.parseExpression(xpath, getCompiler());
-                synchronized (compiled) {
-                    compiled.put(xpath, new SoftReference(expr));
-                }
-                if (cleanupCount++ >= CLEANUP_THRESHOLD) {
-                    cleanupCache();
-                }
+            else {
+                expr = (Expression) compiled.get(xpath);
             }
         }
-        else {
-            expr = (Expression) compiled.get(xpath);
-            if (expr == null) {
-                expr =
-                    (Expression) Parser.parseExpression(xpath, getCompiler());
+
+        if (expr != null) {
+            return expr;
+        }
+
+        expr = (Expression) Parser.parseExpression(xpath, getCompiler());
+
+        synchronized (compiled) {
+            if (USE_SOFT_CACHE) {
+                if (cleanupCount++ >= CLEANUP_THRESHOLD) {
+                    Iterator it = compiled.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Entry me = (Entry) it.next();
+                        if (((SoftReference) me.getValue()).get() == null) {
+                            it.remove();
+                        }
+                    }
+                    cleanupCount = 0;
+                }
+                compiled.put(xpath, new SoftReference(expr));
+            }
+            else {
                 compiled.put(xpath, expr);
             }
         }
-        return expr;
-    }
 
-    private static void cleanupCache() {
-        synchronized (compiled) {
-            Iterator it = compiled.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry me = (Map.Entry) it.next();
-                if (((SoftReference) me.getValue()).get() == null) {
-                    it.remove();
-                }
-            }
-            cleanupCount = 0;
-        }
+        return expr;
     }
 
     /**
