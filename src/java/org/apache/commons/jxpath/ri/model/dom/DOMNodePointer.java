@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.7 2002/06/08 22:47:25 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/06/08 22:47:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.8 2002/08/10 16:13:04 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/08/10 16:13:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -92,7 +92,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/06/08 22:47:25 $
+ * @version $Revision: 1.8 $ $Date: 2002/08/10 16:13:04 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -293,7 +293,7 @@ public class DOMNodePointer extends NodePointer {
         return node;
     }
 
-    public Object getNodeValue(){
+    public Object getNode(){
         return node;
     }
 
@@ -624,7 +624,7 @@ public class DOMNodePointer extends NodePointer {
             return 1;
         }
         else if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE){
-            NamedNodeMap map = ((Node)getNodeValue()).getAttributes();
+            NamedNodeMap map = ((Node)getNode()).getAttributes();
             int length = map.getLength();
             for (int i = 0; i < length; i++){
                 Node n = map.item(i);

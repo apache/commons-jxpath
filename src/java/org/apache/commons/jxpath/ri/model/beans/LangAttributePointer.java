@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/LangAttributePointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/LangAttributePointer.java,v 1.4 2002/08/10 16:13:04 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/08/10 16:13:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of the attribute is based on the locale supplied to it in the constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/08/10 16:13:04 $
  */
 public class LangAttributePointer extends NodePointer {
     public LangAttributePointer(NodePointer parent){
@@ -93,7 +93,7 @@ public class LangAttributePointer extends NodePointer {
         return parent.getLocale().toString().replace('_', '-');
     }
 
-    public Object getNodeValue(){
+    public Object getNode(){
         return getBaseValue();
     }
 

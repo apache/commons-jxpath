@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.9 2002/08/10 01:49:46 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/08/10 01:49:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.10 2002/08/10 16:13:03 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/08/10 16:13:03 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -84,7 +84,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/08/10 01:49:46 $
+ * @version $Revision: 1.10 $ $Date: 2002/08/10 16:13:03 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
@@ -159,7 +159,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * If true, this node does not have children
      */
     public boolean isLeaf() {
-        Object value = getNodeValue();
+        Object value = getNode();
         return value == null
             || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
@@ -214,7 +214,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * return its string value.
      */
     public Object getValue() {
-        return getNodeValue();
+        return getNode();
     }
 
     /**
@@ -262,9 +262,19 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
     /**
      * Returns the object the pointer points to; does not convert it
      * to a "canonical" type.
+     * 
+     * @deprecated 1.1 Please use getNode()
      */
-    public abstract Object getNodeValue();
+    public Object getNodeValue(){
+    	return getNode();
+    }
 
+    /**
+     * Returns the object the pointer points to; does not convert it
+     * to a "canonical" type.
+     */
+    public abstract Object getNode();
+    
     /**
      * Converts the value to the required type and changes the corresponding
      * object to that value.

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.5 2002/08/10 01:46:19 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/08/10 01:46:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.6 2002/08/10 16:13:04 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/08/10 16:13:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/08/10 01:46:19 $
+ * @version $Revision: 1.6 $ $Date: 2002/08/10 16:13:04 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -102,7 +102,7 @@ public class CollectionPointer extends NodePointer {
         return index == WHOLE_COLLECTION;
     }
 
-    public Object getNodeValue(){
+    public Object getNode(){
         if (index != WHOLE_COLLECTION){
             return ValueUtils.getValue(collection, index);
         }
@@ -129,7 +129,7 @@ public class CollectionPointer extends NodePointer {
                 valuePointer = this;
             }
             else {
-                Object value = getNodeValue();
+                Object value = getNode();
                 valuePointer = NodePointer.newChildNodePointer(this, getName(), value);
             }
         }
@@ -143,7 +143,7 @@ public class CollectionPointer extends NodePointer {
         else {
             Object collection = getBaseValue();
             if (ValueUtils.getLength(collection) <= index){
-                ValueUtils.expandCollection(getNodeValue(), index + 1);
+                ValueUtils.expandCollection(getNode(), index + 1);
             }
             ValueUtils.setValue(collection, index, value);
             NodePointer ptr = (NodePointer)clone();
@@ -159,7 +159,7 @@ public class CollectionPointer extends NodePointer {
         else {
             Object collection = getBaseValue();
             if (ValueUtils.getLength(collection) <= index){
-                ValueUtils.expandCollection(getNodeValue(), index + 1);
+                ValueUtils.expandCollection(getNode(), index + 1);
             }
             return this;
         }
@@ -172,7 +172,7 @@ public class CollectionPointer extends NodePointer {
         else {
             Object collection = getBaseValue();
             if (ValueUtils.getLength(collection) <= index){
-                ValueUtils.expandCollection(getNodeValue(), index + 1);
+                ValueUtils.expandCollection(getNode(), index + 1);
             }
             return this;
         }

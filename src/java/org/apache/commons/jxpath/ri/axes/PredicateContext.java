@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.12 2002/08/10 01:33:58 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2002/08/10 01:33:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.13 2002/08/10 16:13:03 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2002/08/10 16:13:03 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2002/08/10 01:33:58 $
+ * @version $Revision: 1.13 $ $Date: 2002/08/10 16:13:03 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -110,7 +110,7 @@ public class PredicateContext extends EvalContext {
             else {
                 Object pred = expression.computeValue(parentContext);
                 if (pred instanceof NodePointer){
-                    pred = ((NodePointer)pred).getNodeValue();
+                    pred = ((NodePointer)pred).getNode();
                 }
                 if (pred instanceof Number){
                     int pos = (int)InfoSetUtil.doubleValue(pred);

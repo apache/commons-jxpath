@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Pointer.java,v 1.3 2002/06/16 03:22:22 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/06/16 03:22:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Pointer.java,v 1.4 2002/08/10 16:13:03 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/08/10 16:13:03 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,15 +75,30 @@ package org.apache.commons.jxpath;
  * the map, which is the value of the property "aMap" of the root object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/06/16 03:22:22 $
+ * @version $Revision: 1.4 $ $Date: 2002/08/10 16:13:03 $
  */
 public interface Pointer {
 
     /**
      * Returns the value of the object, property or collection element
-     * this pointer represents.
+     * this pointer represents. May convert the value to one of the 
+     * canonical InfoSet types: String, Number, Boolean, Set.
+     * 
+     * For example, in the case of an XML element, getValue() will
+     * return the text contained by the element rather than 
+     * the element itself.
      */
     Object getValue();
+
+    /**
+     * Returns the raw value of the object, property or collection element
+     * this pointer represents.  Never converts the object to a
+     * canonical type: returns it as is. 
+     * 
+     * For example, for an XML element, getNode() will
+     * return the element itself rather than the text it contains.
+     */
+    Object getNode();
 
     /**
      * Modifies the value of the object, property or collection element

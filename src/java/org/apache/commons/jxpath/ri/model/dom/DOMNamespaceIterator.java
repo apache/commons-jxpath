@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNamespaceIterator.java,v 1.3 2002/04/26 01:00:38 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNamespaceIterator.java,v 1.4 2002/08/10 16:13:04 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/08/10 16:13:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.w3c.dom.Node;
  * An iterator of namespaces of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:38 $
+ * @version $Revision: 1.4 $ $Date: 2002/08/10 16:13:04 $
  */
 public class DOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;
@@ -84,7 +84,7 @@ public class DOMNamespaceIterator implements NodeIterator {
     public DOMNamespaceIterator(NodePointer parent){
         this.parent = parent;
         attributes = new ArrayList();
-        collectNamespaces(attributes, (Node)parent.getNodeValue());
+        collectNamespaces(attributes, (Node)parent.getNode());
     }
 
     private void collectNamespaces(List attributes, Node node){

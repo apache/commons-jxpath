@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.7 2002/05/30 01:57:23 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/05/30 01:57:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.8 2002/08/10 16:13:04 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/08/10 16:13:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/05/30 01:57:23 $
+ * @version $Revision: 1.8 $ $Date: 2002/08/10 16:13:04 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -210,7 +210,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * property. If the property is not a collection, index should be zero
      * and the value will be the property itself.
      */
-    public Object getNodeValue(){
+    public Object getNode(){
         Object value;
         if (index == WHOLE_COLLECTION){
             value = handler.getProperty(getBean(), getPropertyName());
@@ -304,7 +304,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     public NodePointer createPath(JXPathContext context){
-        if (getNodeValue() == null){
+        if (getNode() == null){
             AbstractFactory factory = getAbstractFactory(context);
             int inx = (index == WHOLE_COLLECTION ? 0 : index);
             if (!factory.createObject(context, this, getBean(), getPropertyName(), inx)){

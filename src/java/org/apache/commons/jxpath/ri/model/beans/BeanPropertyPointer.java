@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.6 2002/08/10 01:44:30 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/08/10 01:44:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.7 2002/08/10 16:13:04 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/08/10 16:13:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/08/10 01:44:30 $
+ * @version $Revision: 1.7 $ $Date: 2002/08/10 16:13:04 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
@@ -176,7 +176,7 @@ public class BeanPropertyPointer extends PropertyPointer {
      * property. If the property is not a collection, index should be zero
      * and the value will be the property itself.
      */
-    public Object getNodeValue(){
+    public Object getNode(){
         if (value == UNINITIALIZED){
             PropertyDescriptor pd = getPropertyDescriptor();
             if (pd == null){
@@ -223,7 +223,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     public NodePointer createPath(JXPathContext context){
-        if (getNodeValue() == null){
+        if (getNode() == null){
             AbstractFactory factory = getAbstractFactory(context);
             int inx = (index == WHOLE_COLLECTION ? 0 : index);
             if (!factory.createObject(context, this, getBean(),

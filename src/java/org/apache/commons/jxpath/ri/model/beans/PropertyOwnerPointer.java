@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.7 2002/08/10 01:49:46 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/08/10 01:49:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.8 2002/08/10 16:13:04 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/08/10 16:13:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/08/10 01:49:46 $
+ * @version $Revision: 1.8 $ $Date: 2002/08/10 16:13:04 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -136,7 +136,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     private static final Object UNINITIALIZED = new Object();
 
     private Object value = UNINITIALIZED;
-    public Object getNodeValue(){
+    public Object getNode(){
         if (value == UNINITIALIZED){
             if (index == WHOLE_COLLECTION){
                 value = getBaseValue();

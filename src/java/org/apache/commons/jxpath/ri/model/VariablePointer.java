@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.5 2002/05/08 23:05:04 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 23:05:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.6 2002/08/10 16:13:03 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/08/10 16:13:03 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:04 $
+ * @version $Revision: 1.6 $ $Date: 2002/08/10 16:13:03 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
@@ -109,7 +109,7 @@ public class VariablePointer extends NodePointer {
         return variables.getVariable(name.getName());
     }
 
-    public Object getNodeValue(){
+    public Object getNode(){
         Object value = getBaseValue();
         if (index != WHOLE_COLLECTION){
             return ValueUtils.getValue(value, index);
@@ -139,7 +139,7 @@ public class VariablePointer extends NodePointer {
         if (valuePointer == null){
             Object value = null;
             if (actual){
-                value = getNodeValue();
+                value = getNode();
             }
             valuePointer = NodePointer.newChildNodePointer(this, null, value);
         }
@@ -282,7 +282,7 @@ public class VariablePointer extends NodePointer {
                 buffer.append('[').append(index + 1).append(']');
             }
         }
-        else if (index != WHOLE_COLLECTION && (getNodeValue() == null || isCollection())){
+        else if (index != WHOLE_COLLECTION && (getNode() == null || isCollection())){
             buffer.append('[').append(index + 1).append(']');
         }
         return buffer.toString();

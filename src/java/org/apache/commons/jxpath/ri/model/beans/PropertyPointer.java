@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.4 2002/05/29 00:40:58 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/05/29 00:40:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.5 2002/08/10 16:13:04 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/08/10 16:13:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a property of the parent object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/05/29 00:40:58 $
+ * @version $Revision: 1.5 $ $Date: 2002/08/10 16:13:04 $
  */
 public abstract class PropertyPointer extends NodePointer {
     public static int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
@@ -102,7 +102,7 @@ public abstract class PropertyPointer extends NodePointer {
 
     public Object getBean(){
         if (bean == null){
-            bean = getParent().getNodeValue();
+            bean = getParent().getNode();
         }
         return bean;
     }
@@ -132,7 +132,7 @@ public abstract class PropertyPointer extends NodePointer {
     private static final Object UNINITIALIZED = new Object();
 
     private Object value = UNINITIALIZED;
-    public Object getNodeValue(){
+    public Object getNode(){
         if (value == UNINITIALIZED){
             if (index == WHOLE_COLLECTION){
                 value = getBaseValue();
@@ -149,7 +149,7 @@ public abstract class PropertyPointer extends NodePointer {
      * selected property value.
      */
     public NodePointer getValuePointer(){
-        return NodePointer.newChildNodePointer(this, getName(), getNodeValue());
+        return NodePointer.newChildNodePointer(this, getName(), getNode());
     }
 
     public int hashCode(){
