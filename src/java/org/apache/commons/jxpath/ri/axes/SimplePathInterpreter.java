@@ -787,7 +787,7 @@ public class SimplePathInterpreter {
      * a) represents the requested path and
      * b) can be used for creation of missing nodes in the path.
      */
-    private static NodePointer createNullPointer(
+    public static NodePointer createNullPointer(
             EvalContext context, NodePointer parent, Step[] steps,
             int currentStep)
     {

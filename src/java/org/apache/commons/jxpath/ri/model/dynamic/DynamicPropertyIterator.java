@@ -58,12 +58,10 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyIterator;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 
 /**
- * <code>DynamicPropertyIterator</code> is different from a regular
- * <code>PropertyIterator</code> in that given a property name it
- * will always find that property (albeit with a null value).
+ * @deprecated - no longer needed, as it is identical to PropertyIterator.
  * 
  * @author <a href="mailto:dmitri@apache.org">Dmitri Plotnikov</a>
- * @version $Id: DynamicPropertyIterator.java,v 1.3 2003/10/09 21:31:41 rdonkin Exp $
+ * @version $Id: DynamicPropertyIterator.java,v 1.4 2004/01/23 01:10:20 dmitri Exp $
  */
 public class DynamicPropertyIterator extends PropertyIterator {
 
@@ -75,9 +73,4 @@ public class DynamicPropertyIterator extends PropertyIterator {
     {
         super(pointer, name, reverse, startWith);
     }
-
-    protected void prepareForIndividualProperty(String name) {
-        ((DynamicPropertyPointer) getPropertyPointer()).setPropertyName(name);
-        super.prepareForIndividualProperty(name);
-   }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.15 2003/10/09 21:31:40 rdonkin Exp $
- * $Revision: 1.15 $
- * $Date: 2003/10/09 21:31:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.16 2004/01/23 01:10:21 dmitri Exp $
+ * $Revision: 1.16 $
+ * $Date: 2004/01/23 01:10:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -78,7 +78,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2003/10/09 21:31:40 $
+ * @version $Revision: 1.16 $ $Date: 2004/01/23 01:10:21 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -200,6 +200,15 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     public abstract PropertyPointer getPropertyPointer();
+    
+    /**
+     * @return true if the property owner can set a property "does not exist".
+     *         A good example is a Map. You can always assign a value to any
+     *         key even if it has never been "declared".
+     */
+    public boolean isDynamicPropertyDeclarationSupported() {
+        return false;
+    }
 
     public int compareChildNodePointers(
         NodePointer pointer1,

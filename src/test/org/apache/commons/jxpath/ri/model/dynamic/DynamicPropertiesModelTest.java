@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertiesModelTest.java,v 1.6 2003/10/09 21:31:44 rdonkin Exp $
- * $Revision: 1.6 $
- * $Date: 2003/10/09 21:31:44 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertiesModelTest.java,v 1.7 2004/01/23 01:10:20 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2004/01/23 01:10:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.TestBean;
  * @todo more iterator testing with maps
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/10/09 21:31:44 $
+ * @version $Revision: 1.7 $ $Date: 2004/01/23 01:10:20 $
  */
 
 public class DynamicPropertiesModelTest extends JXPathTestCase {
@@ -184,8 +184,18 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
         assertXPathSetValue(context, "map/Key1[1]", new Integer(9));
     }
 
+    /**
+     * The key does not exist, but the assignment should succeed anyway,
+     * because you should always be able to store anything in a Map.
+     */
     public void testSetNewKey() {
+        // Using a "simple" path
         assertXPathSetValue(context, "map/Key4", new Integer(7));
+        
+        // Using a "non-simple" path
+        assertXPathPointerLenient(context, "//map/Key5", "/map/Key5");
+        
+        assertXPathSetValue(context, "//map/Key5", new Integer(8));
     }
 
     public void testCreatePath() {
@@ -369,6 +379,40 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
         assertXPathValueIterator(
             context,
             "/map/stuff[@name='fruit']",
-            list("apple", "banana"));
+            list("apple", "banana"));        
+    }
+
+    public void testMapOfMaps() {
+        TestBean bean = (TestBean) context.getContextBean();
+
+        Map fruit = new HashMap();
+        fruit.put("apple", "green");
+        fruit.put("orange", "red");
+        
+        Map meat = new HashMap();
+        meat.put("pork", "pig");
+        meat.put("beef", "cow");
+        
+        bean.getMap().put("fruit", fruit);        
+        bean.getMap().put("meat", meat);        
+                
+        assertXPathPointer(
+            context,
+            "//beef",
+            "/map[@name='meat'][@name='beef']");
+        
+        assertXPathPointer(
+            context,
+            "map//apple",
+            "/map[@name='fruit'][@name='apple']");
+
+        // Ambiguous search - will return nothing
+        assertXPathPointerLenient(context, "map//banana", "null()");
+        
+        // Unambiguous, even though the particular key is missing 
+        assertXPathPointerLenient(
+            context,
+            "//fruit/pear",
+            "/map[@name='fruit']/pear");
     }
 }

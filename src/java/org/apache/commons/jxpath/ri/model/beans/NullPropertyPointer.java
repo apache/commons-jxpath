@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.14 2003/10/09 21:31:40 rdonkin Exp $
- * $Revision: 1.14 $
- * $Date: 2003/10/09 21:31:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.15 2004/01/23 01:10:21 dmitri Exp $
+ * $Revision: 1.15 $
+ * $Date: 2004/01/23 01:10:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2003/10/09 21:31:40 $
+ * @version $Revision: 1.15 $ $Date: 2004/01/23 01:10:21 $
  */
 public class NullPropertyPointer extends PropertyPointer {
 
@@ -126,6 +126,16 @@ public class NullPropertyPointer extends PropertyPointer {
                 "Cannot set property "
                     + asPath()
                     + ", the target object is null");
+        }
+        else if (parent instanceof PropertyOwnerPointer &&
+                ((PropertyOwnerPointer) parent).
+                    isDynamicPropertyDeclarationSupported()){
+            // If the parent property owner can create
+            // a property automatically - let it do so
+            PropertyPointer propertyPointer =
+                ((PropertyOwnerPointer) parent).getPropertyPointer();
+            propertyPointer.setPropertyName(propertyName);
+            propertyPointer.setValue(value);
         }
         else {
             throw new JXPathException(

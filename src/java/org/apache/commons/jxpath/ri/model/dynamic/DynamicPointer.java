@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPointer.java,v 1.4 2003/10/09 21:31:41 rdonkin Exp $
- * $Revision: 1.4 $
- * $Date: 2003/10/09 21:31:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPointer.java,v 1.5 2004/01/23 01:10:20 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2004/01/23 01:10:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,6 +68,7 @@ import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.model.beans.PropertyIterator;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
@@ -77,7 +78,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2003/10/09 21:31:41 $
+ * @version $Revision: 1.5 $ $Date: 2004/01/23 01:10:20 $
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;
@@ -110,7 +111,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
     public NodeIterator createNodeIterator(
                 String property, boolean reverse, NodePointer startWith)
     {
-        return new DynamicPropertyIterator(this, property, reverse, startWith);
+        return new PropertyIterator(this, property, reverse, startWith);
     }
 
     public NodeIterator attributeIterator(QName name) {
@@ -120,7 +121,11 @@ public class DynamicPointer extends PropertyOwnerPointer {
     public QName getName() {
         return name;
     }
-
+    
+    public boolean isDynamicPropertyDeclarationSupported() {
+        return true;
+    }
+    
     /**
      * Returns the DP object iself.
      */
