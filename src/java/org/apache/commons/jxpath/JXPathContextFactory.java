@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContextFactory.java,v 1.5 2003/03/11 00:59:12 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/03/11 00:59:12 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContextFactory.java,v 1.6 2003/08/24 02:30:10 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/08/24 02:30:10 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,7 +83,7 @@ import java.util.Properties;
  * @see JXPathContext#newContext(JXPathContext,Object)
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/03/11 00:59:12 $
+ * @version $Revision: 1.6 $ $Date: 2003/08/24 02:30:10 $
  */
 public abstract class JXPathContextFactory {
 
@@ -95,6 +95,12 @@ public abstract class JXPathContextFactory {
     private static final String DEFAULT_FACTORY_CLASS =
         "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl";
 
+    /** Avoid reading all the files when the findFactory
+        method is called the second time ( cache the result of
+        finding the default impl )
+    */
+    private static String factoryImplName = null;
+    
     protected JXPathContextFactory () {
 
     }
@@ -135,12 +141,9 @@ public abstract class JXPathContextFactory {
      * available or cannot be instantiated.
      */
     public static JXPathContextFactory newInstance() {
-        String factoryImplName =
-            findFactory(FACTORY_NAME_PROPERTY, DEFAULT_FACTORY_CLASS);
-
         if (factoryImplName == null) {
-            throw new JXPathContextFactoryConfigurationError(
-                    "No default implementation found");
+            factoryImplName =
+                findFactory(FACTORY_NAME_PROPERTY, DEFAULT_FACTORY_CLASS);
         }
 
         JXPathContextFactory factoryImpl;
@@ -177,11 +180,6 @@ public abstract class JXPathContextFactory {
     // This code is duplicated in all factories.
     // Keep it in sync or move it to a common place
     // Because it's small probably it's easier to keep it here
-    /** Avoid reading all the files when the findFactory
-        method is called the second time ( cache the result of
-        finding the default impl )
-    */
-    private static String foundFactory = null;
 
     /** Temp debug code - this will be removed after we test everything
      */
@@ -203,26 +201,6 @@ public abstract class JXPathContextFactory {
         @return class name of the JXPathContextFactory
     */
     private static String findFactory(String property, String defaultFactory) {
-        // Use the system property first
-        try {
-            String systemProp = System.getProperty(property);
-            if (systemProp != null) {
-                if (debug) {
-                    System.err.println(
-                        "JXPath: found system property" + systemProp);
-                }
-                return systemProp;
-            }
-
-        }
-        catch (SecurityException se) {
-            // Ignore
-        }
-
-        if (foundFactory != null) {
-            return foundFactory;
-        }
-
         // Use the factory ID system property first
         try {
             String systemProp = System.getProperty(property);
@@ -252,13 +230,13 @@ public abstract class JXPathContextFactory {
             if (f.exists()) {
                 Properties props = new Properties();
                 props.load(new FileInputStream(f));
-                foundFactory = props.getProperty(property);
-                if (debug) {
-                    System.err.println(
-                        "JXPath: found java.home property " + foundFactory);
-                }
-                if (foundFactory != null) {
-                    return foundFactory;
+                String factory = props.getProperty(property);
+                if (factory != null) {
+                    if (debug) {
+                        System.err.println(
+                            "JXPath: found java.home property " + factory);
+                    }
+                    return factory;
                 }
             }
         }
@@ -287,15 +265,15 @@ public abstract class JXPathContextFactory {
                 BufferedReader rd =
                     new BufferedReader(new InputStreamReader(is));
 
-                foundFactory = rd.readLine();
+                String factory = rd.readLine();
                 rd.close();
 
-                if (debug) {
-                    System.err.println(
-                        "JXPath: loaded from services: " + foundFactory);
-                }
-                if (foundFactory != null && !"".equals(foundFactory)) {
-                    return foundFactory;
+                if (factory != null && !"".equals(factory)) {
+                    if (debug) {
+                        System.err.println(
+                            "JXPath: loaded from services: " + factory);
+                    }
+                    return factory;
                 }
             }
         }
