@@ -24,7 +24,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Examples of such objects are JavaBeans and objects with Dynamic Properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/02/29 14:17:41 $
+ * @version $Revision: 1.13 $ $Date: 2004/03/25 03:49:50 $
  */
 public class PropertyIterator implements NodeIterator {
     private boolean empty = false;
@@ -55,8 +55,9 @@ public class PropertyIterator implements NodeIterator {
             this.startIndex = -1;
         }
         if (startWith != null) {
-            while (startWith != null && startWith.getParent() != pointer) {
-                startWith = startWith.getParent();
+            while (startWith != null 
+                    && startWith.getImmediateParentPointer() != pointer) {
+                startWith = startWith.getImmediateParentPointer();
             }
             if (startWith == null) {
                 throw new JXPathException(
@@ -109,7 +110,8 @@ public class PropertyIterator implements NodeIterator {
         catch (Throwable ex) {
             // @todo: should this exception be reported in any way?
             NullPropertyPointer npp =
-                new NullPropertyPointer(propertyNodePointer.getParent());
+                new NullPropertyPointer(
+                        propertyNodePointer.getImmediateParentPointer());
             npp.setPropertyName(propertyNodePointer.getPropertyName());
             npp.setIndex(propertyNodePointer.getIndex());
             return npp.getValuePointer();

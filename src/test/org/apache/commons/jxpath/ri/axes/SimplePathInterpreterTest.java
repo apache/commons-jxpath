@@ -641,7 +641,9 @@ public class SimplePathInterpreterTest extends TestCase {
         else {
             System.err.println("UNKNOWN TYPE: " + pointer.getClass());
         }
-        return pointerSignature(((NodePointer) pointer).getParent()) + type;
+        NodePointer parent = 
+            ((NodePointer) pointer).getImmediateParentPointer();
+        return pointerSignature(parent) + type;
     }
 }
 

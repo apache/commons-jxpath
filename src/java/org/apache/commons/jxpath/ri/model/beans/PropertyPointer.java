@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a property of the parent object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/02/29 14:17:41 $
+ * @version $Revision: 1.13 $ $Date: 2004/03/25 03:49:50 $
  */
 public abstract class PropertyPointer extends NodePointer {
     public static final int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
@@ -57,7 +57,7 @@ public abstract class PropertyPointer extends NodePointer {
 
     public Object getBean() {
         if (bean == null) {
-            bean = getParent().getNode();
+            bean = getImmediateParentPointer().getNode();
         }
         return bean;
     }
@@ -189,7 +189,7 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     public int hashCode() {
-        return getParent().hashCode() + propertyIndex + index;
+        return getImmediateParentPointer().hashCode() + propertyIndex + index;
     }
 
     public boolean equals(Object object) {

@@ -35,7 +35,7 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * attribute and only simple, context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.22 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision: 1.23 $ $Date: 2004/03/25 03:49:50 $
  */
 public abstract class NodePointer implements Pointer {
 
@@ -110,6 +110,14 @@ public abstract class NodePointer implements Pointer {
     }
 
     public NodePointer getParent() {
+        NodePointer pointer = parent;
+        while (pointer != null && pointer.isContainer()) {
+            pointer = pointer.getImmediateParentPointer();
+        }
+        return pointer;
+    }
+    
+    public NodePointer getImmediateParentPointer() {
         return parent;
     }
 
@@ -745,8 +753,8 @@ public abstract class NodePointer implements Pointer {
                     + pointer.getClass().getName()
                     + ")");
         }
-        if (pointer.getParent() != null) {
-            printDeep(pointer.getParent(), indent + "  ");
+        if (pointer.getImmediateParentPointer() != null) {
+            printDeep(pointer.getImmediateParentPointer(), indent + "  ");
         }
     }
 }

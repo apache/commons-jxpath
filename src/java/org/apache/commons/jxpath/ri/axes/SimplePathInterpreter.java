@@ -694,7 +694,7 @@ public class SimplePathInterpreter {
         int quality = PERFECT_MATCH;
         while (pointer != null && !pointer.isActual()) {
             quality--;
-            pointer = pointer.getParent();
+            pointer = pointer.getImmediateParentPointer();
         }
         return quality;
     }

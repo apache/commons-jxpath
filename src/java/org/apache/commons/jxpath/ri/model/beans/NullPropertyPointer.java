@@ -22,7 +22,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2004/02/29 14:17:41 $
+ * @version $Revision: 1.18 $ $Date: 2004/03/25 03:49:50 $
  */
 public class NullPropertyPointer extends PropertyPointer {
 
@@ -190,7 +190,7 @@ public class NullPropertyPointer extends PropertyPointer {
         }
         else {
             StringBuffer buffer = new StringBuffer();
-            buffer.append(getParent().asPath());
+            buffer.append(getImmediateParentPointer().asPath());
             buffer.append("[@name='");
             buffer.append(escape(getPropertyName()));
             buffer.append("']");

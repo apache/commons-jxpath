@@ -54,7 +54,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.39 $ $Date: 2004/03/02 01:32:20 $
+ * @version $Revision: 1.40 $ $Date: 2004/03/25 03:49:50 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -333,7 +333,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 // is going to have isActual == false, but its parent,
                 // which is a non-node pointer identifying the bean property,
                 // will return isActual() == true.
-                NodePointer parent = ((NodePointer) result).getParent();
+                NodePointer parent = 
+                    ((NodePointer) result).getImmediateParentPointer();
                 if (parent == null
                     || !parent.isContainer()
                     || !parent.isActual()) {

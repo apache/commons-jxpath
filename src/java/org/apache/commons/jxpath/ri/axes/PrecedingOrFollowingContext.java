@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyIterator;
  * EvalContext that walks the "preceding::" and "following::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision: 1.15 $ $Date: 2004/03/25 03:49:50 $
  */
 public class PrecedingOrFollowingContext extends EvalContext {
     private NodeTest nodeTest;
@@ -80,8 +80,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
         if (!setStarted) {
             setStarted = true;
             currentRootLocation = parentContext.getCurrentNodePointer();
-            NodePointer parent =
-                getMaterialPointer(currentRootLocation.getParent());
+            NodePointer parent = currentRootLocation.getParent();
             if (parent != null) {
                 // TBD: check type
                 stack.push(
@@ -91,16 +90,14 @@ public class PrecedingOrFollowingContext extends EvalContext {
 
         while (true) {
             if (stack.isEmpty()) {
-                currentRootLocation =
-                    getMaterialPointer(currentRootLocation.getParent());
+                currentRootLocation = currentRootLocation.getParent();
 
                 if (currentRootLocation == null
                     || currentRootLocation.isRoot()) {
                     break;
                 }
 
-                NodePointer parent =
-                    getMaterialPointer(currentRootLocation.getParent());
+                NodePointer parent = currentRootLocation.getParent();
                 if (parent != null) {
                     stack.push(
                         parent.childIterator(
@@ -164,16 +161,5 @@ public class PrecedingOrFollowingContext extends EvalContext {
             }
         }
         return false;
-    }
-
-    /**
-     * If  the pointer is auxiliary, return the parent; otherwise - the pointer
-     * itself
-     */
-    private NodePointer getMaterialPointer(NodePointer pointer) {
-        while (pointer != null && pointer.isContainer()) {
-            pointer = pointer.getParent();
-        }
-        return pointer;
     }
 }

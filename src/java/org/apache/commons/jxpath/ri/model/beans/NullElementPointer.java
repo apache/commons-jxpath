@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * with index 2 (= 3 - 1) and a "foo" pointer as the parent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2004/02/29 14:17:41 $
+ * @version $Revision: 1.17 $ $Date: 2004/03/25 03:49:50 $
  */
 public class NullElementPointer extends CollectionPointer {
 
@@ -87,7 +87,7 @@ public class NullElementPointer extends CollectionPointer {
     }
 
     public int hashCode() {
-        return getParent().hashCode() + index;
+        return getImmediateParentPointer().hashCode() + index;
     }
 
     public boolean equals(Object object) {
@@ -100,7 +100,8 @@ public class NullElementPointer extends CollectionPointer {
         }
 
         NullElementPointer other = (NullElementPointer) object;
-        return getParent() == other.getParent() && index == other.index;
+        return getImmediateParentPointer() == other.getImmediateParentPointer() 
+            && index == other.index;
     }
 
     public int getLength() {
@@ -109,7 +110,7 @@ public class NullElementPointer extends CollectionPointer {
     
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
-        NodePointer parent = getParent();
+        NodePointer parent = getImmediateParentPointer();
         if (parent != null) {
             buffer.append(parent.asPath());
         }
@@ -118,10 +119,11 @@ public class NullElementPointer extends CollectionPointer {
             if (parent != null && parent.getIndex() != WHOLE_COLLECTION) {
                 buffer.append("/.");
             }
-            else if (
-                parent != null
-                    && parent.getParent() != null
-                    && parent.getParent().getIndex() != WHOLE_COLLECTION) {
+            else if (parent != null
+                    && parent.getImmediateParentPointer() != null
+                    && parent.getImmediateParentPointer().getIndex() != 
+                            WHOLE_COLLECTION) 
+            {
                 buffer.append("/.");
             }
             buffer.append("[").append(index + 1).append(']');

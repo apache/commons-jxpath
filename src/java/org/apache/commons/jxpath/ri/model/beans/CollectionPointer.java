@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2004/02/29 14:17:41 $
+ * @version $Revision: 1.18 $ $Date: 2004/03/25 03:49:50 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -211,7 +211,7 @@ public class CollectionPointer extends NodePointer {
      */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
-        NodePointer parent = getParent();
+        NodePointer parent = getImmediateParentPointer();
         if (parent != null) {
             buffer.append(parent.asPath());
             if (index != WHOLE_COLLECTION) {

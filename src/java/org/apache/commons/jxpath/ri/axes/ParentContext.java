@@ -23,7 +23,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "parent::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2004/02/29 14:17:37 $
+ * @version $Revision: 1.15 $ $Date: 2004/03/25 03:49:50 $
  */
 public class ParentContext extends EvalContext {
     private NodeTest nodeTest;
@@ -64,10 +64,10 @@ public class ParentContext extends EvalContext {
         }
         setStarted = true;
         NodePointer thisLocation = parentContext.getCurrentNodePointer();
-        currentNodePointer = thisLocation.getParent();
+        currentNodePointer = thisLocation.getImmediateParentPointer();
         while (currentNodePointer != null
             && currentNodePointer.isContainer()) {
-            currentNodePointer = currentNodePointer.getParent();
+            currentNodePointer = currentNodePointer.getImmediateParentPointer();
         }
         if (currentNodePointer != null
             && currentNodePointer.testNode(nodeTest)) {

@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * "preceding-sibling::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2004/02/29 14:17:37 $
+ * @version $Revision: 1.16 $ $Date: 2004/03/25 03:49:50 $
  */
 public class ChildContext extends EvalContext {
     private NodeTest nodeTest;
@@ -116,10 +116,6 @@ public class ChildContext extends EvalContext {
         }
         if (startFromParentLocation) {
             NodePointer pointer = parent.getParent();
-            while (pointer != null && pointer.isContainer()) {
-                pointer = pointer.getParent();
-            }
-
             iterator = pointer.childIterator(nodeTest, reverse, parent);
         }
         else {

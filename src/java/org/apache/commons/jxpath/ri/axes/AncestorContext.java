@@ -23,7 +23,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2004/02/29 14:17:37 $
+ * @version $Revision: 1.15 $ $Date: 2004/03/25 03:49:50 $
  */
 public class AncestorContext extends EvalContext {
     private NodeTest nodeTest;
@@ -86,7 +86,7 @@ public class AncestorContext extends EvalContext {
         }
 
         while (true) {
-            currentNodePointer = currentNodePointer.getParent();
+            currentNodePointer = currentNodePointer.getImmediateParentPointer();
 
             if (currentNodePointer == null) {
                 return false;

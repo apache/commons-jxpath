@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/02/29 14:17:44 $
+ * @version $Revision: 1.7 $ $Date: 2004/03/25 03:49:50 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -267,7 +267,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(getParent().asPath());
+        buffer.append(getImmediateParentPointer().asPath());
         if (buffer.length() == 0) {
             buffer.append("/.");
         }
