@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.25 2003/01/11 05:41:22 dmitri Exp $
- * $Revision: 1.25 $
- * $Date: 2003/01/11 05:41:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.26 2003/01/30 23:41:29 dmitri Exp $
+ * $Revision: 1.26 $
+ * $Date: 2003/01/30 23:41:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -96,7 +96,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.25 $ $Date: 2003/01/11 05:41:22 $
+ * @version $Revision: 1.26 $ $Date: 2003/01/30 23:41:29 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -481,7 +481,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             rootPointer = NodePointer.newNodePointer(new QName(null, "root"),
                 getContextBean(), getLocale());
         }
-        return rootPointer;
+        return (Pointer) rootPointer.clone();
     }
 
     private EvalContext getRootContext() {

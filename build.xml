@@ -3,7 +3,7 @@
 
 <!--
         "JXPath" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.17 2003/01/11 06:22:53 dmitri Exp $
+        $Id: build.xml,v 1.18 2003/01/30 23:41:28 dmitri Exp $
 -->
 
 
@@ -25,7 +25,7 @@
   <property name="component.package"       value="org.apache.commons.jxpath"/>
 
   <!-- The current version number of this component -->
-  <property name="component.version"       value="1.0"/>
+  <property name="component.version"       value="1.1b1"/>
 
   <!-- The jar name of this component -->
   <property name="jar.name"

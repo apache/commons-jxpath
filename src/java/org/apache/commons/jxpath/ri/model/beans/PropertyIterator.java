@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.7 2003/01/11 05:41:25 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/01/11 05:41:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.8 2003/01/30 23:41:29 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/01/30 23:41:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Examples of such objects are JavaBeans and objects with Dynamic Properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/01/11 05:41:25 $
+ * @version $Revision: 1.8 $ $Date: 2003/01/30 23:41:29 $
  */
 public class PropertyIterator implements NodeIterator {
     private boolean empty = false;
@@ -120,7 +120,7 @@ public class PropertyIterator implements NodeIterator {
             }
         }
     }
-    
+
     protected NodePointer getPropertyPointer() {
         return propertyNodePointer;
     }
@@ -148,7 +148,18 @@ public class PropertyIterator implements NodeIterator {
                 reset();
             }
         }
-        return getValuePointer();       
+        try {
+            NodePointer clone = (NodePointer) propertyNodePointer.clone();
+            return clone.getValuePointer();
+        }
+        catch (Throwable ex) {
+            // @todo: should this exception be reported in any way?
+            NullPropertyPointer npp =
+                new NullPropertyPointer(propertyNodePointer.getParent());
+            npp.setPropertyName(propertyNodePointer.getPropertyName());
+            npp.setIndex(propertyNodePointer.getIndex());
+            return npp.getValuePointer();
+        }
     }
 
     public int getPosition() {
@@ -325,29 +336,12 @@ public class PropertyIterator implements NodeIterator {
     private int getLength() {
         int length;
         try {
-            length = propertyNodePointer.getLength();   // TBD: cache length
+            length = propertyNodePointer.getLength(); // TBD: cache length
         }
         catch (Throwable t) {
             // @todo: should this exception be reported in any way?
             length = 0;
         }
         return length;
-    }
-
-    /**
-     * Computes value pointer for the current pointer - ignores any exceptions
-     */
-    private NodePointer getValuePointer() {
-        try {
-            return propertyNodePointer.getValuePointer();
-        }
-        catch (Throwable ex) {
-            // @todo: should this exception be reported in any way?
-            NullPropertyPointer npp =
-                new NullPropertyPointer(propertyNodePointer.getParent());
-            npp.setPropertyName(propertyNodePointer.getPropertyName());
-            npp.setIndex(propertyNodePointer.getIndex());
-            return npp.getValuePointer();
-        }
     }
 }

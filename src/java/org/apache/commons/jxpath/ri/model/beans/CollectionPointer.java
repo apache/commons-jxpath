@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.12 2003/01/11 05:41:24 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2003/01/11 05:41:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.13 2003/01/30 23:41:29 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2003/01/30 23:41:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2003/01/11 05:41:24 $
+ * @version $Revision: 1.13 $ $Date: 2003/01/30 23:41:29 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -254,15 +254,23 @@ public class CollectionPointer extends NodePointer {
         NodePointer parent = getParent();
         if (parent != null) {
             buffer.append(parent.asPath());
-        }
-        if (index != WHOLE_COLLECTION) {
-            // Address the list[1][2] case
-            if (parent != null && parent.getIndex() != WHOLE_COLLECTION) {
-                buffer.append("/.");
+            if (index != WHOLE_COLLECTION) {
+                // Address the list[1][2] case
+                if (parent.getIndex() != WHOLE_COLLECTION) {
+                    buffer.append("/.");
+                }
+                buffer.append("[").append(index + 1).append(']');
             }
-            buffer.append("[").append(index + 1).append(']');
         }
-
+        else {
+            if (index != WHOLE_COLLECTION) {
+                buffer.append("/.[").append(index + 1).append(']');
+            }
+            else {
+                buffer.append("/");
+            }
+        }
+        
         return buffer.toString();
     }
 }
