@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.3 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.3 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/axes/TestBeanWithNode.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2002/10/20 03:48:22 $
  *
  * ====================================================================
@@ -60,98 +60,51 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.commons.jxpath.ri.model.dom;
+package org.apache.commons.jxpath.ri.axes;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
+import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.TestBean;
 import org.apache.commons.jxpath.xml.DocumentContainer;
-
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
 
 /**
- * Tests JXPath with DOM
+ * Test bean for mixed model JUnit tests.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
  */
+public class TestBeanWithNode extends TestBean {
+    private Object node;
+    private Object object;
 
-public class DOMModelTest extends XMLModelTestCase
-{
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public DOMModelTest(String name){
-        super(name);
+    public Object getVendor(){
+        return node;
     }
 
-    /**
-     * Return the tests included in this test suite.
-     */
-    public static Test suite(){
-        return (new TestSuite(DOMModelTest.class));
+    public Object[] getVendors(){
+        return new Object[]{node};
     }
 
-    protected String getModel(){
-        return DocumentContainer.MODEL_DOM;
+    public void setVendor(Object node){
+        this.node = node;
     }
-    
-    protected AbstractFactory getAbstractFactory(){
-        return new TestDOMFactory();
+
+    public Object getObject(){
+        return object;
     }
-    
-    protected String getXMLSignature(Object node, 
-    		boolean elements, boolean attributes, boolean text, boolean pi){
-    	StringBuffer buffer = new StringBuffer();
-    	appendXMLSignature(buffer, node, elements, attributes, text, pi);
-    	return buffer.toString();
+
+    public void setObject(Object object){
+        this.object = object;
     }
-    
-    private void appendXMLSignature(StringBuffer buffer, Object object, 
-    		boolean elements, boolean attributes, boolean text, boolean pi){
-    	Node node = (Node)object;
-    	int type = node.getNodeType();
-    	switch (type){
-    		case Node.DOCUMENT_NODE:
-    			buffer.append("<D>");
-    			appendXMLSignature(buffer, node.getChildNodes(), 
-    					elements, attributes, text, pi);
-    			buffer.append("</D");
-    			break;
-    			
-    		case Node.ELEMENT_NODE:
-    			String tag = elements ? ((Element)node).getTagName() : "E";
-				buffer.append("<");
-				buffer.append(tag);
-				buffer.append(">");
-    			appendXMLSignature(buffer, node.getChildNodes(), 
-    					elements, attributes, text, pi);
-				buffer.append("</");
-				buffer.append(tag);
-				buffer.append(">");    				
-				break;
-				
-    		case Node.TEXT_NODE:
-    		case Node.CDATA_SECTION_NODE:
-    			if (text){
-    				String string = node.getNodeValue();
-    				string = string.replace('\n', '=');
-    				buffer.append(string);
-    			}
-				break;
-    	}
-	}
-	
-    private void appendXMLSignature(StringBuffer buffer, NodeList children, 
-    		boolean elements, boolean attributes, boolean text, boolean pi)
-    {
-    	for (int i = 0; i < children.getLength(); i++){
-			appendXMLSignature(buffer, children.item(i), 
-					elements, attributes, text, pi);
-    	}
-	}
+
+    public static TestBeanWithNode createTestBeanWithDOM(){
+        DocumentContainer docCtr = new DocumentContainer(
+                JXPathTestCase.class.getResource("Vendor.xml"));
+        Document doc = (Document)docCtr.getValue();
+        TestBeanWithNode tbwdom = new TestBeanWithNode();
+        tbwdom.setVendor(doc.getDocumentElement());
+        tbwdom.setObject(docCtr);
+        return tbwdom;
+    }
+
 }

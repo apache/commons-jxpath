@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.3 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestSuite.java,v 1.1 2002/10/20 03:48:21 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/10/20 03:48:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -60,98 +60,78 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.commons.jxpath.ri.model.dom;
+package org.apache.commons.jxpath;
 
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
-import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
-import org.apache.commons.jxpath.xml.DocumentContainer;
-
-import org.w3c.dom.*;
+import org.apache.commons.jxpath.ri.axes.SimplePathInterpreterTest;
+import org.apache.commons.jxpath.ri.compiler.ContextDependencyTest;
+import org.apache.commons.jxpath.ri.compiler.CoreFunctionTest;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationTest;
+import org.apache.commons.jxpath.ri.compiler.ExtensionFunctionTest;
+import org.apache.commons.jxpath.ri.compiler.VariableTest;
+import org.apache.commons.jxpath.ri.model.MixedModelTest;
+import org.apache.commons.jxpath.ri.model.beans.BeanModelTest;
+import org.apache.commons.jxpath.ri.model.beans.DynamicPropertiesModelTest;
+import org.apache.commons.jxpath.ri.model.dom.DOMModelTest;
+import org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanModelTest;
+import org.apache.commons.jxpath.ri.model.jdom.JDOMModelTest;
+import org.apache.commons.jxpath.util.BasicTypeConverterTest;
 
 /**
- * Tests JXPath with DOM
+ * <p>
+ *  Test Suite for the JXPath class.  The majority of these tests use
+ *  instances of the TestBean class, so be sure to update the tests if you
+ *  change the characteristics of that class.
+ * </p>
+ *
+ * <p>
+ *   Note that the tests are dependent upon the static aspects
+ *   (such as array sizes...) of the TestBean.java class, so ensure
+ *   that all changes to TestBean are reflected here and in other JXPath tests.
+ * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:21 $
  */
 
-public class DOMModelTest extends XMLModelTestCase
+public class JXPathTestSuite extends TestCase
 {
+    private static boolean enabled = true;
+
     /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
+     * Exercise the whole suite
      */
-    public DOMModelTest(String name){
+    public static void main(String args[]) {
+        TestRunner.run(suite());
+    }
+
+    public JXPathTestSuite(String name){
         super(name);
     }
 
     /**
      * Return the tests included in this test suite.
      */
-    public static Test suite(){
-        return (new TestSuite(DOMModelTest.class));
-    }
-
-    protected String getModel(){
-        return DocumentContainer.MODEL_DOM;
-    }
-    
-    protected AbstractFactory getAbstractFactory(){
-        return new TestDOMFactory();
-    }
-    
-    protected String getXMLSignature(Object node, 
-    		boolean elements, boolean attributes, boolean text, boolean pi){
-    	StringBuffer buffer = new StringBuffer();
-    	appendXMLSignature(buffer, node, elements, attributes, text, pi);
-    	return buffer.toString();
-    }
-    
-    private void appendXMLSignature(StringBuffer buffer, Object object, 
-    		boolean elements, boolean attributes, boolean text, boolean pi){
-    	Node node = (Node)object;
-    	int type = node.getNodeType();
-    	switch (type){
-    		case Node.DOCUMENT_NODE:
-    			buffer.append("<D>");
-    			appendXMLSignature(buffer, node.getChildNodes(), 
-    					elements, attributes, text, pi);
-    			buffer.append("</D");
-    			break;
-    			
-    		case Node.ELEMENT_NODE:
-    			String tag = elements ? ((Element)node).getTagName() : "E";
-				buffer.append("<");
-				buffer.append(tag);
-				buffer.append(">");
-    			appendXMLSignature(buffer, node.getChildNodes(), 
-    					elements, attributes, text, pi);
-				buffer.append("</");
-				buffer.append(tag);
-				buffer.append(">");    				
-				break;
-				
-    		case Node.TEXT_NODE:
-    		case Node.CDATA_SECTION_NODE:
-    			if (text){
-    				String string = node.getNodeValue();
-    				string = string.replace('\n', '=');
-    				buffer.append(string);
-    			}
-				break;
-    	}
-	}
-	
-    private void appendXMLSignature(StringBuffer buffer, NodeList children, 
-    		boolean elements, boolean attributes, boolean text, boolean pi)
+    public static Test suite()
     {
-    	for (int i = 0; i < children.getLength(); i++){
-			appendXMLSignature(buffer, children.item(i), 
-					elements, attributes, text, pi);
-    	}
-	}
+        TestSuite suite = new TestSuite();
+        suite.addTestSuite(SimplePathInterpreterTest.class);
+        suite.addTestSuite(ContextDependencyTest.class);
+        suite.addTestSuite(CoreFunctionTest.class);
+        suite.addTestSuite(CoreOperationTest.class);
+        suite.addTestSuite(ExtensionFunctionTest.class);
+        suite.addTestSuite(VariableTest.class);
+        suite.addTestSuite(BeanModelTest.class);
+        suite.addTestSuite(DynamicPropertiesModelTest.class);
+        suite.addTestSuite(DOMModelTest.class);
+        suite.addTestSuite(DynaBeanModelTest.class);
+        suite.addTestSuite(JDOMModelTest.class);
+        suite.addTestSuite(MixedModelTest.class);
+        suite.addTestSuite(BasicTypeConverterTest.class);
+        return suite;
+    }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/JDOMModelTest.java,v 1.2 2002/10/13 03:01:03 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/10/13 03:01:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/JDOMModelTest.java,v 1.3 2002/10/20 03:48:22 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/10/20 03:48:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.w3c.dom.*;
 import java.util.*;
 import java.lang.reflect.*;
 import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
@@ -82,26 +81,19 @@ import org.apache.commons.jxpath.ri.axes.*;
 import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.ri.compiler.Expression;
 import org.apache.commons.jxpath.xml.*;
+import org.jdom.*;
+
 import java.beans.*;
 
 /**
- * Abstract superclass for pure XPath 1.0.  Subclasses
- * apply the same XPaths to contexts using different models:
- * DOM, JDOM etc.
+ * Tests JXPath with JDOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/10/13 03:01:03 $
+ * @version $Revision: 1.3 $ $Date: 2002/10/20 03:48:22 $
  */
 
 public class JDOMModelTest extends XMLModelTestCase
 {
-    /**
-     * Exercises this test case only
-     */
-    public static void main(String args[]) {
-        junit.textui.TestRunner.run(suite());
-    }
-
     /**
      * Construct a new instance of this test case.
      *
@@ -125,4 +117,52 @@ public class JDOMModelTest extends XMLModelTestCase
     public void testID(){
         // id() is not supported by JDOM
     }
+
+    protected AbstractFactory getAbstractFactory(){
+        return new TestJDOMFactory();
+    }
+    
+    protected String getXMLSignature(Object node, 
+    		boolean elements, boolean attributes, boolean text, boolean pi){
+    	StringBuffer buffer = new StringBuffer();
+    	appendXMLSignature(buffer, node, elements, attributes, text, pi);
+    	return buffer.toString();
+    }
+    
+    private void appendXMLSignature(StringBuffer buffer, Object object, 
+    		boolean elements, boolean attributes, boolean text, boolean pi){
+    	if (object instanceof Document){
+			buffer.append("<D>");
+			appendXMLSignature(buffer, ((Document)object).getContent(), 
+					elements, attributes, text, pi);
+			buffer.append("</D");
+    	}
+    	else if (object instanceof Element){
+			String tag = elements ? ((Element)object).getName() : "E";
+			buffer.append("<");
+			buffer.append(tag);
+			buffer.append(">");
+			appendXMLSignature(buffer, ((Element)object).getContent(), 
+					elements, attributes, text, pi);
+			buffer.append("</");
+			buffer.append(tag);
+			buffer.append(">");    				
+    	}
+    	else if (object instanceof Text || object instanceof CDATA){
+			if (text){
+				String string = ((Text)object).getText();
+				string = string.replace('\n', '=');
+				buffer.append(string);
+			}
+    	}
+	}
+	
+    private void appendXMLSignature(StringBuffer buffer, List children, 
+    		boolean elements, boolean attributes, boolean text, boolean pi)
+    {
+    	for (int i = 0; i < children.size(); i++){
+			appendXMLSignature(buffer, children.get(i), 
+					elements, attributes, text, pi);
+    	}
+	}  
 }

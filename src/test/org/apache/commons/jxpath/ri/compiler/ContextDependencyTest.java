@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFunctions2.java,v 1.1 2001/08/23 00:47:02 dmitri Exp $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ContextDependencyTest.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
  * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:02 $
+ * $Date: 2002/10/20 03:48:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,17 +59,44 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath;
 
-import java.util.*;
+package org.apache.commons.jxpath.ri.compiler;
+
+import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.ri.Parser;
 
 /**
+ * Tests the determination of whether an expression is context dependent.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:02 $
+ * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
  */
-public class TestFunctions2 {
 
-    public static int increment(int i){
-        return i + 1;
+public class ContextDependencyTest extends JXPathTestCase
+{
+    public ContextDependencyTest(String name){
+        super(name);
     }
+
+    public void testContextDependency(){
+        testContextDependency("1", false);
+        testContextDependency("$x", false);
+        testContextDependency("/foo", false);
+        testContextDependency("foo", true);
+        testContextDependency("/foo[3]", false);
+        testContextDependency("/foo[$x]", false);
+        testContextDependency("/foo[bar]", true);
+        testContextDependency("3 + 5", false);
+        testContextDependency("test:func(3, 5)", true);
+        testContextDependency("test:func(3, foo)", true);
+    }
+
+    public void testContextDependency(String xpath, boolean expected){
+        Expression expr = 
+            (Expression)Parser.parseExpression(xpath, new TreeCompiler());
+        
+        assertEquals("Context dependency <" + xpath + ">", 
+                expected, 
+                expr.isContextDependent());
+    }   
 }

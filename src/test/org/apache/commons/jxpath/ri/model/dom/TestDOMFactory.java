@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestBeanWithNode.java,v 1.1 2002/08/10 01:50:39 dmitri Exp $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/TestDOMFactory.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
  * $Revision: 1.1 $
- * $Date: 2002/08/10 01:50:39 $
+ * $Date: 2002/10/20 03:48:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -60,49 +60,55 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.commons.jxpath;
+package org.apache.commons.jxpath.ri.model.dom;
 
-import org.apache.commons.jxpath.xml.DocumentContainer;
-import org.w3c.dom.Document;
+import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.Pointer;
+import org.w3c.dom.Node;
 
 /**
- * General purpose test bean for JUnit tests for the "jxpath" component.
+ * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/10 01:50:39 $
+ * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
  */
-public class TestBeanWithNode extends TestBean {
-    private Object node;
-    private Object object;
+public class TestDOMFactory extends AbstractFactory {
 
-    public Object getVendor(){
-        return node;
+    /**
+     * Return <b>false</b> if this factory cannot create the requested object.
+     */
+    public boolean createObject(JXPathContext context, 
+                Pointer pointer, Object parent, String name, int index)
+    {
+        if (name.equals("location") || 
+                name.equals("address") || 
+                name.equals("street")){
+            addDOMElement((Node)parent, index, name);
+            return true;
+        }
+        return false;
     }
 
-    public Object[] getVendors(){
-        return new Object[]{node};
+    private void addDOMElement(Node parent, int index, String tag){
+        Node child = parent.getFirstChild();
+        int count = 0;
+        while (child != null){
+            if (child.getNodeName().equals(tag)){
+                count++;
+            }
+            child = child.getNextSibling();
+        }
+
+        // Keep inserting new elements until we have index + 1 of them
+        while (count <= index){
+            Node newElement = parent.getOwnerDocument().createElement(tag);
+            parent.appendChild(newElement);
+            count++;
+        }
     }
 
-    public void setVendor(Object node){
-        this.node = node;
+    public boolean declareVariable(JXPathContext context, String name){
+        return false;
     }
-
-    public Object getObject(){
-        return object;
-    }
-
-    public void setObject(Object object){
-        this.object = object;
-    }
-
-    public static TestBeanWithNode createTestBeanWithDOM(){
-        DocumentContainer docCtr = new DocumentContainer(
-                TestBeanWithNode.class.getResource("Vendor.xml"));
-        Document doc = (Document)docCtr.getValue();
-        TestBeanWithNode tbwdom = new TestBeanWithNode();
-        tbwdom.setVendor(doc.getDocumentElement());
-        tbwdom.setObject(docCtr);
-        return tbwdom;
-    }
-
 }

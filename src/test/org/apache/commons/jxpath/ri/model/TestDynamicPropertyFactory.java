@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.3 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.3 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/Attic/TestDynamicPropertyFactory.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2002/10/20 03:48:22 $
  *
  * ====================================================================
@@ -60,98 +60,62 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.commons.jxpath.ri.model.dom;
+package org.apache.commons.jxpath.ri.model;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
-import org.apache.commons.jxpath.xml.DocumentContainer;
-
-import org.w3c.dom.*;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.NestedTestBean;
+import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.TestBean;
+import org.jdom.Element;
+import org.w3c.dom.Node;
 
 /**
- * Tests JXPath with DOM
+ * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
  */
-
-public class DOMModelTest extends XMLModelTestCase
-{
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public DOMModelTest(String name){
-        super(name);
-    }
+public class TestDynamicPropertyFactory extends AbstractFactory {
 
     /**
-     * Return the tests included in this test suite.
+     * Create a new instance and put it in the collection on the parent object.
+     * Return <b>false</b> if this factory cannot create the requested object.
      */
-    public static Test suite(){
-        return (new TestSuite(DOMModelTest.class));
+    public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index){
+        if (name.equals("map")){
+            ((TestBean)parent).setMap(new HashMap());
+            return true;
+        }
+        else if (name.equals("TestKey1")){
+            ((Map)parent).put(name, "");
+            return true;
+        }
+        else if (name.equals("TestKey2")){
+            ((Map)parent).put(name, new NestedTestBean("newName"));
+            return true;
+        }
+        else if (name.equals("TestKey3")){
+            Vector v = new Vector();
+            for (int i = 0; i <= index; i++){
+                v.add(null);
+            }
+            ((Map)parent).put(name, v);
+            return true;
+        }
+        else if (name.equals("TestKey4")){
+            ((Map)parent).put(name, new Object[]{new TestBean()});
+            return true;
+        }
+        return false;
     }
 
-    protected String getModel(){
-        return DocumentContainer.MODEL_DOM;
+    public boolean declareVariable(JXPathContext context, String name){
+        return false;
     }
-    
-    protected AbstractFactory getAbstractFactory(){
-        return new TestDOMFactory();
-    }
-    
-    protected String getXMLSignature(Object node, 
-    		boolean elements, boolean attributes, boolean text, boolean pi){
-    	StringBuffer buffer = new StringBuffer();
-    	appendXMLSignature(buffer, node, elements, attributes, text, pi);
-    	return buffer.toString();
-    }
-    
-    private void appendXMLSignature(StringBuffer buffer, Object object, 
-    		boolean elements, boolean attributes, boolean text, boolean pi){
-    	Node node = (Node)object;
-    	int type = node.getNodeType();
-    	switch (type){
-    		case Node.DOCUMENT_NODE:
-    			buffer.append("<D>");
-    			appendXMLSignature(buffer, node.getChildNodes(), 
-    					elements, attributes, text, pi);
-    			buffer.append("</D");
-    			break;
-    			
-    		case Node.ELEMENT_NODE:
-    			String tag = elements ? ((Element)node).getTagName() : "E";
-				buffer.append("<");
-				buffer.append(tag);
-				buffer.append(">");
-    			appendXMLSignature(buffer, node.getChildNodes(), 
-    					elements, attributes, text, pi);
-				buffer.append("</");
-				buffer.append(tag);
-				buffer.append(">");    				
-				break;
-				
-    		case Node.TEXT_NODE:
-    		case Node.CDATA_SECTION_NODE:
-    			if (text){
-    				String string = node.getNodeValue();
-    				string = string.replace('\n', '=');
-    				buffer.append(string);
-    			}
-				break;
-    	}
-	}
-	
-    private void appendXMLSignature(StringBuffer buffer, NodeList children, 
-    		boolean elements, boolean attributes, boolean text, boolean pi)
-    {
-    	for (int i = 0; i < children.getLength(); i++){
-			appendXMLSignature(buffer, children.item(i), 
-					elements, attributes, text, pi);
-    	}
-	}
 }

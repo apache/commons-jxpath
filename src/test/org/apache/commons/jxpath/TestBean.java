@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestBean.java,v 1.2 2002/04/10 03:40:21 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestBean.java,v 1.3 2002/10/20 03:48:21 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/10/20 03:48:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import java.util.*;
  * General purpose test bean for JUnit tests for the "jxpath" component.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:21 $
+ * @version $Revision: 1.3 $ $Date: 2002/10/20 03:48:21 $
  */
 public class TestBean {
 
@@ -83,6 +83,7 @@ public class TestBean {
         beans = new NestedTestBean[2];
         beans[0] = new NestedTestBean("Name 1");
         beans[1] = new NestedTestBean("Name 2");
+        beans[1].setInt(3);
     }
 
     public NestedTestBean[] getBeans(){
@@ -161,8 +162,8 @@ public class TestBean {
         return map;
     }
 
-    public void setMap(HashMap map){
-        this.map = map;
+    public void setMap(Map map){
+        this.map = (HashMap)map;
     }
 
     /**

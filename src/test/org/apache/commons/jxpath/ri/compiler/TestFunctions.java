@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.3 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.3 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2002/10/20 03:48:22 $
  *
  * ====================================================================
@@ -59,99 +59,91 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+package org.apache.commons.jxpath.ri.compiler;
 
-package org.apache.commons.jxpath.ri.model.dom;
+import java.util.Collection;
+import java.util.Map;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
-import org.apache.commons.jxpath.xml.DocumentContainer;
-
-import org.w3c.dom.*;
+import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.Pointer;
 
 /**
- * Tests JXPath with DOM
- *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
  */
+public class TestFunctions {
 
-public class DOMModelTest extends XMLModelTestCase
-{
+    private int foo;
+    private String bar;
+
+    public TestFunctions(){
+    }
+
+    public TestFunctions(int foo, String bar){
+        this.foo = foo;
+        this.bar = bar;
+    }
+
+    public TestFunctions(ExpressionContext context, String bar){
+        this.foo = ((Number)context.getContextNodePointer().getValue()).
+        		intValue();
+        this.bar = bar;
+    }
+
+    public int getFoo(){
+        return foo;
+    }
+
+    public String getBar(){
+        return bar;
+    }
+
+    public void doit(){
+    }
+
+    public TestFunctions setFooAndBar(int foo, String bar){
+        this.foo = foo;
+        this.bar = bar;
+        return this;
+    }
+
+    public static TestFunctions build(int foo, String bar){
+        return new TestFunctions(foo, bar);
+    }
+
+    public String toString(){
+        return "foo=" + foo + "; bar=" + bar;
+    }
+
+    public static String path(ExpressionContext context){
+        return context.getContextNodePointer().asPath();
+    }
+
+    public String instancePath(ExpressionContext context){
+        return context.getContextNodePointer().asPath();
+    }
+
+    public String pathWithSuffix(ExpressionContext context, String suffix){
+        return context.getContextNodePointer().asPath() + suffix;
+    }
+
+    public String className(ExpressionContext context, ExpressionContext child){
+        return context.getContextNodePointer().asPath();
+    }
+
     /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
+     * Returns true if the current node in the current context is a map
      */
-    public DOMModelTest(String name){
-        super(name);
+    public static boolean isMap(ExpressionContext context){
+        Pointer ptr = context.getContextNodePointer();
+        return ptr == null ? false : (ptr.getValue() instanceof Map);
     }
 
     /**
-     * Return the tests included in this test suite.
+     * Returns the number of nodes in the context that is passed as
+     * the first argument.
      */
-    public static Test suite(){
-        return (new TestSuite(DOMModelTest.class));
+    public static int count(ExpressionContext context, Collection col){
+        return col.size();
     }
-
-    protected String getModel(){
-        return DocumentContainer.MODEL_DOM;
-    }
-    
-    protected AbstractFactory getAbstractFactory(){
-        return new TestDOMFactory();
-    }
-    
-    protected String getXMLSignature(Object node, 
-    		boolean elements, boolean attributes, boolean text, boolean pi){
-    	StringBuffer buffer = new StringBuffer();
-    	appendXMLSignature(buffer, node, elements, attributes, text, pi);
-    	return buffer.toString();
-    }
-    
-    private void appendXMLSignature(StringBuffer buffer, Object object, 
-    		boolean elements, boolean attributes, boolean text, boolean pi){
-    	Node node = (Node)object;
-    	int type = node.getNodeType();
-    	switch (type){
-    		case Node.DOCUMENT_NODE:
-    			buffer.append("<D>");
-    			appendXMLSignature(buffer, node.getChildNodes(), 
-    					elements, attributes, text, pi);
-    			buffer.append("</D");
-    			break;
-    			
-    		case Node.ELEMENT_NODE:
-    			String tag = elements ? ((Element)node).getTagName() : "E";
-				buffer.append("<");
-				buffer.append(tag);
-				buffer.append(">");
-    			appendXMLSignature(buffer, node.getChildNodes(), 
-    					elements, attributes, text, pi);
-				buffer.append("</");
-				buffer.append(tag);
-				buffer.append(">");    				
-				break;
-				
-    		case Node.TEXT_NODE:
-    		case Node.CDATA_SECTION_NODE:
-    			if (text){
-    				String string = node.getNodeValue();
-    				string = string.replace('\n', '=');
-    				buffer.append(string);
-    			}
-				break;
-    	}
-	}
-	
-    private void appendXMLSignature(StringBuffer buffer, NodeList children, 
-    		boolean elements, boolean attributes, boolean text, boolean pi)
-    {
-    	for (int i = 0; i < children.getLength(); i++){
-			appendXMLSignature(buffer, children.item(i), 
-					elements, attributes, text, pi);
-    	}
-	}
 }

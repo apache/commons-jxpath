@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.1 2002/10/13 03:01:03 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/13 03:01:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.2 2002/10/20 03:48:22 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/10/20 03:48:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,26 +62,13 @@
 
 package org.apache.commons.jxpath.ri.model;
 
-import java.lang.reflect.InvocationTargetException;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.w3c.dom.*;
-import java.util.*;
-import java.lang.reflect.*;
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.util.*;
-import org.apache.commons.jxpath.ri.*;
-import org.apache.commons.jxpath.ri.parser.*;
-import org.apache.commons.jxpath.ri.model.*;
-import org.apache.commons.jxpath.ri.model.beans.*;
-import org.apache.commons.jxpath.ri.axes.*;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.compiler.Expression;
-import org.apache.commons.jxpath.xml.*;
-import java.beans.*;
+import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.IdentityManager;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.Variables;
+import org.apache.commons.jxpath.xml.DocumentContainer;
 
 /**
  * Abstract superclass for pure XPath 1.0.  Subclasses
@@ -89,110 +76,131 @@ import java.beans.*;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/13 03:01:03 $
+ * @version $Revision: 1.2 $ $Date: 2002/10/20 03:48:22 $
  */
 
-public abstract class XMLModelTestCase extends TestCase
+public abstract class XMLModelTestCase extends JXPathTestCase
 {
-    private boolean enabled = true;
+    private JXPathContext context;
 
     /**
      * Construct a new instance of this test case.
      *
      * @param name Name of the test case
      */
-    public XMLModelTestCase(String name)
-    {
+    public XMLModelTestCase(String name){
         super(name);
     }
 
+    public void setUp(){
+        if (context == null){
+            DocumentContainer docCtr = createDocumentContainer();
+            context = createContext();
+            Variables vars = context.getVariables();
+            vars.declareVariable("document", docCtr.getValue());
+            vars.declareVariable("container", docCtr);
+        }
+    }
 
     protected abstract String getModel();
 
     protected DocumentContainer createDocumentContainer(){
         return new DocumentContainer(
-                getClass().getClassLoader().
-                        getResource("org/apache/commons/jxpath/Vendor.xml"),
+                JXPathTestCase.class.getResource("Vendor.xml"),
                 getModel());
     }
+    
+    protected abstract AbstractFactory getAbstractFactory();
 
     protected JXPathContext createContext(){
         JXPathContext context =
                 JXPathContext.newContext(createDocumentContainer());
-        context.setFactory(new TestFactory());
+        context.setFactory(getAbstractFactory());
         return context;
     }
 
+	/**
+	 * An XML signature is used to determine if we have the right result
+	 * after a modification of XML by JXPath.  It is basically a piece
+	 * of simplified XML.
+	 */    
+    protected abstract String getXMLSignature(Object node, 
+    		boolean elements, boolean attributes, boolean text, boolean pi);
+
+	protected void assertXMLSignature(JXPathContext context,
+			String path, String signature,
+    		boolean elements, boolean attributes, boolean text, boolean pi)
+	{
+		Object node = context.getPointer(path).getNode();
+		String sig = getXMLSignature(node, elements, attributes, text, pi);
+		assertEquals("XML Signature mismatch: ", signature, sig);
+	}
+	
     // ------------------------------------------------ Individual Test Methods
 
     public void testDocumentOrder(){
-        if (!enabled){
-            return;
-        }
-
-        JXPathContext context = createContext();
-        testDocumentOrder(context, "vendor/location", "vendor/location/address/street", -1);
-        testDocumentOrder(context, "vendor/location[@id = '100']", "vendor/location[@id = '101']", -1);
-        testDocumentOrder(context, "vendor//price:amount", "vendor/location", 1);
+        assertDocumentOrder(context, 
+                "vendor/location", 
+                "vendor/location/address/street", 
+                -1);
+                
+        assertDocumentOrder(context, 
+                "vendor/location[@id = '100']", 
+                "vendor/location[@id = '101']", 
+                -1);
+                
+        assertDocumentOrder(context, 
+                "vendor//price:amount", 
+                "vendor/location", 
+                1);
     }
 
-    private void testDocumentOrder(JXPathContext context, String path1, String path2, int expected){
-        NodePointer np1 = (NodePointer)context.getPointer(path1);
-        NodePointer np2 = (NodePointer)context.getPointer(path2);
-        try {
-            int res = np1.compareTo(np2);
-            if (res < 0){
-                res = -1;
-            }
-            else if (res > 0){
-                res = 1;
-            }
-            assertEquals("Comparing paths '" + path1 + "' and '" + path2 + "'", expected, res);
-        }
-        catch (Exception ex){
-            System.err.println("Comparing paths '" + path1 + "' and '" + path2 + "'");
-            ex.printStackTrace();
-        }
-    }
+	public void testSetValue(){
+		assertXPathSetValue(context,
+				"vendor/location[@id = '100']",
+				"New Text");
+		
+		assertXMLSignature(context,
+				"vendor/location[@id = '100']",
+				"<E>New Text</E>",
+				false, false, true, false);
+				
+		assertXPathSetValue(context,
+				"vendor/location[@id = '101']",
+				"Replacement Text");
 
+		assertXMLSignature(context,
+				"vendor/location[@id = '101']",
+				"<E>Replacement Text</E>",
+				false, false, true, false);				
+	}
+	
     /**
      * Test JXPathContext.createPath() with various arguments
      */
     public void testCreatePath(){
-        if (!enabled){
-            return;
-        }
-
-        JXPathContext context = createContext();
-
         // Create a DOM element
-        testCreatePath(context, "/vendor[1]/location[3]", "");
+        assertXPathCreatePath(context, 
+                "/vendor[1]/location[3]", 
+                "",
+                "/vendor[1]/location[3]");
 
         // Create a DOM element with contents
-        testCreatePath(context, "/vendor[1]/location[3]/address/street", "",
+        assertXPathCreatePath(context, 
+                "/vendor[1]/location[3]/address/street", 
+                "",
                 "/vendor[1]/location[3]/address[1]/street[1]");
 
         // Create a DOM attribute
-        testCreatePath(context, "/vendor[1]/location[2]/@manager", "");
-        testCreatePath(context, "/vendor[1]/location[1]/@name", "local");
-    }
+        assertXPathCreatePath(context, 
+                "/vendor[1]/location[2]/@manager", 
+                "",
+                "/vendor[1]/location[2]/@manager");
 
-    private void testCreatePath(JXPathContext context, String path, Object value){
-        testCreatePath(context, path, value, path);
-    }
-
-    private void testCreatePath(JXPathContext context, String path,
-                Object value, String expectedPath){
-        Pointer ptr = null;
-        try {
-            ptr = context.createPath(path);
-        }
-        catch(JXPathException ex){
-            ex.getException().printStackTrace();
-        }
-
-        assertEquals("Pointer <" + path + ">", expectedPath, ptr.asPath());
-        assertEquals("Created <" + path + ">", value, ptr.getValue());
+        assertXPathCreatePath(context, 
+                "/vendor[1]/location[1]/@name", 
+                "local",
+                "/vendor[1]/location[1]/@name");
     }
 
 
@@ -200,40 +208,39 @@ public abstract class XMLModelTestCase extends TestCase
      * Test JXPath.createPathAndSetValue() with various arguments
      */
     public void testCreatePathAndSetValue(){
-        if (!enabled){
-            return;
-        }
-        JXPathContext context = createContext();
-
         // Create a XML element
-        testCreatePathAndSetValue(context, "vendor/location[3]", "");
+        assertXPathCreatePathAndSetValue(context, 
+                "vendor/location[3]", 
+                "",
+                "/vendor[1]/location[3]");
 
         // Create a DOM element with contents
-        testCreatePathAndSetValue(context, "vendor/location[3]/address/street", "Lemon Circle");
+        assertXPathCreatePathAndSetValue(context, 
+                "vendor/location[3]/address/street", 
+                "Lemon Circle",
+                "/vendor[1]/location[3]/address[1]/street[1]");
 
         // Create an attribute
-        testCreatePathAndSetValue(context, "vendor/location[2]/@manager", "John Doe");
-        testCreatePathAndSetValue(context, "vendor/location[1]/@manager", "John Doe");
+        assertXPathCreatePathAndSetValue(context, 
+                "vendor/location[2]/@manager", 
+                "John Doe",
+                "/vendor[1]/location[2]/@manager");
+                
+        assertXPathCreatePathAndSetValue(context,
+                "vendor/location[1]/@manager", 
+                "John Doe",
+                "/vendor[1]/location[1]/@manager");
 
-        testCreatePathAndSetValue(context, "vendor/product/name/attribute::price:language", "English");
-    }
-
-    private void testCreatePathAndSetValue(JXPathContext context, String path, Object value){
-        Pointer ptr = context.createPathAndSetValue(path, value);
-        assertTrue("Pointer <" + path + ">", ptr != null);
-        assertEquals("Created <" + path + ">", value, context.getValue(path));
-        assertEquals("Pointer value <" + path + ">", value, ptr.getValue());
+        assertXPathCreatePathAndSetValue(context, 
+                "vendor/product/name/attribute::price:language", 
+                "English",
+                "/vendor[1]/product[1]/name[1]/@price:language");
     }
 
     /**
      * Test JXPathContext.removePath() with various arguments
      */
     public void testRemovePath(){
-        if (!enabled){
-            return;
-        }
-        JXPathContext context = createContext();
-
         // Remove XML nodes
         context.removePath("vendor/location[@id = '101']//street/text()");
         assertEquals("Remove DOM text", "",
@@ -249,10 +256,6 @@ public abstract class XMLModelTestCase extends TestCase
     }
 
     public void testID(){
-        if (!enabled){
-            return;
-        }
-        JXPathContext context = createContext();
         context.setIdentityManager(new IdentityManager(){
             public Pointer getPointerByID(JXPathContext context, String id){
                 NodePointer ptr = (NodePointer)context.getPointer("/");
@@ -260,228 +263,400 @@ public abstract class XMLModelTestCase extends TestCase
                 return ptr.getPointerByID(context, id);
             }
         });
-        context.setKeyManager(new KeyManager(){
-            public Pointer getPointerByKey(JXPathContext context,
-                                            String key, String value){
-                return NodePointer.newNodePointer(null, "42", null);
-            }
-        });
-        assertEquals("Test ID", "Tangerine Drive",
-            context.getValue("id(101)//street"));
-        assertEquals("Test ID Path", "id('101')/address[1]/street[1]",
-            context.getPointer("id(101)//street").asPath());
 
-        context.setLenient(true);
-        assertEquals("Test ID Path Null", "id(105)/address/street",
-            context.getPointer("id(105)/address/street").asPath());
+        assertXPathValueAndPointer(context,
+                "id(101)//street",
+                "Tangerine Drive",
+                "id('101')/address[1]/street[1]");
+
+        assertXPathPointerLenient(context,
+                "id(105)/address/street",
+                "id(105)/address/street");
     }
 
-    public void testModel() throws Exception {
-        if (!enabled){
-            return;
-        }
+    public void testAxisChild() {
+        assertXPathValue(context,
+                "vendor/location/address/street",
+                "Orchard Road");
 
-        DocumentContainer docCtr = createDocumentContainer();
-        JXPathContext context = createContext();
-        context.getVariables().declareVariable("document", docCtr.getValue());
-        context.getVariables().declareVariable("container", docCtr);
-        testXPaths(context, dom_tests, false);
+        // child:: - first child does not match, need to search
+        assertXPathValue(context,
+                "vendor/location/address/city",
+                "Fruit Market");
+        // local-name(qualified)
+        assertXPathValue(context,
+                "local-name(vendor/product/price:amount)",
+                "amount");
+
+        // local-name(non-qualified)
+        assertXPathValue(context,
+                "local-name(vendor/location)",
+                "location");
+
+        // name (qualified)
+        assertXPathValue(context,
+                "name(vendor/product/price:amount)",
+                "priceNS:amount");
+
+        // name (non-qualified)
+        assertXPathValue(context,
+                "name(vendor/location)",
+                "location");
+
+        // namespace-uri (qualified)
+        assertXPathValue(context,
+                "namespace-uri(vendor/product/price:amount)",
+                "priceNS");
+
+        // default namespace does not affect search
+        assertXPathValue(context,
+                "vendor/product/prix",
+                "934.99");
+
+        // child:: with a wildcard
+        assertXPathValue(context,
+                "count(vendor/product/price:*)",
+                new Double(2));
+
+        // child:: with a namespace and wildcard
+        assertXPathValue(context,
+                "count(vendor/product/value:*)",
+                new Double(2));
+
+        // child:: with the default namespace
+        assertXPathValue(context,
+                "count(vendor/product/*)",
+                new Double(2));
+
+        // child:: with a qualified name
+        assertXPathValue(context,
+                "vendor/product/price:amount",
+                "45.95");
     }
 
-    private void testXPaths(JXPathContext ctx, XP xpath_tests[], boolean ignorePath) throws Exception{
-        Exception exception = null;
-        for  (int i=0; i < xpath_tests.length; i++) {
-            try {
-                Object actual;
-                // System.err.println("XPATH: " + xpath_tests[i].xpath);
-                if (xpath_tests[i].path){
-                    if (ignorePath){
-                        actual = xpath_tests[i].expected;
-                    }
-                    else {
-                        if (xpath_tests[i].eval){
-                            Iterator it = ctx.iteratePointers(xpath_tests[i].xpath);
-                            List paths = new ArrayList();
-                            while (it.hasNext()){
-                                paths.add(((Pointer)it.next()).asPath());
-                            }
-                            actual = paths;
-                        }
-                        else {
-                            ctx.setLenient(xpath_tests[i].lenient);
-                            actual = ctx.getPointer(xpath_tests[i].xpath).asPath();
-                        }
-                    }
-                }
-                else {
-                    if (xpath_tests[i].eval){
-                        ArrayList list = new ArrayList();
-                        Iterator it = ctx.iterate(xpath_tests[i].xpath);
-                        while (it.hasNext()){
-                            list.add(it.next());
-                        }
-                        actual = list;
-                    }
-                    else {
-                        ctx.setLenient(xpath_tests[i].lenient);
-                        actual = ctx.getValue(xpath_tests[i].xpath);
-                        ctx.setLenient(false);
-                    }
-                }
-                assertEquals("Evaluating <" + xpath_tests[i].xpath + ">", xpath_tests[i].expected, actual);
-            }
-            catch (Exception ex){
-                System.err.println("Exception during <" + xpath_tests[i].xpath + ">");
-                ex.printStackTrace();
-                exception = ex;
-            }
-            if (exception != null){
-                throw exception;
-            }
-        }
-
-        // Make sure that location paths are properly constructed
-        for (int i=0; i < xpath_tests.length; i++) {
-            try {
-                if (!xpath_tests[i].path && !xpath_tests[i].eval){
-                    Pointer ptr = ctx.getPointer(xpath_tests[i].xpath);
-                    Pointer test = ctx.getPointer(ptr.asPath());
-                    assertEquals("Testing pointer for <" + xpath_tests[i].xpath + ">", ptr.asPath(), test.asPath());
-                }
-            }
-            catch (Exception ex){
-                System.err.println("Exception during pointer test <" + xpath_tests[i].xpath + ">");
-                ex.printStackTrace();
-            }
-        }
+    public void testAxisChildIndexPredicate() {
+        assertXPathValue(context,
+                "vendor/location[2]/address/street",
+                "Tangerine Drive");
     }
 
-    private static class XP {
-        public String xpath;
-        public Object expected;
-        public boolean eval;
-        public boolean path;
-        public boolean lenient;
+    public void testAxisDescendant() {
+        // descendant::
+        assertXPathValue(context,
+                "//street",
+                "Orchard Road");
 
-        public XP(String xpath,  Object expected, boolean eval, boolean path, boolean lenient){
-            this.xpath = xpath;
-            this.expected = expected;
-            this.eval = eval;
-            this.path = path;
-            this.lenient = lenient;
-        }
+        // descendent:: with a namespace and wildcard
+        assertXPathValue(context,
+                "count(//price:*)",
+                new Double(2));
     }
 
-    private static XP test(String xpath, Object expected){
-        return new XP(xpath, expected, false, false, false);
+    public void testAxisParent() {
+        // parent::
+        assertXPathPointer(context,
+                "//street/..",
+                "/vendor[1]/location[1]/address[1]");
+
+        // parent:: (note reverse document order)
+        assertXPathPointerIterator(context,
+                "//street/..",
+                list("/vendor[1]/location[2]/address[1]",
+                     "/vendor[1]/location[1]/address[1]"));
+
+        // parent:: with a namespace and wildcard
+        assertXPathValue(context,
+                "vendor/product/price:sale/saleEnds/parent::price:*" +
+                        "/saleEnds",
+                "never");
     }
 
-    private static XP testLenient(String xpath, Object expected){
-        return new XP(xpath, expected, false, false, true);
+    public void testAxisFollowingSibling() {
+        // following-sibling::
+        assertXPathValue(context,
+                "vendor/location[.//employeeCount = 10]/" +
+                        "following-sibling::location//street",
+                "Tangerine Drive");
+
+        // following-sibling:: produces the correct pointer
+        assertXPathPointer(context,
+                "vendor/location[.//employeeCount = 10]/" +
+                        "following-sibling::location//street",
+                "/vendor[1]/location[2]/address[1]/street[1]");
     }
 
-    private static XP testEval(String xpath, Object expected){
-        return new XP(xpath, expected, true, false, false);
+    public void testAxisPrecedingSibling() {
+        // preceding-sibling:: produces the correct pointer
+        assertXPathPointer(context,
+                "//location[2]/preceding-sibling::location//street",
+                "/vendor[1]/location[1]/address[1]/street[1]");
     }
 
-    private static XP testPath(String xpath, Object expected){
-        return new XP(xpath, expected, false, true, true);
+    public void testAxisAttribute() {
+        // attribute::
+        assertXPathValue(context,
+                "vendor/location/@id",
+                "100");
+
+        // attribute:: produces the correct pointer
+        assertXPathPointer(context,
+                "vendor/location/@id",
+                "/vendor[1]/location[1]/@id");
+
+        // iterate over attributes
+        assertXPathValueIterator(context,
+                "vendor/location/@id",
+                list("100", "101"));
+
+        // Using different prefixes for the same namespace
+        assertXPathValue(context,
+                "vendor/product/price:amount/@price:discount",
+                "10%");
+        assertXPathValue(context,
+                "vendor/product/value:amount/@value:discount",
+                "10%");
+
+        // namespace uri for an attribute
+        assertXPathValue(context,
+                "namespace-uri(vendor/product/price:amount/@price:discount)",
+                "priceNS");
+
+        // local name of an attribute
+        assertXPathValue(context,
+                "local-name(vendor/product/price:amount/@price:discount)",
+                "discount");
+
+        // name for an attribute
+        assertXPathValue(context,
+                "name(vendor/product/price:amount/@price:discount)",
+                "priceNS:discount");
+
+        // attribute:: with the default namespace
+        assertXPathValue(context,
+                "vendor/product/price:amount/@discount",
+                "20%");
+
+        // namespace uri of an attribute with the default namespace
+        assertXPathValue(context,
+                "namespace-uri(vendor/product/price:amount/@discount)",
+                "");
+
+        // local name of an attribute with the default namespace
+        assertXPathValue(context,
+                "local-name(vendor/product/price:amount/@discount)",
+                "discount");
+
+        // name of an attribute with the default namespace
+        assertXPathValue(context,
+                "name(vendor/product/price:amount/@discount)",
+                "discount");
+
+        // attribute:: with a namespace and wildcard
+        assertXPathValueIterator(context,
+                "vendor/product/price:amount/@price:*",
+                list("10%"));
+
+        // attribute:: with a wildcard
+        assertXPathValueIterator(context,
+                "vendor/location[1]/@*",
+                set("100", "", "local"));
+
+        // attribute:: with default namespace and wildcard
+        assertXPathValueIterator(context,
+                "vendor/product/price:amount/@*",
+                list("20%"));
+
+
+        // Empty attribute
+        assertXPathValue(context,
+                "vendor/location/@manager",
+                "");
+
+        // Missing attribute
+        assertXPathValueLenient(context,
+                "vendor/location/@missing",
+                null);
+
+        // Using attribute in a predicate
+        assertXPathValue(context,
+                "vendor/location[@id='101']//street",
+                "Tangerine Drive");
     }
 
-    private static XP testEvalPath(String xpath, Object expected){
-        return new XP(xpath, expected, true, true, false);
+    public void testAxisNamespace() {
+        // namespace::
+        assertXPathValue(context,
+                "vendor/product/prix/namespace::price",
+                "priceNS");
+
+        // namespace:: pointer
+        assertXPathPointer(context,
+                "vendor/product/prix/namespace::price",
+                "/vendor[1]/product[1]/prix[1]/namespace::price");
+
+        // namespace::*
+        assertXPathValue(context,
+                "count(vendor/product/namespace::*)",
+                new Double(3));
+
+        // name of namespace
+        assertXPathValue(context,
+                "name(vendor/product/prix/namespace::price)",
+                "priceNS:price");
+
+        // local name of namespace
+        assertXPathValue(context,
+                "local-name(vendor/product/prix/namespace::price)",
+                "price");
     }
 
-    private static List list(Object o1){
-        List list = new ArrayList();
-        list.add(o1);
-        return list;
+    public void testAxisAncestor() {
+        // ancestor::
+        assertXPathValue(context,
+                "vendor/product/price:sale/saleEnds/" +
+                        "ancestor::price:sale/saleEnds",
+                "never");
+
+        // ancestor:: with a wildcard
+        assertXPathValue(context,
+                "vendor/product/price:sale/saleEnds/ancestor::price:*" +
+                        "/saleEnds",
+                "never");
     }
 
-    private static List list(Object o1, Object o2){
-        List list = new ArrayList();
-        list.add(o1);
-        list.add(o2);
-        return list;
+    public void testAxisAncestorOrSelf() {
+        // ancestor-or-self::
+        assertXPathValue(context,
+                "vendor/product/price:sale/" +
+                        "ancestor-or-self::price:sale/saleEnds",
+                "never");
     }
 
+    public void testAxisFollowing() {
+        assertXPathValueIterator(context,
+                "vendor/contact/following::location//street",
+                list("Orchard Road", "Tangerine Drive"));
 
-    static final XP[] dom_tests = new XP[]{
-        test("vendor/location/address/street", "Orchard Road"),
-        test("vendor/location[2]/address/street", "Tangerine Drive"),
-        test("vendor/location/address/city", "Fruit Market"),
-        test("//street", "Orchard Road"),
-        test("local-name(//street/..)", "address"),
-        test("number(vendor/location/employeeCount)", new Double(10)),
-        test("vendor/location/employeeCount + 1", new Double(11)),
-        test("vendor/location/employeeCount and true()", Boolean.TRUE),
-        test("vendor/location[.//employeeCount = 10]/following-sibling::location//street", "Tangerine Drive"),
-        testPath("vendor/location[.//employeeCount = 10]/following-sibling::location//street",
-                "/vendor[1]/location[2]/address[1]/street[1]"),
-        testPath("//location[2]/preceding-sibling::location//street",
-                "/vendor[1]/location[1]/address[1]/street[1]"),
-        test("vendor/location/@id", "100"),
-        testPath("vendor/location/@id", "/vendor[1]/location[1]/@id"),
-        testEval("vendor/location/@id", list("100", "101")),
-        test("vendor/product/price:amount", "45.95"),
-        test("namespace-uri(vendor/product/price:amount)", "priceNS"),
-        test("local-name(vendor/product/price:amount)", "amount"),
-        test("name(vendor/product/price:amount)", "priceNS:amount"),
-        test("vendor/product/prix", "934.99"),
-        test("vendor/product/prix/namespace::price", "priceNS"),
-        testPath("vendor/product/prix/namespace::price", "/vendor[1]/product[1]/prix[1]/namespace::price"),
-        test("count(vendor/product/namespace::*)", new Double(3)),
-        test("name(vendor/product/prix/namespace::price)", "priceNS:price"),
-        test("local-name(vendor/product/prix/namespace::price)", "price"),
-        test("vendor/product/price:amount/@price:discount", "10%"),
-        test("vendor/product/value:amount/@value:discount", "10%"),
-        test("namespace-uri(vendor/product/price:amount/@price:discount)", "priceNS"),
-        test("local-name(vendor/product/price:amount/@price:discount)", "discount"),
-        test("name(vendor/product/price:amount/@price:discount)", "priceNS:discount"),
-        test("vendor/product/price:amount/@discount", "20%"),
-        test("namespace-uri(vendor/product/price:amount/@discount)", ""),
-        test("local-name(vendor/product/price:amount/@discount)", "discount"),
-        test("name(vendor/product/price:amount/@discount)", "discount"),
-        test("vendor/product/price:sale/saleEnds/ancestor::price:sale/saleEnds", "never"),
-        test("vendor/product/price:sale/ancestor-or-self::price:sale/saleEnds", "never"),
-        test("vendor/product/price:sale/saleEnds/ancestor::price:*" + "/saleEnds", "never"),
-        test("count(vendor/product/price:*)", new Double(2)),
-        test("count(vendor/product/value:*)", new Double(2)),
-        test("count(vendor/product/*)", new Double(2)),
-        testEval("vendor/product/price:amount/@price:*", list("10%")),
-        testEval("vendor/product/price:amount/@*", list("20%")),
-        test("count(//price:*)", new Double(2)),
-        test("vendor/product/price:sale/saleEnds/parent::price:*" + "/saleEnds", "never"),
-        test("//location/following::price:sale/saleEnds", "never"),
-        test("//price:sale/self::price:sale/saleEnds", "never"),
-        testLenient("//price:sale/self::x/saleEnds", null),
+        // following:: with a namespace
+        assertXPathValue(context,
+                "//location/following::price:sale/saleEnds",
+                "never");
+    }
 
-        test("//product/comment()", "We are not buying this product, ever"),
-        test("//product/text()[. != '']", "We love this product."),
-        testPath("//product/text()", "/vendor[1]/product[1]/text()[1]"),
-        test("//product/processing-instruction()", "do not show anybody"),
-        test("//product/processing-instruction('report')", "average only"),
-        testPath("//product/processing-instruction('report')",
-            "/vendor[1]/product[1]/processing-instruction('report')[1]"),
-        test("name(//product/processing-instruction()[1])", "security"),
+    public void testAxisSelf() {
+        // self:: with a namespace
+        assertXPathValue(context,
+                "//price:sale/self::price:sale/saleEnds",
+                "never");
 
-        test("//product/prix/@xml:lang", "fr"),
-        test("//product/prix[lang('fr')]", "934.99"),
-        test("//product/price:sale[lang('en')]/saleEnds", "never"),
-        test("vendor/location/@manager", ""),
-        testLenient("vendor/location/@missing", null),
-        test("count(vendor/location[1]/@*)", new Double(3)),
-        test("vendor/location[@id='101']//street", "Tangerine Drive"),
+        // self:: with an unmatching name
+        assertXPathValueLenient(context,
+                "//price:sale/self::x/saleEnds",
+                null);
+    }
 
-        test("$document/vendor/location[1]//street", "Orchard Road"),
-        testPath("$document/vendor/location[1]//street",
-            "$document/vendor[1]/location[1]/address[1]/street[1]"),
-        test("$document/vendor//street", "Orchard Road"),
-        test("$container/vendor//street", "Orchard Road"),
-        test("$container//street", "Orchard Road"),
-        testPath("$container//street", "$container/vendor[1]/location[1]/address[1]/street[1]"),
+    public void testNodeTypeComment() {
+        // comment()
+        assertXPathValue(context,
+                "//product/comment()",
+                "We are not buying this product, ever");
+    }
 
-        testEval("vendor/contact/following::location//street",
-            list("Orchard Road", "Tangerine Drive")),
-   };
+    public void testNodeTypeText() {
+        // text()
+        assertXPathValue(context,
+                "//product/text()[. != '']",
+                "We love this product.");
+
+        // text() pointer
+        assertXPathPointer(context,
+                "//product/text()",
+                "/vendor[1]/product[1]/text()[1]");
+
+    }
+
+    public void testNodeTypeProcessingInstruction() {
+        // processing-instruction() without an argument
+        assertXPathValue(context,
+                "//product/processing-instruction()",
+                "do not show anybody");
+
+        // processing-instruction() with an argument
+        assertXPathValue(context,
+                "//product/processing-instruction('report')",
+                "average only");
+
+        // processing-instruction() pointer without an argument
+        assertXPathPointer(context,
+                "//product/processing-instruction('report')",
+                "/vendor[1]/product[1]/processing-instruction('report')[1]");
+
+        // processing-instruction name
+        assertXPathValue(context,
+                "name(//product/processing-instruction()[1])",
+                "security");
+    }
+
+    public void testLang() {
+        // xml:lang built-in attribute
+        assertXPathValue(context,
+                "//product/prix/@xml:lang",
+                "fr");
+
+        // lang() used the built-in xml:lang attribute
+        assertXPathValue(context,
+                "//product/prix[lang('fr')]",
+                "934.99");
+
+        // Default language
+        assertXPathValue(context,
+                "//product/price:sale[lang('en')]/saleEnds",
+                "never");
+    }
+
+    public void testDocument() {
+        assertXPathValue(context,
+                "$document/vendor/location[1]//street",
+                "Orchard Road");
+
+        assertXPathPointer(context,
+                "$document/vendor/location[1]//street",
+                "$document/vendor[1]/location[1]/address[1]/street[1]");
+
+        assertXPathValue(context,
+                "$document/vendor//street",
+                "Orchard Road");
+
+    }
+
+    public void testContainer() {
+        assertXPathValue(context,
+                "$container/vendor//street",
+                "Orchard Road");
+
+        assertXPathValue(context,
+                "$container//street",
+                "Orchard Road");
+
+        assertXPathPointer(context,
+                "$container//street",
+                "$container/vendor[1]/location[1]/address[1]/street[1]");
+
+        // Conversion to number
+        assertXPathValue(context,
+                "number(vendor/location/employeeCount)",
+                new Double(10));
+    }
+
+    public void testTypeConversions() {
+        // Implicit conversion to number
+        assertXPathValue(context,
+                "vendor/location/employeeCount + 1",
+                new Double(11));
+
+        // Implicit conversion to boolean
+        assertXPathValue(context,
+                "vendor/location/employeeCount and true()",
+                Boolean.TRUE);
+    }
 }

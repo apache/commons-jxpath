@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFunctions.java,v 1.2 2002/04/10 03:40:21 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/BeanModelTest.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/10/20 03:48:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,86 +59,67 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath;
 
+package org.apache.commons.jxpath.ri.model.beans;
+
+import java.lang.reflect.InvocationTargetException;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.w3c.dom.*;
 import java.util.*;
+import java.lang.reflect.*;
+import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
+import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.util.*;
+import org.apache.commons.jxpath.ri.*;
+import org.apache.commons.jxpath.ri.parser.*;
+import org.apache.commons.jxpath.ri.model.*;
+import org.apache.commons.jxpath.ri.model.beans.*;
+import org.apache.commons.jxpath.ri.axes.*;
+import org.apache.commons.jxpath.ri.compiler.*;
+import org.apache.commons.jxpath.ri.compiler.Expression;
+import org.apache.commons.jxpath.xml.*;
+import java.beans.*;
 
 /**
+ * Tests JXPath with JavaBeans
+*
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:21 $
+ * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
  */
-public class TestFunctions {
 
-    private int foo;
-    private String bar;
+public class BeanModelTest extends BeanModelTestCase
+{
+    private static final boolean enabled = true;
 
-    public TestFunctions(){
-    }
-
-    public TestFunctions(int foo, String bar){
-        this.foo = foo;
-        this.bar = bar;
-    }
-
-    public TestFunctions(ExpressionContext context, String bar){
-        this.foo = ((Number)context.getContextNodePointer().getValue()).intValue();
-        this.bar = bar;
-    }
-
-    public int getFoo(){
-        return foo;
-    }
-
-    public String getBar(){
-        return bar;
-    }
-
-    public void doit(){
-    }
-
-    public TestFunctions setFooAndBar(int foo, String bar){
-        this.foo = foo;
-        this.bar = bar;
-        return this;
-    }
-
-    public static TestFunctions build(int foo, String bar){
-        return new TestFunctions(foo, bar);
-    }
-
-    public String toString(){
-        return "foo=" + foo + "; bar=" + bar;
-    }
-
-    public static String path(ExpressionContext context){
-        return context.getContextNodePointer().asPath();
-    }
-
-    public String instancePath(ExpressionContext context){
-        return context.getContextNodePointer().asPath();
-    }
-
-    public String pathWithSuffix(ExpressionContext context, String suffix){
-        return context.getContextNodePointer().asPath() + suffix;
-    }
-
-    public String className(ExpressionContext context, ExpressionContext child){
-        return context.getContextNodePointer().asPath();
+    /**
+     * Construct a new instance of this test case.
+     *
+     * @param name Name of the test case
+     */
+    public BeanModelTest(String name){
+        super(name);
     }
 
     /**
-     * Returns true if the current node in the current context is a map
+     * Return the tests included in this test suite.
      */
-    public static boolean isMap(ExpressionContext context){
-        Pointer ptr = context.getContextNodePointer();
-        return ptr == null ? false : (ptr.getValue() instanceof Map);
+    public static TestSuite suite(){
+//        return (new TestSuite(BeanModelTest.class));
+        TestSuite s = new TestSuite();
+        s.addTest(new BeanModelTest("testAxisParent"));
+        return s;
     }
 
-    /**
-     * Returns the number of nodes in the context that is passed as
-     * the first argument.
-     */
-    public static int count(ExpressionContext context, Collection col){
-        return col.size();
+    protected Object createContextBean(){
+        return new TestBean();
     }
+
+    protected AbstractFactory getAbstractFactory(){
+        return new TestBeanFactory();
+    }
+
 }

@@ -25,10 +25,12 @@
   </location>
 
   <location id="101">
+    Text before address.
     <address>
       <street>Tangerine Drive</street>
       <city>Fruit Market</city>
     </address>
+    Text after address.
   </location>
 
   <product xmlns="productNS" xmlns:price="priceNS" xmlns:value="priceNS">

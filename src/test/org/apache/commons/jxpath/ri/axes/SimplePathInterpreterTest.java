@@ -4,9 +4,7 @@ import junit.framework.TestCase;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.TestBeanWithNode;
 import org.apache.commons.jxpath.TestNull;
-import org.apache.commons.jxpath.TestFactory;
 import org.apache.commons.jxpath.NestedTestBean;
 import org.apache.commons.jxpath.ri.model.*;
 import org.apache.commons.jxpath.ri.model.beans.*;
@@ -52,7 +50,7 @@ public class SimplePathInterpreterTest extends TestCase {
         bean.getMap().put("Key6", new Object[0]);
         context = JXPathContext.newContext(null, bean);
         context.setLenient(true);
-        context.setFactory(new TestFactory());
+        context.setFactory(new TestBeanFactory());
     }
 
     public void test_doStep_noPredicates_propertyOwner(){
