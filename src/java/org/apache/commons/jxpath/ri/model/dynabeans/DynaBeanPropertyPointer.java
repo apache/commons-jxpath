@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPropertyPointer.java,v 1.7 2003/03/11 00:59:29 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/03/11 00:59:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPropertyPointer.java,v 1.8 2003/06/17 01:37:59 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/06/17 01:37:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a DynaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/03/11 00:59:29 $
+ * @version $Revision: 1.8 $ $Date: 2003/06/17 01:37:59 $
  */
 public class DynaBeanPropertyPointer extends PropertyPointer {
     private DynaBean dynaBean;
@@ -299,7 +299,6 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
             return TypeUtils.convert(value, type);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
             throw new JXPathException(
                 "Cannot convert value of class "
                     + (value == null ? "null" : value.getClass().getName())
