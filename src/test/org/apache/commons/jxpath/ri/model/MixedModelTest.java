@@ -529,4 +529,35 @@ public class MixedModelTest extends JXPathTestCase {
             new Integer(4),
             "/matrix[1]/.[1]");
     }
+    
+    /**
+     * Scott Heaberlin's test - collection of collections
+     */
+    public void testCollectionPointer() {
+        List list = new ArrayList();
+        Map map = new HashMap();
+        map.put("KeyOne", "SomeStringOne");
+        map.put("KeyTwo", "SomeStringTwo");
+        
+        Map map2 = new HashMap();
+        map2.put("KeyA", "StringA");
+        map2.put("KeyB", "StringB");
+        
+        map.put("KeyThree", map2);
+        list.add(map);
+        
+        List list2 = new ArrayList();
+        list2.add("foo");
+        list2.add(map);
+        list2.add(map);
+        list.add(list2);
+        
+        context = JXPathContext.newContext(list);
+        
+        assertEquals("SomeStringOne", context.getValue(".[1]/KeyOne"));
+        assertEquals("StringA", context.getValue(".[1]/KeyThree/KeyA"));
+        assertEquals(new Integer(3), context.getValue("size(.[1]/KeyThree)"));
+        assertEquals(new Double(6.0), context.getValue("count(.[1]/KeyThree/*)"));
+        assertEquals(new Double(3.0), context.getValue("count(.[1]/KeyThree/KeyA)"));
+    }
 }

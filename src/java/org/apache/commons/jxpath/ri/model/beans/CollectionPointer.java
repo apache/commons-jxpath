@@ -19,8 +19,11 @@ import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
+import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
+import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
@@ -196,10 +199,22 @@ public class CollectionPointer extends NodePointer {
         return getValuePointer().namespacePointer(namespace);
     }
 
-    public boolean testNode(NodeTest nodeTest) {
-//        if (index
-        /** @todo: infinite loop here */
-        return getValuePointer().testNode(nodeTest);
+    public boolean testNode(NodeTest test) {
+        if (index == WHOLE_COLLECTION) {
+            if (test == null) {
+                return true;
+            }
+            else if (test instanceof NodeNameTest) {
+                return false;
+            }
+            else if (test instanceof NodeTypeTest) {
+                if (((NodeTypeTest) test).getNodeType() == Compiler.NODE_TYPE_NODE) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return getValuePointer().testNode(test);
     }
 
     public int compareChildNodePointers(
