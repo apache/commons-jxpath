@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.5 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:05 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
@@ -206,7 +206,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     public void setValue(Object value){
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null){
-            throw new JXPathException("Cannot set property: " + asPath() + " - no such property");
+            throw new JXPathException("Cannot set property: " + asPath() +
+                    " - no such property");
         }
 
         if (index == WHOLE_COLLECTION){
@@ -222,8 +223,10 @@ public class BeanPropertyPointer extends PropertyPointer {
         if (getNodeValue() == null){
             AbstractFactory factory = getAbstractFactory(context);
             int inx = (index == WHOLE_COLLECTION ? 0 : index);
-            if (!factory.createObject(context, this, getBean(), getPropertyName(), inx)){
-                throw new JXPathException("Factory could not create an object for path: " + asPath());
+            if (!factory.createObject(context, this, getBean(),
+                    getPropertyName(), inx)){
+                throw new JXPathException(
+                    "Factory could not create an object for path: " + asPath());
             }
             baseValue = UNINITIALIZED;
             value = UNINITIALIZED;
@@ -231,19 +234,20 @@ public class BeanPropertyPointer extends PropertyPointer {
         return this;
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index){
-        return createPath(context).getValuePointer().createChild(context, name, index);
-//        NodePointer pointer = setIndexExpandingCollection(context, name, index);
-//        return pointer.createPath(context);
+    public NodePointer createChild(JXPathContext context,
+            QName name, int index){
+        return createPath(context).getValuePointer().
+                createChild(context, name, index);
     }
 
-    public void createChild(JXPathContext context, QName name, int index, Object value){
-        createPath(context).getValuePointer().createChild(context, name, index, value);
-//        NodePointer pointer = setIndexExpandingCollection(context, name, index);
-//        pointer.createPath(context, value);
+    public NodePointer createChild(JXPathContext context,
+            QName name, int index, Object value){
+        return createPath(context).getValuePointer().
+                createChild(context, name, index, value);
     }
 
-    private BeanPropertyPointer setIndexExpandingCollection(JXPathContext context, QName name, int index){
+    private BeanPropertyPointer setIndexExpandingCollection(
+            JXPathContext context, QName name, int index){
         // Ignore the name passed to us, use our own information
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null){
@@ -257,8 +261,10 @@ public class BeanPropertyPointer extends PropertyPointer {
 
         if (index >= getLength()){
             AbstractFactory factory = getAbstractFactory(context);
-            if (!factory.createObject(context, this, getBean(), getPropertyName(), index)){
-                throw new JXPathException("Factory could not create path " + asPath());
+            if (!factory.createObject(context, this, getBean(),
+                    getPropertyName(), index)){
+                throw new JXPathException("Factory could not create path " +
+                        asPath());
             }
         }
         BeanPropertyPointer clone = (BeanPropertyPointer)this.clone();
@@ -266,6 +272,20 @@ public class BeanPropertyPointer extends PropertyPointer {
         clone.value = UNINITIALIZED;
         clone.setIndex(index);
         return clone;
+    }
+
+    public void remove(){
+        if (index == WHOLE_COLLECTION){
+            setValue(null);
+        }
+        else if (isCollection()){
+            Object collection = ValueUtils.remove(getBaseValue(), index);
+            ValueUtils.setValue(getBean(), getPropertyDescriptor(), collection);
+        }
+        else if (index == 0){
+            index = WHOLE_COLLECTION;
+            setValue(null);
+        }
     }
 
     /**
@@ -282,16 +302,19 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Finds the property descriptor corresponding to the current property index.
+     * Finds the property descriptor corresponding to the current property
+     * index.
      */
     private PropertyDescriptor getPropertyDescriptor(){
         if (propertyDescriptor == null){
             int inx = getPropertyIndex();
             if (inx == UNSPECIFIED_PROPERTY){
-                propertyDescriptor = beanInfo.getPropertyDescriptor(propertyName);
+                propertyDescriptor = beanInfo.
+                        getPropertyDescriptor(propertyName);
             }
             else {
-                PropertyDescriptor propertyDescriptors[] = getPropertyDescriptors();
+                PropertyDescriptor propertyDescriptors[] =
+                        getPropertyDescriptors();
                 if (inx >=0 && inx < propertyDescriptors.length){
                     propertyDescriptor = propertyDescriptors[inx];
                 }
@@ -313,7 +336,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     private AbstractFactory getAbstractFactory(JXPathContext context){
         AbstractFactory factory = context.getFactory();
         if (factory == null){
-            throw new JXPathException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
+            throw new JXPathException("Factory is not set on the " +
+                "JXPathContext - cannot create path: " + asPath());
         }
         return factory;
     }

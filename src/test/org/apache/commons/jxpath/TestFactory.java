@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFactory.java,v 1.2 2002/04/21 21:52:34 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/21 21:52:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFactory.java,v 1.3 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import org.w3c.dom.*;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/21 21:52:34 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/08 23:05:05 $
  */
 public class TestFactory extends AbstractFactory {
 
@@ -81,6 +81,14 @@ public class TestFactory extends AbstractFactory {
     public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index){
         if (name.equals("testArray")){
             ((TestBean[])parent)[index] = new TestBean();
+            return true;
+        }
+        else if (name.equals("stringArray")){
+            ((String[])parent)[index] = "";
+            return true;
+        }
+        else if (name.equals("array")){
+            ((String[])parent)[index] = "";
             return true;
         }
         else if (name.equals("strings")){
@@ -103,6 +111,10 @@ public class TestFactory extends AbstractFactory {
         }
         else if (name.equals("map")){
             ((TestBean)parent).setMap(new HashMap());
+            return true;
+        }
+        else if (name.equals("TestKey1")){
+            ((Map)parent).put(name, "");
             return true;
         }
         else if (name.equals("TestKey2")){
@@ -132,30 +144,20 @@ public class TestFactory extends AbstractFactory {
     }
 
     private void addElement(Node parent, int index, String tag){
-        boolean repeat = true;
-        while(repeat){
-            Node child = parent.getFirstChild();
-            int count = 0;
-            while (child != null){
-                if (child.getNodeName().equals(tag)){
-                    if (count == index){
-                        repeat = false;
-                        break;
-                    }
-                    count++;
-                }
-                child = child.getNextSibling();
+        Node child = parent.getFirstChild();
+        int count = 0;
+        while (child != null){
+            if (child.getNodeName().equals(tag)){
+                count++;
             }
-            if (child != null){
-                child = child.getNextSibling();
-            }
+            child = child.getNextSibling();
+        }
+
+        // Keep inserting new elements until we have index + 1 of them
+        while (count <= index){
             Node newElement = parent.getOwnerDocument().createElement(tag);
-            if (child != null){
-                parent.insertBefore(newElement, child);
-            }
-            else {
-                parent.appendChild(newElement);
-            }
+            parent.appendChild(newElement);
+            count++;
         }
     }
 

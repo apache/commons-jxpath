@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.4 2002/04/26 03:28:36 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/26 03:28:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.5 2002/05/08 23:05:04 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 23:05:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:36 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:04 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
@@ -153,12 +153,14 @@ public class VariablePointer extends NodePointer {
         return 0;
     }
 
-    public void createPath(JXPathContext context, Object value){
+    public NodePointer createPath(JXPathContext context, Object value){
         if (actual){
             setValue(value);
-            return;
+            return this;
         }
-        createPath(context).setValue(value);
+        NodePointer ptr = createPath(context);
+        ptr.setValue(value);
+        return ptr;
     }
 
     public NodePointer createPath(JXPathContext context){
@@ -188,9 +190,12 @@ public class VariablePointer extends NodePointer {
 
     /**
      */
-    public void createChild(JXPathContext context, QName name, int index, Object value){
+    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
         Object collection = createCollection(context, index);
         ValueUtils.setValue(collection, index, value);
+        NodePointer cl = (NodePointer)clone();
+        cl.setIndex(index);
+        return cl;
     }
 
     private Object createCollection(JXPathContext context, int index){
@@ -214,6 +219,25 @@ public class VariablePointer extends NodePointer {
         }
 
         return collection;
+    }
+
+    public void remove(){
+        if (actual){
+            if (index == WHOLE_COLLECTION){
+                variables.undeclareVariable(name.toString());
+            }
+            else {
+                if (index < 0){
+                    throw new JXPathException("Index is less than 1: " + asPath());
+                }
+
+                Object collection = getBaseValue();
+                if (collection != null && index < getLength()){
+                    collection = ValueUtils.remove(collection, index);
+                    variables.declareVariable(name.toString(), collection);
+                }
+            }
+        }
     }
 
     protected void findVariables(JXPathContext context){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.5 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:05 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -243,11 +243,11 @@ public class DynamicPropertyPointer extends PropertyPointer {
         }
     }
 
-    public void createPath(JXPathContext context, Object value){
-        createChild(context, getName(), index, value);
+    public NodePointer createPath(JXPathContext context, Object value){
+        return createChild(context, getName(), index, value);
     }
 
-    public void createChild(JXPathContext context, QName name, int index, Object value){
+    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
         // Ignore the name passed to us, use our own data
         if (index == WHOLE_COLLECTION){
             handler.setProperty(getBean(), getPropertyName(), value);
@@ -273,6 +273,9 @@ public class DynamicPropertyPointer extends PropertyPointer {
 
             ValueUtils.setValue(collection, index, value);
         }
+        NodePointer ptr = (NodePointer)clone();
+        ptr.setIndex(index);
+        return ptr;
     }
 
     public NodePointer createChild(JXPathContext context, QName name, int index){
@@ -309,6 +312,19 @@ public class DynamicPropertyPointer extends PropertyPointer {
             }
         }
         return this;
+    }
+
+    public void remove(){
+        if (index == WHOLE_COLLECTION){
+            handler.setProperty(getBean(), getPropertyName(), null);
+        }
+        else if (isCollection()){
+            Object collection = ValueUtils.remove(getBaseValue(), index);
+            handler.setProperty(getBean(), getPropertyName(), collection);
+        }
+        else if (index == 0){
+            handler.setProperty(getBean(), getPropertyName(), null);
+        }
     }
 
     public String asPath(){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.17 2002/05/08 00:40:52 dmitri Exp $
- * $Revision: 1.17 $
- * $Date: 2002/05/08 00:40:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.18 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.18 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -100,7 +100,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2002/05/08 00:40:52 $
+ * @version $Revision: 1.18 $ $Date: 2002/05/08 23:05:05 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -477,9 +477,115 @@ public class JXPathTestCase extends TestCase
     }
 
     /**
-     * Test JXPath.createPath() with various arguments
+     * Test JXPathContext.createPath() with various arguments
      */
     public void testCreatePath(){
+        if (!enabled){
+            return;
+        }
+        TestBeanWithDOM tBean = createTestBeanWithDOM();
+        tBean.setNestedBean(null);
+        tBean.setBeans(null);
+        tBean.setMap(null);
+        JXPathContext context = JXPathContext.newContext(tBean);
+        context.setFactory(new TestFactory());
+
+        // Calls factory.declareVariable("string")
+        testCreatePath(context, "$string", null);    // Declare and set to null
+
+        assertTrue("Variable created",
+                context.getVariables().isDeclaredVariable("string"));
+
+        // Calls factory.declareVariable("stringArray"). The factory needs to create a collection
+        testCreatePath(context, "$stringArray[2]", "");
+        assertEquals("Created <" + "$stringArray[1]" + ">", "Value1", context.getValue("$stringArray[1]"));
+
+        context.getVariables().declareVariable("array", new String[]{"Value1"});
+
+        // Does not involve factory at all - just expands the collection
+        testCreatePath(context, "$array[2]", "");
+
+        // Make sure it is still the same array
+        assertEquals("Created <" + "$array[1]" + ">", "Value1", context.getValue("$array[1]"));
+
+        // Calls factory.declareVariable("test"). The factory should create a TestBean
+        testCreatePath(context, "$test/boolean", Boolean.FALSE);
+
+        // Calls factory.declareVariable("testArray").
+        // The factory should create a collection of TestBeans.
+        // Then calls factory.createObject(..., collection, "testArray", 1).
+        // That one should produce an instance of TestBean and put it in the collection
+        // at index 1.
+        testCreatePath(context, "$testArray[2]/boolean", Boolean.FALSE);
+
+        // Calls factory.createObject(..., TestBean, "nestedBean")
+        testCreatePath(context, "/nestedBean/int", new Integer(1));
+
+        // Calls factory.expandCollection(..., testBean, "beans", 2), then
+        // factory.createObject(..., testBean, "beans", 2)
+        testCreatePath(context, "/beans[2]/int", new Integer(1));
+
+        // Another, but the collection already exists
+        testCreatePath(context, "/beans[3]/int", new Integer(1));
+
+        // Calls factory.expandCollection(..., testBean, "beans", 2), then
+        // sets the value
+        testCreatePath(context, "/nestedBean/strings[2]", "String 2");
+
+        // Calls factory.createObject(..., testBean, "map"), then
+        // sets the value
+        testCreatePath(context, "/map[@name='TestKey1']", "");
+
+        // Calls factory.createObject(..., testBean, "map"), then
+        // then factory.createObject(..., map, "TestKey2"), then
+        // sets the value
+        testCreatePath(context, "/map[@name='TestKey2']/int", new Integer(1));
+
+        testCreatePath(context, "/map/TestKey3[2]", null,
+                "/map[@name='TestKey3'][2]");
+
+        // Should be the same as the one before
+        testCreatePath(context, "/map[@name='TestKey3'][3]", null);
+
+        // Create an element of a dynamic map element, which is a collection
+        testCreatePath(context, "/map/TestKey4[1]/int", new Integer(1),
+                "/map[@name='TestKey4'][1]/int");
+
+        tBean.getMap().remove("TestKey4");
+
+        // Should be the same as the one before
+        testCreatePath(context, "/map[@name='TestKey4'][1]/int", new Integer(1));
+
+        // Create a DOM element
+        testCreatePath(context, "/vendor/location[3]", "");
+
+        // Create a DOM element with contents
+        testCreatePath(context, "/vendor/location[3]/address/street", "",
+                "/vendor/location[3]/address[1]/street[1]");
+
+        // Comprehensive tests: map & bean
+        tBean.setMap(null);
+        testCreatePath(context, "/map[@name='TestKey5']/nestedBean/int", new Integer(1));
+        tBean.setMap(null);
+        testCreatePath(context, "/map[@name='TestKey5']/beans[2]/int", new Integer(1));
+    }
+
+    private void testCreatePath(JXPathContext context, String path, Object value){
+        testCreatePath(context, path, value, path);
+    }
+
+    private void testCreatePath(JXPathContext context, String path,
+                Object value, String expectedPath){
+        Pointer ptr = context.createPath(path);
+        assertEquals("Pointer <" + path + ">", expectedPath, ptr.asPath());
+        assertEquals("Created <" + path + ">", value, ptr.getValue());
+    }
+
+
+    /**
+     * Test JXPath.createPathAndSetValue() with various arguments
+     */
+    public void testCreatePathAndSetValue(){
         if (!enabled){
             return;
         }
@@ -491,83 +597,155 @@ public class JXPathTestCase extends TestCase
         context.setFactory(new TestFactory());
 
         // Calls factory.declareVariable("string")
-        testCreatePath(context, "$string", "Value");
+        testCreatePathAndSetValue(context, "$string", "Value");
 
         // Calls factory.declareVariable("stringArray"). The factory needs to create a collection
-        testCreatePath(context, "$stringArray[2]", "Value2");
+        testCreatePathAndSetValue(context, "$stringArray[2]", "Value2");
         assertEquals("Created <" + "$stringArray[1]" + ">", "Value1", context.getValue("$stringArray[1]"));
 
         context.getVariables().declareVariable("array", new String[]{"Value1"});
 
         // Does not involve factory at all - just expands the collection
-        testCreatePath(context, "$array[2]", "Value2");
+        testCreatePathAndSetValue(context, "$array[2]", "Value2");
 
         // Make sure it is still the same array
         assertEquals("Created <" + "$array[1]" + ">", "Value1", context.getValue("$array[1]"));
 
         // Calls factory.declareVariable("test"). The factory should create a TestBean
-        testCreatePath(context, "$test/boolean", Boolean.TRUE);
+        testCreatePathAndSetValue(context, "$test/boolean", Boolean.TRUE);
 
         // Calls factory.declareVariable("testArray").
         // The factory should create a collection of TestBeans.
         // Then calls factory.createObject(..., collection, "testArray", 1).
         // That one should produce an instance of TestBean and put it in the collection
         // at index 1.
-        testCreatePath(context, "$testArray[2]/boolean", Boolean.TRUE);
+        testCreatePathAndSetValue(context, "$testArray[2]/boolean", Boolean.TRUE);
 
         // Calls factory.createObject(..., TestBean, "nestedBean")
-        testCreatePath(context, "nestedBean/int", new Integer(1));
+        testCreatePathAndSetValue(context, "nestedBean/int", new Integer(1));
 
         // Calls factory.expandCollection(..., testBean, "beans", 2), then
         // factory.createObject(..., testBean, "beans", 2)
-        testCreatePath(context, "beans[2]/int", new Integer(2));
+        testCreatePathAndSetValue(context, "beans[2]/int", new Integer(2));
 
         // Another, but the collection already exists
-        testCreatePath(context, "beans[3]/int", new Integer(3));
+        testCreatePathAndSetValue(context, "beans[3]/int", new Integer(3));
 
         // Calls factory.expandCollection(..., testBean, "beans", 2), then
         // sets the value
-        testCreatePath(context, "nestedBean/strings[2]", "Test");
+        testCreatePathAndSetValue(context, "nestedBean/strings[2]", "Test");
 
         // Calls factory.createObject(..., testBean, "map"), then
         // sets the value
-        testCreatePath(context, "map[@name = 'TestKey1']", "Test");
+        testCreatePathAndSetValue(context, "map[@name = 'TestKey1']", "Test");
 
         // Calls factory.createObject(..., testBean, "map"), then
         // then factory.createObject(..., map, "TestKey2"), then
         // sets the value
-        testCreatePath(context, "map[@name = 'TestKey2']/int", new Integer(4));
+        testCreatePathAndSetValue(context, "map[@name = 'TestKey2']/int", new Integer(4));
 
         // Calls factory.expandCollection(..., map, "TestKey3", 2)
-        testCreatePath(context, "map/TestKey3[2]", "Test");
+        testCreatePathAndSetValue(context, "map/TestKey3[2]", "Test");
 
         // Should be the same as the one before
-        testCreatePath(context, "map[@name='TestKey3'][3]", "Test");
+        testCreatePathAndSetValue(context, "map[@name='TestKey3'][3]", "Test");
 
         // Create an element of a dynamic map element, which is a collection
-        testCreatePath(context, "map/TestKey4[1]/int", new Integer(5));
+        testCreatePathAndSetValue(context, "map/TestKey4[1]/int", new Integer(5));
 
         tBean.getMap().remove("TestKey4");
 
         // Should be the same as the one before
-        testCreatePath(context, "map[@name = 'TestKey4'][1]/int", new Integer(5));
+        testCreatePathAndSetValue(context, "map[@name = 'TestKey4'][1]/int", new Integer(5));
 
         // Create a DOM element
-        testCreatePath(context, "vendor/location[3]", "");
+        testCreatePathAndSetValue(context, "vendor/location[3]", "");
 
         // Create a DOM element with contents
-        testCreatePath(context, "vendor/location[3]/address/street", "Lemon Circle");
+        testCreatePathAndSetValue(context, "vendor/location[3]/address/street", "Lemon Circle");
 
         // Comprehensive tests: map & bean
         tBean.setMap(null);
-        testCreatePath(context, "map[@name = 'TestKey5']/nestedBean/int", new Integer(6));
+        testCreatePathAndSetValue(context, "map[@name = 'TestKey5']/nestedBean/int", new Integer(6));
         tBean.setMap(null);
-        testCreatePath(context, "map[@name = 'TestKey5']/beans[2]/int", new Integer(7));
+        testCreatePathAndSetValue(context, "map[@name = 'TestKey5']/beans[2]/int", new Integer(7));
     }
 
-    private void testCreatePath(JXPathContext context, String path, Object value){
-        context.createPath(path, value);
+    private void testCreatePathAndSetValue(JXPathContext context, String path, Object value){
+        Pointer ptr = context.createPathAndSetValue(path, value);
+        assertTrue("Pointer <" + path + ">", ptr != null);
         assertEquals("Created <" + path + ">", value, context.getValue(path));
+        assertEquals("Pointer value <" + path + ">", value, ptr.getValue());
+    }
+
+    /**
+     * Test JXPathContext.removePath() with various arguments
+     */
+    public void testRemovePath(){
+        if (!enabled){
+            return;
+        }
+        TestBeanWithDOM tBean = createTestBeanWithDOM();
+        JXPathContext context = JXPathContext.newContext(tBean);
+
+        // Undeclare variable
+        context.getVariables().declareVariable("temp", "temp");
+        context.removePath("$temp");
+        assertTrue("Undeclare variable",
+                !context.getVariables().isDeclaredVariable("temp"));
+
+        // Remove array element
+        context.getVariables().
+                declareVariable("temp", new String[]{"temp1", "temp2"});
+        context.removePath("$temp[1]");
+        assertEquals("Remove array element", "temp2",
+                    context.getValue("$temp[1]"));
+
+        // Remove list element
+        context.getVariables().
+                declareVariable("temp", list("temp1", "temp2"));
+        context.removePath("$temp[1]");
+        assertEquals("Remove collection element", "temp2",
+                    context.getValue("$temp[1]"));
+
+        // Remove property value
+        context.removePath("nestedBean/int");
+        assertEquals("Remove property value", new Integer(0),
+                    context.getValue("nestedBean/int"));
+
+        // Remove property value
+        context.removePath("nestedBean/strings[1]");
+        assertEquals("Remove property value", "String 2",
+                    context.getValue("nestedBean/strings[1]"));
+
+        context.removePath("nestedBean");
+        assertEquals("Remove property value", null,
+                    context.getValue("nestedBean"));
+
+        tBean.getMap().put("TestKey1", "test");
+
+        // Remove dynamic property
+        context.removePath("map[@name = 'TestKey1']");
+        assertEquals("Remove dynamic property value", null,
+                    context.getValue("map[@name = 'TestKey1']"));
+
+        tBean.getMap().put("TestKey2", new String[]{"temp1", "temp2"});
+        context.removePath("map[@name = 'TestKey2'][1]");
+        assertEquals("Remove dynamic property collection element", "temp2",
+                    context.getValue("map[@name = 'TestKey2'][1]"));
+
+        // Remove DOM nodes
+        context.removePath("vendor/location[@id = '101']//street/text()");
+        assertEquals("Remove DOM text", "",
+                    context.getValue("vendor/location[@id = '101']//street"));
+
+        context.removePath("vendor/location[@id = '101']//street");
+        assertEquals("Remove DOM element", new Double(0),
+                    context.getValue("count(vendor/location[@id = '101']//street)"));
+
+        context.removePath("vendor/location[@id = '100']/@name");
+        assertEquals("Remove DOM attribute", new Double(0),
+                    context.getValue("count(vendor/location[@id = '100']/@name)"));
     }
 
     public void testNull(){

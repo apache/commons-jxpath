@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.5 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:05 $
  */
 public class NullPropertyPointer extends PropertyPointer {
 
@@ -125,12 +125,12 @@ public class NullPropertyPointer extends PropertyPointer {
         return parent.createChild(context, getName(), getIndex());
     }
 
-    public void createPath(JXPathContext context, Object value){
-        parent.createChild(context, getName(), getIndex(), value);
+    public NodePointer createPath(JXPathContext context, Object value){
+        return parent.createChild(context, getName(), getIndex(), value);
     }
 
-    public void createChild(JXPathContext context, QName name, int index, Object value){
-        createPath(context).createChild(context, name, index, value);
+    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
+        return createPath(context).createChild(context, name, index, value);
     }
 
     public NodePointer createChild(JXPathContext context, QName name, int index){

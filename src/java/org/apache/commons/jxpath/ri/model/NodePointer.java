@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.4 2002/04/26 03:28:36 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/26 03:28:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.5 2002/05/08 23:05:04 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 23:05:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -84,7 +84,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:36 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:04 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
@@ -327,8 +327,19 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      *  Called directly by JXPathContext. Must create path and
      *  set value.
      */
-    public void createPath(JXPathContext context, Object value) {
+    public NodePointer createPath(JXPathContext context, Object value) {
         setValue(value);
+        return this;
+    }
+
+    /**
+     * Remove the node of the object graph this pointer points to.
+     */
+    public void remove(){
+        // It is a no-op
+
+//        System.err.println("REMOVING: " + asPath() + " " + getClass());
+//        printPointerChain();
     }
 
     /**
@@ -346,7 +357,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * node. This method must may have to expand the collection in order to
      * assign the element.
      */
-    public void createChild(JXPathContext context, QName name,
+    public NodePointer createChild(JXPathContext context, QName name,
                             int index, Object value) {
         throw new JXPathException(
             "Cannot create an object for path "
@@ -576,5 +587,16 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
         }
 
         return p1.parent.compareChildNodePointers(p1, p2);
+    }
+
+    public void printPointerChain(){
+        Pointer p = this;
+        while (p != null){
+            System.err.println((p == this ? "POINTER: " : " PARENT: ")
+                + p.getClass() + " " + p.asPath());
+            if (p instanceof NodePointer){
+                p = ((NodePointer)p).getParent();
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.4 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/05/08 23:05:05 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -122,9 +122,9 @@ public class CollectionPointer extends NodePointer {
         return valuePointer;
     }
 
-    public void createChild(JXPathContext context, QName name, int index, Object value){
+    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
         if (parent instanceof PropertyPointer){
-            parent.createChild(context, name, index, value);
+            return parent.createChild(context, name, index, value);
         }
         else {
             Object collection = getBaseValue();
@@ -132,6 +132,9 @@ public class CollectionPointer extends NodePointer {
                 ValueUtils.expandCollection(getNodeValue(), index + 1);
             }
             ValueUtils.setValue(collection, index, value);
+            NodePointer ptr = (NodePointer)clone();
+            ptr.setIndex(index);
+            return ptr;
         }
     }
 
@@ -201,8 +204,8 @@ public class CollectionPointer extends NodePointer {
     public boolean testNode(NodeTest nodeTest){
         return getValuePointer().testNode(nodeTest);
     }
-    
-    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){        
+
+    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
         return pointer1.getIndex() - pointer2.getIndex();
     }
 }

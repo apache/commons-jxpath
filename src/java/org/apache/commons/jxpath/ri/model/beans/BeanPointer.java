@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.2 2002/04/24 04:06:46 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:06:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.3 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a path, following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:06:46 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/08 23:05:05 $
  */
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;
@@ -119,11 +119,24 @@ public class BeanPointer extends PropertyOwnerPointer {
      * Throws an exception if you try to change the root element.
      */
     public void setValue(Object value){
+        super.setValue(value);
         if (parent instanceof PropertyPointer){
             parent.setValue(value);
         }
         else {
             throw new UnsupportedOperationException("Cannot setValue of an object that is not some other object's property");
+        }
+    }
+
+    public void remove(){
+        super.setValue(null);
+        if (parent != null){
+            parent.remove();
+        }
+        else {
+            throw new UnsupportedOperationException(
+                "Cannot remove an object that is not " +
+                "some other object's property or a collection element");
         }
     }
 

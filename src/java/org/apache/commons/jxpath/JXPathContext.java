@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.7 2002/04/28 04:37:01 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/04/28 04:37:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.8 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -404,7 +404,7 @@ import java.util.*;
  * Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/04/28 04:37:01 $
+ * @version $Revision: 1.8 $ $Date: 2002/05/08 23:05:05 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -544,7 +544,7 @@ public abstract class JXPathContext {
      * between invocations.
      */
     public abstract CompiledExpression compile(String xpath);
-    
+
     /**
      * Evaluates the xpath and returns the resulting object. Primitive
      * types are wrapped into objects.
@@ -567,6 +567,16 @@ public abstract class JXPathContext {
      */
     public abstract void setValue(String xpath, Object value);
 
+
+    /**
+     * Creates missing elements of the path by invoking an AbstractFactory,
+     * which should first be installed on the context by calling "setFactory".
+     * <p>
+     * Will throw an exception if the AbstractFactory fails to create
+     * an instance for a path element.
+     */
+    public abstract Pointer createPath(String xpath);
+
     /**
      * The same as setValue, except it creates intermediate elements of
      * the path by invoking an AbstractFactory, which should first be
@@ -574,14 +584,31 @@ public abstract class JXPathContext {
      * <p>
      * Will throw an exception if one of the following conditions occurs:
      * <ul>
-     * <li>Elements of the xpath aleady exist, by the path does not in
+     * <li>Elements of the xpath aleady exist, but the path does not in
      *  fact describe an existing property
      * <li>The AbstractFactory fails to create an instance for an intermediate
      * element.
      * <li>The property is not writable (no public, non-static set method)
      * </ul>
      */
-    public abstract void createPath(String xpath, Object value);
+    public abstract Pointer createPathAndSetValue(String xpath, Object value);
+
+    /**
+     * Removes the element of the object graph described by the xpath.
+     */
+    public abstract void removePath(String xpath);
+
+    /**
+     * Removes all elements of the object graph described by the xpath.
+     */
+    public abstract void removeAll(String xpath);
+
+    /**
+     * @deprecated please use createPathAndSetValue(xpath, value)
+     */
+    public void createPath(String xpath, Object value){
+        createPathAndSetValue(xpath, value);
+    }
 
     /**
      * @deprecated Please use iterate
@@ -617,7 +644,7 @@ public abstract class JXPathContext {
      * in the graph, the pointer will be null.
      */
     public abstract Pointer getPointer(String xpath);
-    
+
     /**
      * @deprecated Please use iteratePointers
      */

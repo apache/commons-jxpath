@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPointer.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPointer.java,v 1.3 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/08 23:05:05 $
  */
 public class NullPointer extends PropertyOwnerPointer {
     private QName name;
@@ -96,6 +96,7 @@ public class NullPointer extends PropertyOwnerPointer {
     }
 
     public void setValue(Object value){
+        super.setValue(value);
         if (parent instanceof PropertyPointer){
             parent.setValue(value);
         }
@@ -112,13 +113,13 @@ public class NullPointer extends PropertyOwnerPointer {
         return new NullPropertyPointer(this);
     }
 
-    public void createPath(JXPathContext context, Object value){
+    public NodePointer createPath(JXPathContext context, Object value){
         if (parent != null){
             if (parent instanceof PropertyPointer){
-                parent.createPath(context, value);
+                return parent.createPath(context, value);
             }
             else {
-                parent.createChild(context, getName(), 0, value);
+                return parent.createChild(context, getName(), 0, value);
             }
         }
         else {
@@ -138,12 +139,12 @@ public class NullPointer extends PropertyOwnerPointer {
         throw new UnsupportedOperationException("Cannot create the root object: " + asPath());
     }
 
-    public void createChild(JXPathContext context, QName name, int index, Object value){
+    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
         if (parent != null){
             NodePointer pointer = createPath(context);
             if (pointer != null){
-                pointer.getValuePointer().createChild(context, name, index, value);
-                return;
+                pointer = pointer.getValuePointer().createChild(context, name, index, value);
+                return pointer;
             }
         }
         throw new UnsupportedOperationException("Cannot create the root object: " + asPath());

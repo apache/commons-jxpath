@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.15 2002/05/08 00:40:00 dmitri Exp $
- * $Revision: 1.15 $
- * $Date: 2002/05/08 00:40:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.16 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.16 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -84,7 +84,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2002/05/08 00:40:00 $
+ * @version $Revision: 1.16 $ $Date: 2002/05/08 23:05:05 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -279,13 +279,27 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
     }
 
-    public void createPath(String xpath, Object value){
-        createPath(xpath, compileExpression(xpath), value);
+    public Pointer createPath(String xpath){
+        return createPath(xpath, compileExpression(xpath));
     }
 
-    public void createPath(String xpath, Expression expr, Object value){
+    public Pointer createPath(String xpath, Expression expr){
         try {
-            setValue(xpath, expr, value, true);
+            Object result = expr.computeValue(getRootContext());
+            Pointer pointer = null;
+
+            if (result instanceof Pointer){
+                pointer = (Pointer)result;
+            }
+            else if (result instanceof EvalContext){
+                EvalContext ctx = (EvalContext)result;
+                pointer = ctx.getSingleNodePointer();
+            }
+            else {
+                // This should never happen
+                throw new JXPathException("Expression is not a path:" + xpath);
+            }
+            return ((NodePointer)pointer).createPath(this);
         }
         catch (Throwable ex){
             throw new JXPathException(
@@ -293,7 +307,21 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
     }
 
-    private void setValue(String xpath, Expression expr, Object value, boolean create){
+    public Pointer createPathAndSetValue(String xpath, Object value){
+        return createPathAndSetValue(xpath, compileExpression(xpath), value);
+    }
+
+    public Pointer createPathAndSetValue(String xpath, Expression expr, Object value){
+        try {
+            return setValue(xpath, expr, value, true);
+        }
+        catch (Throwable ex){
+            throw new JXPathException(
+                "Exception trying to create xpath " + xpath, ex);
+        }
+    }
+
+    private Pointer setValue(String xpath, Expression expr, Object value, boolean create){
         Object result = expr.computeValue(getRootContext());
 //        System.err.println("RESULT: " + result);
         Pointer pointer = null;
@@ -310,11 +338,12 @@ public class JXPathContextReferenceImpl extends JXPathContext
             throw new JXPathException("Cannot set value for xpath: " + xpath);
         }
         if (create){
-            ((NodePointer)pointer).createPath(this, value);
+            pointer = ((NodePointer)pointer).createPath(this, value);
         }
         else {
             pointer.setValue(value);
         }
+        return pointer;
     }
 
     /**
@@ -331,14 +360,43 @@ public class JXPathContextReferenceImpl extends JXPathContext
         return expr.iteratePointers(getRootContext());
     }
 
-    private void printPointer(NodePointer pointer){
-        Pointer p = pointer;
-        while (p != null){
-            System.err.println((p == pointer ? "POINTER: " : " PARENT: ")
-                + p.getClass() + " " + p.asPath());
-            if (p instanceof NodePointer){
-                p = ((NodePointer)p).getParent();
+    public void removePath(String xpath){
+        removePath(xpath, compileExpression(xpath));
+    }
+
+    public void removePath(String xpath, Expression expr){
+        try {
+            NodePointer pointer = (NodePointer)getPointer(xpath, expr);
+            if (pointer != null){
+                ((NodePointer)pointer).remove();
             }
+        }
+        catch (Throwable ex){
+            throw new JXPathException(
+                "Exception trying to remove xpath " + xpath, ex);
+        }
+    }
+
+    public void removeAll(String xpath){
+        removeAll(xpath, compileExpression(xpath));
+    }
+
+    public void removeAll(String xpath, Expression expr){
+        try {
+            ArrayList list = new ArrayList();
+            Iterator it = expr.iterate(getRootContext());
+            while (it.hasNext()){
+                list.add(it.next());
+            }
+            Collections.sort(list);
+            for (int i = list.size() - 1; i >= 0; i--){
+                NodePointer pointer = (NodePointer)list.get(i);
+                pointer.remove();
+            }
+        }
+        catch (Throwable ex){
+            throw new JXPathException(
+                "Exception trying to remove all for xpath " + xpath, ex);
         }
     }
 

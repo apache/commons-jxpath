@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributePointer.java,v 1.4 2002/05/08 00:40:00 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/05/08 00:40:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributePointer.java,v 1.5 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.w3c.dom.Attr;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/05/08 00:40:00 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:05 $
  */
 public class DOMAttributePointer extends NodePointer {
     private Attr attr;
@@ -133,6 +133,10 @@ public class DOMAttributePointer extends NodePointer {
      */
     public void setValue(Object value){
         attr.setValue((String)TypeUtils.convert(value, String.class));
+    }
+
+    public void remove(){
+        attr.getOwnerElement().removeAttributeNode(attr);
     }
 
     /**

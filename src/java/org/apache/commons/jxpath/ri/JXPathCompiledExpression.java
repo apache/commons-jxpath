@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.1 2002/04/28 04:37:01 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/28 04:37:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.2 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,21 +67,21 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 
 /**
- * 
+ *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/28 04:37:01 $
+ * @version $Revision: 1.2 $ $Date: 2002/05/08 23:05:05 $
  */
 public class JXPathCompiledExpression implements CompiledExpression {
 
     private String xpath;
     private Expression expression;
-    
+
     public JXPathCompiledExpression(String xpath, Expression expression){
         this.xpath = xpath;
         this.expression = expression;
     }
-    
+
     /**
      * @see CompiledExpression#getValue(JXPathContext)
      */
@@ -109,9 +109,16 @@ public class JXPathCompiledExpression implements CompiledExpression {
     /**
      * @see CompiledExpression#createPath(JXPathContext, Object)
      */
+    public Pointer createPathAndSetValue(JXPathContext context, Object value) {
+        return ((JXPathContextReferenceImpl)context).
+                    createPathAndSetValue(xpath, expression, value);
+    }
+
+    /**
+     * @deprecated use createPathAndSetValue
+     */
     public void createPath(JXPathContext context, Object value) {
-        ((JXPathContextReferenceImpl)context).
-                    createPath(xpath, expression, value);
+        createPathAndSetValue(context, value);
     }
 
     /**
@@ -136,5 +143,19 @@ public class JXPathCompiledExpression implements CompiledExpression {
     public Iterator iteratePointers(JXPathContext context) {
         return ((JXPathContextReferenceImpl)context).
                     iteratePointers(xpath, expression);
+    }
+
+    /**
+     * @see CompiledExpression#remove(JXPathContext)
+     */
+    public void removePath(JXPathContext context){
+        ((JXPathContextReferenceImpl)context).removePath(xpath, expression);
+    }
+
+    /**
+     * @see CompiledExpression#removeAll(JXPathContext)
+     */
+    public void removeAll(JXPathContext context){
+        ((JXPathContextReferenceImpl)context).removeAll(xpath, expression);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/CompiledExpression.java,v 1.1 2002/04/28 04:37:01 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/28 04:37:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/CompiledExpression.java,v 1.2 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,16 +70,16 @@ import java.util.Iterator;
  * <p>
  * Use CompiledExpression only when there is a need to evaluate the
  * same expression multiple times and the CompiledExpression can be
- * conveniently cached.  
+ * conveniently cached.
  * <p>
  * To acqure a CompiledExpression, call {@link JXPathContext#compile
  * JXPathContext.compile}
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/28 04:37:01 $
+ * @version $Revision: 1.2 $ $Date: 2002/05/08 23:05:05 $
  */
 public interface CompiledExpression {
-    
+
     /**
      * Evaluates the xpath and returns the resulting object. Primitive
      * types are wrapped into objects.
@@ -116,6 +116,11 @@ public interface CompiledExpression {
      * <li>The property is not writable (no public, non-static set method)
      * </ul>
      */
+    Pointer createPathAndSetValue(JXPathContext context, Object value);
+
+    /**
+     * @deprecated switch to createPathAndSetValue
+     */
     void createPath(JXPathContext context, Object value);
 
     /**
@@ -132,7 +137,7 @@ public interface CompiledExpression {
      * in the graph, the pointer will be null.
      */
     Pointer getPointer(JXPathContext context, String xpath);
-    
+
     /**
      * Traverses the xpath and returns an Iterator of Pointers.
      * A Pointer provides easy access to a property.
@@ -140,4 +145,14 @@ public interface CompiledExpression {
      * in the graph, the Iterator be empty, but not null.
      */
     Iterator iteratePointers(JXPathContext context);
+
+    /**
+     * Remove the graph element described by this expression
+     */
+    void removePath(JXPathContext context);
+
+    /**
+     * Remove all graph elements described by this expression
+     */
+    void removeAll(JXPathContext context);
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.4 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/05/08 23:05:05 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -149,7 +149,9 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     public abstract QName getName();
-    public abstract void setValue(Object value);
+    public void setValue(Object value){
+        this.value = value;
+    }
 
     public abstract PropertyPointer getPropertyPointer();
 
@@ -161,11 +163,11 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         return NodePointer.newChildNodePointer(this, getName(), getNodeValue());
     }
 
-    public void createChild(JXPathContext context, QName name, int index, Object value){
+    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
         PropertyPointer prop = getPropertyPointer();
         prop.setPropertyName(name.getName());
         prop.setIndex(index);
-        prop.createPath(context, value);
+        return prop.createPath(context, value);
     }
 
     public NodePointer createChild(JXPathContext context, QName name, int index){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.5 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -77,7 +77,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * as the parent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:05 $
  */
 public class NullElementPointer extends PropertyOwnerPointer {
 
@@ -107,6 +107,7 @@ public class NullElementPointer extends PropertyOwnerPointer {
     }
 
     public void setValue(Object value){
+        super.setValue(value);
         if (parent instanceof PropertyPointer){
             parent.setValue(value);
         }
@@ -123,12 +124,12 @@ public class NullElementPointer extends PropertyOwnerPointer {
         return false;
     }
 
-    public void createPath(JXPathContext context, Object value){
+    public NodePointer createPath(JXPathContext context, Object value){
         if (parent instanceof PropertyPointer){
-            parent.getParent().createChild(context, parent.getName(), index, value);
+            return parent.getParent().createChild(context, parent.getName(), index, value);
         }
         else {
-            parent.createChild(context, null, index, value);
+            return parent.createChild(context, null, index, value);
         }
     }
 
@@ -141,16 +142,16 @@ public class NullElementPointer extends PropertyOwnerPointer {
         }
     }
 
-    public void createChild(JXPathContext context, QName name, int index, Object value){
+    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
         if (index != 0 && index != WHOLE_COLLECTION){
             throw new JXPathException("Internal error. " +
                 "Indexed passed to NullElementPointer.createChild() is not 0: " + index);
         }
         if (parent instanceof PropertyPointer){
-            parent.getParent().createChild(context, parent.getName(), getIndex(), value);
+            return parent.getParent().createChild(context, parent.getName(), getIndex(), value);
         }
         else {
-            parent.createChild(context, name, getIndex(), value);
+            return parent.createChild(context, name, getIndex(), value);
         }
     }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.5 2002/05/08 23:05:05 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 23:05:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -88,7 +88,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:05 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -383,8 +383,18 @@ public class DOMNodePointer extends NodePointer {
         return it.getNodePointer();
     }
 
-    public void createChild(JXPathContext context, QName name, int index, Object value){
-        createChild(context, name, index).setValue(value);
+    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
+        NodePointer ptr = createChild(context, name, index);
+        ptr.setValue(value);
+        return ptr;
+    }
+
+    public void remove(){
+        Node parent = node.getParentNode();
+        if (parent == null){
+            throw new JXPathException("Cannot remove root DOM node");
+        }
+        parent.removeChild(node);
     }
 
     public String asPath(){
