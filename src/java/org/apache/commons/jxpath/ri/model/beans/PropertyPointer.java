@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.4 2002/05/29 00:40:58 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/05/29 00:40:58 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a property of the parent object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/05/29 00:40:58 $
  */
 public abstract class PropertyPointer extends NodePointer {
     public static int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
@@ -166,9 +166,20 @@ public abstract class PropertyPointer extends NodePointer {
         }
 
         PropertyPointer other = (PropertyPointer)object;
-        return getParent() == other.getParent() &&
-                propertyIndex == other.propertyIndex &&
-                index == other.index;
+        if (parent != other.parent){
+            if (parent == null || !parent.equals(other.parent)){
+                return false;
+            }
+        }
+
+        if (getPropertyIndex() != other.getPropertyIndex() ||
+               !getPropertyName().equals(other.getPropertyName())){
+            return false;
+        }
+
+        int i_this = (index == WHOLE_COLLECTION ? 0 : index);
+        int i_other = (other.index == WHOLE_COLLECTION ? 0 : other.index);
+        return i_this == i_other;
     }
 
     public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){

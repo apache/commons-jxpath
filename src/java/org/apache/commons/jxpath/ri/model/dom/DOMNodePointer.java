@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.5 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.6 2002/05/29 00:40:58 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/05/29 00:40:58 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -80,6 +80,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
@@ -88,7 +89,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.6 $ $Date: 2002/05/29 00:40:58 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -560,10 +561,33 @@ public class DOMNodePointer extends NodePointer {
     }
 
     public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
-        Node node1 = (Node)pointer1.getNodeValue();
-        Node node2 = (Node)pointer2.getNodeValue();
+        Node node1 = (Node)pointer1.getBaseValue();
+        Node node2 = (Node)pointer2.getBaseValue();
         if (node1 == node2){
             return 0;
+        }
+
+        int t1 = node1.getNodeType();
+        int t2 = node2.getNodeType();
+        if (t1 == Node.ATTRIBUTE_NODE && t2 != Node.ATTRIBUTE_NODE){
+            return -1;
+        }
+        else if (t1 != Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE){
+            return 1;
+        }
+        else if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE){
+            NamedNodeMap map = ((Node)getNodeValue()).getAttributes();
+            int length = map.getLength();
+            for (int i = 0; i < length; i++){
+                Node n = map.item(i);
+                if (n == node1){
+                    return -1;
+                }
+                else if (n == node2){
+                    return 1;
+                }
+            }
+            return 0;       // Should not happen
         }
 
         Node current = node.getFirstChild();

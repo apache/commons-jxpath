@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/NamespacePointer.java,v 1.3 2002/04/26 01:00:38 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/NamespacePointer.java,v 1.4 2002/05/29 00:40:58 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/05/29 00:40:58 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:38 $
+ * @version $Revision: 1.4 $ $Date: 2002/05/29 00:40:58 $
  */
 public class NamespacePointer extends NodePointer {
     private String prefix;
@@ -136,13 +136,7 @@ public class NamespacePointer extends NodePointer {
     }
 
     public int hashCode(){
-        String nsURI = getNamespaceURI();
-        if (nsURI == null){
-            return 0;
-        }
-        else {
-            return nsURI.hashCode();
-        }
+        return prefix.hashCode();
     }
 
     public boolean equals(Object object){
@@ -155,12 +149,9 @@ public class NamespacePointer extends NodePointer {
         }
 
         NamespacePointer other = (NamespacePointer)object;
-        String nsURI = getNamespaceURI();
-        String otherNSURI = other.getNamespaceURI();
-        return (nsURI == null && otherNSURI == null) ||
-               (nsURI != null && nsURI.endsWith(otherNSURI));
+        return prefix.equals(other.prefix);
     }
- 
+
     public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
         // Won't happen - namespaces don't have children
         return 0;

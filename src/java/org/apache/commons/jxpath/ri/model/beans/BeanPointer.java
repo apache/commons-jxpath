@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.3 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.4 2002/05/29 00:40:58 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/05/29 00:40:58 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a path, following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.4 $ $Date: 2002/05/29 00:40:58 $
  */
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;
@@ -162,8 +162,20 @@ public class BeanPointer extends PropertyOwnerPointer {
         }
 
         BeanPointer other = (BeanPointer)object;
+        if (parent != other.parent){
+            if (parent == null || !parent.equals(other.parent)){
+                return false;
+            }
+        }
+
         if ((name == null && other.name != null) ||
                 (name != null && !name.equals(other.name))){
+            return false;
+        }
+
+        int i_this = (index == WHOLE_COLLECTION ? 0 : index);
+        int i_other = (other.index == WHOLE_COLLECTION ? 0 : other.index);
+        if (i_this != i_other){
             return false;
         }
 
