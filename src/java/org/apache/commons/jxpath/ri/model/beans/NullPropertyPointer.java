@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.7 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.8 2002/10/13 02:59:01 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/10/13 02:59:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.8 $ $Date: 2002/10/13 02:59:01 $
  */
 public class NullPropertyPointer extends PropertyPointer {
 
@@ -82,7 +82,7 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     public QName getName(){
-        return new QName(null, propertyName);
+        return new QName(propertyName);
     }
 
     public void setPropertyIndex(int index){
@@ -101,7 +101,7 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     public NodePointer getValuePointer(){
-        return new NullPointer(this,  new QName(null, getPropertyName()));
+        return new NullPointer(this,  new QName(getPropertyName()));
     }
 
     protected boolean isActualProperty(){
@@ -122,19 +122,31 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     public NodePointer createPath(JXPathContext context){
-        return parent.createChild(context, getName(), getIndex());
+        if (isAttribute()){
+            return parent.createAttribute(context, getName());
+        }
+        else {
+            return parent.createChild(context, getName(), getIndex());
+        }
     }
 
     public NodePointer createPath(JXPathContext context, Object value){
-        return parent.createChild(context, getName(), getIndex(), value);
+        if (isAttribute()){
+            NodePointer pointer = parent.createAttribute(context, getName());
+            pointer.setValue(value);
+            return pointer;
+        }
+        else {
+            return parent.createChild(context, getName(), getIndex(), value);
+        }
     }
 
-    public NodePointer createChild(JXPathContext context, 
+    public NodePointer createChild(JXPathContext context,
             QName name, int index, Object value){
         return createPath(context).createChild(context, name, index, value);
     }
 
-    public NodePointer createChild(JXPathContext context, 
+    public NodePointer createChild(JXPathContext context,
             QName name, int index){
         return createPath(context).createChild(context, name, index);
     }
@@ -184,13 +196,13 @@ public class NullPropertyPointer extends PropertyPointer {
     private String escape(String string){
         int index = string.indexOf('\'');
         while (index != -1){
-            string = string.substring(0, index) + "&apos;" + 
+            string = string.substring(0, index) + "&apos;" +
                     string.substring(index + 1);
             index = string.indexOf('\'');
         }
         index = string.indexOf('\"');
         while (index != -1){
-            string = string.substring(0, index) + "&quot;" + 
+            string = string.substring(0, index) + "&quot;" +
                     string.substring(index + 1);
             index = string.indexOf('\"');
         }

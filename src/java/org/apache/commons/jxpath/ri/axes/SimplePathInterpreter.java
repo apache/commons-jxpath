@@ -119,7 +119,7 @@ public class SimplePathInterpreter {
      * starts with the given root, which is the result of evaluation
      * of the root expression of the expression path, applies the
      * given predicates to it and then follows the given steps.
-     * All steps must have the axis "child::"
+     * All steps must have the axis "child::" or "attribute::"
      * and a name test.  They can also optionally have predicates
      * of type [@name=...] or simply [...] interpreted as an index.
      */
@@ -204,17 +204,7 @@ public class SimplePathInterpreter {
                 Step[] steps, int current_step)
     {
         Step step = steps[current_step];
-        NodePointer childPointer;
-        if (step.getAxis() == Compiler.AXIS_CHILD){
-            // Treat the name test as a property name
-            QName name = ((NodeNameTest)step.getNodeTest()).getNodeName();
-
-            childPointer = parentPointer.getPropertyPointer();
-            ((PropertyPointer)childPointer).setPropertyName(name.toString());
-        }
-        else {
-            childPointer = parentPointer;
-        }
+        NodePointer childPointer = createChildPointerForStep(parentPointer, step);
 
         if (!childPointer.isActual()){
             // The property does not exist - create a null pointer.
@@ -272,10 +262,14 @@ public class SimplePathInterpreter {
                 Step[] steps, int current_step)
     {
         Step step = steps[current_step];
+
+        if (step.getAxis() == Compiler.AXIS_SELF){
+            return doStep(context, parentPointer, steps, current_step + 1);
+        }
+
         int bestQuality = 0;
         NodePointer bestMatch = null;
-        NodeIterator it =
-                parentPointer.childIterator(step.getNodeTest(), false, null);
+        NodeIterator it = getNodeIterator(parentPointer, step);
         if (it != null){
             for (int i = 1; it.setPosition(i); i++){
                 NodePointer childPointer = it.getNodePointer();
@@ -316,15 +310,8 @@ public class SimplePathInterpreter {
         Step step = steps[current_step];
         Expression predicates[] = step.getPredicates();
 
-        NodePointer childPointer;
-        if (step.getAxis() == Compiler.AXIS_CHILD){
-            QName name = ((NodeNameTest)step.getNodeTest()).getNodeName();
-            childPointer = parentPointer.getPropertyPointer();
-            ((PropertyPointer)childPointer).setPropertyName(name.toString());
-        }
-        else {
-            childPointer = parentPointer;
-        }
+        NodePointer childPointer =
+                createChildPointerForStep(parentPointer, step);
         if (!childPointer.isActual()){
             // Property does not exist - return a null pointer
             return createNullPointer(
@@ -334,6 +321,28 @@ public class SimplePathInterpreter {
         // Evaluate predicates
         return doPredicate(
             context, childPointer, steps, current_step, predicates, 0);
+    }
+
+    private static NodePointer createChildPointerForStep(
+                PropertyOwnerPointer parentPointer, Step step)
+    {
+        int axis = step.getAxis();
+        if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE){
+            NodePointer childPointer;
+            QName name = ((NodeNameTest)step.getNodeTest()).getNodeName();
+            if (axis == Compiler.AXIS_ATTRIBUTE && isLangAttribute(name)){
+                childPointer = new LangAttributePointer(parentPointer);
+            }
+            else {
+                childPointer = parentPointer.getPropertyPointer();
+                ((PropertyPointer)childPointer).setPropertyName(name.toString());
+                childPointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
+            }
+            return childPointer;
+        }
+        else {
+            return parentPointer;
+        }
     }
 
     /**
@@ -348,7 +357,8 @@ public class SimplePathInterpreter {
         Step step = steps[current_step];
         Expression predicates[] = step.getPredicates();
 
-        if (step.getAxis() == Compiler.AXIS_SELF){
+        int axis = step.getAxis();
+        if (axis == Compiler.AXIS_SELF){
             return doPredicate(context, parent,
                 steps, current_step, predicates, 0);
         }
@@ -361,8 +371,7 @@ public class SimplePathInterpreter {
         // It is a very common use case, so it deserves individual
         // attention
         if (predicates.length == 1){
-            NodeIterator it = parent.childIterator(
-                    step.getNodeTest(), false, null);
+            NodeIterator it = getNodeIterator(parent, step);
             NodePointer pointer = null;
             if (it != null){
                 if (predicate instanceof NameAttributeTest){ // [@name = key]
@@ -387,8 +396,7 @@ public class SimplePathInterpreter {
             }
         }
         else {
-            NodeIterator it = parent.childIterator(
-                    step.getNodeTest(), false, null);
+            NodeIterator it = getNodeIterator(parent, step);
             if (it != null){
                 List list = new ArrayList();
                 for (int i = 1; it.setPosition(i); i++){
@@ -686,10 +694,12 @@ public class SimplePathInterpreter {
 
         Step step = steps[current_step];
 
-        if (step.getAxis() == Compiler.AXIS_CHILD){
+        int axis = step.getAxis();
+        if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE){
             NullPropertyPointer pointer = new NullPropertyPointer(parent);
             QName name = ((NodeNameTest)step.getNodeTest()).getNodeName();
             pointer.setPropertyName(name.toString());
+            pointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
             parent = pointer;
         }
         // else { it is self::node() }
@@ -729,5 +739,26 @@ public class SimplePathInterpreter {
         // Proceed with the remaining steps
         return createNullPointer(
                     context, parent, steps, current_step + 1);
+    }
+
+    private static NodeIterator getNodeIterator(NodePointer pointer, Step step){
+        if (step.getAxis() == Compiler.AXIS_CHILD){
+            return pointer.childIterator(step.getNodeTest(), false, null);
+        }
+        else {      // Compiler.AXIS_ATTRIBUTE
+            if (!(step.getNodeTest() instanceof NodeNameTest)){
+                throw new UnsupportedOperationException(
+                    "Not supported node test for attributes: " +
+                        step.getNodeTest());
+            }
+            return pointer.attributeIterator(
+                ((NodeNameTest)step.getNodeTest()).getNodeName());
+        }
+    }
+
+    private static boolean isLangAttribute(QName name){
+        return name.getPrefix() != null &&
+                name.getPrefix().equals("xml") &&
+                name.getName().equals("lang");
     }
 }

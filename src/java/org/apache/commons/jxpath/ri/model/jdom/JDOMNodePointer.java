@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.1 2002/08/26 22:29:48 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/08/26 22:29:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.2 2002/10/13 02:59:02 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/10/13 02:59:02 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -90,7 +90,7 @@ import org.jdom.Text;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/26 22:29:48 $
+ * @version $Revision: 1.2 $ $Date: 2002/10/13 02:59:02 $
  */
 public class JDOMNodePointer extends NodePointer {
     private Object node;
@@ -484,6 +484,34 @@ public class JDOMNodePointer extends NodePointer {
         NodePointer ptr = createChild(context, name, index);
         ptr.setValue(value);
         return ptr;
+    }
+
+    public NodePointer createAttribute(JXPathContext context, QName name){
+        if (!(node instanceof Element)){
+            return super.createAttribute(context, name);
+        }
+
+        Element element = (Element)node;
+        String prefix = name.getPrefix();
+        if (prefix != null){
+            Namespace ns = element.getNamespace(prefix);
+            if (ns == null){
+                throw new JXPathException("Unknown namespace prefix: " + prefix);
+            }
+            Attribute attr = element.getAttribute(name.getName(), ns);
+            if (attr == null){
+                element.setAttribute(name.getName(), "", ns);
+            }
+        }
+        else {
+            Attribute attr = element.getAttribute(name.getName());
+            if (attr == null){
+                element.setAttribute(name.getName(), "");
+            }
+        }
+        NodeIterator it = attributeIterator(name);
+        it.setPosition(1);
+        return it.getNodePointer();
     }
 
     public void remove(){

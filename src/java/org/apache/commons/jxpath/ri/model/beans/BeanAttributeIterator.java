@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanAttributeIterator.java,v 1.2 2002/04/24 04:06:46 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:06:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanAttributeIterator.java,v 1.3 2002/10/13 02:59:01 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/10/13 02:59:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,24 +66,35 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * An iterator of attributes of a JavaBean. Currently supports only one
- * attribute - "lang".
+ * An iterator of attributes of a JavaBean. Returns bean properties as
+ * well as the "xml:lang" attribute.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:06:46 $
+ * @version $Revision: 1.3 $ $Date: 2002/10/13 02:59:01 $
  */
-public class BeanAttributeIterator implements NodeIterator {
+public class BeanAttributeIterator extends PropertyIterator {
     private NodePointer parent;
-    private QName name;
     private int position = 0;
+    private boolean includeXmlLang;
 
-    public BeanAttributeIterator(NodePointer parent, QName name){
+    public BeanAttributeIterator(PropertyOwnerPointer parent, QName name){
+        super(parent,
+                (name.getPrefix() == null &&
+                 (name.getName() == null || name.getName().equals("*"))) ?
+                        null : name.toString(), false, null);
         this.parent = parent;
-        this.name = name;
+        includeXmlLang =
+            (name.getPrefix() != null && name.getPrefix().equals("xml")) &&
+            (name.getName().equals("lang") || name.getName().equals("*"));
     }
 
     public NodePointer getNodePointer(){
-        return new LangAttributePointer(parent);
+        if (includeXmlLang && position == 1){
+            return new LangAttributePointer(parent);
+        }
+        else {
+            return super.getNodePointer();
+        }
     }
 
     public int getPosition(){
@@ -92,7 +103,17 @@ public class BeanAttributeIterator implements NodeIterator {
 
     public boolean setPosition(int position){
         this.position = position;
-        return position == 1 && name.getPrefix() != null && name.getPrefix().equals("xml") &&
-            (name.getName().equals("lang") || name.getName().equals("*"));
+        if (includeXmlLang){
+            if (position == 1){
+                return true;
+            }
+            else {
+                return super.setPosition(position - 1);
+            }
+        }
+        else {
+            this.position = position;
+            return super.setPosition(position);
+        }
     }
 }

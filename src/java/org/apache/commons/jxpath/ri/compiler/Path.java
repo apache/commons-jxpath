@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Path.java,v 1.5 2002/08/10 01:39:29 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/08/10 01:39:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Path.java,v 1.6 2002/10/13 02:59:01 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/10/13 02:59:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import org.apache.commons.jxpath.ri.axes.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/08/10 01:39:29 $
+ * @version $Revision: 1.6 $ $Date: 2002/10/13 02:59:01 $
  */
 public abstract class Path extends Expression {
 
@@ -115,7 +115,8 @@ public abstract class Path extends Expression {
                                 Compiler.NODE_TYPE_NODE){
                     accepted = true;
                 }
-                else if (steps[i].getAxis() == Compiler.AXIS_CHILD &&
+                else if ((steps[i].getAxis() == Compiler.AXIS_CHILD ||
+                          steps[i].getAxis() == Compiler.AXIS_ATTRIBUTE)  &&
                         (steps[i].getNodeTest() instanceof NodeNameTest) &&
                         !((NodeNameTest)steps[i].getNodeTest()).
                                     getNodeName().getName().equals("*")){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.9 2002/08/26 22:15:26 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/08/26 22:15:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.10 2002/10/13 02:59:02 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/10/13 02:59:02 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -92,7 +92,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/08/26 22:15:26 $
+ * @version $Revision: 1.10 $ $Date: 2002/10/13 02:59:02 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -401,6 +401,29 @@ public class DOMNodePointer extends NodePointer {
         NodePointer ptr = createChild(context, name, index);
         ptr.setValue(value);
         return ptr;
+    }
+
+    public NodePointer createAttribute(JXPathContext context, QName name){
+        if (!(node instanceof Element)){
+            return super.createAttribute(context, name);
+        }
+        Element element = (Element)node;
+        String prefix = name.getPrefix();
+        if (prefix != null){
+            String ns = getNamespaceURI(prefix);
+            if (ns == null){
+                throw new JXPathException("Unknown namespace prefix: " + prefix);
+            }
+            element.setAttributeNS(ns, name.toString(), "");
+        }
+        else {
+            if (!element.hasAttribute(name.getName())){
+                element.setAttribute(name.getName(), "");
+            }
+        }
+        NodeIterator it = attributeIterator(name);
+        it.setPosition(1);
+        return it.getNodePointer();
     }
 
     public void remove(){
