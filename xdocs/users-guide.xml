@@ -19,14 +19,17 @@
     <p>
      If you are not familiar with the XPath syntax, start with
      <a href="http://www.w3schools.com/xpath">XPath Tutorial by W3Schools</a>.<br/>
-     Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
+     Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a> -
+     that's the official standard.
     </p>
 
     <p>
-     You can read and write properties
-     of JavaBeans, get and set elements of arrays, collections,
-     maps, DOM documents, transparent containers, various context objects
-     in Servlets etc.
+     XPath is the official expression language of XSLT. In XSLT you mostly use
+     XPath to access various elements of XML documents.  You can do that with
+     JXPath as well. In addition, you can read and write properties of JavaBeans, get and set
+     elements of arrays, collections, maps, transparent containers, various context objects
+     in Servlets etc.  In other words, JXPath applies the concepts of XPath
+     to alternate object models.
     </p>
 
     <p>
@@ -46,8 +49,9 @@
      properties.
     </p>
     <p>
-     The interpretation of the xpath syntax in the context of Java object graphs
-     is quite intuitive: the "child" axis of XPath is mapped to JavaBean properties.
+     The interpretation of the XPath syntax in the context of Java object graphs
+     is quite intuitive: the <code>"child"</code> axis of XPath is mapped to
+     JavaBean properties.
     </p>
 
 <subsection name="JavaBean Property Access">
@@ -71,11 +75,19 @@ String fName = (String)context.getValue("firstName");
 
 <p>
      In this example, we are using JXPath to access a property of the <code>emp</code> bean.
-     In this simple case the invocation of JXPath is equivalent to invocation of getFirstName()
-     on the bean.
+     In this simple case the invocation of JXPath is equivalent to invocation of
+     <code>getFirstName()</code> on the bean.
 </p>
 </subsection>
 
+<subsection name="Lenient Mode">
+<p>
+The <code>context.getValue(xpath)</code> method throws an exception if the
+supplied xpath does not map to an existing property.  This
+constraint can be relaxed by calling <code>context.setLenient(true)</code>.
+In the lenient mode the method merely returns null if the path maps to nothing.
+</p>
+</subsection>
 
 <subsection name="Nested Bean Property Access">
  <p>
@@ -104,7 +116,7 @@ String fName = (String)context.getValue("firstName");
  In this case XPath is used to access a property of a nested bean.
  </p>
  <p>
- A property identified by the xpath does not have to be a "leaf" property.
+ A property identified by the XPath does not have to be a "leaf" property.
  For instance, we can extract the whole Address object in above example:
  </p>
  <source>
@@ -139,61 +151,6 @@ String fName = (String)context.getValue("firstName");
  </p>
 </subsection>
 
-
-<subsection name="Map Element Access">
- <p>
-  JXPath supports maps. To get a value use its key.
- </p>
- <source>
-                                                                       &#xA0;
- public class Employee {
-    public Map getAddresses(){
-       return addressMap;
-    }
-
-    public void addAddress(String key, Address address){
-       addressMap.put(key, address);
-    }
-    ...
- }
-
- Employee emp = new Employee();
- emp.addAddress("home", new Address(...));
- emp.addAddress("office", new Address(...));
- ...
-
- JXPathContext context = JXPathContext.newContext(emp);
- String homeZipCode =
-        (String)context.getValue("addresses/home/zipCode");
- </source>
-
- <p>
- Often you will need to use the alternative syntax for accessing Map
- elements:
- </p>
- <source>
-                                                                       &#xA0;
- String homeZipCode = (String)context.
-        getValue("addresses[@name='home']/zipCode");
- </source>
-<p>
- The attribute "name" is not reserved for the use with Maps. It can represent
- a property name of a JavaBean as well. Unlike a child name in XPath,
- the value of the "name" attribute does <em>not</em> have to be a properly formed
- identifier.  Also, in this case the key can be an expression, e.g. a variable.
-</p>
-
-<p>
- <b>Note:</b> At this point JXPath only supports Maps that use strings for keys.
-</p>
-<p>
- <b>Note:</b> JXPath supports the extended notion of Map: any object with
-   dynamic properties can be handled by JXPath provided that its
-   class is registered with the
-   <a href="api/org/apache/commons/jxpath/JXPathIntrospector.html"><code>JXPathIntrospector</code></a>.
-</p>
-</subsection>
-
 <subsection name="Retrieving Multiple Results">
  <p>
  JXPath can retrieve multiple objects from a graph. Note that the method
@@ -219,6 +176,61 @@ String fName = (String)context.getValue("firstName");
  </p>
 </subsection>
 
+<subsection name="Map Element Access">
+ <p>
+  JXPath supports maps. To get a value use its key.
+ </p>
+ <source>
+                                                                       &#xA0;
+ public class Employee {
+    private Map addressMap = new HashMap();
+    {
+        addressMap.put("home", new Address(...));
+        addressMap.put("office", new Address(...));
+    }
+
+    public Map getAddresses(){
+       return addressMap;
+    }
+    ...
+ }
+
+ Employee emp = new Employee();
+ JXPathContext context = JXPathContext.newContext(emp);
+ String homeZipCode =
+        (String)context.getValue("addresses/home/zipCode");
+ </source>
+
+ <p>
+ Often you will need to use the alternative syntax for accessing Map
+ elements:
+ </p>
+ <source>
+                                                                       &#xA0;
+ String homeZipCode = (String)context.
+        getValue("addresses[@name='home']/zipCode");
+ </source>
+<p>
+ Unlike a child name in XPath,
+ the value of the "name" attribute does <em>not</em> have to be a properly formed
+ identifier.  Also, in this case the key can be an expression, e.g. a variable.
+</p>
+<p>
+ The attribute "name" can be used not only with Maps, but with JavaBeans
+ as well. The value of this attribute represents the name of a property.
+</p>
+
+<p>
+ <b>Note:</b> At this point JXPath only supports Maps that use strings for keys.
+</p>
+<p>
+ <b>Note:</b> JXPath supports the extended notion of Map: any object with
+   dynamic properties can be handled by JXPath provided that its
+   class is registered with the
+   <a href="api/org/apache/commons/jxpath/JXPathIntrospector.html"><code>JXPathIntrospector</code></a>.
+</p>
+</subsection>
+
 <subsection name="DOM Document Access">
 <p>
 JXPath supports access to DOM Nodes. The DOM node can be the
@@ -238,12 +250,71 @@ DOM objects, even though it is not applicable to JavaBeans.
 </p>
 </subsection>
 
-<subsection name="Lenient Mode">
+<subsection name="Containers">
 <p>
-The <code>jxpathContext.getValue(xpath)</code> method throws an exception if the
-supplied xpath does not map to an existing property/object.  This
-constraint can be relaxed by calling <code>jxpathContext.setLenient(true)</code>.
-In the lenient mode the method merely returns null if the path maps to nothing.
+ A <a href="api/org/apache/commons/jxpath/Container.html">Container</a> is an
+ object implementing an indirection mechanism transparent to JXPath.
+</p>
+<p>
+ For example, if property <code>"foo"</code> of the context node has a Container
+ as its value, the XPath "foo" will produce the contents of that Container,
+ not the container itself.
+</p>
+<p>
+ An example of a useful container is
+ <a href="api/org/apache/commons/jxpath/XMLDocumentContainer.html">XMLDocumentContainer</a>.
+ When you create an XMLDocumentContainer, you give it a pointer to an XML file
+ (a <code>URL</code> or a <code>javax.xml.transform.Source</code>.
+ It will read and parse the XML file only when it is
+ accessed.  You can create XMLDocumentContainers for various XML documents
+ that may or may not be accessed by XPaths.  If they are, they will be automatically
+ read, parsed and traversed. If they are not - they won't be read at all.
+</p>
+<p>
+Let's say we have the the following XML file, which is stored as a Java resource.
+</p>
+<source>
+                                                                       &#xA0;
+    &lt;?xml version="1.0" ?&gt;
+    &lt;vendor&gt;
+      &lt;location id="store101"&gt;
+        &lt;address&gt;
+          &lt;street&gt;Orchard Road&lt;/street&gt;
+        &lt;/address&gt;
+      &lt;/location&gt;
+
+      &lt;location id="store102"&gt;
+        &lt;address&gt;
+          &lt;street&gt;Tangerine Drive&lt;/street&gt;
+        &lt;/address&gt;
+      &lt;/location&gt;
+    &lt;/vendor&gt;
+</source>
+<p>
+Here's the code that makes use of XMLDocumentContainer.
+</p>
+<source>
+                                                                       &#xA0;
+ class Company {
+    private Container locations = null;
+
+    public Container getLocations(){
+        if (locations == null){
+            URL url = getClass().getResource("Vendor.xml");
+            locations = new XMLDocumentContainer(url);
+        }
+        return locations;
+    }
+ }
+ ...
+ context = JXPathContext.newContext(new Company());
+ ...
+ String street = (String)context.getValue(
+                "locations/vendor/location[@id = 'store102']//street");
+</source>
+<p>
+Like was described before, this code will implicitly open and parse the XML
+file and find a value in it according to the XPath.
 </p>
 </subsection>
 
@@ -252,6 +323,7 @@ In the lenient mode the method merely returns null if the path maps to nothing.
      like <code>"para[@type='warning']"</code> are legitimate, they will always produce empty results.
      The only attributes supported for JavaBeans are <code>"name"</code> and <code>"xml:lang"</code>.
 </p>
+
 </section>
 
 <section name="Modifying Object Graphs">
@@ -404,7 +476,64 @@ nodes in object graphs.
  package for an example of just that.
  </p>
  </subsection>
- </section>
+</section>
+
+<section name="Servlet Contexts">
+    <p>
+    The <code>org.apache.commons.jxpath.servlet</code> package contains
+    classes that make it easy to use XPath to access values in various sevlet contexts:
+    "page" (for JSPs), "request", "session" and "application".
+    </p>
+    <p>
+    See static methods of the class
+    <a href="api/org/apache/commons/jxpath/servlet/JXPathServletContexts.html"><code>JXPathServletContexts</code></a>.
+    They allocate various servlet-related JXPathContexts.
+    </p>
+
+    <subsection name="JSP Page Context">
+        <p>
+        The JXPathContext returned by <code>getPageContext(PageContext pageContext)</code>
+        provides access to all scopes via the <code>PageContext.findAttribute()</code>
+        method.  Thus, an expression like <code>"foo"</code> will first look for the attribute
+        named <code>"foo"</code> in the <code>"page"</code> context, then the <code>"request"</code> context, then
+        the <code>"session"</code> one and finally in the <code>"application"</code> context.
+        </p>
+        <p>
+        If you need to limit the attibute lookup to just one scope, you can use the
+        pre-definded variables <code>"page"</code>, <code>"request"</code>,
+        <code>"session"</code> and <code>"application"</code>.
+        For example, the expression <code>"$session/foo"</code> extracts the value of the
+        <i>session</i> attribute named <code>"foo"</code>.
+        </p>
+    </subsection>
+
+    <subsection name="Servlet Request Context">
+        <p>
+        The <code>getRequestContext(ServletRequest request, ServletContext servletContext)</code>
+        method will give you a context that checks the request scope first, then (if there is
+        a session) the session context, then the application context.
+        </p>
+    </subsection>
+
+    <subsection name="HttpSession Context">
+        <p>
+        The <code>getSessionContext(HttpSession session, ServletContext servletContext)</code>
+        method will give you a context that checks the session context, then the application context.
+        </p>
+    </subsection>
+
+    <subsection name="ServletContext Context">
+        <p>
+        Finally, <code>getApplicationContext(ServletContext servletContext)</code>
+        method will give you a context that checks the application context.
+        </p>
+    </subsection>
+
+    <p>
+    All these methods cache the JXPathContexts they create within the corresponding
+    scopes. Subsequent calls use the JXPathContexts created earlier.
+    </p>
+</section>
 
 <section name="Pointers">
 <p>
@@ -667,27 +796,6 @@ the Locale set on the JXPathContext (or the default locale).  See
 </p>
 </section>
 
-<section name="Containers">
-<p>
- A <a href="api/org/apache/commons/jxpath/Container.html">Container</a> is an
- object implementing an indirection mechanism transparent to JXPath.
-
- For example, if property <code>"foo"</code> of the context node has a Container
- as its value, the XPath "foo" will produce the contents of that Container,
- not the container itself.
-</p>
-<p>
- An example of a useful container is
- <a href="api/org/apache/commons/jxpath/XMLDocumentContainer.html">XMLDocumentContainer</a>.
- When you create an XMLDocumentContainer, you give it a pointer to an XML file
- (a <code>URL</code> or a <code>javax.xml.transform.Source</code>.
- It will read and parse the XML file only when it is
- accessed.  You can create XMLDocumentContainers for various XML documents
- that may or may not be accessed by XPaths.  If they are, they will be automatically
- read, parsed and traversed. If they are not - they won't be read at all.
-</p>
-</section>
-
 <section name="Nested Contexts">
  <p>
  If you need to use the same set of variables while interpreting
@@ -771,8 +879,8 @@ the Locale set on the JXPathContext (or the default locale).  See
     models like JavaBeans in mind.  They
     directly support indexed collections.  As a result,
     XPaths like <code>"foo[10]"</code>
-    can be executed as <code>"getFoo(9)"</code> or <code>getFoo()[9]</code>,
-    or <code>getFoo().get(9)</code>,
+    can be executed as <code>"getFoo(9)"</code> or <code>"getFoo()[9]"</code>,
+    or <code>"getFoo().get(9)"</code>,
     depending on the type of collection.  This flexibility
     is disguised well enough by the APIs of the abstract classes,
     so we can still have a natural implementation of traversal of
