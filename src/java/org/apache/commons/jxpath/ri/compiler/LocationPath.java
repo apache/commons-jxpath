@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/LocationPath.java,v 1.6 2003/01/11 05:41:23 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2003/01/11 05:41:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/LocationPath.java,v 1.7 2003/01/19 23:59:24 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/01/19 23:59:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,14 +66,14 @@ import org.apache.commons.jxpath.ri.axes.InitialContext;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.7 $ $Date: 2003/01/19 23:59:24 $
  */
 public class LocationPath extends Path {
 
     private boolean absolute;
 
     public LocationPath(boolean absolute, Step[] steps) {
-        super(Expression.OP_LOCATION_PATH, steps);
+        super(steps);
         this.absolute = absolute;
     }
 
@@ -91,24 +91,15 @@ public class LocationPath extends Path {
 
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("(PATH");
-        if (absolute) {
-            buffer.append("[absolute] ");
-        }
-        else {
-            buffer.append("[relative] ");
-        }
-        Step args[] = getSteps();
-        if (args != null) {
-            buffer.append(' ');
-            for (int i = 0; i < args.length; i++) {
-                if (i > 0) {
-                    buffer.append(", ");
+        Step steps[] = getSteps();
+        if (steps != null) {
+            for (int i = 0; i < steps.length; i++) {
+                if (i > 0 || absolute) {
+                    buffer.append('/');
                 }
-                buffer.append(args[i]);
+                buffer.append(steps[i]);
             }
         }
-        buffer.append(')');
         return buffer.toString();
     }
 

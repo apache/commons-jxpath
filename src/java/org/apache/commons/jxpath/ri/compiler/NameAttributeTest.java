@@ -7,16 +7,16 @@ package org.apache.commons.jxpath.ri.compiler;
  * or maps.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/19 23:59:24 $
  */
-public class NameAttributeTest extends CoreOperation {
+public class NameAttributeTest extends CoreOperationEqual {
 
     public NameAttributeTest(Expression namePath, Expression nameValue) {
-        super(OP_EQ, namePath, nameValue);
+        super(namePath, nameValue);
     }
 
     public Expression getNameTestExpression() {
-        return getArg2();
+        return args[1];
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.6 2003/01/11 05:41:23 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2003/01/11 05:41:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.7 2003/01/19 23:59:24 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/01/19 23:59:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * /bar</code>.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.7 $ $Date: 2003/01/19 23:59:24 $
  */
 public class ExpressionPath extends Path {
 
@@ -89,7 +89,7 @@ public class ExpressionPath extends Path {
         Expression[] predicates,
         Step[] steps) 
     {
-        super(Expression.OP_EXPRESSION_PATH, steps);
+        super(steps);
         this.expression = expression;
         this.predicates = predicates;
     }
@@ -138,11 +138,17 @@ public class ExpressionPath extends Path {
 
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("(EXPRESSION-PATH ");
-        buffer.append(expression);
-
+        if (expression instanceof CoreOperation
+            || expression instanceof ExpressionPath
+            || expression instanceof LocationPath) {
+            buffer.append('(');
+            buffer.append(expression);
+            buffer.append(')');
+        }
+        else {
+            buffer.append(expression);
+        }
         if (predicates != null) {
-            buffer.append(' ');
             for (int i = 0; i < predicates.length; i++) {
                 buffer.append('[');
                 buffer.append(predicates[i]);
@@ -152,15 +158,11 @@ public class ExpressionPath extends Path {
 
         Step steps[] = getSteps();
         if (steps != null) {
-            buffer.append(' ');
             for (int i = 0; i < steps.length; i++) {
-                if (i > 0) {
-                    buffer.append(", ");
-                }
+                buffer.append("/");
                 buffer.append(steps[i]);
             }
         }
-        buffer.append(')');
         return buffer.toString();
     }
 

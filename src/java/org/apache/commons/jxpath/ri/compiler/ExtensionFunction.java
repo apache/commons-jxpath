@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExtensionFunction.java,v 1.6 2003/01/11 05:41:23 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2003/01/11 05:41:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExtensionFunction.java,v 1.7 2003/01/19 23:59:24 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/01/19 23:59:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,14 +73,14 @@ import java.util.Arrays;
  * call.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.7 $ $Date: 2003/01/19 23:59:24 $
  */
 public class ExtensionFunction extends Operation {
 
     private QName functionName;
 
     public ExtensionFunction(QName functionName, Expression args[]) {
-        super(Expression.OP_FUNCTION, args);
+        super(args);
         this.functionName = functionName;
     }
 
@@ -96,10 +96,23 @@ public class ExtensionFunction extends Operation {
         return true;
     }
 
-    public String opCodeToString() {
-        return super.opCodeToString() + ':' + functionName;
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(functionName);
+        buffer.append('(');
+        Expression args[] = getArguments();
+        if (args != null) {
+            for (int i = 0; i < args.length; i++) {
+                if (i > 0) {
+                    buffer.append(", ");
+                }
+                buffer.append(args[i]);
+            }
+        }
+        buffer.append(')');
+        return buffer.toString();
     }
-
+    
     public Object compute(EvalContext context) {
         return computeValue(context);
     }

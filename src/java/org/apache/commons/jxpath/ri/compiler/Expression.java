@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Expression.java,v 1.4 2003/01/11 05:41:23 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2003/01/11 05:41:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Expression.java,v 1.5 2003/01/19 23:59:24 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/19 23:59:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,63 +79,16 @@ import java.util.Locale;
  * provides that hint.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/19 23:59:24 $
  */
 public abstract class Expression {
-
-    public static final int OP_SUM = 1;
-    public static final int OP_MINUS = 2;
-    public static final int OP_MULT = 3;
-    public static final int OP_DIV = 4;
-
-    public static final int OP_CONSTANT = 5;
-    public static final int OP_STEP = 6;
-
-    public static final int OP_AND = 7;
-    public static final int OP_OR = 8;
-
-    public static final int OP_UNARY_MINUS = 9;
-    public static final int OP_MOD = 10;
-
-    public static final int OP_LT = 11;
-    public static final int OP_GT = 12;
-    public static final int OP_LTE = 13;
-    public static final int OP_GTE = 14;
-    public static final int OP_EQ = 15;
-    public static final int OP_NE = 16;
-
-    public static final int OP_VAR = 17;
-
-    public static final int OP_FUNCTION = 18;
-
-    public static final int OP_UNION = 19;
-    public static final int OP_LOCATION_PATH = 20;
-    public static final int OP_EXPRESSION_PATH = 21;
-
-    public static final int OP_CORE_FUNCTION = 22;
-
-    public static final int OP_KEY_LOOKUP = 23;
 
     protected static final Double ZERO = new Double(0);
     protected static final Double ONE = new Double(1);
     protected static final Double NOT_A_NUMBER = new Double(Double.NaN);
 
-    private int typeCode;
-
     private boolean contextDependencyKnown = false;
     private boolean contextDependent;
-
-    protected Expression(int typeCode) {
-        this.typeCode = typeCode;
-    }
-
-    public int getExpressionTypeCode() {
-        return typeCode;
-    }
-
-    protected Expression[] getArguments() {
-        return null;
-    }
 
     /**
      * Returns true if this expression should be re-evaluated
@@ -153,52 +106,6 @@ public abstract class Expression {
      * Implemented by subclasses and result is cached by isContextDependent()
      */
     public abstract boolean computeContextDependent();
-
-    public String toString() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append('(');
-        buffer.append(opCodeToString());
-        Expression args[] = getArguments();
-        if (args != null) {
-            buffer.append(' ');
-            for (int i = 0; i < args.length; i++) {
-                if (i > 0) {
-                    buffer.append(", ");
-                }
-                buffer.append(args[i]);
-            }
-        }
-        buffer.append(')');
-        return buffer.toString();
-    }
-
-    protected String opCodeToString() {
-        switch(typeCode) {
-            case OP_CONSTANT: return "CONST";
-            case OP_STEP: return "STEP";
-            case OP_SUM: return "SUM";
-            case OP_UNION: return "UNION";
-            case OP_MINUS: return "MINUS";
-            case OP_UNARY_MINUS: return "UNARY_MINUS";
-            case OP_MULT: return "MULT";
-            case OP_DIV: return "DIV";
-            case OP_MOD: return "MOD";
-            case OP_AND: return "AND";
-            case OP_OR: return "OR";
-            case OP_LT: return "LT";
-            case OP_GT: return "GT";
-            case OP_LTE: return "LTE";
-            case OP_GTE: return "GTE";
-            case OP_EQ: return "EQ";
-            case OP_NE: return "NE";
-            case OP_VAR: return "VAR";
-            case OP_FUNCTION: return "FUNCTION";
-            case OP_LOCATION_PATH: return "LOCATION_PATH";
-            case OP_EXPRESSION_PATH: return "EXPRESSION_PATH";
-            case OP_CORE_FUNCTION: return "CORE_FUNCTION";
-        }
-        return "UNKNOWN";
-    }
 
     /**
      * Evaluates the expression. If the result is a node set, returns

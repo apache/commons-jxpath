@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/TreeCompiler.java,v 1.6 2003/01/11 05:41:23 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2003/01/11 05:41:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/TreeCompiler.java,v 1.7 2003/01/19 23:59:24 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/01/19 23:59:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,7 +66,7 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.7 $ $Date: 2003/01/19 23:59:24 $
  */
 public class TreeCompiler implements Compiler {
 
@@ -85,63 +85,45 @@ public class TreeCompiler implements Compiler {
     }
 
     public Object sum(Object[] arguments) {
-        return new CoreOperation(
-            Expression.OP_SUM,
-            toExpressionArray(arguments));
+        return new CoreOperationAdd(toExpressionArray(arguments));
     }
 
     public Object minus(Object left, Object right) {
-        return new CoreOperation(
-            Expression.OP_MINUS,
+        return new CoreOperationSubtract(
             (Expression) left,
             (Expression) right);
     }
 
     public Object multiply(Object left, Object right) {
-        return new CoreOperation(
-            Expression.OP_MULT,
-            (Expression) left,
-            (Expression) right);
+        return new CoreOperationMultiply((Expression) left, (Expression) right);
     }
 
     public Object divide(Object left, Object right) {
-        return new CoreOperation(
-            Expression.OP_DIV,
-            (Expression) left,
-            (Expression) right);
+        return new CoreOperationDivide((Expression) left, (Expression) right);
     }
 
     public Object mod(Object left, Object right) {
-        return new CoreOperation(
-            Expression.OP_MOD,
-            (Expression) left,
-            (Expression) right);
+        return new CoreOperationMod((Expression) left, (Expression) right);
     }
 
     public Object lessThan(Object left, Object right) {
-        return new CoreOperation(
-            Expression.OP_LT,
-            (Expression) left,
-            (Expression) right);
+        return new CoreOperationLessThan((Expression) left, (Expression) right);
     }
 
     public Object lessThanOrEqual(Object left, Object right) {
-        return new CoreOperation(
-            Expression.OP_LTE,
+        return new CoreOperationLessThanOrEqual(
             (Expression) left,
             (Expression) right);
     }
 
     public Object greaterThan(Object left, Object right) {
-        return new CoreOperation(
-            Expression.OP_GT,
+        return new CoreOperationGreaterThan(
             (Expression) left,
             (Expression) right);
     }
 
     public Object greaterThanOrEqual(Object left, Object right) {
-        return new CoreOperation(
-            Expression.OP_GTE,
+        return new CoreOperationGreaterThanOrEqual(
             (Expression) left,
             (Expression) right);
     }
@@ -151,24 +133,20 @@ public class TreeCompiler implements Compiler {
             return new NameAttributeTest((Expression) left, (Expression) right);
         }
         else {
-            return new CoreOperation(
-                Expression.OP_EQ,
+            return new CoreOperationEqual(
                 (Expression) left,
                 (Expression) right);
         }
     }
 
     public Object notEqual(Object left, Object right) {
-        return new CoreOperation(
-            Expression.OP_NE,
+        return new CoreOperationNotEqual(
             (Expression) left,
             (Expression) right);
     }
 
     public Object minus(Object argument) {
-        return new CoreOperation(
-            Expression.OP_UNARY_MINUS,
-            (Expression) argument);
+        return new CoreOperationNegate((Expression) argument);
     }
 
     public Object variableReference(Object qName) {
@@ -184,20 +162,17 @@ public class TreeCompiler implements Compiler {
     }
 
     public Object and(Object arguments[]) {
-        return new CoreOperation(
-            Expression.OP_AND,
+        return new CoreOperationAnd(
             toExpressionArray(arguments));
     }
 
     public Object or(Object arguments[]) {
-        return new CoreOperation(
-            Expression.OP_OR,
+        return new CoreOperationOr(
             toExpressionArray(arguments));
     }
 
     public Object union(Object[] arguments) {
-        return new CoreOperation(
-            Expression.OP_UNION,
+        return new CoreOperationUnion(
             toExpressionArray(arguments));
     }
 
@@ -258,7 +233,7 @@ public class TreeCompiler implements Compiler {
     }
 
     private boolean isNameAttributeTest(Expression arg) {
-        if (arg.getExpressionTypeCode() != Expression.OP_LOCATION_PATH) {
+        if (!(arg instanceof LocationPath)) {
             return false;
         }
 

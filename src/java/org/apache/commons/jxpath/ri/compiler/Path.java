@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Path.java,v 1.7 2003/01/11 05:41:23 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/01/11 05:41:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Path.java,v 1.8 2003/01/19 23:59:24 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/01/19 23:59:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -78,7 +78,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.8 $ $Date: 2003/01/19 23:59:24 $
  */
 public abstract class Path extends Expression {
 
@@ -86,8 +86,7 @@ public abstract class Path extends Expression {
     private boolean basicKnown = false;
     private boolean basic;
 
-    public Path(int typeCode, Step[] steps) {
-        super(typeCode);
+    public Path(Step[] steps) {
         this.steps = steps;
     }
 

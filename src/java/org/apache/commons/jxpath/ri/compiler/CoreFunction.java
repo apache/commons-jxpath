@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.9 2003/01/11 05:41:23 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2003/01/11 05:41:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.10 2003/01/19 23:59:23 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2003/01/19 23:59:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * like "position()" or "number()".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.10 $ $Date: 2003/01/19 23:59:23 $
  */
 public class CoreFunction extends Operation {
 
@@ -83,12 +83,74 @@ public class CoreFunction extends Operation {
     private int functionCode;
 
     public CoreFunction(int functionCode, Expression args[]) {
-        super(Expression.OP_CORE_FUNCTION, args);
+        super(args);
         this.functionCode = functionCode;
     }
 
     public int getFunctionCode() {
         return functionCode;
+    }
+    
+    protected String getFunctionName() {
+        switch (functionCode) {
+            case Compiler.FUNCTION_LAST :
+                return "last";
+            case Compiler.FUNCTION_POSITION :
+                return "position";
+            case Compiler.FUNCTION_COUNT :
+                return "count";
+            case Compiler.FUNCTION_ID :
+                return "id";
+            case Compiler.FUNCTION_LOCAL_NAME :
+                return "local-name";
+            case Compiler.FUNCTION_NAMESPACE_URI :
+                return "namespace-uri";
+            case Compiler.FUNCTION_NAME :
+                return "name";
+            case Compiler.FUNCTION_STRING :
+                return "string";
+            case Compiler.FUNCTION_CONCAT :
+                return "concat";
+            case Compiler.FUNCTION_STARTS_WITH :
+                return "starts-with";
+            case Compiler.FUNCTION_CONTAINS :
+                return "contains";
+            case Compiler.FUNCTION_SUBSTRING_BEFORE :
+                return "substring-before";
+            case Compiler.FUNCTION_SUBSTRING_AFTER :
+                return "substring-after";
+            case Compiler.FUNCTION_SUBSTRING :
+                return "substring";
+            case Compiler.FUNCTION_STRING_LENGTH :
+                return "string-length";
+            case Compiler.FUNCTION_NORMALIZE_SPACE :
+                return "normalize-space";
+            case Compiler.FUNCTION_TRANSLATE :
+                return "translate";
+            case Compiler.FUNCTION_BOOLEAN :
+                return "boolean";
+            case Compiler.FUNCTION_NOT :
+                return "not";
+            case Compiler.FUNCTION_TRUE :
+                return "true";
+            case Compiler.FUNCTION_FALSE :
+                return "false";
+            case Compiler.FUNCTION_LANG :
+                return "lang";
+            case Compiler.FUNCTION_NUMBER :
+                return "number";
+            case Compiler.FUNCTION_SUM :
+                return "sum";
+            case Compiler.FUNCTION_FLOOR :
+                return "floor";
+            case Compiler.FUNCTION_CEILING :
+                return "ceiling";
+            case Compiler.FUNCTION_ROUND :
+                return "round";
+            case Compiler.FUNCTION_KEY :
+                return "key";
+        }
+        return "unknownFunction" + functionCode + "()";
     }
 
     public Expression getArg1() {
@@ -157,96 +219,22 @@ public class CoreFunction extends Operation {
 
         return false;
     }
-
-    protected String opCodeToString() {
-        String function = null;
-        switch (functionCode) {
-            case Compiler.FUNCTION_LAST :
-                function = "last";
-                break;
-            case Compiler.FUNCTION_POSITION :
-                function = "position";
-                break;
-            case Compiler.FUNCTION_COUNT :
-                function = "count";
-                break;
-            case Compiler.FUNCTION_ID :
-                function = "id";
-                break;
-            case Compiler.FUNCTION_LOCAL_NAME :
-                function = "local-name";
-                break;
-            case Compiler.FUNCTION_NAMESPACE_URI :
-                function = "namespace-uri";
-                break;
-            case Compiler.FUNCTION_NAME :
-                function = "name";
-                break;
-            case Compiler.FUNCTION_STRING :
-                function = "string";
-                break;
-            case Compiler.FUNCTION_CONCAT :
-                function = "concat";
-                break;
-            case Compiler.FUNCTION_STARTS_WITH :
-                function = "starts-with";
-                break;
-            case Compiler.FUNCTION_CONTAINS :
-                function = "contains";
-                break;
-            case Compiler.FUNCTION_SUBSTRING_BEFORE :
-                function = "substring-before";
-                break;
-            case Compiler.FUNCTION_SUBSTRING_AFTER :
-                function = "substring-after";
-                break;
-            case Compiler.FUNCTION_SUBSTRING :
-                function = "substring";
-                break;
-            case Compiler.FUNCTION_STRING_LENGTH :
-                function = "string-length";
-                break;
-            case Compiler.FUNCTION_NORMALIZE_SPACE :
-                function = "normalize-space";
-                break;
-            case Compiler.FUNCTION_TRANSLATE :
-                function = "translate";
-                break;
-            case Compiler.FUNCTION_BOOLEAN :
-                function = "boolean";
-                break;
-            case Compiler.FUNCTION_NOT :
-                function = "not";
-                break;
-            case Compiler.FUNCTION_TRUE :
-                function = "true";
-                break;
-            case Compiler.FUNCTION_FALSE :
-                function = "false";
-                break;
-            case Compiler.FUNCTION_LANG :
-                function = "lang";
-                break;
-            case Compiler.FUNCTION_NUMBER :
-                function = "number";
-                break;
-            case Compiler.FUNCTION_SUM :
-                function = "sum";
-                break;
-            case Compiler.FUNCTION_FLOOR :
-                function = "floor";
-                break;
-            case Compiler.FUNCTION_CEILING :
-                function = "ceiling";
-                break;
-            case Compiler.FUNCTION_ROUND :
-                function = "round";
-                break;
-            case Compiler.FUNCTION_KEY :
-                function = "key";
-                break;
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(getFunctionName());
+        buffer.append('(');
+        Expression args[] = getArguments();
+        if (args != null) {
+            for (int i = 0; i < args.length; i++) {
+                if (i > 0) {
+                    buffer.append(", ");
+                }
+                buffer.append(args[i]);
+            }
         }
-        return super.opCodeToString() + ':' + function;
+        buffer.append(')');
+        return buffer.toString();
     }
 
     public Object compute(EvalContext context) {

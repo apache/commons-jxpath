@@ -1,13 +1,7 @@
-/*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/VariableReference.java,v 1.6 2003/01/19 23:59:24 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2003/01/19 23:59:24 $
- *
- * ====================================================================
+/* ====================================================================
  * The Apache Software License, Version 1.1
  *
- *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +30,7 @@
  *
  * 5. Products derived from this software may not be called "Apache"
  *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
+ *    permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -53,55 +47,42 @@
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation and was
- * originally based on software copyright (c) 2001, Plotnix, Inc,
- * <http://www.plotnix.com/>.
- * For more information on the Apache Software Foundation, please see
+ * individuals on behalf of the Apache Software Foundation.  For more
+ * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
- * An element of the compile tree holding a variable reference.
+ * Implementation of Expression for the operation "&gt;".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/01/19 23:59:24 $
+ * @version $Revision: 1.1 $ $Date: 2003/01/19 23:59:24 $
  */
-public class VariableReference extends Expression {
+public class CoreOperationGreaterThan extends CoreOperation {
 
-    private QName varName;
-
-    public VariableReference(QName varName) {
-        this.varName = varName;
+    public CoreOperationGreaterThan(Expression arg1, Expression arg2) {
+        super(new Expression[] { arg1, arg2 });
     }
 
-    public QName getVariableName() {
-        return varName;
-    }
-
-    public String toString() {
-        return "$" + varName;
-    }
-
-    public boolean isContextDependent() {
-        return false;
-    }
-
-    public boolean computeContextDependent() {
-        return false;
-    }
-
-    public Object compute(EvalContext context) {
-        return computeValue(context);
-    }
-
-    /**
-     * Returns the value of the variable.
-     */
     public Object computeValue(EvalContext context) {
-        return context.getRootContext().getVariableContext(varName);
+        double l = InfoSetUtil.doubleValue(args[0].computeValue(context));
+        double r = InfoSetUtil.doubleValue(args[1].computeValue(context));
+        return l > r ? Boolean.TRUE : Boolean.FALSE;
+    }
+    
+    protected int getPrecedence() {
+        return 3;
+    }
+
+    protected boolean isSymmetric() {
+        return false;
+    }
+    
+    public String getSymbol() {
+        return ">";
     }
 }

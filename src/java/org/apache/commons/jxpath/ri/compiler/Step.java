@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Step.java,v 1.5 2003/01/11 05:41:23 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/01/11 05:41:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Step.java,v 1.6 2003/01/19 23:59:24 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/19 23:59:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,7 +65,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/19 23:59:24 $
  */
 public class Step {
     private int axis;
@@ -103,9 +103,38 @@ public class Step {
 
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(axisToString(getAxis()));
-        buffer.append("::");
-        buffer.append(nodeTest);
+        int axis = getAxis();
+        if (axis == Compiler.AXIS_CHILD) {
+            buffer.append(nodeTest);
+        }
+        else if (axis == Compiler.AXIS_ATTRIBUTE) {
+            buffer.append('@');
+            buffer.append(nodeTest);
+        }
+        else if (axis == Compiler.AXIS_SELF
+                && nodeTest instanceof NodeTypeTest
+                && ((NodeTypeTest) nodeTest).getNodeType()
+                    == Compiler.NODE_TYPE_NODE) {
+            buffer.append(".");
+        }
+        else if (axis == Compiler.AXIS_PARENT
+                && nodeTest instanceof NodeTypeTest
+                && ((NodeTypeTest) nodeTest).getNodeType()
+                    == Compiler.NODE_TYPE_NODE) {
+            buffer.append("..");
+        }
+        else if (axis == Compiler.AXIS_DESCENDANT_OR_SELF
+                && nodeTest instanceof NodeTypeTest
+                && ((NodeTypeTest) nodeTest).getNodeType()
+                    == Compiler.NODE_TYPE_NODE 
+                && (predicates == null || predicates.length == 0)) {
+            buffer.append("");
+        }
+        else {
+            buffer.append(axisToString(axis));
+            buffer.append("::");
+            buffer.append(nodeTest);
+        }
         Expression[] predicates = getPredicates();
         if (predicates != null) {
             for (int i = 0; i < predicates.length; i++) {
