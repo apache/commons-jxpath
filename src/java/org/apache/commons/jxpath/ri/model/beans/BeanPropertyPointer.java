@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.5 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.6 2002/08/10 01:44:30 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/08/10 01:44:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.6 $ $Date: 2002/08/10 01:44:30 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
@@ -186,8 +186,11 @@ public class BeanPropertyPointer extends PropertyPointer {
                 if (index == WHOLE_COLLECTION){
                     value = ValueUtils.getValue(getBean(), pd);
                 }
-                else {
+                else if (index >= 0 && index < getLength()){
                     value = ValueUtils.getValue(getBean(), pd, index);
+                }
+                else {
+                    value = null;
                 }
             }
         }
