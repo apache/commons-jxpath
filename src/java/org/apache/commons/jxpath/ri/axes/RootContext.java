@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.11 2003/03/11 00:59:20 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2003/03/11 00:59:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.12 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,6 +63,7 @@ package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.ri.QName;
@@ -72,7 +73,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that is used to hold the root node for the path traversal.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2003/03/11 00:59:20 $
+ * @version $Revision: 1.12 $ $Date: 2003/03/25 02:41:34 $
  */
 public class RootContext extends EvalContext {
     private JXPathContextReferenceImpl jxpathContext;
@@ -124,6 +125,12 @@ public class RootContext extends EvalContext {
     }
 
     public EvalContext getConstantContext(Object constant) {
+        if (constant instanceof NodeSet) {
+            return new NodeSetContext(
+                new RootContext(jxpathContext, null),
+                (NodeSet) constant);
+        }
+                
         NodePointer pointer;
         if (constant instanceof NodePointer) {
             pointer = (NodePointer) constant;

@@ -250,6 +250,7 @@ public class SimplePathInterpreter {
             // execute remaining steps for each node,
             // looking for the best quality match
             int bestQuality = 0;
+            childPointer = (NodePointer) childPointer.clone();
             NodePointer bestMatch = null;
             int count = childPointer.getLength();
             for (int i = 0; i < count; i++) {
@@ -525,13 +526,11 @@ public class SimplePathInterpreter {
             //  if so - proceed to the next predicate
             NodePointer bestMatch = null;
             int bestQuality = 0;
+            child = (NodePointer) child.clone();
             int count = child.getLength();
             for (int i = 0; i < count; i++) {
                 child.setIndex(i);
                 NodePointer valuePointer = valuePointer(child);
-                if (valuePointer == child) {
-                    valuePointer = (NodePointer) child.clone();
-                }
                 NodePointer pointer;
                 if ((valuePointer instanceof PropertyOwnerPointer)
                     || valuePointer.isCollection()) {
@@ -672,6 +671,7 @@ public class SimplePathInterpreter {
         int index = indexFromPredicate(context, predicate);
         NodePointer pointer = parent;
         if (isCollectionElement(pointer, index)) {
+            pointer = (NodePointer) pointer.clone();
             pointer.setIndex(index);
             return doPredicate(
                 context,

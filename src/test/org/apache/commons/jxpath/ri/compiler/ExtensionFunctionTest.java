@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.7 2003/03/11 00:59:36 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/03/11 00:59:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.8 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,7 +83,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/03/11 00:59:36 $
+ * @version $Revision: 1.8 $ $Date: 2003/03/25 02:41:34 $
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase {
@@ -290,7 +290,9 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         // Two ClassFunctions are sharing the same prefix.
         // This is TestFunctions2
         assertXPathValue(context, "string(test:increment(8))", "9");
-
+        
+        // See that a NodeSet gets properly converted to a string
+        assertXPathValue(context, "test:string(/beans/name)", "Name 1");
     }
 
     public void testExpressionContext() {
@@ -330,6 +332,52 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             context,
             "/beans[contains(test:path(), '[2]')]/name",
             "Name 2");
+    }
+    
+    public void testCollectionReturn() {
+        assertXPathValueIterator(
+            context,
+            "test:collection()/name",
+            list("foo", "bar"));
+
+        assertXPathPointerIterator(
+            context,
+            "test:collection()/name",
+            list("/.[1]/name", "/.[2]/name"));
+            
+        assertXPathValue(
+            context,
+            "test:collection()/name",
+            "foo");        
+
+        assertXPathValue(
+            context,
+            "test:collection()/@name",
+            "foo");        
+    }
+
+    public void testNodeSetReturn() {
+        assertXPathValueIterator(
+            context,
+            "test:nodeSet()/name",
+            list("Name 1", "Name 2"));
+
+        assertXPathPointerIterator(
+            context,
+            "test:nodeSet()/name",
+            list("/beans[1]/name", "/beans[2]/name"));
+            
+        assertXPathValueAndPointer(
+            context,
+            "test:nodeSet()/name",
+            "Name 1",
+            "/beans[1]/name");        
+
+        assertXPathValueAndPointer(
+            context,
+            "test:nodeSet()/@name",
+            "Name 1",
+            "/beans[1]/@name");
     }
 
     private static class Context implements ExpressionContext {

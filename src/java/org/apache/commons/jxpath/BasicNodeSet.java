@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.11 2003/03/25 02:41:34 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2003/03/25 02:41:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/BasicNodeSet.java,v 1.1 2003/03/25 02:41:33 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2003/03/25 02:41:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,67 +59,65 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.axes;
+package org.apache.commons.jxpath;
 
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.model.NodePointer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * A single-set EvalContext that provides access to the current node of
- * the parent context and nothing else.  It does not pass the iteration
- * on to the parent context.
- *
+ * A simple implementation of NodeSet that behaves as a collection of pointers. 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2003/03/25 02:41:34 $
+ * @version $Revision: 1.1 $ $Date: 2003/03/25 02:41:33 $
  */
-public class InitialContext extends EvalContext {
-    private boolean startedSet = false;
-    private boolean started = false;
-    private boolean collection;
-    private NodePointer nodePointer;
+public class BasicNodeSet implements NodeSet {
+    private List pointers = new ArrayList();
+    private List readOnlyPointers;
+    private List nodes;
+    private List values;
 
-    public InitialContext(EvalContext parentContext) {
-        super(parentContext);
-        nodePointer =
-            (NodePointer) parentContext.getCurrentNodePointer().clone();
-        if (nodePointer != null) {
-            collection =
-                (nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION);
+    public void add(Pointer pointer) {
+        pointers.add(pointer);
+        readOnlyPointers = null;
+    }
+    
+    public void remove(Pointer pointer) {
+        pointers.remove(pointer);
+        readOnlyPointers = null;
+    }
+    
+    public List getPointers() {
+        if (readOnlyPointers == null) {
+            readOnlyPointers = Collections.unmodifiableList(pointers);
         }
+        return readOnlyPointers;
     }
 
-    public Pointer getSingleNodePointer() {
-        return nodePointer;
-    }
-
-    public NodePointer getCurrentNodePointer() {
-        return nodePointer;
-    }
-
-    public boolean nextNode() {
-        return setPosition(position + 1);
-    }
-
-    public boolean setPosition(int position) {
-        this.position = position;
-        if (collection) {
-            if (position >= 1 && position <= nodePointer.getLength()) {
-                nodePointer.setIndex(position - 1);
-                return true;
+    public List getNodes() {
+        if (nodes == null) {
+            nodes = new ArrayList();
+            for (int i = 0; i < pointers.size(); i++) {
+                Pointer pointer = (Pointer) pointers.get(i);
+                nodes.add(pointer.getValue());
             }
-            return false;
+            nodes = Collections.unmodifiableList(nodes);
         }
-        else {
-            return position == 1;
-        }
+        return nodes;
     }
 
-    public boolean nextSet() {
-        if (started) {
-            return false;
+    public List getValues() {
+        if (values == null) {
+            values = new ArrayList();
+            for (int i = 0; i < pointers.size(); i++) {
+                Pointer pointer = (Pointer) pointers.get(i);
+                values.add(pointer.getValue());
+            }
+            values = Collections.unmodifiableList(values);
         }
-        started = true;
-        return true;
+        return values;
+    }
+    
+    public String toString() {
+        return pointers.toString();
     }
 }

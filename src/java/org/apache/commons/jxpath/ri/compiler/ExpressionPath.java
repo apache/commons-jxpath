@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.8 2003/03/11 00:59:22 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2003/03/11 00:59:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.9 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,6 +63,7 @@ package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.axes.InitialContext;
+import org.apache.commons.jxpath.ri.axes.NodeSetContext;
 import org.apache.commons.jxpath.ri.axes.PredicateContext;
 import org.apache.commons.jxpath.ri.axes.SimplePathInterpreter;
 import org.apache.commons.jxpath.ri.axes.UnionContext;
@@ -74,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * /bar</code>.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2003/03/11 00:59:22 $
+ * @version $Revision: 1.9 $ $Date: 2003/03/25 02:41:34 $
  */
 public class ExpressionPath extends Path {
 
@@ -202,7 +203,7 @@ public class ExpressionPath extends Path {
 
         if (firstMatch
             && isSimpleExpressionPath()
-            && !(context instanceof UnionContext)) {
+            && !(context instanceof NodeSetContext)) {
             EvalContext ctx = context;
             NodePointer ptr = (NodePointer) ctx.getSingleNodePointer();
             if (ptr != null

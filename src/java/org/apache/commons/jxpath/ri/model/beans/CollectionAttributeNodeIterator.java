@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.11 2003/03/25 02:41:34 dmitri Exp $
- * $Revision: 1.11 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionAttributeNodeIterator.java,v 1.1 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
@@ -58,68 +58,32 @@
  * <http://www.plotnix.com/>.
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- */
-package org.apache.commons.jxpath.ri.axes;
+ */package org.apache.commons.jxpath.ri.model.beans;
 
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * A single-set EvalContext that provides access to the current node of
- * the parent context and nothing else.  It does not pass the iteration
- * on to the parent context.
+ * Combines attribute node iterators of all elements of a collection into one
+ * aggregate attribute node iterator.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2003/03/25 02:41:34 $
+ * @version $Revision: 1.1 $ $Date: 2003/03/25 02:41:34 $
  */
-public class InitialContext extends EvalContext {
-    private boolean startedSet = false;
-    private boolean started = false;
-    private boolean collection;
-    private NodePointer nodePointer;
+public class CollectionAttributeNodeIterator extends CollectionNodeIterator {
 
-    public InitialContext(EvalContext parentContext) {
-        super(parentContext);
-        nodePointer =
-            (NodePointer) parentContext.getCurrentNodePointer().clone();
-        if (nodePointer != null) {
-            collection =
-                (nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION);
-        }
+    private QName name;
+
+    public CollectionAttributeNodeIterator(
+        CollectionPointer pointer,
+        QName name) 
+    {
+        super(pointer, false, null);
+        this.name = name;
     }
 
-    public Pointer getSingleNodePointer() {
-        return nodePointer;
-    }
-
-    public NodePointer getCurrentNodePointer() {
-        return nodePointer;
-    }
-
-    public boolean nextNode() {
-        return setPosition(position + 1);
-    }
-
-    public boolean setPosition(int position) {
-        this.position = position;
-        if (collection) {
-            if (position >= 1 && position <= nodePointer.getLength()) {
-                nodePointer.setIndex(position - 1);
-                return true;
-            }
-            return false;
-        }
-        else {
-            return position == 1;
-        }
-    }
-
-    public boolean nextSet() {
-        if (started) {
-            return false;
-        }
-        started = true;
-        return true;
+    protected NodeIterator getElementNodeIterator(NodePointer elementPointer) {
+        return elementPointer.attributeIterator(name);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/util/BasicTypeConverterTest.java,v 1.3 2003/03/11 00:59:40 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2003/03/11 00:59:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/util/BasicTypeConverterTest.java,v 1.4 2003/03/25 02:41:35 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/03/25 02:41:35 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,16 +65,20 @@ package org.apache.commons.jxpath.util;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.jxpath.NodeSet;
+import org.apache.commons.jxpath.Pointer;
+
 /**
  * Tests BasicTypeConverter
  * 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/03/11 00:59:40 $
+ * @version $Revision: 1.4 $ $Date: 2003/03/25 02:41:35 $
  */
 
 public class BasicTypeConverterTest extends TestCase {
@@ -144,4 +148,69 @@ public class BasicTypeConverterTest extends TestCase {
             expected,
             result);
     }
+    
+    public void testSingletonCollectionToString() {
+        assertConversion(Collections.singleton("Earth"), String.class, "Earth");
+    }
+
+    public void testSingletonArrayToString() {
+        assertConversion(new String[] { "Earth" }, String.class, "Earth");
+    }
+
+    public void testPointerToString() {
+        assertConversion(new Pointer() {
+            public Object getValue() {
+                return "value";
+            }
+            public Object getNode() {
+                return null;
+            }
+            public void setValue(Object value) {
+            }
+            public Object getRootNode() {
+                return null;
+            }
+            public String asPath() {
+                return null;
+            }
+            public Object clone() {
+                return null;
+            }
+            public int compareTo(Object o) {
+                return 0;
+            }
+        }, String.class, "value");
+    }
+
+    public void testNodeSetToString() {
+        assertConversion(new NodeSet() {
+            public List getNodes() {
+                return null;
+            }
+            public List getPointers() {
+                return null;
+            }
+            public List getValues() {
+                List list = new ArrayList();
+                list.add("hello");
+                list.add("goodbye");
+                return Collections.singletonList(list);
+            }
+        }, String.class, "hello");
+    }
+
+    // succeeds in current version
+    public void testNodeSetToInteger() {
+        assertConversion(new NodeSet() {
+            public List getNodes() {
+                return null;
+            }
+            public List getPointers() {
+                return null;
+            }
+            public List getValues() {
+                return Collections.singletonList("9");
+            }
+        }, Integer.class, new Integer(9));
+    }    
 }

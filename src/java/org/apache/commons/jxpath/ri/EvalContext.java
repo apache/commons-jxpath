@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.23 2003/03/11 00:59:18 dmitri Exp $
- * $Revision: 1.23 $
- * $Date: 2003/03/11 00:59:18 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.24 2003/03/25 02:41:33 dmitri Exp $
+ * $Revision: 1.24 $
+ * $Date: 2003/03/25 02:41:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,6 +69,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.jxpath.BasicNodeSet;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
@@ -85,7 +86,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.23 $ $Date: 2003/03/11 00:59:18 $
+ * @version $Revision: 1.24 $ $Date: 2003/03/25 02:41:33 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
@@ -176,7 +177,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
                 throw new NoSuchElementException();
             }
             hasPerformedIteratorStep = false;
-            return (NodePointer) getCurrentNodePointer().clone();
+            return getCurrentNodePointer();
         }
     }
 
@@ -214,9 +215,9 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             while (nextNode()) {
                 NodePointer pointer = getCurrentNodePointer();
                 if (!set.contains(pointer)) {
-                    Pointer cln = (Pointer) pointer.clone();
-                    set.add(cln);
-                    list.add(cln);
+//                    Pointer cln = (Pointer) pointer.clone();
+                    set.add(pointer);
+                    list.add(pointer);
                 }
             }
         }
@@ -268,8 +269,14 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
                     + "should not request pointer list while "
                     + "iterating over an EvalContext");
         }
-        
-        return new SimpleNodeSet();
+        BasicNodeSet set = new BasicNodeSet();
+        while (nextSet()) {
+            while (nextNode()) {
+                set.add(getCurrentNodePointer());
+            }
+        }
+
+        return set;
     }
 
     public String toString() {
@@ -376,50 +383,4 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         this.position = position;
         return true;
     }
-    
-    class SimpleNodeSet implements NodeSet {
-        private List pointers;
-        private List nodes;
-        private List values;
-
-        public SimpleNodeSet() {
-            pointers = new ArrayList();
-            while (nextSet()) {
-                while (nextNode()) {
-                    pointers.add(getCurrentNodePointer());
-                }
-            }
-        }
-
-        public List getPointers() {
-            return Collections.unmodifiableList(pointers);
-        }
-
-        public List getNodes() {
-            if (nodes == null) {
-                List pointers = getPointers();
-                nodes = new ArrayList();
-                for (int i = 0; i < pointers.size(); i++) {
-                    Pointer pointer = (Pointer) pointers.get(i);
-                    nodes.add(pointer.getValue());
-                }
-                nodes = Collections.unmodifiableList(nodes);
-            }
-            return nodes;
-        }
-
-        public List getValues() {
-            if (values == null) {
-                List pointers = getPointers();
-                values = new ArrayList();
-                for (int i = 0; i < pointers.size(); i++) {
-                    Pointer pointer = (Pointer) pointers.get(i);
-                    values.add(pointer.getValue());
-                }
-                values = Collections.unmodifiableList(values);
-            }
-            return values;
-        }
-    }
-    
 }

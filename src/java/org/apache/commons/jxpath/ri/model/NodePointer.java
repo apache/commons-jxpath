@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.17 2003/03/11 00:59:23 dmitri Exp $
- * $Revision: 1.17 $
- * $Date: 2003/03/11 00:59:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.18 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.18 $
+ * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,7 +81,7 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * attribute and only simple, context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2003/03/11 00:59:23 $
+ * @version $Revision: 1.18 $ $Date: 2003/03/25 02:41:34 $
  */
 public abstract class NodePointer implements Pointer {
 
@@ -325,9 +325,9 @@ public abstract class NodePointer implements Pointer {
         return getValuePointer().getImmediateNode();
     }
     
-    public Object getRootNode(){
+    public Object getRootNode() {
         if (rootNode == null) {
-            if (parent != null){
+            if (parent != null) {
                 rootNode = parent.getRootNode();
             }
             else {
@@ -369,6 +369,10 @@ public abstract class NodePointer implements Pointer {
             }
             QName testName = ((NodeNameTest) test).getNodeName();
             QName nodeName = getName();
+            if (nodeName == null) {
+                return false;
+            }
+            
             String testPrefix = testName.getPrefix();
             String nodePrefix = nodeName.getPrefix();
             if (!equalStrings(testPrefix, nodePrefix)) {

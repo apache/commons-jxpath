@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.11 2003/03/25 02:41:34 dmitri Exp $
- * $Revision: 1.11 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionNodeIterator.java,v 1.1 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
@@ -58,68 +58,101 @@
  * <http://www.plotnix.com/>.
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- */
-package org.apache.commons.jxpath.ri.axes;
+ */package org.apache.commons.jxpath.ri.model.beans;
 
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.EvalContext;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * A single-set EvalContext that provides access to the current node of
- * the parent context and nothing else.  It does not pass the iteration
- * on to the parent context.
+ * Combines node iterators of all elements of a collection into one
+ * aggregate node iterator.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2003/03/25 02:41:34 $
+ * @version $Revision: 1.1 $ $Date: 2003/03/25 02:41:34 $
  */
-public class InitialContext extends EvalContext {
-    private boolean startedSet = false;
-    private boolean started = false;
-    private boolean collection;
-    private NodePointer nodePointer;
+public abstract class CollectionNodeIterator implements NodeIterator {
+    private CollectionPointer pointer;
+    private boolean reverse;
+    private NodePointer startWith; 
+    private int position;
+    private List collection;
 
-    public InitialContext(EvalContext parentContext) {
-        super(parentContext);
-        nodePointer =
-            (NodePointer) parentContext.getCurrentNodePointer().clone();
-        if (nodePointer != null) {
-            collection =
-                (nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION);
-        }
+    protected CollectionNodeIterator(
+        CollectionPointer pointer,
+        boolean reverse,
+        NodePointer startWith) 
+    {
+        this.pointer = pointer;
+        this.reverse = reverse;
+        this.startWith = startWith;
     }
+    
+    /**
+     * Implemened by subclasses to produce child/attribute node iterators.
+     */
+    protected abstract NodeIterator 
+            getElementNodeIterator(NodePointer elementPointer);
 
-    public Pointer getSingleNodePointer() {
-        return nodePointer;
-    }
-
-    public NodePointer getCurrentNodePointer() {
-        return nodePointer;
-    }
-
-    public boolean nextNode() {
-        return setPosition(position + 1);
+    public int getPosition() {
+        return position;
     }
 
     public boolean setPosition(int position) {
-        this.position = position;
-        if (collection) {
-            if (position >= 1 && position <= nodePointer.getLength()) {
-                nodePointer.setIndex(position - 1);
-                return true;
-            }
+        if (collection == null) {
+            prepare();
+        }
+        
+        if (position < 1 || position > collection.size()) {
             return false;
         }
-        else {
-            return position == 1;
-        }
+        this.position = position;
+        return true;
     }
 
-    public boolean nextSet() {
-        if (started) {
-            return false;
+    public NodePointer getNodePointer() {
+        if (position == 0) {
+            return null;
         }
-        started = true;
-        return true;
+        return (NodePointer) collection.get(position - 1);
+    }
+    
+    private void prepare() {
+        collection = new ArrayList();
+        NodePointer ptr = (NodePointer) pointer.clone();
+        int length = ptr.getLength();
+        for (int i = 0; i < length; i++) {
+            ptr.setIndex(i);
+            NodePointer elementPointer = ptr.getValuePointer();
+            NodeIterator iter = getElementNodeIterator(elementPointer);
+
+            for (int j = 1; iter.setPosition(j); j++) {
+                NodePointer childPointer = iter.getNodePointer();
+                if (reverse) {
+                    collection.add(0, childPointer);
+                }
+                else {
+                    collection.add(childPointer);
+                }
+            }
+        }
+        if (startWith != null) {
+            int index = collection.indexOf(startWith);
+            if (index == -1) {
+                throw new JXPathException(
+                    "Invalid starting pointer for iterator: " + startWith);
+            }
+            while (collection.size() > index) {
+                if (!reverse) {
+                    collection.remove(collection.size() - 1);
+                }
+                else {
+                    collection.remove(0);
+                }
+            }
+        }
     }
 }

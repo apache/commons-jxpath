@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.11 2003/03/25 02:41:34 dmitri Exp $
- * $Revision: 1.11 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/NodeSetContext.java,v 1.1 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
@@ -61,65 +61,52 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * A single-set EvalContext that provides access to the current node of
- * the parent context and nothing else.  It does not pass the iteration
- * on to the parent context.
+ * A simple context that is based on a NodeSet.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2003/03/25 02:41:34 $
+ * @version $Revision: 1.1 $ $Date: 2003/03/25 02:41:34 $
  */
-public class InitialContext extends EvalContext {
+public class NodeSetContext extends EvalContext {
     private boolean startedSet = false;
-    private boolean started = false;
-    private boolean collection;
-    private NodePointer nodePointer;
+    private NodeSet nodeSet;
 
-    public InitialContext(EvalContext parentContext) {
+    public NodeSetContext(EvalContext parentContext, NodeSet nodeSet) {
         super(parentContext);
-        nodePointer =
-            (NodePointer) parentContext.getCurrentNodePointer().clone();
-        if (nodePointer != null) {
-            collection =
-                (nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION);
-        }
+        this.nodeSet = nodeSet;
     }
-
-    public Pointer getSingleNodePointer() {
-        return nodePointer;
+    
+    public NodeSet getNodeSet() {
+        return nodeSet;
     }
 
     public NodePointer getCurrentNodePointer() {
-        return nodePointer;
+        if (position == 0) {
+            if (!setPosition(1)) {
+                return null;
+            }
+        }
+        return (NodePointer) nodeSet.getPointers().get(position - 1);
+    }
+
+    public boolean setPosition(int position) {
+        super.setPosition(position);
+        return position >= 1 && position <= nodeSet.getPointers().size();
+    }
+
+    public boolean nextSet() {
+        if (startedSet) {
+            return false;
+        }
+        startedSet = true;
+        return true;
     }
 
     public boolean nextNode() {
         return setPosition(position + 1);
-    }
-
-    public boolean setPosition(int position) {
-        this.position = position;
-        if (collection) {
-            if (position >= 1 && position <= nodePointer.getLength()) {
-                nodePointer.setIndex(position - 1);
-                return true;
-            }
-            return false;
-        }
-        else {
-            return position == 1;
-        }
-    }
-
-    public boolean nextSet() {
-        if (started) {
-            return false;
-        }
-        started = true;
-        return true;
     }
 }

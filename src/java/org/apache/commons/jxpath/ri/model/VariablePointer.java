@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.14 2003/03/11 00:59:23 dmitri Exp $
- * $Revision: 1.14 $
- * $Date: 2003/03/11 00:59:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.15 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.15 $
+ * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2003/03/11 00:59:23 $
+ * @version $Revision: 1.15 $ $Date: 2003/03/25 02:41:34 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
@@ -229,7 +229,9 @@ public class VariablePointer extends NodePointer {
                 throw new JXPathException(
                     "Factory could not create object path: " + asPath());
             }
-            setIndex(index);
+            NodePointer cln = (NodePointer) clone();
+            cln.setIndex(index);
+            return cln;
         }
         return this;
     }

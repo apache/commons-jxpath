@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.9 2003/03/11 00:59:25 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2003/03/11 00:59:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.10 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Examples of such objects are JavaBeans and objects with Dynamic Properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2003/03/11 00:59:25 $
+ * @version $Revision: 1.10 $ $Date: 2003/03/25 02:41:34 $
  */
 public class PropertyIterator implements NodeIterator {
     private boolean empty = false;
@@ -91,7 +91,8 @@ public class PropertyIterator implements NodeIterator {
         boolean reverse,
         NodePointer startWith) 
     {
-        propertyNodePointer = pointer.getPropertyPointer();
+        propertyNodePointer =
+            (PropertyPointer) pointer.getPropertyPointer().clone();
         this.name = name;
         this.reverse = reverse;
         this.includeStart = true;
@@ -149,8 +150,7 @@ public class PropertyIterator implements NodeIterator {
             }
         }
         try {
-            NodePointer clone = (NodePointer) propertyNodePointer.clone();
-            return clone.getValuePointer();
+            return propertyNodePointer.getValuePointer();
         }
         catch (Throwable ex) {
             // @todo: should this exception be reported in any way?

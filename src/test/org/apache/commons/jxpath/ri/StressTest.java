@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.11 2003/03/25 02:41:34 dmitri Exp $
- * $Revision: 1.11 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/StressTest.java,v 1.1 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
@@ -59,67 +59,80 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.axes;
 
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.model.NodePointer;
+package org.apache.commons.jxpath.ri;
+
+import junit.framework.TestCase;
+
+import org.apache.commons.jxpath.JXPathContext;
 
 /**
- * A single-set EvalContext that provides access to the current node of
- * the parent context and nothing else.  It does not pass the iteration
- * on to the parent context.
+ * Test thread safety.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2003/03/25 02:41:34 $
+ * @version $Revision: 1.1 $ $Date: 2003/03/25 02:41:34 $
  */
-public class InitialContext extends EvalContext {
-    private boolean startedSet = false;
-    private boolean started = false;
-    private boolean collection;
-    private NodePointer nodePointer;
 
-    public InitialContext(EvalContext parentContext) {
-        super(parentContext);
-        nodePointer =
-            (NodePointer) parentContext.getCurrentNodePointer().clone();
-        if (nodePointer != null) {
-            collection =
-                (nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION);
+public class StressTest extends TestCase {
+    
+    private static final int THREAD_COUNT = 50;
+    private static final int THREAD_DURATION = 1000;
+    private static JXPathContext context;
+    private static int count;
+    private static Throwable exception;
+        
+    /**
+     * Construct a new instance of this test case.
+     *
+     * @param name Name of the test case
+     */
+    public StressTest(String name) {
+        super(name);
+    }
+
+    public void testThreads() throws Throwable {
+        context = JXPathContext.newContext(null, new Double(100));
+        Thread[] threadArray = new Thread[THREAD_COUNT];
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            threadArray[i] = new Thread(new StressRunnable());
         }
-    }
+        
+        for (int i = 0; i < threadArray.length; i++) {
+            threadArray[i].start();
+        }
 
-    public Pointer getSingleNodePointer() {
-        return nodePointer;
-    }
-
-    public NodePointer getCurrentNodePointer() {
-        return nodePointer;
-    }
-
-    public boolean nextNode() {
-        return setPosition(position + 1);
-    }
-
-    public boolean setPosition(int position) {
-        this.position = position;
-        if (collection) {
-            if (position >= 1 && position <= nodePointer.getLength()) {
-                nodePointer.setIndex(position - 1);
-                return true;
+        for (int i = 0; i < threadArray.length; i++) {
+            try {
+                threadArray[i].join();
             }
-            return false;
+            catch (InterruptedException e) {
+                assertTrue("Interrupted", false);
+            }
         }
-        else {
-            return position == 1;
-        }
-    }
 
-    public boolean nextSet() {
-        if (started) {
-            return false;
+        if (exception != null) {
+            throw exception;
         }
-        started = true;
-        return true;
+        assertEquals("Test count", THREAD_COUNT * THREAD_DURATION, count);
+    }    
+
+    private final class StressRunnable implements Runnable {
+        public void run() {
+            for (int j = 0; j < THREAD_DURATION && exception == null; j++) {
+                try { 
+                    double random = 1 + Math.random();
+                    double sum =
+                        ((Double) context.getValue("/ + " + random))
+                            .doubleValue();
+                    assertEquals(100 + random, sum, 0.0001);
+                    synchronized (context) {
+                        count++;
+                    }
+                }                    
+                catch (Throwable t) {
+                    exception = t;
+                }
+            }
+        }
     }
 }

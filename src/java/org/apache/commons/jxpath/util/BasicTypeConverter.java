@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.7 2003/03/11 00:59:34 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/03/11 00:59:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.8 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.NodeSet;
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/03/11 00:59:34 $
+ * @version $Revision: 1.8 $ $Date: 2003/03/25 02:41:34 $
  */
 public class BasicTypeConverter implements TypeConverter {
 
@@ -157,9 +157,14 @@ public class BasicTypeConverter implements TypeConverter {
             else if (Collection.class.isAssignableFrom(toType)) {
                 return canCreateCollection(toType);
             }
-            else if (Array.getLength(object) == 1) {
-                Object value = Array.get(object, 0);
-                return canConvert(value, toType);
+            else {
+                if (Array.getLength(object) > 0) {
+                    Object value = Array.get(object, 0);
+                    return canConvert(value, toType);
+                }
+                else {
+                    return canConvert("", toType);
+                }
             }
         }
         else if (object instanceof Collection) {
@@ -178,16 +183,21 @@ public class BasicTypeConverter implements TypeConverter {
             else if (Collection.class.isAssignableFrom(toType)) {
                 return canCreateCollection(toType);
             }
-            else if (((Collection) object).size() == 1) {
-                Object value;
-                if (object instanceof List) {
-                    value = ((List) object).get(0);
+            else {
+                if (((Collection) object).size() > 0) {
+                    Object value;
+                    if (object instanceof List) {
+                        value = ((List) object).get(0);
+                    }
+                    else {
+                        Iterator it = ((Collection) object).iterator();
+                        value = it.next();
+                    }
+                    return canConvert(value, toType);
                 }
                 else {
-                    Iterator it = ((Collection) object).iterator();
-                    value = it.next();
+                    return canConvert("", toType);
                 }
-                return canConvert(value, toType);
             }
         }
         else if (object instanceof NodeSet) {
@@ -198,6 +208,7 @@ public class BasicTypeConverter implements TypeConverter {
         }
         return false;
     }
+
     /**
      * Converts the supplied object to the specified
      * type. Throws a runtime exception if the conversion is
@@ -220,11 +231,79 @@ public class BasicTypeConverter implements TypeConverter {
             return object;
         }
 
-        if (toType == String.class) {
+        if (fromType.isArray()) {
+            int length = Array.getLength(object);
+            if (toType.isArray()) {
+                Class cType = toType.getComponentType();
+
+                Object array = Array.newInstance(cType, length);
+                for (int i = 0; i < length; i++) {
+                    Object value = Array.get(object, i);
+                    Array.set(array, i, convert(value, cType));
+                }
+                return array;
+            }
+            else if (Collection.class.isAssignableFrom(toType)) {
+                Collection collection = allocateCollection(toType);
+                for (int i = 0; i < length; i++) {
+                    collection.add(Array.get(object, i));
+                }
+                return unmodifiableCollection(collection);
+            }
+            else {
+                if (length > 0) { 
+                    Object value = Array.get(object, 0);
+                    return convert(value, toType);
+                }
+                else {
+                    return convert("", toType);
+                }
+            }
+        }
+        else if (object instanceof Collection) {
+            int length = ((Collection) object).size();
+            if (toType.isArray()) {
+                Class cType = toType.getComponentType();
+                Object array = Array.newInstance(cType, length);
+                Iterator it = ((Collection) object).iterator();
+                for (int i = 0; i < length; i++) {
+                    Object value = it.next();
+                    Array.set(array, i, convert(value, cType));
+                }
+                return array;
+            }
+            else if (Collection.class.isAssignableFrom(toType)) {
+                Collection collection = allocateCollection(toType);
+                collection.addAll((Collection) object);
+                return unmodifiableCollection(collection);
+            }
+            else {
+                if (length > 0) {
+                    Object value;
+                    if (object instanceof List) {
+                        value = ((List) object).get(0);
+                    }
+                    else {
+                        Iterator it = ((Collection) object).iterator();
+                        value = it.next();
+                    }
+                    return convert(value, toType);
+                }
+                else {
+                    return convert("", toType);
+                }
+            }
+        }
+        else if (object instanceof NodeSet) {
+            return convert(((NodeSet) object).getValues(), toType);
+        }
+        else if (object instanceof Pointer) {
+            return convert(((Pointer) object).getValue(), toType);
+        }
+        else if (toType == String.class) {
             return object.toString();
         }
-
-        if (object instanceof Boolean) {
+        else if (object instanceof Boolean) {
             if (toType == boolean.class) {
                 return object;
             }
@@ -251,73 +330,6 @@ public class BasicTypeConverter implements TypeConverter {
             if (value != null) {
                 return value;
             }
-        }
-        else if (fromType.isArray()) {
-            int length = Array.getLength(object);
-            if (toType.isArray()) {
-                Class cType = toType.getComponentType();
-
-                Object array = Array.newInstance(cType, length);
-                for (int i = 0; i < length; i++) {
-                    Object value = Array.get(object, i);
-                    Array.set(array, i, convert(value, cType));
-                }
-                return array;
-            }
-            else if (Collection.class.isAssignableFrom(toType)) {
-                Collection collection = allocateCollection(toType);
-                for (int i = 0; i < length; i++) {
-                    collection.add(Array.get(object, i));
-                }
-                return unmodifiableCollection(collection);
-            }
-            else if (length == 1) {
-                Object value = Array.get(object, 0);
-                return convert(value, toType);
-            }
-        }
-        else if (object instanceof Collection) {
-            int length = ((Collection) object).size();
-            if (toType.isArray()) {
-                Class cType = toType.getComponentType();
-                Object array = Array.newInstance(cType, length);
-                Iterator it = ((Collection) object).iterator();
-                for (int i = 0; i < length; i++) {
-                    Object value = it.next();
-                    Array.set(array, i, convert(value, cType));
-                }
-                return array;
-            }
-            else if (Collection.class.isAssignableFrom(toType)) {
-                Collection collection = allocateCollection(toType);
-                collection.addAll((Collection) object);
-                return unmodifiableCollection(collection);
-            }
-            else if (length == 1) {
-                Object value;
-                if (object instanceof List) {
-                    value = ((List) object).get(0);
-                }
-                else {
-                    Iterator it = ((Collection) object).iterator();
-                    value = it.next();
-                }
-                return convert(value, toType);
-            }
-            else {
-                throw new RuntimeException(
-                    "Cannot convert collection to "
-                        + toType
-                        + ", it contains "
-                        + length
-                        + " elements");
-            }
-        }
-        else if (object instanceof NodeSet) {
-            return convert(((NodeSet) object).getValues(), toType);
-        }
-        else if (object instanceof Pointer) {
-            return convert(((Pointer) object).getValue(), toType);
         }
         
         throw new RuntimeException(
@@ -503,7 +515,7 @@ public class BasicTypeConverter implements TypeConverter {
             throw new UnsupportedOperationException();
         }
         
-        public Object clone(){
+        public Object clone() {
             return this;
         }
         

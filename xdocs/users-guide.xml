@@ -116,6 +116,8 @@
             </li>
             <li><a href="#Collections as Arguments">Collections as Arguments</a>
             </li>
+            <li><a href="#Collection as the Return Value">Collection as the Return Value</a>
+            </li>
           </ul>
         </li>
         <li><a href="#Type Conversions">Type Conversions</a>
@@ -1183,6 +1185,7 @@ public class MyExtenstionFunctions {
       </subsection>
       
       <subsection name="Collections as Arguments">
+        <p>
          There are two ways a collection can be passed to an extension function:
          as a <a href="apidocs/org/apache/commons/jxpath/NodeSet.html"><code>NodeSet</code></a>
          or as a Collection proper.  If the argument type is declared
@@ -1190,6 +1193,7 @@ public class MyExtenstionFunctions {
          out of the node set and pass those to the function as a regular collection.
          Note that a collection is always passed to an extension function by value -
          it cannot be modified.
+        </p>
 
 <!--============================ + SOURCE + ============================-->
 <source>
@@ -1234,6 +1238,14 @@ public class MyExtenstionFunctions {
 </source>
 <!--============================ - SOURCE - ============================-->
 
+      </subsection>
+      <subsection name="Collection as the Return Value">
+        <p>
+         A custom function can return a collection of arbitrary objects or a NodeSet.
+         The simple implementation of NodeSet, 
+         <a href="apidocs/org/apache/commons/jxpath/BasicNodeSet.html#setLocale">BasicNodeSet</a>,
+         may come handy.
+        </p>
       </subsection>
     </section>
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.30 2003/03/11 00:59:18 dmitri Exp $
- * $Revision: 1.30 $
- * $Date: 2003/03/11 00:59:18 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.31 2003/03/25 02:41:33 dmitri Exp $
+ * $Revision: 1.31 $
+ * $Date: 2003/03/25 02:41:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -98,12 +98,13 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.30 $ $Date: 2003/03/11 00:59:18 $
+ * @version $Revision: 1.31 $ $Date: 2003/03/25 02:41:33 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
     /**
-     * Change this to <code>false</code> to disable soft caching of CompiledExpressions. 
+     * Change this to <code>false</code> to disable soft caching of 
+     * CompiledExpressions. 
      */
     public static final boolean USE_SOFT_CACHE = true;
     
@@ -227,9 +228,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * 
      * Override this to return an aternate compiler.
      */
-    protected Compiler getCompiler(){
+    protected Compiler getCompiler() {
         return COMPILER;
-        
     }
     
     protected CompiledExpression compilePath(String xpath) {
@@ -247,7 +247,9 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             if (expr == null) {
                 expr =
                     (Expression) Parser.parseExpression(xpath, getCompiler());
-                compiled.put(xpath, new SoftReference(expr));
+                synchronized (compiled) {
+                    compiled.put(xpath, new SoftReference(expr));
+                }
                 if (cleanupCount++ >= CLEANUP_THRESHOLD) {
                     cleanupCache();
                 }
@@ -265,14 +267,16 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     private static void cleanupCache() {
-        Iterator it = compiled.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry me = (Map.Entry) it.next();
-            if (((SoftReference) me.getValue()).get() == null) {
-                it.remove();
+        synchronized (compiled) {
+            Iterator it = compiled.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry me = (Map.Entry) it.next();
+                if (((SoftReference) me.getValue()).get() == null) {
+                    it.remove();
+                }
             }
+            cleanupCount = 0;
         }
-        cleanupCount = 0;
     }
 
     /**
@@ -539,7 +543,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
     }
 
-    public JXPathContext getRelativeContext(Pointer pointer){
+    public JXPathContext getRelativeContext(Pointer pointer) {
         Object contextBean = pointer.getNode();
         if (contextBean == null) {
             throw new JXPathException(
@@ -550,11 +554,11 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
     
     public synchronized Pointer getContextPointer() {
-        return (Pointer) contextPointer.clone();
+        return contextPointer;
     }
 
     private synchronized NodePointer getAbsoluteRootPointer() {
-        return (NodePointer) rootPointer.clone();
+        return (NodePointer) rootPointer;
     }
 
     private EvalContext getEvalContext() {

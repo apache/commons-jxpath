@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions.java,v 1.5 2003/03/11 00:59:36 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/03/11 00:59:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions.java,v 1.6 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,17 +61,21 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.jxpath.BasicNodeSet;
 import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.NestedTestBean;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.NodeSet;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/03/11 00:59:36 $
+ * @version $Revision: 1.6 $ $Date: 2003/03/25 02:41:34 $
  */
 public class TestFunctions {
 
@@ -160,5 +164,25 @@ public class TestFunctions {
     
     public static int countPointers(NodeSet nodeSet) {
         return nodeSet.getPointers().size();
+    }
+    
+    public static String string(String string) {
+        return string;
+    }
+    
+    public static Collection collection() {
+        ArrayList list = new ArrayList();
+        list.add(new NestedTestBean("foo"));
+        list.add(new NestedTestBean("bar"));
+        return list;
+    }
+    
+    public static NodeSet nodeSet(ExpressionContext context) {
+        JXPathContext jxpathCtx = context.getJXPathContext();
+        BasicNodeSet set = new BasicNodeSet();
+        set.add(jxpathCtx.getPointer("/beans[1]"));
+        set.add(jxpathCtx.getPointer("/beans[2]"));
+        
+        return set;
     }
 }

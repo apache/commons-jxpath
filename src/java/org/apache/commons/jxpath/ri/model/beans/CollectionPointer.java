@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.14 2003/03/11 00:59:25 dmitri Exp $
- * $Revision: 1.14 $
- * $Date: 2003/03/11 00:59:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.15 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.15 $
+ * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2003/03/11 00:59:25 $
+ * @version $Revision: 1.15 $ $Date: 2003/03/25 02:41:34 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -208,14 +208,20 @@ public class CollectionPointer extends NodePointer {
                 boolean reverse, NodePointer startWith)
     {
         if (index == WHOLE_COLLECTION) {
-            return null;
+            return new CollectionChildNodeIterator(
+                this,
+                test,
+                reverse,
+                startWith);
         }
-        return getValuePointer().childIterator(test, reverse, startWith);
+        else {
+            return getValuePointer().childIterator(test, reverse, startWith);
+        }
     }
 
     public NodeIterator attributeIterator(QName name) {
         if (index == WHOLE_COLLECTION) {
-            return null;
+            return new CollectionAttributeNodeIterator(this, name);
         }
         return getValuePointer().attributeIterator(name);
     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.18 2003/03/11 00:59:20 dmitri Exp $
- * $Revision: 1.18 $
- * $Date: 2003/03/11 00:59:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.19 2003/03/25 02:41:34 dmitri Exp $
+ * $Revision: 1.19 $
+ * $Date: 2003/03/25 02:41:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.18 $ $Date: 2003/03/11 00:59:20 $
+ * @version $Revision: 1.19 $ $Date: 2003/03/25 02:41:34 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -154,7 +154,9 @@ public class PredicateContext extends EvalContext {
             return false;
         }
         dynamicPropertyPointer =
-            ((PropertyOwnerPointer) parent).getPropertyPointer();
+            (PropertyPointer) ((PropertyOwnerPointer) parent)
+                .getPropertyPointer()
+                .clone();
         return true;
     }
 
