@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperation.java,v 1.5 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperation.java,v 1.6 2002/08/26 22:19:51 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/08/26 22:19:51 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,8 +67,12 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.axes.InitialContext;
+import org.apache.commons.jxpath.ri.axes.SelfContext;
 import org.apache.commons.jxpath.ri.axes.UnionContext;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -77,7 +81,7 @@ import java.util.HashSet;
  * "-", "*" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.6 $ $Date: 2002/08/26 22:19:51 $
  */
 public class CoreOperation extends Operation {
     public CoreOperation(int code, Expression args[]){
@@ -286,55 +290,98 @@ public class CoreOperation extends Operation {
      * Compares two values
      */
     protected boolean equal(EvalContext context, Expression left, Expression right){
-        Object l = left.computeValue(context);
-        Object r = right.computeValue(context);
-        boolean result;
-        if (l == r){
-            return true;
-        }
+        Object l = left.compute(context);
+        Object r = right.compute(context);
 
-        if (l instanceof EvalContext && r instanceof EvalContext){
-            Set lset = new HashSet(valueSet(((EvalContext)l)));
-            Set rset = new HashSet(valueSet(((EvalContext)r)));
-            return lset.equals(rset);
-        }
+//        System.err.println("COMPARING: " +
+//            (l == null ? "null" : l.getClass().getName()) + " " +
+//            (r == null ? "null" : r.getClass().getName()));
 
-        if (l instanceof EvalContext){
+        if (l instanceof InitialContext || l instanceof SelfContext){
             l = ((EvalContext)l).getSingleNodePointer();
         }
-        if (r instanceof EvalContext){
+
+        if (r instanceof InitialContext || r instanceof SelfContext){
             r = ((EvalContext)r).getSingleNodePointer();
         }
 
+        if (l instanceof Collection){
+            l = ((Collection)l).iterator();
+        }
+
+        if (r instanceof Collection){
+            r = ((Collection)r).iterator();
+        }
+
+        if ((l instanceof Iterator) && !(r instanceof Iterator)){
+            return contains((Iterator)l, r);
+        }
+        else if (!(l instanceof Iterator) && (r instanceof Iterator)){
+            return contains((Iterator)r, l);
+        }
+        else if (l instanceof Iterator && r instanceof Iterator){
+            return findMatch((Iterator)l, (Iterator)r);
+        }
+
+        return equal(l, r);
+    }
+
+    protected boolean contains(Iterator it, Object value){
+        while (it.hasNext()){
+            Object element = it.next();
+            if (equal(element, value)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean findMatch(Iterator lit, Iterator rit){
+        HashSet left = new HashSet();
+        while (lit.hasNext()){
+            left.add(lit.next());
+        }
+        while (rit.hasNext()){
+            if (contains(left.iterator(), rit.next())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean equal(Object l, Object r){
         if (l instanceof Pointer && r instanceof Pointer){
             if (l.equals(r)){
                 return true;
             }
         }
 
-        if (l instanceof NodePointer){
-            l = ((NodePointer)l).getValue();
-        }
-        if (r instanceof NodePointer){
-            r = ((NodePointer)r).getValue();
+        if (l instanceof Pointer){
+            l = ((Pointer)l).getValue();
         }
 
+        if (r instanceof Pointer){
+            r = ((Pointer)r).getValue();
+        }
+
+        if (l == r){
+            return true;
+        }
+
+//        System.err.println("COMPARING VALUES: " + l + " " + r);
         if (l instanceof Boolean || r instanceof Boolean){
-            result = (InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r));
+            return (InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r));
         }
         else if (l instanceof Number || r instanceof Number){
-            result = (InfoSetUtil.doubleValue(l) == InfoSetUtil.doubleValue(r));
+            return (InfoSetUtil.doubleValue(l) == InfoSetUtil.doubleValue(r));
         }
         else if (l instanceof String || r instanceof String){
-            result = (InfoSetUtil.stringValue(l).equals(InfoSetUtil.stringValue(r)));
+            return (InfoSetUtil.stringValue(l).equals(InfoSetUtil.stringValue(r)));
         }
         else if (l == null){
             return r == null;
         }
-        else {
-            result = l.equals(r);
-        }
-        return result;
+        return l.equals(r);
     }
 
     /**
