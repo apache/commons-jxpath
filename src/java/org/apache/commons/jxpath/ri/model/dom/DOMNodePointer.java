@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.16 2003/03/11 00:59:27 dmitri Exp $
- * $Revision: 1.16 $
- * $Date: 2003/03/11 00:59:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.17 2003/05/04 23:52:34 dmitri Exp $
+ * $Revision: 1.17 $
+ * $Date: 2003/05/04 23:52:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -92,7 +92,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2003/03/11 00:59:27 $
+ * @version $Revision: 1.17 $ $Date: 2003/05/04 23:52:34 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -327,10 +327,6 @@ public class DOMNodePointer extends NodePointer {
     }
 
     public boolean isLeaf() {
-        if (node instanceof Element) {
-//            System.err.println("HAS CHILD NODES: " + 
-//              ((Element)node).getTagName() + " " + !node.hasChildNodes());
-        }
         return !node.hasChildNodes();
     }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributeIterator.java,v 1.3 2003/03/11 00:59:30 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2003/03/11 00:59:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributeIterator.java,v 1.4 2003/05/04 23:52:34 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/05/04 23:52:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.jdom.Namespace;
  * An iterator of attributes of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/03/11 00:59:30 $
+ * @version $Revision: 1.4 $ $Date: 2003/05/04 23:52:34 $
  */
 public class JDOMAttributeIterator implements NodeIterator {
     private NodePointer parent;
@@ -89,13 +89,6 @@ public class JDOMAttributeIterator implements NodeIterator {
         this.name = name;
         if (parent.getNode() instanceof Element) {
             Element element = (Element) parent.getNode();
-//            System.err.println("ELEMENT: " + element.getName());
-//            List a = element.getAttributes();
-//            for (int i = 0; i < a.size(); i++) {
-//                Attribute x = (Attribute)a.get(i);
-//                System.err.println("ATTR: " + x.getName() + " " + 
-//                              x.getNamespace());
-//            }
             String prefix = name.getPrefix();
             Namespace ns;
             if (prefix != null) {
@@ -120,7 +113,6 @@ public class JDOMAttributeIterator implements NodeIterator {
                 attributes = new ArrayList();
                 if (ns != null) {
                     Attribute attr = element.getAttribute(lname, ns);
-//  System.err.println("LNAME=" + lname + "  NS: " + ns + " ATTR: " + attr);
                     if (attr != null) {
                         attributes.add(attr);
                     }
