@@ -18,13 +18,14 @@ package org.apache.commons.jxpath.ri.model.dom;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:46 $
+ * @version $Revision: 1.6 $ $Date: 2004/06/29 22:58:17 $
  */
 public class TestDOMFactory extends AbstractFactory {
 
@@ -41,13 +42,18 @@ public class TestDOMFactory extends AbstractFactory {
         if (name.equals("location")
             || name.equals("address")
             || name.equals("street")) {
-            addDOMElement((Node) parent, index, name);
+            addDOMElement((Node) parent, index, name, null);
+            return true;
+        }
+        if (name.startsWith("price:")) {
+            String namespaceURI = context.getNamespaceURI("price");
+            addDOMElement((Node) parent, index, name, namespaceURI);
             return true;
         }
         return false;
     }
 
-    private void addDOMElement(Node parent, int index, String tag) {
+    private void addDOMElement(Node parent, int index, String tag, String namespaceURI) {
         Node child = parent.getFirstChild();
         int count = 0;
         while (child != null) {
@@ -59,7 +65,15 @@ public class TestDOMFactory extends AbstractFactory {
 
         // Keep inserting new elements until we have index + 1 of them
         while (count <= index) {
-            Node newElement = parent.getOwnerDocument().createElement(tag);
+            Document doc = parent.getOwnerDocument();
+            Node newElement;
+            if (namespaceURI == null) {
+                newElement = doc.createElement(tag);
+            } 
+            else {
+                newElement = doc.createElementNS(namespaceURI, tag);
+            }
+       
             parent.appendChild(newElement);
             count++;
         }

@@ -44,7 +44,7 @@ import org.jdom.Text;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2004/04/01 02:55:31 $
+ * @version $Revision: 1.17 $ $Date: 2004/06/29 22:58:18 $
  */
 public class JDOMNodePointer extends NodePointer {
     private Object node;
@@ -497,8 +497,18 @@ public class JDOMNodePointer extends NodePointer {
                 name.toString(),
                 index);
         if (success) {
+            NodeTest nodeTest;
+            String prefix = name.getPrefix();
+            if (prefix != null) {
+                String namespaceURI = context.getNamespaceURI(prefix);
+                nodeTest = new NodeNameTest(name, namespaceURI);
+            }
+            else {
+                nodeTest = new NodeNameTest(name);
+            }
+
             NodeIterator it =
-                childIterator(new NodeNameTest(name), false, null);
+                childIterator(nodeTest, false, null);
             if (it != null && it.setPosition(index + 1)) {
                 return it.getNodePointer();
             }

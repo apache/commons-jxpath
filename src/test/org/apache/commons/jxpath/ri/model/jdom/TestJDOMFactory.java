@@ -26,7 +26,7 @@ import org.jdom.Element;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:43 $
+ * @version $Revision: 1.6 $ $Date: 2004/06/29 22:58:17 $
  */
 public class TestJDOMFactory extends AbstractFactory {
 
@@ -44,13 +44,19 @@ public class TestJDOMFactory extends AbstractFactory {
         if (name.equals("location")
             || name.equals("address")
             || name.equals("street")) {
-            addJDOMElement((Element) parent, index, name);
+            addJDOMElement((Element) parent, index, name, null);
             return true;
         }
+        if (name.startsWith("price:")) {
+            String namespaceURI = context.getNamespaceURI("price");
+            addJDOMElement((Element) parent, index, name, namespaceURI);
+            return true;
+        }
+
         return false;
     }
 
-    private void addJDOMElement(Element parent, int index, String tag) {
+    private void addJDOMElement(Element parent, int index, String tag, String namespaceURI) {
         List children = parent.getContent();
         int count = 0;
         for (int i = 0; i < children.size(); i++) {
@@ -65,7 +71,15 @@ public class TestJDOMFactory extends AbstractFactory {
         while (count <= index) {
             // In a real factory we would need to do the right thing with
             // the namespace prefix.
-            Element newElement = new Element(tag);
+            Element newElement;
+            if (namespaceURI != null) {
+                String prefix = tag.substring(0, tag.indexOf(':'));
+                tag = tag.substring(tag.indexOf(':') + 1);
+                newElement = new Element(tag, prefix, namespaceURI);
+            }
+            else {
+                newElement = new Element(tag);
+            }
             parent.addContent(newElement);
             count++;
         }

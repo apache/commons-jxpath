@@ -46,7 +46,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.23 $ $Date: 2004/04/01 02:55:32 $
+ * @version $Revision: 1.24 $ $Date: 2004/06/29 22:58:17 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -387,8 +387,17 @@ public class DOMNodePointer extends NodePointer {
                 name.toString(),
                 index);
         if (success) {
-            NodeIterator it =
-                childIterator(new NodeNameTest(name), false, null);
+            NodeTest nodeTest;
+            String prefix = name.getPrefix();
+            if (prefix != null) {
+                String namespaceURI = context.getNamespaceURI(prefix);
+                nodeTest = new NodeNameTest(name, namespaceURI);
+            }
+            else {
+                nodeTest = new NodeNameTest(name);
+            }
+
+            NodeIterator it = childIterator(nodeTest, false, null);
             if (it != null && it.setPosition(index + 1)) {
                 return it.getNodePointer();
             }

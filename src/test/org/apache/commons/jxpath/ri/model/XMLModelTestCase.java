@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.21 $ $Date: 2004/04/01 02:55:32 $
+ * @version $Revision: 1.22 $ $Date: 2004/06/29 22:58:18 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {
@@ -190,7 +190,16 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             context,
             "/vendor[1]/location[4]/@manager",
             "",
-            "/vendor[1]/location[4]/@manager");   
+            "/vendor[1]/location[4]/@manager");
+         
+         context.registerNamespace("price", "priceNS");
+         
+         // Create a DOM element
+         assertXPathCreatePath(
+             context,
+             "/vendor[1]/price:foo/price:bar",
+             "",
+             "/vendor[1]/price:foo[1]/price:bar[1]");
     }
 
     /**
@@ -235,6 +244,15 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             "vendor/product/product:name/attribute::price:language",
             "English",
             "/vendor[1]/product[1]/product:name[1]/@price:language");
+        
+        context.registerNamespace("price", "priceNS");
+        
+        // Create a DOM element
+        assertXPathCreatePathAndSetValue(
+            context,
+            "/vendor[1]/price:foo/price:bar",
+            "123.20",
+            "/vendor[1]/price:foo[1]/price:bar[1]");
     }
 
     /**
@@ -773,44 +791,5 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
                 "//product:name",
                 "Box of oranges",
                 "/vendor[1]/product[1]/goods:name[1]");
-        
-//        if (isExternalNamespaceSupported()) {
-//             DocumentContainer container = new DocumentContainer(
-//                    XMLModelTestCase.class.getResource("ExternalNamespaceTest.xml"),
-//                    getModel());
-//            JXPathContext context = JXPathContext.newContext(container);             
-//            NamespaceManager nsm = context.getNamespaceManager();
-//            nsm.registerNamespace("quality", "qualityNS");
-//            nsm.registerNamespace("money", "priceNS");
-//            
-//            assertXPathValueAndPointer(
-//                    context,
-//                    "//quality:color",
-//                    "orange",
-//                    "/vendor[1]/product[1]/quality:color[1]");
-//            
-//            // It is supposed to figure out that the prefixes "money" and
-//            // "value" map to the same namespaceURI
-//            assertXPathValueAndPointer(
-//                    context,
-//                    "//value:price",
-//                    "1000.00",
-//                    "/vendor[1]/product[1]/money:price[1]");
-//            
-//            assertXPathValue(
-//                    context,
-//                    "local-name(vendor/product/value:price)",
-//                    "price");
-//            
-//            assertXPathValue(
-//                    context,
-//                    "name(vendor/product/quality:color)",
-//                    "qualityNS:color");
-//
-//            assertXPathValue(
-//                    context,
-//                    "namespace-uri(vendor/product/value:price)",
-//                    "priceNS");
-//        }
     }
 }
