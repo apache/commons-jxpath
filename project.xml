@@ -1,26 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <pomVersion>3</pomVersion>
+  <extend>../project.xml</extend>
   <name>JXPath</name>
-  <id>jakarta-commons-jxpath</id>
+  <id>commons-jxpath</id>
   <currentVersion>1.0-beta1-dev</currentVersion>
-  <organization>
-    <name>Apache Software Foundation</name>
-    <url>http://jakarta.apache.org/</url>
-  </organization>
   <inceptionYear>2001</inceptionYear>
-  <package>org.apache.commons.jxpath</package>
   <shortDescription>XPath for Java Objects</shortDescription>
-
   <description>A package of Java utility methods for accessing and modifying object properties</description>
-
-  <url>http://jakarta.apache.org/commons/jxpath/</url>
-  <!-- cvsWebUrl>http://cvs.apache.org/viewcvs/jakarta-commons/jxpath/</cvsWebUrl -->
-  <issueTrackingUrl>http://nagoya.apache.org/bugzilla/buglist.cgi?bug_status=UNCONFIRMEDcomponent=JXPath</issueTrackingUrl>
-  <siteAddress>jakarta.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/commons/jxpath</siteDirectory>
-  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/jxpath</distributionDirectory>
 
   <versions>
     <version>
@@ -29,15 +16,6 @@
       <tag>JXPATH_1_0_B1</tag>
     </version>
   </versions>
-
-  <mailingLists>
-    <mailingList>
-      <name>Commons Developer List</name>
-      <subscribe>commons-dev-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>commons-dev-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://www.mail-archive.com/commons-dev@jakarta.apache.org/</archive>
-    </mailingList>
-  </mailingLists>
 
   <developers>
     <developer>
@@ -53,43 +31,36 @@
       <organization>Sun Microsystems</organization>
     </developer>
   </developers>
+  
   <dependencies>
     <dependency>
-      <name>xml-xalan2</name>
-      <type>required</type>
+      <id>xalan</id>
       <version>2.1.0</version>
-      <jar>xalan-2.1.0.jar</jar>
     </dependency>
     <dependency>
-      <name>servlet</name>
-      <type>required</type>
+      <id>servletapi</id>
       <version>2.2</version>
-      <jar>servlet-2.2.jar</jar>
     </dependency>
     <dependency>
-      <name>junit</name>
+      <id>junit</id>
       <type>required</type>
       <version>3.7</version>
-      <jar>junit-3.7.jar</jar>
     </dependency>
     <dependency>
-      <name>optional</name>
-      <type>required</type>
+      <id>ant+optional</id>
       <version>1.4.1</version>
-      <jar>jakarta-ant-1.4.1-optional.jar</jar>
+    </dependency>
+    <dependency>
+      <id>xml-apis</id>
+      <version>2.0.2</version>
     </dependency>
   </dependencies>
+  
   <build>
-    <sourceDirectory>src/java</sourceDirectory>
-    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-    <aspectSourceDirectories/>
-    <unitTestPatterns>
-      <unitTestPattern>include=**/*TestCase.java</unitTestPattern>
-    </unitTestPatterns>
-    <integrationUnitTestPatterns/>
-    <jarResources>
-    <!--<jarResource>include = *.properties</jarResource>-->
-</jarResources>
-    <jars/>
+    <unitTest>
+      <includes>
+        <include>**/*TestCase.java</include>
+      </includes>
+    </unitTest>
   </build>
 </project>
