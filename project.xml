@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <version>2</version>
+  <pomVersion>3</pomVersion>
   <name>JXPath</name>
   <id>jakarta-commons-jxpath</id>
   <currentVersion>1.0-beta1-dev</currentVersion>
-  <organization>Apache Software Foundation</organization>
+  <organization>
+    <name>Apache Software Foundation</name>
+    <url>http://jakarta.apache.org/</url>
+  </organization>
   <inceptionYear>2001</inceptionYear>
   <package>org.apache.commons.jxpath</package>
-  
   <shortDescription>XPath for Java Objects</shortDescription>
-  
-  <description>a package of Java utility methods for accessing and modifying the
-    elements of arbitrary graphs consisting of JavaBeans, collections, arrays, 
-    maps and primitive values using the XPath syntax
-  </description>
-  
+
+  <description>A package of Java utility methods for accessing and modifying object properties</description>
+
   <url>http://jakarta.apache.org/commons/jxpath/</url>
-  <cvsWebUrl>http://cvs.apache.org/viewcvs/jakarta-commons/jxpath/</cvsWebUrl>
-  <issueTrackingUrl>http://nagoya.apache.org/bugzilla/buglist.cgi?bug_status=UNCONFIRMED&amp;bug_status=NEW&amp;bug_status=ASSIGNED&amp;bug_status=REOPENED&amp;component=JXPath</issueTrackingUrl>
+  <!-- cvsWebUrl>http://cvs.apache.org/viewcvs/jakarta-commons/jxpath/</cvsWebUrl -->
+  <issueTrackingUrl>http://nagoya.apache.org/bugzilla/buglist.cgi?bug_status=UNCONFIRMEDcomponent=JXPath</issueTrackingUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/commons/jxpath</siteDirectory>
   <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/jxpath</distributionDirectory>
-  
+
+  <versions>
+    <version>
+      <id>b1</id>
+      <name>1.0-b1</name>
+      <tag>JXPATH_1_0_B1</tag>
+    </version>
+  </versions>
+
   <mailingLists>
     <mailingList>
       <name>Commons Developer List</name>
@@ -31,13 +38,13 @@
       <archive>http://www.mail-archive.com/commons-dev@jakarta.apache.org/</archive>
     </mailingList>
   </mailingLists>
-  
+
   <developers>
     <developer>
       <name>Dmitri Plotnikov</name>
       <id>dmitri</id>
       <email>dmitri@apache.org</email>
-      <organization></organization>
+      <organization/>
     </developer>
     <developer>
       <name>Craig McClanahan</name>
@@ -46,7 +53,6 @@
       <organization>Sun Microsystems</organization>
     </developer>
   </developers>
-  
   <dependencies>
     <dependency>
       <name>xml-xalan2</name>
@@ -66,28 +72,24 @@
       <version>3.7</version>
       <jar>junit-3.7.jar</jar>
     </dependency>
-
+    <dependency>
+      <name>optional</name>
+      <type>required</type>
+      <version>1.4.1</version>
+      <jar>jakarta-ant-1.4.1-optional.jar</jar>
+    </dependency>
   </dependencies>
-  
   <build>
-    <sourceDirectories>
-      <sourceDirectory>src/java</sourceDirectory>
-    </sourceDirectories>
-    
+    <sourceDirectory>src/java</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-    
     <aspectSourceDirectories/>
-    
     <unitTestPatterns>
-      <unitTestPattern>include = **/*TestCase.java</unitTestPattern>
+      <unitTestPattern>include=**/*TestCase.java</unitTestPattern>
     </unitTestPatterns>
-    
-    <integrationUnitTestPatterns></integrationUnitTestPatterns>
-    
+    <integrationUnitTestPatterns/>
     <jarResources>
     <!--<jarResource>include = *.properties</jarResource>-->
-    </jarResources>
-    
+</jarResources>
     <jars/>
   </build>
 </project>

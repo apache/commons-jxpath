@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.2 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.3 2002/06/09 01:58:41 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/06/09 01:58:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.Pointer;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.3 $ $Date: 2002/06/09 01:58:41 $
  */
 public class JXPathCompiledExpression implements CompiledExpression {
 
@@ -146,7 +146,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * @see CompiledExpression#remove(JXPathContext)
+     * @see CompiledExpression#removePath(JXPathContext)
      */
     public void removePath(JXPathContext context){
         ((JXPathContextReferenceImpl)context).removePath(xpath, expression);

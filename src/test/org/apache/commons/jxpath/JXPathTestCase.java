@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.22 2002/06/08 22:47:24 dmitri Exp $
- * $Revision: 1.22 $
- * $Date: 2002/06/08 22:47:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.23 2002/06/09 01:58:41 dmitri Exp $
+ * $Revision: 1.23 $
+ * $Date: 2002/06/09 01:58:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -95,7 +95,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.22 $ $Date: 2002/06/08 22:47:24 $
+ * @version $Revision: 1.23 $ $Date: 2002/06/09 01:58:41 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -930,6 +930,7 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testParser(JXPathContext ctx, boolean ignorePath) throws Exception {
+        bean.getBeans()[1].setInt(3);
         ctx.setLocale(Locale.US);
         ctx.getVariables().declareVariable("a", new Double(1));
         ctx.getVariables().declareVariable("b", new Double(1));
@@ -1114,6 +1115,7 @@ public class JXPathTestCase extends TestCase
         testEval("beans[1]/strings", list("String 1", "String 2", "String 3")),
         testEval("beans/strings[2]", list("String 2", "String 2")),
         test("beans/strings[2]", "String 2"),
+        test("beans[int > 2]/name", "Name 2"),
 
         test("beans/strings[name(.)='strings'][2]", "String 2"),
         test("(beans/strings[2])[1]", "String 2"),
