@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPointer.java,v 1.7 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPointer.java,v 1.1 2002/11/28 01:01:30 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/11/28 01:01:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,21 +59,24 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.model.beans;
+package org.apache.commons.jxpath.ri.model.dynamic;
 
 import java.util.Locale;
 
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
+import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
 /**
  * A Pointer that points to an object with Dynamic Properties. It is used
  * for the first element of a path; following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.1 $ $Date: 2002/11/28 01:01:30 $
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;
@@ -101,6 +104,16 @@ public class DynamicPointer extends PropertyOwnerPointer {
 
     public PropertyPointer getPropertyPointer(){
         return new DynamicPropertyPointer(this, handler);
+    }
+
+    public NodeIterator createNodeIterator(
+                String property, boolean reverse, NodePointer startWith)
+    {
+        return new DynamicPropertyIterator(this, property, reverse, startWith);
+    }
+
+    public NodeIterator attributeIterator(QName name){
+        return new DynamicAttributeIterator(this, name);
     }
 
     public QName getName(){

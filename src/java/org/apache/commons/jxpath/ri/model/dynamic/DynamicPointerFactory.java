@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPointerFactory.java,v 1.3 2002/07/03 21:12:36 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/07/03 21:12:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPointerFactory.java,v 1.1 2002/11/28 01:01:30 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/11/28 01:01:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,7 +59,7 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.model.beans;
+package org.apache.commons.jxpath.ri.model.dynamic;
 
 import java.util.Locale;
 
@@ -69,13 +69,14 @@ import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
+import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Implements NodePointerFactory for Dynamic classes like Map.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/07/03 21:12:36 $
+ * @version $Revision: 1.1 $ $Date: 2002/11/28 01:01:30 $
  */
 public class DynamicPointerFactory implements NodePointerFactory {
 

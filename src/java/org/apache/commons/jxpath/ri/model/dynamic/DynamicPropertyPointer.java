@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.11 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertyPointer.java,v 1.1 2002/11/28 01:01:30 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/11/28 01:01:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,20 +59,21 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.model.beans;
+package org.apache.commons.jxpath.ri.model.dynamic;
 
 import java.util.Arrays;
 
 import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.1 $ $Date: 2002/11/28 01:01:30 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -90,8 +91,8 @@ public class DynamicPropertyPointer extends PropertyPointer {
     /**
      * This type of node is auxiliary.
      */
-    public boolean isNode(){
-        return false;
+    public boolean isContainer(){
+        return true;
     }
 
     /**

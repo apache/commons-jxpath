@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertiesModelTest.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/11/26 01:20:08 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertiesModelTest.java,v 1.1 2002/11/28 01:01:30 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/11/28 01:01:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -60,18 +60,17 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.commons.jxpath.ri.model.beans;
+package org.apache.commons.jxpath.ri.model.dynamic;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.TestBean;
-import org.apache.commons.jxpath.ri.model.TestDynamicPropertyFactory;
 
 /**
  * @todo more iterator testing with maps
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
+ * @version $Revision: 1.1 $ $Date: 2002/11/28 01:01:30 $
  */
 
 public class DynamicPropertiesModelTest extends JXPathTestCase
