@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.6 2002/08/10 01:37:12 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/08/10 01:37:12 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.7 2002/10/12 20:56:03 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/10/12 20:56:03 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import java.util.Collection;
  * like "position()" or "number()".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/08/10 01:37:12 $
+ * @version $Revision: 1.7 $ $Date: 2002/10/12 20:56:03 $
  */
 public class CoreFunction extends Operation {
 
@@ -550,7 +550,7 @@ public class CoreFunction extends Operation {
 
     protected Object functionNull(EvalContext context){
         assertArgCount(0);
-        return new NullPointer(null, context.getRootContext().getCurrentNodePointer().getLocale());
+        return null;
     }
 
     protected Object functionNumber(EvalContext context){
