@@ -33,7 +33,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * like "position()" or "number()".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision: 1.16 $ $Date: 2004/04/01 02:53:45 $
  */
 public class CoreFunction extends Operation {
 
@@ -389,7 +389,7 @@ public class CoreFunction extends Operation {
     protected Object functionName(EvalContext context) {
         if (getArgumentCount() == 0) {
             NodePointer ptr = context.getCurrentNodePointer();
-            return ptr.getExpandedName().toString();
+            return ptr.getName().toString();
         }
         assertArgCount(1);
         Object set = getArg1().compute(context);
@@ -397,7 +397,7 @@ public class CoreFunction extends Operation {
             EvalContext ctx = (EvalContext) set;
             if (ctx.hasNext()) {
                 NodePointer ptr = (NodePointer) ctx.next();
-                return ptr.getExpandedName().toString();
+                return ptr.getName().toString();
             }
         }
         return "";
