@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.3 2001/09/21 23:22:43 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/21 23:22:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/NodeTest.java,v 1.1 2001/09/21 23:22:44 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2001/09/21 23:22:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,86 +59,14 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.axes;
-
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.pointers.*;
+package org.apache.commons.jxpath.ri.compiler;
 
 import java.util.*;
+import org.apache.commons.jxpath.ri.Compiler;
 
 /**
- * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
- *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:43 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/21 23:22:44 $
  */
-public class AncestorContext extends EvalContext {
-    private NodeTest nodeTest;
-    private boolean setStarted = false;
-    private NodePointer currentNodePointer;
-    private boolean includeSelf;
-    private HashSet visitedNodes = new HashSet();
-
-    /**
-     * @param parentContext represents the previous step on the path
-     * @param includeSelf differentiates between "ancestor::" and "ancestor-or-self::" axes
-     * @param nameTest is the name of the element(s) we are looking for
-     */
-    public AncestorContext(EvalContext parentContext, boolean includeSelf, NodeTest nodeTest){
-        super(parentContext);
-        this.includeSelf = includeSelf;
-        this.nodeTest = nodeTest;
-    }
-
-    public NodePointer getCurrentNodePointer(){
-        return currentNodePointer;
-    }
-
-    public boolean setPosition(int position){
-        if (position == 0 || position < getCurrentPosition()){
-            setStarted = false;
-        }
-
-        while (getCurrentPosition() < position){
-            if (!next()){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean next(){
-        while (nextIgnoreDuplicates()){
-            NodePointer location = getCurrentNodePointer();
-            if (!visitedNodes.contains(location)){
-                visitedNodes.add(location.clone());
-                position++;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns true if there is another object in the current set, even
-     * if that object has already been encountered in the same iteration.
-     */
-    private boolean nextIgnoreDuplicates(){
-        if (!setStarted){
-            setStarted = true;
-            currentNodePointer = parentContext.getCurrentNodePointer();
-            if (includeSelf){
-                if (currentNodePointer.testNode(nodeTest)){
-                    return true;
-                }
-            }
-        }
-
-        currentNodePointer = currentNodePointer.getParent();
-
-        return currentNodePointer != null && currentNodePointer.testNode(nodeTest);
-    }
+public abstract class NodeTest {
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/Compiler.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/Compiler.java,v 1.2 2001/09/21 23:22:43 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:43 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import java.util.*;
  * <p>
  * Since objects returned by Compiler methods are passed as arguments to
  * other Compiler methods, the descriptions of these methods use virtual
- * types.  There are three virtual object types: EXPRESSION, QNAME and STEP.
+ * types.  There are four virtual object types: EXPRESSION, QNAME, STEP and NODE_TEST.
  * <p>
  * The following example illustrates this notion.  This sequence compiles
  * the xpath "foo[round(1 div 2)]/text()":
@@ -80,13 +80,15 @@ import java.util.*;
  *      Object expr2 = compiler.number("2");
  *      Object expr3 = compiler.div(expr1, expr2);
  *      Object expr4 = compiler.coreFunction(Compiler.FUNCTION_ROUND, new Object[]{expr3});
- *      Object step1 = compiler.nodeNameTest(Compiler.AXIS_CHILD, qname1, new Object[]{expr4});
- *      Object step2 = compiler.nodeTypeTest(Compiler.AXIS_CHILD, Compiler.NODE_TYPE_TEXT, null);
+ *      Object test1 = compiler.nodeNameTest(qname1);
+ *      Object step1 = compiler.step(Compiler.AXIS_CHILD, test1, new Object[]{expr4});
+ *      Object test2 = compiler.nodeTypeTest(Compiler.NODE_TYPE_TEXT);
+ *      Object step2 = compiler.nodeTypeTest(Compiler.AXIS_CHILD, test2, null);
  *      Object expr5 = compiler.locationPath(false, new Object[]{step1, step2});
  * </pre></blockquote>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:43 $
  */
 public interface Compiler {
 
@@ -136,7 +138,8 @@ public interface Compiler {
     public static final int FUNCTION_FLOOR = 25;
     public static final int FUNCTION_CEILING = 26;
     public static final int FUNCTION_ROUND = 27;
-//    public static final int FUNCTION_KEY = 28;
+    public static final int FUNCTION_NULL = 28;
+//    public static final int FUNCTION_KEY = 29;
 
     /**
      * Produces an EXPRESSION object that represents a numeric constant.
@@ -302,31 +305,34 @@ public interface Compiler {
     Object union(Object[] arguments);
 
     /**
-     * Produces a STEP object that represents a node name test.
+     * Produces a NODE_TEST object that represents a node name test.
      *
-     * @param axis is one of the AXIS_... constants
      * @param qname is a QNAME object
-     * @param predicates are EXPRESSION objects
      */
-    Object nodeNameTest(int axis, Object qname, Object[] predicates);
+    Object nodeNameTest(Object qname);
 
     /**
-     * Produces a STEP object that represents a node type test.
+     * Produces a NODE_TEST object that represents a node type test.
      *
-     * @param axis is one of the AXIS_... constants
-     * @param nodeType is one of the NODE_TYPE_... constants
-     * @param predicates are EXPRESSION objects
+     * @param qname is a QNAME object
      */
-    Object nodeTypeTest(int axis, int nodeType, Object[] predicates);
+    Object nodeTypeTest(int nodeType);
 
     /**
-     * Produces a STEP object that represents a processing instruction test.
+     * Produces a NODE_TEST object that represents a processing instruction test.
+     *
+     * @param qname is a QNAME object
+     */
+    Object processingInstructionTest(String instruction);
+
+    /**
+     * Produces a STEP object that represents a node test.
      *
      * @param axis is one of the AXIS_... constants
-     * @param instruction is a processing instruction
+     * @param nodeTest is a NODE_TEST object
      * @param predicates are EXPRESSION objects
      */
-    Object processingInstructionTest(int axis, String instruction, Object[] predicates);
+    Object step(int axis, Object nodeTest, Object[] predicates);
 
     /**
      * Produces an EXPRESSION object representing a location path

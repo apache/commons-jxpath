@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/NodeNameTest.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/NodeNameTest.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,13 +65,12 @@ import java.util.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
  */
-public class NodeNameTest extends Step {
+public class NodeNameTest extends NodeTest {
     private QName qname;
 
-    public NodeNameTest(int axis, QName qname, Expression predicates[]){
-        super(axis, predicates);
+    public NodeNameTest(QName qname){
         this.qname = qname;
     }
 
@@ -80,21 +79,6 @@ public class NodeNameTest extends Step {
     }
 
     public String toString(){
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("(NODE_NAME_TEST ");
-        buffer.append(axisToString(getAxis()));
-        buffer.append(" ");
-        buffer.append(qname);
-        Expression[] predicates = getPredicates();
-        if (predicates != null){
-            buffer.append(' ');
-            for (int i = 0; i < predicates.length; i++){
-                buffer.append('[');
-                buffer.append(predicates[i]);
-                buffer.append(']');
-            }
-        }
-        buffer.append(')');
-        return buffer.toString();
+        return qname.toString();
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanPointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanPointer.java,v 1.3 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import java.beans.*;
  * a path, following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:45 $
  */
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;
@@ -124,7 +124,7 @@ public class BeanPointer extends PropertyOwnerPointer {
     }
 
     public int hashCode(){
-        return System.identityHashCode(bean) + name.hashCode();
+        return name == null ? 0 : name.hashCode();
     }
 
     public boolean equals(Object object){
@@ -137,8 +137,15 @@ public class BeanPointer extends PropertyOwnerPointer {
         }
 
         BeanPointer other = (BeanPointer)object;
-        return bean == other.bean &&
-                name.equals(other.name);
+        if ((name == null && other.name != null) ||
+                (name != null && !name.equals(other.name))){
+            return false;
+        }
+
+        if (bean instanceof Number || bean instanceof String || bean instanceof Boolean){
+            return bean.equals(other.bean);
+        }
+        return bean == other.bean;
     }
 
     /**
@@ -148,20 +155,22 @@ public class BeanPointer extends PropertyOwnerPointer {
         if (parent != null){
             return super.asPath();
         }
+        else if (bean == null){
+            return "null()";
+        }
+        else if (bean instanceof Number){
+            String string = bean.toString();
+            if (string.endsWith(".0")){
+                string = string.substring(0, string.length() - 2);
+            }
+            return string;
+        }
+        else if (bean instanceof Boolean){
+            return ((Boolean)bean).booleanValue() ? "true()" : "false()";
+        }
+        else if (bean instanceof String){
+            return "'" + bean + "'";
+        }
         return "";
-    }
-
-    public String toString(){
-        return bean.getClass().getName() + "@" + System.identityHashCode(bean) +
-            "(" + name + ")";
-    }
-
-    public Object clone(){
-        BeanPointer pointer = new BeanPointer(name, bean, beanInfo);
-        pointer.index = index;
-//        pointer.value = value;
-        pointer.propertyDescriptors = propertyDescriptors;
-        pointer.names = names;
-        return pointer;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,21 +70,20 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import java.util.*;
 
 /**
+ * EvalContext that walks the "parent::" axis.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
  */
 public class ParentContext extends EvalContext {
-    private QName nameTest;
+    private NodeTest nodeTest;
     private boolean setStarted = false;
-    private boolean started = false;
     private NodePointer currentNodePointer;
     private HashSet visitedNodes = new HashSet();
 
-    public ParentContext(EvalContext parentContext, QName nameTest){
+    public ParentContext(EvalContext parentContext, NodeTest nodeTest){
         super(parentContext);
-        if (nameTest != null && nameTest.getName() != "*"){
-            this.nameTest = nameTest;
-        }
+        this.nodeTest = nodeTest;
     }
 
     public NodePointer getCurrentNodePointer(){
@@ -96,60 +95,37 @@ public class ParentContext extends EvalContext {
     }
 
     public boolean setPosition(int position){
+        super.setPosition(position);
+        if (position == 0){
+            setStarted = false;
+        }
         return position == 1;
     }
 
-    public boolean nextSet(){
-        setStarted = false;
-
-        // First time this method is called, we should look for
-        // the first parent set that contains at least one node.
-        if (!started){
-            started = true;
-            while (parentContext.nextSet()){
-                if (nextParent()){
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        // In subsequent calls, we see if the parent context
-        // has any nodes left in the current set
-        if (nextParent()){
-            return true;
-        }
-
-        // If not, we look for the next set that contains
-        // at least one node
-        while (parentContext.nextSet()){
-            if (nextParent()){
+    public boolean next(){
+        while (nextIgnoreDuplicates()){
+            NodePointer location = getCurrentNodePointer();
+            if (!visitedNodes.contains(location)){
+                visitedNodes.add(location.clone());
+                position++;
                 return true;
             }
         }
         return false;
     }
 
-    private boolean nextParent(){
-        while (parentContext.next()){
-            NodePointer thisLocation = parentContext.getCurrentNodePointer();
-            currentNodePointer = thisLocation.getParent();
-            if (currentNodePointer != null && !visitedNodes.contains(currentNodePointer)){
-                if (nameTest == null || currentNodePointer.getName().equals(nameTest)){
-                    visitedNodes.add(currentNodePointer.clone());
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean next(){
+    /**
+     * Returns true if there is another object in the current set, even
+     * if that object has already been encountered in the same iteration.
+     */
+    private boolean nextIgnoreDuplicates(){
         // Each set contains exactly one node: the parent
         if (setStarted){
             return false;
         }
         setStarted = true;
-        return true;
+        NodePointer thisLocation = parentContext.getCurrentNodePointer();
+        currentNodePointer = thisLocation.getParent();
+        return currentNodePointer != null && currentNodePointer.testNode(nodeTest);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyOwnerPointer.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyOwnerPointer.java,v 1.2 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,34 +75,83 @@ import org.w3c.dom.*;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:45 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
-    public NodeIterator childIterator(QName name, boolean reverse){
-        String property;
-        if (name == null || name.getName().equals("*")){
-            property = null;
-        }
-        else {
-            property = name.getName();
-        }
-        // TBD: qname
-        return new PropertyIterator(this, true, property, reverse);
+    public NodeIterator childIterator(NodeTest test, boolean reverse){
+        return nodeIterator(test, reverse, true);
     }
 
-    public NodeIterator siblingIterator(QName name, boolean reverse){
-        String property;
-        if (name == null || name.getName().equals("*")){
-            property = null;
-        }
-        else {
-            property = name.getName();
-        }
-        // TBD: qname
-        return new PropertyIterator(this, false, property, reverse);
+    public NodeIterator siblingIterator(NodeTest test, boolean reverse){
+        return nodeIterator(test, reverse, false);
     }
 
+    private NodeIterator nodeIterator(NodeTest test, boolean reverse, boolean children){
+        if (test == null){
+            return new PropertyIterator(this, children, null, reverse);
+        }
+        else if (test instanceof NodeNameTest){
+            QName testName = ((NodeNameTest)test).getNodeName();
+            String property;
+            if (!isDefaultNamespace(testName.getPrefix())){
+                return null;
+            }
+            else if (testName.getName().equals("*")){
+                property = null;
+            }
+            else {
+                property = testName.getName();
+            }
+            return new PropertyIterator(this, children, property, reverse);
+        }
+        else if (test instanceof NodeTypeTest){
+            if (((NodeTypeTest)test).getNodeType() == Compiler.NODE_TYPE_NODE){
+                return new PropertyIterator(this, children, null, reverse);
+            }
+        }
+        return null;
+    }
+
+    public boolean testNode(NodeTest test){
+        if (test == null){
+            return true;
+        }
+        else if (test instanceof NodeNameTest){
+            QName testName = ((NodeNameTest)test).getNodeName();
+            QName nodeName = getName();
+            String testPrefix = testName.getPrefix();
+            String nodePrefix = nodeName.getPrefix();
+            if (!equalStrings(testPrefix, nodePrefix)){
+                String testNS = getNamespaceURI(testPrefix);
+                String nodeNS = getNamespaceURI(nodePrefix);
+                if (!equalStrings(testNS, nodeNS)){
+                    return false;
+                }
+            }
+            String testLocalName = testName.getName();
+            if (testLocalName.equals("*")){
+                return true;
+            }
+            return testLocalName.equals(nodeName.getName());
+        }
+        else if (test instanceof NodeTypeTest){
+            if (((NodeTypeTest)test).getNodeType() == Compiler.NODE_TYPE_NODE){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean equalStrings(String s1, String s2){
+        if (s1 == null && s2 != null){
+            return false;
+        }
+        if (s1 != null && !s1.equals(s2)){
+            return false;
+        }
+        return true;
+    }
 
     public static int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
 
@@ -128,7 +177,6 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     public abstract QName getName();
     public abstract void setValue(Object value);
-    public abstract Object clone();
 
     public PropertyPointer getPropertyPointer(){
         Object value = getValue();

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMNodeIterator.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMNodeIterator.java,v 1.2 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,22 +74,23 @@ import org.w3c.dom.*;
  * An iterator of children of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:45 $
  */
 public class DOMNodeIterator implements NodeIterator {
     private NodePointer parent;
-    private QName name;
+    private NodeTest nodeTest;
+    private String namespaceURI;
     private Node node;
     private Node child = null;
     private boolean children;
     private boolean reverse;
     private int position = 0;
 
-    public DOMNodeIterator(NodePointer parent, boolean children, QName name, boolean reverse){
+    public DOMNodeIterator(NodePointer parent, boolean children, NodeTest nodeTest, boolean reverse){
         this.parent = parent;
         this.children = children;
         this.node = (Node)parent.getValue();
-        this.name = name;
+        this.nodeTest = nodeTest;
         this.reverse = reverse;
     }
 
@@ -183,14 +184,6 @@ public class DOMNodeIterator implements NodeIterator {
     }
 
     private boolean testChild(){
-        if (name == null){
-            return true;
-        }
-        String ns = child.getNamespaceURI();
-        String nodeName = child.getNodeName();
-        if (nodeName != null && nodeName.equals(name.getName())){
-            return true;
-        }
-        return false;
+        return DOMNodePointer.testNode(parent, child, nodeTest);
     }
 }

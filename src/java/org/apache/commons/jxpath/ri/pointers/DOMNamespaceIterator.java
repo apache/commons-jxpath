@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.3 2001/09/21 23:22:43 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/21 23:22:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMNamespaceIterator.java,v 1.1 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,86 +59,80 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.axes;
+package org.apache.commons.jxpath.ri.pointers;
 
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.pointers.*;
+import org.apache.commons.jxpath.ri.Compiler;
+import org.apache.commons.jxpath.ri.compiler.*;
 
+import java.lang.reflect.*;
 import java.util.*;
+import java.beans.*;
+import org.w3c.dom.*;
 
 /**
- * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
+ * An iterator of namespaces of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:43 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/21 23:22:45 $
  */
-public class AncestorContext extends EvalContext {
-    private NodeTest nodeTest;
-    private boolean setStarted = false;
-    private NodePointer currentNodePointer;
-    private boolean includeSelf;
-    private HashSet visitedNodes = new HashSet();
+public class DOMNamespaceIterator implements NodeIterator {
+    private NodePointer parent;
+    private List attributes;
+    private int position = 0;
 
-    /**
-     * @param parentContext represents the previous step on the path
-     * @param includeSelf differentiates between "ancestor::" and "ancestor-or-self::" axes
-     * @param nameTest is the name of the element(s) we are looking for
-     */
-    public AncestorContext(EvalContext parentContext, boolean includeSelf, NodeTest nodeTest){
-        super(parentContext);
-        this.includeSelf = includeSelf;
-        this.nodeTest = nodeTest;
+    public DOMNamespaceIterator(NodePointer parent){
+        this.parent = parent;
+        attributes = new ArrayList();
+        collectNamespaces(attributes, (Node)parent.getValue());
     }
 
-    public NodePointer getCurrentNodePointer(){
-        return currentNodePointer;
-    }
-
-    public boolean setPosition(int position){
-        if (position == 0 || position < getCurrentPosition()){
-            setStarted = false;
+    private void collectNamespaces(List attributes, Node node){
+        Node parent = node.getParentNode();
+        if (parent != null){
+            collectNamespaces(attributes, parent);
         }
-
-        while (getCurrentPosition() < position){
-            if (!next()){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean next(){
-        while (nextIgnoreDuplicates()){
-            NodePointer location = getCurrentNodePointer();
-            if (!visitedNodes.contains(location)){
-                visitedNodes.add(location.clone());
-                position++;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns true if there is another object in the current set, even
-     * if that object has already been encountered in the same iteration.
-     */
-    private boolean nextIgnoreDuplicates(){
-        if (!setStarted){
-            setStarted = true;
-            currentNodePointer = parentContext.getCurrentNodePointer();
-            if (includeSelf){
-                if (currentNodePointer.testNode(nodeTest)){
-                    return true;
+        if (node.getNodeType() == Node.ELEMENT_NODE){
+            NamedNodeMap map = node.getAttributes();
+            int count = map.getLength();
+            for (int i = 0; i < count; i++){
+                Attr attr = (Attr)map.item(i);
+                String prefix = DOMNodePointer.getPrefix(attr);
+                String name = DOMNodePointer.getLocalName(attr);
+                if ((prefix != null && prefix.equals("xmlns")) ||
+                        (prefix == null && name.equals("xmlns"))){
+                    attributes.add(attr);
                 }
             }
         }
+    }
 
-        currentNodePointer = currentNodePointer.getParent();
+    public NodePointer getNodePointer(){
+        if (position == 0){
+            if (!setPosition(1)){
+                return null;
+            }
+            position = 0;
+        }
+        int index = position - 1;
+        if (index < 0){
+            index = 0;
+        }
+        String prefix = "";
+        Attr attr = (Attr)attributes.get(index);
+        String name = attr.getPrefix();
+        if (name != null && name.equals("xmlns")){
+            prefix = DOMNodePointer.getLocalName(attr);
+        }
+        return new NamespacePointer(parent, prefix, attr.getValue());
+    }
 
-        return currentNodePointer != null && currentNodePointer.testNode(nodeTest);
+    public int getPosition(){
+        return position;
+    }
+
+    public boolean setPosition(int position){
+        this.position = position;
+        return position >= 1 && position <= attributes.size();
     }
 }

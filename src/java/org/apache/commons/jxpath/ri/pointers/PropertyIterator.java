@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyIterator.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyIterator.java,v 1.2 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,7 +66,7 @@ package org.apache.commons.jxpath.ri.pointers;
  * Examples of such objects are JavaBeans and objects with Dynamic Properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:45 $
  */
 public class PropertyIterator implements NodeIterator {
     boolean empty = false;
@@ -77,7 +77,6 @@ public class PropertyIterator implements NodeIterator {
     private int position = 0;
     private PropertyPointer propertyNodePointer;
     private int startPropertyIndex;
-    private boolean firstIteration = true;
 
     private boolean ready = false;
     private boolean includeStart = false;
@@ -112,8 +111,7 @@ public class PropertyIterator implements NodeIterator {
     }
 
     public NodePointer getNodePointer(){
-        if (firstIteration){
-            firstIteration = false;
+        if (position == 0){
             if (name != null){
                 if (!targetReady){
                     prepare();
@@ -138,7 +136,6 @@ public class PropertyIterator implements NodeIterator {
     }
 
     public boolean setPosition(int position){
-        firstIteration = false;
         if (name != null){
             return setPositionIndividual(position);
         }

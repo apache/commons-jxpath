@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ProcessingInstructionTest.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ProcessingInstructionTest.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,32 +65,20 @@ import java.util.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
  */
-public class ProcessingInstructionTest extends Step {
-    private String instruction;
+public class ProcessingInstructionTest extends NodeTest {
+    private String target;
 
-    public ProcessingInstructionTest(int axis, String instruction, Expression predicates[]){
-        super(axis, predicates);
-        this.instruction = instruction;
+    public ProcessingInstructionTest(String target){
+        this.target = target;
+    }
+
+    public String getTarget(){
+        return target;
     }
 
     public String toString(){
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("(PROCESSING-INSTRUCTION ");
-        buffer.append(axisToString(getAxis()));
-        buffer.append(" ");
-        buffer.append(instruction);
-        Expression predicates[] = getPredicates();
-        if (predicates != null){
-            buffer.append(' ');
-            for (int i = 0; i < predicates.length; i++){
-                buffer.append('[');
-                buffer.append(predicates[i]);
-                buffer.append(']');
-            }
-        }
-        buffer.append(')');
-        return buffer.toString();
+        return "processing-instruction(" + target + ")";
     }
 }

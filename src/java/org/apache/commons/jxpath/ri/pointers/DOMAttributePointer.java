@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMAttributePointer.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMAttributePointer.java,v 1.2 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.w3c.dom.*;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:45 $
  */
 public class DOMAttributePointer extends NodePointer {
     private Attr attr;
@@ -85,15 +85,19 @@ public class DOMAttributePointer extends NodePointer {
     }
 
     public QName getName(){
-        return new QName(attr.getNamespaceURI(), attr.getNodeName());
+        return new QName(DOMNodePointer.getPrefix(attr), DOMNodePointer.getLocalName(attr));
     }
 
-    public NodeIterator childIterator(QName name, boolean reverse){
-        return null;
+    public QName getExpandedName(){
+        return new QName(getNamespaceURI(),  DOMNodePointer.getLocalName(attr));
     }
 
-    public NodeIterator siblingIterator(QName name, boolean reverse){
-        return null;
+    public String getNamespaceURI(){
+        String prefix = DOMNodePointer.getPrefix(attr);
+        if (prefix == null){
+            return null;
+        }
+        return parent.getNamespaceURI(prefix);
     }
 
     public Object getBaseValue(){
@@ -115,6 +119,12 @@ public class DOMAttributePointer extends NodePointer {
         return true;
     }
 
+    public boolean testNode(NodeTest nodeTest){
+        return nodeTest == null ||
+                ((nodeTest instanceof NodeTypeTest) &&
+                    ((NodeTypeTest)nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE);
+    }
+
     /**
      * Throws UnsupportedOperationException.
      */
@@ -131,7 +141,7 @@ public class DOMAttributePointer extends NodePointer {
             buffer.append('/');
         }
         buffer.append('@');
-        buffer.append(getName().asString());
+        buffer.append(getName());
         return buffer.toString();
     }
 
@@ -150,14 +160,5 @@ public class DOMAttributePointer extends NodePointer {
 
         DOMAttributePointer other = (DOMAttributePointer)object;
         return attr == other.attr;
-    }
-
-    public String toString(){
-        return attr.toString();
-    }
-
-    public Object clone(){
-        DOMAttributePointer pointer = new DOMAttributePointer(parent, attr);
-        return pointer;
     }
 }

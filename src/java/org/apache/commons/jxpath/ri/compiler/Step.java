@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Step.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Step.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,19 +67,25 @@ import org.apache.commons.jxpath.ri.Compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
  */
-public abstract class Step {
+public class Step {
     private int axis;
+    private NodeTest nodeTest;
     private Expression[] predicates;
 
-    protected Step(int axis, Expression[] predicates){
+    protected Step(int axis, NodeTest nodeTest, Expression[] predicates){
         this.axis = axis;
+        this.nodeTest = nodeTest;
         this.predicates = predicates;
     }
 
     public int getAxis(){
         return axis;
+    }
+
+    public NodeTest getNodeTest(){
+        return nodeTest;
     }
 
     public Expression[] getPredicates(){
@@ -116,6 +122,22 @@ public abstract class Step {
                 }
             }
         }
+    }
+
+    public String toString(){
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(axisToString(getAxis()));
+        buffer.append("::");
+        buffer.append(nodeTest);
+        Expression[] predicates = getPredicates();
+        if (predicates != null){
+            for (int i = 0; i < predicates.length; i++){
+                buffer.append('[');
+                buffer.append(predicates[i]);
+                buffer.append(']');
+            }
+        }
+        return buffer.toString();
     }
 
     public static String axisToString(int axis){

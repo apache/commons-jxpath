@@ -288,6 +288,7 @@ TOKEN:
 |   <FUNCTION_NOT: "not">
 |   <FUNCTION_TRUE: "true">
 |   <FUNCTION_FALSE: "false">
+|   <FUNCTION_NULL: "null">
 |   <FUNCTION_LANG: "lang">
 |   <FUNCTION_NUMBER: "number">
 |   <FUNCTION_SUM: "sum">
@@ -331,6 +332,7 @@ String NCName() :
     |   <FUNCTION_NOT>
     |   <FUNCTION_TRUE>
     |   <FUNCTION_FALSE>
+    |   <FUNCTION_NULL>
     |   <FUNCTION_LANG>
     |   <FUNCTION_NUMBER>
     |   <FUNCTION_SUM>
@@ -386,6 +388,7 @@ int CoreFunctionName() :
     |   <FUNCTION_NOT>              { code = Compiler.FUNCTION_NOT; }
     |   <FUNCTION_TRUE>             { code = Compiler.FUNCTION_TRUE; }
     |   <FUNCTION_FALSE>            { code = Compiler.FUNCTION_FALSE; }
+    |   <FUNCTION_NULL>             { code = Compiler.FUNCTION_NULL; }
     |   <FUNCTION_LANG>             { code = Compiler.FUNCTION_LANG; }
     |   <FUNCTION_NUMBER>           { code = Compiler.FUNCTION_NUMBER; }
     |   <FUNCTION_SUM>              { code = Compiler.FUNCTION_SUM; }
@@ -572,6 +575,7 @@ Object RelativeLocationPath() :
 
 void LocationStep(ArrayList steps) :
 {
+    Object t;
     Object s;
 }
 {
@@ -580,7 +584,8 @@ void LocationStep(ArrayList steps) :
     |   <SLASHSLASH>
         {
             // Abbreviated step: descendant-or-self::node()
-            steps.add(compiler.nodeTypeTest(Compiler.AXIS_DESCENDANT_OR_SELF, Compiler.NODE_TYPE_NODE, null));
+            t = compiler.nodeTypeTest(Compiler.NODE_TYPE_NODE);
+            steps.add(compiler.step(Compiler.AXIS_DESCENDANT_OR_SELF, t, null));
         }
     )
     NodeTest(steps)
@@ -604,7 +609,9 @@ void NodeTest(ArrayList steps) :
             axis = AxisSpecifier()
             (
                 LOOKAHEAD(NodeType() "(" ")") type = NodeType() "(" ")"
-            |   LOOKAHEAD(<PI>) <PI> "(" <Literal> {instruction = token.image; } ")"
+            |   LOOKAHEAD(<PI>) <PI> "(" <Literal> {
+                    instruction = unescape(token.image.substring(1, token.image.length() - 1));
+                    } ")"
             |   name = WildcardName()
             )
             |   "."
@@ -627,15 +634,15 @@ void NodeTest(ArrayList steps) :
     )
     {
         if (name != null){
-            s = compiler.nodeNameTest(axis, name, ps.toArray());
+            s = compiler.nodeNameTest(name);
         }
         else if (instruction != null){
-            s = compiler.processingInstructionTest(axis, instruction, ps.toArray());
+            s = compiler.processingInstructionTest(instruction);
         }
         else {
-            s = compiler.nodeTypeTest(axis, type, ps.toArray());
+            s = compiler.nodeTypeTest(type);
         }
-        steps.add(s);
+        steps.add(compiler.step(axis, s, ps.toArray()));
     }
 }
 

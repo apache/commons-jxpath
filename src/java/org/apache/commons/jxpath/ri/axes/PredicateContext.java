@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.3 2001/09/21 23:22:44 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/21 23:22:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,8 +70,10 @@ import org.apache.commons.jxpath.ri.pointers.*;
 import org.apache.commons.jxpath.ri.EvalContext;
 
 /**
+ * EvalContext that checks predicates.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:44 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -84,10 +86,6 @@ public class PredicateContext extends EvalContext {
         this.expression = expression;
         dynamicPropertyNameExpression = (Expression)expression.
             getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT);
-    }
-
-    public int getCurrentPosition(){
-        return position;
     }
 
     public boolean next(){

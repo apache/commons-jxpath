@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMAttributeIterator.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMAttributeIterator.java,v 1.2 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,19 +71,102 @@ import java.beans.*;
 import org.w3c.dom.*;
 
 /**
- * An iterator of children of a DOM Node.
+ * An iterator of attributes of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:45 $
  */
 public class DOMAttributeIterator implements NodeIterator {
     private NodePointer parent;
-    private NamedNodeMap attributes;
+    private QName name;
+    private List attributes;
     private int position = 0;
 
-    public DOMAttributeIterator(NodePointer parent){
+    public DOMAttributeIterator(NodePointer parent, QName name){
         this.parent = parent;
-        attributes = ((Node)parent.getValue()).getAttributes();
+        this.name = name;
+        attributes = new ArrayList();
+        Node node = (Node)parent.getValue();
+        if (node.getNodeType() == Node.ELEMENT_NODE){
+            String lname = name.getName();
+            if (!lname.equals("*")){
+                Attr attr = getAttribute((Element)node, name);
+                if (attr != null){
+                    attributes.add(attr);
+                }
+            }
+            else {
+                NamedNodeMap map = node.getAttributes();
+                int count = map.getLength();
+                for (int i = 0; i < count; i++){
+                    Attr attr = (Attr)map.item(i);
+                    if (testAttr(attr, name)){
+                        attributes.add(attr);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean testAttr(Attr attr, QName testName){
+        String nodePrefix = DOMNodePointer.getPrefix(attr);
+        String nodeLocalName = DOMNodePointer.getLocalName(attr);
+
+        if (nodePrefix != null && nodePrefix.equals("xmlns")){
+            return false;
+        }
+
+        if (nodePrefix == null && nodeLocalName.equals("xmlns")){
+            return false;
+        }
+
+        String testLocalName = name.getName();
+        if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)){
+            String testPrefix = testName.getPrefix();
+
+            if (equalStrings(testPrefix, nodePrefix)){
+                return true;
+            }
+
+            String testNS = null;
+            if (testPrefix != null){
+                testNS = parent.getNamespaceURI(testPrefix);
+            }
+
+            String nodeNS = null;
+            if (nodePrefix != null){
+                nodeNS = parent.getNamespaceURI(nodePrefix);
+            }
+            return equalStrings(testNS, nodeNS);
+        }
+        return false;
+    }
+
+    private static boolean equalStrings(String s1, String s2){
+        if (s1 == null && s2 != null){
+            return false;
+        }
+        if (s1 != null && !s1.equals(s2)){
+            return false;
+        }
+        return true;
+    }
+
+    private Attr getAttribute(Element element, QName name){
+        String testPrefix = name.getPrefix();
+        String testNS = null;
+
+        if (testPrefix != null){
+            testNS = parent.getNamespaceURI(testPrefix);
+        }
+
+        Node attr;
+        if (testNS != null){
+            return element.getAttributeNodeNS(testNS, name.getName());
+        }
+        else {
+            return element.getAttributeNode(name.getName());
+        }
     }
 
     public NodePointer getNodePointer(){
@@ -97,7 +180,7 @@ public class DOMAttributeIterator implements NodeIterator {
         if (index < 0){
             index = 0;
         }
-        return new DOMAttributePointer(parent, (Attr)attributes.item(index));
+        return new DOMAttributePointer(parent, (Attr)attributes.get(index));
     }
 
     public int getPosition(){
@@ -106,6 +189,6 @@ public class DOMAttributeIterator implements NodeIterator {
 
     public boolean setPosition(int position){
         this.position = position;
-        return position >= 1 && position <= attributes.getLength();
+        return position >= 1 && position <= attributes.size();
     }
 }

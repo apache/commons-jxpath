@@ -68,13 +68,14 @@ public interface XPathParserConstants {
   int FUNCTION_NOT = 62;
   int FUNCTION_TRUE = 63;
   int FUNCTION_FALSE = 64;
-  int FUNCTION_LANG = 65;
-  int FUNCTION_NUMBER = 66;
-  int FUNCTION_SUM = 67;
-  int FUNCTION_FLOOR = 68;
-  int FUNCTION_CEILING = 69;
-  int FUNCTION_ROUND = 70;
-  int NCName = 71;
+  int FUNCTION_NULL = 65;
+  int FUNCTION_LANG = 66;
+  int FUNCTION_NUMBER = 67;
+  int FUNCTION_SUM = 68;
+  int FUNCTION_FLOOR = 69;
+  int FUNCTION_CEILING = 70;
+  int FUNCTION_ROUND = 71;
+  int NCName = 72;
 
   int DEFAULT = 0;
 
@@ -144,6 +145,7 @@ public interface XPathParserConstants {
     "\"not\"",
     "\"true\"",
     "\"false\"",
+    "\"null\"",
     "\"lang\"",
     "\"number\"",
     "\"sum\"",

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AttributeContext.java,v 1.1 2001/09/03 01:22:30 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/03 01:22:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AttributeContext.java,v 1.2 2001/09/21 23:22:43 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:43 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,25 +71,21 @@ import java.util.*;
  * EvalContext that walks the "attribute::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:30 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:43 $
  */
 public class AttributeContext extends EvalContext {
-    private QName nameTest;
+    private NodeTest nodeTest;
     private boolean setStarted = false;
-    private boolean started = false;
-    private DOMAttributeIterator iterator;
+    private NodeIterator iterator;
     private NodePointer currentNodePointer;
 
     /**
      * @param parentContext represents the previous step on the path
      * @param nameTest is the name of the attribute we are looking for
      */
-    public AttributeContext(EvalContext parentContext, QName nameTest){
+    public AttributeContext(EvalContext parentContext, NodeTest nodeTest){
         super(parentContext);
-        if (nameTest != null && !nameTest.getName().equals("*")){
-            this.nameTest = nameTest;
-        }
-        reset();
+        this.nodeTest = nodeTest;
     }
 
     public NodePointer getCurrentNodePointer(){
@@ -97,11 +93,13 @@ public class AttributeContext extends EvalContext {
     }
 
     public boolean setPosition(int position){
-        if (position < this.position){
-            reset();
+        if (position == 0 || position < getCurrentPosition()){
+            setStarted = false;
+            iterator = null;
+            super.setPosition(0);
         }
 
-        while (this.position < position){
+        while (getCurrentPosition() < position){
             if (!next()){
                 return false;
             }
@@ -109,47 +107,15 @@ public class AttributeContext extends EvalContext {
         return true;
     }
 
-    public boolean nextSet(){
-        reset();
-
-        // First time this method is called, we should look for
-        // the first parent set that contains at least one node.
-        if (!started){
-            started = true;
-            while (parentContext.nextSet()){
-                if (parentContext.next()){
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        // In subsequent calls, we see if the parent context
-        // has any nodes left in the current set
-        if (parentContext.next()){
-            return true;
-        }
-
-        // If not, we look for the next set that contains
-        // at least one node
-        while (parentContext.nextSet()){
-            if (parentContext.next()){
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean next(){
+        super.setPosition(getCurrentPosition() + 1);
         if (!setStarted){
             setStarted = true;
-            if (nameTest != null){
-                currentNodePointer = parentContext.getCurrentNodePointer().attributePointer(nameTest);
-                return currentNodePointer != null;
+            if (!(nodeTest instanceof NodeNameTest)){
+                return false;
             }
-            else {
-                iterator = new DOMAttributeIterator(parentContext.getCurrentNodePointer());
-            }
+            QName name = ((NodeNameTest)nodeTest).getNodeName();
+            iterator = parentContext.getCurrentNodePointer().attributeIterator(name);
         }
 
         if (iterator == null){
@@ -160,14 +126,5 @@ public class AttributeContext extends EvalContext {
         }
         currentNodePointer = iterator.getNodePointer();
         return true;
-    }
-
-    /**
-     * Back to position=0
-     */
-    protected void reset(){
-        super.reset();
-        setStarted = false;
-        iterator = null;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.3 2001/09/21 23:22:43 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/21 23:22:43 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,23 +73,19 @@ import java.util.*;
  * axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:43 $
  */
 public class DescendantContext extends EvalContext {
-    private QName nameTest;
+    private NodeTest nodeTest;
     private boolean setStarted = false;
-    private boolean started = false;
     private Stack stack;
     private NodePointer currentNodePointer;
     private boolean includeSelf;
 
-    public DescendantContext(EvalContext parentContext, boolean includeSelf, QName nameTest){
+    public DescendantContext(EvalContext parentContext, boolean includeSelf, NodeTest nodeTest){
         super(parentContext);
         this.includeSelf = includeSelf;
-        if (nameTest != null && !nameTest.getName().equals("*")){
-            this.nameTest = nameTest;
-        }
-        reset();
+        this.nodeTest = nodeTest;
     }
 
     public NodePointer getCurrentNodePointer(){
@@ -97,8 +93,9 @@ public class DescendantContext extends EvalContext {
     }
 
     public boolean setPosition(int position){
-        if (position < this.position){
-            reset();
+        if (position == 0 || position < this.position){
+            stack = new Stack();
+            setStarted = false;
         }
 
         while (this.position < position){
@@ -109,36 +106,6 @@ public class DescendantContext extends EvalContext {
         return true;
     }
 
-    public boolean nextSet(){
-        reset();
-        // First time this method is called, we should look for
-        // the first parent set that contains at least one node.
-        if (!started){
-            started = true;
-            while (parentContext.nextSet()){
-                if (parentContext.next()){
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        // In subsequent calls, we see if the parent context
-        // has any nodes left in the current set
-        if (parentContext.next()){
-            return true;
-        }
-
-        // If not, we look for the next set that contains
-        // at least one node
-        while (parentContext.nextSet()){
-            if (parentContext.next()){
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean next(){
         if (!setStarted){
             setStarted = true;
@@ -147,7 +114,7 @@ public class DescendantContext extends EvalContext {
                 stack.push(currentNodePointer.childIterator(null, false));
             }
             if (includeSelf){
-                if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
+                if (currentNodePointer.testNode(nodeTest)){
                     position++;
                     return true;
                 }
@@ -161,7 +128,7 @@ public class DescendantContext extends EvalContext {
                 if (!currentNodePointer.isLeaf()){
                     stack.push(currentNodePointer.childIterator(null, false));
                 }
-                if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
+                if (currentNodePointer.testNode(nodeTest)){
                     position++;
                     return true;
                 }
@@ -172,11 +139,5 @@ public class DescendantContext extends EvalContext {
             }
         }
         return false;
-    }
-
-    protected void reset(){
-        super.reset();
-        stack = new Stack();
-        setStarted = false;
     }
 }

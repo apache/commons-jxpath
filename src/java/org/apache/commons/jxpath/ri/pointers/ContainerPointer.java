@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/ContainerPointer.java,v 1.1 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/ContainerPointer.java,v 1.2 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.w3c.dom.Node;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:45 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
@@ -137,28 +137,27 @@ public class ContainerPointer extends NodePointer {
                 index == other.index;
     }
 
-    public String toString(){
-        return asPath();
+    public NodeIterator childIterator(NodeTest test, boolean reverse){
+        return getValuePointer().childIterator(test, reverse);
     }
 
-    public Object clone(){
-        ContainerPointer pointer = new ContainerPointer(parent, container);
-        return pointer;
+    public NodeIterator siblingIterator(NodeTest test, boolean reverse){
+        return getValuePointer().siblingIterator(test, reverse);
     }
 
-    public NodeIterator childIterator(QName name, boolean reverse){
-        return getValuePointer().childIterator(name, reverse);
+    public NodeIterator attributeIterator(QName name){
+        return getValuePointer().attributeIterator(name);
     }
 
-    public NodeIterator siblingIterator(QName name, boolean reverse){
-        return getValuePointer().siblingIterator(name, reverse);
+    public NodeIterator namespaceIterator(){
+        return getValuePointer().namespaceIterator();
     }
 
-    public NodeIterator attributeIterator(){
-        return getValuePointer().attributeIterator();
+    public NodePointer namespacePointer(String namespace){
+        return getValuePointer().namespacePointer(namespace);
     }
 
-    public NodePointer attributePointer(QName name){
-        return getValuePointer().attributePointer(name);
+    public boolean testNode(NodeTest nodeTest){
+        return getValuePointer().testNode(nodeTest);
     }
 }

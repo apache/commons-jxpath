@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.5 2001/09/11 23:34:26 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2001/09/11 23:34:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.6 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -93,12 +93,12 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2001/09/11 23:34:26 $
+ * @version $Revision: 1.6 $ $Date: 2001/09/21 23:22:45 $
  */
 
 public class JXPathTestCase extends TestCase
 {
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     /**
      * Exercises this test case only
@@ -188,11 +188,10 @@ public class JXPathTestCase extends TestCase
             PropertyPointer holder = root.getPropertyPointer();
             holder.setPropertyIndex(relativeProperty(holder, relativePropertyIndex));
             holder.setIndex(offset);
-            it = holder.siblingIterator(new QName(null, "integers"), reverse);
+            it = holder.siblingIterator(new NodeNameTest(new QName(null, "integers")), reverse);
         }
         else {
-//            it = PropertyIterator.iterator(root, "integers", reverse);
-            it = root.childIterator(new QName(null, "integers"), reverse);
+            it = root.childIterator(new NodeNameTest(new QName(null, "integers")), reverse);
         }
 
         int size = 0;
@@ -313,16 +312,16 @@ public class JXPathTestCase extends TestCase
 
             testGetValue(context, "$z/int",  new Integer(1));
             testGetValue(context, "$z/integers[$x - 5]",  new Integer(2));
-
+            testGetValue(context, ".",  bean.getBeans());
             testGetValue(context, ".[2]/name",  "Name 2");
             testGetValue(context, "$t[2]",  "b");
             testGetValue(context, "$m/Key1",  "Value 1");
-//          testGetValue(context, "[1]",  new Integer(2));
         }
     }
 
     private void testGetValue(JXPathContext context, String xpath, Object expected) {
         Object actual = context.getValue(xpath);
+//        System.err.println("xpath: " + xpath + " ACTUAL: " + actual);
         assertEquals("Evaluating <" + xpath + ">", expected, actual);
     }
 
@@ -463,6 +462,9 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testParserReferenceImpl(){
+        if (!enabled){
+            return;
+        }
         System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
                 "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
         testParser(JXPathContextFactory.newInstance().newContext(null, bean), false);
@@ -518,6 +520,22 @@ public class JXPathTestCase extends TestCase
             }
             catch (Exception ex){
                 System.err.println("Exception during <" + xpath_tests[i].xpath + ">");
+                ex.printStackTrace();
+            }
+        }
+
+        // Make sure that location paths are properly constructed
+        for (int i=0; i < xpath_tests.length; i++) {
+            try {
+                if (!xpath_tests[i].path && !xpath_tests[i].eval){
+                    Pointer ptr = ctx.locateValue(xpath_tests[i].xpath);
+//                  System.err.println(xpath_tests[i].xpath + " ptr: " + ptr.getClass() + "\n  " + ptr.asPath());
+                    Pointer test = ctx.locateValue(ptr.asPath());
+                    assertEquals("Testing pointer for <" + xpath_tests[i].xpath + ">", ptr.asPath(), test.asPath());
+                }
+            }
+            catch (Exception ex){
+                System.err.println("Exception during pointer test <" + xpath_tests[i].xpath + ">");
                 ex.printStackTrace();
             }
         }
@@ -585,6 +603,7 @@ public class JXPathTestCase extends TestCase
 
         // Variables
         test("$a", new Double(1)),
+        testPath("$a", "$a"),
         test("$a = $b", Boolean.TRUE),
         test("$a = $test", Boolean.FALSE),
 
@@ -598,6 +617,8 @@ public class JXPathTestCase extends TestCase
         // child::
         test("count(set)", new Double(3)),
         test("boolean", Boolean.FALSE),
+        testEval("foo:boolean", list()),
+        test("@*", null),
         testPath("boolean", "/boolean"),
         testEvalPath("boolean", list("/boolean")),
         test("nestedBean/name", "Name 0"),
@@ -629,8 +650,8 @@ public class JXPathTestCase extends TestCase
         testEval("//self::node()[name = 'Name 0']/name", list("Name 0")),
         testEval("//self::node()[name(.) = concat('n', 'a', 'm', 'e')]",
                 list("Name 1", "Name 2", "Name 3", "Name 6", "Name 0", "Name 5", "Name 4")),
-        test("count(//self::beans)", new Double(2)),
-        test("count(nestedBean//.)", new Double(7)),
+        test("count(//self::beans)", new Double(4)),
+        test("count(nestedBean//.)", new Double(13)),
         testEval("descendant-or-self::name", list("Name 1", "Name 2", "Name 3", "Name 6", "Name 0", "Name 5", "Name 4")),
         test("count(descendant-or-self::root)", new Double(1)),
         test("count(descendant-or-self::node())", new Double(66)),
@@ -742,6 +763,7 @@ public class JXPathTestCase extends TestCase
         test("ceiling(-1.5)", new Double(-1)),
         test("round(1.5)", new Double(2)),
         test("round(-1.5)", new Double(-1)),
+        test("null()", null),
 
         // Extension functions
         test("string(test:new())", "foo=0; bar=null"),
@@ -765,6 +787,10 @@ public class JXPathTestCase extends TestCase
         testPath("$testnull/nothing", "$testnull/nothing"),
         testEval("$testnull/nothing[1]", Collections.EMPTY_LIST),
     };
+
+    private static List list(){
+        return Collections.EMPTY_LIST;
+    }
 
     private static List list(Object o1){
         List list = new ArrayList();
@@ -830,6 +856,9 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testDOM(){
+//        if (!enabled){
+//            return;
+//        }
         System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
                 "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
         try {
@@ -851,11 +880,10 @@ public class JXPathTestCase extends TestCase
     }
 
     static final XP[] dom_tests = new XP[]{
-        // Numbers
         test("vendor/location/address/street", "Some street"),
         test("vendor/location[2]/address/street", "Other street"),
         test("//street", "Some street"),
-        test("name(//street/..)", "address"),
+        test("local-name(//street/..)", "address"),
         test("number(vendor/location/employeeCount)", new Double(10)),
         test("vendor/location/employeeCount + 1", new Double(11)),
         test("vendor/location/employeeCount and true()", Boolean.TRUE),
@@ -867,12 +895,54 @@ public class JXPathTestCase extends TestCase
         test("vendor/location/@id", "100"),
         testPath("vendor/location/@id", "/vendor[1]/location[1]/@id"),
         testEval("vendor/location/@id", list("100", "101")),
+        test("vendor/nsnode/foo:bar", "BAR"),
+        test("namespace-uri(vendor/nsnode/foo:bar)", "foonamespace"),
+        test("local-name(vendor/nsnode/foo:bar)", "bar"),
+        test("name(vendor/nsnode/foo:bar)", "foonamespace:bar"),
+        test("vendor/nsnode/baz", "BAZ"),
+        test("vendor/nsnode/baz/namespace::foo", "foonamespace"),
+        testPath("vendor/nsnode/baz/namespace::foo", "/vendor[1]/nsnode[1]/baz[1]/namespace::foo"),
+        test("count(vendor/nsnode/namespace::*)", new Double(3)),
+        test("name(vendor/nsnode/baz/namespace::foo)", "foonamespace:foo"),
+        test("local-name(vendor/nsnode/baz/namespace::foo)", "foo"),
+        test("vendor/nsnode/foo:bar/@foo:attr", "A"),
+        test("vendor/nsnode/zoo:bar/@zoo:attr", "A"),
+        test("namespace-uri(vendor/nsnode/foo:bar/@foo:attr)", "foonamespace"),
+        test("local-name(vendor/nsnode/foo:bar/@foo:attr)", "attr"),
+        test("name(vendor/nsnode/foo:bar/@foo:attr)", "foonamespace:attr"),
+        test("vendor/nsnode/foo:bar/@attr", "B"),
+        test("namespace-uri(vendor/nsnode/foo:bar/@attr)", null),
+        test("local-name(vendor/nsnode/foo:bar/@attr)", "attr"),
+        test("name(vendor/nsnode/foo:bar/@attr)", "attr"),
+        test("vendor/nsnode/foo:x/y/ancestor::foo:x/y", "why"),
+        test("vendor/nsnode/foo:x/ancestor-or-self::foo:x/y", "why"),
+        test("vendor/nsnode/foo:x/y/ancestor::foo:*" + "/y", "why"),
+        test("count(vendor/nsnode/foo:*)", new Double(2)),
+        test("count(vendor/nsnode/zoo:*)", new Double(2)),
+        test("count(vendor/nsnode/*)", new Double(1)),
+        testEval("vendor/nsnode/foo:bar/@foo:*", list("A")),
+        testEval("vendor/nsnode/foo:bar/@*", list("B")),
+        test("count(//foo:*)", new Double(2)),
+        test("vendor/nsnode/foo:x/y/parent::foo:*" + "/y", "why"),
+        test("//location/following::foo:x/y", "why"),
+        test("//foo:x/self::foo:x/y", "why"),
+        test("//foo:x/self::x/y", null),
+
+        test("//nsnode/comment()", "z"),
+        test("//nsnode/text()", "text"),
+        testPath("//nsnode/text()", "/vendor[1]/nsnode[1]/text()[1]"),
+        test("//nsnode/processing-instruction()", "ahead"),
+        test("//nsnode/processing-instruction('do')", "it"),
+        testPath("//nsnode/processing-instruction('do')", "/vendor[1]/nsnode[1]/processing-instruction('do')[1]"),
+        test("name(//nsnode/processing-instruction()[1])", "go"),
+
         test("vendor/location/@blank", ""),
         test("vendor/location/@missing", null),
         test("count(vendor/location[1]/@*)", new Double(3)),
         test("vendor/location[@id='101']//street", "Other street"),
         test("$test/int", new Integer(1)),
         test("$test/vendor/location[1]//street", "Some street"),
+        testPath("$test/vendor/location[1]//street", "$test/vendor/location[1]/address[1]/street[1]"),
         test("$dom/vendor//street", "Some street"),
         test("$test/object/vendor/location[1]//street", "Some street"),
         testPath("$test/object/vendor/location[1]//street", "$test/object/vendor[1]/location[1]/address[1]/street[1]"),

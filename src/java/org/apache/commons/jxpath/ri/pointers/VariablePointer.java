@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/VariablePointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/VariablePointer.java,v 1.3 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,17 +71,16 @@ import java.beans.*;
 import org.w3c.dom.Node;
 
 /**
+ * Pointer to a context variable.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:45 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
     private QName name;
     private NodePointer valuePointer;
 
-    /**
-     * Used for the root node
-     */
     public VariablePointer(Variables variables, QName name){
         super(null);
         this.variables = variables;
@@ -136,41 +135,37 @@ public class VariablePointer extends NodePointer {
                 index == other.index;
     }
 
-    public String toString(){
-        return asPath();
-    }
-
     public String asPath(){
         StringBuffer buffer = new StringBuffer();
         buffer.append('$');
-        buffer.append(name.asString());
+        buffer.append(name);
         if (index != WHOLE_COLLECTION && isCollection()){
             buffer.append('[').append(index + 1).append(']');
         }
         return buffer.toString();
     }
 
-    public Object clone(){
-        VariablePointer pointer = new VariablePointer(variables, name);
-        pointer.index = index;
-        return pointer;
+    public NodeIterator childIterator(NodeTest test, boolean reverse){
+        return getValuePointer().childIterator(test, reverse);
     }
 
-//    private
-
-    public NodeIterator childIterator(QName name, boolean reverse){
-        return getValuePointer().childIterator(name, reverse);
+    public NodeIterator siblingIterator(NodeTest test, boolean reverse){
+        return getValuePointer().siblingIterator(test, reverse);
     }
 
-    public NodeIterator siblingIterator(QName name, boolean reverse){
-        return getValuePointer().siblingIterator(name, reverse);
+    public NodeIterator attributeIterator(QName name){
+        return getValuePointer().attributeIterator(name);
     }
 
-    public NodeIterator attributeIterator(){
-        return getValuePointer().attributeIterator();
+    public NodeIterator namespaceIterator(){
+        return getValuePointer().namespaceIterator();
     }
 
-    public NodePointer attributePointer(QName name){
-        return getValuePointer().attributePointer(name);
+    public NodePointer namespacePointer(String name){
+        return getValuePointer().namespacePointer(name);
+    }
+
+    public boolean testNode(NodeTest nodeTest){
+        return getValuePointer().testNode(nodeTest);
     }
 }

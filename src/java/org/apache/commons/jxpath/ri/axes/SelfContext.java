@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/SelfContext.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/SelfContext.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,7 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
+import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.ri.pointers.*;
@@ -69,76 +70,58 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import java.util.*;
 
 /**
+ * EvalContext that returns the current node from the parent context if the test succeeds.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
  */
 public class SelfContext extends EvalContext {
-    private QName nameTest;
+    private NodeTest nodeTest;
     private boolean startedSet = false;
-    private boolean started = false;
+    private NodePointer contextNodePointer;
+    private NodePointer nodePointer;
 
-    public SelfContext(EvalContext parentContext, QName nameTest){
+    public SelfContext(EvalContext parentContext, NodeTest nodeTest){
         super(parentContext);
-        if (nameTest != null && !nameTest.getName().equals("*")){
-            this.nameTest = nameTest;
+        this.nodeTest = nodeTest;
+    }
+
+    public Pointer getContextNodePointer(){
+        if (setPosition(1)){
+            return contextNodePointer;
         }
+        return null;
     }
 
     public NodePointer getCurrentNodePointer(){
-        return parentContext.getCurrentNodePointer();
-    }
-
-    public int getCurrentPosition(){
-        return 1;
-    }
-
-    public boolean setPosition(int position){
-        return position == 1;
-    }
-
-    public boolean nextSet(){
-        startedSet = false;
-
-        // First time this method is called, we should look for
-        // the first parent set that contains at least one node.
-        if (!started){
-            started = true;
-            while (parentContext.nextSet()){
-                if (parentContext.next()){
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        // In subsequent calls, we see if the parent context
-        // has any nodes left in the current set
-        if (parentContext.next()){
-            return true;
-        }
-
-        // If not, we look for the next set that contains
-        // at least one node
-        while (parentContext.nextSet()){
-            if (parentContext.next()){
-                return true;
-            }
-        }
-
-        return false;
+        return nodePointer;
     }
 
     public boolean next(){
-        if (startedSet){
+        return setPosition(getCurrentPosition() + 1);
+    }
+
+    public boolean setPosition(int position){
+        super.setPosition(position);
+        if (position == 0){
+            startedSet = false;
+            return true;
+        }
+
+        if (!startedSet){
+            startedSet = true;
+            contextNodePointer = (NodePointer)parentContext.getContextNodePointer();
+        }
+
+        if (contextNodePointer == null){
             return false;
         }
 
-        startedSet = true;
-
-        if (nameTest != null){
-            return nameTest.equals(getCurrentNodePointer().getName());
+        nodePointer = (NodePointer)contextNodePointer.clone();
+        if (position < 1 || position > nodePointer.getLength()){
+            return false;
         }
-
-        return true;
+        nodePointer.setIndex(position - 1);
+        return nodeTest == null || nodePointer.testNode(nodeTest);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.3 2001/09/21 23:22:43 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/21 23:22:43 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,13 +79,13 @@ import org.w3c.dom.*;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:43 $
  */
 public abstract class EvalContext implements ExpressionContext {
     protected EvalContext parentContext;
     protected RootContext rootContext;
-    private HashSet visitedNodes = new HashSet();
     protected int position = 0;
+    private boolean startedSetIteration = false;
 
     public EvalContext(EvalContext parentContext){
         this.parentContext = parentContext;
@@ -104,6 +104,7 @@ public abstract class EvalContext implements ExpressionContext {
 
     /**
      * Sets current position = 0, which is the pre-iteration state.
+     * @deprecated
      */
     protected void reset(){
         position = 0;
@@ -156,18 +157,32 @@ public abstract class EvalContext implements ExpressionContext {
      * Returns true if there is another sets of objects to interate over.
      * Resets the current position and node.
      */
-    public abstract boolean nextSet();
+    public boolean nextSet(){
+        setPosition(0);     // Restart iteration within the set
 
-    /**
-     * Returns true if there is another object in the current set.
-     * Switches the current position and node to the next object.
-     */
-    public boolean next(){
-        while (nextIgnoreDuplicates()){
-            NodePointer location = getCurrentNodePointer();
-            if (!visitedNodes.contains(location)){
-                visitedNodes.add(location.clone());
-                position++;
+        // Most of the time you have one set per parent node
+        // First time this method is called, we should look for
+        // the first parent set that contains at least one node.
+        if (!startedSetIteration){
+            startedSetIteration = true;
+            while (parentContext.nextSet()){
+                if (parentContext.next()){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // In subsequent calls, we see if the parent context
+        // has any nodes left in the current set
+        if (parentContext.next()){
+            return true;
+        }
+
+        // If not, we look for the next set that contains
+        // at least one node
+        while (parentContext.nextSet()){
+            if (parentContext.next()){
                 return true;
             }
         }
@@ -175,19 +190,21 @@ public abstract class EvalContext implements ExpressionContext {
     }
 
     /**
-     * Returns true if there is another object in the current set, even
-     * if that object has already been encountered in the same iteration.
+     * Returns true if there is another object in the current set.
+     * Switches the current position and node to the next object.
      */
-    protected boolean nextIgnoreDuplicates(){
-        return false;
-    }
+    public abstract boolean next();
 
     /**
      * Moves the current position to the specified index. Used with integer
      * predicates to quickly get to the n'th element of the node set.
      * Returns false if the position is out of the node set range.
+     * You can call it with 0 as the position argument to restart the iteration.
      */
-    public abstract boolean setPosition(int position);
+    public boolean setPosition(int position){
+        this.position = position;
+        return true;
+    }
 
     /**
      * Creates an EvalContext with the value of the specified
@@ -497,6 +514,9 @@ public abstract class EvalContext implements ExpressionContext {
         else if (l instanceof String || r instanceof String){
             result = (stringValue(l).equals(stringValue(r)));
         }
+        else if (l == null){
+            return r == null;
+        }
         else {
             result = l.equals(r);
         }
@@ -558,18 +578,35 @@ public abstract class EvalContext implements ExpressionContext {
             return "";
         }
         else if (object instanceof Node){
-            NodeList list = ((Node)object).getChildNodes();
-            StringBuffer buf = new StringBuffer(16);
-            for(int i = 0; i < list.getLength();i++) {
-                Node child = list.item(i);
-                if (child.getNodeType() == Node.TEXT_NODE){
-                    buf.append(child.getNodeValue());
-                }
-                else {
-                    buf.append(stringValue(child));
-                }
+            Node node = (Node)object;
+            int nodeType = node.getNodeType();
+            if (nodeType == Node.COMMENT_NODE){
+                String text = ((Comment)node).getData();
+                return text == null ? "" : text.trim();
             }
-            return buf.toString().trim();
+            else if (nodeType == Node.TEXT_NODE ||
+                    nodeType == Node.CDATA_SECTION_NODE){
+                String text = node.getNodeValue();
+                return text == null ? "" : text.trim();
+            }
+            else if (nodeType == Node.PROCESSING_INSTRUCTION_NODE){
+                String text = ((ProcessingInstruction)node).getData();
+                return text == null ? "" : text.trim();
+            }
+            else {
+                NodeList list = node.getChildNodes();
+                StringBuffer buf = new StringBuffer(16);
+                for(int i = 0; i < list.getLength();i++) {
+                    Node child = list.item(i);
+                    if (child.getNodeType() == Node.TEXT_NODE){
+                        buf.append(child.getNodeValue());
+                    }
+                    else {
+                        buf.append(stringValue(child));
+                    }
+                }
+                return buf.toString().trim();
+            }
         }
         else if (object instanceof NodePointer){
             return stringValue(((NodePointer)object).getValue());
@@ -695,7 +732,7 @@ public abstract class EvalContext implements ExpressionContext {
             rootContext = this;
         }
         if (firstMatch){
-            boolean basic = path.getEvaluationHint(LocationPath.BASIC_PATH_HINT) == Boolean.TRUE;
+            boolean basic = path.getEvaluationHint(LocationPath.BASIC_PATH_HINT).equals(Boolean.TRUE);
             if (basic){
                 Object result = tryBasicPath(new InitialContext(rootContext), steps);
                 if (result != FAILURE){
@@ -724,7 +761,7 @@ public abstract class EvalContext implements ExpressionContext {
         }
         PropertyOwnerPointer pointer = (PropertyOwnerPointer)ptr.clone();
         for (int i = 0; i < steps.length; i++){
-            String propertyName = ((NodeNameTest)steps[i]).getNodeName().getName();
+            String propertyName = ((NodeNameTest)steps[i].getNodeTest()).getNodeName().getName();
             pointer = pointer.getPropertyPointer();
             ((PropertyPointer)pointer).setPropertyName(propertyName);
 
@@ -801,7 +838,7 @@ public abstract class EvalContext implements ExpressionContext {
      */
     private Object evalSteps(EvalContext context, Step steps[], boolean firstMatch){
         for (int i = 0; i < steps.length; i++){
-            context = createContextForStep(context, steps[i]);
+            context = createContextForStep(context, steps[i].getAxis(), steps[i].getNodeTest());
             Expression predicates[] = steps[i].getPredicates();
             if (predicates != null){
                 for (int j = 0; j < predicates.length; j++){
@@ -811,7 +848,9 @@ public abstract class EvalContext implements ExpressionContext {
         }
 
         if (firstMatch){
-            return context.getContextNodePointer();
+            Pointer ptr = context.getContextNodePointer();
+//            System.err.println("GETTING CTX POINTER: " + context + " " + ptr);
+            return ptr;
         }
         else {
             return context;
@@ -822,69 +861,36 @@ public abstract class EvalContext implements ExpressionContext {
      * Different axes are serviced by different contexts. This method
      * allocates the right context for the supplied step.
      */
-    protected EvalContext createContextForStep(EvalContext context, Step step){
-        if (step instanceof NodeNameTest){
-            QName name = ((NodeNameTest)step).getNodeName();
-            switch(step.getAxis()){
-                case Compiler.AXIS_ANCESTOR:
-                    return new AncestorContext(context, false, name);
-                case Compiler.AXIS_ANCESTOR_OR_SELF:
-                    return new AncestorContext(context, true, name);
-                case Compiler.AXIS_ATTRIBUTE:
-                    return new AttributeContext(context, name);
-                case Compiler.AXIS_CHILD:
-                    return new ChildContext(context, name, false, false);
-                case Compiler.AXIS_DESCENDANT:
-                    return new DescendantContext(context, false, name);
-                case Compiler.AXIS_DESCENDANT_OR_SELF:
-                    return new DescendantContext(context, true, name);
-                case Compiler.AXIS_FOLLOWING:
-                    return new PrecedingOrFollowingContext(context, name, false);
-                case Compiler.AXIS_FOLLOWING_SIBLING:
-                    return new ChildContext(context, name, true, false);
-                case Compiler.AXIS_NAMESPACE:
-                    break;
-                case Compiler.AXIS_PARENT:
-                    return new ParentContext(context, name);
-                case Compiler.AXIS_PRECEDING:
-                    return new PrecedingOrFollowingContext(context, name, true);
-                case Compiler.AXIS_PRECEDING_SIBLING:
-                    return new ChildContext(context, name, true, true);
-                case Compiler.AXIS_SELF:
-                    return new SelfContext(context, name);
-            }
+    protected EvalContext createContextForStep(EvalContext context, int axis, NodeTest nodeTest){
+        switch(axis){
+            case Compiler.AXIS_ANCESTOR:
+                return new AncestorContext(context, false, nodeTest);
+            case Compiler.AXIS_ANCESTOR_OR_SELF:
+                return new AncestorContext(context, true, nodeTest);
+            case Compiler.AXIS_ATTRIBUTE:
+                return new AttributeContext(context, nodeTest);
+            case Compiler.AXIS_CHILD:
+                return new ChildContext(context, nodeTest, false, false);
+            case Compiler.AXIS_DESCENDANT:
+                return new DescendantContext(context, false, nodeTest);
+            case Compiler.AXIS_DESCENDANT_OR_SELF:
+                return new DescendantContext(context, true, nodeTest);
+            case Compiler.AXIS_FOLLOWING:
+                return new PrecedingOrFollowingContext(context, nodeTest, false);
+            case Compiler.AXIS_FOLLOWING_SIBLING:
+                return new ChildContext(context, nodeTest, true, false);
+            case Compiler.AXIS_NAMESPACE:
+                return new NamespaceContext(context, nodeTest);
+            case Compiler.AXIS_PARENT:
+                return new ParentContext(context, nodeTest);
+            case Compiler.AXIS_PRECEDING:
+                return new PrecedingOrFollowingContext(context, nodeTest, true);
+            case Compiler.AXIS_PRECEDING_SIBLING:
+                return new ChildContext(context, nodeTest, true, true);
+            case Compiler.AXIS_SELF:
+                return new SelfContext(context, nodeTest);
         }
-        else if (step instanceof NodeTypeTest){
-            switch (step.getAxis()){
-                case Compiler.AXIS_ANCESTOR:
-                    return new AncestorContext(context, false, null);
-                case Compiler.AXIS_ANCESTOR_OR_SELF:
-                    return new AncestorContext(context, true, null);
-                case Compiler.AXIS_ATTRIBUTE:
-                    return new AttributeContext(context, null);
-                case Compiler.AXIS_CHILD:
-                    return new ChildContext(context, null, false, false);
-                case Compiler.AXIS_DESCENDANT:
-                    return new DescendantContext(context, false, null);
-                case Compiler.AXIS_DESCENDANT_OR_SELF:
-                    return new DescendantContext(context, true, null);
-                case Compiler.AXIS_FOLLOWING:
-                    return new PrecedingOrFollowingContext(context, null, false);
-                case Compiler.AXIS_FOLLOWING_SIBLING:
-                    return new ChildContext(context, null, true, false);
-                case Compiler.AXIS_NAMESPACE:
-                    break;
-                case Compiler.AXIS_PARENT:
-                    return new ParentContext(context, null);
-                case Compiler.AXIS_PRECEDING:
-                    return new PrecedingOrFollowingContext(context, null, true);
-                case Compiler.AXIS_PRECEDING_SIBLING:
-                    return new ChildContext(context, null, true, true);
-                case Compiler.AXIS_SELF:
-                    return context;
-            }
-        }
-        throw new RuntimeException("Cannot create context for step: " + step);
+        return null;        // Never happens
     }
 
     /**
@@ -900,7 +906,7 @@ public abstract class EvalContext implements ExpressionContext {
         }
         Function function = getRootContext().getFunction(functionName, parameters);
         if (function == null){
-            throw new RuntimeException("No such function: " + functionName.asString() +
+            throw new RuntimeException("No such function: " + functionName +
                  Arrays.asList(parameters));
         }
 
@@ -919,12 +925,12 @@ public abstract class EvalContext implements ExpressionContext {
 
             case Compiler.FUNCTION_LANG:
             case Compiler.FUNCTION_ID:
-            case Compiler.FUNCTION_LOCAL_NAME:
-            case Compiler.FUNCTION_NAMESPACE_URI:{
+            {
                 System.err.println("UNIMPLEMENTED: " + function);
                 return null;
             }
-
+            case Compiler.FUNCTION_LOCAL_NAME:          return functionLocalName(function);
+            case Compiler.FUNCTION_NAMESPACE_URI:       return functionNamespaceURI(function);
             case Compiler.FUNCTION_NAME:                return functionName(function);
             case Compiler.FUNCTION_STRING:              return functionString(function);
             case Compiler.FUNCTION_CONCAT:              return functionConcat(function);
@@ -940,6 +946,7 @@ public abstract class EvalContext implements ExpressionContext {
             case Compiler.FUNCTION_NOT:                 return functionNot(function);
             case Compiler.FUNCTION_TRUE:                return functionTrue(function);
             case Compiler.FUNCTION_FALSE:               return functionFalse(function);
+            case Compiler.FUNCTION_NULL:                return functionNull(function);
             case Compiler.FUNCTION_NUMBER:              return functionNumber(function);
             case Compiler.FUNCTION_SUM:                 return functionSum(function);
             case Compiler.FUNCTION_FLOOR:               return functionFloor(function);
@@ -956,18 +963,17 @@ public abstract class EvalContext implements ExpressionContext {
         // Move the position to the beginning and iterate through
         // the context to count nodes.
         int old = getCurrentPosition();
+        setPosition(0);
         int count = 0;
-        if (setPosition(1)){
-            count = 1;
-            while (next()){
-                count++;
-            }
+        while(next()){
+            count++;
         }
+
         // Restore the current position.
         if (old != 0){
             setPosition(old);
         }
-        return new Integer(count);
+        return new Double(count);
     }
 
     protected Object functionPosition(CoreFunction function){
@@ -1003,6 +1009,36 @@ public abstract class EvalContext implements ExpressionContext {
         return new Double(count);
     }
 
+    protected Object functionNamespaceURI(CoreFunction function){
+        if (function.getArgumentCount() == 0){
+            return getCurrentNodePointer();
+        }
+        assertArgCount(function, 1);
+        Object set = eval(function.getArg1(), false);
+        if (set instanceof EvalContext){
+            EvalContext ctx = (EvalContext)set;
+            if (ctx.nextSet() && ctx.next()){
+                return ctx.getCurrentNodePointer().getNamespaceURI();
+            }
+        }
+        return "";
+    }
+
+    protected Object functionLocalName(CoreFunction function){
+        if (function.getArgumentCount() == 0){
+            return getCurrentNodePointer();
+        }
+        assertArgCount(function, 1);
+        Object set = eval(function.getArg1(), false);
+        if (set instanceof EvalContext){
+            EvalContext ctx = (EvalContext)set;
+            if (ctx.nextSet() && ctx.next()){
+                return ctx.getCurrentNodePointer().getName().getName();
+            }
+        }
+        return "";
+    }
+
     protected Object functionName(CoreFunction function){
         if (function.getArgumentCount() == 0){
             return getCurrentNodePointer();
@@ -1012,7 +1048,7 @@ public abstract class EvalContext implements ExpressionContext {
         if (set instanceof EvalContext){
             EvalContext ctx = (EvalContext)set;
             if (ctx.nextSet() && ctx.next()){
-                return ctx.getCurrentNodePointer().getName().asString();
+                return ctx.getCurrentNodePointer().getExpandedName().toString();
             }
         }
         return "";
@@ -1202,6 +1238,11 @@ public abstract class EvalContext implements ExpressionContext {
     protected Object functionFalse(CoreFunction function){
         assertArgCount(function, 0);
         return Boolean.FALSE;
+    }
+
+    protected Object functionNull(CoreFunction function){
+        assertArgCount(function, 0);
+        return null;
     }
 
     protected Object functionNumber(CoreFunction function){

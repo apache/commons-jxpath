@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.3 2001/09/21 23:22:44 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/21 23:22:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,11 +71,13 @@ import java.util.*;
 import java.beans.*;
 
 /**
+ * EvalContext that walks the "preceding::" and "following::" axes.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:44 $
  */
 public class PrecedingOrFollowingContext extends EvalContext {
-    private QName nameTest;
+    private NodeTest nodeTest;
     private boolean setStarted = false;
     private boolean started = false;
     private Stack stack;
@@ -85,20 +87,11 @@ public class PrecedingOrFollowingContext extends EvalContext {
     private boolean includeSelf;
     private boolean reverse;
 
-    public PrecedingOrFollowingContext(EvalContext parentContext, QName nameTest, boolean reverse){
+    public PrecedingOrFollowingContext(EvalContext parentContext, NodeTest nodeTest, boolean reverse){
         super(parentContext);
         this.includeSelf = includeSelf;
-        if (nameTest != null && !nameTest.getName().equals("*")){
-            this.nameTest = nameTest;
-        }
+        this.nodeTest = nodeTest;
         this.reverse = reverse;
-        reset();
-    }
-
-    protected void reset(){
-        super.reset();
-        stack = new Stack();
-        setStarted = false;
     }
 
     public NodePointer getCurrentNodePointer(){
@@ -106,8 +99,9 @@ public class PrecedingOrFollowingContext extends EvalContext {
     }
 
     public boolean setPosition(int position){
-        if (position < this.position){
-            reset();
+        if (position == 0 || position < this.position){
+            stack = new Stack();
+            setStarted = false;
         }
 
         while (this.position < position){
@@ -116,36 +110,6 @@ public class PrecedingOrFollowingContext extends EvalContext {
             }
         }
         return true;
-    }
-
-    public boolean nextSet(){
-        reset();
-        // First time this method is called, we should look for
-        // the first parent set that contains at least one node.
-        if (!started){
-            started = true;
-            while (parentContext.nextSet()){
-                if (parentContext.next()){
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        // In subsequent calls, we see if the parent context
-        // has any nodes left in the current set
-        if (parentContext.next()){
-            return true;
-        }
-
-        // If not, we look for the next set that contains
-        // at least one node
-        while (parentContext.nextSet()){
-            if (parentContext.next()){
-                return true;
-            }
-        }
-        return false;
     }
 
     public boolean next(){
@@ -162,21 +126,20 @@ public class PrecedingOrFollowingContext extends EvalContext {
                 if (currentRootLocation == null || currentRootLocation.isRoot()){
                     break;
                 }
-//                System.err.println("PUSHING: " + currentRootLocation);
                 // TBD: check type
                 stack.push(currentRootLocation.siblingIterator(null, reverse));
             }
 
             while (!stack.isEmpty()){
                 if (!reverse){
-                    PropertyIterator it = (PropertyIterator)stack.peek();
+                    NodeIterator it = (NodeIterator)stack.peek();
                     if (it.setPosition(it.getPosition() + 1)){
                         currentNodePointer = it.getNodePointer();
                         if (!currentNodePointer.isLeaf()){
                             stack.push(currentNodePointer.childIterator(null, reverse));
                         }
-                        if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
-                            position++;
+                        if (currentNodePointer.testNode(nodeTest)){
+                            super.setPosition(getCurrentPosition() + 1);
                             return true;
                         }
                     }
@@ -186,14 +149,14 @@ public class PrecedingOrFollowingContext extends EvalContext {
                     }
                 }
                 else {
-                    PropertyIterator it = (PropertyIterator)stack.peek();
+                    NodeIterator it = (NodeIterator)stack.peek();
                     if (it.setPosition(it.getPosition() + 1)){
                         currentNodePointer = it.getNodePointer();
                         if (!currentNodePointer.isLeaf()){
                             stack.push(currentNodePointer.childIterator(null, reverse));
                         }
-                        else if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
-                            position++;
+                        else if (currentNodePointer.testNode(nodeTest)){
+                            super.setPosition(getCurrentPosition() + 1);
                             return true;
                         }
                     }
@@ -202,8 +165,8 @@ public class PrecedingOrFollowingContext extends EvalContext {
                         if (!stack.isEmpty()){
                             it = (PropertyIterator)stack.peek();
                             currentNodePointer = it.getNodePointer();
-                            if (nameTest == null || nameTest.equals(currentNodePointer.getName())){
-                                position++;
+                            if (currentNodePointer.testNode(nodeTest)){
+                                super.setPosition(getCurrentPosition() + 1);
                                 return true;
                             }
                         }

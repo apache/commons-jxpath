@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/NodeTypeTest.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/NodeTypeTest.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,13 +66,12 @@ import org.apache.commons.jxpath.ri.Compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
  */
-public class NodeTypeTest extends Step {
+public class NodeTypeTest extends NodeTest {
     private int nodeType;
 
-    public NodeTypeTest(int axis, int nodeType, Expression predicates[]){
-        super(axis, predicates);
+    public NodeTypeTest(int nodeType){
         this.nodeType = nodeType;
     }
 
@@ -81,22 +80,7 @@ public class NodeTypeTest extends Step {
     }
 
     public String toString(){
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("(NODE_TYPE_TEST ");
-        buffer.append(axisToString(getAxis()));
-        buffer.append(" ");
-        buffer.append(nodeTypeToString(nodeType));
-        Expression predicates[] = getPredicates();
-        if (predicates != null){
-            buffer.append(' ');
-            for (int i = 0; i < predicates.length; i++){
-                buffer.append('[');
-                buffer.append(predicates[i]);
-                buffer.append(']');
-            }
-        }
-        buffer.append(')');
-        return buffer.toString();
+        return nodeTypeToString(nodeType) + "()";
     }
 
     public static String nodeTypeToString(int code){

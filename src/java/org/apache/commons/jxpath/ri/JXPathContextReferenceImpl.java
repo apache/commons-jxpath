@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.3 2001/09/08 20:59:58 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/08 20:59:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.4 2001/09/21 23:22:43 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2001/09/21 23:22:43 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,7 +81,7 @@ import org.w3c.dom.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/08 20:59:58 $
+ * @version $Revision: 1.4 $ $Date: 2001/09/21 23:22:43 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -145,17 +145,13 @@ public class JXPathContextReferenceImpl extends JXPathContext
      */
     public Object getValue(String xpath){
         Object result = eval(xpath, true);
-        if (result instanceof NodePointer){
-            result = ((NodePointer)result).getValue();
-        }
-        else if (result instanceof EvalContext){
+        if (result instanceof EvalContext){
             EvalContext ctx = (EvalContext)result;
-            while(ctx.nextSet()){
-                if (ctx.next()){
-                    result = ctx.getCurrentNodePointer().getValue();
-                    break;
-                }
-            }
+            result = ctx.getContextNodePointer();
+        }
+
+        if (result instanceof Pointer){
+            result = ((Pointer)result).getValue();
         }
         if (result instanceof Node){
             result = EvalContext.stringValue((Node)result);
@@ -209,6 +205,9 @@ public class JXPathContextReferenceImpl extends JXPathContext
 
     public Pointer locateValue(String xpath){
         Object result = eval(xpath, true);
+        if (result instanceof EvalContext){
+            result = ((EvalContext)result).getContextNodePointer();
+        }
         if (result instanceof Pointer){
             return (Pointer)result;
         }
@@ -282,7 +281,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
     }
 
     public NodePointer getVariablePointer(QName name){
-        String varName = name.asString();
+        String varName = name.toString();
         JXPathContext varCtx = this;
         Variables vars = null;
         while (varCtx != null){
@@ -325,6 +324,6 @@ public class JXPathContextReferenceImpl extends JXPathContext
         if (func != null){
             return func;
         }
-        throw new RuntimeException("Undefined function: " + functionName.asString());
+        throw new RuntimeException("Undefined function: " + functionName.toString());
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointer.java,v 1.2 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointer.java,v 1.3 2001/09/21 23:22:45 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/21 23:22:45 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,12 +74,13 @@ import org.w3c.dom.Node;
  * Common superclass for Poitners of all kinds.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:45 $
  */
 public abstract class NodePointer implements Pointer, Cloneable {
 
     public static int WHOLE_COLLECTION = Integer.MIN_VALUE;
     protected int index = WHOLE_COLLECTION;
+    public static String UNKNOWN_NAMESPACE = "<<unknown namespace>>";
 
     public static NodePointer createNodePointer(QName name, Object bean){
         if (bean == null){
@@ -127,30 +128,76 @@ public abstract class NodePointer implements Pointer, Cloneable {
      * Returns a NodeIterator that iterates over all children or all children
      * with the given name.
      */
-    public abstract NodeIterator childIterator(QName name, boolean reverse);
+    public NodeIterator childIterator(NodeTest test, boolean reverse){
+        return null;
+    }
 
     /**
      * Returns a NodeIterator that iterates over all siblings or all siblings
      * with the given name starting with this pointer and excluding the value
      * currently pointed at.
      */
-    public abstract NodeIterator siblingIterator(QName name, boolean reverse);
-
-    /**
-     * Returns a NodeIterator that iterates over all attributes of the value
-     * currently pointed at.
-     * May return null if the object does not support the attributes.
-     */
-    public NodeIterator attributeIterator(){
+    public NodeIterator siblingIterator(NodeTest test, boolean reverse){
         return null;
     }
 
     /**
-     * Returns a NodePointer for the specified attribute. May return null
-     * if attributes are not supported or if there is no such attribute.
+     * Returns a NodeIterator that iterates over all attributes of the current node
+     * matching the supplied node name (could have a wildcard).
+     * May return null if the object does not support the attributes.
      */
-    public NodePointer attributePointer(QName attribute){
+    public NodeIterator attributeIterator(QName qname){
         return null;
+    }
+
+    /**
+     * Returns a NodeIterator that iterates over all namespaces of the value
+     * currently pointed at.
+     * May return null if the object does not support the namespaces.
+     */
+    public NodeIterator namespaceIterator(){
+        return null;
+    }
+
+    /**
+     * Returns a NodePointer for the specified namespace. Will return null
+     * if namespaces are not supported. Will return UNKNOWN_NAMESPACE if there is no such namespace.
+     */
+    public NodePointer namespacePointer(String namespace){
+        return null;
+    }
+
+    public String getNamespaceURI(String prefix){
+        return null;
+    }
+
+    public String getNamespaceURI(){
+        return null;
+    }
+
+    /**
+     * Returns true if the supplied prefix represents the
+     * default namespace in the context of the current node.
+     */
+    protected boolean isDefaultNamespace(String prefix){
+        if (prefix == null){
+            return true;
+        }
+
+        String namespace = getNamespaceURI(prefix);
+        if (namespace == null){
+            return false;       // undefined namespace
+        }
+
+        return namespace.equals(getDefaultNamespaceURI());
+    }
+
+    protected String getDefaultNamespaceURI(){
+        return null;
+    }
+
+    public QName getExpandedName(){
+        return getName();
     }
 
     protected NodePointer parent;
@@ -199,7 +246,7 @@ public abstract class NodePointer implements Pointer, Cloneable {
     public abstract QName getName();
     public abstract Object getBaseValue();
     public abstract void setValue(Object value);
-    public abstract Object clone();
+    public abstract boolean testNode(NodeTest nodeTest);
 
     public String asPath(){
         StringBuffer buffer = new StringBuffer();
@@ -211,11 +258,26 @@ public abstract class NodePointer implements Pointer, Cloneable {
             if (getParent() != null){
                 buffer.append('/');
             }
-            buffer.append(name.asString());
+            buffer.append(name);
         }
         if (index != WHOLE_COLLECTION && isCollection()){
             buffer.append('[').append(index + 1).append(']');
         }
         return buffer.toString();
+    }
+
+    public Object clone(){
+        try {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException ex){
+            // Of course it is supported
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public String toString(){
+        return asPath();
     }
 }

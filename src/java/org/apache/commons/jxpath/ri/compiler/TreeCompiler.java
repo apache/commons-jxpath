@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/TreeCompiler.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/TreeCompiler.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/21 23:22:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,7 +66,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
  */
 public class TreeCompiler implements Compiler {
 
@@ -175,16 +175,20 @@ public class TreeCompiler implements Compiler {
         return new ExpressionPath((Expression)expression, toExpressionArray(predicates), toStepArray(steps));
     }
 
-    public Object nodeNameTest(int axis, Object qname, Object[] predicates){
-        return new NodeNameTest(axis, (QName)qname, toExpressionArray(predicates));
+    public Object nodeNameTest(Object qname){
+        return new NodeNameTest((QName)qname);
     }
 
-    public Object nodeTypeTest(int axis, int nodeType, Object[] predicates){
-        return new NodeTypeTest(axis, nodeType, toExpressionArray(predicates));
+    public Object nodeTypeTest(int nodeType){
+        return new NodeTypeTest(nodeType);
     }
 
-    public Object processingInstructionTest(int axis, String instruction, Object[] predicates){
-        return new ProcessingInstructionTest(axis, instruction, toExpressionArray(predicates));
+    public Object processingInstructionTest(String instruction){
+        return new ProcessingInstructionTest(instruction);
+    }
+
+    public Object step(int axis, Object nodeTest, Object[] predicates){
+        return new Step(axis, (NodeTest)nodeTest, toExpressionArray(predicates));
     }
 
     private Expression[] toExpressionArray(Object[] array){
