@@ -1,9 +1,9 @@
-<project name="JXPath" default="compile" basedir=".">
+<project name="JXPath" default="jar" basedir=".">
 
 
 <!--
         "JXPath" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.9 2002/06/10 01:58:19 dmitri Exp $
+        $Id: build.xml,v 1.10 2002/06/17 23:54:27 dmitri Exp $
 -->
 
 
