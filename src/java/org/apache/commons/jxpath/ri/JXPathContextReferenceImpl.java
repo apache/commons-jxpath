@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.31 2003/03/25 02:41:33 dmitri Exp $
- * $Revision: 1.31 $
- * $Date: 2003/03/25 02:41:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.32 2003/05/04 23:51:59 dmitri Exp $
+ * $Revision: 1.32 $
+ * $Date: 2003/05/04 23:51:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -98,7 +98,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.31 $ $Date: 2003/03/25 02:41:33 $
+ * @version $Revision: 1.32 $ $Date: 2003/05/04 23:51:59 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -553,11 +553,11 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         return new JXPathContextReferenceImpl(this, contextBean, pointer);
     }
     
-    public synchronized Pointer getContextPointer() {
+    public Pointer getContextPointer() {
         return contextPointer;
     }
 
-    private synchronized NodePointer getAbsoluteRootPointer() {
+    private NodePointer getAbsoluteRootPointer() {
         return (NodePointer) rootPointer;
     }
 
@@ -604,12 +604,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 if (func != null) {
                     return func;
                 }
-
-                funcCtx = funcCtx.getParentContext();
             }
-            else {
-                break;
-            }
+            funcCtx = funcCtx.getParentContext();
         }
         func = GENERIC_FUNCTIONS.getFunction(namespace, name, parameters);
         if (func != null) {

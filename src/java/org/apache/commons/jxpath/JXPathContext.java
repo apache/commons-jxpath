@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.16 2003/03/11 00:59:12 dmitri Exp $
- * $Revision: 1.16 $
- * $Date: 2003/03/11 00:59:12 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.17 2003/05/04 23:51:59 dmitri Exp $
+ * $Revision: 1.17 $
+ * $Date: 2003/05/04 23:51:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -418,7 +418,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2003/03/11 00:59:12 $
+ * @version $Revision: 1.17 $ $Date: 2003/05/04 23:51:59 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -427,18 +427,20 @@ public abstract class JXPathContext {
     protected Functions functions;
     protected AbstractFactory factory;
     protected Locale locale;
+    protected boolean lenientSet = false;
     protected boolean lenient = false;
     protected IdentityManager idManager;
     protected KeyManager keyManager;
     protected HashMap decimalFormats;
 
+    private static JXPathContextFactory contextFactory;
     private static JXPathContext compilationContext;
 
     /**
      * Creates a new JXPathContext with the specified object as the root node.
      */
     public static JXPathContext newContext(Object contextBean) {
-        return JXPathContextFactory.newInstance().newContext(null, contextBean);
+        return getContextFactory().newContext(null, contextBean);
     }
 
     /**
@@ -450,11 +452,19 @@ public abstract class JXPathContext {
         JXPathContext parentContext,
         Object contextBean) 
     {
-        return JXPathContextFactory.newInstance().newContext(
-            parentContext,
-            contextBean);
+        return getContextFactory().newContext(parentContext, contextBean);
     }
 
+    /**
+     * Acquires a context factory and caches it. 
+     */
+    private static JXPathContextFactory getContextFactory () {
+        if (contextFactory == null) {
+            contextFactory = JXPathContextFactory.newInstance();            
+        }
+        return contextFactory;
+    }
+    
     /**
      * This  constructor should remain protected - it is to be overridden by
      * subclasses, but never explicitly invoked by clients.
@@ -477,7 +487,7 @@ public abstract class JXPathContext {
     public Object getContextBean() {
         return contextBean;
     }
-
+    
     /**
      * Returns a Pointer for the context bean.
      */
@@ -598,6 +608,9 @@ public abstract class JXPathContext {
      */
     public DecimalFormatSymbols getDecimalFormatSymbols(String name) {
         if (decimalFormats == null) {
+            if (parentContext != null) {
+                return parentContext.getDecimalFormatSymbols(name);
+            }
             return null;
         }
         return (DecimalFormatSymbols) decimalFormats.get(name);
@@ -614,12 +627,16 @@ public abstract class JXPathContext {
      */
     public void setLenient(boolean lenient) {
         this.lenient = lenient;
+        lenientSet = true;
     }
 
     /**
      * @see #setLenient(boolean)
      */
     public boolean isLenient() {
+        if (!lenientSet && parentContext != null) {
+            return parentContext.isLenient();
+        }
         return lenient;
     }
 

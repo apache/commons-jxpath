@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.13 2003/03/25 02:41:35 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2003/03/25 02:41:35 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.14 2003/05/04 23:51:59 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2003/05/04 23:51:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,12 +68,14 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.NestedTestBean;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
+import org.apache.commons.jxpath.ri.compiler.TestFunctions;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
@@ -81,7 +83,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2003/03/25 02:41:35 $
+ * @version $Revision: 1.14 $ $Date: 2003/05/04 23:51:59 $
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase {
@@ -985,5 +987,15 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             "../integers[2]", 
             new Integer(2), 
             "/integers[2]");
+    }
+    
+    public void testRelativeContextInheritance() {
+        context.setFunctions(new ClassFunctions(TestFunctions.class, "test"));
+        JXPathContext relative =
+            context.getRelativeContext(context.getPointer("nestedBean"));
+        
+        assertXPathValue(relative, 
+            "test:countPointers(strings)", 
+            new Integer(3));
     }
 }
