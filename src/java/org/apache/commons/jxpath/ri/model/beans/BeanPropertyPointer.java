@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.13 2003/03/11 00:59:24 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2003/03/11 00:59:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.14 2003/06/17 01:39:51 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2003/06/17 01:39:51 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,7 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
+import java.beans.IndexedPropertyDescriptor;
 import java.beans.PropertyDescriptor;
 
 import org.apache.commons.jxpath.JXPathBeanInfo;
@@ -73,7 +74,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2003/03/11 00:59:24 $
+ * @version $Revision: 1.14 $ $Date: 2003/06/17 01:39:51 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
@@ -84,6 +85,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     private static final Object UNINITIALIZED = new Object();
     private Object baseValue = UNINITIALIZED;
     private Object value = UNINITIALIZED;
+    
+    private static final int UNKNOWN_LENGTH_MAX_COUNT = 10000;
 
     public BeanPropertyPointer(NodePointer parent, JXPathBeanInfo beanInfo) {
         super(parent);
@@ -174,15 +177,17 @@ public class BeanPropertyPointer extends PropertyPointer {
      */
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
-            Object baseValue = getBaseValue();
             if (index == WHOLE_COLLECTION) {
-                value = baseValue;
-            }
-            else if (value != null && index >= 0 && index < getLength()) {
-                value = ValueUtils.getValue(baseValue, index);
+                value = getBaseValue();
             }
             else {
-                value = null;
+                PropertyDescriptor pd = getPropertyDescriptor();
+                if (pd == null) {
+                    value = null;
+                }
+                else {
+                    value = ValueUtils.getValue(getBean(), pd, index);
+                }
             }
         }
         return value;
@@ -196,6 +201,10 @@ public class BeanPropertyPointer extends PropertyPointer {
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null) {
             return false;
+        }
+        
+        if (pd instanceof IndexedPropertyDescriptor) {
+            return true;
         }
         
         int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
@@ -218,6 +227,12 @@ public class BeanPropertyPointer extends PropertyPointer {
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null) {
             return 1;
+        }
+        
+        if (pd instanceof IndexedPropertyDescriptor) {
+            return ValueUtils.getIndexedPropertyLength(
+                getBean(),
+                (IndexedPropertyDescriptor) pd);
         }
         
         int hint = ValueUtils.getCollectionHint(pd.getPropertyType());

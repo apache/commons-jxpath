@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/BeanModelTest.java,v 1.5 2003/06/17 01:39:51 dmitri Exp $
- * $Revision: 1.5 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/TestIndexedPropertyBean.java,v 1.1 2003/06/17 01:39:51 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2003/06/17 01:39:51 $
  *
  * ====================================================================
@@ -62,55 +62,27 @@
 
 package org.apache.commons.jxpath.ri.model.beans;
 
-import junit.framework.TestSuite;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.TestBean;
-import org.apache.commons.jxpath.ri.model.BeanModelTestCase;
+import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
- * Tests JXPath with JavaBeans
-*
+ * Test bean for JUnit tests of indexed property handling.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/06/17 01:39:51 $
+ * @version $Revision: 1.1 $ $Date: 2003/06/17 01:39:51 $
  */
+public class TestIndexedPropertyBean {
 
-public class BeanModelTest extends BeanModelTestCase {
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public BeanModelTest(String name) {
-        super(name);
+    public int getIndexed(int i) {
+        if (i >= 2) {
+            throw new ArrayIndexOutOfBoundsException(i);
+        }
+        return i;
     }
-
-    /**
-     * Return the tests included in this test suite.
-     */
-    public static TestSuite suite() {
-        return (new TestSuite(BeanModelTest.class));
-    }
-
-    protected Object createContextBean() {
-        return new TestBean();
-    }
-
-    protected AbstractFactory getAbstractFactory() {
-        return new TestBeanFactory();
-    }
-    
-    public void testIndexedProperty() {
-        JXPathContext context =
-            JXPathContext.newContext(null, new TestIndexedPropertyBean());
-            
-        assertXPathValueAndPointer(
-            context,
-            "indexed[1]",
-            new Integer(0),
-            "/indexed[1]");
-    }
-
-
 }

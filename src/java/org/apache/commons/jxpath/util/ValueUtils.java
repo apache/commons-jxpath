@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.15 2003/03/11 00:59:34 dmitri Exp $
- * $Revision: 1.15 $
- * $Date: 2003/03/11 00:59:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.16 2003/06/17 01:39:51 dmitri Exp $
+ * $Revision: 1.16 $
+ * $Date: 2003/06/17 01:39:51 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,6 +64,7 @@ package org.apache.commons.jxpath.util;
 import java.beans.IndexedPropertyDescriptor;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -82,10 +83,11 @@ import org.apache.commons.jxpath.JXPathException;
  * Collection and property access utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2003/03/11 00:59:34 $
+ * @version $Revision: 1.16 $ $Date: 2003/06/17 01:39:51 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
+    private static final int UNKNOWN_LENGTH_MAX_COUNT = 16000;
 
     /**
      * Returns true if the object is an array or a Collection
@@ -130,6 +132,42 @@ public class ValueUtils {
         }
                 
         return 0;
+    }
+    
+    /**
+     * If there is a regular non-indexed read method for this property,
+     * uses this method to obtain the collection and then returns its
+     * length.
+     * Otherwise, attempts to guess the length of the collection by
+     * calling the indexed get method repeatedly.  The method is supposed
+     * to throw an exception if the index is out of bounds. 
+     */
+    public static int getIndexedPropertyLength(
+        Object object,
+        IndexedPropertyDescriptor pd) 
+    {
+        if (pd.getReadMethod() != null) {
+            return getLength(getValue(object, pd));
+        }
+        
+        Method readMethod = pd.getIndexedReadMethod();
+        if (readMethod == null) {
+            throw new JXPathException(
+                "No indexed read method for property " + pd.getName());
+        }
+
+        for (int i = 0; i < UNKNOWN_LENGTH_MAX_COUNT; i++) {
+            try {
+                readMethod.invoke(object, new Object[] { new Integer(i)});
+            }
+            catch (Throwable t) {
+                return i;
+            }
+        }
+        
+        throw new JXPathException(
+            "Cannot determine the length of the indexed property "
+                + pd.getName());
     }
 
     /**
@@ -422,8 +460,19 @@ public class ValueUtils {
                         bean,
                         new Object[] { new Integer(index)});
                 }
+            }            
+            catch (InvocationTargetException ex) {
+                Throwable t =
+                    ((InvocationTargetException) ex).getTargetException();
+                if (t instanceof ArrayIndexOutOfBoundsException) {
+                    return null;
+                }
+                
+                throw new JXPathException(
+                    "Cannot access property: " + propertyDescriptor.getName(),
+                    t);
             }
-            catch (Exception ex) {
+            catch (Throwable ex) {
                 throw new JXPathException(
                     "Cannot access property: " + propertyDescriptor.getName(),
                     ex);
@@ -461,7 +510,6 @@ public class ValueUtils {
                 }
             }
             catch (Exception ex) {
-                ex.printStackTrace();
                 throw new RuntimeException(
                     "Cannot access property: "
                         + propertyDescriptor.getName()
