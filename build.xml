@@ -3,7 +3,7 @@
 
 <!--
         "JXPath" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.15 2002/10/13 03:01:18 dmitri Exp $
+        $Id: build.xml,v 1.16 2002/10/20 04:00:34 dmitri Exp $
 -->
 
 
@@ -71,6 +71,9 @@
     <pathelement location="${jdom.jar}"/>
     <pathelement location="${servlet.jar}"/>
     <pathelement location="${junit.jar}"/>
+    <pathelement location="${commons-beanutils.jar}"/>
+    <pathelement location="${commons-collections.jar}"/>
+    <pathelement location="${commons-logging.jar}"/>
   </path>
 
 
@@ -86,6 +89,9 @@
     <pathelement location="${servlet.jar}"/>
     <pathelement location="${junit.jar}"/>
     <pathelement location="${jdom.jar}"/>
+    <pathelement location="${commons-beanutils.jar}"/>
+    <pathelement location="${commons-collections.jar}"/>
+    <pathelement location="${commons-logging.jar}"/>
   </path>
 
   <!-- Should all tests fail if one does? -->
@@ -136,6 +142,9 @@
     <echo message="jaxp.jaxp.jar = ${jaxp.jaxp.jar}"/>
     <echo message="jaxp.xslt.jar = ${jaxp.xslt.jar}"/>
     <echo message="servlet.jar = ${servlet.jar}"/>
+    <echo message="commons-beanutils.jar = ${commons-beanutils.jar}"/>
+    <echo message="commons-collections.jar = ${commons-collections.jar}"/>
+    <echo message="commons-logging.jar = ${commons-logging.jar}"/>
   </target>
 
   <target name="check.junit" unless="junit.present">
@@ -307,22 +316,7 @@
     <echo message="Running JXPath tests ..."/>
     <java classname="${test.runner}" fork="yes"
         failonerror="${test.failonerror}">
-      <arg value="org.apache.commons.jxpath.JXPathTest"/>
-      <classpath refid="test.classpath"/>
-    </java>
-    <java classname="${test.runner}" fork="yes"
-        failonerror="${test.failonerror}">
-      <arg value="org.apache.commons.jxpath.ri.axes.SimplePathInterpreterTest"/>
-      <classpath refid="test.classpath"/>
-    </java>
-    <java classname="${test.runner}" fork="yes"
-        failonerror="${test.failonerror}">
-      <arg value="org.apache.commons.jxpath.ri.model.dom.DOMModelTest"/>
-      <classpath refid="test.classpath"/>
-    </java>
-    <java classname="${test.runner}" fork="yes"
-        failonerror="${test.failonerror}">
-      <arg value="org.apache.commons.jxpath.ri.model.jdom.JDOMModelTest"/>
+      <arg value="org.apache.commons.jxpath.JXPathTestSuite"/>
       <classpath refid="test.classpath"/>
     </java>
   </target>
