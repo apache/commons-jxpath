@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Expression.java,v 1.7 2003/10/09 21:31:39 rdonkin Exp $
- * $Revision: 1.7 $
- * $Date: 2003/10/09 21:31:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Expression.java,v 1.8 2004/01/18 01:43:30 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2004/01/18 01:43:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,7 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import org.apache.commons.jxpath.NamespaceManager;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
@@ -79,7 +80,7 @@ import java.util.Locale;
  * provides that hint.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/10/09 21:31:39 $
+ * @version $Revision: 1.8 $ $Date: 2004/01/18 01:43:30 $
  */
 public abstract class Expression {
 
@@ -139,11 +140,25 @@ public abstract class Expression {
         private Iterator iterator;
         private QName qname;
         private Locale locale;
+        private NamespaceManager namespaceManager;
 
+        /**
+         * @deprecated Use the method that takes a NamespaceManager
+         */
         public PointerIterator(Iterator it, QName qname, Locale locale) {
+            this(it, qname, locale, null);
+        }
+
+        public PointerIterator(
+                Iterator it,
+                QName qname,
+                Locale locale,
+                NamespaceManager namespaceManager) 
+        {
             this.iterator = it;
             this.qname = qname;
             this.locale = locale;
+            this.namespaceManager = namespaceManager;
         }
 
         public boolean hasNext() {
@@ -152,7 +167,11 @@ public abstract class Expression {
 
         public Object next() {
             Object o = iterator.next();
-            return NodePointer.newNodePointer(qname, o, locale);
+            return NodePointer.newNodePointer(
+                    qname,
+                    o,
+                    locale,
+                    namespaceManager);
         }
 
         public void remove() {

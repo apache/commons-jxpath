@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.18 2003/10/09 21:31:41 rdonkin Exp $
- * $Revision: 1.18 $
- * $Date: 2003/10/09 21:31:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.19 2004/01/18 01:43:30 dmitri Exp $
+ * $Revision: 1.19 $
+ * $Date: 2004/01/18 01:43:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,6 +68,7 @@ import java.util.Map;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.NamespaceManager;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
@@ -92,7 +93,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.18 $ $Date: 2003/10/09 21:31:41 $
+ * @version $Revision: 1.19 $ $Date: 2004/01/18 01:43:30 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -274,6 +275,12 @@ public class DOMNodePointer extends NodePointer {
                     }
                 }
                 aNode = aNode.getParentNode();
+            }
+            if (namespace == null) {
+                NamespaceManager manager = getNamespaceManager();
+                if (manager != null) {
+                    namespace = manager.getNamespaceURI(prefix, this);
+                }
             }
             if (namespace == null || namespace.equals("")) {
                 namespace = NodePointer.UNKNOWN_NAMESPACE;

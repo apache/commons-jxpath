@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/CoreFunctionTest.java,v 1.6 2003/10/09 21:31:43 rdonkin Exp $
- * $Revision: 1.6 $
- * $Date: 2003/10/09 21:31:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/CoreFunctionTest.java,v 1.7 2004/01/18 01:43:30 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2004/01/18 01:43:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -77,7 +77,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test basic functionality of JXPath - core functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/10/09 21:31:43 $
+ * @version $Revision: 1.7 $ $Date: 2004/01/18 01:43:30 $
  */
 
 public class CoreFunctionTest extends JXPathTestCase {
@@ -179,7 +179,7 @@ public class CoreFunctionTest extends JXPathTestCase {
                 String key,
                 String value) 
             {
-                return NodePointer.newNodePointer(null, "42", null);
+                return NodePointer.newNodePointer(null, "42", null, null);
             }
         });
 

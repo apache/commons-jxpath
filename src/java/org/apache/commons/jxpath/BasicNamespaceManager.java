@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointerFactory.java,v 1.6 2004/01/18 01:43:30 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2004/01/18 01:43:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Attic/BasicNamespaceManager.java,v 1.1 2004/01/18 01:43:29 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2004/01/18 01:43:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,44 +59,31 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.model;
+package org.apache.commons.jxpath;
 
-import java.util.Locale;
-
-import org.apache.commons.jxpath.ri.QName;
+import java.util.HashMap;
 
 /**
- * Creates NodePointers for objects of a certain type.
- * NodePointerFactories are ordered according to the values returned
- * by the "getOrder" method and always queried in that order.
+ * The default implementation of NamespaceManager based on a simple HashMap.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/01/18 01:43:30 $
+ * @version $Revision: 1.1 $ $Date: 2004/01/18 01:43:29 $
  */
-public interface NodePointerFactory {
+public class BasicNamespaceManager implements NamespaceManager
+{
+    private HashMap prefixMap = new HashMap();
+    
+    /**
+     * @see NamespaceManager#getNamespaceURI(String, Pointer)
+     */
+    public String getNamespaceURI(String prefix, Pointer context) {
+        return (String) prefixMap.get(prefix);
+    }
 
     /**
-     * The factory order number determines its position between other factories.
+     * @see NamespaceManager#registerNamespace(String, String)
      */
-    int getOrder();
-
-    /**
-     * Create a NodePointer for the supplied object.  The node will represent
-     * the "root" object for a path.
-     *
-     * @return  null if this factory does not recognize objects of the supplied
-     * type.
-     */
-    NodePointer createNodePointer(QName name, Object object, Locale locale);
-
-    /**
-     * Create a NodePointer for the supplied child object.
-     * <p>
-     * @return null if this factory does not recognize objects of the supplied
-     * type.
-     */
-    NodePointer createNodePointer(
-        NodePointer parent,
-        QName name,
-        Object object);
+    public void registerNamespace(String prefix, String namespaceURI) {
+        prefixMap.put(prefix, namespaceURI);
+    }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.35 2003/10/09 21:31:38 rdonkin Exp $
- * $Revision: 1.35 $
- * $Date: 2003/10/09 21:31:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.36 2004/01/18 01:43:30 dmitri Exp $
+ * $Revision: 1.36 $
+ * $Date: 2004/01/18 01:43:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -99,7 +99,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.35 $ $Date: 2003/10/09 21:31:38 $
+ * @version $Revision: 1.36 $ $Date: 2004/01/18 01:43:30 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -181,14 +181,16 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 NodePointer.newNodePointer(
                     new QName(null, "root"),
                     contextPointer.getRootNode(),
-                    getLocale());
+                    getLocale(),
+                    getNamespaceManager());
         }
         else {
             this.contextPointer =
                 NodePointer.newNodePointer(
                     new QName(null, "root"),
                     contextBean,
-                    getLocale());
+                    getLocale(),
+                    getNamespaceManager());
             this.rootPointer = this.contextPointer;
         }
     }
@@ -374,7 +376,11 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             return (Pointer) result;
         }
         else {
-            return NodePointer.newNodePointer(null, result, getLocale());
+            return NodePointer.newNodePointer(
+                    null,
+                    result,
+                    getLocale(),
+                    getNamespaceManager());
         }
     }
 

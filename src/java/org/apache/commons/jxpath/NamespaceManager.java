@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointerFactory.java,v 1.6 2004/01/18 01:43:30 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2004/01/18 01:43:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Attic/NamespaceManager.java,v 1.1 2004/01/18 01:43:29 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2004/01/18 01:43:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,44 +59,30 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.model;
-
-import java.util.Locale;
-
-import org.apache.commons.jxpath.ri.QName;
+package org.apache.commons.jxpath;
 
 /**
- * Creates NodePointers for objects of a certain type.
- * NodePointerFactories are ordered according to the values returned
- * by the "getOrder" method and always queried in that order.
+ * A delegate of JXPathContext that resolves prefixes into namespaceURI's.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/01/18 01:43:30 $
+ * @version $Revision: 1.1 $ $Date: 2004/01/18 01:43:29 $
  */
-public interface NodePointerFactory {
+public interface NamespaceManager {
 
     /**
-     * The factory order number determines its position between other factories.
+     * Given a prefix, returns a registered namespace URI.
+     * @param prefix The namespace prefix to look up
+     * @param context The location in the object graph (or XML file) defining
+     *    the context for the lookup. 
+     * @return namespace URI or null if the prefix is undefined.
      */
-    int getOrder();
-
+    String getNamespaceURI(String prefix, Pointer context);
+    
     /**
-     * Create a NodePointer for the supplied object.  The node will represent
-     * the "root" object for a path.
-     *
-     * @return  null if this factory does not recognize objects of the supplied
-     * type.
+     * Registers a namespace defined in the global context.
+     * 
+     * @param prefix
+     * @param namespaceURI
      */
-    NodePointer createNodePointer(QName name, Object object, Locale locale);
-
-    /**
-     * Create a NodePointer for the supplied child object.
-     * <p>
-     * @return null if this factory does not recognize objects of the supplied
-     * type.
-     */
-    NodePointer createNodePointer(
-        NodePointer parent,
-        QName name,
-        Object object);
+    void registerNamespace(String prefix, String namespaceURI);    
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.8 2003/10/09 21:31:44 rdonkin Exp $
- * $Revision: 1.8 $
- * $Date: 2003/10/09 21:31:44 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.9 2004/01/18 01:43:30 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2004/01/18 01:43:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,10 +76,11 @@ import org.w3c.dom.NodeList;
  * Tests JXPath with DOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2003/10/09 21:31:44 $
+ * @version $Revision: 1.9 $ $Date: 2004/01/18 01:43:30 $
  */
 
 public class DOMModelTest extends XMLModelTestCase {
+    
     /**
      * Construct a new instance of this test case.
      *
@@ -104,6 +105,10 @@ public class DOMModelTest extends XMLModelTestCase {
         return new TestDOMFactory();
     }
 
+    protected boolean isExternalNamespaceSupported() {
+        return true;
+    }
+    
     protected String getXMLSignature(
         Object node,
         boolean elements,

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.9 2003/10/09 21:31:43 rdonkin Exp $
- * $Revision: 1.9 $
- * $Date: 2003/10/09 21:31:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.10 2004/01/18 01:43:30 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2004/01/18 01:43:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,7 +83,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2003/10/09 21:31:43 $
+ * @version $Revision: 1.10 $ $Date: 2004/01/18 01:43:30 $
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase {
@@ -391,7 +391,8 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             return NodePointer.newNodePointer(
                 null,
                 object,
-                Locale.getDefault());
+                Locale.getDefault(),
+                null);
         }
 
         public List getContextNodeList() {

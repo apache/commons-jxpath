@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.19 2003/10/09 21:31:38 rdonkin Exp $
- * $Revision: 1.19 $
- * $Date: 2003/10/09 21:31:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.20 2004/01/18 01:43:29 dmitri Exp $
+ * $Revision: 1.20 $
+ * $Date: 2004/01/18 01:43:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -418,7 +418,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.19 $ $Date: 2003/10/09 21:31:38 $
+ * @version $Revision: 1.20 $ $Date: 2004/01/18 01:43:29 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -432,6 +432,7 @@ public abstract class JXPathContext {
     protected IdentityManager idManager;
     protected KeyManager keyManager;
     protected HashMap decimalFormats;
+    protected NamespaceManager namespaceManager;
 
     private static JXPathContextFactory contextFactory;
     private static JXPathContext compilationContext;
@@ -809,4 +810,28 @@ public abstract class JXPathContext {
                     + "no KeyManager has been specified");
         }
     }
+    
+    /**
+     * Install a namespace manager that will be used by the context
+     * to look up namespace URI's for prefixes.
+     */
+    public void setNamespaceManager(NamespaceManager namespaceManager) {
+        this.namespaceManager = namespaceManager;
+    }
+
+    /**
+     * Returns this context's namespace manager. If none has been installed,
+     * returns the key manager of the parent context, or the default
+     * namespace manager.
+     */
+    public NamespaceManager getNamespaceManager() {
+        if (keyManager == null && parentContext != null) {
+            return parentContext.getNamespaceManager();
+        }
+        if (namespaceManager == null) {
+            namespaceManager = new BasicNamespaceManager();
+        }
+        return namespaceManager;
+    }
+
 }
