@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.7 2002/04/28 04:35:48 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/04/28 04:35:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.8 2002/08/10 01:32:38 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/08/10 01:32:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,6 +64,8 @@ package org.apache.commons.jxpath.ri.axes;
 import java.util.Stack;
 
 import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
@@ -73,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/04/28 04:35:48 $
+ * @version $Revision: 1.8 $ $Date: 2002/08/10 01:32:38 $
  */
 public class DescendantContext extends EvalContext {
     private NodeTest nodeTest;
@@ -81,6 +83,8 @@ public class DescendantContext extends EvalContext {
     private Stack stack;
     private NodePointer currentNodePointer;
     private boolean includeSelf;
+    private final static NodeTest elementNodeTest = 
+            new NodeNameTest(new QName(null, "*"));
 
     public DescendantContext(EvalContext parentContext, boolean includeSelf, NodeTest nodeTest){
         super(parentContext);
@@ -123,7 +127,8 @@ public class DescendantContext extends EvalContext {
             currentNodePointer = parentContext.getCurrentNodePointer();
             if (currentNodePointer != null){
                 if (!currentNodePointer.isLeaf()){
-                    stack.push(currentNodePointer.childIterator(null, false, null));
+                    stack.push(currentNodePointer.childIterator(
+                            elementNodeTest, false, null));
                 }
                 if (includeSelf){
                     if (currentNodePointer.testNode(nodeTest)){
@@ -139,7 +144,8 @@ public class DescendantContext extends EvalContext {
             if (it.setPosition(it.getPosition() + 1)){
                 currentNodePointer = it.getNodePointer();
                 if (!currentNodePointer.isLeaf()){
-                    stack.push(currentNodePointer.childIterator(null, false, null));
+                    stack.push(currentNodePointer.childIterator(
+                        elementNodeTest, false, null));
                 }
                 if (currentNodePointer.testNode(nodeTest)){
                     position++;
