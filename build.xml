@@ -3,7 +3,7 @@
 
 <!--
         "JXPath" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.4 2002/04/10 03:40:19 dmitri Exp $
+        $Id: build.xml,v 1.5 2002/04/12 00:52:05 dmitri Exp $
 -->
 
 
@@ -16,17 +16,20 @@
 <!-- ========== Component Declarations ==================================== -->
 
   <!-- The name of this component -->
-  <property name="component.name"          value="JXPath"/>
+  <property name="component.name"          value="jxpath"/>
 
   <!-- The title of this component -->
   <property name="component.title"         value="XPath traversal of JavaBeans"/>
+
+  <!-- The primary package name of this component -->
+  <property name="component.package"       value="org.apache.commons.jxpath"/>
 
   <!-- The current version number of this component -->
   <property name="component.version"       value="0.1-dev"/>
 
   <!-- The jar name of this component -->
   <property name="jar.name"
-           value="commons-${component.name}-${component.version}.jar"/>
+           value="commons-${component.name}.jar"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"              value="target"/>
@@ -124,6 +127,7 @@
     depends="check_available">
     <echo message="-------- ${component.name} ${component.version} --------"/>
     <filter  token="name"                  value="${component.name}"/>
+    <filter  token="package"               value="${component.package}"/>
     <filter  token="version"               value="${component.version}"/>
 
     <echo message="junit.jar = ${junit.jar}"/>
@@ -259,6 +263,8 @@
   <!-- ================================================================== -->
   <target name="jar" description="Build jar">
     <mkdir      dir="${dist.home}"/>
+    <copy      file="../LICENSE"
+             tofile="${build.home}/classes/META-INF/LICENSE.txt"/>
     <jar    jarfile="${dist.home}/${jar.name}"
             basedir="${build.home}/classes"
            manifest="${build.home}/conf/MANIFEST.MF"/>
