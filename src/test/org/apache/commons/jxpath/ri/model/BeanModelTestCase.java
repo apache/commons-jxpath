@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.3 2002/11/26 01:33:35 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/11/26 01:33:35 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.4 2002/11/29 07:22:01 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/11/29 07:22:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/11/26 01:33:35 $
+ * @version $Revision: 1.4 $ $Date: 2002/11/29 07:22:01 $
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase
@@ -648,15 +648,17 @@ public abstract class BeanModelTestCase extends JXPathTestCase
         assertXPathValue(context, 
             "lang('fr')", 
             Boolean.FALSE);
-            
-        assertXPathValueIterator(
-            context,
-            "beans[1]/strings[string-length() = 8]",
-            list("String 1", "String 2", "String 3"));
+    }
+    
+    public void testCoreFunctions(){
             
         assertXPathValue(context, 
             "boolean(boolean)", 
-            Boolean.FALSE);
+            Boolean.TRUE);
+
+        assertXPathValue(context,
+            "boolean(boolean = false())",
+            Boolean.TRUE);
             
         assertXPathValue(
             context,
@@ -678,6 +680,11 @@ public abstract class BeanModelTestCase extends JXPathTestCase
         assertXPathValue(context,
                 "beans[int > 2]/name",
                 "Name 2");
+
+        assertXPathValueIterator(
+            context,
+            "beans[1]/strings[string-length() = 8]",
+            list("String 1", "String 2", "String 3"));
 
         // use some fancy axis and the child axis in the predicate
         assertXPathValueIterator(context,

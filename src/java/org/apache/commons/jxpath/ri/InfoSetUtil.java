@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/InfoSetUtil.java,v 1.4 2002/07/03 21:13:06 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/07/03 21:13:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/InfoSetUtil.java,v 1.5 2002/11/29 07:22:02 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/11/29 07:22:02 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Type conversions, XPath style.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/07/03 21:13:06 $
+ * @version $Revision: 1.5 $ $Date: 2002/11/29 07:22:02 $
  */
 public class InfoSetUtil {
 
@@ -193,7 +193,7 @@ public class InfoSetUtil {
             return ((String)object).length() != 0;
         }
         else if (object instanceof NodePointer){
-            return booleanValue(((NodePointer)object).getValue());
+            return ((NodePointer)object).isActual();
         }
         else if (object == null){
             return false;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.5 2002/11/29 06:44:15 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/11/29 06:44:15 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.6 2002/11/29 07:22:01 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/11/29 07:22:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/11/29 06:44:15 $
+ * @version $Revision: 1.6 $ $Date: 2002/11/29 07:22:01 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase
@@ -369,7 +369,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase
                 "vendor//promotion[../@stores = 'all']",
                 list(""));
     }
-
+    
     public void testAxisParent() {
         // parent::
         assertXPathPointer(context,
@@ -678,4 +678,18 @@ public abstract class XMLModelTestCase extends JXPathTestCase
                 "vendor/location/employeeCount and true()",
                 Boolean.TRUE);
     }
+    
+    public void testBooleanFunction(){
+        assertXPathValue(context,
+            "boolean(vendor//saleEnds[../@stores = 'all'])",
+            Boolean.TRUE);
+
+        assertXPathValue(context,
+            "boolean(vendor//promotion[../@stores = 'all'])",
+            Boolean.TRUE);
+
+        assertXPathValue(context,
+            "boolean(vendor//promotion[../@stores = 'some'])",
+            Boolean.FALSE);
+     }    
 }
