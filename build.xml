@@ -139,7 +139,7 @@
     </property>
     <property name="title" value="JXPath 1.2 API">
     </property>
-    <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="src/java" packagenames=".*">
+    <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="src/java" packagenames="*">
       <classpath>
         <fileset dir="${libdir}">
           <include name="*.jar">
