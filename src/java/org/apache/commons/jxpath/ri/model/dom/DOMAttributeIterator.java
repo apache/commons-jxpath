@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributeIterator.java,v 1.6 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributeIterator.java,v 1.7 2002/12/02 01:12:20 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/12/02 01:12:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.w3c.dom.Node;
  * An iterator of attributes of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.7 $ $Date: 2002/12/02 01:12:20 $
  */
 public class DOMAttributeIterator implements NodeIterator {
     private NodePointer parent;
@@ -164,19 +164,21 @@ public class DOMAttributeIterator implements NodeIterator {
 
         if (testNS != null){
             Attr attr = element.getAttributeNodeNS(testNS, name.getName());
-            if (attr == null){
-                // This may mean that the parser does not support NS for
-                // attributes, example - the version of Crimson bundled
-                // with JDK 1.4.0
-                NamedNodeMap nnm = element.getAttributes();
-                for (int i = 0; i < nnm.getLength(); i++){
-                    attr = (Attr)nnm.item(i);
-                    if (testAttr(attr, name)){
-                        return attr;
-                    }
+            if (attr != null){
+                return attr;
+            }
+            
+            // This may mean that the parser does not support NS for
+            // attributes, example - the version of Crimson bundled
+            // with JDK 1.4.0
+            NamedNodeMap nnm = element.getAttributes();
+            for (int i = 0; i < nnm.getLength(); i++){
+                attr = (Attr)nnm.item(i);
+                if (testAttr(attr, name)){
+                    return attr;
                 }
             }
-            return attr;
+            return null;
         }
         else {
             return element.getAttributeNode(name.getName());

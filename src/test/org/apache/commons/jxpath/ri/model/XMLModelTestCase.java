@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.6 2002/11/29 07:22:01 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/11/29 07:22:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.7 2002/12/02 01:12:19 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/12/02 01:12:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/11/29 07:22:01 $
+ * @version $Revision: 1.7 $ $Date: 2002/12/02 01:12:19 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase
@@ -495,6 +495,11 @@ public abstract class XMLModelTestCase extends JXPathTestCase
                 "vendor/location/@missing",
                 null);
 
+        // Missing attribute with namespace
+        assertXPathValueLenient(context,
+                "vendor/location/@miss:missing",
+                null);
+                
         // Using attribute in a predicate
         assertXPathValue(context,
                 "vendor/location[@id='101']//street",
