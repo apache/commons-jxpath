@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.12 2003/03/11 00:59:20 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2003/03/11 00:59:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.13 2003/05/04 23:53:19 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2003/05/04 23:53:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,6 +63,7 @@ package org.apache.commons.jxpath.ri.axes;
 
 import java.util.Stack;
 
+import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
@@ -75,7 +76,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2003/03/11 00:59:20 $
+ * @version $Revision: 1.13 $ $Date: 2003/05/04 23:53:19 $
  */
 public class DescendantContext extends EvalContext {
     private NodeTest nodeTest;
@@ -85,7 +86,7 @@ public class DescendantContext extends EvalContext {
     private boolean includeSelf;
     private static final NodeTest ELEMENT_NODE_TEST =
             new NodeTypeTest(Compiler.NODE_TYPE_NODE);
-
+                        
     public DescendantContext(
             EvalContext parentContext,
             boolean includeSelf,
@@ -149,22 +150,40 @@ public class DescendantContext extends EvalContext {
             NodeIterator it = (NodeIterator) stack.peek();
             if (it.setPosition(it.getPosition() + 1)) {
                 currentNodePointer = it.getNodePointer();
-                if (!currentNodePointer.isLeaf()) {
-                    stack.push(
-                        currentNodePointer.childIterator(
-                            ELEMENT_NODE_TEST,
-                            false,
-                            null));
-                }
-                if (currentNodePointer.testNode(nodeTest)) {
-                    position++;
-                    return true;
+                if (!isRecursive()) {
+                    if (!currentNodePointer.isLeaf()) {
+                        stack.push(
+                            currentNodePointer.childIterator(
+                                ELEMENT_NODE_TEST,
+                                false,
+                                null));
+                    }
+                    if (currentNodePointer.testNode(nodeTest)) {
+                        position++;
+                        return true;
+                    }
                 }
             }
             else {
                 // We get here only if the name test failed 
                 // and the iterator ended
                 stack.pop();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if we are reentering a bean we have already seen and if so
+     * returns true to prevent infinite recursion.
+     */
+    private boolean isRecursive() {
+        Object node = currentNodePointer.getNode();
+        for (int i = stack.size() - 1; --i >= 0;) {
+            NodeIterator it = (NodeIterator) stack.get(i);
+            Pointer pointer = it.getNodePointer();
+            if (pointer != null && pointer.getNode() == node) {
+                return true;
             }
         }
         return false;

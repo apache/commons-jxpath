@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestSuite.java,v 1.3 2003/01/20 00:00:26 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2003/01/20 00:00:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestSuite.java,v 1.4 2003/05/04 23:53:19 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/05/04 23:53:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,6 +68,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.apache.commons.jxpath.ri.JXPathCompiledExpressionTest;
+import org.apache.commons.jxpath.ri.axes.RecursiveAxesTest;
 import org.apache.commons.jxpath.ri.axes.SimplePathInterpreterTest;
 import org.apache.commons.jxpath.ri.compiler.ContextDependencyTest;
 import org.apache.commons.jxpath.ri.compiler.CoreFunctionTest;
@@ -96,7 +97,7 @@ import org.apache.commons.jxpath.util.BasicTypeConverterTest;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/01/20 00:00:26 $
+ * @version $Revision: 1.4 $ $Date: 2003/05/04 23:53:19 $
  */
 
 public class JXPathTestSuite extends TestCase {
@@ -132,6 +133,7 @@ public class JXPathTestSuite extends TestCase {
         suite.addTestSuite(JDOMModelTest.class);
         suite.addTestSuite(MixedModelTest.class);
         suite.addTestSuite(BasicTypeConverterTest.class);
+        suite.addTestSuite(RecursiveAxesTest.class);
         return suite;
     }
 }
