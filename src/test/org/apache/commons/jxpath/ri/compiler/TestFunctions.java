@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.NodeSet;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision: 1.10 $ $Date: 2004/03/25 05:42:01 $
  */
 public class TestFunctions {
 
@@ -48,6 +48,11 @@ public class TestFunctions {
         this.foo =
             ((Number) context.getContextNodePointer().getValue()).intValue();
         this.bar = bar;
+    }
+    
+    public TestFunctions(int foo, Object object, boolean another) {
+        this.foo = foo;
+        bar = String.valueOf(object);
     }
 
     public int getFoo() {

@@ -33,7 +33,7 @@ import org.apache.commons.jxpath.NodeSet;
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/02/29 14:17:43 $
+ * @version $Revision: 1.13 $ $Date: 2004/03/25 05:42:01 $
  */
 public class BasicTypeConverter implements TypeConverter {
 
@@ -177,6 +177,12 @@ public class BasicTypeConverter implements TypeConverter {
         }
 
         if (toType == Object.class) {
+            if (object instanceof NodeSet) {
+                return convert(((NodeSet) object).getValues(), toType);
+            }
+            else if (object instanceof Pointer) {
+                return convert(((Pointer) object).getValue(), toType);
+            }
             return object;
         }
 

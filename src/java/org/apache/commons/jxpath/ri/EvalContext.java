@@ -40,7 +40,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.29 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision: 1.30 $ $Date: 2004/03/25 05:42:01 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
@@ -243,6 +243,15 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         }
 
         return set;
+    }
+    
+    /**
+     * Typically returns the NodeSet by calling getNodeSet(), 
+     * but will be overridden for contexts that more naturally produce
+     * individual values, e.g. VariableContext
+     */
+    public Object getValue() {
+        return getNodeSet();
     }
 
     public String toString() {

@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that is used to hold the root node for the path traversal.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision: 1.17 $ $Date: 2004/03/25 05:42:01 $
  */
 public class RootContext extends EvalContext {
     private JXPathContextReferenceImpl jxpathContext;
@@ -61,7 +61,11 @@ public class RootContext extends EvalContext {
     public NodePointer getCurrentNodePointer() {
         return pointer;
     }
-
+    
+    public Object getValue() {
+        return pointer;
+    }
+    
     public int getCurrentPosition() {
         throw new UnsupportedOperationException();
     }

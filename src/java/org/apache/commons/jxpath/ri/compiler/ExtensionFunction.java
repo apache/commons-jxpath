@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.QName;
  * call.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision: 1.13 $ $Date: 2004/03/25 05:42:01 $
  */
 public class ExtensionFunction extends Operation {
 
@@ -94,7 +94,7 @@ public class ExtensionFunction extends Operation {
     
     private Object convert(Object object) {
         if (object instanceof EvalContext) {
-            return ((EvalContext) object).getNodeSet();
+            return ((EvalContext) object).getValue();
         }
         return object;
     }  

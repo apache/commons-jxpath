@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "namespace::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision: 1.10 $ $Date: 2004/03/25 05:42:01 $
  */
 public class NamespaceContext extends EvalContext {
     private NodeTest nodeTest;
@@ -74,19 +74,19 @@ public class NamespaceContext extends EvalContext {
                 return false;
             }
 
-            QName testName = ((NodeNameTest) nodeTest).getNodeName();
+            NodeNameTest nodeNameTest = (NodeNameTest) nodeTest;
+            QName testName = nodeNameTest.getNodeName();
             if (testName.getPrefix() != null) {
                 return false;
             }
-            String testLocalName = testName.getName();
-            if (testLocalName.equals("*")) {
+            if (nodeNameTest.isWildcard()) {
                 iterator =
                     parentContext.getCurrentNodePointer().namespaceIterator();
             }
             else {
                 currentNodePointer =
                     parentContext.getCurrentNodePointer().namespacePointer(
-                        testLocalName);
+                            testName.getName());
                 return currentNodePointer != null;
             }
         }

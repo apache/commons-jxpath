@@ -25,6 +25,7 @@ import java.util.Set;
 import org.apache.commons.jxpath.functions.ConstructorFunction;
 import org.apache.commons.jxpath.functions.MethodFunction;
 import org.apache.commons.jxpath.util.MethodLookupUtils;
+import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * Extension functions provided by Java classes.  The class prefix specified
@@ -64,7 +65,7 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
 
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision: 1.13 $ $Date: 2004/03/25 05:42:01 $
  */
 public class PackageFunctions implements Functions {
     private String classPrefix;
@@ -119,7 +120,7 @@ public class PackageFunctions implements Functions {
         }
 
         if (parameters.length >= 1) {
-            Object target = parameters[0];
+            Object target = TypeUtils.convert(parameters[0], Object.class);
             if (target != null) {
                 Method method =
                     MethodLookupUtils.lookupMethod(

@@ -37,7 +37,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision: 1.15 $ $Date: 2004/03/25 05:42:01 $
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase {
@@ -170,6 +170,12 @@ public class ExtensionFunctionTest extends JXPathTestCase {
 
         // Allocate new object using a custom constructor - type conversion
         assertXPathValue(context, "string(test:new('3', 4))", "foo=3; bar=4.0");
+        
+        context.getVariables().declareVariable("A", "baz");        
+        assertXPathValue(
+                context,
+                "string(test:new(2, $A, false))",
+                "foo=2; bar=baz");
     }
 
     public void testMethodCall() {
@@ -210,16 +216,8 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             "size(beans)", 
             new Integer(2));
             
-        boolean exception = false;
-        try {
-            assertXPathValue(context, "add($myList, 'hello')", Boolean.TRUE);
-        }
-        catch (Exception ex) {
-            exception = true;
-        }
-        assertTrue(
-            "Exception trying to add to an unmodifiable list",
-            exception);
+        context.getValue("add($myList, 'hello')");
+        assertEquals("After adding an element", 2, list.size());
     }
 
     public void testStaticMethodCall() {

@@ -25,7 +25,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * on to the parent context.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2004/02/29 14:17:37 $
+ * @version $Revision: 1.14 $ $Date: 2004/03/25 05:42:01 $
  */
 public class InitialContext extends EvalContext {
     private boolean startedSet = false;
@@ -50,7 +50,11 @@ public class InitialContext extends EvalContext {
     public NodePointer getCurrentNodePointer() {
         return nodePointer;
     }
-
+    
+    public Object getValue() {
+        return nodePointer;
+    }
+    
     public boolean nextNode() {
         return setPosition(position + 1);
     }
