@@ -46,7 +46,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.25 $ $Date: 2004/10/06 00:34:14 $
+ * @version $Revision: 1.26 $ $Date: 2004/12/30 21:59:36 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -226,6 +226,10 @@ public class DOMNodePointer extends NodePointer {
         }
 
         namespaces.put(prefix, namespace);
+        if (namespace == UNKNOWN_NAMESPACE) {
+            return null;
+        }
+        
         // TBD: We are supposed to resolve relative URIs to absolute ones.
         return namespace;
     }

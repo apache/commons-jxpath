@@ -28,14 +28,18 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2004/06/29 22:57:20 $
+ * @version $Revision: 1.3 $ $Date: 2004/12/30 21:59:36 $
  */
 public class NamespaceResolver implements Cloneable {
-    
+    final protected NamespaceResolver parent;
     protected HashMap namespaceMap = new HashMap();
     protected HashMap reverseMap;
     protected NodePointer pointer;
     private boolean sealed;
+        
+    public NamespaceResolver(NamespaceResolver parent) {
+        this.parent = parent;
+    }
     
     /**
      * Registers a namespace prefix.
@@ -56,6 +60,9 @@ public class NamespaceResolver implements Cloneable {
     }
     
     public Pointer getNamespaceContextPointer() {
+        if (pointer == null && parent != null) {
+            return parent.getNamespaceContextPointer();
+        }
         return pointer;
     }
     
@@ -73,6 +80,9 @@ public class NamespaceResolver implements Cloneable {
         String uri = (String) namespaceMap.get(prefix);
         if (uri == null && pointer != null) {
             uri = pointer.getNamespaceURI(prefix);
+        }
+        if (uri == null && parent != null) {
+            return parent.getNamespaceURI(prefix);
         }
 //        System.err.println("For prefix " + prefix + " URI=" + uri);
         return uri;
@@ -96,6 +106,9 @@ public class NamespaceResolver implements Cloneable {
             }
         }
         String prefix = (String) reverseMap.get(namespaceURI);
+        if (prefix == null && parent != null) {
+            return parent.getPrefix(namespaceURI);
+        }
         return prefix;
     }
     
@@ -105,6 +118,9 @@ public class NamespaceResolver implements Cloneable {
     
     public void seal() {
         sealed = true;
+        if (parent != null) {
+            parent.seal();
+        }
     }
     
     public Object clone() {

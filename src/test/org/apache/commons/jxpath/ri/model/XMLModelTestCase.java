@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.24 $ $Date: 2004/10/06 00:34:14 $
+ * @version $Revision: 1.25 $ $Date: 2004/12/30 21:59:36 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {
@@ -798,6 +798,22 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         // Preference for externally registered namespace prefix
         assertXPathValueAndPointer(context,
                 "//product:name",
+                "Box of oranges",
+                "/vendor[1]/product[1]/goods:name[1]");
+        
+        // Same, but with a child context        
+        JXPathContext childCtx = 
+            JXPathContext.newContext(context, context.getContextBean());
+        assertXPathValueAndPointer(childCtx,
+                "//product:name",
+                "Box of oranges",
+                "/vendor[1]/product[1]/goods:name[1]");
+        
+        // Same, but with a relative context        
+        JXPathContext relativeCtx = 
+            context.getRelativeContext(context.getPointer("/vendor"));
+        assertXPathValueAndPointer(relativeCtx,
+                "product/product:name",
                 "Box of oranges",
                 "/vendor[1]/product[1]/goods:name[1]");
     }

@@ -53,7 +53,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.43 $ $Date: 2004/04/04 23:16:23 $
+ * @version $Revision: 1.44 $ $Date: 2004/12/30 21:59:36 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -146,7 +146,11 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             this.rootPointer = this.contextPointer;
         }
         
-        namespaceResolver = new NamespaceResolver();
+        NamespaceResolver parentNR = null;
+        if (parentContext instanceof JXPathContextReferenceImpl) {
+            parentNR = ((JXPathContextReferenceImpl)parentContext).getNamespaceResolver();
+        }
+        namespaceResolver = new NamespaceResolver(parentNR);
         namespaceResolver
                 .setNamespaceContextPointer((NodePointer) this.contextPointer);
     }
