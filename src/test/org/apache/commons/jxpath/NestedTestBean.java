@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/NestedTestBean.java,v 1.3 2002/04/12 02:28:06 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/12 02:28:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/NestedTestBean.java,v 1.4 2002/10/13 03:25:48 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/10/13 03:25:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,7 +65,7 @@ package org.apache.commons.jxpath;
  * A general purpose JavaBean for JUnit tests for the "jxpath" component.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/12 02:28:06 $
+ * @version $Revision: 1.4 $ $Date: 2002/10/13 03:25:48 $
  */
 public class NestedTestBean {
     private String name = "Name 0";
@@ -75,6 +75,10 @@ public class NestedTestBean {
     }
 
     public NestedTestBean(String name){
+        this.name = name;
+    }
+
+    public void setName(String name){
         this.name = name;
     }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/JXPathTest.java,v 1.1 2002/10/13 03:01:03 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/13 03:01:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/JXPathTest.java,v 1.2 2002/10/13 03:25:48 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/10/13 03:25:48 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -96,7 +96,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/13 03:01:03 $
+ * @version $Revision: 1.2 $ $Date: 2002/10/13 03:25:48 $
  */
 
 public class JXPathTest extends TestCase
@@ -453,6 +453,38 @@ public class JXPathTest extends TestCase
             actual.add(((Pointer)it.next()).getValue());
         }
         assertEquals("Iterating <" + "beans/int" + ">", list(new Integer(5), new Integer(6)), actual);
+    }
+
+    public void testIteratePointerSetValue() {
+        JXPathContext context = JXPathContext.newContext(bean);
+
+        testGetValue(context, "/beans[1]/name", "Name 1");
+        testGetValue(context, "/beans[2]/name", "Name 2");
+
+        // Test setting via context
+        context.setValue("/beans[2]/name", "Name 2 set");
+        testGetValue(context, "/beans[2]/name", "Name 2 set");
+
+        // Restore original value
+        context.setValue("/beans[2]/name", "Name 2");
+        testGetValue(context, "/beans[2]/name", "Name 2");
+
+        int iter_count = 0;
+        Iterator iter = context.iteratePointers("/beans/name");
+        while (iter.hasNext()) {
+            iter_count++;
+            Pointer pointer = (Pointer) iter.next();
+            String s = (String) pointer.getValue();
+            s = s + "suffix";
+            pointer.setValue(s);
+            assertEquals("pointer.getValue", s, pointer.getValue());
+            // fails right here, the value isn't getting set in the bean.
+            assertEquals("context.getValue", s, context.getValue(pointer.asPath()));
+        }
+        assertEquals("Iteration count", 2, iter_count);
+
+        testGetValue(context, "/beans[1]/name", "Name 1suffix");
+        testGetValue(context, "/beans[2]/name", "Name 2suffix");
     }
 
     /**
