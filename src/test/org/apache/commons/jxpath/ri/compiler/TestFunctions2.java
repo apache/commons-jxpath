@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions2.java,v 1.3 2003/01/20 00:00:27 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2003/01/20 00:00:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions2.java,v 1.4 2003/03/11 00:59:36 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/03/11 00:59:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ package org.apache.commons.jxpath.ri.compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/01/20 00:00:27 $
+ * @version $Revision: 1.4 $ $Date: 2003/03/11 00:59:36 $
  */
 public class TestFunctions2 {
 

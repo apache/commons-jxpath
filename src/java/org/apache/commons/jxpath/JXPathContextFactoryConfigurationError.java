@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContextFactoryConfigurationError.java,v 1.2 2002/04/24 03:29:33 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 03:29:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContextFactoryConfigurationError.java,v 1.3 2003/03/11 00:59:12 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/03/11 00:59:12 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@ package org.apache.commons.jxpath;
  * or instantiated.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 03:29:33 $
+ * @version $Revision: 1.3 $ $Date: 2003/03/11 00:59:12 $
  */
 
 public class JXPathContextFactoryConfigurationError extends Error {

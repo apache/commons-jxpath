@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DocumentContainer.java,v 1.5 2003/01/25 01:50:37 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/01/25 01:50:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DocumentContainer.java,v 1.6 2003/03/11 00:59:34 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/03/11 00:59:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.JXPathException;
  * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/01/25 01:50:37 $
+ * @version $Revision: 1.6 $ $Date: 2003/03/11 00:59:34 $
  */
 public class DocumentContainer implements Container {
 

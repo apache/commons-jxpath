@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.31 2003/01/20 00:00:26 dmitri Exp $
- * $Revision: 1.31 $
- * $Date: 2003/01/20 00:00:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.32 2003/03/11 00:59:35 dmitri Exp $
+ * $Revision: 1.32 $
+ * $Date: 2003/03/11 00:59:35 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,7 +78,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Abstract superclass for various JXPath tests.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.31 $ $Date: 2003/01/20 00:00:26 $
+ * @version $Revision: 1.32 $ $Date: 2003/03/11 00:59:35 $
  */
 
 public abstract class JXPathTestCase extends TestCase {

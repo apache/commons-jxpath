@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynabeans/TestDynaBeanFactory.java,v 1.5 2003/01/20 00:00:29 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/01/20 00:00:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynabeans/TestDynaBeanFactory.java,v 1.6 2003/03/11 00:59:39 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/03/11 00:59:39 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.Pointer;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/01/20 00:00:29 $
+ * @version $Revision: 1.6 $ $Date: 2003/03/11 00:59:39 $
  */
 public class TestDynaBeanFactory extends AbstractFactory {
 

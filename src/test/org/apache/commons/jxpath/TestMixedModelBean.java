@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestMixedModelBean.java,v 1.4 2003/01/20 00:00:27 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2003/01/20 00:00:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestMixedModelBean.java,v 1.5 2003/03/11 00:59:35 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/03/11 00:59:35 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -76,7 +76,7 @@ import org.w3c.dom.Element;
  * Mixed model test bean: Java, collections, map, DOM, Container.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2003/01/20 00:00:27 $
+ * @version $Revision: 1.5 $ $Date: 2003/03/11 00:59:35 $
  */
 public class TestMixedModelBean {
     private String string;

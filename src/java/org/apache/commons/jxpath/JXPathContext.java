@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.15 2003/02/19 00:59:52 dmitri Exp $
- * $Revision: 1.15 $
- * $Date: 2003/02/19 00:59:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.16 2003/03/11 00:59:12 dmitri Exp $
+ * $Revision: 1.16 $
+ * $Date: 2003/03/11 00:59:12 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -418,7 +418,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2003/02/19 00:59:52 $
+ * @version $Revision: 1.16 $ $Date: 2003/03/11 00:59:12 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;

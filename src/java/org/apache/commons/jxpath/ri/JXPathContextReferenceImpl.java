@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.29 2003/02/21 00:37:26 dmitri Exp $
- * $Revision: 1.29 $
- * $Date: 2003/02/21 00:37:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.30 2003/03/11 00:59:18 dmitri Exp $
+ * $Revision: 1.30 $
+ * $Date: 2003/03/11 00:59:18 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -98,7 +98,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.29 $ $Date: 2003/02/21 00:37:26 $
+ * @version $Revision: 1.30 $ $Date: 2003/03/11 00:59:18 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     

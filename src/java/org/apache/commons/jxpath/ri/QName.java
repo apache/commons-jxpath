@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/QName.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/01/11 05:41:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/QName.java,v 1.6 2003/03/11 00:59:19 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/03/11 00:59:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.JXPathException;
  * and an local name.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:22 $
+ * @version $Revision: 1.6 $ $Date: 2003/03/11 00:59:19 $
  */
 public class QName {
     private String prefix;

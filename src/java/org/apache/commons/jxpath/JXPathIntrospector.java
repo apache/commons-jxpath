@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/01/11 05:41:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.6 2003/03/11 00:59:12 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/03/11 00:59:12 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,7 @@ import java.util.HashMap;
  * JXPathBeanInfo} objects for Java classes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:22 $
+ * @version $Revision: 1.6 $ $Date: 2003/03/11 00:59:12 $
  */
 public class JXPathIntrospector {
 

@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.13 2003/01/11 05:41:24 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2003/01/11 05:41:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.14 2003/03/11 00:59:25 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2003/03/11 00:59:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * with index 2 (= 3 - 1) and a "foo" pointer as the parent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2003/01/11 05:41:24 $
+ * @version $Revision: 1.14 $ $Date: 2003/03/11 00:59:25 $
  */
 public class NullElementPointer extends CollectionPointer {
 

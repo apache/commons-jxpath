@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.6 2003/02/19 00:59:53 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2003/02/19 00:59:53 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.7 2003/03/11 00:59:34 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/03/11 00:59:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.NodeSet;
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/02/19 00:59:53 $
+ * @version $Revision: 1.7 $ $Date: 2003/03/11 00:59:34 $
  */
 public class BasicTypeConverter implements TypeConverter {
 

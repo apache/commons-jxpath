@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/XMLParser.java,v 1.1 2002/08/10 01:28:49 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/08/10 01:28:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/XMLParser.java,v 1.2 2003/03/11 00:59:35 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/03/11 00:59:35 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@ import java.io.InputStream;
  * some of the parsers we want to support may not be JAXP compliant.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/10 01:28:49 $
+ * @version $Revision: 1.2 $ $Date: 2003/03/11 00:59:35 $
  */
 public interface XMLParser {
 

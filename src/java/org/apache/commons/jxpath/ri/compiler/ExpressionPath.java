@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.7 2003/01/19 23:59:24 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/01/19 23:59:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.8 2003/03/11 00:59:22 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/03/11 00:59:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * /bar</code>.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/01/19 23:59:24 $
+ * @version $Revision: 1.8 $ $Date: 2003/03/11 00:59:22 $
  */
 public class ExpressionPath extends Path {
 

@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPointer.java,v 1.2 2003/01/11 05:41:26 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2003/01/11 05:41:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPointer.java,v 1.3 2003/03/11 00:59:29 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/03/11 00:59:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,7 +77,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2003/01/11 05:41:26 $
+ * @version $Revision: 1.3 $ $Date: 2003/03/11 00:59:29 $
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;

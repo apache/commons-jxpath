@@ -22,17 +22,20 @@
           the XPath 1.0 standard.  A JDOM node can also be a part of a mixed model,
           i.e. the value of a property, variable, container, collection element
           etc.
+          <br/>
         </li>
         <li>
           Pointer has an additional method: getNode(), which returns the raw
           value without converting it to a primitive value.  This makes
           a difference when you are working with DOM/JDOM and want to obtain
           the Node itself, not the textual value of the Node.
+          <br/>
         </li>
         <li>
           Support for DynaBeans
           (see <a href="http://jakarta.apache.org/commons/beanutils">Jakarta
           Commons BeanUtils</a>).
+          <br/>
         </li>
         <li>
           Refactored XML parsing by container to allow for alternate parsers.
@@ -40,8 +43,8 @@
           DOM (default) or JDOM.  From that point the processing is transparent.
           See
           <a href="apidocs/org/apache/commons/jxpath/xml/DocumentContainer.html">
-            <code>org.apache.commons.jxpath.xml.DocumentContainer</code>
-          </a>.
+            <code>org.apache.commons.jxpath.xml.DocumentContainer.</code></a>
+          <br/>
         </li>
         <li>
           The <code>format-number</code> XSLT function is now supported.
@@ -50,28 +53,41 @@
           XSLT as <code>&lt;xsl:decimal-format&gt;</code> (see
           <a href="http://www.w3schools.com/xsl/el_decimal-format.asp">
           W3Schools tutorial</a>).  The new methods of JXPathContext:
-          <code>setDecimalFormatSymbols</code> and
-          <code>getDecimalFormatSymbols</code> fulfill that requirement.
+          <code>setDecimalFormatSymbols()</code> and
+          <code>getDecimalFormatSymbols()</code> fulfill that requirement.
+          <br/>
         </li>
         <li>
           The <code>attribute::</code> axis is now supported models other than
           DOM/JDOM.  For beans and maps it is interpreted the same way as
           the <code>"child::"</code> axis.
+          <br/>
         </li>
         <li>
           In JXPath 1.0 you could only register DynamicPropertyHandlers for
           concrete classes, now you can also register them for interfaces.
+          <br/>
         </li>
         <li>
           The implementation of <code>setValue()</code> has changed for DOM/JDOM
           nodes.  In JXPath 1.0 it would replace text in the element, but leave
-          subelements alone.  The new implementation is more consistent: it
+          sub-elements alone.  The new implementation is more consistent: it
           drops all subelements first.  Also, if you pass a Node as the new
           value, it will insert the Node in the tree.
+          <br/>
+        </li>
+        <li>
+          If you need to evaluate multiple paths relative to a certain node
+          in the object graph, you can now create a relative JXPathContext.
+          Obtain the pointer for the location that is supposed to define
+          the relative context and then a relative context by calling
+          <code>context.getRelativeContext(pointer)</code>.
+          <br/>
         </li>
         <li>
           The JUnit tests for JXPath have been completely redisigned and
           significantly enhanced.
+          <br/>
         </li>
       </ul>
      </p>
@@ -100,7 +116,7 @@
           <li>Per Kreipke</li>
           <li>Kees Kuip</li>
           <li>David Li</li>
-          <li>Ulrich Nicolas Lissé</li>
+          <li>Ulrich Nicolas Lisse</li>
           <li>Costin Manolache</li>
           <li>Thorsten Mauch</li>
           <li>Craig R. McClanahan</li>

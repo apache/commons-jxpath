@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.10 2003/01/11 05:41:27 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2003/01/11 05:41:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.11 2003/03/11 00:59:34 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/03/11 00:59:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,7 +65,7 @@ package org.apache.commons.jxpath.util;
  * Global type conversion utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2003/01/11 05:41:27 $
+ * @version $Revision: 1.11 $ $Date: 2003/03/11 00:59:34 $
  */
 public class TypeUtils {
     private static TypeConverter typeConverter = new BasicTypeConverter();

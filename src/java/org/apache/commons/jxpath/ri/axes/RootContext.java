@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.10 2003/02/19 00:59:51 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2003/02/19 00:59:51 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.11 2003/03/11 00:59:20 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/03/11 00:59:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that is used to hold the root node for the path traversal.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2003/02/19 00:59:51 $
+ * @version $Revision: 1.11 $ $Date: 2003/03/11 00:59:20 $
  */
 public class RootContext extends EvalContext {
     private JXPathContextReferenceImpl jxpathContext;

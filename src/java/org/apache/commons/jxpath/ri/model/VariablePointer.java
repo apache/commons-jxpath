@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.13 2003/01/20 00:07:52 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2003/01/20 00:07:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.14 2003/03/11 00:59:23 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2003/03/11 00:59:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2003/01/20 00:07:52 $
+ * @version $Revision: 1.14 $ $Date: 2003/03/11 00:59:23 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;

@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.8 2003/02/07 00:51:41 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2003/02/07 00:51:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.9 2003/03/11 00:59:17 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/03/11 00:59:17 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * An XPath extension function implemented as an individual Java method.
  * 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2003/02/07 00:51:41 $
+ * @version $Revision: 1.9 $ $Date: 2003/03/11 00:59:17 $
  */
 public class MethodFunction implements Function {
 

@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPointer.java,v 1.3 2003/01/11 05:41:25 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2003/01/11 05:41:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPointer.java,v 1.4 2003/03/11 00:59:28 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/03/11 00:59:28 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * A Pointer that points to a DynaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:25 $
+ * @version $Revision: 1.4 $ $Date: 2003/03/11 00:59:28 $
  */
 public class DynaBeanPointer extends PropertyOwnerPointer {
     private QName name;

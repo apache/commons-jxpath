@@ -4,16 +4,17 @@
   <extend>../project.xml</extend>
   <name>JXPath</name>
   <id>commons-jxpath</id>
-  <currentVersion>1.1b2</currentVersion>
+  <currentVersion>1.1</currentVersion>
   <inceptionYear>2001</inceptionYear>
   <shortDescription>XPath for Java Objects</shortDescription>
   <description>A package of Java utility methods for accessing and modifying object properties</description>
+  <url>http://jakarta.apache.org/commons/jxpath/index.html</url>
 
   <versions>
     <version>
-      <id>b2</id>
-      <name>1.1-b2</name>
-      <tag>JXPATH_1_1_B2</tag>
+      <id>1.1</id>
+      <name>1.1</name>
+      <tag>JXPATH_1_1</tag>
     </version>
   </versions>
 
@@ -89,4 +90,21 @@
       </resources>
     </unitTest>
   </build>
+
+  <reports>
+    <report>maven-junit-report-plugin</report>
+    <!--
+    <report>maven-jdepend-plugin</report>
+    <report>maven-checkstyle-plugin</report>
+    <report>maven-changelog-plugin</report>
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-file-activity-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-linkcheck-plugin</report>
+    <report>maven-tasklist-plugin</report>
+    <report>maven-clover-plugin</report>
+    -->
+  </reports>
 </project>

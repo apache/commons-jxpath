@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.16 2003/02/19 00:59:52 dmitri Exp $
- * $Revision: 1.16 $
- * $Date: 2003/02/19 00:59:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.17 2003/03/11 00:59:23 dmitri Exp $
+ * $Revision: 1.17 $
+ * $Date: 2003/03/11 00:59:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
  *
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -81,7 +81,7 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * attribute and only simple, context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2003/02/19 00:59:52 $
+ * @version $Revision: 1.17 $ $Date: 2003/03/11 00:59:23 $
  */
 public abstract class NodePointer implements Pointer {
 
