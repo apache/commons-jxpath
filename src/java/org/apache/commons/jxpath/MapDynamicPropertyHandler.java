@@ -17,12 +17,13 @@ package org.apache.commons.jxpath;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Implements the DynamicPropertyHandler interface for java.util.Map.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision: 1.7 $ $Date: 2004/03/02 01:03:14 $
  */
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
@@ -33,8 +34,9 @@ public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
      */
     public String[] getPropertyNames(Object object) {
         Map map = (Map) object;
-        String names[] = new String[map.size()];
-        Iterator it = map.keySet().iterator();
+        Set set = map.keySet();
+        String names[] = new String[set.size()];
+        Iterator it = set.iterator();
         for (int i = 0; i < names.length; i++) {
             names[i] = String.valueOf(it.next());
         }
