@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.4 2002/04/28 04:31:13 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/28 04:31:13 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.5 2002/05/08 23:03:28 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 23:03:28 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/28 04:31:13 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 23:03:28 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -116,7 +116,7 @@ public class ValueUtils {
             return 1;
         }
     }
-    
+
     public static Iterator iterate(Object collection){
         if (collection == null){
             return Collections.EMPTY_LIST.iterator();
@@ -158,6 +158,49 @@ public class ValueUtils {
         else {
             throw new JXPathException("Cannot turn " + collection.getClass().getName() +
                     " into a collection of size " + size);
+        }
+    }
+
+    public static Object remove(Object collection, int index){
+        if (collection == null){
+            return null;
+        }
+        else if (collection.getClass().isArray()){
+            int length = Array.getLength(collection);
+            Object smaller = Array.newInstance(collection.getClass().getComponentType(), length-1);
+            if (index > 0){
+                System.arraycopy(collection, 0, smaller, 0, index);
+            }
+            if (index < length - 1){
+                System.arraycopy(collection, index + 1, smaller,
+                        index, length - index - 1);
+            }
+            return smaller;
+        }
+        else if (collection instanceof List){
+            int size = ((List)collection).size();
+            if (index < size){
+                ((List)collection).remove(index);
+            }
+            return collection;
+        }
+        else if (collection instanceof Collection){
+            Iterator it = ((Collection)collection).iterator();
+            for (int i = 0; i < index; i++){
+                if (!it.hasNext()){
+                    break;
+                }
+                it.next();
+            }
+            if (it.hasNext()){
+                it.next();
+                it.remove();
+            }
+            return collection;
+        }
+        else {
+            throw new JXPathException("Cannot remove " +
+                    collection.getClass().getName() + "[" + index + "]");
         }
     }
 
@@ -276,18 +319,21 @@ public class ValueUtils {
             value = method.invoke(bean, new Object[]{value});
         }
         catch (Exception ex){
+            ex.printStackTrace();
             throw new JXPathException(
                 "Cannot modify property: " + propertyDescriptor.getName(), ex);
         }
     }
 
     private static Object convert(Object value, Class type){
-        if (!TypeUtils.canConvert(value, type)){
+        try {
+            return TypeUtils.convert(value, type);
+        }
+        catch (Exception ex){
             throw new JXPathException("Cannot convert value of class " +
                     (value == null ? "null" : value.getClass().getName()) +
-                    " to type " + type);
+                    " to type " + type, ex);
         }
-        return TypeUtils.convert(value, type);
     }
 
     /**
