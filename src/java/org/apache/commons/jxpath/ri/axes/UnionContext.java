@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java,v 1.6 2002/04/28 04:35:48 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/04/28 04:35:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java,v 1.7 2002/05/29 00:41:32 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/05/29 00:41:32 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of a union operation like (a | b)
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/04/28 04:35:48 $
+ * @version $Revision: 1.7 $ $Date: 2002/05/29 00:41:32 $
  */
 public class UnionContext extends EvalContext {
     private boolean startedSet = false;
@@ -83,6 +83,13 @@ public class UnionContext extends EvalContext {
     public UnionContext(EvalContext parentContext, EvalContext contexts[]){
         super(parentContext);
         this.contexts = contexts;
+    }
+
+    public int getDocumentOrder(){
+        if (contexts.length > 1){
+            return 1;
+        }
+        return super.getDocumentOrder();
     }
 
     public NodePointer getCurrentNodePointer(){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.14 2002/05/08 00:40:00 dmitri Exp $
- * $Revision: 1.14 $
- * $Date: 2002/05/08 00:40:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.15 2002/05/29 00:41:33 dmitri Exp $
+ * $Revision: 1.15 $
+ * $Date: 2002/05/29 00:41:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2002/05/08 00:40:00 $
+ * @version $Revision: 1.15 $ $Date: 2002/05/29 00:41:33 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
@@ -87,6 +87,15 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     protected int position = 0;
     private boolean startedSetIteration = false;
     private boolean done = false;
+    private Iterator pointerIterator;
+
+    // Sorts in the reverse order to the one defined by the Comparable
+    // interface.
+    private static final Comparator REVERSE_COMPARATOR = new Comparator(){
+        public int compare(Object o1, Object o2){
+            return ((Comparable)o2).compareTo(o1);
+        }
+    };
 
     public EvalContext(EvalContext parentContext){
         this.parentContext = parentContext;
@@ -105,41 +114,77 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     }
 
     /**
+     * Determines the document order for this context.
+     *
+     * @return 1 ascending order, -1 descending order,
+     *  0 - does not require ordering
+     */
+    public int getDocumentOrder(){
+        // Default behavior: if the parent needs to be ordered,
+        // this one needs to be ordered too
+        if (parentContext != null && parentContext.getDocumentOrder() != 0){
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
      * Returns true if there are mode nodes matching the context's constraints.
      */
     public boolean hasNext(){
-        if (done){
-            return false;
+        if (pointerIterator != null){
+            return pointerIterator.hasNext();
         }
-        if (position == 0){
-            while (nextSet()){
-                if (nextNode()){
-                    return true;
-                }
+
+        if (getDocumentOrder() != 0){
+            return constructIterator();
+        }
+        else {
+            if (done){
+                return false;
             }
-            return false;
+            if (position == 0){
+                while (nextSet()){
+                    if (nextNode()){
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return true;
         }
-        return true;
     }
 
     /**
      * Returns the next node pointer in the context
      */
     public Object next(){
-        if (done || (position == 0 && !hasNext())){
-            throw new NoSuchElementException();
+        if (pointerIterator != null){
+            return pointerIterator.next();
         }
-        NodePointer pointer = getCurrentNodePointer();
-        if (!nextNode()){
-            done = true;
-            while (nextSet()){
-                if (nextNode()){
-                    done = false;
-                    break;
+
+        if (getDocumentOrder() != 0){
+            if (!constructIterator()){
+                throw new NoSuchElementException();
+            }
+            return pointerIterator.next();
+        }
+        else {
+            if (done || (position == 0 && !hasNext())){
+                throw new NoSuchElementException();
+            }
+            NodePointer pointer = getCurrentNodePointer();
+            if (!nextNode()){
+                done = true;
+                while (nextSet()){
+                    if (nextNode()){
+                        done = false;
+                        break;
+                    }
                 }
             }
+            return pointer;
         }
-        return pointer;
     }
 
     /**
@@ -148,6 +193,32 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     public void remove(){
         throw new UnsupportedOperationException(
             "JXPath iterators cannot remove nodes");
+    }
+
+    private boolean constructIterator(){
+        HashSet set = new HashSet();
+        ArrayList list = new ArrayList();
+        while (nextSet()){
+            while (nextNode()){
+                NodePointer pointer = getCurrentNodePointer();
+                if (!set.contains(pointer)){
+                    set.add(pointer);
+                    list.add(pointer);
+                }
+            }
+        }
+        if (list.isEmpty()){
+            return false;
+        }
+
+        if (getDocumentOrder() == 1){
+            Collections.sort(list);
+        }
+        else {
+            Collections.sort(list, REVERSE_COMPARATOR);
+        }
+        pointerIterator = list.iterator();
+        return true;
     }
 
     /**
