@@ -3,7 +3,7 @@
 
 <!--
         "JXPath" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.5 2002/04/12 00:52:05 dmitri Exp $
+        $Id: build.xml,v 1.6 2002/04/24 01:02:55 dmitri Exp $
 -->
 
 
@@ -353,6 +353,8 @@
           <classpath location="${velocity.jar}"/>
           <classpath location="${jdom.jar}"/>
           <classpath location="${xerces.jar}"/>
+          <classpath location="${commons-collections.jar}"/>
+          <classpath location="${logkit.jar}"/>
       </taskdef>
 
       <echo>
