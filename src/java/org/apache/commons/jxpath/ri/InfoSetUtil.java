@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/InfoSetUtil.java,v 1.1 2002/05/08 00:40:00 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/05/08 00:40:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/InfoSetUtil.java,v 1.2 2002/06/08 22:43:15 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/06/08 22:43:15 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,7 +66,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/05/08 00:40:00 $
+ * @version $Revision: 1.2 $ $Date: 2002/06/08 22:43:15 $
  */
 public class InfoSetUtil {
 
@@ -83,7 +83,12 @@ public class InfoSetUtil {
             return (String)object;
         }
         else if (object instanceof Number){
-            return String.valueOf(((Number)object).doubleValue());
+            double d = ((Number)object).doubleValue();
+            long l = ((Number)object).longValue();
+            if (d == l){
+                return String.valueOf(l);
+            }
+            return String.valueOf(d);
         }
         else if (object instanceof Boolean){
             return ((Boolean)object).booleanValue() ? "true" : "false";
