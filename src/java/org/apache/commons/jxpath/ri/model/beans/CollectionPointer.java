@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.10 2002/11/28 01:02:04 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/11/28 01:02:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.11 2003/01/10 02:11:28 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/01/10 02:11:28 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/11/28 01:02:04 $
+ * @version $Revision: 1.11 $ $Date: 2003/01/10 02:11:28 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -269,8 +269,7 @@ public class CollectionPointer extends NodePointer {
         }
         if (index != WHOLE_COLLECTION) {
             // Address the list[1][2] case
-            if (parent != null && parent.isContainer() &&
-                    parent.getIndex() != WHOLE_COLLECTION){
+            if (parent != null && parent.getIndex() != WHOLE_COLLECTION){
                 buffer.append("/.");
             }
             buffer.append("[").append(index + 1).append(']');

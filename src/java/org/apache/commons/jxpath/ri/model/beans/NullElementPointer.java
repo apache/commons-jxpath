@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.11 2002/11/28 01:02:04 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2002/11/28 01:02:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.12 2003/01/10 02:11:28 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2003/01/10 02:11:28 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -77,12 +77,12 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * as the parent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2002/11/28 01:02:04 $
+ * @version $Revision: 1.12 $ $Date: 2003/01/10 02:11:28 $
  */
-public class NullElementPointer extends PropertyOwnerPointer {
+public class NullElementPointer extends CollectionPointer {
 
     public NullElementPointer(NodePointer parent, int index){
-        super(parent);
+        super(parent, (Object)null);
         this.index = index;
     }
 
@@ -115,13 +115,8 @@ public class NullElementPointer extends PropertyOwnerPointer {
     }
 
     public void setValue(Object value){
-        super.setValue(value);
-        if (parent instanceof PropertyPointer){
-            parent.setValue(value);
-        }
-        else {
-            throw new UnsupportedOperationException("Cannot setValue of an object that is not some other object's property");
-        }
+        throw new UnsupportedOperationException(
+            "Collection element does not exist: " + this);
     }
 
     public boolean isActual(){
@@ -133,8 +128,12 @@ public class NullElementPointer extends PropertyOwnerPointer {
     }
 
     public NodePointer createPath(JXPathContext context, Object value){
-        if (parent instanceof PropertyPointer){
-            return parent.getParent().createChild(context, parent.getName(), index, value);
+        if (parent instanceof PropertyPointer) {
+            return parent.getParent().createChild(
+                context,
+                parent.getName(),
+                index,
+                value);
         }
         else {
             return parent.createChild(context, null, index, value);
@@ -142,34 +141,57 @@ public class NullElementPointer extends PropertyOwnerPointer {
     }
 
     public NodePointer createPath(JXPathContext context){
-        if (parent instanceof PropertyPointer){
-            return parent.getParent().createChild(context, parent.getName(), index);
+        if (parent instanceof PropertyPointer) {
+            return parent.getParent().createChild(
+                context,
+                parent.getName(),
+                index);
         }
         else {
             return parent.createChild(context, null, index);
         }
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
-        if (index != 0 && index != WHOLE_COLLECTION){
-            throw new JXPathException("Internal error. " +
-                "Indexed passed to NullElementPointer.createChild() is not 0: " + index);
+    public NodePointer createChild(
+        JXPathContext context,
+        QName name,
+        int index,
+        Object value) 
+    {
+        if (index != 0 && index != WHOLE_COLLECTION) {
+            throw new JXPathException(
+                "Internal error. Indexed passed to "
+                    + "NullElementPointer.createChild() is not 0: "
+                    + index);
         }
-        if (parent instanceof PropertyPointer){
-            return parent.getParent().createChild(context, parent.getName(), getIndex(), value);
+        if (parent instanceof PropertyPointer) {
+            return parent.getParent().createChild(
+                context,
+                parent.getName(),
+                getIndex(),
+                value);
         }
         else {
             return parent.createChild(context, name, getIndex(), value);
         }
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index){
-        if (index != 0 && index != WHOLE_COLLECTION){
-            throw new JXPathException("Internal error. " +
-                "Indexed passed to NullElementPointer.createChild() is not 0: " + index);
+    public NodePointer createChild(
+        JXPathContext context,
+        QName name,
+        int index) 
+    {
+        if (index != 0 && index != WHOLE_COLLECTION) {
+            throw new JXPathException(
+                "Internal error. Indexed passed to "
+                    + "NullElementPointer.createChild() is not 0: "
+                    + index);
         }
-        if (parent instanceof PropertyPointer){
-            return parent.getParent().createChild(context, parent.getName(), getIndex());
+        if (parent instanceof PropertyPointer) {
+            return parent.getParent().createChild(
+                context,
+                parent.getName(),
+                getIndex());
         }
         else {
             return parent.createChild(context, name, getIndex());
@@ -194,11 +216,30 @@ public class NullElementPointer extends PropertyOwnerPointer {
             index == other.index;
     }
 
-    public String asPath(){
-        return parent.asPath() + "[" + (index + 1) + "]";
-    }
-
     public int getLength(){
         return 0;
     }
+    
+    public String asPath() {
+        StringBuffer buffer = new StringBuffer();
+        NodePointer parent = getParent();
+        if (parent != null) {
+            buffer.append(parent.asPath());
+        }
+        if (index != WHOLE_COLLECTION) {
+            // Address the list[1][2] case
+            if (parent != null && parent.getIndex() != WHOLE_COLLECTION) {
+                buffer.append("/.");
+            }
+            else if (
+                parent != null
+                    && parent.getParent() != null
+                    && parent.getParent().getIndex() != WHOLE_COLLECTION) {
+                buffer.append("/.");
+            }
+            buffer.append("[").append(index + 1).append(']');
+        }
+
+        return buffer.toString();
+    }    
 }

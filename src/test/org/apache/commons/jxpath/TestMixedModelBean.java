@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestMixedModelBean.java,v 1.1 2002/10/20 03:48:21 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestMixedModelBean.java,v 1.2 2003/01/10 02:11:28 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/10 02:11:28 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.w3c.dom.Element;
  * Mixed model test bean: Java, collections, map, DOM, Container.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:21 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/10 02:11:28 $
  */
 public class TestMixedModelBean {
     private String string;
@@ -84,6 +84,7 @@ public class TestMixedModelBean {
     private Map map;
 
     private List list;
+    private int[][] matrix;
 
     public TestMixedModelBean(){
         string = "string";
@@ -106,10 +107,14 @@ public class TestMixedModelBean {
         list.add(string);
         list.add(bean);
         list.add(map);
-        list.add(Collections.singletonList("string2"));
+        list.add(new ArrayList(Collections.singletonList("string2")));
         list.add(document);
         list.add(element);
         list.add(container);
+        
+        matrix = new int[1][];
+        matrix[0] = new int[1];
+        matrix[0][0] = 3;
     }
 
     public String getString(){
@@ -138,5 +143,9 @@ public class TestMixedModelBean {
     
     public Container getContainer(){
         return container;
+    }
+    
+    public int[][] getMatrix(){
+        return matrix;
     }
 }

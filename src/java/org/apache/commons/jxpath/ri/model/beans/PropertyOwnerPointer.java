@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.11 2002/11/28 01:02:04 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2002/11/28 01:02:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.12 2003/01/10 02:11:28 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2003/01/10 02:11:28 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,6 +64,7 @@ package org.apache.commons.jxpath.ri.model.beans;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
@@ -78,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2002/11/28 01:02:04 $
+ * @version $Revision: 1.12 $ $Date: 2003/01/10 02:11:28 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -162,9 +163,15 @@ public abstract class PropertyOwnerPointer extends NodePointer {
             parent.setValue(value);
         }
         else if (parent != null){
-            throw new UnsupportedOperationException(
-                "Cannot setValue of an object that is not " +
-                "some other object's property");
+            if (index == WHOLE_COLLECTION){
+                throw new UnsupportedOperationException(
+                    "Cannot setValue of an object that is not " +
+                    "some other object's property");
+            }
+            else {
+                throw new JXPathException(
+                    "The specified collection element does not exist: " + this);
+            }
         }
         else {
             throw new UnsupportedOperationException(

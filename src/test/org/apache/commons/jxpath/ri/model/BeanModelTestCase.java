@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.4 2002/11/29 07:22:01 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/11/29 07:22:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.5 2003/01/10 02:11:29 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/10 02:11:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/11/29 07:22:01 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/10 02:11:29 $
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase
@@ -677,9 +677,29 @@ public abstract class BeanModelTestCase extends JXPathTestCase
 
     public void testBooleanPredicate(){
         // use child axis
+        
+        // bean[1]/int = 1
+        // bean[2]/int = 3
+        
         assertXPathValue(context,
                 "beans[int > 2]/name",
                 "Name 2");
+
+        assertXPathValueIterator(context,
+                "beans[int > 2]/name",
+                list("Name 2"));
+
+        assertXPathValueIterator(context,
+                "beans[int >= 1]/name",
+                list("Name 1", "Name 2"));
+                
+        assertXPathValueIterator(context,
+                "beans[int < 2]/name",
+                list("Name 1"));
+                
+        assertXPathValueIterator(context,
+                "beans[int <= 3]/name",
+                list("Name 1", "Name 2"));
 
         assertXPathValueIterator(
             context,

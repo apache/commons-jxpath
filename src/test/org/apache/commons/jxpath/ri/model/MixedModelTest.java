@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/MixedModelTest.java,v 1.2 2002/11/28 01:02:05 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/11/28 01:02:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/MixedModelTest.java,v 1.3 2003/01/10 02:11:29 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/10 02:11:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -86,7 +86,7 @@ import org.apache.commons.jxpath.Variables;
  * Tests JXPath with mixed model: beans, maps, DOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/11/28 01:02:05 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/10 02:11:29 $
  */
 
 public class MixedModelTest extends JXPathTestCase
@@ -122,8 +122,12 @@ public class MixedModelTest extends JXPathTestCase
         vars.declareVariable("document", bean.getDocument());
         vars.declareVariable("element", bean.getElement());
         vars.declareVariable("container", bean.getContainer());
-        
         vars.declareVariable("testnull", new TestNull());
+        
+        int[][] matrix = new int[1][];
+        matrix[0] = new int[1];
+        matrix[0][0] = 3;
+        vars.declareVariable("matrix", matrix);
     }
 
     public void testVarPrimitive(){
@@ -500,5 +504,50 @@ public class MixedModelTest extends JXPathTestCase
         assertXPathPointerIterator(context,
             "$e//error",
             Collections.EMPTY_LIST);
+    }
+    
+    public void testMatrix(){
+        assertXPathValueAndPointer(context,
+               "$matrix[1]/.[1]",
+               new Integer(3),
+               "$matrix[1]/.[1]");
+                
+        context.setValue("$matrix[1]/.[1]", new Integer(2));
+
+        assertXPathValueAndPointer(context,
+              "matrix[1]/.[1]",
+              new Integer(3),
+              "/matrix[1]/.[1]");
+                
+        context.setValue("matrix[1]/.[1]", "2");
+      
+        assertXPathValue(context, "matrix[1]/.[1]", new Integer(2));
+      
+        context.getVariables().declareVariable(
+            "wholebean",
+            context.getContextBean());
+            
+        assertXPathValueAndPointer(context,
+            "$wholebean/matrix[1]/.[1]",
+            new Integer(2),
+            "$wholebean/matrix[1]/.[1]");
+
+        boolean ex = false;
+        try {
+            context.setValue("$wholebean/matrix[1]/.[2]", "4");
+        }
+        catch (Exception e){
+            ex = true;
+        }        
+        assertTrue("Exception setting value of non-existent element", ex);
+        
+        ex = false;
+        try {
+            context.setValue("$wholebean/matrix[2]/.[1]", "4");
+        }
+        catch (Exception e){
+            ex = true;
+        }        
+        assertTrue("Exception setting value of non-existent element", ex);
     }
 }
