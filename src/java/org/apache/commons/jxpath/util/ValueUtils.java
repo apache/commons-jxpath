@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.3 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.4 2002/04/28 04:31:13 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/28 04:31:13 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/28 04:31:13 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -114,6 +114,29 @@ public class ValueUtils {
         }
         else {
             return 1;
+        }
+    }
+    
+    public static Iterator iterate(Object collection){
+        if (collection == null){
+            return Collections.EMPTY_LIST.iterator();
+        }
+        if (collection.getClass().isArray()){
+            int length = Array.getLength(collection);
+            if (length == 0){
+                return Collections.EMPTY_LIST.iterator();
+            }
+            ArrayList list = new ArrayList();
+            for (int i = 0; i < length; i++){
+                list.add(Array.get(collection, i));
+            }
+            return list.iterator();
+        }
+        else if (collection instanceof Collection){
+            return ((Collection)collection).iterator();
+        }
+        else {
+            return Collections.singletonList(collection).iterator();
         }
     }
 
