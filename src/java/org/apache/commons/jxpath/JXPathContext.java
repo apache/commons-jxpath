@@ -16,8 +16,10 @@
 package org.apache.commons.jxpath;
 
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -372,7 +374,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.24 $ $Date: 2004/04/04 23:16:23 $
+ * @version $Revision: 1.25 $ $Date: 2004/06/29 21:15:46 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -623,6 +625,40 @@ public abstract class JXPathContext {
      */
     protected abstract CompiledExpression compilePath(String xpath);
 
+    /**
+	 * Finds the first object that matches the specified XPath. It is equivalent
+	 * to <code>getPointer(xpath).getNode()</code>. Note, that this method
+	 * produces the same result as <code>getValue()</code> on object models
+	 * like JavaBeans, but a different result for DOM/JDOM etc., because it
+	 * returns the Node itself, rather than its textual contents.
+	 * 
+	 * @param xpath the xpath to be evaluated
+	 * @return the found object
+	 */
+    public Object selectSingleNode(String xpath) {
+    	Pointer pointer = getPointer(xpath);
+    	if (pointer == null) {
+    		return null;
+    	}
+		return pointer.getNode();
+    }
+    
+    /**
+     * Finds all nodes that match the specified XPath. 
+     *   
+     * @param xpath the xpath to be evaluated
+     * @return a list of found objects
+     */
+    public List selectNodes(String xpath) {
+    	ArrayList list = new ArrayList();
+    	Iterator iterator = iteratePointers(xpath);
+    	while (iterator.hasNext()) {
+			Pointer pointer = (Pointer) iterator.next();
+			list.add(pointer.getNode());
+		}
+		return list;
+    }
+    
     /**
      * Evaluates the xpath and returns the resulting object. Primitive
      * types are wrapped into objects.
