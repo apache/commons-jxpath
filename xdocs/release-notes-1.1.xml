@@ -1,16 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <document>
-  <properties>
-    <title>
-       JXPath Release Notes 1.1
-    </title>
-    <author email="dmitri@apache.org">
-       Dmitri Plotnikov
-    </author>
-  </properties>
+   <properties>
+      <title>Contributors</title>
+      <author email="commons-dev@jakarta.apache.org">Commons Documentation Team</author>
+      <author email="dmitri@apache.org">Dmitri Plotnikov</author>
+      <revision>$Id: release-notes-1.1.xml,v 1.2 2003/01/29 18:11:05 dmitri Exp $</revision>
+   </properties>
 
-  <body>
-
+   <body>
   <section name="JXPath 1.1 Release Notes">
     <p>
       Most changes in 1.1 are in the internal implementation and do not affect
@@ -47,7 +44,7 @@
           The <code>format-number</code> XSLT function is now supported.
           In order to provide full conformance with the standard, we also
           needed to introduce the format customization mechanism known in
-          XSLT as <code>&lt;xsl:decimal-format&gt;</code> (see
+          XSLT as <code>&amp;lt;xsl:decimal-format&amp;gt;</code> (see
           <a href="http://www.w3schools.com/xsl/el_decimal-format.asp">
           W3Schools tutorial</a>).  The new methods of JXPathContext:
           <code>setDecimalFormatSymbols</code> and
@@ -77,11 +74,10 @@
      </p>
 
     </section>
-
     <section name="Acknowledgements">
       <p>
         Great thanks to everybody who reported problems, helped to trace them,
-        suggested changed or simply provided encouragement. Special thanks to
+        suggested changes or simply provided encouragement. Special thanks to
         <ul>
           <li>Trond Aasan</li>
           <li>Bjorn Bength</li>
@@ -100,7 +96,7 @@
           <li>Per Kreipke</li>
           <li>Kees Kuip</li>
           <li>David Li</li>
-          <li>Ulrich Nicolas Lissé</li>
+          <li>Ulrich Nicolas Lisse</li>
           <li>Costin Manolache</li>
           <li>Thorsten Mauch</li>
           <li>Craig R. McClanahan</li>
@@ -121,7 +117,7 @@
         </ul>
         Thanks!
       </p>
-
     </section>
-  </body>
+
+   </body>
 </document>
