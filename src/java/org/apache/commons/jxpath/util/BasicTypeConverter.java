@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.1 2002/06/12 21:02:05 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/06/12 21:02:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.2 2002/06/16 03:22:21 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/06/16 03:22:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,10 +68,10 @@ import java.util.*;
 import java.lang.reflect.*;
 
 /**
- * The default delegate of JXPathContext that is used for type conversion.
+ * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/06/12 21:02:05 $
+ * @version $Revision: 1.2 $ $Date: 2002/06/16 03:22:21 $
  */
 public class BasicTypeConverter implements TypeConverter {
 

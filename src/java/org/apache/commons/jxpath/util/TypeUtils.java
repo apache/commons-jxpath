@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.7 2002/06/12 21:02:05 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/06/12 21:02:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.8 2002/06/16 03:22:21 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/06/16 03:22:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.Pointer;
  * Global type conversion utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/06/12 21:02:05 $
+ * @version $Revision: 1.8 $ $Date: 2002/06/16 03:22:21 $
  */
 public class TypeUtils {
     private static TypeConverter typeConverter = new BasicTypeConverter();
@@ -92,30 +92,17 @@ public class TypeUtils {
     }
 
     /**
-     * @deprecated Use MethodLookupUtils
+     * Returns true if the global converter can convert the supplied
+     * object to the specified type.
      */
-    public static Constructor lookupConstructor(Class targetClass, Object[] parameters){
-        return MethodLookupUtils.lookupConstructor(targetClass, parameters);
-    }
-
-    /**
-     * @deprecated Use MethodLookupUtils
-     */
-    public static Method lookupStaticMethod(Class targetClass, String name, Object[] parameters){
-        return MethodLookupUtils.lookupStaticMethod(targetClass, name, parameters);
-    }
-
-    /**
-     * @deprecated Use MethodLookupUtils
-     */
-    public static Method lookupMethod(Class targetClass, String name, Object[] parameters){
-        return MethodLookupUtils.lookupMethod(targetClass, name, parameters);
-    }
-
     public static boolean canConvert(Object object, Class toType){
         return typeConverter.canConvert(object, toType);
     }
 
+    /**
+     * Converts the supplied object to the specified type. May
+     * throw a RuntimeException.
+     */
     public static Object convert(Object object, Class toType){
         return typeConverter.convert(object, toType);
     }

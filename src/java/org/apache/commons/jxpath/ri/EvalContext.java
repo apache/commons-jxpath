@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.15 2002/05/29 00:41:33 dmitri Exp $
- * $Revision: 1.15 $
- * $Date: 2002/05/29 00:41:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.16 2002/06/16 03:22:21 dmitri Exp $
+ * $Revision: 1.16 $
+ * $Date: 2002/06/16 03:22:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2002/05/29 00:41:33 $
+ * @version $Revision: 1.16 $ $Date: 2002/06/16 03:22:21 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
@@ -222,7 +222,8 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     }
 
     /**
-     * Returns the list of all Pointers in this context
+     * Returns the list of all Pointers in this context for the current
+     * position of the parent context.
      */
     public List getContextNodeList() {
         int pos = position;
@@ -243,7 +244,8 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     }
 
     /**
-     * Returns the list of all node values in this context
+     * Returns the list of all Pointers in this context for all positions
+     * of the parent contexts.
      */
     public List getPointerList() {
         int pos = position;
@@ -265,29 +267,6 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         return list;
     }
 
-    /**
-     * Returns the list of all node values in this context
-     */
-    public List getValueList() {
-        int pos = position;
-        if (pos != 0) {
-            reset();
-        }
-        List list = new ArrayList();
-        while (nextSet()){
-            while (nextNode()) {
-                list.add(getCurrentNodePointer().getValue());
-            }
-        }
-        if (pos != 0) {
-            setPosition(pos);
-        }
-        else {
-            reset();
-        }
-        return list;
-    }
-
     public String toString() {
         Pointer ptr = getContextNodePointer();
         if (ptr == null) {
@@ -297,6 +276,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             return "Expression context [" + getPosition() + "] " + ptr.asPath();
         }
     }
+
     /**
      * Returns the root context of the path, which provides easy
      * access to variables and functions.

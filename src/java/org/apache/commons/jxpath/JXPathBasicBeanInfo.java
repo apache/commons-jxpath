@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathBasicBeanInfo.java,v 1.3 2002/04/21 21:52:31 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/21 21:52:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathBasicBeanInfo.java,v 1.4 2002/06/16 03:22:22 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/06/16 03:22:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import java.util.*;
  * See java.beans.BeanInfo, java.beans.Introspector
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/21 21:52:31 $
+ * @version $Revision: 1.4 $ $Date: 2002/06/16 03:22:22 $
  */
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private boolean atomic = false;
@@ -146,10 +146,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
                 propertyNames[i] = pds[i].getName();
             }
         }
-//        int inx = Arrays.binarySearch(propertyNames, propertyName);
-//        if (inx < 0){
-//            return null;
-//        }
+
         for (int i = 0; i < propertyNames.length; i++){
             if (propertyNames[i] == propertyName){
                 return propertyDescriptors[i];

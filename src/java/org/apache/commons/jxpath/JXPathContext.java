@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.10 2002/06/08 22:47:24 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/06/08 22:47:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.11 2002/06/16 03:22:22 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/06/16 03:22:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,8 @@ import java.util.*;
  * allocating JXPathContext directly, you should call a static <code>newContext</code>
  * method.  This method will utilize the JXPathContextFactory API to locate
  * a suitable implementation of JXPath.
- * JXPath comes bundled with a default implementation called Reference Implementation.
+ * Bundled with JXPath comes a default implementation called
+ * Reference Implementation.
  * </p>
  *
  * <h2>JXPath Interprets XPath Syntax on Java Object Graphs</h2>
@@ -396,15 +397,18 @@ import java.util.*;
  *     like "para[@type='warning']" are legitimate, they will always produce empty results.
  *     The only attribute supported for JavaBeans is "name".  The XPath "foo/bar" is
  *     equivalent to "foo[@name='bar']".
- * <li>The current version of JXPath does not support the <code>id(string)</code>
- *     and <code>key(key, value)</code> XPath functions.
  * </ul>
  *
  * See <a href="http://www.w3schools.com/xpath">XPath Tutorial by W3Schools</a><br>
- * Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
+ * Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath)
+ *    Version 1.0 </a><br><br>
+ * You will also find more information and examples in
+ * <a href="http://jakarta.apache.org/commons/jxpath/users-guide.html">
+ * JXPath User's Guide</a>
+ *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/06/08 22:47:24 $
+ * @version $Revision: 1.11 $ $Date: 2002/06/16 03:22:22 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -420,7 +424,7 @@ public abstract class JXPathContext {
     private static JXPathContext compilationContext;
 
     /**
-     * Creates a new JXPathContext with the specified bean as the root node.
+     * Creates a new JXPathContext with the specified object as the root node.
      */
     public static JXPathContext newContext(Object contextBean){
         return JXPathContextFactory.newInstance().newContext(null, contextBean);
@@ -463,14 +467,18 @@ public abstract class JXPathContext {
      */
     public abstract Pointer getContextPointer();
 
+    /**
+     * Installs a custom implementation of the Variables interface.
+     */
     public void setVariables(Variables vars){
         this.vars = vars;
     }
 
     /**
      * Returns the variable pool associated with the context. If no such
-     * pool was specified during the construction of the context,
-     * returns the default implementation of Variables, {@link BasicVariables BasicVariables}.
+     * pool was specified with the <code>setVariables()</code> method,
+     * returns the default implementation of Variables,
+     * {@link BasicVariables BasicVariables}.
      */
     public Variables getVariables(){
         if (vars == null){
@@ -479,23 +487,35 @@ public abstract class JXPathContext {
         return vars;
     }
 
+    /**
+     * Install a library of extension functions.
+     *
+     * @see FunctionLibrary
+     */
     public void setFunctions(Functions functions){
         this.functions = functions;
     }
 
+    /**
+     * Returns the set of functions installed on the context.
+     */
     public Functions getFunctions(){
-        // TBD: default lib
         return functions;
     }
 
+    /**
+     * Install an abstract factory that should be used by the
+     * <code>createPath()</code> and <code>createPathAndSetValue()</code>
+     * methods.
+     */
     public void setFactory(AbstractFactory factory){
         this.factory = factory;
     }
 
     /**
      * Returns the AbstractFactory installed on this context.
-     * If none has been installed, it calls getFactory() on
-     * the parent context.
+     * If none has been installed and this context has a parent context,
+     * returns the parent's factory.  Otherwise returns null.
      */
     public AbstractFactory getFactory(){
         if (factory == null && parentContext != null){
@@ -515,8 +535,9 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Returns the locale set with setLocale or Locale.getDefault()
-     * by default.
+     * Returns the locale set with setLocale. If none was set and
+     * the context has a parent, returns the parent's locale.
+     * Otherwise, returns Locale.getDefault().
      */
     protected Locale getLocale(){
         if (locale == null){
@@ -566,7 +587,7 @@ public abstract class JXPathContext {
 
     /**
      * Overridden by each concrete implementation of JXPathContext
-     * to perform compilation.
+     * to perform compilation. Is called by <code>compile()</code>.
      */
     protected abstract CompiledExpression compilePath(String xpath);
 
@@ -591,7 +612,6 @@ public abstract class JXPathContext {
      * </ul>
      */
     public abstract void setValue(String xpath, Object value);
-
 
     /**
      * Creates missing elements of the path by invoking an AbstractFactory,
@@ -629,38 +649,11 @@ public abstract class JXPathContext {
     public abstract void removeAll(String xpath);
 
     /**
-     * @deprecated please use createPathAndSetValue(xpath, value)
-     */
-    public void createPath(String xpath, Object value){
-        createPathAndSetValue(xpath, value);
-    }
-
-    /**
-     * @deprecated Please use iterate
-     */
-    public List eval(String xpath){
-        ArrayList list = new ArrayList();
-        Iterator it = iterate(xpath);
-        while (it.hasNext()){
-            list.add(it.next());
-        }
-        return list;
-    }
-
-    /**
-     * Traverses the xpath and returns a Iterator of all results found
+     * Traverses the xpath and returns an Iterator of all results found
      * for the path. If the xpath matches no properties
-     * in the graph, the Iterator will not be null.
+     * in the graph, the Iterator will be empty, but not null.
      */
     public abstract Iterator iterate(String xpath);
-
-
-    /**
-     * @deprecated Please use getPointer(String xpath)
-     */
-    public Pointer locateValue(String xpath){
-        return getPointer(xpath);
-    }
 
     /**
      * Traverses the xpath and returns a Pointer.
@@ -669,18 +662,6 @@ public abstract class JXPathContext {
      * in the graph, the pointer will be null.
      */
     public abstract Pointer getPointer(String xpath);
-
-    /**
-     * @deprecated Please use iteratePointers
-     */
-    public List locate(String xpath){
-        ArrayList list = new ArrayList();
-        Iterator it = iteratePointers(xpath);
-        while (it.hasNext()){
-            list.add(it.next());
-        }
-        return list;
-    }
 
     /**
      * Traverses the xpath and returns an Iterator of Pointers.

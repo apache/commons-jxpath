@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.5 2002/05/08 23:03:28 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 23:03:28 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.6 2002/06/16 03:22:21 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/06/16 03:22:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,20 +70,17 @@ import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
+ * Collection and property access utilities.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 23:03:28 $
+ * @version $Revision: 1.6 $ $Date: 2002/06/16 03:22:21 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
 
-    public static boolean isCollection(PropertyDescriptor propertyDescriptor){
-        return false;
-    }
-
-    public static boolean isCollection(PropertyDescriptor propertyDescriptor, Object value){
-        return isCollection(value);
-    }
-
+    /**
+     * Returns true if the object is an array or a Collection
+     */
     public static boolean isCollection(Object value){
         if (value == null){
             return false;
@@ -97,11 +94,10 @@ public class ValueUtils {
         return false;
     }
 
-    public static int getLength(Object bean, PropertyDescriptor propertyDescriptor){
-        Object obj = getValue(bean, propertyDescriptor);
-        return getLength(obj);
-    }
-
+    /**
+     * Returns the length of the supplied collection. If the supplied object
+     * is not a collection, returns 1. If collection is null, returns 0.
+     */
     public static int getLength(Object collection){
         if (collection == null){
             return 0;
@@ -117,6 +113,11 @@ public class ValueUtils {
         }
     }
 
+    /**
+     * Returns an iterator for the supplied collection. If the argument
+     * is null, returns an empty iterator. If the argument is not
+     * a collection, returns an iterator that produces just that one object.
+     */
     public static Iterator iterate(Object collection){
         if (collection == null){
             return Collections.EMPTY_LIST.iterator();
@@ -140,13 +141,19 @@ public class ValueUtils {
         }
     }
 
+    /**
+     * Grows the collection if necessary to the specified size. Returns
+     * the new, expanded collection.
+     */
     public static Object expandCollection(Object collection, int size){
         if (collection == null){
             return null;
         }
         else if (collection.getClass().isArray()){
-            Object bigger = Array.newInstance(collection.getClass().getComponentType(), size);
-            System.arraycopy(collection, 0, bigger, 0, Array.getLength(collection));
+            Object bigger = Array.newInstance(
+                  collection.getClass().getComponentType(), size);
+            System.arraycopy(
+                  collection, 0, bigger, 0, Array.getLength(collection));
             return bigger;
         }
         else if (collection instanceof Collection){
@@ -161,13 +168,17 @@ public class ValueUtils {
         }
     }
 
+    /**
+     * Returns the index'th element from the supplied collection.
+     */
     public static Object remove(Object collection, int index){
         if (collection == null){
             return null;
         }
         else if (collection.getClass().isArray()){
             int length = Array.getLength(collection);
-            Object smaller = Array.newInstance(collection.getClass().getComponentType(), length-1);
+            Object smaller = Array.newInstance(
+                  collection.getClass().getComponentType(), length-1);
             if (index > 0){
                 System.arraycopy(collection, 0, smaller, 0, index);
             }
@@ -204,48 +215,9 @@ public class ValueUtils {
         }
     }
 
-    public static Object getValue(Object bean, PropertyDescriptor propertyDescriptor, int index){
-        if (propertyDescriptor instanceof IndexedPropertyDescriptor){
-            Object value;
-            try {
-                IndexedPropertyDescriptor ipd = (IndexedPropertyDescriptor)propertyDescriptor;
-                Method method = ipd.getIndexedReadMethod();
-                if (method != null){
-                    return method.invoke(bean, new Object[]{new Integer(index)});
-                }
-            }
-            catch (Exception ex){
-                throw new JXPathException(
-                    "Cannot access property: " + propertyDescriptor.getName(),
-                    ex);
-            }
-        }
-        // We will fall through if there is no indexed read
-
-        return getValue(getValue(bean, propertyDescriptor), index);
-    }
-
-    public static void setValue(Object bean, PropertyDescriptor propertyDescriptor, int index, Object value){
-        if (propertyDescriptor instanceof IndexedPropertyDescriptor){
-            try {
-                IndexedPropertyDescriptor ipd = (IndexedPropertyDescriptor)propertyDescriptor;
-                Method method = ipd.getIndexedWriteMethod();
-                if (method != null){
-                    method.invoke(bean,
-                        new Object[]{new Integer(index),
-                                     convert(value, ipd.getIndexedPropertyType())});
-                    return;
-                }
-            }
-            catch (Exception ex){
-                throw new RuntimeException("Cannot access property: " + propertyDescriptor.getName() +
-                    ", " + ex.getMessage());
-            }
-        }
-        // We will fall through if there is no indexed read
-        setValue(getValue(bean, propertyDescriptor), index, value);
-    }
-
+    /**
+     * Returns the index'th element of the supplied collection.
+     */
     public static Object getValue(Object collection, int index){
         Object value = collection;
         if (collection != null){
@@ -278,25 +250,37 @@ public class ValueUtils {
         return value;
     }
 
+    /**
+     * Modifies the index'th element of the supplied collection.
+     * Converts the value to the required type if necessary.
+     */
     public static void setValue(Object collection, int index, Object value){
         if (collection != null){
             if (collection.getClass().isArray()){
-                Array.set(collection, index, convert(value, collection.getClass().getComponentType()));
+                Array.set(collection, index,
+                    convert(value, collection.getClass().getComponentType()));
             }
             else if (collection instanceof List){
                 ((List)collection).set(index, value);
             }
             else if (collection instanceof Collection){
-                throw new UnsupportedOperationException("Cannot set value of an element of a " +
+                throw new UnsupportedOperationException(
+                        "Cannot set value of an element of a " +
                         collection.getClass().getName());
             }
         }
     }
 
-    public static Object getValue(Object bean, PropertyDescriptor propertyDescriptor){
+    /**
+     * Returns the value of the bean's property represented by
+     * the supplied property descriptor.
+     */
+    public static Object getValue(Object bean,
+                    PropertyDescriptor propertyDescriptor){
         Object value;
         try {
-            Method method = getAccessibleMethod(propertyDescriptor.getReadMethod());
+            Method method =
+                getAccessibleMethod(propertyDescriptor.getReadMethod());
             if (method == null){
                 throw new JXPathException("No read method");
             }
@@ -309,9 +293,15 @@ public class ValueUtils {
         return value;
     }
 
-    public static void setValue(Object bean, PropertyDescriptor propertyDescriptor, Object value){
+    /**
+     * Modifies the value of the bean's property represented by
+     * the supplied property descriptor.
+     */
+    public static void setValue(Object bean,
+            PropertyDescriptor propertyDescriptor, Object value){
         try {
-            Method method = getAccessibleMethod(propertyDescriptor.getWriteMethod());
+            Method method =
+                getAccessibleMethod(propertyDescriptor.getWriteMethod());
             if (method == null){
                 throw new JXPathException("No write method");
             }
@@ -337,11 +327,68 @@ public class ValueUtils {
     }
 
     /**
+     * Returns the index'th element of the bean's property represented by
+     * the supplied property descriptor.
+     */
+    public static Object getValue(Object bean,
+            PropertyDescriptor propertyDescriptor, int index){
+        if (propertyDescriptor instanceof IndexedPropertyDescriptor){
+            Object value;
+            try {
+                IndexedPropertyDescriptor ipd =
+                    (IndexedPropertyDescriptor)propertyDescriptor;
+                Method method = ipd.getIndexedReadMethod();
+                if (method != null){
+                    return method.invoke(bean, new Object[]{new Integer(index)});
+                }
+            }
+            catch (Exception ex){
+                throw new JXPathException(
+                    "Cannot access property: " + propertyDescriptor.getName(),
+                    ex);
+            }
+        }
+
+        // We will fall through if there is no indexed read
+
+        return getValue(getValue(bean, propertyDescriptor), index);
+    }
+
+    /**
+     * Modifies the index'th element of the bean's property represented by
+     * the supplied property descriptor. Converts the value to the required
+     * type if necessary.
+     */
+    public static void setValue(Object bean,
+              PropertyDescriptor propertyDescriptor, int index, Object value){
+        if (propertyDescriptor instanceof IndexedPropertyDescriptor){
+            try {
+                IndexedPropertyDescriptor ipd =
+                      (IndexedPropertyDescriptor)propertyDescriptor;
+                Method method = ipd.getIndexedWriteMethod();
+                if (method != null){
+                    method.invoke(bean,
+                        new Object[]{new Integer(index),
+                                     convert(value, ipd.getIndexedPropertyType())});
+                    return;
+                }
+            }
+            catch (Exception ex){
+                throw new RuntimeException("Cannot access property: " +
+                    propertyDescriptor.getName() + ", " + ex.getMessage());
+            }
+        }
+        // We will fall through if there is no indexed read
+        setValue(getValue(bean, propertyDescriptor), index, value);
+    }
+
+    /**
      * Returns a shared instance of the dynamic property handler class
      * returned by <code>getDynamicPropertyHandlerClass()</code>.
      */
-    public static DynamicPropertyHandler getDynamicPropertyHandler(Class clazz) {
-        DynamicPropertyHandler handler = (DynamicPropertyHandler)dynamicPropertyHandlerMap.get(clazz);
+    public static DynamicPropertyHandler getDynamicPropertyHandler(Class clazz){
+        DynamicPropertyHandler handler =
+            (DynamicPropertyHandler)dynamicPropertyHandlerMap.get(clazz);
         if (handler == null){
             try {
                 handler = (DynamicPropertyHandler)clazz.newInstance();
@@ -359,8 +406,8 @@ public class ValueUtils {
     // -------------------------------------------------------- Private Methods
     //
     //  The rest of the code in this file was copied FROM
-    //  org.apache.commons.beanutils.PropertyUtil. We don't want to introduce a dependency
-    //  on BeanUtils yet - DP.
+    //  org.apache.commons.beanutils.PropertyUtil. We don't want to introduce
+    //  a dependency on BeanUtils yet - DP.
     //
 
     /**

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/CompiledExpression.java,v 1.2 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/CompiledExpression.java,v 1.3 2002/06/16 03:22:22 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/06/16 03:22:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import java.util.Iterator;
  * JXPathContext.compile}
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.3 $ $Date: 2002/06/16 03:22:22 $
  */
 public interface CompiledExpression {
 
@@ -103,6 +103,13 @@ public interface CompiledExpression {
     void setValue(JXPathContext context, Object value);
 
     /**
+     * Creates intermediate elements of
+     * the path by invoking an AbstractFactory, which should first be
+     * installed on the context by calling "setFactory".
+     */
+    Pointer createPath(JXPathContext context);
+
+    /**
      * The same as setValue, except it creates intermediate elements of
      * the path by invoking an AbstractFactory, which should first be
      * installed on the context by calling "setFactory".
@@ -117,11 +124,6 @@ public interface CompiledExpression {
      * </ul>
      */
     Pointer createPathAndSetValue(JXPathContext context, Object value);
-
-    /**
-     * @deprecated switch to createPathAndSetValue
-     */
-    void createPath(JXPathContext context, Object value);
 
     /**
      * Traverses the xpath and returns a Iterator of all results found

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.3 2002/06/09 01:58:41 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/06/09 01:58:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.4 2002/06/16 03:22:21 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/06/16 03:22:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.Pointer;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/06/09 01:58:41 $
+ * @version $Revision: 1.4 $ $Date: 2002/06/16 03:22:21 $
  */
 public class JXPathCompiledExpression implements CompiledExpression {
 
@@ -107,18 +107,19 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * @see CompiledExpression#createPath(JXPathContext, Object)
+     * @see CompiledExpression#createPath(JXPathContext)
+     */
+    public Pointer createPath(JXPathContext context) {
+        return ((JXPathContextReferenceImpl)context).
+                    createPath(xpath, expression);
+    }
+
+    /**
+     * @see CompiledExpression#createPathAndSetValue(JXPathContext, Object)
      */
     public Pointer createPathAndSetValue(JXPathContext context, Object value) {
         return ((JXPathContextReferenceImpl)context).
                     createPathAndSetValue(xpath, expression, value);
-    }
-
-    /**
-     * @deprecated use createPathAndSetValue
-     */
-    public void createPath(JXPathContext context, Object value) {
-        createPathAndSetValue(context, value);
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/AbstractFactory.java,v 1.3 2002/04/24 03:29:33 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/24 03:29:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/AbstractFactory.java,v 1.4 2002/06/16 03:22:22 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/06/16 03:22:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ package org.apache.commons.jxpath;
  * return true to indicate that the factory has successfully created the described object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/24 03:29:33 $
+ * @version $Revision: 1.4 $ $Date: 2002/06/16 03:22:22 $
  */
 public abstract class AbstractFactory {
 
@@ -99,7 +99,7 @@ public abstract class AbstractFactory {
     }
 
     /**
-     * Create a new object and set it on the specified variable
+     * Declare the specified variable
      * 
      * @param context hosts variable pools. See {@link JXPathContext#getVariables() 
      *        JXPathContext.getVariables()}

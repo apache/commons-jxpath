@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.3 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.4 2002/06/16 03:22:22 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/06/16 03:22:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Examples of such objects are JavaBeans and objects with Dynamic Properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/06/16 03:22:22 $
  */
 public class PropertyIterator implements NodeIterator {
     private boolean empty = false;
@@ -270,7 +270,6 @@ public class PropertyIterator implements NodeIterator {
 
         String names[] = propertyNodePointer.getPropertyNames();
         if (!reverse){
-//            int startPropertyIndex = propertyNodePointer.getPropertyIndex();
             if (startPropertyIndex == PropertyPointer.UNSPECIFIED_PROPERTY){
                 startPropertyIndex = 0;
             }
@@ -290,7 +289,6 @@ public class PropertyIterator implements NodeIterator {
             }
         }
         else {
-//            int startPropertyIndex = propertyNodePointer.getPropertyIndex();
             if (startPropertyIndex == PropertyPointer.UNSPECIFIED_PROPERTY){
                 startPropertyIndex = names.length - 1;
             }

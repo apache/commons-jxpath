@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/PackageFunctions.java,v 1.5 2002/04/26 03:28:36 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/26 03:28:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/PackageFunctions.java,v 1.6 2002/06/16 03:22:22 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/06/16 03:22:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import java.util.Set;
 
 import org.apache.commons.jxpath.functions.ConstructorFunction;
 import org.apache.commons.jxpath.functions.MethodFunction;
-import org.apache.commons.jxpath.util.TypeUtils;
+import org.apache.commons.jxpath.util.MethodLookupUtils;
 
 /**
  * Extension functions provided by Java classes.  The class prefix specified
@@ -108,7 +108,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/26 03:28:36 $
+ * @version $Revision: 1.6 $ $Date: 2002/06/16 03:22:22 $
  */
 public class PackageFunctions implements Functions {
     private String classPrefix;
@@ -170,7 +170,8 @@ public class PackageFunctions implements Functions {
                 }
             }
             if (target != null) {
-                Method method = TypeUtils.lookupMethod(target.getClass(), name, parameters);
+                Method method = MethodLookupUtils.
+                    lookupMethod(target.getClass(), name, parameters);
                 if (method != null) {
                     return new MethodFunction(method);
                 }
@@ -198,14 +199,15 @@ public class PackageFunctions implements Functions {
 
         if (methodName.endsWith("new")) {
             Constructor constructor =
-                TypeUtils.lookupConstructor(functionClass, parameters);
+                MethodLookupUtils.lookupConstructor(functionClass, parameters);
             if (constructor != null) {
                 return new ConstructorFunction(constructor);
             }
         }
         else {
             Method method =
-                TypeUtils.lookupStaticMethod(functionClass, methodName, parameters);
+                MethodLookupUtils.
+                    lookupStaticMethod(functionClass, methodName, parameters);
             if (method != null) {
                 return new MethodFunction(method);
             }

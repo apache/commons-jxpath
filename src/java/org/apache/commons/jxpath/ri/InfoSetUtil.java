@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/InfoSetUtil.java,v 1.2 2002/06/08 22:43:15 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/06/08 22:43:15 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/InfoSetUtil.java,v 1.3 2002/06/16 03:22:21 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/06/16 03:22:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,8 +65,10 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
+ * Type conversions, XPath style.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/06/08 22:43:15 $
+ * @version $Revision: 1.3 $ $Date: 2002/06/16 03:22:21 $
  */
 public class InfoSetUtil {
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Container.java,v 1.2 2002/04/24 04:05:41 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Container.java,v 1.3 2002/06/16 03:22:22 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/06/16 03:22:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,10 +66,10 @@ package org.apache.commons.jxpath;
  * mechanism transparent to JXPath.  For example, if property
  * "foo" of the context node has a Container as its value,
  * the XPath "foo" will produce the contents of that Container,
- * not the container itself.
+ * rather than the container itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:41 $
+ * @version $Revision: 1.3 $ $Date: 2002/06/16 03:22:22 $
  */
 public interface Container {
 

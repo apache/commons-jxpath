@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ClassFunctions.java,v 1.4 2002/04/24 03:29:33 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/24 03:29:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ClassFunctions.java,v 1.5 2002/06/16 03:22:22 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/06/16 03:22:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import java.util.Set;
 
 import org.apache.commons.jxpath.functions.ConstructorFunction;
 import org.apache.commons.jxpath.functions.MethodFunction;
-import org.apache.commons.jxpath.util.TypeUtils;
+import org.apache.commons.jxpath.util.MethodLookupUtils;
 
 /**
  * Extension functions provided by a Java class.
@@ -94,7 +94,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * the method.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/24 03:29:33 $
+ * @version $Revision: 1.5 $ $Date: 2002/06/16 03:22:22 $
  */
 public class ClassFunctions implements Functions {
     private Class functionClass;
@@ -108,7 +108,7 @@ public class ClassFunctions implements Functions {
 
     /**
      * Returns a set of one namespace - the one specified in the constructor.
-     * 
+     *
      * @returns a singleton
      */
     public Set getUsedNamespaces(){
@@ -118,11 +118,11 @@ public class ClassFunctions implements Functions {
     /**
      * Returns a Function, if any, for the specified namespace,
      * name and parameter types.
-     * 
+     *
      * @param namespace if it is not the namespace specified in the constructor,
      *     the method returns null
      * @param name is a function name or "new" for a constructor.
-     * 
+     *
      * @return a MethodFunction, a ConstructorFunction or null if there is no
      *      such function.
      */
@@ -137,18 +137,20 @@ public class ClassFunctions implements Functions {
 
         if (name.equals("new")) {
             Constructor constructor =
-                TypeUtils.lookupConstructor(functionClass, parameters);
+                MethodLookupUtils.lookupConstructor(functionClass, parameters);
             if (constructor != null) {
                 return new ConstructorFunction(constructor);
             }
         }
         else {
-            Method method = TypeUtils.lookupStaticMethod(functionClass, name, parameters);
+            Method method = MethodLookupUtils.
+                lookupStaticMethod(functionClass, name, parameters);
             if (method != null) {
                 return new MethodFunction(method);
             }
 
-            method = TypeUtils.lookupMethod(functionClass, name, parameters);
+            method = MethodLookupUtils.
+                lookupMethod(functionClass, name, parameters);
             if (method != null) {
                 return new MethodFunction(method);
             }

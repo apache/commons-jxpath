@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/DynamicPropertyHandler.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/DynamicPropertyHandler.java,v 1.2 2002/06/16 03:22:22 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/06/16 03:22:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ package org.apache.commons.jxpath;
  * <ol>
  * <li>Build an implementation of the DynamicPropertyHandler interface
  * for the desired collection type.</li>
- * <li>Invoke static method {@link JXPathIntrospector#registerDynamicClass
+ * <li>Invoke the static method {@link JXPathIntrospector#registerDynamicClass
  * JXPathIntrospector.registerDynamicClass(class, handlerClass)}</li>
  * </ol>
  * JXPath allows access to dynamic properties using these three formats:
@@ -80,7 +80,7 @@ package org.apache.commons.jxpath;
  * </ul>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/06/16 03:22:22 $
  */
 public interface DynamicPropertyHandler {
 
