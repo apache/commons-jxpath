@@ -16,26 +16,53 @@
 package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
+import java.util.HashSet;
 
 import javax.servlet.ServletRequest;
-import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
  * Implementation of the DynamicPropertyHandler interface that provides
- * access to attributes of a ServletRequest.
+ * access to attributes and parameters of a ServletRequest.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.6 $ $Date: 2004/05/08 15:10:49 $
  */
-public class ServletRequestHandler implements DynamicPropertyHandler {
-
-    public String[] getPropertyNames(Object request) {
-        Enumeration e = ((ServletRequest) request).getAttributeNames();
-        return Util.toStrings(e);
+public class ServletRequestHandler extends HttpSessionHandler {
+    
+    protected void collectPropertyNames(HashSet set, Object bean) {
+        super.collectPropertyNames(set, bean);
+        ServletRequestAndContext handle = (ServletRequestAndContext) bean; 
+        ServletRequest servletRequest = handle.getServletRequest();
+        Enumeration e = servletRequest.getAttributeNames();
+        while (e.hasMoreElements()) {
+            set.add(e.nextElement());
+        }
+        e = servletRequest.getParameterNames();
+        while (e.hasMoreElements()) {
+            set.add(e.nextElement());
+        }
     }
-
-    public Object getProperty(Object request, String property) {
-        return ((ServletRequest) request).getAttribute(property);
+    
+    public Object getProperty(Object bean, String property) { 
+        ServletRequestAndContext handle = (ServletRequestAndContext) bean; 
+        ServletRequest servletRequest = handle.getServletRequest();
+        String[] strings = servletRequest.getParameterValues(property);
+        if (strings != null) {
+            if (strings.length == 0) {
+                return null;
+            }
+            if (strings.length == 1) {
+                return strings[0];
+            }
+            return strings;
+        }
+        
+        Object object = servletRequest.getAttribute(property);
+        if (object != null) {
+            return object;
+        }
+        
+        return super.getProperty(bean, property);
     }
 
     public void setProperty(Object request, String property, Object value) {

@@ -16,29 +16,57 @@
 package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
+import java.util.HashSet;
 
 import javax.servlet.http.HttpSession;
-import org.apache.commons.jxpath.DynamicPropertyHandler;
+
+import org.apache.commons.jxpath.JXPathException;
 
 /**
  * Implementation of the DynamicPropertyHandler interface that provides
  * access to attributes of a HttpSession.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.6 $ $Date: 2004/05/08 15:10:49 $
  */
-public class HttpSessionHandler implements DynamicPropertyHandler {
+public class HttpSessionHandler extends ServletContextHandler {
 
-    public String[] getPropertyNames(Object session) {
-        Enumeration e = ((HttpSession) session).getAttributeNames();
-        return Util.toStrings(e);
+    protected void collectPropertyNames(HashSet set, Object bean) {
+        HttpSessionAndServletContext handle = 
+            (HttpSessionAndServletContext) bean;
+        super.collectPropertyNames(set, handle.getServletContext());
+        HttpSession session = handle.getSession();
+        if (session != null) {
+            Enumeration e = session.getAttributeNames();
+            while (e.hasMoreElements()) {
+                set.add(e.nextElement());
+            }
+        }
+    }
+    
+    public Object getProperty(Object bean, String property) {
+        HttpSessionAndServletContext handle = 
+            (HttpSessionAndServletContext) bean;
+        HttpSession session = handle.getSession();
+        if (session != null) {
+            Object object = session.getAttribute(property);
+            if (object != null) {
+                return object;
+            }
+        }
+        return super.getProperty(handle.getServletContext(), property);
     }
 
-    public Object getProperty(Object session, String property) {
-        return ((HttpSession) session).getAttribute(property);
-    }
-
-    public void setProperty(Object session, String property, Object value) {
-        ((HttpSession) session).setAttribute(property, value);
+    public void setProperty(Object bean, String property, Object value) {
+        HttpSessionAndServletContext handle = 
+            (HttpSessionAndServletContext) bean;
+        HttpSession session = handle.getSession();
+        if (session != null) {
+            session.setAttribute(property, value);
+        }
+        else {
+            throw new JXPathException("Cannot set session attribute: "
+                    + "there is no session");
+        }
     }
 }

@@ -61,7 +61,7 @@ import org.apache.commons.jxpath.JXPathIntrospector;
  * servlet. JXPath does not automatically create sessions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.6 $ $Date: 2004/05/08 15:10:49 $
  */
 public final class JXPathServletContexts {
 
@@ -69,8 +69,20 @@ public final class JXPathServletContexts {
 
     static {
         JXPathIntrospector.registerDynamicClass(
-            PageScopeContext.class,
-            PageScopeContextHandler.class);
+                PageScopeContext.class,
+                PageScopeContextHandler.class);
+        JXPathIntrospector.registerDynamicClass(
+                PageContext.class,
+                PageContextHandler.class);
+        JXPathIntrospector.registerDynamicClass(
+                ServletContext.class,
+                ServletContextHandler.class);
+        JXPathIntrospector.registerDynamicClass(
+                ServletRequestAndContext.class,
+                ServletRequestHandler.class);
+        JXPathIntrospector.registerDynamicClass(
+                HttpSessionAndServletContext.class,
+                HttpSessionHandler.class);
         factory = JXPathContextFactory.newInstance();
     }
 
@@ -82,9 +94,6 @@ public final class JXPathServletContexts {
         JXPathContext context =
             (JXPathContext) pageContext.getAttribute(Constants.JXPATH_CONTEXT);
         if (context == null) {
-            JXPathIntrospector.registerDynamicClass(
-                pageContext.getClass(),
-                PageContextHandler.class);
             JXPathContext parentContext =
                 getRequestContext(
                     pageContext.getRequest(),
@@ -109,26 +118,34 @@ public final class JXPathServletContexts {
     {
         JXPathContext context =
             (JXPathContext) request.getAttribute(Constants.JXPATH_CONTEXT);
-        if (context == null) {
-            JXPathContext parentContext = null;
-            if (request instanceof HttpServletRequest) {
-                HttpSession session =
-                    ((HttpServletRequest) request).getSession(false);
-                if (session != null) {
-                    parentContext = getSessionContext(session, servletContext);
-                }
-                else {
-                    parentContext = getApplicationContext(servletContext);
-                }
+        // If we are in an included JSP or Servlet, the request parameter
+        // will represent the included URL, but the JXPathContext we have
+        // just acquired will represent the outer request.
+        if (context != null) {
+            ServletRequestAndContext handle = 
+                (ServletRequestAndContext) context.getContextBean();
+            if (handle.getServletRequest() == request) {
+                return context;
             }
-            JXPathIntrospector.registerDynamicClass(
-                request.getClass(),
-                ServletRequestHandler.class);
-            context = factory.newContext(parentContext, request);
-            context.setVariables(
-                new KeywordVariables(Constants.REQUEST_SCOPE, request));
-            request.setAttribute(Constants.JXPATH_CONTEXT, context);
         }
+        
+        JXPathContext parentContext = null;
+        if (request instanceof HttpServletRequest) {
+            HttpSession session =
+                ((HttpServletRequest) request).getSession(false);
+            if (session != null) {
+                parentContext = getSessionContext(session, servletContext);
+            }
+            else {
+                parentContext = getApplicationContext(servletContext);
+            }
+        }
+        ServletRequestAndContext handle = 
+            new ServletRequestAndContext(request, servletContext);
+        context = factory.newContext(parentContext, handle);
+        context.setVariables(
+            new KeywordVariables(Constants.REQUEST_SCOPE, handle));
+        request.setAttribute(Constants.JXPATH_CONTEXT, context);
         return context;
     }
 
@@ -143,13 +160,12 @@ public final class JXPathServletContexts {
         JXPathContext context =
             (JXPathContext) session.getAttribute(Constants.JXPATH_CONTEXT);
         if (context == null) {
-            JXPathIntrospector.registerDynamicClass(
-                session.getClass(),
-                HttpSessionHandler.class);
             JXPathContext parentContext = getApplicationContext(servletContext);
-            context = factory.newContext(parentContext, session);
+            HttpSessionAndServletContext handle = 
+                new HttpSessionAndServletContext(session, servletContext);
+            context = factory.newContext(parentContext, handle);
             context.setVariables(
-                new KeywordVariables(Constants.SESSION_SCOPE, session));
+                new KeywordVariables(Constants.SESSION_SCOPE, handle));
             session.setAttribute(Constants.JXPATH_CONTEXT, context);
         }
         return context;
@@ -166,9 +182,6 @@ public final class JXPathServletContexts {
             (JXPathContext) servletContext.getAttribute(
                 Constants.JXPATH_CONTEXT);
         if (context == null) {
-            JXPathIntrospector.registerDynamicClass(
-                servletContext.getClass(),
-                ServletContextHandler.class);
             context = factory.newContext(null, servletContext);
             context.setVariables(
                 new KeywordVariables(

@@ -15,24 +15,31 @@
  */
 package org.apache.commons.jxpath.servlet;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 /**
- * Turns an Enumeration of Strings into an array of Strings.
+ * Just a structure to hold a ServletRequest and ServletContext together.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.1 $ $Date: 2004/05/08 15:10:49 $
  */
-public final class Util {
+public class HttpSessionAndServletContext {
 
-    private static final String[] STRING_ARRAY = new String[0];
+    private HttpSession session;
+    private ServletContext context;
 
-    public static String[] toStrings(Enumeration e) {
-        ArrayList list = new ArrayList(16);
-        while (e.hasMoreElements()) {
-            list.add(e.nextElement());
-        }
-        return (String[]) list.toArray(STRING_ARRAY);
+    public HttpSessionAndServletContext(HttpSession session,
+            ServletContext context) {
+        this.session = session;
+        this.context = context;
+    }
+    
+    public HttpSession getSession() {
+        return session;
+    }
+    
+    public ServletContext getServletContext() {
+        return context;
     }
 }

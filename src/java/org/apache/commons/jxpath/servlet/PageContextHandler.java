@@ -15,10 +15,11 @@
  */
 package org.apache.commons.jxpath.servlet;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 
 import javax.servlet.jsp.PageContext;
+
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
@@ -26,12 +27,12 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * access to attributes of a PageContext in all scopes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.6 $ $Date: 2004/05/08 15:10:49 $
  */
 public class PageContextHandler implements DynamicPropertyHandler {
 
     public String[] getPropertyNames(Object pageContext) {
-        ArrayList list = new ArrayList();
+        HashSet list = new HashSet();
         Enumeration e =
             ((PageContext) pageContext).getAttributeNamesInScope(
                 PageContext.PAGE_SCOPE);

@@ -15,6 +15,7 @@
  */
 package org.apache.commons.jxpath.servlet;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import org.apache.commons.jxpath.DynamicPropertyHandler;
@@ -24,13 +25,19 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * access to attributes of a PageScopeContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.6 $ $Date: 2004/05/08 15:10:49 $
  */
 public class PageScopeContextHandler implements DynamicPropertyHandler {
+    
+    private static final String[] STRING_ARRAY = new String[0];
 
     public String[] getPropertyNames(Object pageScope) {
         Enumeration e = ((PageScopeContext) pageScope).getAttributeNames();
-        return Util.toStrings(e);
+        ArrayList list = new ArrayList(16);
+        while (e.hasMoreElements()) {
+            list.add(e.nextElement());
+        }
+        return (String[]) list.toArray(STRING_ARRAY);
     }
 
     public Object getProperty(Object pageScope, String property) {

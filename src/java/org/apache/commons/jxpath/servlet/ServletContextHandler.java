@@ -16,8 +16,10 @@
 package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
+import java.util.HashSet;
 
 import javax.servlet.ServletContext;
+
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
@@ -25,13 +27,23 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * access to attributes of a ServletContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.6 $ $Date: 2004/05/08 15:10:49 $
  */
 public class ServletContextHandler implements DynamicPropertyHandler {
+    
+    private static final String[] STRING_ARRAY = new String[0];
 
     public String[] getPropertyNames(Object context) {
-        Enumeration e = ((ServletContext) context).getAttributeNames();
-        return Util.toStrings(e);
+        HashSet list = new HashSet(16);
+        collectPropertyNames(list, context);
+        return (String[]) list.toArray(STRING_ARRAY);
+    }
+    
+    protected void collectPropertyNames(HashSet set, Object bean) {
+        Enumeration e = ((ServletContext) bean).getAttributeNames();
+        while (e.hasMoreElements()) {
+            set.add(e.nextElement());
+        }
     }
 
     public Object getProperty(Object context, String property) {
