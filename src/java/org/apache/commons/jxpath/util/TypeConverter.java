@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.7 2002/06/12 21:02:05 dmitri Exp $
- * $Revision: 1.7 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeConverter.java,v 1.1 2002/06/12 21:02:05 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2002/06/12 21:02:05 $
  *
  * ====================================================================
@@ -61,62 +61,28 @@
  */
 package org.apache.commons.jxpath.util;
 
-import java.lang.reflect.*;
-import java.util.*;
-
-import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.Pointer;
-
 /**
- * Global type conversion utilities.
+ * A type converter can be installed on TypeUtils to introduce
+ * additional type conversions for JXPath. Most of
+ * the time BasicTypeConverter should be used as the superclass.
+ *
+ * @see TypeUtils#setTypeConverter
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/06/12 21:02:05 $
+ * @version $Revision: 1.1 $ $Date: 2002/06/12 21:02:05 $
  */
-public class TypeUtils {
-    private static TypeConverter typeConverter = new BasicTypeConverter();
+public interface TypeConverter {
 
     /**
-     * Install an alternative type converter.
+     * Returns true if it can convert the supplied
+     * object to the specified class.
      */
-    public static synchronized void setTypeConverter(TypeConverter converter){
-        typeConverter = converter;
-    }
+    boolean canConvert(Object object, Class toType);
 
     /**
-     * Returns the current type converter.
+     * Converts the supplied object to the specified
+     * type. Throws a runtime exception if the conversion is
+     * not possible.
      */
-    public static TypeConverter getTypeConverter(){
-        return typeConverter;
-    }
-
-    /**
-     * @deprecated Use MethodLookupUtils
-     */
-    public static Constructor lookupConstructor(Class targetClass, Object[] parameters){
-        return MethodLookupUtils.lookupConstructor(targetClass, parameters);
-    }
-
-    /**
-     * @deprecated Use MethodLookupUtils
-     */
-    public static Method lookupStaticMethod(Class targetClass, String name, Object[] parameters){
-        return MethodLookupUtils.lookupStaticMethod(targetClass, name, parameters);
-    }
-
-    /**
-     * @deprecated Use MethodLookupUtils
-     */
-    public static Method lookupMethod(Class targetClass, String name, Object[] parameters){
-        return MethodLookupUtils.lookupMethod(targetClass, name, parameters);
-    }
-
-    public static boolean canConvert(Object object, Class toType){
-        return typeConverter.canConvert(object, toType);
-    }
-
-    public static Object convert(Object object, Class toType){
-        return typeConverter.convert(object, toType);
-    }
+    Object convert(Object object, Class toType);
 }
