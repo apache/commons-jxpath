@@ -3,7 +3,7 @@
 
 <!--
         "JXPath" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.10 2002/06/17 23:54:27 dmitri Exp $
+        $Id: build.xml,v 1.11 2002/06/25 22:46:15 dmitri Exp $
 -->
 
 
@@ -25,7 +25,7 @@
   <property name="component.package"       value="org.apache.commons.jxpath"/>
 
   <!-- The current version number of this component -->
-  <property name="component.version"       value="1.0-beta2"/>
+  <property name="component.version"       value="1.0"/>
 
   <!-- The jar name of this component -->
   <property name="jar.name"
@@ -261,7 +261,7 @@
   <!-- ================================================================== -->
   <!-- J A R                                                              -->
   <!-- ================================================================== -->
-  <target name="jar" description="Build jar">
+  <target name="jar" depends="compile" description="Build jar">
     <mkdir      dir="${dist.home}"/>
     <copy      file="LICENSE"
              tofile="${build.home}/classes/META-INF/LICENSE.txt"/>
