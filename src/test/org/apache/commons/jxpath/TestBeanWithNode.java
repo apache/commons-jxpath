@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestBeanWithDOM.java,v 1.2 2002/04/21 21:52:34 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/21 21:52:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestBeanWithNode.java,v 1.1 2002/08/10 01:50:39 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/08/10 01:50:39 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,28 +62,28 @@
 
 package org.apache.commons.jxpath;
 
-import java.util.*;
-import org.w3c.dom.*;
+import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.w3c.dom.Document;
 
 /**
  * General purpose test bean for JUnit tests for the "jxpath" component.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/21 21:52:34 $
+ * @version $Revision: 1.1 $ $Date: 2002/08/10 01:50:39 $
  */
-public class TestBeanWithDOM extends TestBean {
-    private Node node;
+public class TestBeanWithNode extends TestBean {
+    private Object node;
     private Object object;
 
-    public Node getVendor(){
+    public Object getVendor(){
         return node;
     }
 
-    public Node[] getVendors(){
-        return new Node[]{node};
+    public Object[] getVendors(){
+        return new Object[]{node};
     }
 
-    public void setVendor(Node node){
+    public void setVendor(Object node){
         this.node = node;
     }
 
@@ -93,6 +93,16 @@ public class TestBeanWithDOM extends TestBean {
 
     public void setObject(Object object){
         this.object = object;
+    }
+
+    public static TestBeanWithNode createTestBeanWithDOM(){
+        DocumentContainer docCtr = new DocumentContainer(
+                TestBeanWithNode.class.getResource("Vendor.xml"));
+        Document doc = (Document)docCtr.getValue();
+        TestBeanWithNode tbwdom = new TestBeanWithNode();
+        tbwdom.setVendor(doc.getDocumentElement());
+        tbwdom.setObject(docCtr);
+        return tbwdom;
     }
 
 }

@@ -12,9 +12,11 @@
   <!ELEMENT product ANY>
 ]>
 
-<vendor>
+<vendor name="fruitco">
   <contact>John</contact>
-  <contact>Jack</contact>
+  <contact name='jack'>Jack</contact>
+  <contact name='jim'>Jim</contact>
+  <contact name='jack'>Jack Black</contact>
   <location id="100" name="local" manager="">
     <address>
       <street>Orchard Road</street>
@@ -25,6 +27,7 @@
   <location id="101">
     <address>
       <street>Tangerine Drive</street>
+      <city>Fruit Market</city>
     </address>
   </location>
 

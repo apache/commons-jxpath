@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFactory.java,v 1.3 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFactory.java,v 1.4 2002/08/10 01:50:39 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/08/10 01:50:39 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import org.w3c.dom.*;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.4 $ $Date: 2002/08/10 01:50:39 $
  */
 public class TestFactory extends AbstractFactory {
 
@@ -138,6 +138,10 @@ public class TestFactory extends AbstractFactory {
         }
         else if (name.equals("location") || name.equals("address") || name.equals("street")){
             addElement((Node)parent, index, name);
+            return true;
+        }
+        else if (name.startsWith("testKey")){
+            ((Map)parent).put(name, new HashMap());
             return true;
         }
         return false;
