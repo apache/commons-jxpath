@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.7 2002/08/10 01:19:09 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/08/10 01:19:09 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.8 2002/10/12 20:57:44 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/10/12 20:57:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * Collection and property access utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/08/10 01:19:09 $
+ * @version $Revision: 1.8 $ $Date: 2002/10/12 20:57:44 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -378,7 +378,16 @@ public class ValueUtils {
             }
         }
         // We will fall through if there is no indexed read
-        setValue(getValue(bean, propertyDescriptor), index, value);
+        Object collection = getValue(bean, propertyDescriptor);
+        if (isCollection(collection)){
+            setValue(collection, index, value);
+        }
+        else if (index == 0){
+            setValue(bean, propertyDescriptor, value);
+        }
+        else {
+            throw new RuntimeException("Not a collection: " + propertyDescriptor.getName());
+        }
     }
 
     /**
