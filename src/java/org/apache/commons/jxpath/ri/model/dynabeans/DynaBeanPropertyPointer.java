@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPropertyPointer.java,v 1.4 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPropertyPointer.java,v 1.5 2002/11/28 01:02:05 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/11/28 01:02:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a DynaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.5 $ $Date: 2002/11/28 01:02:05 $
  */
 public class DynaBeanPropertyPointer extends PropertyPointer {
     private DynaBean dynaBean;
@@ -98,8 +98,8 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     /**
      * This type of node is auxiliary.
      */
-    public boolean isNode(){
-        return false;
+    public boolean isContainer(){
+        return true;
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.13 2002/11/26 01:20:06 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2002/11/26 01:20:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.14 2002/11/28 01:02:04 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2002/11/28 01:02:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,17 +72,16 @@ import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
-import org.apache.commons.jxpath.ri.model.beans.NullElementPointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 
 /**
  * Common superclass for Pointers of all kinds.  A NodePointer maps to
- * a deterministic XPath that represents the location of a node in an object graph.
- * This XPath uses only simple axes: child, namespace and attribute and only simple,
- * context-independent predicates.
+ * a deterministic XPath that represents the location of a node in an 
+ * object graph. This XPath uses only simple axes: child, namespace and
+ * attribute and only simple, context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2002/11/26 01:20:06 $
+ * @version $Revision: 1.14 $ $Date: 2002/11/28 01:02:04 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
@@ -179,11 +178,18 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
     public abstract boolean isLeaf();
 
     /**
-     * If false, this node is axiliary and can only be used as an intermediate
-     * in the chain of pointers.
+     * @deprecated Please use !isContainer()
      */
-    public boolean isNode() {
-        return true;
+    public boolean isNode(){
+        return !isContainer();
+    }
+     
+    /**
+     * If true, this node is axiliary and can only be used as an intermediate in
+     * the chain of pointers.
+     */
+    public boolean isContainer() {
+        return false;
     }
 
     /**
@@ -233,16 +239,17 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * this method returns the pointer to the contents.
      * Only an auxiliary (non-node) pointer can (and should) return a
      * value pointer other than itself.
-     * Note that you probably don't want to override <code>getValuePointer()</code>
-     * directly.  Override the <code>getImmediateValuePointer()</code> 
-     * method instead.  The <code>getValuePointer()</code> method is
-     * calls <code>getImmediateValuePointer()</code> and, if the result is not
+     * Note that you probably don't want to override 
+     * <code>getValuePointer()</code> directly.  Override the
+     * <code>getImmediateValuePointer()</code> method instead.  The
+     * <code>getValuePointer()</code> method is calls
+     * <code>getImmediateValuePointer()</code> and, if the result is not
      * <code>this</code>, invokes <code>getValuePointer()</code> recursively.
-     * The idea here is to open all nested containers. Let's say we have a 
-     * container within a container within a container.
-     * The <code>getValuePointer()</code> method should then open all 
-     * those containers and return the pointer to the ultimate contents.
-     * It does so with the above recursion.
+     * The idea here is to open all nested containers. Let's say we have a
+     * container within a container within a container. The
+     * <code>getValuePointer()</code> method should then open all those
+     * containers and return the pointer to the ultimate contents. It does so
+     * with the above recursion.
      */
     public NodePointer getValuePointer() {
         NodePointer ivp = getImmediateValuePointer();
@@ -340,7 +347,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
             return true;
         }
         else if (test instanceof NodeNameTest) {
-            if (!isNode()) {
+            if (isContainer()) {
                 return false;
             }
             QName testName = ((NodeNameTest) test).getNodeName();
@@ -574,35 +581,26 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * Returns an XPath that maps to this Pointer.
      */
     public String asPath() {
+        // If the parent of this node is a container, it is responsible
+        // for appended this node's part of the path.
+        if (parent != null && parent.isContainer()) {
+            return parent.asPath();
+        }
+
         StringBuffer buffer = new StringBuffer();
-        if (getParent() != null) {
-            buffer.append(getParent().asPath());
-            // TBD: the following needs to be redesigned.
-            // What this condition says is
-            // "if the parent of this node has already appended this node's
-            // name, don't do it again".  However, I would hate to add an ugly
-            // API like "isResponsibleForAppendingChildName()".
-            if (getParent().isNode() || (parent instanceof NullElementPointer)){
-                QName name = getName();
-                if (name != null) {
-                    if (buffer.length() == 0 ||
-                            buffer.charAt(buffer.length()-1) != '/'){
-                        buffer.append('/');
-                    }
-                    if (attribute){
-                        buffer.append('@');
-                    }
-                    buffer.append(name);
-                }
-            }
+        if (parent != null) {
+            buffer.append(parent.asPath());
         }
-        else {
-            QName name = getName();
-            if (attribute){
-                buffer.append('@');
-            }
-            buffer.append(name);
+
+        if (buffer.length() == 0
+            || buffer.charAt(buffer.length() - 1) != '/') {
+            buffer.append('/');
         }
+        if (attribute) {
+            buffer.append('@');
+        }
+        buffer.append(getName());
+
         if (index != WHOLE_COLLECTION && isCollection()) {
             buffer.append('[').append(index + 1).append(']');
         }

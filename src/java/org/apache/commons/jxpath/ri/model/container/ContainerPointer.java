@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.6 2002/11/26 01:20:07 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/11/26 01:20:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.7 2002/11/28 01:02:04 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/11/28 01:02:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/11/26 01:20:07 $
+ * @version $Revision: 1.7 $ $Date: 2002/11/28 01:02:04 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
@@ -95,8 +95,8 @@ public class ContainerPointer extends NodePointer {
     /**
      * This type of node is auxiliary.
      */
-    public boolean isNode(){
-        return false;
+    public boolean isContainer(){
+        return true;
     }
 
     public QName getName(){

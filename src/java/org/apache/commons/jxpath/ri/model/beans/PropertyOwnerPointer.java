@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.10 2002/11/26 01:20:06 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/11/26 01:20:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.11 2002/11/28 01:02:04 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/11/28 01:02:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -78,13 +78,13 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/11/26 01:20:06 $
+ * @version $Revision: 1.11 $ $Date: 2002/11/28 01:02:04 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
     public NodeIterator childIterator(NodeTest test, boolean reverse, NodePointer startWith){
         if (test == null){
-            return new PropertyIterator(this, null, reverse, startWith);
+            return createNodeIterator(null, reverse, startWith);
         }
         else if (test instanceof NodeNameTest){
             QName testName = ((NodeNameTest)test).getNodeName();
@@ -98,14 +98,22 @@ public abstract class PropertyOwnerPointer extends NodePointer {
             else {
                 property = testName.getName();
             }
-            return new PropertyIterator(this, property, reverse, startWith);
+            return createNodeIterator(property, reverse, startWith);
         }
         else if (test instanceof NodeTypeTest){
             if (((NodeTypeTest)test).getNodeType() == Compiler.NODE_TYPE_NODE){
-                return new PropertyIterator(this, null, reverse, startWith);
+                return createNodeIterator(null, reverse, startWith);
             }
         }
         return null;
+    }
+
+    public NodeIterator createNodeIterator(
+                String property,
+                boolean reverse,
+                NodePointer startWith) 
+    {
+        return new PropertyIterator(this, property, reverse, startWith);
     }
 
     public NodeIterator attributeIterator(QName name){
@@ -150,7 +158,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      */
     public void setValue(Object value){
         this.value = value;
-        if (parent instanceof PropertyPointer){
+        if (parent.isContainer()){
             parent.setValue(value);
         }
         else if (parent != null){

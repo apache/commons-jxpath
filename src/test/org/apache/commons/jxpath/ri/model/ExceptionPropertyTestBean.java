@@ -1,13 +1,7 @@
-/*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.10 2002/11/28 01:02:04 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/11/28 01:02:04 $
- *
- * ====================================================================
+/* ====================================================================
  * The Apache Software License, Version 1.1
  *
- *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +30,7 @@
  *
  * 5. Products derived from this software may not be called "Apache"
  *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
+ *    permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -53,72 +47,30 @@
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation and was
- * originally based on software copyright (c) 2001, Plotnix, Inc,
- * <http://www.plotnix.com/>.
- * For more information on the Apache Software Foundation, please see
+ * individuals on behalf of the Apache Software Foundation.  For more
+ * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.axes;
+package org.apache.commons.jxpath.ri.model;
 
-import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.compiler.NodeTest;
-import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.TestBean;
 
 /**
- * EvalContext that walks the "parent::" axis.
- *
- * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/11/28 01:02:04 $
+ * 
+ * @author <a href="mailto:dmitri@apache.org">Dmitri Plotnikov</a>
+ * @version $Id: ExceptionPropertyTestBean.java,v 1.1 2002/11/28 01:02:05 dmitri Exp $
  */
-public class ParentContext extends EvalContext {
-    private NodeTest nodeTest;
-    private boolean setStarted = false;
-    private NodePointer currentNodePointer;
+public class ExceptionPropertyTestBean {
 
-    public ParentContext(EvalContext parentContext, NodeTest nodeTest){
-        super(parentContext);
-        this.nodeTest = nodeTest;
+    public String getErrorString(){
+        throw new RuntimeException("errorString");
+    }
+    
+    public String[] getErrorStringArray(){
+        throw new RuntimeException("errorStringArray");
     }
 
-    public NodePointer getCurrentNodePointer(){
-        return currentNodePointer;
-    }
-
-    public int getCurrentPosition(){
-        return 1;
-    }
-
-    public int getDocumentOrder(){
-        return -1;
-    }
-
-    public void reset(){
-        super.reset();
-        setStarted = false;
-    }
-
-    public boolean setPosition(int position){
-        super.setPosition(position);
-        return position == 1;
-    }
-
-    public boolean nextNode(){
-        // Each set contains exactly one node: the parent
-        if (setStarted){
-            return false;
-        }
-        setStarted = true;
-        NodePointer thisLocation = parentContext.getCurrentNodePointer();
-        currentNodePointer = thisLocation.getParent();
-        while (currentNodePointer != null && currentNodePointer.isContainer()){
-            currentNodePointer = currentNodePointer.getParent();
-        }
-        if (currentNodePointer != null &&
-                currentNodePointer.testNode(nodeTest)){
-            position++;
-            return true;
-        }
-        return false;
+    public TestBean getErrorBean(){
+        throw new RuntimeException("errorBean");
     }
 }

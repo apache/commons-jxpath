@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/Attic/TestDynamicPropertyFactory.java,v 1.3 2002/11/26 01:33:35 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/11/26 01:33:35 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynamic/TestDynamicPropertyFactory.java,v 1.1 2002/11/28 01:02:05 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/11/28 01:02:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -60,7 +60,7 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.commons.jxpath.ri.model;
+package org.apache.commons.jxpath.ri.model.dynamic;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.*;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/11/26 01:33:35 $
+ * @version $Revision: 1.1 $ $Date: 2002/11/28 01:02:05 $
  */
 public class TestDynamicPropertyFactory extends AbstractFactory {
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.5 2002/10/12 21:02:24 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/10/12 21:02:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.6 2002/11/28 01:02:04 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/11/28 01:02:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Examples of such objects are JavaBeans and objects with Dynamic Properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/10/12 21:02:24 $
+ * @version $Revision: 1.6 $ $Date: 2002/11/28 01:02:04 $
  */
 public class PropertyIterator implements NodeIterator {
     private boolean empty = false;
@@ -90,28 +90,34 @@ public class PropertyIterator implements NodeIterator {
         this.name = name;
         this.reverse = reverse;
         this.includeStart = true;
-        if (reverse){
+        if (reverse) {
             this.startPropertyIndex = PropertyPointer.UNSPECIFIED_PROPERTY;
             this.startIndex = -1;
         }
-        if (startWith != null){
-            while (startWith != null && startWith.getParent() != pointer){
+        if (startWith != null) {
+            while (startWith != null && startWith.getParent() != pointer) {
                 startWith = startWith.getParent();
             }
-            if (startWith == null){
+            if (startWith == null) {
                 throw new JXPathException(
-                    "PropertyIerator startWith parameter is not a child of the supplied parent");
+                    "PropertyIerator startWith parameter is "
+                        + "not a child of the supplied parent");
             }
-            this.startPropertyIndex = ((PropertyPointer)startWith).getPropertyIndex();
+            this.startPropertyIndex =
+                ((PropertyPointer) startWith).getPropertyIndex();
             this.startIndex = startWith.getIndex();
-            if (this.startIndex == NodePointer.WHOLE_COLLECTION){
+            if (this.startIndex == NodePointer.WHOLE_COLLECTION) {
                 this.startIndex = 0;
             }
             this.includeStart = false;
-            if (reverse && startIndex == -1){
+            if (reverse && startIndex == -1) {
                 this.includeStart = true;
             }
         }
+    }
+    
+    protected NodePointer getPropertyPointer(){
+        return propertyNodePointer;
     }
 
     public void reset(){
@@ -123,7 +129,7 @@ public class PropertyIterator implements NodeIterator {
         if (position == 0){
             if (name != null){
                 if (!targetReady){
-                    prepare();
+                    prepareForIndividualProperty(name);
                 }
                 // If there is no such property - return null
                 if (empty){
@@ -137,7 +143,7 @@ public class PropertyIterator implements NodeIterator {
                 reset();
             }
         }
-        return propertyNodePointer.getValuePointer();
+        return getValuePointer();       
     }
 
     public int getPosition(){
@@ -160,14 +166,14 @@ public class PropertyIterator implements NodeIterator {
         }
 
         if (!targetReady){
-            prepare();
+            prepareForIndividualProperty(name);
         }
 
         if (empty){
             return false;
         }
 
-        int length = propertyNodePointer.getLength();   // TBD: cache length
+        int length = getLength();
         int index;
         if (!reverse){
             index = position + startIndex;
@@ -207,7 +213,7 @@ public class PropertyIterator implements NodeIterator {
             int index = 1;
             for (int i = startPropertyIndex; i < count; i++){
                 propertyNodePointer.setPropertyIndex(i);
-                int length = propertyNodePointer.getLength();
+                int length = getLength();
                 if (i == startPropertyIndex){
                     length -= startIndex;
                     if (!includeStart){
@@ -236,7 +242,7 @@ public class PropertyIterator implements NodeIterator {
             }
             for (int i = start; i >= 0; i--){
                 propertyNodePointer.setPropertyIndex(i);
-                int length = propertyNodePointer.getLength();
+                int length = getLength();
                 if (i == startPropertyIndex){
                     int end = startIndex;
                     if (end == -1){
@@ -263,13 +269,9 @@ public class PropertyIterator implements NodeIterator {
         return false;
     }
 
-    private void prepare(){
+    protected void prepareForIndividualProperty(String name){
         targetReady = true;
         empty = true;
-        // TBD: simplify
-        if (propertyNodePointer instanceof DynamicPropertyPointer){
-            propertyNodePointer.setPropertyName(name);
-        }
 
         String names[] = propertyNodePointer.getPropertyNames();
         if (!reverse){
@@ -309,6 +311,38 @@ public class PropertyIterator implements NodeIterator {
                     break;
                 }
             }
+        }
+    }
+
+    /**
+     * Computes length for the current pointer - ignores any exceptions
+     */
+    private int getLength() {
+        int length;
+        try {
+            length = propertyNodePointer.getLength();   // TBD: cache length
+        }
+        catch (Throwable t){
+            // @todo: should this exception be reported in any way?
+            length = 0;
+        }
+        return length;
+    }
+
+    /**
+     * Computes value pointer for the current pointer - ignores any exceptions
+     */
+    private NodePointer getValuePointer() {
+        try {
+            return propertyNodePointer.getValuePointer();
+        }
+        catch (Throwable ex){
+            // @todo: should this exception be reported in any way?
+            NullPropertyPointer npp =
+                new NullPropertyPointer(propertyNodePointer.getParent());
+            npp.setPropertyName(propertyNodePointer.getPropertyName());
+            npp.setIndex(propertyNodePointer.getIndex());
+            return npp.getValuePointer();
         }
     }
 }

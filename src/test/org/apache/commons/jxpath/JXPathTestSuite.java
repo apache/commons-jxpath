@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestSuite.java,v 1.1 2002/10/20 03:48:21 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestSuite.java,v 1.2 2002/11/28 01:02:05 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/28 01:02:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,9 +75,9 @@ import org.apache.commons.jxpath.ri.compiler.ExtensionFunctionTest;
 import org.apache.commons.jxpath.ri.compiler.VariableTest;
 import org.apache.commons.jxpath.ri.model.MixedModelTest;
 import org.apache.commons.jxpath.ri.model.beans.BeanModelTest;
-import org.apache.commons.jxpath.ri.model.beans.DynamicPropertiesModelTest;
 import org.apache.commons.jxpath.ri.model.dom.DOMModelTest;
 import org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanModelTest;
+import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertiesModelTest;
 import org.apache.commons.jxpath.ri.model.jdom.JDOMModelTest;
 import org.apache.commons.jxpath.util.BasicTypeConverterTest;
 
@@ -95,7 +95,7 @@ import org.apache.commons.jxpath.util.BasicTypeConverterTest;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:21 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/28 01:02:05 $
  */
 
 public class JXPathTestSuite extends TestCase

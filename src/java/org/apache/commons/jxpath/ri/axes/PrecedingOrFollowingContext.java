@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.9 2002/11/26 01:20:06 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/11/26 01:20:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.10 2002/11/28 01:02:04 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/11/28 01:02:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyIterator;
  * EvalContext that walks the "preceding::" and "following::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/11/26 01:20:06 $
+ * @version $Revision: 1.10 $ $Date: 2002/11/28 01:02:04 $
  */
 public class PrecedingOrFollowingContext extends EvalContext {
     private NodeTest nodeTest;
@@ -194,7 +194,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
      * If the pointer is auxiliary, return the parent; otherwise - the pointer itself
      */
     private NodePointer getMaterialPointer(NodePointer pointer){
-        while (pointer != null && !pointer.isNode()){
+        while (pointer != null && pointer.isContainer()){
             pointer = pointer.getParent();
         }
         return pointer;

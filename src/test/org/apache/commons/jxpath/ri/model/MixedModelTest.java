@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/MixedModelTest.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/MixedModelTest.java,v 1.2 2002/11/28 01:02:05 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/28 01:02:05 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -86,13 +86,11 @@ import org.apache.commons.jxpath.Variables;
  * Tests JXPath with mixed model: beans, maps, DOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/28 01:02:05 $
  */
 
 public class MixedModelTest extends JXPathTestCase
 {
-    private static final boolean enabled = true;
-
     private JXPathContext context;
 
     /**
@@ -419,9 +417,6 @@ public class MixedModelTest extends JXPathTestCase
      * Test JXPath.iterate() with map containing an array
      */
     public void testIterateArray(){
-        if (!enabled){
-            return;
-        }
         Map map = new HashMap();
         map.put("foo", new String[]{"a", "b", "c"});
 
@@ -433,9 +428,6 @@ public class MixedModelTest extends JXPathTestCase
     }
 
     public void testIteratePointersArray(){
-        if (!enabled){
-            return;
-        }
         Map map = new HashMap();
         map.put("foo", new String[]{"a", "b", "c"});
 
@@ -452,9 +444,6 @@ public class MixedModelTest extends JXPathTestCase
     }
 
     public void testIteratePointersArrayElementWithVariable(){
-        if (!enabled){
-            return;
-        }
         Map map = new HashMap();
         map.put("foo", new String[]{"a", "b", "c"});
 
@@ -470,9 +459,6 @@ public class MixedModelTest extends JXPathTestCase
     }
 
     public void testIterateVector(){
-        if (!enabled){
-            return;
-        }
         Map map = new HashMap();
         Vector vec = new Vector();
         vec.add(new HashMap());
@@ -483,5 +469,36 @@ public class MixedModelTest extends JXPathTestCase
         assertXPathPointerIterator(context,
             "/vec",
             list("/.[@name='vec'][1]", "/.[@name='vec'][2]"));
+    }
+    
+    public void testErrorProperty(){
+        context.getVariables().declareVariable(
+            "e",
+            new ExceptionPropertyTestBean());
+         
+        boolean ex = false;   
+        try {
+            assertXPathValue(context, "$e/errorString", null);
+        }
+        catch (Throwable t){
+            ex = true;
+        }
+        assertTrue("Legitimate exception accessing property", ex);
+        
+        assertXPathPointer(context, 
+            "$e/errorString", 
+            "$e/errorString");
+
+        assertXPathPointerLenient(context,
+            "$e/errorStringArray[1]",
+            "$e/errorStringArray[1]");
+            
+        assertXPathPointerIterator(context,
+            "$e/errorString",
+            list("$e/errorString"));
+
+        assertXPathPointerIterator(context,
+            "$e//error",
+            Collections.EMPTY_LIST);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.9 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.10 2002/11/28 01:02:04 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/11/28 01:02:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.10 $ $Date: 2002/11/28 01:02:04 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -113,8 +113,8 @@ public class CollectionPointer extends NodePointer {
             || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
-    public boolean isNode(){
-        return index == WHOLE_COLLECTION;
+    public boolean isContainer(){
+        return index != WHOLE_COLLECTION;
     }
 
     public Object getImmediateNode(){
@@ -269,7 +269,7 @@ public class CollectionPointer extends NodePointer {
         }
         if (index != WHOLE_COLLECTION) {
             // Address the list[1][2] case
-            if (parent != null && !parent.isNode() &&
+            if (parent != null && parent.isContainer() &&
                     parent.getIndex() != WHOLE_COLLECTION){
                 buffer.append("/.");
             }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.23 2002/10/20 03:44:27 dmitri Exp $
- * $Revision: 1.23 $
- * $Date: 2002/10/20 03:44:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.24 2002/11/28 01:02:04 dmitri Exp $
+ * $Revision: 1.24 $
+ * $Date: 2002/11/28 01:02:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,15 +75,15 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
 import org.apache.commons.jxpath.ri.model.VariablePointer;
 import org.apache.commons.jxpath.ri.model.beans.BeanPointerFactory;
 import org.apache.commons.jxpath.ri.model.beans.CollectionPointerFactory;
-import org.apache.commons.jxpath.ri.model.beans.DynamicPointerFactory;
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
+import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointerFactory;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.23 $ $Date: 2002/10/20 03:44:27 $
+ * @version $Revision: 1.24 $ $Date: 2002/11/28 01:02:04 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -222,27 +222,30 @@ public class JXPathContextReferenceImpl extends JXPathContext
 
     public Object getValue(String xpath, Expression expr){
         Object result = expr.computeValue(getRootContext());
-        if (result instanceof EvalContext){
-            EvalContext ctx = (EvalContext)result;
+        if (result instanceof EvalContext) {
+            EvalContext ctx = (EvalContext) result;
             result = ctx.getSingleNodePointer();
-            if (!lenient && result == null){
+            if (!lenient && result == null) {
                 throw new JXPathException("No value for xpath: " + xpath);
             }
         }
-        if (result instanceof NodePointer){
-            if (!lenient && !((NodePointer)result).isActual()){
+        if (result instanceof NodePointer) {
+            result = ((NodePointer) result).getValuePointer();
+            if (!lenient && !((NodePointer) result).isActual()) {
                 // We need to differentiate between pointers representing
-                // a non-existing property and one representing a property
+                // a non-existing property and ones representing a property
                 // whose value is null.  In the latter case, the pointer
                 // is going to have isActual == false, but its parent,
                 // which is a non-node pointer identifying the bean property,
                 // will return isActual() == true.
-                NodePointer parent = ((NodePointer)result).getParent();
-                if (parent == null || parent.isNode() || !parent.isActual()){
+                NodePointer parent = ((NodePointer) result).getParent();
+                if (parent == null
+                    || !parent.isContainer()
+                    || !parent.isActual()) {
                     throw new JXPathException("No value for xpath: " + xpath);
                 }
             }
-            result = ((NodePointer)result).getValue();
+            result = ((NodePointer) result).getValue();
         }
         return result;
     }

@@ -9,6 +9,8 @@ import org.apache.commons.jxpath.NestedTestBean;
 import org.apache.commons.jxpath.ri.model.*;
 import org.apache.commons.jxpath.ri.model.beans.*;
 import org.apache.commons.jxpath.ri.model.dom.*;
+import org.apache.commons.jxpath.ri.model.dynamic.*;
+
 import java.util.*;
 
 public class SimplePathInterpreterTest extends TestCase {

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.10 2002/11/26 01:20:06 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/11/26 01:20:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.11 2002/11/28 01:02:04 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/11/28 01:02:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/11/26 01:20:06 $
+ * @version $Revision: 1.11 $ $Date: 2002/11/28 01:02:04 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
@@ -95,8 +95,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     /**
      * This type of node is auxiliary.
      */
-    public boolean isNode(){
-        return false;
+    public boolean isContainer(){
+        return true;
     }
 
     /**
