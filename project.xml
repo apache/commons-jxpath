@@ -57,7 +57,7 @@
     </dependency>
     <dependency>
       <id>jdom</id>
-      <version>b8</version>
+      <version>b9</version>
       <url>http://www.jdom.org</url> 
     </dependency>
     <dependency> 
