@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFactory.java,v 1.4 2002/08/10 01:50:39 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/08/10 01:50:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFactory.java,v 1.5 2002/08/26 22:33:10 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/08/26 22:33:10 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,13 +63,14 @@
 package org.apache.commons.jxpath;
 
 import java.util.*;
-import org.w3c.dom.*;
+import org.w3c.dom.Node;
+import org.jdom.*;
 
 /**
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/08/10 01:50:39 $
+ * @version $Revision: 1.5 $ $Date: 2002/08/26 22:33:10 $
  */
 public class TestFactory extends AbstractFactory {
 
@@ -137,7 +138,12 @@ public class TestFactory extends AbstractFactory {
             return true;
         }
         else if (name.equals("location") || name.equals("address") || name.equals("street")){
-            addElement((Node)parent, index, name);
+            if (parent instanceof Node){        // That's DOM
+                addDOMElement((Node)parent, index, name);
+            }
+            else {                              // Assume JDOM
+                addJDOMElement((Element)parent, index, name);
+            }
             return true;
         }
         else if (name.startsWith("testKey")){
@@ -147,7 +153,7 @@ public class TestFactory extends AbstractFactory {
         return false;
     }
 
-    private void addElement(Node parent, int index, String tag){
+    private void addDOMElement(Node parent, int index, String tag){
         Node child = parent.getFirstChild();
         int count = 0;
         while (child != null){
@@ -161,6 +167,27 @@ public class TestFactory extends AbstractFactory {
         while (count <= index){
             Node newElement = parent.getOwnerDocument().createElement(tag);
             parent.appendChild(newElement);
+            count++;
+        }
+    }
+
+    private void addJDOMElement(Element parent, int index, String tag){
+        List children = parent.getContent();
+        int count = 0;
+        for (int i = 0; i < children.size(); i++){
+            Object child = children.get(i);
+            if (child instanceof Element &&
+                    ((Element)child).getQualifiedName().equals(tag)){
+                count++;
+            }
+        }
+
+        // Keep inserting new elements until we have index + 1 of them
+        while (count <= index){
+            // In a real factory we would need to do the right thing with
+            // the namespace prefix.
+            Element newElement = new Element(tag);
+            parent.addContent(newElement);
             count++;
         }
     }

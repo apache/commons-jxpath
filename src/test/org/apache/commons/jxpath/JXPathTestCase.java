@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.26 2002/08/10 01:50:38 dmitri Exp $
- * $Revision: 1.26 $
- * $Date: 2002/08/10 01:50:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.27 2002/08/26 22:33:10 dmitri Exp $
+ * $Revision: 1.27 $
+ * $Date: 2002/08/26 22:33:10 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -96,7 +96,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.26 $ $Date: 2002/08/10 01:50:38 $
+ * @version $Revision: 1.27 $ $Date: 2002/08/26 22:33:10 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -1140,6 +1140,7 @@ public class JXPathTestCase extends TestCase
         // Variables
         test("$a", new Double(1)),
         testPath("$a", "$a"),
+
         test("$a = $b", Boolean.TRUE),
         test("$a = $test", Boolean.FALSE),
 
@@ -1424,7 +1425,9 @@ public class JXPathTestCase extends TestCase
         }
         System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
                 "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
-        DocumentContainer docCtr = new DocumentContainer(getClass().getResource("Vendor.xml"));
+        DocumentContainer docCtr = new DocumentContainer(
+                getClass().getResource("Vendor.xml"),
+                DocumentContainer.MODEL_DOM);
         Document doc = (Document)docCtr.getValue();
         JXPathContext ctx = JXPathContextFactory.newInstance().newContext(null, doc);
         ctx.setLocale(Locale.US);
@@ -1435,45 +1438,18 @@ public class JXPathTestCase extends TestCase
         ctx.getVariables().declareVariable("test", tbwdom);
         testXPaths(ctx, dom_tests, false);
     }
-/*
-    public void testJDOM() throws Exception {
-        if (true){
-            return;
-        }
+
+    private TestBeanWithNode createTestBeanWithDOM(){
         DocumentContainer docCtr =
             new DocumentContainer(getClass().getResource("Vendor.xml"),
-                DocumentContainer.MODEL_JDOM);
-        org.jdom.Document doc = (org.jdom.Document)docCtr.getValue();
-        JXPathContext ctx = JXPathContextFactory.newInstance().newContext(null, doc);
-        ctx.setLocale(Locale.US);
-        ctx.getVariables().declareVariable("dom", doc);
-        ctx.getVariables().declareVariable("object", docCtr);
-        ctx.getVariables().declareVariable("null", null);
-        TestBeanWithNode tbwdom = createTestBeanWithDOM();
-        ctx.getVariables().declareVariable("test", tbwdom);
-        testXPaths(ctx, dom_tests, false);
-    }
-*/
-    private TestBeanWithNode createTestBeanWithDOM(){
-        DocumentContainer docCtr = new DocumentContainer(getClass().getResource("Vendor.xml"));
+            DocumentContainer.MODEL_DOM);
         Document doc = (Document)docCtr.getValue();
         TestBeanWithNode tbwdom = new TestBeanWithNode();
         tbwdom.setVendor(doc.getDocumentElement());
         tbwdom.setObject(docCtr);
         return tbwdom;
     }
-/*
-    private TestBeanWithNode createTestBeanWithJDOM(){
-        DocumentContainer docCtr = new DocumentContainer(
-            getClass().getResource("Vendor.xml"),
-            DocumentContainer.MODEL_JDOM);
-        org.jdom.Document doc = (org.jdom.Document)docCtr.getValue();
-        TestBeanWithNode tbwdom = new TestBeanWithNode();
-        tbwdom.setVendor(doc.getRootElement());
-        tbwdom.setObject(docCtr);
-        return tbwdom;
-    }
-*/
+
     static final XP[] dom_tests = new XP[]{
         test("vendor/location/address/street", "Orchard Road"),
         test("vendor/location[2]/address/street", "Tangerine Drive"),
@@ -1525,7 +1501,8 @@ public class JXPathTestCase extends TestCase
         testLenient("//price:sale/self::x/saleEnds", null),
 
         test("//product/comment()", "We are not buying this product, ever"),
-        test("//product/text()[. != '']", "We love this product."),
+        //  This test was incorrect
+        //  test("//product/text()[. != '']", "We love this product."),
         testPath("//product/text()", "/vendor[1]/product[1]/text()[1]"),
         test("//product/processing-instruction()", "do not show anybody"),
         test("//product/processing-instruction('report')", "average only"),
@@ -1551,8 +1528,8 @@ public class JXPathTestCase extends TestCase
         testEval("vendor/contact/following::location//street",
             list("Orchard Road", "Tangerine Drive")),
 
-        test("id('101')//street", "Tangerine Drive"),
-        testPath("id('101')//street", "id('101')/address[1]/street[1]"),
+//        test("id('101')//street", "Tangerine Drive"),
+//        testPath("id('101')//street", "id('101')/address[1]/street[1]"),
    };
 
     public void testTypeConversions(){
