@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.22 $ $Date: 2004/06/29 22:58:18 $
+ * @version $Revision: 1.23 $ $Date: 2004/06/30 00:29:13 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {
@@ -555,6 +555,11 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             context,
             "vendor/location[@id='101']//street",
             "Tangerine Drive");
+        
+        assertXPathValueIterator(
+            context,
+            "/vendor/location[1]/@*[name()!= 'manager']", list("100",
+            "local"));
     }
 
     public void testAxisNamespace() {
