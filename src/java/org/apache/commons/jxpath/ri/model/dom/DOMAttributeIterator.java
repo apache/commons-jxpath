@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributeIterator.java,v 1.3 2002/04/26 01:00:38 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributeIterator.java,v 1.4 2002/06/18 00:03:16 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/06/18 00:03:16 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.w3c.dom.Node;
  * An iterator of attributes of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:38 $
+ * @version $Revision: 1.4 $ $Date: 2002/06/18 00:03:16 $
  */
 public class DOMAttributeIterator implements NodeIterator {
     private NodePointer parent;
@@ -162,9 +162,21 @@ public class DOMAttributeIterator implements NodeIterator {
             testNS = parent.getNamespaceURI(testPrefix);
         }
 
-        Node attr;
         if (testNS != null){
-            return element.getAttributeNodeNS(testNS, name.getName());
+            Attr attr = element.getAttributeNodeNS(testNS, name.getName());
+            if (attr == null){
+                // This may mean that the parser does not support NS for
+                // attributes, example - the version of Crimson bundled
+                // with JDK 1.4.0
+                NamedNodeMap nnm = element.getAttributes();
+                for (int i = 0; i < nnm.getLength(); i++){
+                    attr = (Attr)nnm.item(i);
+                    if (testAttr(attr, name)){
+                        return attr;
+                    }
+                }
+            }
+            return null;
         }
         else {
             return element.getAttributeNode(name.getName());
