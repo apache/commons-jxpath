@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/InfoSetUtil.java,v 1.3 2002/06/16 03:22:21 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/06/16 03:22:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/InfoSetUtil.java,v 1.4 2002/07/03 21:13:06 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/07/03 21:13:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Type conversions, XPath style.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/06/16 03:22:21 $
+ * @version $Revision: 1.4 $ $Date: 2002/07/03 21:13:06 $
  */
 public class InfoSetUtil {
 
@@ -138,7 +138,7 @@ public class InfoSetUtil {
         else if (object instanceof NodePointer){
             return number(((NodePointer)object).getValue());
         }
-        return ZERO;
+        return number(stringValue(object));
     }
 
     /**
@@ -171,7 +171,7 @@ public class InfoSetUtil {
         else if (object instanceof EvalContext){
             return doubleValue(stringValue(object));
         }
-        return 0;
+        return doubleValue(stringValue(object));
     }
 
     /**
@@ -195,6 +195,9 @@ public class InfoSetUtil {
         else if (object instanceof NodePointer){
             return booleanValue(((NodePointer)object).getValue());
         }
-        return false;
+        else if (object == null){
+            return false;
+        }
+        return true;
     }
 }
