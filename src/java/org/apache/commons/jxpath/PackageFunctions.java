@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/PackageFunctions.java,v 1.4 2002/04/24 03:29:33 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/24 03:29:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/PackageFunctions.java,v 1.5 2002/04/26 03:28:36 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/26 03:28:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -108,7 +108,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/24 03:29:33 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/26 03:28:36 $
  */
 public class PackageFunctions implements Functions {
     private String classPrefix;
@@ -140,10 +140,10 @@ public class PackageFunctions implements Functions {
      * <li><b>subpackage.subpackage.Classname.new</b>, if looking for a constructor in
      *      a subpackage</li>
      * <li><b>Classname.methodname</b>, if looking for a static method</li>
-     * <li><b>subpackage.subpackage.Classname.methodname</b>, if looking for a 
+     * <li><b>subpackage.subpackage.Classname.methodname</b>, if looking for a
      *      static method of a class in a subpackage</li>
      * </ul>
-     * 
+     *
      * @return a MethodFunction, a ConstructorFunction or null if no function is found
      */
     public Function getFunction(String namespace, String name, Object[] parameters) {
@@ -191,7 +191,9 @@ public class PackageFunctions implements Functions {
             functionClass = Class.forName(className);
         }
         catch (ClassNotFoundException ex) {
-            throw new RuntimeException("Class not found: " + ex);
+            throw new JXPathException("Cannot invoke extension function "
+                + (namespace != null ? namespace + ":" + name : name),
+                ex);
         }
 
         if (methodName.endsWith("new")) {

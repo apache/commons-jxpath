@@ -277,7 +277,7 @@ public class SimplePathInterpreter {
             value = ((NodePointer)value).getValue();
         }
         if (value == null){
-            throw new RuntimeException("Predicate is null: " + value);
+            throw new JXPathException("Predicate is null: " + value);
         }
 
         if (value instanceof Number){

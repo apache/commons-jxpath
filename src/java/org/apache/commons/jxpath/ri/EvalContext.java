@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.11 2002/04/26 01:00:38 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2002/04/26 01:00:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.12 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -78,7 +78,7 @@ import org.apache.commons.jxpath.ri.model.beans.*;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2002/04/26 01:00:38 $
+ * @version $Revision: 1.12 $ $Date: 2002/04/26 03:28:37 $
  */
 public abstract class EvalContext implements ExpressionContext {
     protected EvalContext parentContext;
@@ -145,7 +145,7 @@ public abstract class EvalContext implements ExpressionContext {
         }
         return list;
     }
-    
+
     /**
      * Returns the list of all node values in this context
      */
@@ -892,7 +892,7 @@ public abstract class EvalContext implements ExpressionContext {
         }
         Function function = getRootContext().getFunction(functionName, parameters);
         if (function == null){
-            throw new RuntimeException("No such function: " + functionName +
+            throw new JXPathException("No such function: " + functionName +
                  Arrays.asList(parameters));
         }
 
@@ -1265,7 +1265,8 @@ public abstract class EvalContext implements ExpressionContext {
             }
             return new Double(sum);
         }
-        throw new RuntimeException("Invalid argument type for 'sum': " + v.getClass().getName());
+        throw new JXPathException("Invalid argument type for 'sum': "
+            + v.getClass().getName());
     }
 
     protected Object functionFloor(CoreFunction function){
@@ -1288,7 +1289,8 @@ public abstract class EvalContext implements ExpressionContext {
 
     private void assertArgCount(CoreFunction function, int count){
         if (function.getArgumentCount() != count){
-            throw new RuntimeException("Incorrect number of argument: " + function);
+            throw new JXPathException("Incorrect number of argument: "
+                + function);
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,6 +62,7 @@
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
@@ -76,7 +77,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * as the parent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
  */
 public class NullElementPointer extends PropertyOwnerPointer {
 
@@ -142,7 +143,7 @@ public class NullElementPointer extends PropertyOwnerPointer {
 
     public void createChild(JXPathContext context, QName name, int index, Object value){
         if (index != 0 && index != WHOLE_COLLECTION){
-            throw new RuntimeException("Internal error. " +
+            throw new JXPathException("Internal error. " +
                 "Indexed passed to NullElementPointer.createChild() is not 0: " + index);
         }
         if (parent instanceof PropertyPointer){
@@ -155,7 +156,7 @@ public class NullElementPointer extends PropertyOwnerPointer {
 
     public NodePointer createChild(JXPathContext context, QName name, int index){
         if (index != 0 && index != WHOLE_COLLECTION){
-            throw new RuntimeException("Internal error. " +
+            throw new JXPathException("Internal error. " +
                 "Indexed passed to NullElementPointer.createChild() is not 0: " + index);
         }
         if (parent instanceof PropertyPointer){

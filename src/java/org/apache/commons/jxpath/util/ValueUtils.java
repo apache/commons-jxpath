@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.2 2002/04/24 04:05:39 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.3 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,11 +66,12 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 import java.util.*;
 
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/26 03:28:37 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -132,7 +133,7 @@ public class ValueUtils {
             return collection;
         }
         else {
-            throw new RuntimeException("Cannot turn " + collection.getClass().getName() +
+            throw new JXPathException("Cannot turn " + collection.getClass().getName() +
                     " into a collection of size " + size);
         }
     }
@@ -148,8 +149,9 @@ public class ValueUtils {
                 }
             }
             catch (Exception ex){
-                throw new RuntimeException("Cannot access property: " + propertyDescriptor.getName() +
-                    ", " + ex.getMessage());
+                throw new JXPathException(
+                    "Cannot access property: " + propertyDescriptor.getName(),
+                    ex);
             }
         }
         // We will fall through if there is no indexed read
@@ -230,14 +232,13 @@ public class ValueUtils {
         try {
             Method method = getAccessibleMethod(propertyDescriptor.getReadMethod());
             if (method == null){
-                throw new RuntimeException("No read method");
+                throw new JXPathException("No read method");
             }
             value = method.invoke(bean, new Object[0]);
         }
         catch (Exception ex){
-            ex.printStackTrace();
-            throw new RuntimeException("Cannot access property: " + propertyDescriptor.getName() +
-                ", " + ex.getMessage());
+            throw new JXPathException(
+                "Cannot access property: " + propertyDescriptor.getName(), ex);
         }
         return value;
     }
@@ -246,20 +247,20 @@ public class ValueUtils {
         try {
             Method method = getAccessibleMethod(propertyDescriptor.getWriteMethod());
             if (method == null){
-                throw new RuntimeException("No write method");
+                throw new JXPathException("No write method");
             }
             value = convert(value, propertyDescriptor.getPropertyType());
             value = method.invoke(bean, new Object[]{value});
         }
         catch (Exception ex){
-            throw new RuntimeException("Cannot modify property: " + propertyDescriptor.getName() +
-                ", " + ex);
+            throw new JXPathException(
+                "Cannot modify property: " + propertyDescriptor.getName(), ex);
         }
     }
 
     private static Object convert(Object value, Class type){
         if (!TypeUtils.canConvert(value, type)){
-            throw new RuntimeException("Cannot convert value of class " +
+            throw new JXPathException("Cannot convert value of class " +
                     (value == null ? "null" : value.getClass().getName()) +
                     " to type " + type);
         }
@@ -277,8 +278,9 @@ public class ValueUtils {
                 handler = (DynamicPropertyHandler)clazz.newInstance();
             }
             catch (Exception ex){
-                throw new RuntimeException("Cannot allocate dynamic property handler " +
-                    " of class " + clazz + ".\n" + ex);
+                throw new JXPathException(
+                    "Cannot allocate dynamic property handler of class "
+                    + clazz.getName(), ex);
             }
             dynamicPropertyHandlerMap.put(clazz, handler);
         }

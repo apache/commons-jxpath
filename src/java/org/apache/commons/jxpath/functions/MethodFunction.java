@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.4 2002/04/24 04:05:41 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/24 04:05:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.5 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,11 +66,12 @@ import java.lang.reflect.Modifier;
 
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/24 04:05:41 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/26 03:28:37 $
  */
 public class MethodFunction implements Function {
 
@@ -122,9 +123,7 @@ public class MethodFunction implements Function {
             return method.invoke(target, args);
         }
         catch (Exception exception){
-            exception.printStackTrace();
-            // TBD
-            throw new RuntimeException("Cannot invoke " + method + ": " + exception);
+            throw new JXPathException("Cannot invoke " + method, exception);
         }
     }
 }

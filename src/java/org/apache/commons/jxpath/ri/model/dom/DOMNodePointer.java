@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.3 2002/04/26 01:00:38 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,6 +67,7 @@ import java.util.Map;
 
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
@@ -87,7 +88,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:38 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -371,12 +372,12 @@ public class DOMNodePointer extends NodePointer {
             index = 0;
         }
         if (!getAbstractFactory(context).createObject(context, this, node, name.toString(), index)){
-            throw new RuntimeException("Factory could not create a child node for path: " +
+            throw new JXPathException("Factory could not create a child node for path: " +
                     asPath() + "/" + name + "[" + (index+1) + "]");
         }
         NodeIterator it = childIterator(new NodeNameTest(name), false, null);
         if (it == null || !it.setPosition(index + 1)){
-            throw new RuntimeException("Factory could not create a child node for path: " +
+            throw new JXPathException("Factory could not create a child node for path: " +
                     asPath() + "/" + name + "[" + (index+1) + "]");
         }
         return it.getNodePointer();
@@ -543,18 +544,18 @@ public class DOMNodePointer extends NodePointer {
     private AbstractFactory getAbstractFactory(JXPathContext context){
         AbstractFactory factory = context.getFactory();
         if (factory == null){
-            throw new RuntimeException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
+            throw new JXPathException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
         }
         return factory;
     }
-    
+
     public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
         Node node1 = (Node)pointer1.getNodeValue();
         Node node2 = (Node)pointer2.getNodeValue();
         if (node1 == node2){
             return 0;
         }
-        
+
         Node current = node.getFirstChild();
         while (current != null){
             if (current == node1){
@@ -567,5 +568,5 @@ public class DOMNodePointer extends NodePointer {
         }
 
         return 0;
-    }    
+    }
 }

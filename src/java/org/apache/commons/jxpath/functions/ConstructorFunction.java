@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/ConstructorFunction.java,v 1.4 2002/04/24 04:05:41 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/24 04:05:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/ConstructorFunction.java,v 1.5 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,13 +65,14 @@ import java.lang.reflect.Constructor;
 
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * An extension function that creates an instance using a constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/24 04:05:41 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/26 03:28:37 $
  */
 public class ConstructorFunction implements Function {
 
@@ -106,9 +107,7 @@ public class ConstructorFunction implements Function {
             return constructor.newInstance(args);
         }
         catch (Exception exception){
-            // TBD
-            exception.printStackTrace();
-            throw new RuntimeException("Cannot invoke constructor " + constructor + ": " + exception);
+            throw new JXPathException("Cannot invoke constructor " + constructor, exception);
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.4 2002/04/26 03:28:36 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/26 03:28:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,6 +63,7 @@ package org.apache.commons.jxpath.ri.model;
 
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
@@ -72,7 +73,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:36 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
@@ -103,7 +104,7 @@ public class VariablePointer extends NodePointer {
 
     public Object getBaseValue(){
         if (!actual){
-            throw new RuntimeException("Undefined variable: " + name);
+            throw new JXPathException("Undefined variable: " + name);
         }
         return variables.getVariable(name.getName());
     }
@@ -118,7 +119,7 @@ public class VariablePointer extends NodePointer {
 
     public void setValue(Object value){
         if (!actual){
-            throw new RuntimeException("Cannot set undefined variable: " + name);
+            throw new JXPathException("Cannot set undefined variable: " + name);
         }
         valuePointer = null;
         if (index != WHOLE_COLLECTION){
@@ -164,7 +165,7 @@ public class VariablePointer extends NodePointer {
         if (!actual){
             AbstractFactory factory = getAbstractFactory(context);
             if (!factory.declareVariable(context, name.toString())){
-                throw new RuntimeException("Factory cannot define variable '" + name + "' for path: " + asPath());
+                throw new JXPathException("Factory cannot define variable '" + name + "' for path: " + asPath());
             }
             findVariables(context);
             // Assert: actual == true
@@ -178,7 +179,7 @@ public class VariablePointer extends NodePointer {
             AbstractFactory factory = getAbstractFactory(context);
             // Ignore the name passed as a parameter, pass the name of the variable instead
             if (!factory.createObject(context, this, collection, getName().toString(), index)){
-                throw new RuntimeException("Factory could not create object path: " + asPath());
+                throw new JXPathException("Factory could not create object path: " + asPath());
             }
             setIndex(index);
         }
@@ -197,14 +198,14 @@ public class VariablePointer extends NodePointer {
 
         Object collection = getBaseValue();
         if (collection == null){
-            throw new RuntimeException("Factory did not assign a collection to variable '" + name + "' for path: " + asPath());
+            throw new JXPathException("Factory did not assign a collection to variable '" + name + "' for path: " + asPath());
         }
 
         if (index == WHOLE_COLLECTION){
             index = 0;
         }
         else if (index < 0){
-            throw new RuntimeException("Index is less than 1: " + asPath());
+            throw new JXPathException("Index is less than 1: " + asPath());
         }
 
         if (index >= getLength()){
@@ -286,7 +287,9 @@ public class VariablePointer extends NodePointer {
     private AbstractFactory getAbstractFactory(JXPathContext context){
         AbstractFactory factory = context.getFactory();
         if (factory == null){
-            throw new RuntimeException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
+            throw new JXPathException(
+              "Factory is not set on the JXPathContext - cannot create path: "
+              + asPath());
         }
         return factory;
     }

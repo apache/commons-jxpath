@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,6 +66,7 @@ import java.beans.PropertyDescriptor;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathBeanInfo;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
@@ -74,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
@@ -205,7 +206,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     public void setValue(Object value){
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null){
-            throw new RuntimeException("Cannot set property: " + asPath() + " - no such property");
+            throw new JXPathException("Cannot set property: " + asPath() + " - no such property");
         }
 
         if (index == WHOLE_COLLECTION){
@@ -222,7 +223,7 @@ public class BeanPropertyPointer extends PropertyPointer {
             AbstractFactory factory = getAbstractFactory(context);
             int inx = (index == WHOLE_COLLECTION ? 0 : index);
             if (!factory.createObject(context, this, getBean(), getPropertyName(), inx)){
-                throw new RuntimeException("Factory could not create an object for path: " + asPath());
+                throw new JXPathException("Factory could not create an object for path: " + asPath());
             }
             baseValue = UNINITIALIZED;
             value = UNINITIALIZED;
@@ -246,18 +247,18 @@ public class BeanPropertyPointer extends PropertyPointer {
         // Ignore the name passed to us, use our own information
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null){
-            throw new RuntimeException("Cannot create path: " + asPath() +
+            throw new JXPathException("Cannot create path: " + asPath() +
                     " - property '" + getPropertyName() + "' does not exist");
         }
 
         if (index < 0){
-            throw new RuntimeException("Index is less than 1: " + asPath());
+            throw new JXPathException("Index is less than 1: " + asPath());
         }
 
         if (index >= getLength()){
             AbstractFactory factory = getAbstractFactory(context);
             if (!factory.createObject(context, this, getBean(), getPropertyName(), index)){
-                throw new RuntimeException("Factory could not create path " + asPath());
+                throw new JXPathException("Factory could not create path " + asPath());
             }
         }
         BeanPropertyPointer clone = (BeanPropertyPointer)this.clone();
@@ -312,7 +313,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     private AbstractFactory getAbstractFactory(JXPathContext context){
         AbstractFactory factory = context.getFactory();
         if (factory == null){
-            throw new RuntimeException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
+            throw new JXPathException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
         }
         return factory;
     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.12 2002/04/26 01:00:38 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2002/04/26 01:00:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.13 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,6 +66,7 @@ import java.lang.ref.SoftReference;
 import java.util.*;
 
 import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.compiler.Expression;
 import org.apache.commons.jxpath.ri.compiler.TreeCompiler;
@@ -80,14 +81,17 @@ import org.apache.commons.jxpath.ri.model.dom.DOMPointerFactory;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
+ * The reference implementation of JXPathContext.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2002/04/26 01:00:38 $
+ * @version $Revision: 1.13 $ $Date: 2002/04/26 03:28:37 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
     private static final Compiler compiler = new TreeCompiler();
     private static final Map compiled = new HashMap();
-    private static final PackageFunctions genericFunctions = new PackageFunctions("", null);
+    private static final PackageFunctions genericFunctions =
+        new PackageFunctions("", null);
     private static boolean useSoftCache = true;
     private static int cleanupCount = 0;
     private static Vector nodeFactories = new Vector();
@@ -105,7 +109,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
     // The frequency of the cache cleanup
     private static final int CLEANUP_THRESHOLD = 500;
 
-    protected JXPathContextReferenceImpl(JXPathContext parentContext, Object contextBean){
+    protected JXPathContextReferenceImpl(JXPathContext parentContext,
+                                         Object contextBean){
         super(parentContext, contextBean);
         synchronized (nodeFactories){
             createNodeFactoryArray();
@@ -115,7 +120,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
     private static void createNodeFactoryArray() {
         if (nodeFactoryArray == null) {
             nodeFactoryArray =
-                (NodePointerFactory[]) nodeFactories.toArray(new NodePointerFactory[0]);
+                (NodePointerFactory[]) nodeFactories.
+                    toArray(new NodePointerFactory[0]);
             Arrays.sort(nodeFactoryArray, new Comparator() {
                 public int compare(Object a, Object b) {
                     int orderA = ((NodePointerFactory) a).getOrder();
@@ -125,7 +131,6 @@ public class JXPathContextReferenceImpl extends JXPathContext
             });
         }
     }
-
     /**
      * Call this with a custom NodePointerFactory to add support for
      * additional types of objects.  Make sure the factory returns
@@ -191,7 +196,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
 //        System.err.println("XPATH: " + xpath);
         Object result = eval(xpath, true);
         if (result == null && !lenient){
-            throw new RuntimeException("No value for xpath: " + xpath);
+            throw new JXPathException("No value for xpath: " + xpath);
         }
 
         if (result instanceof EvalContext){
@@ -212,7 +217,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
         Object value = getValue(xpath);
         if (value != null && requiredType != null){
             if (!TypeUtils.canConvert(value, requiredType)){
-                throw new RuntimeException("Invalid expression type. '" + xpath +
+                throw new JXPathException("Invalid expression type. '" + xpath +
                     "' returns " + value.getClass().getName() +
                     ". It cannot be converted to " + requiredType.getName());
             }
@@ -262,8 +267,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
             setValue(xpath, value, false);
         }
         catch (Throwable ex){
-            throw new RuntimeException("Exception trying to set value with xpath " +
-                    xpath + ". " + ex.getMessage());
+            throw new JXPathException(
+                "Exception trying to set value with xpath " + xpath, ex);
         }
     }
 
@@ -275,9 +280,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
             setValue(xpath, value, true);
         }
         catch (Throwable ex){
-            ex.printStackTrace();
-            throw new RuntimeException("Exception trying to create xpath " +
-                    xpath + ". " + ex.getMessage());
+            throw new JXPathException(
+                "Exception trying to create xpath " + xpath, ex);
         }
     }
 
@@ -295,7 +299,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
         else {
             // This should never happen
-            throw new RuntimeException("Cannot set value for xpath: " + xpath);
+            throw new JXPathException("Cannot set value for xpath: " + xpath);
         }
         if (create){
             ((NodePointer)pointer).createPath(this, value);
@@ -314,7 +318,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
             return Collections.singletonList((Pointer)result);
         }
         else {
-            return Collections.singletonList(NodePointer.newNodePointer(null, result, getLocale()));
+            return Collections.singletonList(
+                    NodePointer.newNodePointer(null, result, getLocale()));
         }
     }
 
@@ -326,7 +331,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
     private void printPointer(NodePointer pointer){
         Pointer p = pointer;
         while (p != null){
-            System.err.println((p == pointer ? "POINTER: " : " PARENT: ") + p.getClass() + " " + p.asPath());
+            System.err.println((p == pointer ? "POINTER: " : " PARENT: ")
+                + p.getClass() + " " + p.asPath());
             if (p instanceof NodePointer){
                 p = ((NodePointer)p).getParent();
             }
@@ -401,6 +407,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
         if (func != null){
             return func;
         }
-        throw new RuntimeException("Undefined function: " + functionName.toString());
+        throw new JXPathException(
+            "Undefined function: " + functionName.toString());
     }
 }

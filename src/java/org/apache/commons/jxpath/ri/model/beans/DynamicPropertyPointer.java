@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,6 +66,7 @@ import java.util.Arrays;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
@@ -74,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -256,13 +257,13 @@ public class DynamicPropertyPointer extends PropertyPointer {
             if (collection == null){
                 AbstractFactory factory = getAbstractFactory(context);
                 if (!factory.createObject(context, this, getBean(), getPropertyName(), 0)){
-                    throw new RuntimeException("Factory could not create an object for path: " + asPath());
+                    throw new JXPathException("Factory could not create an object for path: " + asPath());
                 }
                 collection = getBaseValue();
             }
 
             if (index < 0){
-                throw new RuntimeException("Index is less than 1: " + asPath());
+                throw new JXPathException("Index is less than 1: " + asPath());
             }
 
             if (index >= getLength()){
@@ -280,13 +281,13 @@ public class DynamicPropertyPointer extends PropertyPointer {
         if (collection == null){
             AbstractFactory factory = getAbstractFactory(context);
             if (!factory.createObject(context, this, getBean(), getPropertyName(), 0)){
-                throw new RuntimeException("Factory could not create an object for path: " + asPath());
+                throw new JXPathException("Factory could not create an object for path: " + asPath());
             }
             collection = getBaseValue();
         }
 
         if (index < 0){
-            throw new RuntimeException("Index is less than 1: " + asPath());
+            throw new JXPathException("Index is less than 1: " + asPath());
         }
 
         if (index >= getLength()){
@@ -304,7 +305,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
             AbstractFactory factory = getAbstractFactory(context);
             int inx = (index == WHOLE_COLLECTION ? 0 : index);
             if (!factory.createObject(context, this, getBean(), getPropertyName(), inx)){
-                throw new RuntimeException("Factory could not create an object for path: " + asPath());
+                throw new JXPathException("Factory could not create an object for path: " + asPath());
             }
         }
         return this;
@@ -339,7 +340,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     private AbstractFactory getAbstractFactory(JXPathContext context){
         AbstractFactory factory = context.getFactory();
         if (factory == null){
-            throw new RuntimeException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
+            throw new JXPathException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
         }
         return factory;
     }

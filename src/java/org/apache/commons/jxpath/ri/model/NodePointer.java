@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 01:00:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.4 2002/04/26 03:28:36 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/26 03:28:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,6 +64,7 @@ package org.apache.commons.jxpath.ri.model;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
@@ -83,7 +84,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:36 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
@@ -110,7 +111,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
                 return pointer;
             }
         }
-        throw new RuntimeException(
+        throw new JXPathException(
             "Could not allocate a NodePointer for object of " + bean.getClass());
     }
 
@@ -127,7 +128,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
                 return pointer;
             }
         }
-        throw new RuntimeException(
+        throw new JXPathException(
             "Could not allocate a NodePointer for object of " + bean.getClass());
     }
 
@@ -263,7 +264,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * to a "canonical" type.
      */
     public abstract Object getNodeValue();
-    
+
     /**
      * Converts the value to the required type and changes the corresponding
      * object to that value.
@@ -345,12 +346,9 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * node. This method must may have to expand the collection in order to
      * assign the element.
      */
-    public void createChild(
-        JXPathContext context,
-        QName name,
-        int index,
-        Object value) {
-        throw new RuntimeException(
+    public void createChild(JXPathContext context, QName name,
+                            int index, Object value) {
+        throw new JXPathException(
             "Cannot create an object for path "
                 + asPath()
                 + ", operation is not allowed for this type of node");
@@ -363,7 +361,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * newly created element.
      */
     public NodePointer createChild(JXPathContext context, QName name, int index) {
-        throw new RuntimeException(
+        throw new JXPathException(
             "Cannot create an object for path "
                 + asPath()
                 + ", operation is not allowed for this type of node");
@@ -568,8 +566,9 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
         }
 
         if (depth1 == 1){
-            throw new RuntimeException(
-                "Cannot compare pointers that do not belong to the same tree");
+            throw new JXPathException(
+                "Cannot compare pointers that do not belong to the same tree: '"
+                + p1 + "' and '" + p2 + "'");
         }
         int r = compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);
         if (r != 0){

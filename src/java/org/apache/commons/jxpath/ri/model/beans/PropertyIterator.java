@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyIterator.java,v 1.3 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,7 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
@@ -69,7 +70,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Examples of such objects are JavaBeans and objects with Dynamic Properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/26 03:28:37 $
  */
 public class PropertyIterator implements NodeIterator {
     private boolean empty = false;
@@ -98,7 +99,7 @@ public class PropertyIterator implements NodeIterator {
                 startWith = startWith.getParent();
             }
             if (startWith == null){
-                throw new RuntimeException(
+                throw new JXPathException(
                     "PropertyIerator startWith parameter is not a child of the supplied parent");
             }
             this.startPropertyIndex = ((PropertyPointer)startWith).getPropertyIndex();

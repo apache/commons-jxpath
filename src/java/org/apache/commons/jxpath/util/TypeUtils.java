@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.3 2002/04/26 00:57:11 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/26 00:57:11 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.4 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,11 +65,12 @@ import java.lang.reflect.*;
 import java.util.*;
 
 import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/26 00:57:11 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:37 $
  */
 public class TypeUtils {
 
@@ -126,7 +127,7 @@ public class TypeUtils {
             }
         }
         if (ambiguous){
-            throw new RuntimeException("Ambigous constructor " + Arrays.asList(parameters));
+            throw new JXPathException("Ambigous constructor " + Arrays.asList(parameters));
         }
         return constructor;
     }
@@ -182,7 +183,7 @@ public class TypeUtils {
             }
         }
         if (ambiguous){
-            throw new RuntimeException("Ambigous method call: " + name);
+            throw new JXPathException("Ambigous method call: " + name);
         }
         return method;
     }
@@ -250,7 +251,7 @@ public class TypeUtils {
             }
         }
         if (ambiguous){
-            throw new RuntimeException("Ambigous method call: " + name);
+            throw new JXPathException("Ambigous method call: " + name);
         }
         return method;
     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.13 2002/04/26 01:00:38 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2002/04/26 01:00:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.14 2002/04/26 03:28:37 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2002/04/26 03:28:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -99,7 +99,7 @@ import org.apache.xml.utils.PrefixResolverDefault;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2002/04/26 01:00:38 $
+ * @version $Revision: 1.14 $ $Date: 2002/04/26 03:28:37 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -1066,28 +1066,22 @@ public class JXPathTestCase extends TestCase
         return list;
     }
 
-    public void testDOM(){
+    public void testDOM() throws Exception {
         if (!enabled){
             return;
         }
         System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
                 "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
-        try {
-            XMLDocumentContainer docCtr = new XMLDocumentContainer(getClass().getResource("Vendor.xml"));
-            Document doc = (Document)docCtr.getValue();
-            JXPathContext ctx = JXPathContextFactory.newInstance().newContext(null, doc);
-            ctx.setLocale(Locale.US);
-            ctx.getVariables().declareVariable("dom", doc);
-            ctx.getVariables().declareVariable("object", docCtr);
-            ctx.getVariables().declareVariable("null", null);
-            TestBeanWithDOM tbwdom = createTestBeanWithDOM();
-            ctx.getVariables().declareVariable("test", tbwdom);
-            testXPaths(ctx, dom_tests, false);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-            throw new RuntimeException("Test failed");
-        }
+        XMLDocumentContainer docCtr = new XMLDocumentContainer(getClass().getResource("Vendor.xml"));
+        Document doc = (Document)docCtr.getValue();
+        JXPathContext ctx = JXPathContextFactory.newInstance().newContext(null, doc);
+        ctx.setLocale(Locale.US);
+        ctx.getVariables().declareVariable("dom", doc);
+        ctx.getVariables().declareVariable("object", docCtr);
+        ctx.getVariables().declareVariable("null", null);
+        TestBeanWithDOM tbwdom = createTestBeanWithDOM();
+        ctx.getVariables().declareVariable("test", tbwdom);
+        testXPaths(ctx, dom_tests, false);
     }
 
     private TestBeanWithDOM createTestBeanWithDOM(){
