@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <version>2</version>
+  <name>JXPath</name>
+  <id>jakarta-commons-jxpath</id>
+  <currentVersion>1.0-beta1-dev</currentVersion>
+  <organization>Apache Software Foundation</organization>
+  <inceptionYear>2002</inceptionYear>
+  <package>org.apache.commons.jxpath</package>
+  
+  <shortDescription>XPath for Java Objects</shortDescription>
+  
+  <description>a package of Java utility methods for accessing and modifying the
+    elements of arbitrary graphs consisting of JavaBeans, collections, arrays, 
+    maps and primitive values using the XPath syntax
+  </description>
+  
+  <url>http://jakarta.apache.org/commons/jxpath/</url>
+  <cvsWebUrl>http://cvs.apache.org/viewcvs/jakarta-commons/jxpath/</cvsWebUrl>
+  <issueTrackingUrl>http://nagoya.apache.org/bugzilla/buglist.cgi?bug_status=UNCONFIRMED&amp;bug_status=NEW&amp;bug_status=ASSIGNED&amp;bug_status=REOPENED&amp;component=JXPath</issueTrackingUrl>
+  <siteAddress>jakarta.apache.org</siteAddress>
+  <siteDirectory>/www/jakarta.apache.org/commons/jxpath</siteDirectory>
+  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/jxpath</distributionDirectory>
+  
+  <mailingLists>
+    <mailingList>
+      <name>Commons Developer List</name>
+      <subscribe>commons-dev-subscribe@jakarta.apache.org</subscribe>
+      <unsubscribe>commons-dev-unsubscribe@jakarta.apache.org</unsubscribe>
+      <archive>http://www.mail-archive.com/commons-dev@jakarta.apache.org/</archive>
+    </mailingList>
+  </mailingLists>
+  
+  <developers>
+    <developer>
+      <name>Dmitri Plotnikov</name>
+      <id>dmitri</id>
+      <email>dmitri@apache.org</email>
+      <organization></organization>
+    </developer>
+    <developer>
+      <name>Craig McClanahan</name>
+      <id>craigmcc</id>
+      <email>Craig.McClanahan@eng.sun.com</email>
+      <organization>Sun Microsystems</organization>
+    </developer>
+  </developers>
+  
+  <dependencies>
+    <dependency>
+      <name>xml-xalan2</name>
+      <type>required</type>
+      <version>2.1.0</version>
+      <jar>xalan-2.1.0.jar</jar>
+    </dependency>
+    <dependency>
+      <name>servlet</name>
+      <type>required</type>
+      <version>2.2</version>
+      <jar>servlet-2.2.jar</jar>
+    </dependency>
+    <dependency>
+      <name>junit</name>
+      <type>required</type>
+      <version>3.7</version>
+      <jar>junit-3.7.jar</jar>
+    </dependency>
+
+  </dependencies>
+  
+  <build>
+    <sourceDirectories>
+      <sourceDirectory>src/java</sourceDirectory>
+    </sourceDirectories>
+    
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    
+    <aspectSourceDirectories/>
+    
+    <unitTestPatterns>
+      <unitTestPattern>include = **/Test*.java</unitTestPattern>
+    </unitTestPatterns>
+    
+    <integrationUnitTestPatterns></integrationUnitTestPatterns>
+    
+    <jarResources>
+    <!--<jarResource>include = *.properties</jarResource>-->
+    </jarResources>
+    
+    <jars/>
+  </build>
+</project>
