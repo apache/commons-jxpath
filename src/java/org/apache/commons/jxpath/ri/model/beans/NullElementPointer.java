@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.6 2002/07/11 01:17:16 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/07/11 01:17:16 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.7 2002/08/10 01:49:46 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/08/10 01:49:46 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -77,7 +77,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * as the parent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/07/11 01:17:16 $
+ * @version $Revision: 1.7 $ $Date: 2002/08/10 01:49:46 $
  */
 public class NullElementPointer extends PropertyOwnerPointer {
 
@@ -104,6 +104,16 @@ public class NullElementPointer extends PropertyOwnerPointer {
 
     public NodePointer getValuePointer(){
         return new NullPointer(this, getName());
+    }
+
+    public void setValue(Object value){
+        super.setValue(value);
+        if (parent instanceof PropertyPointer){
+            parent.setValue(value);
+        }
+        else {
+            throw new UnsupportedOperationException("Cannot setValue of an object that is not some other object's property");
+        }
     }
 
     public boolean isActual(){

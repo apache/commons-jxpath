@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.5 2002/07/11 01:17:16 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/07/11 01:17:16 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.6 2002/08/10 01:49:46 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/08/10 01:49:46 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a path, following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/07/11 01:17:16 $
+ * @version $Revision: 1.6 $ $Date: 2002/08/10 01:49:46 $
  */
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;
@@ -113,6 +113,22 @@ public class BeanPointer extends PropertyOwnerPointer {
      */
     public Object getBaseValue(){
         return bean;
+    }
+
+    /**
+     * Throws an exception if you try to change the root element.
+     */
+    public void setValue(Object value){
+        super.setValue(value);
+        if (parent instanceof PropertyPointer){
+            parent.setValue(value);
+        }
+        else if (parent != null){
+            throw new UnsupportedOperationException("Cannot setValue of an object that is not some other object's property");
+        }
+        else {
+            throw new UnsupportedOperationException("Cannot replace the root object");
+        }
     }
 
     public void remove(){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.8 2002/07/03 21:12:36 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/07/03 21:12:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.9 2002/08/10 01:49:46 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/08/10 01:49:46 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -84,7 +84,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/07/03 21:12:36 $
+ * @version $Revision: 1.9 $ $Date: 2002/08/10 01:49:46 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
@@ -421,6 +421,10 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * May return null if the object does not support the attributes.
      */
     public NodeIterator attributeIterator(QName qname) {
+        NodePointer valuePointer = getValuePointer();
+        if (valuePointer != null && valuePointer != this){
+            return valuePointer.attributeIterator(qname);
+        }
         return null;
     }
 
@@ -612,14 +616,24 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
         return p1.parent.compareChildNodePointers(p1, p2);
     }
 
+    /**
+     * Print internal structure of a pointer for debugging
+     */
     public void printPointerChain(){
-        Pointer p = this;
-        while (p != null){
-            System.err.println((p == this ? "POINTER: " : " PARENT: ")
-                + p.getClass() + " " + p.asPath());
-            if (p instanceof NodePointer){
-                p = ((NodePointer)p).getParent();
-            }
+        printDeep(this, "");
+    }
+
+    private static void printDeep(NodePointer pointer, String indent){
+        if (indent.length() == 0){
+            System.err.println("POINTER: " + pointer + "(" +
+                    pointer.getClass().getName() + ")");
+        }
+        else {
+            System.err.println(indent + " of " + pointer + "(" +
+                    pointer.getClass().getName() + ")");
+        }
+        if (pointer.getParent() != null){
+            printDeep(pointer.getParent(), indent + "  ");
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.5 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.6 2002/08/10 01:49:46 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/08/10 01:49:46 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,12 +68,12 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.6 $ $Date: 2002/08/10 01:49:46 $
  */
 public class NullPropertyPointer extends PropertyPointer {
 
     private String propertyName = "*";
-    private boolean dynamic = false;
+    private boolean byNameAttribute = false;
 
     /**
      */
@@ -129,11 +129,13 @@ public class NullPropertyPointer extends PropertyPointer {
         return parent.createChild(context, getName(), getIndex(), value);
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
+    public NodePointer createChild(JXPathContext context, 
+            QName name, int index, Object value){
         return createPath(context).createChild(context, name, index, value);
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index){
+    public NodePointer createChild(JXPathContext context, 
+            QName name, int index){
         return createPath(context).createChild(context, name, index);
     }
 
@@ -145,8 +147,9 @@ public class NullPropertyPointer extends PropertyPointer {
         this.propertyName = propertyName;
     }
 
-    public void setDynamic(boolean flag){
-        dynamic = flag;
+    public void setNameAttributeValue(String attributeValue){
+        this.propertyName = attributeValue;
+        byNameAttribute = true;
     }
 
     public boolean isCollection(){
@@ -162,7 +165,7 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     public String asPath(){
-        if (!dynamic){
+        if (!byNameAttribute){
             return super.asPath();
         }
         else {
@@ -181,12 +184,14 @@ public class NullPropertyPointer extends PropertyPointer {
     private String escape(String string){
         int index = string.indexOf('\'');
         while (index != -1){
-            string = string.substring(0, index) + "&apos;" + string.substring(index + 1);
+            string = string.substring(0, index) + "&apos;" + 
+                    string.substring(index + 1);
             index = string.indexOf('\'');
         }
         index = string.indexOf('\"');
         while (index != -1){
-            string = string.substring(0, index) + "&quot;" + string.substring(index + 1);
+            string = string.substring(0, index) + "&quot;" + 
+                    string.substring(index + 1);
             index = string.indexOf('\"');
         }
         return string;
