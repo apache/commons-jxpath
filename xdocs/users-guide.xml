@@ -870,8 +870,8 @@ the Locale set on the JXPathContext (or the default locale).  See
   <p>
     Architecturally, multiple model support is
     made possible by the notions of a
-    <a href="api/org/apache/commons/jxpath/ri/pointers/NodePointer.html">NodePointer</a> and
-    <a href="api/org/apache/commons/jxpath/ri/pointers/NodeIterator.html">NodeIterator</a>, which are
+    <a href="api/org/apache/commons/jxpath/ri/model/NodePointer.html">NodePointer</a> and
+    <a href="api/org/apache/commons/jxpath/ri/model/NodeIterator.html">NodeIterator</a>, which are
     simple abstract classes that
     are extended in different ways to traverse graphs
     of objects of different
@@ -889,7 +889,7 @@ the Locale set on the JXPathContext (or the default locale).  See
     <p>
     To add support for a new object model, build custom implementations
     of NodePointer and NodeIterator as well as
-    <a href="api/org/apache/commons/jxpath/ri/pointers/NodePointerFactory.html">NodePointerFactory</a>.  Then
+    <a href="api/org/apache/commons/jxpath/ri/model/NodePointerFactory.html">NodePointerFactory</a>.  Then
     register the new factory with
     <a href="api/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.html">JXPathContextReferenceImpl</a>.
     </p>
