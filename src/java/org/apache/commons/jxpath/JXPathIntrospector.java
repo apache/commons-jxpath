@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.6 2003/03/11 00:59:12 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2003/03/11 00:59:12 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.7 2003/08/24 01:15:28 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/08/24 01:15:28 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import java.util.HashMap;
  * JXPathBeanInfo} objects for Java classes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/03/11 00:59:12 $
+ * @version $Revision: 1.7 $ $Date: 2003/08/24 01:15:28 $
  */
 public class JXPathIntrospector {
 
@@ -78,6 +78,7 @@ public class JXPathIntrospector {
     private static HashMap byInterface = new HashMap();
 
     static {
+        registerAtomicClass(Class.class);
         registerAtomicClass(Boolean.TYPE);
         registerAtomicClass(Boolean.class);
         registerAtomicClass(Byte.TYPE);
