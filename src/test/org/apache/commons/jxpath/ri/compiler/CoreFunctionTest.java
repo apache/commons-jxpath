@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test basic functionality of JXPath - core functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision: 1.10 $ $Date: 2004/05/08 20:07:09 $
  */
 
 public class CoreFunctionTest extends JXPathTestCase {
@@ -50,6 +50,8 @@ public class CoreFunctionTest extends JXPathTestCase {
             context = JXPathContext.newContext(new TestMixedModelBean());
             Variables vars = context.getVariables();
             vars.declareVariable("nan", new Double(Double.NaN));
+            vars.declareVariable("bool_true", new Boolean("true"));
+            vars.declareVariable("bool_false", new Boolean("false"));
         }
     }
 
@@ -95,13 +97,15 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValue(context, "not(false())", Boolean.TRUE);
         assertXPathValue(context, "not(true())", Boolean.FALSE);
         assertXPathValue(context, "number('1')", new Double(1));
+        assertXPathValue(context, "number($bool_true)", new Double(1));
+        assertXPathValue(context, "number($bool_false)", new Double(0));
         assertXPathValue(context, "floor(1.5)", new Double(1));
         assertXPathValue(context, "floor(-1.5)", new Double(-2));
         assertXPathValue(context, "ceiling(1.5)", new Double(2));
         assertXPathValue(context, "ceiling(-1.5)", new Double(-1));
         assertXPathValue(context, "round(1.5)", new Double(2));
         assertXPathValue(context, "round(-1.5)", new Double(-1));
-        assertXPathValue(context, "null()", null);
+        assertXPathValue(context, "null()", null);        
     }
 
     public void testIDFunction() {

@@ -22,7 +22,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Type conversions, XPath style.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision: 1.10 $ $Date: 2004/05/08 20:07:09 $
  */
 public class InfoSetUtil {
 
@@ -87,7 +87,12 @@ public class InfoSetUtil {
             return value;
         }
         else if (object instanceof EvalContext) {
-            return number(stringValue(object));
+            EvalContext ctx = (EvalContext) object;
+            Pointer ptr = ctx.getSingleNodePointer();
+            if (ptr != null) {
+                return number(ptr);
+            }
+            return NOT_A_NUMBER;
         }
         else if (object instanceof NodePointer) {
             return number(((NodePointer) object).getValue());
@@ -123,7 +128,12 @@ public class InfoSetUtil {
             return doubleValue(((NodePointer) object).getValue());
         }
         else if (object instanceof EvalContext) {
-            return doubleValue(stringValue(object));
+            EvalContext ctx = (EvalContext) object;
+            Pointer ptr = ctx.getSingleNodePointer();
+            if (ptr != null) {
+                return doubleValue(ptr);
+            }
+            return Double.NaN;
         }
         return doubleValue(stringValue(object));
     }
