@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/tree/Attic/BeanNamedNodeMap.java,v 1.1 2001/08/23 00:47:01 dmitri Exp $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/MapDynamicPropertyHandler.java,v 1.1 2001/09/11 23:34:26 dmitri Exp $
  * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:01 $
+ * $Date: 2001/09/11 23:34:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,81 +59,44 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.tree;
+package org.apache.commons.jxpath;
 
-import org.apache.commons.jxpath.*;
-import org.w3c.dom.*;
+import java.util.*;
 
 /**
- * Attributes are not supported in this release of JXPath. Therefore,
- * this class is a placeholder.
+ * Implements the DynamicPropertyHandler interface for java.util.Map.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:01 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/11 23:34:26 $
  */
-public class BeanNamedNodeMap implements NamedNodeMap {
-    public Object bean;
-    public JXPathBeanInfo beanInfo;
+public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
-    public BeanNamedNodeMap(Object bean, JXPathBeanInfo beanInfo){
-        this.bean = bean;
-        this.beanInfo = beanInfo;
+    private static final String[] STRING_ARRAY = new String[0];
+
+    /**
+     * Returns string representations of all keys in the map.
+     */
+    public String[] getPropertyNames(Object object){
+        Map map = (Map)object;
+        String names[] = new String[map.size()];
+        Iterator it = map.keySet().iterator();
+        for (int i = 0; i < names.length; i++){
+            names[i] = String.valueOf(it.next());
+        }
+        return names;
     }
 
     /**
-     * Unsupported.
+     * Returns the value for the specified key.
      */
-    public Node getNamedItem(String name){
-        return null;
+    public Object getProperty(Object object, String propertyName){
+        return ((Map)object).get(propertyName);
     }
 
     /**
-     * Unsupported.
+     * Sets the specified key value.
      */
-    public Node setNamedItem(Node arg) throws DOMException {
-        throw JXPathException.unmodifiable();
-    }
-
-    /**
-     * Unsupported.
-     */
-    public Node removeNamedItem(String name) throws DOMException {
-        throw JXPathException.unmodifiable();
-    }
-
-    /**
-     * Unsupported
-     */
-    public Node item(int index){
-        return null;
-    }
-
-    /**
-     * Returns 0
-     */
-    public int getLength() {
-        return 0;
-    }
-
-    /**
-     * Unsupported.
-     */
-    public Node getNamedItemNS(String namespaceURI, String localName){
-        return null;
-    }
-
-    /**
-     * Unsupported.
-     */
-    public Node setNamedItemNS(Node arg) throws DOMException {
-        throw JXPathException.unmodifiable();
-    }
-
-    /**
-     * Unsupported.
-     */
-    public Node removeNamedItemNS(String namespaceURI,String localName)
-                                  throws DOMException {
-        throw JXPathException.unmodifiable();
+    public void setProperty(Object object, String propertyName, Object value){
+        ((Map)object).put(propertyName, value);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.4 2001/09/08 20:59:58 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2001/09/08 20:59:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.5 2001/09/11 23:34:26 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2001/09/11 23:34:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,6 @@ import org.apache.commons.jxpath.ri.parser.*;
 import org.apache.commons.jxpath.ri.pointers.*;
 import org.apache.commons.jxpath.ri.axes.*;
 import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.tree.DOMWrapper;
 import java.beans.*;
 
 
@@ -94,7 +93,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2001/09/08 20:59:58 $
+ * @version $Revision: 1.5 $ $Date: 2001/09/11 23:34:26 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -461,36 +460,6 @@ public class JXPathTestCase extends TestCase
             func = funcs.getFunction("test", "getFoo", args);
             assertEquals("test:getFoo($test, 1, x)", func.invoke(args).toString(), "0");
         }
-    }
-
-    /*
-     * Remove the underscore from the method name if you want to see the output
-     */
-    public void _testXSLT(){
-        Node node = DOMWrapper.createNode(bean, "test");
-        printXML(node, System.err);
-    }
-
-    private static void printXML(Node node, java.io.OutputStream outputStream){
-        try {
-            javax.xml.transform.dom.DOMSource source = new javax.xml.transform.dom.DOMSource(node);
-            javax.xml.transform.stream.StreamResult result = new javax.xml.transform.stream.StreamResult(outputStream);
-            javax.xml.transform.Transformer trans = javax.xml.transform.TransformerFactory.newInstance().newTransformer();
-            trans.setOutputProperty(javax.xml.transform.OutputKeys.INDENT, "yes");
-            trans.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-            trans.transform(source, result);
-        }
-        catch (Exception ex){
-            // We don't care about this. The method is only for debugging
-            ex.printStackTrace();
-        }
-   }
-
-   // Fails most tests. Remove "_" and run to see them.
-    public void _testParserXalan(){
-        System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
-                "org.apache.commons.jxpath.xalan.JXPathContextFactoryXalanImpl");
-        testParser(JXPathContextFactory.newInstance().newContext(null, bean), true);
     }
 
     public void testParserReferenceImpl(){

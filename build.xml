@@ -3,7 +3,7 @@
 
 <!--
         "JXPath" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.2 2001/09/08 21:01:00 dmitri Exp $
+        $Id: build.xml,v 1.3 2001/09/11 23:34:26 dmitri Exp $
 -->
 
 
@@ -61,7 +61,7 @@
     <pathelement location="${build.home}/classes"/>
     <pathelement location="${jaxp.jaxp.jar}"/>
     <pathelement location="${jaxp.xslt.jar}"/>
-    <pathelement location="${j2ee.jar}"/>
+    <pathelement location="${servlet.jar}"/>
     <pathelement location="${junit.jar}"/>
   </path>
 
@@ -75,7 +75,7 @@
     <pathelement location="${build.home}/tests"/>
     <pathelement location="${jaxp.jaxp.jar}"/>
     <pathelement location="${jaxp.xslt.jar}"/>
-    <pathelement location="${j2ee.jar}"/>
+    <pathelement location="${servlet.jar}"/>
     <pathelement location="${junit.jar}"/>
   </path>
 
@@ -109,7 +109,7 @@
 
     <available 
       classname="javax.servlet.ServletRequest"
-      property="j2ee.present"
+      property="servlet.present"
       classpathref="compile.classpath"
     />
 
@@ -125,7 +125,7 @@
     <echo message="junit.jar = ${junit.jar}"/>
     <echo message="jaxp.jaxp.jar = ${jaxp.jaxp.jar}"/>
     <echo message="jaxp.xslt.jar = ${jaxp.xslt.jar}"/>
-    <echo message="j2ee.jar = ${j2ee.jar}"/>
+    <echo message="servlet.jar = ${servlet.jar}"/>
   </target>
 
   <target name="check.junit" unless="junit.present">
@@ -149,10 +149,10 @@
     </antcall>
   </target>
 
-  <target name="check.j2ee" unless="j2ee.present">
+  <target name="check.servlet" unless="servlet.present">
     <antcall target="property-warning">
-      <param name="name" value="j2ee.jar"/>
-      <param name="value" value="${j2ee.jar}"/>
+      <param name="name" value="servlet.jar"/>
+      <param name="value" value="${servlet.jar}"/>
     </antcall>
   </target>
 
@@ -175,7 +175,7 @@
   </target>
 
   <target name="prepare" depends="init, 
-                         check.junit,check.jaxp.jaxp,check.jaxp.xslt,check.j2ee"
+                         check.junit,check.jaxp.jaxp,check.jaxp.xslt,check.servlet"
    description="Prepare build directory">
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>

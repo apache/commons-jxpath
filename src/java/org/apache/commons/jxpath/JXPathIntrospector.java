@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.2 2001/09/11 23:34:26 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/11 23:34:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,14 +62,14 @@
 package org.apache.commons.jxpath;
 
 import java.util.*;
-import org.apache.commons.jxpath.tree.MapDynamicPropertyHandler;
+import org.apache.commons.jxpath.MapDynamicPropertyHandler;
 
 /**
  * JXPathIntrospector maintains a registry of {@link JXPathBeanInfo JXPathBeanInfo} objects
  * for Java classes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/11 23:34:26 $
  */
 public class JXPathIntrospector {
 
