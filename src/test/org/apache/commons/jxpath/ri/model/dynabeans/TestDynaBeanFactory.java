@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynabeans/TestDynaBeanFactory.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynabeans/TestDynaBeanFactory.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:08 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,44 +62,43 @@
 
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
-
 import org.apache.commons.beanutils.DynaBean;
-import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.NestedTestBean;
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.TestBean;
+import org.apache.commons.jxpath.*;
 
 /**
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
  */
 public class TestDynaBeanFactory extends AbstractFactory {
 
     /**
      */
-    public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index){
-        if (name.equals("nestedBean")){
-            ((DynaBean)parent).set("nestedBean", new NestedTestBean("newName"));
-            return true;
-        }
-        else if (name.equals("beans")){
-            DynaBean bean = (DynaBean)parent;
-            Object beans[] = (Object[])bean.get("beans");
-            if (beans == null || index >= beans.length){
-                beans = new NestedTestBean[index + 1];
-                bean.set("beans", beans);
-            }
-            beans[index] = new NestedTestBean("newName");
-            return true;
-        }
-        return false;
-    }
+	public boolean createObject(
+    		JXPathContext context,
+    		Pointer pointer,
+    		Object parent,
+    		String name,
+    		int index) 
+    {
+		if (name.equals("nestedBean")) {
+			((DynaBean) parent).set(
+				"nestedBean",
+				new NestedTestBean("newName"));
+			return true;
+		} else if (name.equals("beans")) {
+			DynaBean bean = (DynaBean) parent;
+			Object beans[] = (Object[]) bean.get("beans");
+			if (beans == null || index >= beans.length) {
+				beans = new NestedTestBean[index + 1];
+				bean.set("beans", beans);
+			}
+			beans[index] = new NestedTestBean("newName");
+			return true;
+		}
+		return false;
+	}
 
 
     /**

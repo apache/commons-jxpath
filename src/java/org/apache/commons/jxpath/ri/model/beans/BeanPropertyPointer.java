@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.9 2002/10/20 03:47:17 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/10/20 03:47:17 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPropertyPointer.java,v 1.10 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,13 +62,11 @@
 package org.apache.commons.jxpath.ri.model.beans;
 
 import java.beans.PropertyDescriptor;
-import java.util.Arrays;
 
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathBeanInfo;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
@@ -77,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/10/20 03:47:17 $
+ * @version $Revision: 1.10 $ $Date: 2002/11/26 01:20:06 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
@@ -174,7 +172,7 @@ public class BeanPropertyPointer extends PropertyPointer {
      * property. If the property is not a collection, index should be zero
      * and the value will be the property itself.
      */
-    public Object getNode(){
+    public Object getImmediateNode(){
         if (value == UNINITIALIZED){
             Object baseValue = getBaseValue();
             if (index == WHOLE_COLLECTION){
@@ -194,6 +192,41 @@ public class BeanPropertyPointer extends PropertyPointer {
         return getPropertyDescriptor() != null;
     }
 
+    public boolean isCollection(){
+        PropertyDescriptor pd = getPropertyDescriptor();
+        if (pd == null){
+            return false;
+        }
+        
+        int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
+        if (hint == -1){
+            return false;
+        }
+        if (hint == 1){
+            return true;
+        }
+        
+        Object value = getBaseValue();
+        return value != null && ValueUtils.isCollection(value);
+    }
+    
+    /**
+     * If the property contains a collection, then the length of that
+     * collection, otherwise - 1.
+     */
+    public int getLength(){
+        PropertyDescriptor pd = getPropertyDescriptor();
+        if (pd == null){
+            return 1;
+        }
+        
+        int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
+        if (hint == -1){
+            return 1;
+        }
+        return ValueUtils.getLength(getBaseValue());
+    }
+    
     /**
      * If index == WHOLE_COLLECTION, change the value of the property, otherwise
      * change the value of the index'th element of the collection

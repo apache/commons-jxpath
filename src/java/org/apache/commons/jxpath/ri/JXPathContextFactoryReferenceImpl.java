@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextFactoryReferenceImpl.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextFactoryReferenceImpl.java,v 1.2 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,16 +61,15 @@
  */
 package org.apache.commons.jxpath.ri;
 
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathContextFactory;
 import org.apache.commons.jxpath.JXPathContextFactoryConfigurationError;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.Variables;
 
 /**
  * Default implementation of JXPathContextFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:06 $
  */
 public class JXPathContextFactoryReferenceImpl extends JXPathContextFactory {
 

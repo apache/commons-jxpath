@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.7 2002/10/20 03:47:17 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/10/20 03:47:17 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.8 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/10/20 03:47:17 $
+ * @version $Revision: 1.8 $ $Date: 2002/11/26 01:20:06 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -117,7 +117,7 @@ public class CollectionPointer extends NodePointer {
         return index == WHOLE_COLLECTION;
     }
 
-    public Object getNode(){
+    public Object getImmediateNode(){
         if (index != WHOLE_COLLECTION){
             return ValueUtils.getValue(collection, index);
         }
@@ -144,9 +144,9 @@ public class CollectionPointer extends NodePointer {
                 valuePointer = this;
             }
             else {
-                Object value = getNode();
-                valuePointer = NodePointer.
-                			newChildNodePointer(this, getName(), value);
+                Object value = getImmediateNode();
+                valuePointer =
+                    NodePointer.newChildNodePointer(this, getName(), value);
             }
         }
         return valuePointer;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.11 2002/10/20 03:44:52 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2002/10/20 03:44:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.12 2002/11/26 01:20:07 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2002/11/26 01:20:07 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -92,7 +92,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2002/10/20 03:44:52 $
+ * @version $Revision: 1.12 $ $Date: 2002/11/26 01:20:07 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -301,7 +301,7 @@ public class DOMNodePointer extends NodePointer {
         return node;
     }
 
-    public Object getNode(){
+    public Object getImmediateNode(){
         return node;
     }
 

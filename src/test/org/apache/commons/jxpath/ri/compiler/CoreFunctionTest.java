@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/CoreFunctionTest.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/CoreFunctionTest.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:08 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test basic functionality of JXPath - core functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
  */
 
 public class CoreFunctionTest extends JXPathTestCase
@@ -147,7 +147,9 @@ public class CoreFunctionTest extends JXPathTestCase
     public void testIDFunction(){
         context.setIdentityManager(new IdentityManager(){
             public Pointer getPointerByID(JXPathContext context, String id){
-                NodePointer ptr = (NodePointer)context.getPointer("/document");
+                NodePointer ptr = (NodePointer)context.
+                        getPointer("/document");
+                ptr = ptr.getValuePointer();
                 return ptr.getPointerByID(context, id);
             }
         });

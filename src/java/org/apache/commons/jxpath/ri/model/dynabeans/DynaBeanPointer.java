@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPointer.java,v 1.1 2002/10/20 03:44:18 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:44:18 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPointer.java,v 1.2 2002/11/26 01:20:07 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:07 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,23 +61,20 @@
  */
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
-import java.beans.PropertyDescriptor;
 import java.util.Locale;
 
 import org.apache.commons.beanutils.DynaBean;
-import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
-import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
-import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.apache.commons.jxpath.util.ValueUtils;
+import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
+import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
 
 /**
  * A Pointer that points to a DynaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:44:18 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:07 $
  */
 public class DynaBeanPointer extends PropertyOwnerPointer {
     private QName name;
@@ -114,7 +111,7 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
         return dynaBean;
     }
 
-    public Object getNode(){
+    public Object getImmediateNode(){
         return dynaBean;
     }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.7 2002/10/12 20:56:03 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/10/12 20:56:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.8 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,22 +61,21 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import java.util.Collection;
+
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.InfoSetUtil;
 import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.ri.InfoSetUtil;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.apache.commons.jxpath.ri.model.beans.NullPointer;
-
-import java.util.Collection;
 
 /**
  * An element of the compile tree representing one of built-in functions
  * like "position()" or "number()".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/10/12 20:56:03 $
+ * @version $Revision: 1.8 $ $Date: 2002/11/26 01:20:06 $
  */
 public class CoreFunction extends Operation {
 

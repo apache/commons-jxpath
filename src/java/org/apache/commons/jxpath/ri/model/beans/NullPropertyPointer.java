@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.9 2002/10/20 03:47:17 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/10/20 03:47:17 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.10 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/10/20 03:47:17 $
+ * @version $Revision: 1.10 $ $Date: 2002/11/26 01:20:06 $
  */
 public class NullPropertyPointer extends PropertyPointer {
 
@@ -96,7 +96,7 @@ public class NullPropertyPointer extends PropertyPointer {
         return null;
     }
 
-    public Object getNode(){
+    public Object getImmediateNode(){
         return null;
     }
 

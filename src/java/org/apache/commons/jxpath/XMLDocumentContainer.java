@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/XMLDocumentContainer.java,v 1.6 2002/08/10 01:28:49 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/08/10 01:28:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/XMLDocumentContainer.java,v 1.7 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,26 +61,15 @@
  */
 package org.apache.commons.jxpath;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.jxpath.xml.DocumentContainer;
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import org.apache.commons.jxpath.xml.DocumentContainer;
 
 /**
  * An XML document container reads and parses XML only when it is
@@ -95,7 +84,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * @deprecated 1.1 Please use org.apache.commons.jxpath.xml.DocumentContainer
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/08/10 01:28:49 $
+ * @version $Revision: 1.7 $ $Date: 2002/11/26 01:20:06 $
  */
 public class XMLDocumentContainer implements Container {
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.7 2002/10/20 03:47:17 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/10/20 03:47:17 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.8 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,14 +61,12 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
-import java.beans.PropertyDescriptor;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathBeanInfo;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * A Pointer that points to a JavaBean or a collection. It is either
@@ -77,29 +75,39 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * in the chain.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/10/20 03:47:17 $
+ * @version $Revision: 1.8 $ $Date: 2002/11/26 01:20:06 $
  */
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;
     private Object bean;
     private JXPathBeanInfo beanInfo;
 
-    public BeanPointer(QName name, Object bean, JXPathBeanInfo beanInfo, Locale locale){
-        super(null, locale);
-        this.name = name;
-        this.bean = bean;
-        this.beanInfo = beanInfo;
-    }
+	public BeanPointer(
+    		QName name,
+    		Object bean,
+    		JXPathBeanInfo beanInfo,
+    		Locale locale) 
+    {
+		super(null, locale);
+		this.name = name;
+		this.bean = bean;
+		this.beanInfo = beanInfo;
+	}
 
     /**
      * @param name is the name given to the first node
      */
-    public BeanPointer(NodePointer parent, QName name, Object bean, JXPathBeanInfo beanInfo){
-        super(parent);
-        this.name = name;
-        this.bean = bean;
-        this.beanInfo = beanInfo;
-    }
+	public BeanPointer(
+    		NodePointer parent,
+    		QName name,
+    		Object bean,
+    		JXPathBeanInfo beanInfo) 
+    {
+		super(parent);
+		this.name = name;
+		this.bean = bean;
+		this.beanInfo = beanInfo;
+	}
 
     public PropertyPointer getPropertyPointer(){
         return new BeanPropertyPointer(this, beanInfo);
@@ -140,38 +148,40 @@ public class BeanPointer extends PropertyOwnerPointer {
         return name == null ? 0 : name.hashCode();
     }
 
-    public boolean equals(Object object){
-        if (object == this){
-            return true;
-        }
+	public boolean equals(Object object) {
+		if (object == this) {
+			return true;
+		}
 
-        if (!(object instanceof BeanPointer)){
-            return false;
-        }
+		if (!(object instanceof BeanPointer)) {
+			return false;
+		}
 
-        BeanPointer other = (BeanPointer)object;
-        if (parent != other.parent){
-            if (parent == null || !parent.equals(other.parent)){
-                return false;
-            }
-        }
+		BeanPointer other = (BeanPointer) object;
+		if (parent != other.parent) {
+			if (parent == null || !parent.equals(other.parent)) {
+				return false;
+			}
+		}
 
-        if ((name == null && other.name != null) ||
-                (name != null && !name.equals(other.name))){
-            return false;
-        }
+		if ((name == null && other.name != null)
+			|| (name != null && !name.equals(other.name))) {
+			return false;
+		}
 
-        int i_this = (index == WHOLE_COLLECTION ? 0 : index);
-        int i_other = (other.index == WHOLE_COLLECTION ? 0 : other.index);
-        if (i_this != i_other){
-            return false;
-        }
+		int i_this = (index == WHOLE_COLLECTION ? 0 : index);
+		int i_other = (other.index == WHOLE_COLLECTION ? 0 : other.index);
+		if (i_this != i_other) {
+			return false;
+		}
 
-        if (bean instanceof Number || bean instanceof String || bean instanceof Boolean){
-            return bean.equals(other.bean);
-        }
-        return bean == other.bean;
-    }
+		if (bean instanceof Number
+			|| bean instanceof String
+			|| bean instanceof Boolean) {
+			return bean.equals(other.bean);
+		}
+		return bean == other.bean;
+	}
 
     /**
      * If the pointer has a parent, then parent's path.
@@ -179,26 +189,26 @@ public class BeanPointer extends PropertyOwnerPointer {
      * If the bean is a primitive value, the value itself.
      * Otherwise - an empty string.
      */
-    public String asPath(){
-        if (parent != null){
-            return super.asPath();
-        }
-        else if (bean == null){
-            return "null()";
-        }
-        else if (bean instanceof Number){
-            String string = bean.toString();
-            if (string.endsWith(".0")){
-                string = string.substring(0, string.length() - 2);
-            }
-            return string;
-        }
-        else if (bean instanceof Boolean){
-            return ((Boolean)bean).booleanValue() ? "true()" : "false()";
-        }
-        else if (bean instanceof String){
-            return "'" + bean + "'";
-        }
-        return "/";
-    }
+	public String asPath() {
+		if (parent != null) {
+			return super.asPath();
+		}
+		else if (bean == null) {
+			return "null()";
+		}
+		else if (bean instanceof Number) {
+			String string = bean.toString();
+			if (string.endsWith(".0")) {
+				string = string.substring(0, string.length() - 2);
+			}
+			return string;
+		}
+		else if (bean instanceof Boolean) {
+			return ((Boolean) bean).booleanValue() ? "true()" : "false()";
+		}
+		else if (bean instanceof String) {
+			return "'" + bean + "'";
+		}
+		return "/";
+	}
 }

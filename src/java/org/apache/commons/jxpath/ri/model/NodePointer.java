@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.12 2002/10/20 03:47:17 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2002/10/20 03:47:17 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.13 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,7 +65,6 @@ import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
@@ -83,7 +82,7 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2002/10/20 03:47:17 $
+ * @version $Revision: 1.13 $ $Date: 2002/11/26 01:20:06 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
@@ -216,11 +215,16 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
     public abstract int getLength();
 
     /**
-     * By default, returns <code>getNodeValue()</code>, can be overridden to
+     * By default, returns <code>getNode()</code>, can be overridden to
      * return a "canonical" value, like for instance a DOM element should
      * return its string value.
      */
     public Object getValue() {
+        NodePointer valuePointer = getValuePointer();
+        if (valuePointer != this){
+            return valuePointer.getValue();
+        }
+        // Default behavior is to return the same as getNode() 
         return getNode();
     }
 
@@ -229,11 +233,33 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * this method returns the pointer to the contents.
      * Only an auxiliary (non-node) pointer can (and should) return a
      * value pointer other than itself.
+     * Note that you probably don't want to override <code>getValuePointer()</code>
+     * directly.  Override the <code>getImmediateValuePointer()</code> 
+     * method instead.  The <code>getValuePointer()</code> method is
+     * calls <code>getImmediateValuePointer()</code> and, if the result is not
+     * <code>this</code>, invokes <code>getValuePointer()</code> recursively.
+     * The idea here is to open all nested containers. Let's say we have a 
+     * container within a container within a container.
+     * The <code>getValuePointer()</code> method should then open all 
+     * those containers and return the pointer to the ultimate contents.
+     * It does so with the above recursion.
      */
     public NodePointer getValuePointer() {
+        NodePointer ivp = getImmediateValuePointer();
+        if (ivp != this){
+            return ivp.getValuePointer();
+        }
         return this;
     }
 
+    /**
+     * @see #getValuePointer()
+     *      * @return NodePointer is either <code>this</code> or a pointer
+     *   for the immediately contained value.     */
+    public NodePointer getImmediateValuePointer() {
+        return this;
+    }
+    
     /**
      * An actual pointer points to an existing part of an object graph, even
      * if it is null. A non-actual pointer represents a part that does not exist
@@ -280,9 +306,18 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
     /**
      * Returns the object the pointer points to; does not convert it
+     * to a "canonical" type. Opens containers, properties etc and returns
+     * the ultimate contents.
+     */
+    public Object getNode(){
+        return getValuePointer().getImmediateNode();
+    }
+    
+    /**
+     * Returns the object the pointer points to; does not convert it
      * to a "canonical" type.
      */
-    public abstract Object getNode();
+    public abstract Object getImmediateNode();
 
     /**
      * Converts the value to the required type and changes the corresponding

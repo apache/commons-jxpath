@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperation.java,v 1.6 2002/08/26 22:19:51 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/08/26 22:19:51 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperation.java,v 1.7 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,27 +61,22 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import java.util.*;
+
 import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.Compiler;
-import org.apache.commons.jxpath.ri.InfoSetUtil;
-import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.InfoSetUtil;
 import org.apache.commons.jxpath.ri.axes.InitialContext;
 import org.apache.commons.jxpath.ri.axes.SelfContext;
 import org.apache.commons.jxpath.ri.axes.UnionContext;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.HashSet;
+import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * A compile tree element representing one of the core operations like "+",
  * "-", "*" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/08/26 22:19:51 $
+ * @version $Revision: 1.7 $ $Date: 2002/11/26 01:20:06 $
  */
 public class CoreOperation extends Operation {
     public CoreOperation(int code, Expression args[]){

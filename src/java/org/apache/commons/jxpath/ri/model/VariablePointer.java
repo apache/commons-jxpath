@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.7 2002/10/20 03:47:17 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/10/20 03:47:17 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.8 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/10/20 03:47:17 $
+ * @version $Revision: 1.8 $ $Date: 2002/11/26 01:20:06 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
@@ -121,7 +121,7 @@ public class VariablePointer extends NodePointer {
         return value != null && ValueUtils.isCollection(value);
     }
 
-    public Object getNode(){
+    public Object getImmediateNode(){
         Object value = getBaseValue();
         if (index != WHOLE_COLLECTION){
             return ValueUtils.getValue(value, index);
@@ -147,11 +147,11 @@ public class VariablePointer extends NodePointer {
         return actual;
     }
 
-    public NodePointer getValuePointer(){
+    public NodePointer getImmediateValuePointer(){
         if (valuePointer == null){
             Object value = null;
             if (actual){
-                value = getNode();
+                value = getImmediateNode();
             }
             valuePointer = NodePointer.newChildNodePointer(this, null, value);
         }

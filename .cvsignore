@@ -2,3 +2,10 @@ build.properties
 dist
 target
 bin
+.classpath
+.project
+build.bat
+maven.bat
+maven.log
+docs
+test-reports

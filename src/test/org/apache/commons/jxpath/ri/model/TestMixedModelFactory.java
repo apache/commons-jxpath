@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/TestMixedModelFactory.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/TestMixedModelFactory.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:08 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,23 +63,15 @@
 package org.apache.commons.jxpath.ri.model;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
-import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.NestedTestBean;
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.TestBean;
-import org.jdom.Element;
-import org.w3c.dom.Node;
+import org.apache.commons.jxpath.*;
 
 /**
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
  */
 public class TestMixedModelFactory extends AbstractFactory {
 

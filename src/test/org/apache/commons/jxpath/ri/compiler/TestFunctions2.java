@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions2.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions2.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:08 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,11 +61,10 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import java.util.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
  */
 public class TestFunctions2 {
 

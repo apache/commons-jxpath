@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/JDOMModelTest.java,v 1.3 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/JDOMModelTest.java,v 1.4 2002/11/26 01:20:08 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/11/26 01:20:08 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,34 +62,21 @@
 
 package org.apache.commons.jxpath.ri.model.jdom;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import java.util.*;
-import java.lang.reflect.*;
+import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.util.*;
-import org.apache.commons.jxpath.ri.*;
-import org.apache.commons.jxpath.ri.parser.*;
-import org.apache.commons.jxpath.ri.model.*;
-import org.apache.commons.jxpath.ri.model.beans.*;
-import org.apache.commons.jxpath.ri.axes.*;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.compiler.Expression;
-import org.apache.commons.jxpath.xml.*;
+import org.apache.commons.jxpath.xml.DocumentContainer;
 import org.jdom.*;
-
-import java.beans.*;
 
 /**
  * Tests JXPath with JDOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.4 $ $Date: 2002/11/26 01:20:08 $
  */
 
 public class JDOMModelTest extends XMLModelTestCase

@@ -111,7 +111,8 @@ public class SimplePathInterpreter {
     {
 //        PATH = createNullPointer(context, root, steps, 0).toString();  // Dbg
         NodePointer pointer = doStep(context, root, steps, 0);
-        return valuePointer(pointer);
+//        return valuePointer(pointer);
+        return pointer;
     }
 
     /**
@@ -129,7 +130,9 @@ public class SimplePathInterpreter {
     {
 //        PATH = createNullPointerForPredicates(context, root,
 //                    steps, -1, predicates, 0).toString();  // Debugging
-        return doPredicate(context, root, steps, -1, predicates, 0);
+        NodePointer pointer = doPredicate(context, root, steps, -1, predicates, 0);
+//        return valuePointer(pointer);
+        return pointer;
     }
 
     /**
@@ -143,8 +146,6 @@ public class SimplePathInterpreter {
             EvalContext context, NodePointer parent,
             Step steps[], int current_step)
     {
-        parent = valuePointer(parent);
-
         if (parent == null){
             return null;
         }
@@ -154,6 +155,9 @@ public class SimplePathInterpreter {
             return parent;
         }
 
+        // Open all containers
+        parent = valuePointer(parent);
+        
         Step step = steps[current_step];
         Expression predicates[] = step.getPredicates();
 
@@ -584,7 +588,7 @@ public class SimplePathInterpreter {
         NodePointer pointer = parent;
         if (isCollectionElement(pointer, index)){
             pointer.setIndex(index);
-            return doPredicate(context, valuePointer(pointer),
+            return doPredicate(context, pointer,
                     steps, current_step, predicates, current_predicate + 1);
         }
         return createNullPointerForPredicates(context, parent,
@@ -671,10 +675,7 @@ public class SimplePathInterpreter {
      * returns a pointer for the contained value.
      */
     private static NodePointer valuePointer(NodePointer pointer){
-        while (pointer != null && !pointer.isNode()){
-            pointer = pointer.getValuePointer();
-        }
-        return pointer;
+        return pointer == null ? null : pointer.getValuePointer();
     }
 
     /**
@@ -686,11 +687,11 @@ public class SimplePathInterpreter {
             EvalContext context, NodePointer parent, Step[] steps,
             int current_step)
     {
-        parent = valuePointer(parent);
-
         if (current_step == steps.length){
             return parent;
         }
+
+        parent = valuePointer(parent);
 
         Step step = steps[current_step];
 

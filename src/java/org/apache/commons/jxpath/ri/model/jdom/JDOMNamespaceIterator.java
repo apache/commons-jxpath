@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNamespaceIterator.java,v 1.1 2002/08/26 22:29:48 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/08/26 22:29:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNamespaceIterator.java,v 1.2 2002/11/26 01:20:07 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:07 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,19 +61,18 @@
  */
 package org.apache.commons.jxpath.ri.model.jdom;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.*;
 
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.jdom.*;
+import org.jdom.Element;
+import org.jdom.Namespace;
 
 /**
  * An iterator of namespaces of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/26 22:29:48 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:07 $
  */
 public class JDOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;
@@ -88,22 +87,10 @@ public class JDOMNamespaceIterator implements NodeIterator {
             namespaces = new ArrayList();
             prefixes = new HashSet();
             collectNamespaces((Element)parent.getNode());
-//            System.err.println("NAMESPACES: " + namespaces);
         }
     }
 
     private void collectNamespaces(Element element){
-//            NamedNodeMap map = node.getAttributes();
-//            int count = map.getLength();
-//            for (int i = 0; i < count; i++){
-//                Attr attr = (Attr)map.item(i);
-//                String prefix = DOMNodePointer.getPrefix(attr);
-//                String name = DOMNodePointer.getLocalName(attr);
-//                if ((prefix != null && prefix.equals("xmlns")) ||
-//                        (prefix == null && name.equals("xmlns"))){
-//                    attributes.add(attr);
-//                }
-//            }
         Namespace ns = element.getNamespace();
         if (ns != null && !prefixes.contains(ns.getPrefix())){
             namespaces.add(ns);
@@ -134,12 +121,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
         if (index < 0){
             index = 0;
         }
-        String prefix = "";
         Namespace ns = (Namespace)namespaces.get(index);
-//        String name = attr.getPrefix();
-//        if (name != null && name.equals("xmlns")){
-//            prefix = JDOMNodePointer.getLocalName(attr);
-//        }
         return new JDOMNamespacePointer(parent, ns.getPrefix(), ns.getURI());
     }
 

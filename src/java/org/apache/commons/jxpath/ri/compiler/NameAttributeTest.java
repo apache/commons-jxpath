@@ -1,12 +1,13 @@
 package org.apache.commons.jxpath.ri.compiler;
 
-import org.apache.commons.jxpath.ri.EvalContext;
 
 /**
- *
+ * Captures the <code>foo[@name=<i>expr</i>]</code> expression. These
+ * expressions are handled in a special way when applied to beans
+ * or maps.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:06 $
  */
 public class NameAttributeTest extends CoreOperation {
 

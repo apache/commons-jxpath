@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.9 2002/10/20 03:43:55 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/10/20 03:43:55 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.10 2002/11/26 01:20:07 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/11/26 01:20:07 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,17 +63,19 @@ package org.apache.commons.jxpath.util;
 
 import java.beans.IndexedPropertyDescriptor;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
-import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
+import org.apache.commons.jxpath.JXPathException;
 
 /**
  * Collection and property access utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/10/20 03:43:55 $
+ * @version $Revision: 1.10 $ $Date: 2002/11/26 01:20:07 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -92,6 +94,35 @@ public class ValueUtils {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Returns 1 if the type is a collection, 
+     * -1 if it is definitely not
+     * and 0 if it may be a collection in some cases.
+     */
+    public static int getCollectionHint(Class clazz){
+        if (clazz.isArray()){
+            return 1;
+        }
+        
+        if (Collection.class.isAssignableFrom(clazz)){
+            return 1;
+        }
+        
+        if (clazz.isPrimitive()){
+            return -1;
+        }
+        
+        if (clazz.isInterface()){
+            return 0;
+        }
+        
+        if (Modifier.isFinal(clazz.getModifiers())){
+            return -1;
+        }
+                
+        return 0;
     }
 
     /**
@@ -336,7 +367,6 @@ public class ValueUtils {
     public static Object getValue(Object bean,
             PropertyDescriptor propertyDescriptor, int index){
         if (propertyDescriptor instanceof IndexedPropertyDescriptor){
-            Object value;
             try {
                 IndexedPropertyDescriptor ipd =
                     (IndexedPropertyDescriptor)propertyDescriptor;
@@ -448,12 +478,11 @@ public class ValueUtils {
         }
 
         // Check the implemented interfaces and subinterfaces
-        String methodName = method.getName();
-        Class[] parameterTypes = method.getParameterTypes();
-        method =
-            getAccessibleMethodFromInterfaceNest(clazz,
-                                                 method.getName(),
-                                                 method.getParameterTypes());
+		method =
+			getAccessibleMethodFromInterfaceNest(
+				clazz,
+				method.getName(),
+				method.getParameterTypes());
         return (method);
     }
 

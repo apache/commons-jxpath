@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.18 2002/10/20 03:43:39 dmitri Exp $
- * $Revision: 1.18 $
- * $Date: 2002/10/20 03:43:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.19 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.19 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,13 +63,11 @@ package org.apache.commons.jxpath.ri;
 
 import java.util.*;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.axes.*;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.model.NodeIterator;
+import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.apache.commons.jxpath.ri.model.beans.*;
-import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * An XPath evaluation context.
@@ -79,7 +77,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.18 $ $Date: 2002/10/20 03:43:39 $
+ * @version $Revision: 1.19 $ $Date: 2002/11/26 01:20:06 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;

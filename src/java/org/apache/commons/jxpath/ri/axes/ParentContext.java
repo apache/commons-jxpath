@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.8 2002/10/20 03:43:38 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/10/20 03:43:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.9 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,8 +61,6 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-import java.util.HashSet;
-
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodePointer;
@@ -71,7 +69,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "parent::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/10/20 03:43:38 $
+ * @version $Revision: 1.9 $ $Date: 2002/11/26 01:20:06 $
  */
 public class ParentContext extends EvalContext {
     private NodeTest nodeTest;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.5 2002/10/20 03:47:18 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/10/20 03:47:18 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.6 2002/11/26 01:20:07 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/11/26 01:20:07 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/10/20 03:47:18 $
+ * @version $Revision: 1.6 $ $Date: 2002/11/26 01:20:07 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
@@ -124,7 +124,7 @@ public class ContainerPointer extends NodePointer {
         return getValuePointer().isLeaf();
     }    
 
-    public Object getNode(){
+    public Object getImmediateNode(){
         Object value = getBaseValue();
         if (index != WHOLE_COLLECTION){
             if (index >= 0 && index < getLength()){
@@ -141,10 +141,11 @@ public class ContainerPointer extends NodePointer {
         container.setValue(value);
     }
 
-    public NodePointer getValuePointer(){
-        if (valuePointer == null){
-            Object value = getNode();
-            valuePointer = NodePointer.newChildNodePointer(this, getName(), value).getValuePointer();
+    public NodePointer getImmediateValuePointer(){
+        if (valuePointer == null) {
+            Object value = getImmediateNode();
+            valuePointer =
+                NodePointer.newChildNodePointer(this, getName(), value);
         }
         return valuePointer;
     }

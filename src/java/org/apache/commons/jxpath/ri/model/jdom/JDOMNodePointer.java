@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.3 2002/10/20 03:44:51 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/10/20 03:44:51 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.4 2002/11/26 01:20:07 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/11/26 01:20:07 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,7 +61,6 @@
  */
 package org.apache.commons.jxpath.ri.model.jdom;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -71,27 +70,17 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
-import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
-import org.apache.commons.jxpath.ri.compiler.NodeTest;
-import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
-import org.apache.commons.jxpath.ri.compiler.ProcessingInstructionTest;
+import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.TypeUtils;
-import org.jdom.Attribute;
-import org.jdom.CDATA;
-import org.jdom.Comment;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.ProcessingInstruction;
-import org.jdom.Text;
+import org.jdom.*;
 
 /**
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/10/20 03:44:51 $
+ * @version $Revision: 1.4 $ $Date: 2002/11/26 01:20:07 $
  */
 public class JDOMNodePointer extends NodePointer {
     private Object node;
@@ -263,7 +252,7 @@ public class JDOMNodePointer extends NodePointer {
     /**
      * @see org.apache.commons.jxpath.ri.model.NodePointer#getNode()
      */
-    public Object getNode() {
+    public Object getImmediateNode() {
         return node;
     }
 
@@ -580,31 +569,32 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     public NodePointer createAttribute(JXPathContext context, QName name){
-        if (!(node instanceof Element)){
-            return super.createAttribute(context, name);
-        }
+		if (!(node instanceof Element)) {
+			return super.createAttribute(context, name);
+		}
 
-        Element element = (Element)node;
-        String prefix = name.getPrefix();
-        if (prefix != null){
-            Namespace ns = element.getNamespace(prefix);
-            if (ns == null){
-                throw new JXPathException("Unknown namespace prefix: " + prefix);
-            }
-            Attribute attr = element.getAttribute(name.getName(), ns);
-            if (attr == null){
-                element.setAttribute(name.getName(), "", ns);
-            }
-        }
-        else {
-            Attribute attr = element.getAttribute(name.getName());
-            if (attr == null){
-                element.setAttribute(name.getName(), "");
-            }
-        }
-        NodeIterator it = attributeIterator(name);
-        it.setPosition(1);
-        return it.getNodePointer();
+		Element element = (Element) node;
+		String prefix = name.getPrefix();
+		if (prefix != null) {
+			Namespace ns = element.getNamespace(prefix);
+			if (ns == null) {
+				throw new JXPathException(
+					"Unknown namespace prefix: " + prefix);
+			}
+			Attribute attr = element.getAttribute(name.getName(), ns);
+			if (attr == null) {
+				element.setAttribute(name.getName(), "", ns);
+			}
+		}
+		else {
+			Attribute attr = element.getAttribute(name.getName());
+			if (attr == null) {
+				element.setAttribute(name.getName(), "");
+			}
+		}
+		NodeIterator it = attributeIterator(name);
+		it.setPosition(1);
+		return it.getNodePointer();
     }
 
     public void remove(){
@@ -723,24 +713,25 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     private int getRelativePositionOfPI(String target){
-        Element parent = ((ProcessingInstruction)node).getParent();
-        if (parent == null){
-            return 1;
-        }
-        List children = parent.getContent();
-        int count = 0;
-        for (int i = 0; i < children.size(); i++){
-            Object child = children.get(i);
-            if (child instanceof ProcessingInstruction &&
-                  (target == null ||
-                   target.equals(((ProcessingInstruction)child).getTarget()))){
-                count++;
-            }
-            if (child == node){
-                break;
-            }
-        }
-        return count;
+		Element parent = ((ProcessingInstruction) node).getParent();
+		if (parent == null) {
+			return 1;
+		}
+		List children = parent.getContent();
+		int count = 0;
+		for (int i = 0; i < children.size(); i++) {
+			Object child = children.get(i);
+			if (child instanceof ProcessingInstruction
+				&& (target == null
+					|| target.equals(
+						((ProcessingInstruction) child).getTarget()))) {
+				count++;
+			}
+			if (child == node) {
+				break;
+			}
+		}
+		return count;
     }
 
     public int hashCode(){
@@ -760,13 +751,13 @@ public class JDOMNodePointer extends NodePointer {
         return node == other.node;
     }
 
-    private AbstractFactory getAbstractFactory(JXPathContext context){
-        AbstractFactory factory = context.getFactory();
-        if (factory == null){
-            throw new JXPathException(
-                    "Factory is not set on the JXPathContext - " +
-                    "cannot create path: " + asPath());
-        }
-        return factory;
-    }
+	private AbstractFactory getAbstractFactory(JXPathContext context) {
+		AbstractFactory factory = context.getFactory();
+		if (factory == null) {
+			throw new JXPathException(
+				"Factory is not set on the JXPathContext - cannot create path: "
+					+ asPath());
+		}
+		return factory;
+	}
 }

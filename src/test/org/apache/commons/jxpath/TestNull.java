@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestNull.java,v 1.1 2001/08/23 00:47:02 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:02 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestNull.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:08 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,13 +62,12 @@
 
 package org.apache.commons.jxpath;
 
-import java.util.*;
 
 /**
  * General purpose test bean for JUnit tests for the "jxpath" component.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:02 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
  */
 public class TestNull {
 

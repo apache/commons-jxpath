@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertiesModelTest.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertiesModelTest.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:08 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,32 +62,16 @@
 
 package org.apache.commons.jxpath.ri.model.beans;
 
-import java.lang.reflect.InvocationTargetException;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.w3c.dom.*;
-import java.util.*;
-import java.lang.reflect.*;
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.util.*;
-import org.apache.commons.jxpath.ri.*;
-import org.apache.commons.jxpath.ri.parser.*;
-import org.apache.commons.jxpath.ri.model.*;
-import org.apache.commons.jxpath.ri.model.beans.*;
-import org.apache.commons.jxpath.ri.axes.*;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.compiler.Expression;
-import org.apache.commons.jxpath.xml.*;
-import java.beans.*;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.TestBean;
+import org.apache.commons.jxpath.ri.model.TestDynamicPropertyFactory;
 
 /**
  * @todo more iterator testing with maps
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
  */
 
 public class DynamicPropertiesModelTest extends JXPathTestCase

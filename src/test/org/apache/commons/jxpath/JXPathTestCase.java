@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.29 2002/10/20 03:48:21 dmitri Exp $
- * $Revision: 1.29 $
- * $Date: 2002/10/20 03:48:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.30 2002/11/26 01:20:08 dmitri Exp $
+ * $Revision: 1.30 $
+ * $Date: 2002/11/26 01:20:08 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,32 +62,17 @@
 
 package org.apache.commons.jxpath;
 
-import java.lang.reflect.InvocationTargetException;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.w3c.dom.*;
 import java.util.*;
-import java.lang.reflect.*;
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.util.*;
-import org.apache.commons.jxpath.ri.*;
-import org.apache.commons.jxpath.ri.parser.*;
-import org.apache.commons.jxpath.ri.model.*;
-import org.apache.commons.jxpath.ri.model.beans.*;
-import org.apache.commons.jxpath.ri.axes.*;
-import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.compiler.Expression;
-import org.apache.commons.jxpath.xml.*;
-import java.beans.*;
+
+import junit.framework.TestCase;
+
+import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * Abstract superclass for various JXPath tests.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.29 $ $Date: 2002/10/20 03:48:21 $
+ * @version $Revision: 1.30 $ $Date: 2002/11/26 01:20:08 $
  */
 
 public abstract class JXPathTestCase extends TestCase
@@ -101,77 +86,7 @@ public abstract class JXPathTestCase extends TestCase
     {
         super(name);
     }
-/*
-    protected void testXPaths(JXPathContext ctx, XPathTest xpath_tests[])
-            throws Exception
-    {
-        Exception exception = null;
-        for  (int i=0; i < xpath_tests.length; i++) {
-            try {
-                Object actual;
-                // System.err.println("XPATH: " + xpath_tests[i].xpath);
-                if (xpath_tests[i].path){
-                    if (xpath_tests[i].eval){
-                        Iterator it = ctx.iteratePointers(xpath_tests[i].xpath);
-                        List paths = new ArrayList();
-                        while (it.hasNext()){
-                            paths.add(((Pointer)it.next()).asPath());
-                        }
-                        actual = paths;
-                    }
-                    else {
-                        ctx.setLenient(xpath_tests[i].lenient);
-                        actual = ctx.getPointer(xpath_tests[i].xpath).asPath();
-                    }
-                }
-                else {
-                    if (xpath_tests[i].eval){
-                        ArrayList list = new ArrayList();
-                        Iterator it = ctx.iterate(xpath_tests[i].xpath);
-                        while (it.hasNext()){
-                            list.add(it.next());
-                        }
-                        actual = list;
-                    }
-                    else {
-                        ctx.setLenient(xpath_tests[i].lenient);
-                        actual = ctx.getValue(xpath_tests[i].xpath);
-                        ctx.setLenient(false);
-                    }
-                }
-                assertEquals("Evaluating <" + xpath_tests[i].xpath + ">",
-                        xpath_tests[i].expected, actual);
-            }
-            catch (Exception ex){
-                System.err.println("Exception during <" +
-                    xpath_tests[i].xpath + ">");
-                ex.printStackTrace();
-                exception = ex;
-            }
-            if (exception != null){
-                throw exception;
-            }
-        }
-
-        // Make sure that location paths are properly constructed
-        for (int i=0; i < xpath_tests.length; i++) {
-            try {
-                if (!xpath_tests[i].path && !xpath_tests[i].eval){
-                    Pointer ptr = ctx.getPointer(xpath_tests[i].xpath);
-                    Pointer test = ctx.getPointer(ptr.asPath());
-                    assertEquals(
-                        "Testing pointer for <" + xpath_tests[i].xpath + ">",
-                        ptr.asPath(), test.asPath());
-                }
-            }
-            catch (Exception ex){
-                System.err.println("Exception during pointer test <" +
-                        xpath_tests[i].xpath + ">");
-                ex.printStackTrace();
-            }
-        }
-    }
-*/
+    
     protected void assertXPathValue(JXPathContext ctx,
                 String xpath, Object expected)
     {

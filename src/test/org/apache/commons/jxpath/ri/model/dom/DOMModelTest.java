@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.3 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.4 2002/11/26 01:20:08 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/11/26 01:20:08 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,14 +68,15 @@ import junit.framework.TestSuite;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
 import org.apache.commons.jxpath.xml.DocumentContainer;
-
-import org.w3c.dom.*;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Tests JXPath with DOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.4 $ $Date: 2002/11/26 01:20:08 $
  */
 
 public class DOMModelTest extends XMLModelTestCase
@@ -88,7 +89,7 @@ public class DOMModelTest extends XMLModelTestCase
     public DOMModelTest(String name){
         super(name);
     }
-
+    
     /**
      * Return the tests included in this test suite.
      */

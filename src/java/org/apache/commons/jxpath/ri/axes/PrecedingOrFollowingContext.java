@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.8 2002/05/29 00:41:32 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/05/29 00:41:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.9 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyIterator;
  * EvalContext that walks the "preceding::" and "following::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/05/29 00:41:32 $
+ * @version $Revision: 1.9 $ $Date: 2002/11/26 01:20:06 $
  */
 public class PrecedingOrFollowingContext extends EvalContext {
     private NodeTest nodeTest;
@@ -83,12 +83,10 @@ public class PrecedingOrFollowingContext extends EvalContext {
     private Stack nameStack;
     private NodePointer currentNodePointer;
     private NodePointer currentRootLocation;
-    private boolean includeSelf;
     private boolean reverse;
 
     public PrecedingOrFollowingContext(EvalContext parentContext, NodeTest nodeTest, boolean reverse){
         super(parentContext);
-        this.includeSelf = includeSelf;
         this.nodeTest = nodeTest;
         this.reverse = reverse;
     }

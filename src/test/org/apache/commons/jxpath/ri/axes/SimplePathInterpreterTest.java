@@ -55,150 +55,157 @@ public class SimplePathInterpreterTest extends TestCase {
 
     public void test_doStep_noPredicates_propertyOwner(){
         // Existing scalar property
-        testValueAndPointer("/int",
+        assertValueAndPointer("/int",
                 new Integer(1),
                 "/int",
+                "Bb",
                 "BbB");
 
         // self::
-        testValueAndPointer("/./int",
+        assertValueAndPointer("/./int",
                 new Integer(1),
                 "/int",
+                "Bb",
                 "BbB");
 
         // Missing property
-        testNullPointer("/foo",
+        assertNullPointer("/foo",
                 "/foo",
-                "BnN");
+                "Bn");
 
         // existingProperty/existingScalarProperty
-        testValueAndPointer("/nestedBean/int",
+        assertValueAndPointer("/nestedBean/int",
                 new Integer(1),
                 "/nestedBean/int",
+                "BbBb",
                 "BbBbB");
 
         // existingProperty/collectionProperty
-        testValueAndPointer("/nestedBean/strings",
+        assertValueAndPointer("/nestedBean/strings",
                 bean.getNestedBean().getStrings(),
                 "/nestedBean/strings",
+                "BbBb",
                 "BbBbC");
 
         // existingProperty/missingProperty
-        testNullPointer("/nestedBean/foo",
+        assertNullPointer("/nestedBean/foo",
                 "/nestedBean/foo",
-                "BbBnN");
+                "BbBn");
 
         // map/missingProperty
-        testNullPointer("/map/foo",
+        assertNullPointer("/map/foo",
                 "/map[@name='foo']",
-                "BbDdN");
+                "BbDd");
 
         // Existing property by search in collection
-        testValueAndPointer("/list/int",
+        assertValueAndPointer("/list/int",
                 new Integer(1),
                 "/list[3]/int",
+                "BbBb",
                 "BbBbB");
 
         // Missing property by search in collection
-        testNullPointer("/list/foo",
+        assertNullPointer("/list/foo",
                 "/list[1]/foo",
-                "BbBnN");
+                "BbBn");
 
         // existingProperty/missingProperty/missingProperty
-        testNullPointer("/nestedBean/foo/bar",
+        assertNullPointer("/nestedBean/foo/bar",
                 "/nestedBean/foo/bar",
-                "BbBnNnN");
+                "BbBnNn");
 
         // collection/existingProperty/missingProperty
-        testNullPointer("/list/int/bar",
+        assertNullPointer("/list/int/bar",
                 "/list[3]/int/bar",
-                "BbBbBnN");
+                "BbBbBn");
 
         // collectionProperty/missingProperty/missingProperty
-        testNullPointer("/list/foo/bar",
+        assertNullPointer("/list/foo/bar",
                 "/list[1]/foo/bar",
-                "BbBnNnN");
+                "BbBnNn");
 
         // map/missingProperty/anotherStep
-        testNullPointer("/map/foo/bar",
+        assertNullPointer("/map/foo/bar",
                 "/map[@name='foo']/bar",
-                "BbDdNnN");
+                "BbDdNn");
 
         // Existing dynamic property
-        testValueAndPointer("/map/Key1",
+        assertValueAndPointer("/map/Key1",
                 "Value 1",
                 "/map[@name='Key1']",
+                "BbDd",
                 "BbDdB");
 
         // collectionProperty
-        testValueAndPointer("/integers",
+        assertValueAndPointer("/integers",
                 bean.getIntegers(),
                 "/integers",
+                "Bb",
                 "BbC");
     }
 
     public void test_doStep_noPredicates_standard(){
         // Existing DOM node
-        testValueAndPointer("/vendor/location/address/city",
+        assertValueAndPointer("/vendor/location/address/city",
                 "Fruit Market",
                 "/vendor/location[2]/address[1]/city[1]",
                 "BbMMMM");
 
         // Missing DOM node
-        testNullPointer("/vendor/location/address/pity",
+        assertNullPointer("/vendor/location/address/pity",
                 "/vendor/location[1]/address[1]/pity",
-                "BbMMMnN");
+                "BbMMMn");
 
         // Missing DOM node inside a missing element
-        testNullPointer("/vendor/location/address/itty/bitty",
+        assertNullPointer("/vendor/location/address/itty/bitty",
                 "/vendor/location[1]/address[1]/itty/bitty",
-                "BbMMMnNnN");
+                "BbMMMnNn");
 
         // Missing DOM node by search for the best match
-        testNullPointer("/vendor/location/address/city/pretty",
+        assertNullPointer("/vendor/location/address/city/pretty",
                 "/vendor/location[2]/address[1]/city[1]/pretty",
-                "BbMMMMnN");
+                "BbMMMMn");
     }
 
     public void test_doStep_predicates_propertyOwner(){
         // missingProperty[@name=foo]
-        testNullPointer("/foo[@name='foo']",
+        assertNullPointer("/foo[@name='foo']",
                 "/foo[@name='foo']",
-                "BnNnN");
+                "BnNn");
 
         // missingProperty[index]
-        testNullPointer("/foo[3]",
+        assertNullPointer("/foo[3]",
                 "/foo[3]",
-                "BnN");
+                "Bn");
     }
 
     public void test_doStep_predicates_standard(){
         // Looking for an actual XML attribute called "name"
         // nodeProperty/name[@name=value]
-        testValueAndPointer("/vendor/contact[@name='jack']",
+        assertValueAndPointer("/vendor/contact[@name='jack']",
                 "Jack",
                 "/vendor/contact[2]",
                 "BbMM");
 
         // Indexing in XML
-        testValueAndPointer("/vendor/contact[2]",
+        assertValueAndPointer("/vendor/contact[2]",
                 "Jack",
                 "/vendor/contact[2]",
                 "BbMM");
 
         // Indexing in XML, no result
-        testNullPointer("/vendor/contact[5]",
+        assertNullPointer("/vendor/contact[5]",
                 "/vendor/contact[5]",
-                "BbMnN");
+                "BbMn");
 
         // Combination of search by name and indexing in XML
-        testValueAndPointer("/vendor/contact[@name='jack'][2]",
+        assertValueAndPointer("/vendor/contact[@name='jack'][2]",
                 "Jack Black",
                 "/vendor/contact[4]",
                 "BbMM");
 
         // Combination of search by name and indexing in XML
-        testValueAndPointer("/vendor/contact[@name='jack'][2]",
+        assertValueAndPointer("/vendor/contact[@name='jack'][2]",
                 "Jack Black",
                 "/vendor/contact[4]",
                 "BbMM");
@@ -206,126 +213,135 @@ public class SimplePathInterpreterTest extends TestCase {
 
     public void test_doPredicate_name(){
         // existingProperty[@name=existingProperty]
-        testValueAndPointer("/nestedBean[@name='int']",
+        assertValueAndPointer("/nestedBean[@name='int']",
                 new Integer(1),
                 "/nestedBean/int",
+                "BbBb",
                 "BbBbB");
 
         // /self::node()[@name=existingProperty]
-        testValueAndPointer("/.[@name='int']",
+        assertValueAndPointer("/.[@name='int']",
                 new Integer(1),
                 "/int",
+                "Bb",
                 "BbB");
 
         // dynamicProperty[@name=existingProperty]
-        testValueAndPointer("/map[@name='Key1']",
+        assertValueAndPointer("/map[@name='Key1']",
                 "Value 1",
                 "/map[@name='Key1']",
+                "BbDd",
                 "BbDdB");
 
         // existingProperty[@name=collectionProperty]
-        testValueAndPointer("/nestedBean[@name='strings']",
+        assertValueAndPointer("/nestedBean[@name='strings']",
                 bean.getNestedBean().getStrings(),
                 "/nestedBean/strings",
+                "BbBb",
                 "BbBbC");
 
         // existingProperty[@name=missingProperty]
-        testNullPointer("/nestedBean[@name='foo']",
+        assertNullPointer("/nestedBean[@name='foo']",
                 "/nestedBean[@name='foo']",
-                "BbBnN");
+                "BbBn");
 
         // map[@name=collectionProperty]
-        testValueAndPointer("/map[@name='Key3']",
+        assertValueAndPointer("/map[@name='Key3']",
                 bean.getMap().get("Key3"),
                 "/map[@name='Key3']",
+                "BbDd",
                 "BbDdC");
-
+                
         // map[@name=missingProperty]
-        testNullPointer("/map[@name='foo']",
+        assertNullPointer("/map[@name='foo']",
                 "/map[@name='foo']",
-                "BbDdN");
+                "BbDd");
 
         // collectionProperty[@name=...] (find node)
-        testValueAndPointer("/list[@name='fruitco']",
+        assertValueAndPointer("/list[@name='fruitco']",
                 context.getValue("/vendor"),
                 "/list[5]",
                 "BbCM");
 
         // collectionProperty[@name=...] (find map entry)
-        testValueAndPointer("/map/Key3[@name='key']/name",
+        assertValueAndPointer("/map/Key3[@name='key']/name",
                 "Name 9",
                 "/map[@name='Key3'][4][@name='key']/name",
+                "BbDdCDdBb",
                 "BbDdCDdBbB");
 
         // map/collectionProperty[@name...]
-        testValueAndPointer("map/Key3[@name='fruitco']",
+        assertValueAndPointer("map/Key3[@name='fruitco']",
                 context.getValue("/vendor"),
                 "/map[@name='Key3'][3]",
                 "BbDdCM");
 
         // Bean property -> DOM Node, name match
-        testValueAndPointer("/vendor[@name='fruitco']",
+        assertValueAndPointer("/vendor[@name='fruitco']",
                 context.getValue("/vendor"),
                 "/vendor",
                 "BbM");
 
         // Bean property -> DOM Node, name mismatch
-        testNullPointer("/vendor[@name='foo']",
+        assertNullPointer("/vendor[@name='foo']",
                 "/vendor[@name='foo']",
-                "BbMnN");
+                "BbMn");
 
-        testNullPointer("/vendor[@name='foo'][3]",
+        assertNullPointer("/vendor[@name='foo'][3]",
                 "/vendor[@name='foo'][3]",
-                "BbMnN");
+                "BbMn");
 
         // existingProperty(bean)[@name=missingProperty]/anotherStep
-        testNullPointer("/nestedBean[@name='foo']/bar",
+        assertNullPointer("/nestedBean[@name='foo']/bar",
                 "/nestedBean[@name='foo']/bar",
-                "BbBnNnN");
+                "BbBnNn");
 
         // map[@name=missingProperty]/anotherStep
-        testNullPointer("/map[@name='foo']/bar",
+        assertNullPointer("/map[@name='foo']/bar",
                 "/map[@name='foo']/bar",
-                "BbDdNnN");
+                "BbDdNn");
 
         // existingProperty(node)[@name=missingProperty]/anotherStep
-        testNullPointer("/vendor[@name='foo']/bar",
+        assertNullPointer("/vendor[@name='foo']/bar",
                 "/vendor[@name='foo']/bar",
-                "BbMnNnN");
+                "BbMnNn");
 
         // existingProperty(node)[@name=missingProperty][index]/anotherStep
-        testNullPointer("/vendor[@name='foo'][3]/bar",
+        assertNullPointer("/vendor[@name='foo'][3]/bar",
                 "/vendor[@name='foo'][3]/bar",
-                "BbMnNnN");
+                "BbMnNn");
 
         // Existing dynamic property + existing property
-        testValueAndPointer("/map[@name='Key2'][@name='name']",
+        assertValueAndPointer("/map[@name='Key2'][@name='name']",
                 "Name 6",
                 "/map[@name='Key2']/name",
+                "BbDdBb",
                 "BbDdBbB");
 
         // Existing dynamic property + existing property + index
-        testValueAndPointer("/map[@name='Key2'][@name='strings'][2]",
+        assertValueAndPointer("/map[@name='Key2'][@name='strings'][2]",
                 "String 2",
                 "/map[@name='Key2']/strings[2]",
+                "BbDdBb",
                 "BbDdBbB");
 
         // bean/map/map/property
-        testValueAndPointer("map[@name='Key5'][@name='key']/name",
+        assertValueAndPointer("map[@name='Key5'][@name='key']/name",
                 "Name 9",
                 "/map[@name='Key5'][@name='key']/name",
+                "BbDdDdBb",
                 "BbDdDdBbB");
 
-        testNullPointer("map[@name='Key2'][@name='foo']",
+        assertNullPointer("map[@name='Key2'][@name='foo']",
                 "/map[@name='Key2'][@name='foo']",
-                "BbDdBnN");
+                "BbDdBn");
 
-        testNullPointer("map[@name='Key2'][@name='foo'][@name='bar']",
+        assertNullPointer("map[@name='Key2'][@name='foo'][@name='bar']",
                 "/map[@name='Key2'][@name='foo'][@name='bar']",
-                "BbDdBnNnN");
+                "BbDdBnNn");
 
         // bean/map/node
-        testValueAndPointer("map[@name='Key4'][@name='fruitco']",
+        assertValueAndPointer("map[@name='Key4'][@name='fruitco']",
                 context.getValue("/vendor"),
                 "/map[@name='Key4']",
                 "BbDdM");
@@ -333,40 +349,40 @@ public class SimplePathInterpreterTest extends TestCase {
 
     public void test_doPredicates_standard(){
         // bean/map/collection/node
-        testValueAndPointer("map[@name='Key3'][@name='fruitco']",
+        assertValueAndPointer("map[@name='Key3'][@name='fruitco']",
                 context.getValue("/vendor"),
                 "/map[@name='Key3'][3]",
                 "BbDdCM");
 
         // bean/map/collection/missingNode
-        testNullPointer("map[@name='Key3'][@name='foo']",
+        assertNullPointer("map[@name='Key3'][@name='foo']",
                 "/map[@name='Key3'][4][@name='foo']",
-                "BbDdCDdN");
+                "BbDdCDd");
 
         // bean/map/node
-        testValueAndPointer("map[@name='Key4'][@name='fruitco']",
+        assertValueAndPointer("map[@name='Key4'][@name='fruitco']",
                 context.getValue("/vendor"),
                 "/map[@name='Key4']",
                 "BbDdM");
 
         // bean/map/emptyCollection[@name=foo]
-        testNullPointer("map[@name='Key6'][@name='fruitco']",
+        assertNullPointer("map[@name='Key6'][@name='fruitco']",
                 "/map[@name='Key6'][@name='fruitco']",
-                "BbDdCnN");
+                "BbDdCn");
 
         // bean/node[@name=foo][index]
-        testValueAndPointer("/vendor/contact[@name='jack'][2]",
+        assertValueAndPointer("/vendor/contact[@name='jack'][2]",
                 "Jack Black",
                 "/vendor/contact[4]",
                 "BbMM");
 
         // bean/node[@name=foo][missingIndex]
-        testNullPointer("/vendor/contact[@name='jack'][5]",
+        assertNullPointer("/vendor/contact[@name='jack'][5]",
                 "/vendor/contact[@name='jack'][5]",
-                "BbMnNnN");
+                "BbMnNn");
 
         // bean/node/.[@name=foo][index]
-        testValueAndPointer("/vendor/contact/.[@name='jack']",
+        assertValueAndPointer("/vendor/contact/.[@name='jack']",
                 "Jack",
                 "/vendor/contact[2]",
                 "BbMM");
@@ -374,135 +390,147 @@ public class SimplePathInterpreterTest extends TestCase {
 
     public void test_doPredicate_index(){
         // Existing dynamic property + existing property + index
-        testValueAndPointer("/map[@name='Key2'][@name='strings'][2]",
+        assertValueAndPointer("/map[@name='Key2'][@name='strings'][2]",
                 "String 2",
                 "/map[@name='Key2']/strings[2]",
+                "BbDdBb",
                 "BbDdBbB");
 
         // existingProperty[@name=collectionProperty][index]
-        testValueAndPointer("/nestedBean[@name='strings'][2]",
+        assertValueAndPointer("/nestedBean[@name='strings'][2]",
                 bean.getNestedBean().getStrings()[1],
                 "/nestedBean/strings[2]",
+                "BbBb",
                 "BbBbB");
 
         // existingProperty[@name=missingProperty][index]
-        testNullPointer("/nestedBean[@name='foo'][3]",
+        assertNullPointer("/nestedBean[@name='foo'][3]",
                 "/nestedBean[@name='foo'][3]",
-                "BbBnN");
+                "BbBn");
 
         // existingProperty[@name=collectionProperty][missingIndex]
-        testNullPointer("/nestedBean[@name='strings'][5]",
+        assertNullPointer("/nestedBean[@name='strings'][5]",
                 "/nestedBean/strings[5]",
-                "BbBbEN");
+                "BbBbE");
 
         // map[@name=collectionProperty][index]
-        testValueAndPointer("/map[@name='Key3'][2]",
+        assertValueAndPointer("/map[@name='Key3'][2]",
                 new Integer(2),
                 "/map[@name='Key3'][2]",
+                "BbDd",
                 "BbDdB");
 
         // map[@name=collectionProperty][missingIndex]
-        testNullPointer("/map[@name='Key3'][5]",
+        assertNullPointer("/map[@name='Key3'][5]",
                 "/map[@name='Key3'][5]",
-                "BbDdEN");
+                "BbDdE");
 
         // map[@name=collectionProperty][missingIndex]/property
-        testNullPointer("/map[@name='Key3'][5]/foo",
+        assertNullPointer("/map[@name='Key3'][5]/foo",
                 "/map[@name='Key3'][5]/foo",
-                "BbDdENnN");
+                "BbDdENn");
 
         // map[@name=map][@name=collection][index]
-        testValueAndPointer("/map[@name='Key5'][@name='strings'][2]",
+        assertValueAndPointer("/map[@name='Key5'][@name='strings'][2]",
                 "String 2",
                 "/map[@name='Key5'][@name='strings'][2]",
+                "BbDdDd",
                 "BbDdDdB");
 
         // map[@name=map][@name=collection][missingIndex]
-        testNullPointer("/map[@name='Key5'][@name='strings'][5]",
+        assertNullPointer("/map[@name='Key5'][@name='strings'][5]",
                 "/map[@name='Key5'][@name='strings'][5]",
-                "BbDdDdEN");
+                "BbDdDdE");
 
         // Existing dynamic property + indexing
-        testValueAndPointer("/map[@name='Key3'][2]",
+        assertValueAndPointer("/map[@name='Key3'][2]",
                 new Integer(2),
                 "/map[@name='Key3'][2]",
+                "BbDd",
                 "BbDdB");
 
         // Existing dynamic property + indexing
-        testValueAndPointer("/map[@name='Key3'][1]/name",
+        assertValueAndPointer("/map[@name='Key3'][1]/name",
                 "some",
                 "/map[@name='Key3'][1]/name",
+                "BbDdBb",
                 "BbDdBbB");
 
         // map[@name=missingProperty][index]
-        testNullPointer("/map[@name='foo'][3]",
+        assertNullPointer("/map[@name='foo'][3]",
                 "/map[@name='foo'][3]",
-                "BbDdEN");
+                "BbDdE");
 
         // collectionProperty[index]
-        testValueAndPointer("/integers[2]",
+        assertValueAndPointer("/integers[2]",
                 new Integer(2),
                 "/integers[2]",
+                "Bb",
                 "BbB");
 
         // existingProperty/collectionProperty[index]
-        testValueAndPointer("/nestedBean/strings[2]",
+        assertValueAndPointer("/nestedBean/strings[2]",
                 bean.getNestedBean().getStrings()[1],
                 "/nestedBean/strings[2]",
+                "BbBb",
                 "BbBbB");
 
         // existingProperty[index]/existingProperty
-        testValueAndPointer("/list[3]/int",
+        assertValueAndPointer("/list[3]/int",
                 new Integer(1),
                 "/list[3]/int",
+                "BbBb",
                 "BbBbB");
 
         // existingProperty[missingIndex]
-        testNullPointer("/list[6]",
+        assertNullPointer("/list[6]",
                 "/list[6]",
-                "BbEN");
+                "BbE");
 
         // existingProperty/missingProperty[index]
-        testNullPointer("/nestedBean/foo[3]",
+        assertNullPointer("/nestedBean/foo[3]",
                 "/nestedBean/foo[3]",
-                "BbBnN");
+                "BbBn");
 
         // map[@name=missingProperty][index]
-        testNullPointer("/map/foo[3]",
+        assertNullPointer("/map/foo[3]",
                 "/map[@name='foo'][3]",
-                "BbDdEN");
+                "BbDdE");
 
         // existingProperty/collectionProperty[missingIndex]
-        testNullPointer("/nestedBean/strings[5]",
+        assertNullPointer("/nestedBean/strings[5]",
                 "/nestedBean/strings[5]",
-                "BbBbEN");
+                "BbBbE");
 
         // map/collectionProperty[missingIndex]/property
-        testNullPointer("/map/Key3[5]/foo",
+        assertNullPointer("/map/Key3[5]/foo",
                 "/map[@name='Key3'][5]/foo",
-                "BbDdENnN");
+                "BbDdENn");
 
         // map[@name=map]/collection[index]
-        testValueAndPointer("/map[@name='Key5']/strings[2]",
+        assertValueAndPointer("/map[@name='Key5']/strings[2]",
                 "String 2",
                 "/map[@name='Key5'][@name='strings'][2]",
+                "BbDdDd",
                 "BbDdDdB");
 
         // map[@name=map]/collection[missingIndex]
-        testNullPointer("/map[@name='Key5']/strings[5]",
+        assertNullPointer("/map[@name='Key5']/strings[5]",
                 "/map[@name='Key5'][@name='strings'][5]",
-                "BbDdDdEN");
+                "BbDdDdE");
 
         // scalarPropertyAsCollection[index]
-        testValueAndPointer("/int[1]",
+        assertValueAndPointer("/int[1]",
                 new Integer(1),
                 "/int",
+                "Bb",
                 "BbB");
 
         // scalarPropertyAsCollection[index]
-        testValueAndPointer(".[1]/int",
+        assertValueAndPointer(".[1]/int",
                 new Integer(1),
                 "/int",
+                "Bb",
                 "BbB");
     }
 
@@ -510,14 +538,26 @@ public class SimplePathInterpreterTest extends TestCase {
         context.getVariables().declareVariable("array", new String[]{"Value1"});
         context.getVariables().declareVariable("testnull", new TestNull());
 
-        testNullPointer("$testnull/nothing[2]",
+        assertNullPointer("$testnull/nothing[2]",
                 "$testnull/nothing[2]",
-                "VBbEN");
+                "VBbE");
     }
 
-    private void testValueAndPointer(
+    private void assertValueAndPointer(
             String path, Object expectedValue, String expectedPath,
             String expectedSignature)
+    {
+        assertValueAndPointer(
+            path,
+            expectedValue,
+            expectedPath,
+            expectedSignature,
+            expectedSignature);
+    }
+    
+    private void assertValueAndPointer(
+            String path, Object expectedValue, String expectedPath,
+            String expectedSignature, String expectedValueSignature)
     {
         Object value = context.getValue(path);
         assertEquals("Checking value: " + path, expectedValue, value);
@@ -528,21 +568,28 @@ public class SimplePathInterpreterTest extends TestCase {
 
         assertEquals("Checking signature: " + path,
                 expectedSignature, pointerSignature(pointer));
+        
+        Pointer vPointer = ((NodePointer)pointer).getValuePointer();
+        assertEquals("Checking value pointer signature: " + path,
+                expectedValueSignature, pointerSignature(vPointer));
     }
 
-
-    private void testNullPointer(String path, String expectedPath,
+    private void assertNullPointer(String path, String expectedPath,
             String expectedSignature)
     {
         Pointer pointer = context.getPointer(path);
         assertNotNull("Null path exists: " + path,
                     pointer);
-        assertTrue("Null path is null: " + path,
-                    !((NodePointer)pointer).isActual());
         assertEquals("Null path as path: " + path,
                     expectedPath, pointer.asPath());
         assertEquals("Checking Signature: " + path,
-                expectedSignature, pointerSignature(pointer));
+                    expectedSignature, pointerSignature(pointer));
+                
+        Pointer vPointer = ((NodePointer)pointer).getValuePointer();
+        assertTrue("Null path is null: " + path,
+                    !((NodePointer)vPointer).isActual());
+        assertEquals("Checking value pointer signature: " + path,
+                    expectedSignature + "N", pointerSignature(vPointer));
     }
 
     /**

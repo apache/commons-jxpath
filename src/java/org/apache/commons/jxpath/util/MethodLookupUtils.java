@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/MethodLookupUtils.java,v 1.1 2002/06/12 21:02:05 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/06/12 21:02:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/MethodLookupUtils.java,v 1.2 2002/11/26 01:20:07 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:07 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,19 +61,20 @@
  */
 package org.apache.commons.jxpath.util;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.Pointer;
 
 /**
  * Method lookup utilities, which find static and non-static methods as well
  * as constructors based on a name and list of parameters.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/06/12 21:02:05 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:07 $
  */
 public class MethodLookupUtils {
 

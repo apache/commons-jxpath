@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:08 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,18 +62,9 @@
 
 package org.apache.commons.jxpath.ri.model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-import junit.framework.TestSuite;
-
-import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
-import org.apache.commons.jxpath.NestedTestBean;
-import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
@@ -83,12 +74,11 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase
 {
-    private static boolean enabled = true;
     private JXPathContext context;
 
     /**
@@ -115,10 +105,6 @@ public abstract class BeanModelTestCase extends JXPathTestCase
      * Test property iterators, the core of the graph traversal engine
      */
     public void testIndividualIterators(){
-        if (!enabled){
-            return;
-        }
-//        testIndividual(0, 0, true, false, 3);
         testIndividual(+1, 0, true, false, 0);
         testIndividual(-1, 0, true, false, 4);
 
@@ -136,41 +122,49 @@ public abstract class BeanModelTestCase extends JXPathTestCase
     private void testIndividual(int relativePropertyIndex, int offset,
                 boolean useStartLocation, boolean reverse, int expected)
     {
-        PropertyOwnerPointer root =
-            (PropertyOwnerPointer)NodePointer.newNodePointer(
-                    new QName(null, "root"), createContextBean(),
-                    Locale.getDefault());
+		PropertyOwnerPointer root =
+			(PropertyOwnerPointer) NodePointer.newNodePointer(
+				new QName(null, "root"),
+				createContextBean(),
+				Locale.getDefault());
 
-        NodeIterator it;
+		NodeIterator it;
 
-        PropertyPointer start = null;
+		PropertyPointer start = null;
 
-        if (useStartLocation){
-            start = root.getPropertyPointer();
-            start.setPropertyIndex(relativeProperty(start, relativePropertyIndex));
-            start.setIndex(offset);
-        }
-        it = root.childIterator(
-                new NodeNameTest(new QName(null, "integers")),
-                reverse, start);
+		if (useStartLocation) {
+			start = root.getPropertyPointer();
+			start.setPropertyIndex(
+				relativeProperty(start, relativePropertyIndex));
+			start.setIndex(offset);
+		}
+		it =
+			root.childIterator(
+				new NodeNameTest(new QName(null, "integers")),
+				reverse,
+				start);
 
-        int size = 0;
-        while(it.setPosition(it.getPosition() + 1)){
-            size++;
-        }
-        assertEquals("ITERATIONS: Individual, relativePropertyIndex=" +
-            relativePropertyIndex +
-            ", offset=" + offset + ", useStartLocation=" + useStartLocation +
-            ", reverse=" + reverse, expected, size);
+		int size = 0;
+		while (it.setPosition(it.getPosition() + 1)) {
+			size++;
+		}
+		assertEquals(
+			"ITERATIONS: Individual, relativePropertyIndex="
+				+ relativePropertyIndex
+				+ ", offset="
+				+ offset
+				+ ", useStartLocation="
+				+ useStartLocation
+				+ ", reverse="
+				+ reverse,
+			expected,
+			size);
     }
 
     /**
      * Test property iterators with multiple properties returned
      */
     public void testMultipleIterators(){
-        if (!enabled){
-            return;
-        }
         testMultiple(0, 0, true, false, 20);
 
         testMultiple(3, 0, true, false, 16);
@@ -222,40 +216,40 @@ public abstract class BeanModelTestCase extends JXPathTestCase
     }
 
     public void testIteratePropertyArrayWithHasNext(){
-        if (!enabled){
-            return;
-        }
-        JXPathContext context = JXPathContext.newContext(createContextBean());
-        Iterator it = context.iteratePointers("/integers");
-        List actual = new ArrayList();
-        while(it.hasNext()){
-            actual.add(((Pointer)it.next()).asPath());
-        }
-        assertEquals("Iterating 'hasNext'/'next'<" + "/integers" + ">",
-            list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"),
-            actual);
+		JXPathContext context = JXPathContext.newContext(createContextBean());
+		Iterator it = context.iteratePointers("/integers");
+		List actual = new ArrayList();
+		while (it.hasNext()) {
+			actual.add(((Pointer) it.next()).asPath());
+		}
+		assertEquals(
+			"Iterating 'hasNext'/'next'<" + "/integers" + ">",
+			list(
+				"/integers[1]",
+				"/integers[2]",
+				"/integers[3]",
+				"/integers[4]"),
+			actual);
     }
 
-    public void testIteratePropertyArrayWithoutHasNext(){
-        if (!enabled){
-            return;
-        }
-        JXPathContext context = JXPathContext.newContext(createContextBean());
-        Iterator it = context.iteratePointers("/integers");
-        List actual = new ArrayList();
-        for (int i = 0; i < 4; i++){
-            actual.add(it.next().toString());
-        }
-        assertEquals("Iterating 'next'<" + "/integers" + ">",
-            list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"),
-            actual);
-    }
+	public void testIteratePropertyArrayWithoutHasNext() {
+		JXPathContext context = JXPathContext.newContext(createContextBean());
+		Iterator it = context.iteratePointers("/integers");
+		List actual = new ArrayList();
+		for (int i = 0; i < 4; i++) {
+			actual.add(it.next().toString());
+		}
+		assertEquals(
+			"Iterating 'next'<" + "/integers" + ">",
+			list(
+				"/integers[1]",
+				"/integers[2]",
+				"/integers[3]",
+				"/integers[4]"),
+			actual);
+	}
 
     public void testIterateAndSet(){
-        if (!enabled){
-            return;
-        }
-
         JXPathContext context = JXPathContext.newContext(createContextBean());
 
         Iterator it = context.iteratePointers("beans/int");
@@ -277,37 +271,40 @@ public abstract class BeanModelTestCase extends JXPathTestCase
     /**
      * Test contributed by Kate Dvortsova
      */
-    public void testIteratePointerSetValue() {
-        JXPathContext context = JXPathContext.newContext(createContextBean());
+	public void testIteratePointerSetValue() {
+		JXPathContext context = JXPathContext.newContext(createContextBean());
 
-        assertXPathValue(context, "/beans[1]/name", "Name 1");
-        assertXPathValue(context, "/beans[2]/name", "Name 2");
+		assertXPathValue(context, "/beans[1]/name", "Name 1");
+		assertXPathValue(context, "/beans[2]/name", "Name 2");
 
-        // Test setting via context
-        context.setValue("/beans[2]/name", "Name 2 set");
-        assertXPathValue(context, "/beans[2]/name", "Name 2 set");
+		// Test setting via context
+		context.setValue("/beans[2]/name", "Name 2 set");
+		assertXPathValue(context, "/beans[2]/name", "Name 2 set");
 
-        // Restore original value
-        context.setValue("/beans[2]/name", "Name 2");
-        assertXPathValue(context, "/beans[2]/name", "Name 2");
+		// Restore original value
+		context.setValue("/beans[2]/name", "Name 2");
+		assertXPathValue(context, "/beans[2]/name", "Name 2");
 
-        int iter_count = 0;
-        Iterator iter = context.iteratePointers("/beans/name");
-        while (iter.hasNext()) {
-            iter_count++;
-            Pointer pointer = (Pointer) iter.next();
-            String s = (String) pointer.getValue();
-            s = s + "suffix";
-            pointer.setValue(s);
-            assertEquals("pointer.getValue", s, pointer.getValue());
-            // fails right here, the value isn't getting set in the bean.
-            assertEquals("context.getValue", s, context.getValue(pointer.asPath()));
-        }
-        assertEquals("Iteration count", 2, iter_count);
+		int iter_count = 0;
+		Iterator iter = context.iteratePointers("/beans/name");
+		while (iter.hasNext()) {
+			iter_count++;
+			Pointer pointer = (Pointer) iter.next();
+			String s = (String) pointer.getValue();
+			s = s + "suffix";
+			pointer.setValue(s);
+			assertEquals("pointer.getValue", s, pointer.getValue());
+			// fails right here, the value isn't getting set in the bean.
+			assertEquals(
+				"context.getValue",
+				s,
+				context.getValue(pointer.asPath()));
+		}
+		assertEquals("Iteration count", 2, iter_count);
 
-        assertXPathValue(context, "/beans[1]/name", "Name 1suffix");
-        assertXPathValue(context, "/beans[2]/name", "Name 2suffix");
-    }
+		assertXPathValue(context, "/beans[1]/name", "Name 1suffix");
+		assertXPathValue(context, "/beans[2]/name", "Name 2suffix");
+	}
 
     public void testRoot(){
         assertXPathValueAndPointer(context,
@@ -634,24 +631,47 @@ public abstract class BeanModelTestCase extends JXPathTestCase
                 "/nestedBean/int");
     }
 
-    public void testAttributeLang(){
+	public void testAttributeLang() {
 
-        assertXPathValue(context,
-                "@xml:lang",
-                "en-US");
+		assertXPathValue(context, 
+            "@xml:lang", 
+            "en-US");
 
-        assertXPathValue(context,
-                "count(@xml:*)",
-                new Double(1));
+		assertXPathValue(context, 
+            "count(@xml:*)", 
+            new Double(1));
 
-        assertXPathValue(context,"lang('en')", Boolean.TRUE);
-        assertXPathValue(context,"lang('fr')", Boolean.FALSE);
-        assertXPathValueIterator(context, "beans[1]/strings[string-length() = 8]", list("String 1", "String 2", "String 3"));
-        assertXPathValue(context,"boolean(boolean)", Boolean.FALSE);
-        assertXPathValue(context,"boolean(integers[position() < 3])", Boolean.TRUE);
-        assertXPathValue(context,"boolean(integers[position() > 4])", Boolean.FALSE);
-        assertXPathValue(context,"sum(integers)", new Double(10));
-    }
+		assertXPathValue(context, 
+            "lang('en')", 
+            Boolean.TRUE);
+            
+		assertXPathValue(context, 
+            "lang('fr')", 
+            Boolean.FALSE);
+            
+		assertXPathValueIterator(
+			context,
+			"beans[1]/strings[string-length() = 8]",
+			list("String 1", "String 2", "String 3"));
+            
+		assertXPathValue(context, 
+            "boolean(boolean)", 
+            Boolean.FALSE);
+            
+		assertXPathValue(
+			context,
+			"boolean(integers[position() < 3])",
+			Boolean.TRUE);
+            
+		assertXPathValue(
+			context,
+			"boolean(integers[position() > 4])",
+			Boolean.FALSE);
+            
+		assertXPathValue(context, 
+            "sum(integers)", 
+            new Double(10));
+	}
 
     public void testBooleanPredicate(){
         // use child axis

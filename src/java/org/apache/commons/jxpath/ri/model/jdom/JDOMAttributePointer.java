@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributePointer.java,v 1.2 2002/10/20 03:47:18 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/10/20 03:47:18 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributePointer.java,v 1.3 2002/11/26 01:20:07 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/11/26 01:20:07 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,10 +61,7 @@
  */
 package org.apache.commons.jxpath.ri.model.jdom;
 
-import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
-import org.apache.commons.jxpath.ri.compiler.NodeTest;
-import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.TypeUtils;
 import org.jdom.Attribute;
@@ -73,7 +70,7 @@ import org.jdom.Attribute;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/10/20 03:47:18 $
+ * @version $Revision: 1.3 $ $Date: 2002/11/26 01:20:07 $
  */
 public class JDOMAttributePointer extends NodePointer {
     private Attribute attr;
@@ -83,9 +80,11 @@ public class JDOMAttributePointer extends NodePointer {
         this.attr = attr;
     }
 
-    public QName getName(){
-        return new QName(JDOMNodePointer.getPrefix(attr), JDOMNodePointer.getLocalName(attr));
-    }
+	public QName getName() {
+		return new QName(
+			JDOMNodePointer.getPrefix(attr),
+			JDOMNodePointer.getLocalName(attr));
+	}
 
     public QName getExpandedName(){
         return new QName(getNamespaceURI(),  attr.getName());
@@ -111,7 +110,7 @@ public class JDOMAttributePointer extends NodePointer {
         return 1;
     }    
 
-    public Object getNode(){
+    public Object getImmediateNode(){
         String value = attr.getValue();
         if (value == null){
             return null;
@@ -126,12 +125,6 @@ public class JDOMAttributePointer extends NodePointer {
     public boolean isLeaf(){
         return true;
     }
-
-//    public boolean testNode(NodeTest nodeTest){
-//        return nodeTest == null ||
-//                ((nodeTest instanceof NodeTypeTest) &&
-//                    ((NodeTypeTest)nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE);
-//    }
 
     /**
      * Sets the value of this attribute.
@@ -177,8 +170,11 @@ public class JDOMAttributePointer extends NodePointer {
         return attr == other.attr;
     }
 
-    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
-        // Won't happen - attributes don't have children
-        return 0;
-    }
+	public int compareChildNodePointers(
+    		NodePointer pointer1,
+    		NodePointer pointer2) 
+    {
+		// Won't happen - attributes don't have children
+		return 0;
+	}
 }

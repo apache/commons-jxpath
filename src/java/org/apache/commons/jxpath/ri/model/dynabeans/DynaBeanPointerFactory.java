@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPointerFactory.java,v 1.1 2002/10/20 03:44:18 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:44:18 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPointerFactory.java,v 1.2 2002/11/26 01:20:07 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:20:07 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,7 +64,6 @@ package org.apache.commons.jxpath.ri.model.dynabeans;
 import java.util.Locale;
 
 import org.apache.commons.beanutils.DynaBean;
-import org.apache.commons.beanutils.DynaClass;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
@@ -76,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:44:18 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:07 $
  */
 public class DynaBeanPointerFactory implements NodePointerFactory {
 

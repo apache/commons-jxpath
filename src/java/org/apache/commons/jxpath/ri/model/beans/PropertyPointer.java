@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.6 2002/10/20 03:47:17 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/10/20 03:47:17 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.7 2002/11/26 01:20:06 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/11/26 01:20:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a property of the parent object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/10/20 03:47:17 $
+ * @version $Revision: 1.7 $ $Date: 2002/11/26 01:20:06 $
  */
 public abstract class PropertyPointer extends NodePointer {
     public static int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
@@ -128,7 +128,7 @@ public abstract class PropertyPointer extends NodePointer {
     private static final Object UNINITIALIZED = new Object();
 
     private Object value = UNINITIALIZED;
-    public Object getNode(){
+    public Object getImmediateNode(){
         if (value == UNINITIALIZED){
             if (index == WHOLE_COLLECTION){
                 value = getBaseValue();
@@ -164,8 +164,11 @@ public abstract class PropertyPointer extends NodePointer {
      * Returns a NodePointer that can be used to access the currently
      * selected property value.
      */
-    public NodePointer getValuePointer(){
-        return NodePointer.newChildNodePointer(this, getName(), getNode());
+    public NodePointer getImmediateValuePointer(){
+        return NodePointer.newChildNodePointer(
+            this,
+            getName(),
+            getImmediateNode());
     }
 
     public int hashCode(){
