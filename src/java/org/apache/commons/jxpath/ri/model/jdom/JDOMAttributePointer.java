@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributePointer.java,v 1.3 2002/11/26 01:20:07 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/11/26 01:20:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributePointer.java,v 1.4 2002/11/26 01:33:34 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/11/26 01:33:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.jdom.Attribute;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/11/26 01:20:07 $
+ * @version $Revision: 1.4 $ $Date: 2002/11/26 01:33:34 $
  */
 public class JDOMAttributePointer extends NodePointer {
     private Attribute attr;
@@ -80,11 +80,11 @@ public class JDOMAttributePointer extends NodePointer {
         this.attr = attr;
     }
 
-	public QName getName() {
-		return new QName(
-			JDOMNodePointer.getPrefix(attr),
-			JDOMNodePointer.getLocalName(attr));
-	}
+    public QName getName() {
+        return new QName(
+            JDOMNodePointer.getPrefix(attr),
+            JDOMNodePointer.getLocalName(attr));
+    }
 
     public QName getExpandedName(){
         return new QName(getNamespaceURI(),  attr.getName());
@@ -145,7 +145,7 @@ public class JDOMAttributePointer extends NodePointer {
             buffer.append(parent.asPath());
             if (buffer.length() == 0 ||
                     buffer.charAt(buffer.length()-1) != '/'){
-            	buffer.append('/');
+                buffer.append('/');
             }
         }
         buffer.append('@');
@@ -170,11 +170,11 @@ public class JDOMAttributePointer extends NodePointer {
         return attr == other.attr;
     }
 
-	public int compareChildNodePointers(
-    		NodePointer pointer1,
-    		NodePointer pointer2) 
+    public int compareChildNodePointers(
+            NodePointer pointer1,
+            NodePointer pointer2) 
     {
-		// Won't happen - attributes don't have children
-		return 0;
-	}
+        // Won't happen - attributes don't have children
+        return 0;
+    }
 }

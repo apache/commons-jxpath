@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.8 2002/11/26 01:20:06 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/11/26 01:20:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.9 2002/11/26 01:33:34 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/11/26 01:33:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/11/26 01:20:06 $
+ * @version $Revision: 1.9 $ $Date: 2002/11/26 01:33:34 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -100,7 +100,7 @@ public class CollectionPointer extends NodePointer {
     }
 
     public boolean isCollection(){
-    	return true;
+        return true;
     }
 
     public int getLength(){
@@ -153,7 +153,7 @@ public class CollectionPointer extends NodePointer {
     }
 
     public NodePointer createChild(JXPathContext context, 
-    			QName name, int index, Object value)
+                QName name, int index, Object value)
     {
         if (parent instanceof PropertyPointer){
             return parent.createChild(context, name, index, value);
@@ -184,7 +184,7 @@ public class CollectionPointer extends NodePointer {
     }
 
     public NodePointer createChild(JXPathContext context, 
-    			QName name, int index)
+                QName name, int index)
     {
         if (parent instanceof PropertyPointer){
             return parent.createChild(context, name, index);
@@ -217,7 +217,7 @@ public class CollectionPointer extends NodePointer {
     }
 
     public NodeIterator childIterator(NodeTest test, 
-    			boolean reverse, NodePointer startWith)
+                boolean reverse, NodePointer startWith)
     {
         if (index == WHOLE_COLLECTION){
             return null;
@@ -253,7 +253,7 @@ public class CollectionPointer extends NodePointer {
     }
 
     public int compareChildNodePointers(
-    			NodePointer pointer1, NodePointer pointer2)
+                NodePointer pointer1, NodePointer pointer2)
     {
         return pointer1.getIndex() - pointer2.getIndex();
     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.10 2002/11/26 01:20:07 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/11/26 01:20:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/ValueUtils.java,v 1.11 2002/11/26 01:33:34 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/11/26 01:33:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.JXPathException;
  * Collection and property access utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/11/26 01:20:07 $
+ * @version $Revision: 1.11 $ $Date: 2002/11/26 01:33:34 $
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -478,11 +478,11 @@ public class ValueUtils {
         }
 
         // Check the implemented interfaces and subinterfaces
-		method =
-			getAccessibleMethodFromInterfaceNest(
-				clazz,
-				method.getName(),
-				method.getParameterTypes());
+        method =
+            getAccessibleMethodFromInterfaceNest(
+                clazz,
+                method.getName(),
+                method.getParameterTypes());
         return (method);
     }
 

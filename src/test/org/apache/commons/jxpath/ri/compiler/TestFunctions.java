@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/TestFunctions.java,v 1.2 2002/11/26 01:33:34 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/11/26 01:33:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import org.apache.commons.jxpath.Pointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2002/11/26 01:33:34 $
  */
 public class TestFunctions {
 
@@ -86,7 +86,7 @@ public class TestFunctions {
 
     public TestFunctions(ExpressionContext context, String bar){
         this.foo = ((Number)context.getContextNodePointer().getValue()).
-        		intValue();
+                intValue();
         this.bar = bar;
     }
 

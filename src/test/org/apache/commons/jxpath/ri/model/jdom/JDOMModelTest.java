@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/JDOMModelTest.java,v 1.4 2002/11/26 01:20:08 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/11/26 01:20:08 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/JDOMModelTest.java,v 1.5 2002/11/26 01:33:35 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/11/26 01:33:35 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.jdom.*;
  * Tests JXPath with JDOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/11/26 01:20:08 $
+ * @version $Revision: 1.5 $ $Date: 2002/11/26 01:33:35 $
  */
 
 public class JDOMModelTest extends XMLModelTestCase
@@ -110,46 +110,46 @@ public class JDOMModelTest extends XMLModelTestCase
     }
     
     protected String getXMLSignature(Object node, 
-    		boolean elements, boolean attributes, boolean text, boolean pi){
-    	StringBuffer buffer = new StringBuffer();
-    	appendXMLSignature(buffer, node, elements, attributes, text, pi);
-    	return buffer.toString();
+            boolean elements, boolean attributes, boolean text, boolean pi){
+        StringBuffer buffer = new StringBuffer();
+        appendXMLSignature(buffer, node, elements, attributes, text, pi);
+        return buffer.toString();
     }
     
     private void appendXMLSignature(StringBuffer buffer, Object object, 
-    		boolean elements, boolean attributes, boolean text, boolean pi){
-    	if (object instanceof Document){
-			buffer.append("<D>");
-			appendXMLSignature(buffer, ((Document)object).getContent(), 
-					elements, attributes, text, pi);
-			buffer.append("</D");
-    	}
-    	else if (object instanceof Element){
-			String tag = elements ? ((Element)object).getName() : "E";
-			buffer.append("<");
-			buffer.append(tag);
-			buffer.append(">");
-			appendXMLSignature(buffer, ((Element)object).getContent(), 
-					elements, attributes, text, pi);
-			buffer.append("</");
-			buffer.append(tag);
-			buffer.append(">");    				
-    	}
-    	else if (object instanceof Text || object instanceof CDATA){
-			if (text){
-				String string = ((Text)object).getText();
-				string = string.replace('\n', '=');
-				buffer.append(string);
-			}
-    	}
-	}
-	
+            boolean elements, boolean attributes, boolean text, boolean pi){
+        if (object instanceof Document){
+            buffer.append("<D>");
+            appendXMLSignature(buffer, ((Document)object).getContent(), 
+                    elements, attributes, text, pi);
+            buffer.append("</D");
+        }
+        else if (object instanceof Element){
+            String tag = elements ? ((Element)object).getName() : "E";
+            buffer.append("<");
+            buffer.append(tag);
+            buffer.append(">");
+            appendXMLSignature(buffer, ((Element)object).getContent(), 
+                    elements, attributes, text, pi);
+            buffer.append("</");
+            buffer.append(tag);
+            buffer.append(">");                 
+        }
+        else if (object instanceof Text || object instanceof CDATA){
+            if (text){
+                String string = ((Text)object).getText();
+                string = string.replace('\n', '=');
+                buffer.append(string);
+            }
+        }
+    }
+    
     private void appendXMLSignature(StringBuffer buffer, List children, 
-    		boolean elements, boolean attributes, boolean text, boolean pi)
+            boolean elements, boolean attributes, boolean text, boolean pi)
     {
-    	for (int i = 0; i < children.size(); i++){
-			appendXMLSignature(buffer, children.get(i), 
-					elements, attributes, text, pi);
-    	}
-	}  
+        for (int i = 0; i < children.size(); i++){
+            appendXMLSignature(buffer, children.get(i), 
+                    elements, attributes, text, pi);
+        }
+    }  
 }

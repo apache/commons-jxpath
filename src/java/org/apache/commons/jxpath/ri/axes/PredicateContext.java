@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.15 2002/11/26 01:20:06 dmitri Exp $
- * $Revision: 1.15 $
- * $Date: 2002/11/26 01:20:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.16 2002/11/26 01:33:34 dmitri Exp $
+ * $Revision: 1.16 $
+ * $Date: 2002/11/26 01:33:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2002/11/26 01:20:06 $
+ * @version $Revision: 1.16 $ $Date: 2002/11/26 01:33:34 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -93,47 +93,47 @@ public class PredicateContext extends EvalContext {
     }
 
     public boolean nextNode(){
-		if (done) {
-			return false;
-		}
-		while (parentContext.nextNode()) {
-			if (setupDynamicPropertyPointer()) {
-				Object pred = nameTestExpression.computeValue(parentContext);
-				if (pred instanceof NodePointer) {
-					pred = ((NodePointer) pred).getValue();
-				}
-				dynamicPropertyPointer.setPropertyName(
-					InfoSetUtil.stringValue(pred));
-				position = 1;
-				done = true;
-				return true;
-			}
-			else {
-				Object pred = expression.computeValue(parentContext);
-				if (pred instanceof Iterator) {
-					if (!((Iterator) pred).hasNext()) {
-						return false;
-					}
-					pred = ((Iterator) pred).next();
-				}
+        if (done) {
+            return false;
+        }
+        while (parentContext.nextNode()) {
+            if (setupDynamicPropertyPointer()) {
+                Object pred = nameTestExpression.computeValue(parentContext);
+                if (pred instanceof NodePointer) {
+                    pred = ((NodePointer) pred).getValue();
+                }
+                dynamicPropertyPointer.setPropertyName(
+                    InfoSetUtil.stringValue(pred));
+                position = 1;
+                done = true;
+                return true;
+            }
+            else {
+                Object pred = expression.computeValue(parentContext);
+                if (pred instanceof Iterator) {
+                    if (!((Iterator) pred).hasNext()) {
+                        return false;
+                    }
+                    pred = ((Iterator) pred).next();
+                }
 
-				if (pred instanceof NodePointer) {
-					pred = ((NodePointer) pred).getNode();
-				}
+                if (pred instanceof NodePointer) {
+                    pred = ((NodePointer) pred).getNode();
+                }
 
-				if (pred instanceof Number) {
-					int pos = (int) InfoSetUtil.doubleValue(pred);
-					position++;
-					done = true;
-					return parentContext.setPosition(pos);
-				}
-				else if (InfoSetUtil.booleanValue(pred)) {
-					position++;
-					return true;
-				}
-			}
-		}
-		return false;
+                if (pred instanceof Number) {
+                    int pos = (int) InfoSetUtil.doubleValue(pred);
+                    position++;
+                    done = true;
+                    return parentContext.setPosition(pos);
+                }
+                else if (InfoSetUtil.booleanValue(pred)) {
+                    position++;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -159,22 +159,22 @@ public class PredicateContext extends EvalContext {
     }
 
     public boolean setPosition(int position){
-		if (nameTestExpression == null) {
-			return setPositionStandard(position);
-		}
-		else {
-			if (dynamicPropertyPointer == null) {
-				if (!setupDynamicPropertyPointer()) {
-					return setPositionStandard(position);
-				}
-			}
-			if (position < 1
-				|| position > dynamicPropertyPointer.getLength()) {
-				return false;
-			}
-			dynamicPropertyPointer.setIndex(position - 1);
-			return true;
-		}
+        if (nameTestExpression == null) {
+            return setPositionStandard(position);
+        }
+        else {
+            if (dynamicPropertyPointer == null) {
+                if (!setupDynamicPropertyPointer()) {
+                    return setPositionStandard(position);
+                }
+            }
+            if (position < 1
+                || position > dynamicPropertyPointer.getLength()) {
+                return false;
+            }
+            dynamicPropertyPointer.setIndex(position - 1);
+            return true;
+        }
     }
 
     public NodePointer getCurrentNodePointer(){

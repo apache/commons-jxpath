@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.10 2002/11/26 01:20:06 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/11/26 01:20:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.11 2002/11/26 01:33:34 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/11/26 01:33:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/11/26 01:20:06 $
+ * @version $Revision: 1.11 $ $Date: 2002/11/26 01:33:34 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -80,13 +80,13 @@ public class DynamicPropertyPointer extends PropertyPointer {
     private String[] names;
     private String requiredPropertyName;
 
-	public DynamicPropertyPointer(
-    		NodePointer parent,
-    		DynamicPropertyHandler handler) 
+    public DynamicPropertyPointer(
+            NodePointer parent,
+            DynamicPropertyHandler handler) 
     {
-		super(parent);
-		this.handler = handler;
-	}
+        super(parent);
+        this.handler = handler;
+    }
     /**
      * This type of node is auxiliary.
      */
@@ -202,17 +202,17 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * and the value will be the property itself.
      */
     public Object getImmediateNode(){
-		Object value;
-		if (index == WHOLE_COLLECTION) {
-			value = handler.getProperty(getBean(), getPropertyName());
-		}
-		else {
-			value =
-				ValueUtils.getValue(
-					handler.getProperty(getBean(), getPropertyName()),
-					index);
-		}
-		return value;
+        Object value;
+        if (index == WHOLE_COLLECTION) {
+            value = handler.getProperty(getBean(), getPropertyName());
+        }
+        else {
+            value =
+                ValueUtils.getValue(
+                    handler.getProperty(getBean(), getPropertyName()),
+                    index);
+        }
+        return value;
     }
 
     /**
@@ -229,15 +229,15 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * represented by the property.
      */
     public void setValue(Object value){
-		if (index == WHOLE_COLLECTION) {
-			handler.setProperty(getBean(), getPropertyName(), value);
-		}
-		else {
-			ValueUtils.setValue(
-				handler.getProperty(getBean(), getPropertyName()),
-				index,
-				value);
-		}
+        if (index == WHOLE_COLLECTION) {
+            handler.setProperty(getBean(), getPropertyName(), value);
+        }
+        else {
+            ValueUtils.setValue(
+                handler.getProperty(getBean(), getPropertyName()),
+                index,
+                value);
+        }
     }
 
     public NodePointer createPath(JXPathContext context, Object value){
@@ -245,118 +245,118 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
-		// Ignore the name passed to us, use our own data
-		if (index == WHOLE_COLLECTION) {
-			handler.setProperty(getBean(), getPropertyName(), value);
-		}
-		else {
-			Object collection = getBaseValue();
-			if (collection == null) {
-				AbstractFactory factory = getAbstractFactory(context);
-				if (!factory
-					.createObject(
-						context,
-						this,
-						getBean(),
-						getPropertyName(),
-						0)) {
-					throw new JXPathException(
-						"Factory could not create an object for path: "
-							+ asPath());
-				}
-				collection = getBaseValue();
-			}
+        // Ignore the name passed to us, use our own data
+        if (index == WHOLE_COLLECTION) {
+            handler.setProperty(getBean(), getPropertyName(), value);
+        }
+        else {
+            Object collection = getBaseValue();
+            if (collection == null) {
+                AbstractFactory factory = getAbstractFactory(context);
+                if (!factory
+                    .createObject(
+                        context,
+                        this,
+                        getBean(),
+                        getPropertyName(),
+                        0)) {
+                    throw new JXPathException(
+                        "Factory could not create an object for path: "
+                            + asPath());
+                }
+                collection = getBaseValue();
+            }
 
-			if (index < 0) {
-				throw new JXPathException("Index is less than 1: " + asPath());
-			}
+            if (index < 0) {
+                throw new JXPathException("Index is less than 1: " + asPath());
+            }
 
-			if (index >= getLength()) {
-				collection = ValueUtils.expandCollection(collection, index + 1);
-				handler.setProperty(getBean(), getPropertyName(), collection);
-			}
+            if (index >= getLength()) {
+                collection = ValueUtils.expandCollection(collection, index + 1);
+                handler.setProperty(getBean(), getPropertyName(), collection);
+            }
 
-			ValueUtils.setValue(collection, index, value);
-		}
-		NodePointer ptr = (NodePointer) clone();
-		ptr.setIndex(index);
-		return ptr;
+            ValueUtils.setValue(collection, index, value);
+        }
+        NodePointer ptr = (NodePointer) clone();
+        ptr.setIndex(index);
+        return ptr;
     }
 
     public NodePointer createChild(JXPathContext context, QName name, int index){
-		// Ignore the name passed to us, use our own data
-		Object collection = getBaseValue();
-		if (collection == null) {
-			AbstractFactory factory = getAbstractFactory(context);
-			if (!factory
-				.createObject(context, this, getBean(), getPropertyName(), 0)) {
-				throw new JXPathException(
-					"Factory could not create an object for path: " + asPath());
-			}
-			collection = getBaseValue();
-		}
+        // Ignore the name passed to us, use our own data
+        Object collection = getBaseValue();
+        if (collection == null) {
+            AbstractFactory factory = getAbstractFactory(context);
+            if (!factory
+                .createObject(context, this, getBean(), getPropertyName(), 0)) {
+                throw new JXPathException(
+                    "Factory could not create an object for path: " + asPath());
+            }
+            collection = getBaseValue();
+        }
 
-		if (index < 0) {
-			throw new JXPathException("Index is less than 1: " + asPath());
-		}
+        if (index < 0) {
+            throw new JXPathException("Index is less than 1: " + asPath());
+        }
 
-		if (index >= getLength()) {
-			collection = ValueUtils.expandCollection(collection, index + 1);
-			handler.setProperty(getBean(), getPropertyName(), collection);
-		}
+        if (index >= getLength()) {
+            collection = ValueUtils.expandCollection(collection, index + 1);
+            handler.setProperty(getBean(), getPropertyName(), collection);
+        }
 
-		DynamicPropertyPointer pointer = (DynamicPropertyPointer) this.clone();
-		pointer.setIndex(index);
-		return pointer;
+        DynamicPropertyPointer pointer = (DynamicPropertyPointer) this.clone();
+        pointer.setIndex(index);
+        return pointer;
     }
 
     public NodePointer createPath(JXPathContext context){
-		if (getNode() == null) {
-			AbstractFactory factory = getAbstractFactory(context);
-			int inx = (index == WHOLE_COLLECTION ? 0 : index);
-			if (!factory
-				.createObject(
-					context,
-					this,
-					getBean(),
-					getPropertyName(),
-					inx)) {
-				throw new JXPathException(
-					"Factory could not create an object for path: " + asPath());
-			}
-		}
-		return this;
+        if (getNode() == null) {
+            AbstractFactory factory = getAbstractFactory(context);
+            int inx = (index == WHOLE_COLLECTION ? 0 : index);
+            if (!factory
+                .createObject(
+                    context,
+                    this,
+                    getBean(),
+                    getPropertyName(),
+                    inx)) {
+                throw new JXPathException(
+                    "Factory could not create an object for path: " + asPath());
+            }
+        }
+        return this;
     }
 
     public void remove(){
-		if (index == WHOLE_COLLECTION) {
-			handler.setProperty(getBean(), getPropertyName(), null);
-		}
-		else if (isCollection()) {
-			Object collection = ValueUtils.remove(getBaseValue(), index);
-			handler.setProperty(getBean(), getPropertyName(), collection);
-		}
-		else if (index == 0) {
-			handler.setProperty(getBean(), getPropertyName(), null);
-		}
+        if (index == WHOLE_COLLECTION) {
+            handler.setProperty(getBean(), getPropertyName(), null);
+        }
+        else if (isCollection()) {
+            Object collection = ValueUtils.remove(getBaseValue(), index);
+            handler.setProperty(getBean(), getPropertyName(), collection);
+        }
+        else if (index == 0) {
+            handler.setProperty(getBean(), getPropertyName(), null);
+        }
     }
 
     public String asPath(){
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(getParent().asPath());
-		if (buffer.length() == 0) {
-			buffer.append("/.");
-		}
-		else if (buffer.charAt(buffer.length() - 1) == '/') {
-			buffer.append('.');
-		}
-		buffer.append("[@name='");
-		buffer.append(escape(getPropertyName()));
-		buffer.append("']");
-		if (index != WHOLE_COLLECTION && isCollection()) {
-			buffer.append('[').append(index + 1).append(']');
-		}
-		return buffer.toString();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(getParent().asPath());
+        if (buffer.length() == 0) {
+            buffer.append("/.");
+        }
+        else if (buffer.charAt(buffer.length() - 1) == '/') {
+            buffer.append('.');
+        }
+        buffer.append("[@name='");
+        buffer.append(escape(getPropertyName()));
+        buffer.append("']");
+        if (index != WHOLE_COLLECTION && isCollection()) {
+            buffer.append('[').append(index + 1).append(']');
+        }
+        return buffer.toString();
     }
 
     private String escape(String string){

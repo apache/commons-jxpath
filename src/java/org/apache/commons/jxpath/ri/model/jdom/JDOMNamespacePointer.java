@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNamespacePointer.java,v 1.3 2002/11/26 01:20:07 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/11/26 01:20:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNamespacePointer.java,v 1.4 2002/11/26 01:33:34 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/11/26 01:33:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/11/26 01:20:07 $
+ * @version $Revision: 1.4 $ $Date: 2002/11/26 01:33:34 $
  */
 public class JDOMNamespacePointer extends NodePointer {
     private String prefix;
@@ -79,15 +79,15 @@ public class JDOMNamespacePointer extends NodePointer {
         this.prefix = prefix;
     }
 
-	public JDOMNamespacePointer(
-    		NodePointer parent,
-    		String prefix,
-    		String namespaceURI) 
+    public JDOMNamespacePointer(
+            NodePointer parent,
+            String prefix,
+            String namespaceURI) 
     {
-		super(parent);
-		this.prefix = prefix;
-		this.namespaceURI = namespaceURI;
-	}
+        super(parent);
+        this.prefix = prefix;
+        this.namespaceURI = namespaceURI;
+    }
 
     public QName getName(){
         return new QName(getNamespaceURI(), prefix);
@@ -133,7 +133,7 @@ public class JDOMNamespacePointer extends NodePointer {
             buffer.append(parent.asPath());
             if (buffer.length() == 0 ||
                     buffer.charAt(buffer.length()-1) != '/'){
-            	buffer.append('/');
+                buffer.append('/');
             }
         }
         buffer.append("namespace::");
@@ -158,11 +158,11 @@ public class JDOMNamespacePointer extends NodePointer {
         return prefix.equals(other.prefix);
     }
 
-	public int compareChildNodePointers(
-		NodePointer pointer1,
-		NodePointer pointer2) 
+    public int compareChildNodePointers(
+        NodePointer pointer1,
+        NodePointer pointer2) 
     {
-		// Won't happen - namespaces don't have children
-		return 0;
-	}
+        // Won't happen - namespaces don't have children
+        return 0;
+    }
  }

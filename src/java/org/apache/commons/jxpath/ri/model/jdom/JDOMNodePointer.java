@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.4 2002/11/26 01:20:07 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/11/26 01:20:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.5 2002/11/26 01:33:34 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/11/26 01:33:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -80,7 +80,7 @@ import org.jdom.*;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/11/26 01:20:07 $
+ * @version $Revision: 1.5 $ $Date: 2002/11/26 01:33:34 $
  */
 public class JDOMNodePointer extends NodePointer {
     private Object node;
@@ -332,67 +332,67 @@ public class JDOMNodePointer extends NodePointer {
             }
         }
         else {
-        	Element element = (Element)node;
-        	element.getContent().clear();
-        	            
-        	if (value instanceof Element){
-        		Element valueElement = (Element)value;
-        		addContent(valueElement.getContent());
-        	}
-        	else if (value instanceof Document){
-        		Document valueDocument = (Document)value;        		
-        		addContent(valueDocument.getContent());
-        	}
-        	else if (value instanceof Text ||
-        			 value instanceof CDATA){
-        		String string = ((Text)value).getText();
-        		element.addContent(new Text(string));
-			}
-			else if (value instanceof ProcessingInstruction){
-				ProcessingInstruction pi = (ProcessingInstruction)
-						((ProcessingInstruction)value).clone();
-				element.addContent(pi);
-			}
-			else if (value instanceof Comment){
-				Comment comment = (Comment)((Comment)value).clone();
-				element.addContent(comment);
-			}
-        	else {
-	            String string = (String)TypeUtils.convert(value, String.class);
-	            if (string != null && !string.equals("")){
-	                element.addContent(new Text(string));
-	            }
-        	}
+            Element element = (Element)node;
+            element.getContent().clear();
+                        
+            if (value instanceof Element){
+                Element valueElement = (Element)value;
+                addContent(valueElement.getContent());
+            }
+            else if (value instanceof Document){
+                Document valueDocument = (Document)value;                
+                addContent(valueDocument.getContent());
+            }
+            else if (value instanceof Text ||
+                     value instanceof CDATA){
+                String string = ((Text)value).getText();
+                element.addContent(new Text(string));
+            }
+            else if (value instanceof ProcessingInstruction){
+                ProcessingInstruction pi = (ProcessingInstruction)
+                        ((ProcessingInstruction)value).clone();
+                element.addContent(pi);
+            }
+            else if (value instanceof Comment){
+                Comment comment = (Comment)((Comment)value).clone();
+                element.addContent(comment);
+            }
+            else {
+                String string = (String)TypeUtils.convert(value, String.class);
+                if (string != null && !string.equals("")){
+                    element.addContent(new Text(string));
+                }
+            }
         }
     }
     
     private void addContent(List content){
-    	Element element = (Element)node;
-    	int count = content.size();
-    	
-    	for (int i = 0; i < count; i++){
-    		Object child = content.get(i);
-    		if (child instanceof Element){
-    			child = ((Element)child).clone();
-    			element.addContent((Element)child);
-    		}
-	        else if (child instanceof Text){
-    			child = ((Text)child).clone();
-    			element.addContent((Text)child);
-	        }
-	        else if (node instanceof CDATA){
-    			child = ((CDATA)child).clone();
-    			element.addContent((CDATA)child);
-	        }
-	        else if (node instanceof ProcessingInstruction){
-    			child = ((ProcessingInstruction)child).clone();
-    			element.addContent((ProcessingInstruction)child);
-	        }
-	        else if (node instanceof Comment){
-    			child = ((Comment)child).clone();
-    			element.addContent((Comment)child);
-	        }
-    	}
+        Element element = (Element)node;
+        int count = content.size();
+        
+        for (int i = 0; i < count; i++){
+            Object child = content.get(i);
+            if (child instanceof Element){
+                child = ((Element)child).clone();
+                element.addContent((Element)child);
+            }
+            else if (child instanceof Text){
+                child = ((Text)child).clone();
+                element.addContent((Text)child);
+            }
+            else if (node instanceof CDATA){
+                child = ((CDATA)child).clone();
+                element.addContent((CDATA)child);
+            }
+            else if (node instanceof ProcessingInstruction){
+                child = ((ProcessingInstruction)child).clone();
+                element.addContent((ProcessingInstruction)child);
+            }
+            else if (node instanceof Comment){
+                child = ((Comment)child).clone();
+                element.addContent((Comment)child);
+            }
+        }
     }
     
     public boolean testNode(NodeTest test){
@@ -569,32 +569,32 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     public NodePointer createAttribute(JXPathContext context, QName name){
-		if (!(node instanceof Element)) {
-			return super.createAttribute(context, name);
-		}
+        if (!(node instanceof Element)) {
+            return super.createAttribute(context, name);
+        }
 
-		Element element = (Element) node;
-		String prefix = name.getPrefix();
-		if (prefix != null) {
-			Namespace ns = element.getNamespace(prefix);
-			if (ns == null) {
-				throw new JXPathException(
-					"Unknown namespace prefix: " + prefix);
-			}
-			Attribute attr = element.getAttribute(name.getName(), ns);
-			if (attr == null) {
-				element.setAttribute(name.getName(), "", ns);
-			}
-		}
-		else {
-			Attribute attr = element.getAttribute(name.getName());
-			if (attr == null) {
-				element.setAttribute(name.getName(), "");
-			}
-		}
-		NodeIterator it = attributeIterator(name);
-		it.setPosition(1);
-		return it.getNodePointer();
+        Element element = (Element) node;
+        String prefix = name.getPrefix();
+        if (prefix != null) {
+            Namespace ns = element.getNamespace(prefix);
+            if (ns == null) {
+                throw new JXPathException(
+                    "Unknown namespace prefix: " + prefix);
+            }
+            Attribute attr = element.getAttribute(name.getName(), ns);
+            if (attr == null) {
+                element.setAttribute(name.getName(), "", ns);
+            }
+        }
+        else {
+            Attribute attr = element.getAttribute(name.getName());
+            if (attr == null) {
+                element.setAttribute(name.getName(), "");
+            }
+        }
+        NodeIterator it = attributeIterator(name);
+        it.setPosition(1);
+        return it.getNodePointer();
     }
 
     public void remove(){
@@ -621,7 +621,7 @@ public class JDOMNodePointer extends NodePointer {
             if (parent instanceof JDOMNodePointer){
                 if (buffer.length() == 0 ||
                         buffer.charAt(buffer.length()-1) != '/'){
-                	buffer.append('/');
+                    buffer.append('/');
                 }
                 buffer.append(getName());
                 buffer.append('[');
@@ -713,25 +713,25 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     private int getRelativePositionOfPI(String target){
-		Element parent = ((ProcessingInstruction) node).getParent();
-		if (parent == null) {
-			return 1;
-		}
-		List children = parent.getContent();
-		int count = 0;
-		for (int i = 0; i < children.size(); i++) {
-			Object child = children.get(i);
-			if (child instanceof ProcessingInstruction
-				&& (target == null
-					|| target.equals(
-						((ProcessingInstruction) child).getTarget()))) {
-				count++;
-			}
-			if (child == node) {
-				break;
-			}
-		}
-		return count;
+        Element parent = ((ProcessingInstruction) node).getParent();
+        if (parent == null) {
+            return 1;
+        }
+        List children = parent.getContent();
+        int count = 0;
+        for (int i = 0; i < children.size(); i++) {
+            Object child = children.get(i);
+            if (child instanceof ProcessingInstruction
+                && (target == null
+                    || target.equals(
+                        ((ProcessingInstruction) child).getTarget()))) {
+                count++;
+            }
+            if (child == node) {
+                break;
+            }
+        }
+        return count;
     }
 
     public int hashCode(){
@@ -751,13 +751,13 @@ public class JDOMNodePointer extends NodePointer {
         return node == other.node;
     }
 
-	private AbstractFactory getAbstractFactory(JXPathContext context) {
-		AbstractFactory factory = context.getFactory();
-		if (factory == null) {
-			throw new JXPathException(
-				"Factory is not set on the JXPathContext - cannot create path: "
-					+ asPath());
-		}
-		return factory;
-	}
+    private AbstractFactory getAbstractFactory(JXPathContext context) {
+        AbstractFactory factory = context.getFactory();
+        if (factory == null) {
+            throw new JXPathException(
+                "Factory is not set on the JXPathContext - cannot create path: "
+                    + asPath());
+        }
+        return factory;
+    }
 }

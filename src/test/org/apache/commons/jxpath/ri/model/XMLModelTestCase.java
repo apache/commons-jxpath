@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.3 2002/11/26 01:20:08 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/11/26 01:20:08 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.4 2002/11/26 01:33:35 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/11/26 01:33:35 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/11/26 01:20:08 $
+ * @version $Revision: 1.4 $ $Date: 2002/11/26 01:33:35 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase
@@ -121,23 +121,23 @@ public abstract class XMLModelTestCase extends JXPathTestCase
         return context;
     }
 
-	/**
-	 * An XML signature is used to determine if we have the right result
-	 * after a modification of XML by JXPath.  It is basically a piece
-	 * of simplified XML.
-	 */    
+    /**
+     * An XML signature is used to determine if we have the right result
+     * after a modification of XML by JXPath.  It is basically a piece
+     * of simplified XML.
+     */    
     protected abstract String getXMLSignature(Object node, 
-    		boolean elements, boolean attributes, boolean text, boolean pi);
+            boolean elements, boolean attributes, boolean text, boolean pi);
 
-	protected void assertXMLSignature(JXPathContext context,
-			String path, String signature,
-    		boolean elements, boolean attributes, boolean text, boolean pi)
-	{
-		Object node = context.getPointer(path).getNode();
-		String sig = getXMLSignature(node, elements, attributes, text, pi);
-		assertEquals("XML Signature mismatch: ", signature, sig);
-	}
-	
+    protected void assertXMLSignature(JXPathContext context,
+            String path, String signature,
+            boolean elements, boolean attributes, boolean text, boolean pi)
+    {
+        Object node = context.getPointer(path).getNode();
+        String sig = getXMLSignature(node, elements, attributes, text, pi);
+        assertEquals("XML Signature mismatch: ", signature, sig);
+    }
+    
     // ------------------------------------------------ Individual Test Methods
 
     public void testDocumentOrder(){
@@ -157,26 +157,26 @@ public abstract class XMLModelTestCase extends JXPathTestCase
                 1);
     }
 
-	public void testSetValue(){
-		assertXPathSetValue(context,
-				"vendor/location[@id = '100']",
-				"New Text");
-		
-		assertXMLSignature(context,
-				"vendor/location[@id = '100']",
-				"<E>New Text</E>",
-				false, false, true, false);
-				
-		assertXPathSetValue(context,
-				"vendor/location[@id = '101']",
-				"Replacement Text");
+    public void testSetValue(){
+        assertXPathSetValue(context,
+                "vendor/location[@id = '100']",
+                "New Text");
+        
+        assertXMLSignature(context,
+                "vendor/location[@id = '100']",
+                "<E>New Text</E>",
+                false, false, true, false);
+                
+        assertXPathSetValue(context,
+                "vendor/location[@id = '101']",
+                "Replacement Text");
 
-		assertXMLSignature(context,
-				"vendor/location[@id = '101']",
-				"<E>Replacement Text</E>",
-				false, false, true, false);				
-	}
-	
+        assertXMLSignature(context,
+                "vendor/location[@id = '101']",
+                "<E>Replacement Text</E>",
+                false, false, true, false);                
+    }
+    
     /**
      * Test JXPathContext.createPath() with various arguments
      */

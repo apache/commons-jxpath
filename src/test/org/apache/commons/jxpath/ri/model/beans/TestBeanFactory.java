@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/TestBeanFactory.java,v 1.2 2002/11/26 01:20:08 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/11/26 01:20:08 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/TestBeanFactory.java,v 1.3 2002/11/26 01:33:35 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/11/26 01:33:35 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.*;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:08 $
+ * @version $Revision: 1.3 $ $Date: 2002/11/26 01:33:35 $
  */
 public class TestBeanFactory extends AbstractFactory {
 
@@ -78,19 +78,19 @@ public class TestBeanFactory extends AbstractFactory {
     public boolean createObject(JXPathContext context, 
                 Pointer pointer, Object parent, String name, int index)
     {
-		if (name.equals("nestedBean")) {
-			((TestBean) parent).setNestedBean(new NestedTestBean("newName"));
-			return true;
-		} else if (name.equals("beans")) {
-			TestBean bean = (TestBean) parent;
-			if (bean.getBeans() == null || index >= bean.getBeans().length) {
-				bean.setBeans(new NestedTestBean[index + 1]);
-			}
-			((TestBean) parent).getBeans()[index] =
-				new NestedTestBean("newName");
-			return true;
-		}
-		return false;   }
+        if (name.equals("nestedBean")) {
+            ((TestBean) parent).setNestedBean(new NestedTestBean("newName"));
+            return true;
+        } else if (name.equals("beans")) {
+            TestBean bean = (TestBean) parent;
+            if (bean.getBeans() == null || index >= bean.getBeans().length) {
+                bean.setBeans(new NestedTestBean[index + 1]);
+            }
+            ((TestBean) parent).getBeans()[index] =
+                new NestedTestBean("newName");
+            return true;
+        }
+        return false;   }
 
     /**
      * Create a new object and set it on the specified variable

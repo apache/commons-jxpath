@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPropertyPointer.java,v 1.3 2002/11/26 01:20:07 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/11/26 01:20:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPropertyPointer.java,v 1.4 2002/11/26 01:33:34 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/11/26 01:33:34 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a DynaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/11/26 01:20:07 $
+ * @version $Revision: 1.4 $ $Date: 2002/11/26 01:33:34 $
  */
 public class DynaBeanPropertyPointer extends PropertyPointer {
     private DynaBean dynaBean;
@@ -262,140 +262,140 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     public NodePointer createChild(JXPathContext context,
             QName name, int index, Object value)
     {
-		// Ignore the name passed to us, use our own data
-		if (index == WHOLE_COLLECTION) {
-			setValue(index, value);
-		}
-		else if (isIndexedProperty()) {
-			dynaBean.set(getPropertyName(), index, convert(value, true));
-		}
-		else {
-			Object collection = getBaseValue();
-			if (collection == null) {
-				AbstractFactory factory = getAbstractFactory(context);
-				if (!factory
-					.createObject(
-						context,
-						this,
-						getBean(),
-						getPropertyName(),
-						0)) {
-					throw new JXPathException(
-						"Factory could not create an object for path: "
-							+ asPath());
-				}
-				collection = getBaseValue();
-			}
+        // Ignore the name passed to us, use our own data
+        if (index == WHOLE_COLLECTION) {
+            setValue(index, value);
+        }
+        else if (isIndexedProperty()) {
+            dynaBean.set(getPropertyName(), index, convert(value, true));
+        }
+        else {
+            Object collection = getBaseValue();
+            if (collection == null) {
+                AbstractFactory factory = getAbstractFactory(context);
+                if (!factory
+                    .createObject(
+                        context,
+                        this,
+                        getBean(),
+                        getPropertyName(),
+                        0)) {
+                    throw new JXPathException(
+                        "Factory could not create an object for path: "
+                            + asPath());
+                }
+                collection = getBaseValue();
+            }
 
-			if (index < 0) {
-				throw new JXPathException("Index is less than 1: " + asPath());
-			}
+            if (index < 0) {
+                throw new JXPathException("Index is less than 1: " + asPath());
+            }
 
-			if (index >= getLength()) {
-				collection = ValueUtils.expandCollection(collection, index + 1);
-				dynaBean.set(getPropertyName(), collection);
-			}
+            if (index >= getLength()) {
+                collection = ValueUtils.expandCollection(collection, index + 1);
+                dynaBean.set(getPropertyName(), collection);
+            }
 
-			ValueUtils.setValue(collection, index, value);
-		}
-		NodePointer ptr = (NodePointer) clone();
-		ptr.setIndex(index);
-		return ptr;
+            ValueUtils.setValue(collection, index, value);
+        }
+        NodePointer ptr = (NodePointer) clone();
+        ptr.setIndex(index);
+        return ptr;
     }
 
     public NodePointer createChild(JXPathContext context,
             QName name, int index)
     {
-		if (isIndexedProperty()) {
-			AbstractFactory factory = getAbstractFactory(context);
-			if (!factory
-				.createObject(
-					context,
-					this,
-					dynaBean,
-					getPropertyName(),
-					index)) {
-				throw new JXPathException(
-					"Factory could not create an object for path: " + asPath());
-			}
-		}
-		else {
-			// Ignore the name passed to us, use our own data
-			Object collection = getBaseValue();
-			if (collection == null) {
-				AbstractFactory factory = getAbstractFactory(context);
-				if (!factory
-					.createObject(
-						context,
-						this,
-						dynaBean,
-						getPropertyName(),
-						index)) {
-					throw new JXPathException(
-						"Factory could not create an object for path: "
-							+ asPath());
-				}
-				collection = getBaseValue();
-			}
+        if (isIndexedProperty()) {
+            AbstractFactory factory = getAbstractFactory(context);
+            if (!factory
+                .createObject(
+                    context,
+                    this,
+                    dynaBean,
+                    getPropertyName(),
+                    index)) {
+                throw new JXPathException(
+                    "Factory could not create an object for path: " + asPath());
+            }
+        }
+        else {
+            // Ignore the name passed to us, use our own data
+            Object collection = getBaseValue();
+            if (collection == null) {
+                AbstractFactory factory = getAbstractFactory(context);
+                if (!factory
+                    .createObject(
+                        context,
+                        this,
+                        dynaBean,
+                        getPropertyName(),
+                        index)) {
+                    throw new JXPathException(
+                        "Factory could not create an object for path: "
+                            + asPath());
+                }
+                collection = getBaseValue();
+            }
 
-			if (index < 0) {
-				throw new JXPathException("Index is less than 1: " + asPath());
-			}
+            if (index < 0) {
+                throw new JXPathException("Index is less than 1: " + asPath());
+            }
 
-			if (index >= getLength()) {
-				collection = ValueUtils.expandCollection(collection, index + 1);
-				dynaBean.set(getPropertyName(), collection);
-			}
-		}
+            if (index >= getLength()) {
+                collection = ValueUtils.expandCollection(collection, index + 1);
+                dynaBean.set(getPropertyName(), collection);
+            }
+        }
 
-		DynaBeanPropertyPointer pointer =
-			(DynaBeanPropertyPointer) this.clone();
-		pointer.setIndex(index);
-		return pointer;
+        DynaBeanPropertyPointer pointer =
+            (DynaBeanPropertyPointer) this.clone();
+        pointer.setIndex(index);
+        return pointer;
     }
 
     public NodePointer createPath(JXPathContext context){
-		if (getNode() == null) {
-			AbstractFactory factory = getAbstractFactory(context);
-			int inx = (index == WHOLE_COLLECTION ? 0 : index);
-			if (!factory
-				.createObject(
-					context,
-					this,
-					dynaBean,
-					getPropertyName(),
-					inx)) {
-				throw new JXPathException(
-					"Factory could not create an object for path: " + asPath());
-			}
-		}
+        if (getNode() == null) {
+            AbstractFactory factory = getAbstractFactory(context);
+            int inx = (index == WHOLE_COLLECTION ? 0 : index);
+            if (!factory
+                .createObject(
+                    context,
+                    this,
+                    dynaBean,
+                    getPropertyName(),
+                    inx)) {
+                throw new JXPathException(
+                    "Factory could not create an object for path: " + asPath());
+            }
+        }
         return this;
     }
 
     public void remove(){
-		if (index == WHOLE_COLLECTION) {
-			dynaBean.set(getPropertyName(), null);
-		}
-		else if (isIndexedProperty()) {
-			dynaBean.set(getPropertyName(), index, null);
-		}
-		else if (isCollection()) {
-			Object collection = ValueUtils.remove(getBaseValue(), index);
-			dynaBean.set(getPropertyName(), collection);
-		}
-		else if (index == 0) {
-			dynaBean.set(getPropertyName(), null);
-		}
+        if (index == WHOLE_COLLECTION) {
+            dynaBean.set(getPropertyName(), null);
+        }
+        else if (isIndexedProperty()) {
+            dynaBean.set(getPropertyName(), index, null);
+        }
+        else if (isCollection()) {
+            Object collection = ValueUtils.remove(getBaseValue(), index);
+            dynaBean.set(getPropertyName(), collection);
+        }
+        else if (index == 0) {
+            dynaBean.set(getPropertyName(), null);
+        }
     }
 
     private AbstractFactory getAbstractFactory(JXPathContext context){
-		AbstractFactory factory = context.getFactory();
-		if (factory == null) {
-			throw new JXPathException(
-				"Factory is not set on the JXPathContext - cannot create path: "
-					+ asPath());
-		}
-		return factory;
+        AbstractFactory factory = context.getFactory();
+        if (factory == null) {
+            throw new JXPathException(
+                "Factory is not set on the JXPathContext - cannot create path: "
+                    + asPath());
+        }
+        return factory;
     }
 
     private void setValue(int index, Object value){
@@ -413,29 +413,29 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
 
     private Object convert(Object value, boolean element){
-		DynaClass dynaClass = (DynaClass) dynaBean.getDynaClass();
-		DynaProperty property = dynaClass.getDynaProperty(getPropertyName());
-		Class type = property.getType();
-		if (element) {
-			if (type.isArray()) {
-				type = type.getComponentType();
-			}
-			else {
-				return value; // No need to convert
-			}
-		}
+        DynaClass dynaClass = (DynaClass) dynaBean.getDynaClass();
+        DynaProperty property = dynaClass.getDynaProperty(getPropertyName());
+        Class type = property.getType();
+        if (element) {
+            if (type.isArray()) {
+                type = type.getComponentType();
+            }
+            else {
+                return value; // No need to convert
+            }
+        }
 
-		try {
-			return TypeUtils.convert(value, type);
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-			throw new JXPathException(
-				"Cannot convert value of class "
-					+ (value == null ? "null" : value.getClass().getName())
-					+ " to type "
-					+ type,
-				ex);
-		}
+        try {
+            return TypeUtils.convert(value, type);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            throw new JXPathException(
+                "Cannot convert value of class "
+                    + (value == null ? "null" : value.getClass().getName())
+                    + " to type "
+                    + type,
+                ex);
+        }
     }
 }
