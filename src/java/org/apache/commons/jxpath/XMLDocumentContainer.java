@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/XMLDocumentContainer.java,v 1.4 2002/04/26 03:28:36 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/26 03:28:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/XMLDocumentContainer.java,v 1.5 2002/06/08 22:46:11 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/06/08 22:46:11 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,6 +64,7 @@ package org.apache.commons.jxpath;
 import java.io.InputStream;
 import java.net.URL;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -83,7 +84,7 @@ import org.w3c.dom.Node;
  * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/26 03:28:36 $
+ * @version $Revision: 1.5 $ $Date: 2002/06/08 22:46:11 $
  */
 public class XMLDocumentContainer implements Container {
 
@@ -119,12 +120,21 @@ public class XMLDocumentContainer implements Container {
                 try {
                     if (xmlURL != null){
                         stream = xmlURL.openStream();
-                        source = new StreamSource(stream);
                     }
-                    DOMResult result = new DOMResult();
-                    Transformer trans = TransformerFactory.newInstance().newTransformer();
-                    trans.transform(source, result);
-                    document = (Document) result.getNode();
+                    if (stream != null){
+                        DocumentBuilderFactory factory =
+                                DocumentBuilderFactory.newInstance();
+                        document = factory.newDocumentBuilder().parse(stream);
+                    }
+                    else {
+                        if (xmlURL != null){
+                            source = new StreamSource(stream);
+                        }
+                        DOMResult result = new DOMResult();
+                        Transformer trans = TransformerFactory.newInstance().newTransformer();
+                        trans.transform(source, result);
+                        document = (Document) result.getNode();
+                    }
                 }
                 finally {
                     if (stream != null){
