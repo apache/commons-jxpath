@@ -16,6 +16,7 @@
 package org.apache.commons.jxpath.util;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,7 +32,7 @@ import org.apache.commons.jxpath.Pointer;
  * Tests BasicTypeConverter
  * 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/02/29 14:17:46 $
+ * @version $Revision: 1.7 $ $Date: 2004/06/29 21:50:02 $
  */
 
 public class BasicTypeConverterTest extends TestCase {
@@ -166,4 +167,8 @@ public class BasicTypeConverterTest extends TestCase {
             }
         }, Integer.class, new Integer(9));
     }    
+    
+    public void testBeanUtilsConverter() {
+        assertConversion("12", BigDecimal.class, new BigDecimal(12));
+    }
 }

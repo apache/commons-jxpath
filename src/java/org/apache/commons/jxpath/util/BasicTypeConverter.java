@@ -25,15 +25,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.NodeSet;
+import org.apache.commons.jxpath.Pointer;
 
 /**
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2004/03/25 05:42:01 $
+ * @version $Revision: 1.14 $ $Date: 2004/06/29 21:50:02 $
  */
 public class BasicTypeConverter implements TypeConverter {
 
@@ -160,7 +161,7 @@ public class BasicTypeConverter implements TypeConverter {
         else if (object instanceof Pointer) {
             return canConvert(((Pointer) object).getValue(), toType);
         }
-        return false;
+        return ConvertUtils.lookup(toType) != null;
     }
 
     /**
@@ -292,6 +293,10 @@ public class BasicTypeConverter implements TypeConverter {
             }
         }
         
+        if (ConvertUtils.lookup(toType) != null) {
+			return ConvertUtils.convert(object.toString(), toType);
+		}
+
         throw new RuntimeException(
             "Cannot convert " + object.getClass() + " to " + toType);
     }
