@@ -11,7 +11,7 @@
 <h1>
 The Jakarta Commons <i>JXPath</i> Component</h1></center>
 
-<center>$Id: STATUS.html,v 1.3 2002/04/28 22:43:08 dmitri Exp $
+<center>$Id: STATUS.html,v 1.4 2002/06/10 01:57:50 dmitri Exp $
 <br><a href="#Introduction">[Introduction]</a><a href="#Dependencies">[Dependencies]</a><a href="#Release Info">[Release
 Info]</a><a href="#Committers">[Committers]</a><a href="#Action Items">[Action
 Items]</a></center>
@@ -37,22 +37,21 @@ for development and use:
 <a href="http://java.sun.com/j2se">Java Development Kit</a> (Version 1.3
 or later)</li>
 
-<li>
-<a href="http://java.sun.com/xml/">JAXP</a> (Version 1.1 or later)</li>
+  <li> <a href="http://java.sun.com/xml/">JAXP</a> (Version 1.1 or later) build 
+    time dependency only - no runtime dependency</li>
 
 <li>
 <a href="http://www.junit.org">JUnit Testing Framework</a> (Version 3.7
 or later) - for unit tests only, not required for deployment</li>
 
-<li>
-<a href="http://www.webgain.com/products/metamata/java_doc.html">JavaCC</a>
-(Version 2.0 or later)</li>
+  <li> <a href="http://www.webgain.com/products/metamata/java_doc.html">JavaCC</a> 
+    (Version 2.0 or later) - for build only - no runtime dependency</li>
 </ul>
 <a NAME="Release Info"></a>
 <h3>
 3. RELEASE INFO</h3>
-Current Release: <b>1.0 beta 1</b>
-<p>Planned Next Release: <b>1.0, timeframe: 27 May, 2002</b>
+Current Release: <b>1.0 beta 2</b> 
+<p>Planned Next Release: <b>1.0, timeframe: 17 June, 2002</b> 
 <p>See the
 <a href="#Action Items">Action Items</a> list for tasks that
 need to be completed prior to this release.
@@ -74,34 +73,14 @@ The following action items need to be completed prior to a Version 1.0
 release of this component:
 <br>&nbsp;
 <table BORDER >
-<tr>
-<th WIDTH="80%">Action Item</th>
-
-<th WIDTH="20%">Volunteer</th>
-</tr>
-
-<tr>
-<td><b>Documentation</b>. Validate all JavaDoc and user's guide.</td>
-
-<td ALIGN=CENTER>Dmitri Plotnikov</td>
-</tr>
-
-<tr>
-<td><b>Unit Tests.</b> Add more unit tests</td>
-
-<td>
-<center>Dmitri Plotnikov</center>
-</td>
-</tr>
-
-<tr>
-<td><b>Fix problems with document order.&nbsp;</b> There are some cases
-where JXPath violates the XPath spec in relation to document order.</td>
-
-<td>
-<center>Dmitri Plotnikov</center>
-</td>
-</tr>
+  <tr> 
+    <th WIDTH="80%">Action Item</th>
+    <th WIDTH="20%">Volunteer</th>
+  </tr>
+  <tr> 
+    <td><b>Documentation</b>. Validate all JavaDoc and user's guide.</td>
+    <td ALIGN=CENTER>Dmitri Plotnikov</td>
+  </tr>
 </table>
 
 </body>
