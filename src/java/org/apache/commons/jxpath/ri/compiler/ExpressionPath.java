@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.4 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.5 2002/08/10 01:39:29 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/08/10 01:39:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,11 +70,9 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * a path that starts with an expression like a function call: <code>getFoo(.)/bar</code>.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.5 $ $Date: 2002/08/10 01:39:29 $
  */
 public class ExpressionPath extends Path {
-
-    public static final String BASIC_PREDICATES_HINT = "basicPredicatesHint";
 
     private Expression expression;
     private Expression predicates[];
@@ -186,6 +184,7 @@ public class ExpressionPath extends Path {
             context = evalContext.getRootContext().getConstantContext(value);
         }
 
+
         if (firstMatch && isSimpleExpressionPath() &&
                 !(context instanceof UnionContext)){
             EvalContext ctx = context;
@@ -193,16 +192,13 @@ public class ExpressionPath extends Path {
             if (ptr != null &&
                     (ptr.getIndex() == NodePointer.WHOLE_COLLECTION ||
                      predicates == null || predicates.length == 0)){
-                NodePointer pointer = SimplePathInterpreter.
-                    interpretPredicates(evalContext, ptr, predicates);
-                return SimplePathInterpreter.interpretPath(evalContext,
-                    pointer, getSteps());
+                return SimplePathInterpreter.
+                    interpretSimpleExpressionPath(
+                            evalContext, ptr, predicates, getSteps());
             }
         }
-
         if (predicates != null){
             for (int j = 0; j < predicates.length; j++){
-//                System.err.println("PREDICATE: " + predicates[j]);
                 context = new PredicateContext(context, predicates[j]);
             }
         }

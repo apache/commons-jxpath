@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Path.java,v 1.4 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Path.java,v 1.5 2002/08/10 01:39:29 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/08/10 01:39:29 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,12 +69,11 @@ import org.apache.commons.jxpath.ri.axes.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.5 $ $Date: 2002/08/10 01:39:29 $
  */
 public abstract class Path extends Expression {
 
     private Step[] steps;
-    public static final String BASIC_PATH_HINT = "basicPathHint";
     private boolean basicKnown = false;
     private boolean basic;
 
@@ -109,15 +108,25 @@ public abstract class Path extends Expression {
             basic = true;
             Step[] steps = getSteps();
             for (int i = 0; i < steps.length; i++){
-                if (steps[i].getAxis() != Compiler.AXIS_CHILD ||
-                        !(steps[i].getNodeTest() instanceof NodeNameTest) ||
-                        ((NodeNameTest)steps[i].getNodeTest()).
+                boolean accepted = false;
+                if (steps[i].getAxis() == Compiler.AXIS_SELF &&
+                        (steps[i].getNodeTest() instanceof NodeTypeTest) &&
+                        ((NodeTypeTest)steps[i].getNodeTest()).getNodeType() ==
+                                Compiler.NODE_TYPE_NODE){
+                    accepted = true;
+                }
+                else if (steps[i].getAxis() == Compiler.AXIS_CHILD &&
+                        (steps[i].getNodeTest() instanceof NodeNameTest) &&
+                        !((NodeNameTest)steps[i].getNodeTest()).
                                     getNodeName().getName().equals("*")){
+                    accepted = true;
+                }
+                if (accepted){
+                    accepted = areBasicPredicates(steps[i].getPredicates());
+                }
+                if (!accepted){
                     basic = false;
                     break;
-                }
-                if (basic){
-                    basic = areBasicPredicates(steps[i].getPredicates());
                 }
             }
         }
@@ -159,21 +168,25 @@ public abstract class Path extends Expression {
 
         if (isSimplePath()){
             NodePointer ptr = (NodePointer)context.getSingleNodePointer();
-            return SimplePathInterpreter.interpretPath(context, ptr, steps);
+            return SimplePathInterpreter.interpretSimpleLocationPath(context, ptr, steps);
         }
         else {
-            for (int i = 0; i < steps.length; i++){
-                context = createContextForStep(context, steps[i].getAxis(), steps[i].getNodeTest());
-                Expression predicates[] = steps[i].getPredicates();
-                if (predicates != null){
-                    for (int j = 0; j < predicates.length; j++){
-                        context = new PredicateContext(context, predicates[j]);
-                    }
+            return searchForPath(context);
+        }
+    }
+
+    private Pointer searchForPath(EvalContext context) {
+        for (int i = 0; i < steps.length; i++){
+            context = createContextForStep(context, steps[i].getAxis(), steps[i].getNodeTest());
+            Expression predicates[] = steps[i].getPredicates();
+            if (predicates != null){
+                for (int j = 0; j < predicates.length; j++){
+                    context = new PredicateContext(context, predicates[j]);
                 }
             }
-
-            return context.getSingleNodePointer();
         }
+
+        return context.getSingleNodePointer();
     }
 
     /**
