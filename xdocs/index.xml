@@ -16,10 +16,10 @@
 -->
 <document>
    <properties>
-      <title>Home</title>
+      <title>JXPath Home</title>
       <author email="commons-dev@jakarta.apache.org">Commons Documentation Team</author>
       <author email="dmitri@apache.org">Dmitri Plotnikov</author>
-      <revision>$Id: index.xml,v 1.5 2004/02/29 14:17:43 scolebourne Exp $</revision>
+      <revision>$Id: index.xml,v 1.6 2004/06/30 00:30:02 dmitri Exp $</revision>
    </properties>
 
    <body>
@@ -88,12 +88,24 @@ while (it.hasNext()){
       <section name="Releases">
         <ul>
           <li>
-            <a href="http://jakarta.apache.org/builds/jakarta-commons/release/commons-jxpath/v1.0/">Version 1.0</a>
+            <a href="http://jakarta.apache.org/site/binindex.cgi#commons-jxpath">Version 1.2 (mirror, bin)</a>
           </li>
           <li>
-            <a href="http://jakarta.apache.org/builds/jakarta-commons/release/commons-jxpath/v1.1/">Version 1.1</a>
+            <a href="http://jakarta.apache.org/site/sourceindex.cgi#commons-jxpath">Version 1.2 (mirror, source)</a>
+          </li>
+          <li>
+            <a href="http://archive.apache.org/dist/jakarta/commons/jxpath/old/v1.1/">Version 1.1</a>
+          </li>
+          <li>
+            <a href="http://archive.apache.org/dist/jakarta/commons/jxpath/old/v1.0/">Version 1.0</a>
           </li>
         </ul>
+      </section>
+
+      <section name="Nightly Build">
+        <p>
+          Nightly build can be found <a href="http://cvs.apache.org/builds/jakarta-commons/nightly/commons-jxpath/">here</a>.
+        </p>
       </section>
 
    </body>

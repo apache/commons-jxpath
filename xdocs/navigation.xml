@@ -17,8 +17,19 @@
 <!DOCTYPE org.apache.commons.menus SYSTEM '../../commons-build/menus/menus.dtd'>
 <project name="JXPath">
   <title>JXPath</title>
-  <organizationLogo href="http://jakarta.apache.org/images/jakarta-logo.gif">Jakarta</organizationLogo>
+  <organizationLogo href="/images/temp.gif">Jakarta</organizationLogo>
   <body>
+    <menu name="Commons JXPath">
+      <item name="Overview" href="/index.html"/>
+      <item name="User's Guide" href="/users-guide.html"/>
+      <item name="Javadoc (Release 1.2)" href="apidocs/index.html"/>
+      <item name="Release Notes (1.2)" href="/release-notes-1.2.html"/>
+      <item name="Mailing lists" href="/mail-lists.html"/>
+      <item name="Team" href="/team-list.html"/>
+      <!--item name="Tasks" href="/tasks.html"/-->
+      <item name="CVS" href="http://cvs.apache.org/viewcvs/jakarta-commons/jxpath/"/>
+    </menu>
+    
     &common-menus;
   </body>
 </project>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2001-2004 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<document>
+  <properties>
+    <title>
+       JXPath Release Notes 1.2
+    </title>
+    <author email="dmitri@apache.org">
+       Dmitri Plotnikov
+    </author>
+  </properties>
+
+  <body>
+
+  <section name="JXPath 1.2 Release Notes">
+    <p>
+      Most changes in 1.2 are in the internal implementation and do not affect
+      public APIs. However there are a couple of publicly visible features:
+      <ul>
+        <li>
+          Namespace registration. Namespace URIs can now be associated with prefixes
+          at the level of JXPathContext.
+          <br/>
+        </li>
+        <li>
+          JXPathContext has two new convenience methods: <code>selectNodes</code> and
+          <code>selectSingleNode</code>.
+          <br/>
+        </li>
+        <li>
+          Type conversion is integrated with BeanUtils.
+          <br/>
+        </li>
+      </ul>
+     </p>
+     <p>
+      This release also includes countless bug fixes and implementation improvements.
+     </p>
+
+    </section>
+
+    <section name="Acknowledgements">
+      <p>
+        Great thanks to everybody who reported problems, helped to trace them,
+        suggested changed or simply provided encouragement. Special thanks to
+        <ul>
+          <li>Jim Alateras</li>
+          <li>Psi Aushilfe3</li>
+          <li>Richard Barnett</li>
+          <li>Martin John Bartlett</li>
+          <li>Christian Beer</li>
+          <li>Jochen Bedersdorfer</li>
+          <li>Heiko Bensch</li>
+          <li>Noel J. Bergman</li>
+          <li>Timothy H. Bessie</li>
+          <li>Luca Biolcati</li>
+          <li>John C Bledsoe</li>
+          <li>Doug Borland</li>
+          <li>Vladimir R. Bossicard</li>
+          <li>Lloyd Boucher</li>
+          <li>Don Brown</li>
+          <li>Louis Calisi</li>
+          <li>Jerome Candat</li>
+          <li>Nassim Chalfouh</li>
+          <li>Prasad Rao Challakonda</li>
+          <li>Adam Chesney</li>
+          <li>Prasad Chodavarapu</li>
+          <li>David Chung</li>
+          <li>Mark R. Diggory</li>
+          <li>Robert Burrell Donkin</li>
+          <li>Juergen Donnerstag</li>
+          <li>Yann Duponchel</li>
+          <li>Xavier Dury</li>
+          <li>Erik Earle</li>
+          <li>Nagesh Eranki</li>
+          <li>JP Fielding</li>
+          <li>Gary Gregory</li>
+          <li>Peter Franken</li>
+          <li>Eric D. Friedman</li>
+          <li>Matthew Hawthorne</li>
+          <li>Joerg Heinicke</li>
+          <li>Reidar Hoerning</li>
+          <li>Nick Hofstede</li>
+          <li>Jason Horman</li>
+          <li>Ted Husted</li>
+          <li>Ivelin Ivanov</li>
+          <li>Uwe Janner</li>
+          <li>Kees Jongenburger</li>
+          <li>Adrian Perez Jorge</li>
+          <li>Snehal Khanna</li>
+          <li>John C. Landers</li>
+          <li>Jeff Lansing</li>
+          <li>Jonathan Layes</li>
+          <li>David Leangen</li>
+          <li>Joerg Lensing</li>
+          <li>Pato Loco</li>
+          <li>Tony Lodge</li>
+          <li>Joachim Maes</li>
+          <li>Thomas Mathis</li>
+          <li>Brian McCallister</li>
+          <li>Markus Menner</li>
+          <li>Stephan Mikaty</li>
+          <li>Shahar Mosek</li>
+          <li>Russell Neufeld</li>
+          <li>Peter Neumcke</li>
+          <li>Christopher Oliver</li>
+          <li>Steve Pannier</li>
+          <li>Adrian Price</li>
+          <li>Venkatesh Prasad Ranganath</li>
+          <li>Simon Raess</li>
+          <li>Sudhir Rao</li>
+          <li>Stan Reinis</li>
+          <li>Jean-Baptiste Reure</li>
+          <li>Michael Nascimento Santos</li>
+          <li>Dmitry Sklyut</li>
+          <li>Phil Steitz</li>
+          <li>Nikolay Tsankov</li>
+          <li>Joerg Troester</li>
+          <li>Joern Turner</li>
+          <li>Rob Walker</li>
+          <li>Sylvain Wallez</li>
+          <li>Knut Wannheden</li>          
+          <li>Chris White</li>
+          <li>Jeremy Wohl</li>
+          <li>Henri Yandell</li>
+          <li>Guanqun Zhang</li>
+          <li>Chuck (bigfishsmallpond)</li>
+        </ul>
+        Thanks!
+      </p>
+
+    </section>
+  </body>
+</document>
