@@ -104,6 +104,8 @@
         </li>
         <li><a href="#Pointers">Pointers</a>
         </li>
+        <li><a href="#Relative Contexts">Relative Contexts</a>
+        </li>
         <li><a href="#Extension Functions">Extension Functions</a>
           <ul>
             <li><a href="#Standard Extension Functions">Standard Extension Functions</a>
@@ -985,6 +987,40 @@ List homeAddresses = context.getPointer("//employee/address[@name='home']");
       </p>
     </section>
 
+    <section name="Relative Contexts">
+      <p>
+        If you need to evaluate multiple paths relative to a certain node
+        in the object graph, you might want to create a relative JXPathContext.
+      </p>
+      <p>
+        First obtain the pointer for the location that is supposed to define
+        the relative context.  Then obtain the relative context by calling
+        <code>context.getRelativeContext(pointer)</code>.
+      </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
+ JXPathContext context = JXPathContext.newContext(bean);
+
+ Pointer addressPtr = context.getPointer("/employees[1]/addresses[2]");
+
+ JXPathContext relativeContext = 
+              context.getRelativeContext(addressPtr);
+
+ // Evaluate relative path 
+ String zipCode = (String)relativeContext.getValue("zipCode");
+
+ // Evaluate absolute path
+ String name = (String)relativeContext.getValue("/employees[1]/name");
+
+ // Use the parent axis to locate the employee for the current address
+ Double salary = (Double)relativeContext.getValue("../salary");
+
+ </source>
+<!--============================ - SOURCE - ============================-->
+
+    </section>
 
     <section name="Extension Functions">
       <p>

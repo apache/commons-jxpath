@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.15 2003/01/11 05:41:24 dmitri Exp $
- * $Revision: 1.15 $
- * $Date: 2003/01/11 05:41:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.16 2003/02/19 00:59:52 dmitri Exp $
+ * $Revision: 1.16 $
+ * $Date: 2003/02/19 00:59:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,14 +81,15 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * attribute and only simple, context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2003/01/11 05:41:24 $
+ * @version $Revision: 1.16 $ $Date: 2003/02/19 00:59:52 $
  */
-public abstract class NodePointer implements Pointer, Cloneable, Comparable {
+public abstract class NodePointer implements Pointer {
 
     public static final int WHOLE_COLLECTION = Integer.MIN_VALUE;
     protected int index = WHOLE_COLLECTION;
     public static final String UNKNOWN_NAMESPACE = "<<unknown namespace>>";
     private boolean attribute = false;
+    private transient Object rootNode;
 
     /**
      * Allocates an entirely new NodePointer by iterating through all installed
@@ -322,6 +323,18 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      */
     public Object getNode() {
         return getValuePointer().getImmediateNode();
+    }
+    
+    public Object getRootNode(){
+        if (rootNode == null) {
+            if (parent != null){
+                rootNode = parent.getRootNode();
+            }
+            else {
+                rootNode = getImmediateNode();
+            }
+        }
+        return rootNode;
     }
     
     /**

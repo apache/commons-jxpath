@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.9 2003/01/11 05:41:23 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2003/01/11 05:41:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.10 2003/02/19 00:59:51 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2003/02/19 00:59:51 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,30 +72,35 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that is used to hold the root node for the path traversal.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2003/01/11 05:41:23 $
+ * @version $Revision: 1.10 $ $Date: 2003/02/19 00:59:51 $
  */
 public class RootContext extends EvalContext {
-    private boolean startedSet = false;
-    private boolean started = false;
-    private JXPathContextReferenceImpl parent;
+    private JXPathContextReferenceImpl jxpathContext;
     private NodePointer pointer;
     private Object registers[];
     private int availableRegister = 0;
     public static final Object UNKNOWN_VALUE = new Object();
     private static final int MAX_REGISTER = 4;
 
-    public RootContext(JXPathContextReferenceImpl parent, NodePointer pointer) {
+    public RootContext(
+        JXPathContextReferenceImpl jxpathContext,
+        NodePointer pointer) 
+    {
         super(null);
-        this.parent = parent;
+        this.jxpathContext = jxpathContext;
         this.pointer = pointer;
     }
 
     public JXPathContext getJXPathContext() {
-        return parent;
+        return jxpathContext;
     }
 
     public RootContext getRootContext() {
         return this;
+    }
+    
+    public EvalContext getAbsoluteRootContext() {
+        return jxpathContext.getAbsoluteRootContext();
     }
 
     public NodePointer getCurrentNodePointer() {
@@ -103,27 +108,19 @@ public class RootContext extends EvalContext {
     }
 
     public int getCurrentPosition() {
-        return 1;
+        throw new UnsupportedOperationException();
     }
 
     public boolean nextNode() {
-        if (started) {
-            return false;
-        }
-        started = true;
-        return true;
+        throw new UnsupportedOperationException();
     }
 
     public boolean nextSet() {
-        if (startedSet) {
-            return false;
-        }
-        startedSet = true;
-        return true;
+        throw new UnsupportedOperationException();
     }
 
     public boolean setPosition(int position) {
-        return position == 1;
+        throw new UnsupportedOperationException();
     }
 
     public EvalContext getConstantContext(Object constant) {
@@ -135,16 +132,18 @@ public class RootContext extends EvalContext {
             pointer =
                 NodePointer.newNodePointer(new QName(null, ""), constant, null);
         }
-        return new InitialContext(new RootContext(parent, pointer));
+        return new InitialContext(new RootContext(jxpathContext, pointer));
     }
 
     public EvalContext getVariableContext(QName variableName) {
         return new InitialContext(
-            new RootContext(parent, parent.getVariablePointer(variableName)));
+            new RootContext(
+                jxpathContext,
+                jxpathContext.getVariablePointer(variableName)));
     }
 
     public Function getFunction(QName functionName, Object[] parameters) {
-        return parent.getFunction(functionName, parameters);
+        return jxpathContext.getFunction(functionName, parameters);
     }
 
     public Object getRegisteredValue(int id) {

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Pointer.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/01/11 05:41:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Pointer.java,v 1.6 2003/02/19 00:59:52 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/02/19 00:59:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,8 @@
  */
 package org.apache.commons.jxpath;
 
+import java.io.Serializable;
+
 /**
  * Pointers represent locations of objects and their properties
  * in Java object graphs. JXPathContext has methods
@@ -76,9 +78,9 @@ package org.apache.commons.jxpath;
  * object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:22 $
+ * @version $Revision: 1.6 $ $Date: 2003/02/19 00:59:52 $
  */
-public interface Pointer {
+public interface Pointer extends Cloneable, Comparable, Serializable {
 
     /**
      * Returns the value of the object, property or collection element
@@ -108,6 +110,11 @@ public interface Pointer {
     void setValue(Object value);
 
     /**
+     * Returns the node this pointer is based on. 
+     */
+    Object getRootNode();
+    
+    /**
      * Returns a string that is a proper "canonical" XPath that corresponds to
      * this pointer.  Consider this example:
      * <p><code>Pointer  ptr = ctx.getPointer("//employees[firstName = 'John']")
@@ -120,4 +127,9 @@ public interface Pointer {
      * /departments[@name = 'HR']/employees[3]"</code>.
      */
     String asPath();
+    
+    /**
+     * Pointers are cloneable
+     */
+    Object clone();
 }

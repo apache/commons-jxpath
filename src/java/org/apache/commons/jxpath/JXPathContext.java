@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.14 2003/01/29 18:15:17 dmitri Exp $
- * $Revision: 1.14 $
- * $Date: 2003/01/29 18:15:17 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.15 2003/02/19 00:59:52 dmitri Exp $
+ * $Revision: 1.15 $
+ * $Date: 2003/02/19 00:59:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -418,7 +418,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2003/01/29 18:15:17 $
+ * @version $Revision: 1.15 $ $Date: 2003/02/19 00:59:52 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -442,7 +442,7 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Creates  a new JXPathContext with the specified bean as the root node and
+     * Creates a new JXPathContext with the specified bean as the root node and
      * the specified parent context. Variables defined in a parent context can
      * be referenced in XPaths passed to the child context.
      */
@@ -482,6 +482,14 @@ public abstract class JXPathContext {
      * Returns a Pointer for the context bean.
      */
     public abstract Pointer getContextPointer();
+
+    /**
+     * Returns a JXPathContext that is relative to the current JXPathContext.
+     * The supplied pointer becomes the context pointer of the new context.
+     * The relative context inherits variables, extension functions, locale etc
+     * from the parent context.
+     */
+    public abstract JXPathContext getRelativeContext(Pointer pointer);
 
     /**
      * Installs a custom implementation of the Variables interface.

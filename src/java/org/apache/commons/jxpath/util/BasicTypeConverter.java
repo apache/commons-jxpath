@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.5 2003/02/07 00:51:40 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/02/07 00:51:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.6 2003/02/19 00:59:53 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/02/19 00:59:53 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.NodeSet;
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/02/07 00:51:40 $
+ * @version $Revision: 1.6 $ $Date: 2003/02/19 00:59:53 $
  */
 public class BasicTypeConverter implements TypeConverter {
 
@@ -494,8 +494,21 @@ public class BasicTypeConverter implements TypeConverter {
         public Object getNode() {
             return bean;
         }
+        
+        public Object getRootNode() {
+            return bean;
+        }        
+        
         public void setValue(Object value) {
             throw new UnsupportedOperationException();
+        }
+        
+        public Object clone(){
+            return this;
+        }
+        
+        public int compareTo(Object object) {
+            return 0;
         }
         
         public String asPath() {

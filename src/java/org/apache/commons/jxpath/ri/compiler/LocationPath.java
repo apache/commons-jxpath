@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/LocationPath.java,v 1.7 2003/01/19 23:59:24 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/01/19 23:59:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/LocationPath.java,v 1.8 2003/02/19 00:59:52 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/02/19 00:59:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,7 +66,7 @@ import org.apache.commons.jxpath.ri.axes.InitialContext;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/01/19 23:59:24 $
+ * @version $Revision: 1.8 $ $Date: 2003/02/19 00:59:52 $
  */
 public class LocationPath extends Path {
 
@@ -107,12 +107,12 @@ public class LocationPath extends Path {
         // Create a chain of contexts
         EvalContext rootContext;
         if (isAbsolute()) {
-            rootContext = context.getRootContext();
+            rootContext = context.getRootContext().getAbsoluteRootContext();
         }
         else {
-            rootContext = context;
+            rootContext = new InitialContext(context);
         }
-        return evalSteps(new InitialContext(rootContext));
+        return evalSteps(rootContext);
     }
 
 
@@ -120,11 +120,11 @@ public class LocationPath extends Path {
         // Create a chain of contexts
         EvalContext rootContext;
         if (isAbsolute()) {
-            rootContext = context.getRootContext();
+            rootContext = context.getRootContext().getAbsoluteRootContext();
         }
         else {
-            rootContext = context;
+            rootContext = new InitialContext(context);
         }
-        return getSingleNodePointerForSteps(new InitialContext(rootContext));
+        return getSingleNodePointerForSteps(rootContext);
     }
 }

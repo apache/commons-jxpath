@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.10 2003/02/18 18:11:37 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2003/02/18 18:11:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.11 2003/02/19 00:59:52 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/02/19 00:59:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,7 +81,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2003/02/18 18:11:37 $
+ * @version $Revision: 1.11 $ $Date: 2003/02/19 00:59:52 $
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase {
@@ -955,5 +955,35 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             "Remove collection element",
             null,
             context.getValue("nestedBean"));
+    }
+    
+    public void testRelativeContextRelativePath() {
+        JXPathContext relative =
+            context.getRelativeContext(context.getPointer("nestedBean"));
+        
+        assertXPathValueAndPointer(relative, 
+            "int", 
+            new Integer(1), 
+            "/nestedBean/int");
+    }
+
+    public void testRelativeContextAbsolutePath() {
+        JXPathContext relative =
+            context.getRelativeContext(context.getPointer("nestedBean"));
+        
+        assertXPathValueAndPointer(relative, 
+            "/integers[2]", 
+            new Integer(2), 
+            "/integers[2]");
+    }
+
+    public void testRelativeContextParent() {
+        JXPathContext relative =
+            context.getRelativeContext(context.getPointer("nestedBean"));
+        
+        assertXPathValueAndPointer(relative, 
+            "../integers[2]", 
+            new Integer(2), 
+            "/integers[2]");
     }
 }
