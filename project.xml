@@ -79,7 +79,7 @@
     <aspectSourceDirectories/>
     
     <unitTestPatterns>
-      <unitTestPattern>include = **/Test*.java</unitTestPattern>
+      <unitTestPattern>include = **/*TestCase.java</unitTestPattern>
     </unitTestPatterns>
     
     <integrationUnitTestPatterns></integrationUnitTestPatterns>
