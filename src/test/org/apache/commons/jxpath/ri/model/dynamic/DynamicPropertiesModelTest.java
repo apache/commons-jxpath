@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertiesModelTest.java,v 1.4 2003/05/06 02:13:27 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2003/05/06 02:13:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertiesModelTest.java,v 1.5 2003/08/24 03:46:01 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/08/24 03:46:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.TestBean;
  * @todo more iterator testing with maps
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2003/05/06 02:13:27 $
+ * @version $Revision: 1.5 $ $Date: 2003/08/24 03:46:01 $
  */
 
 public class DynamicPropertiesModelTest extends JXPathTestCase {
@@ -154,6 +154,20 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
             context,
             "/.[@name='map'][@name='Key2'][@name='name']",
             "/map[@name='Key2']/name");
+                        
+        ((Map)context.getValue("map")).put("Key:3", "value3");
+        
+        assertXPathValueAndPointer(
+            context,
+            "/map[@name='Key:3']",
+            "value3",
+            "/map[@name='Key:3']");
+
+        assertXPathValueAndPointer(
+            context,
+            "/map[@name='Key:4:5']",
+            null,
+            "/map[@name='Key:4:5']");
     }
 
     public void testSetPrimitiveValue() {

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/QName.java,v 1.6 2003/03/11 00:59:19 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2003/03/11 00:59:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/QName.java,v 1.7 2003/08/24 03:46:01 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/08/24 03:46:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.JXPathException;
  * and an local name.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2003/03/11 00:59:19 $
+ * @version $Revision: 1.7 $ $Date: 2003/08/24 03:46:01 $
  */
 public class QName {
     private String prefix;
@@ -87,10 +87,6 @@ public class QName {
     }
 
     public QName(String prefix, String localName) {
-        if (localName.indexOf(':') != -1) {
-            throw new JXPathException(
-                "The 'localName' part of a QName cannot contain colons");
-        }
         this.prefix = prefix;
         this.name = localName;
     }
