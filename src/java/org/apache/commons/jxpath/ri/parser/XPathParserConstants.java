@@ -76,7 +76,8 @@ public interface XPathParserConstants {
   int FUNCTION_FLOOR = 70;
   int FUNCTION_CEILING = 71;
   int FUNCTION_ROUND = 72;
-  int NCName = 73;
+  int FUNCTION_FORMAT_NUMBER = 73;
+  int NCName = 74;
 
   int DEFAULT = 0;
 
@@ -154,6 +155,7 @@ public interface XPathParserConstants {
     "\"floor\"",
     "\"ceiling\"",
     "\"round\"",
+    "\"format-number\"",
     "<NCName>",
     "\":\"",
     "\"(\"",

@@ -1,6 +1,6 @@
 @echo off
 
-set JAVACC_HOME=c:\tools\javacc2.0
+set JAVACC_HOME=c:\tools\javacc2.1
 
-%JAVACC_HOME%\bin\javacc.bat XPath.jj
-%JAVACC_HOME%\bin\jjdoc.bat
+call %JAVACC_HOME%\bin\javacc.bat XPath.jj
+call %JAVACC_HOME%\bin\jjdoc.bat  XPath.jj

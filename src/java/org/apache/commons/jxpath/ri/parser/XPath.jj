@@ -25,7 +25,6 @@ options {
     OPTIMIZE_TOKEN_MANAGER = false;     // (default true)
     ERROR_REPORTING = true;             // (default true)
     JAVA_UNICODE_ESCAPE = true;         // (default false)
-// @@@ Note: Unicode seems broken in JavaCC 1.1, else this should be true
     UNICODE_INPUT = false;              // (default false)
     IGNORE_CASE = false;                // (default false)
     COMMON_TOKEN_ACTION = false;        // (default false)
@@ -294,6 +293,7 @@ TOKEN:
 |   <FUNCTION_FLOOR: "floor">
 |   <FUNCTION_CEILING: "ceiling">
 |   <FUNCTION_ROUND: "round">
+|   <FUNCTION_FORMAT_NUMBER: "format-number">
 |
     <NCName :
         (<Letter> | ["_"]) (<Letter> | <UnicodeDigit> | [".","-","_"] | <CombiningChar> | <Extender>)*
@@ -339,6 +339,7 @@ String NCName() :
     |   <FUNCTION_CEILING>
     |   <FUNCTION_ROUND>
     |   <FUNCTION_KEY>
+    |   <FUNCTION_FORMAT_NUMBER>
     )
     {
         return token.image;
@@ -395,6 +396,7 @@ int CoreFunctionName() :
     |   <FUNCTION_CEILING>          { code = Compiler.FUNCTION_CEILING; }
     |   <FUNCTION_ROUND>            { code = Compiler.FUNCTION_ROUND; }
     |   <FUNCTION_KEY>              { code = Compiler.FUNCTION_KEY; }
+    |   <FUNCTION_FORMAT_NUMBER>    { code = Compiler.FUNCTION_FORMAT_NUMBER; }
     )
     {
         return code;
