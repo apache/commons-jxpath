@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DocumentContainer.java,v 1.2 2002/08/26 22:29:49 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/08/26 22:29:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DocumentContainer.java,v 1.3 2002/08/26 22:52:09 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/08/26 22:52:09 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.JXPathException;
  * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/08/26 22:29:49 $
+ * @version $Revision: 1.3 $ $Date: 2002/08/26 22:52:09 $
  */
 public class DocumentContainer implements Container {
 
@@ -108,7 +108,7 @@ public class DocumentContainer implements Container {
      * resource file.
      */
     public DocumentContainer(URL xmlURL){
-        this(xmlURL, MODEL_JDOM);
+        this(xmlURL, MODEL_DOM);
     }
 
     /**
