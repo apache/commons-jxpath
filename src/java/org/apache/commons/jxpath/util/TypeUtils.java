@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.5 2002/05/08 00:38:19 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 00:38:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.6 2002/05/08 23:03:43 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/05/08 23:03:43 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.Pointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 00:38:19 $
+ * @version $Revision: 1.6 $ $Date: 2002/05/08 23:03:43 $
  */
 public class TypeUtils {
 
@@ -418,6 +418,32 @@ public class TypeUtils {
 
     public static Object convert(Object object, Class toType){
         if (object == null){
+            if (toType.isPrimitive()){
+                if (toType == boolean.class){
+                    return Boolean.FALSE;
+                }
+                if (toType == char.class){
+                    return new Character('\0');
+                }
+                if (toType == byte.class){
+                    return new Byte((byte)0);
+                }
+                if (toType == short.class){
+                    return new Short((short)0);
+                }
+                if (toType == int.class){
+                    return new Integer(0);
+                }
+                if (toType == long.class){
+                    return new Long(0l);
+                }
+                if (toType == float.class){
+                    return new Float(0.0f);
+                }
+                if (toType == double.class){
+                    return new Double(0.0);
+                }
+            }
             return null;
         }
 
