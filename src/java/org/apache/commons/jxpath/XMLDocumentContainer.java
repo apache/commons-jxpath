@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/XMLDocumentContainer.java,v 1.1 2001/09/03 01:22:30 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/03 01:22:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/XMLDocumentContainer.java,v 1.2 2002/04/11 03:00:11 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/11 03:00:11 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -82,7 +82,7 @@ import java.io.InputStream;
  * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/03 01:22:30 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/11 03:00:11 $
  */
 public class XMLDocumentContainer implements Container {
 
@@ -92,10 +92,16 @@ public class XMLDocumentContainer implements Container {
 
     public XMLDocumentContainer(URL xmlURL){
         this.xmlURL = xmlURL;
+        if (xmlURL == null){
+            throw new RuntimeException("Source is null");
+        }
     }
 
     public XMLDocumentContainer(Source source){
         this.source = source;
+        if (source == null){
+            throw new RuntimeException("Source is null");
+        }
     }
 
     public Object getValue(){
@@ -120,7 +126,8 @@ public class XMLDocumentContainer implements Container {
             }
             catch (Exception ex){
                 throw new RuntimeException("Cannot read XML from: " +
-                    (xmlURL != null ? xmlURL.toString() : source.getSystemId()) + "\n" + ex);
+                    (xmlURL != null ? xmlURL.toString() :
+                        (source != null ? source.getSystemId() : "<<undefined source>>")) + "\n" + ex);
             }
         }
         return document;
