@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.20 2002/05/29 00:42:06 dmitri Exp $
- * $Revision: 1.20 $
- * $Date: 2002/05/29 00:42:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.21 2002/05/30 01:57:35 dmitri Exp $
+ * $Revision: 1.21 $
+ * $Date: 2002/05/30 01:57:35 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -95,7 +95,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.20 $ $Date: 2002/05/29 00:42:06 $
+ * @version $Revision: 1.21 $ $Date: 2002/05/30 01:57:35 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -305,6 +305,7 @@ public class JXPathTestCase extends TestCase
         }
         Map map = new HashMap();
         map.put("foo", new String[]{"a", "b", "c"});
+
         JXPathContext context = JXPathContext.newContext(map);
         testIterate(context, "foo", list("a", "b", "c"));
 
@@ -319,6 +320,14 @@ public class JXPathTestCase extends TestCase
             actual.add(it.next());
         }
         assertEquals("Iterating <" + xpath + ">", expected, actual);
+
+        it = context.iteratePointers(xpath);
+        actual = new ArrayList();
+        while (it.hasNext()){
+            Pointer ptr = (Pointer)it.next();
+            actual.add(context.getValue(ptr.asPath()));
+        }
+        assertEquals("Iterating pointers <" + xpath + ">", expected, actual);
     }
 
 

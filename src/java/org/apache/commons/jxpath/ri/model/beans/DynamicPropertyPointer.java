@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.6 2002/05/29 00:38:07 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/05/29 00:38:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPropertyPointer.java,v 1.7 2002/05/30 01:57:23 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/05/30 01:57:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/05/29 00:38:07 $
+ * @version $Revision: 1.7 $ $Date: 2002/05/30 01:57:23 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -330,6 +330,12 @@ public class DynamicPropertyPointer extends PropertyPointer {
     public String asPath(){
         StringBuffer buffer = new StringBuffer();
         buffer.append(getParent().asPath());
+        if (buffer.length() == 0){
+            buffer.append("/.");
+        }
+        else if (buffer.charAt(buffer.length() - 1) == '/'){
+            buffer.append('.');
+        }
         buffer.append("[@name='");
         buffer.append(escape(getPropertyName()));
         buffer.append("']");

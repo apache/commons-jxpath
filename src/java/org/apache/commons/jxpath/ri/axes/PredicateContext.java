@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.9 2002/05/08 00:40:00 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/05/08 00:40:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.10 2002/05/30 01:57:23 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/05/30 01:57:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/05/08 00:40:00 $
+ * @version $Revision: 1.10 $ $Date: 2002/05/30 01:57:23 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -87,7 +87,7 @@ public class PredicateContext extends EvalContext {
         super(parentContext);
         this.expression = expression;
         if (expression instanceof NameAttributeTest){
-            nameTestExpression = 
+            nameTestExpression =
                 ((NameAttributeTest)expression).getNameTestExpression();
         }
     }
@@ -103,6 +103,7 @@ public class PredicateContext extends EvalContext {
                     pred = ((NodePointer)pred).getValue();
                 }
                 dynamicPropertyPointer.setPropertyName(InfoSetUtil.stringValue(pred));
+                position = 1;
                 done = true;
                 return true;
             }
@@ -143,6 +144,24 @@ public class PredicateContext extends EvalContext {
         return true;
     }
 
+    public boolean setPosition(int position){
+        if (nameTestExpression == null){
+            return setPositionStandard(position);
+        }
+        else {
+            if (dynamicPropertyPointer == null){
+                if (!setupDynamicPropertyPointer()){
+                    return setPositionStandard(position);
+                }
+            }
+            if (position < 1 || position > dynamicPropertyPointer.getLength()){
+                return false;
+            }
+            dynamicPropertyPointer.setIndex(position - 1);
+            return true;
+        }
+    }
+
     public NodePointer getCurrentNodePointer(){
         if (position == 0){
             if (!setPosition(1)){
@@ -167,7 +186,7 @@ public class PredicateContext extends EvalContext {
         return parentContext.nextSet();
     }
 
-    public boolean setPosition(int position){
+    private boolean setPositionStandard(int position){
         if (this.position > position){
             reset();
         }
