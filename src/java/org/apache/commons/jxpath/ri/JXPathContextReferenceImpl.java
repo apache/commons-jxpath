@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.22 2002/10/13 02:26:50 dmitri Exp $
- * $Revision: 1.22 $
- * $Date: 2002/10/13 02:26:50 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.23 2002/10/20 03:44:27 dmitri Exp $
+ * $Revision: 1.23 $
+ * $Date: 2002/10/20 03:44:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,7 +83,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.22 $ $Date: 2002/10/13 02:26:50 $
+ * @version $Revision: 1.23 $ $Date: 2002/10/20 03:44:27 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -100,6 +100,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
         nodeFactories.add(new BeanPointerFactory());
         nodeFactories.add(new DynamicPointerFactory());
 
+        // DOM  factory is only registered if DOM support is on the classpath
         Object domFactory = allocateConditionally(
                 "org.apache.commons.jxpath.ri.model.dom.DOMPointerFactory",
                 "org.w3c.dom.Node");
@@ -107,6 +108,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
             nodeFactories.add(domFactory);
         }
 
+        // JDOM  factory is only registered if JDOM is on the classpath
         Object jdomFactory = allocateConditionally(
                 "org.apache.commons.jxpath.ri.model.jdom.JDOMPointerFactory",
                 "org.jdom.Document");
@@ -114,9 +116,18 @@ public class JXPathContextReferenceImpl extends JXPathContext
             nodeFactories.add(jdomFactory);
         }
 
+        // DynaBean factory is only registered if BeanUtils are on the classpath
+        Object dynaBeanFactory = allocateConditionally(
+                "org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanPointerFactory",
+                "org.apache.commons.beanutils.DynaBean");
+        if (dynaBeanFactory != null){
+            nodeFactories.add(dynaBeanFactory);
+        }
+
         nodeFactories.add(new ContainerPointerFactory());
         createNodeFactoryArray();
     }
+
     private NodePointer rootPointer;
 
     // The frequency of the cache cleanup
