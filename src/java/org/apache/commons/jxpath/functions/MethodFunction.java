@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,47 +67,59 @@ import org.apache.commons.jxpath.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
  */
 public class MethodFunction implements Function {
 
     private Method method;
+    private static final Object EMPTY_ARRAY[] = new Object[0];
 
     public MethodFunction(Method method){
         this.method = method;
     }
 
-    /**
-     */
-    public Object invoke(Object[] parameters){
+    public Object invoke(ExpressionContext context, Object[] parameters){
         try {
             Object target;
             Object[] args;
             if (Modifier.isStatic(method.getModifiers())){
                 target = null;
                 if (parameters == null){
-                    args = null;
+                    parameters = EMPTY_ARRAY;
                 }
-                else {
-                    Class types[] = method.getParameterTypes();
-                    args = new Object[parameters.length];
-                    for (int i = 0; i < args.length; i++){
-                        args[i] = Types.convert(parameters[i], types[i]);
-                    }
+                int pi = 0;
+                Class types[] = method.getParameterTypes();
+                if (types.length >= 1 && ExpressionContext.class.isAssignableFrom(types[0])){
+                    pi = 1;
+                }
+                args = new Object[parameters.length + pi];
+                if (pi == 1){
+                    args[0] = context;
+                }
+                for (int i = 0; i < parameters.length; i++){
+                    args[i + pi] = Types.convert(parameters[i], types[i + pi]);
                 }
             }
             else {
-                target = Types.convert(parameters[0], method.getDeclaringClass());
+                int pi = 0;
                 Class types[] = method.getParameterTypes();
-                args = new Object[parameters.length - 1];
-                for (int i = 0; i < args.length; i++){
-                    args[i] = Types.convert(parameters[i + 1], types[i]);
+                if (types.length >= 1 && ExpressionContext.class.isAssignableFrom(types[0])){
+                    pi = 1;
+                }
+                target = Types.convert(parameters[0], method.getDeclaringClass());
+                args = new Object[parameters.length - 1 + pi];
+                if (pi == 1){
+                    args[0] = context;
+                }
+                for (int i = 1; i < parameters.length; i++){
+                    args[pi + i - 1] = Types.convert(parameters[i], types[i - 1]);
                 }
             }
 
             return method.invoke(target, args);
         }
         catch (Exception exception){
+            exception.printStackTrace();
             // TBD
             throw new RuntimeException("Cannot invoke " + method + ": " + exception);
         }

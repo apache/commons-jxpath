@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<document>
+   <properties>
+      <title>Contributors</title>
+      <author email="commons-dev@jakarta.apache.org">Commons Documentation Team</author>
+      <author email="dmitri@apache.org">Dmitri Plotnikov</author>
+      <revision>$Id: contributors.xml,v 1.1 2002/04/10 03:40:21 dmitri Exp $</revision>
+   </properties>
+
+   <body>
+      <section name="Contributors">
+         <p>
+            The original code of <em>JXPath</em> was developed by Dmitri Plotnikov of PLOTNIX, Inc and
+            contributed to Jakarta.
+         </p>
+         <p>
+            After the original contribution, the following volunteers have contributed code,
+            documentation, testing and support to <em>JXPath</em>.
+         </p>
+         <!-- alphabetical by last name please -->
+         <ul>
+            <li>Craig R. McClanahan</li>
+            <li>Dmitri Plotnikov</li>
+         </ul>
+         <p>
+            Special thanks to <i>James Strachan</i>, whose help in
+            bringing JXPath to Apache cannot be overestimated.
+         </p>
+      </section>
+   </body>
+</document>

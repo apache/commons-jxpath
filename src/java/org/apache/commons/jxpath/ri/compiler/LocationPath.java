@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/LocationPath.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/21 23:22:44 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/LocationPath.java,v 1.3 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,18 +62,14 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 import java.util.*;
-import org.apache.commons.jxpath.ri.Compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/10 03:40:20 $
  */
 public class LocationPath extends Path {
 
     private boolean absolute;
-    public static final String BASIC_PATH_HINT = "basicPathHint";
-    private boolean basicKnown = false;
-    private boolean basic;
 
     public LocationPath(boolean absolute, Step[] steps){
         super(Expression.OP_LOCATION_PATH, steps);
@@ -113,41 +109,5 @@ public class LocationPath extends Path {
         }
         buffer.append(')');
         return buffer.toString();
-    }
-
-    /**
-     * Recognized predicated formatted as <code>[@name = <i>expr</i>]</code>
-     */
-    public Object getEvaluationHint(String hint){
-        if (!hint.equals(BASIC_PATH_HINT)){
-            return null;
-        }
-
-        if (!basicKnown){
-            basicKnown = true;
-            basic = true;
-            Step[] steps = getSteps();
-            for (int i = 0; i < steps.length; i++){
-                if (steps[i].getAxis() != Compiler.AXIS_CHILD ||
-                        !(steps[i].getNodeTest() instanceof NodeNameTest) ||
-                        ((NodeNameTest)steps[i].getNodeTest()).getNodeName().getName().equals("*")){
-                    basic = false;
-                    break;
-                }
-                Expression predicates[] = steps[i].getPredicates();
-                if (predicates != null && predicates.length != 0){
-                    if (predicates.length != 1){
-                        basic = false;
-                        break;
-                    }
-                    if (predicates[0].getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT) == null &&
-                            predicates[0].isContextDependent()){
-                        basic = false;
-                        break;
-                    }
-                }
-            }
-        }
-        return basic ? Boolean.TRUE : Boolean.FALSE;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NullPointer.java,v 1.4 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2001/09/26 01:21:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NullPointer.java,v 1.5 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import java.beans.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/10 03:40:20 $
  */
 public class NullPointer extends PropertyOwnerPointer {
     private QName name;
@@ -99,6 +99,26 @@ public class NullPointer extends PropertyOwnerPointer {
 
     public void setValue(Object value){
         throw new UnsupportedOperationException("Cannot setValue of an object that is not some other object's property");
+    }
+
+    public boolean isActual(){
+        return false;
+    }
+
+    public void createPath(JXPathContext context, Object value){
+        if (parent != null){
+            parent.createPath(context, value);
+        }
+        else {
+            throw new UnsupportedOperationException("Cannot create the root object");
+        }
+    }
+
+    public NodePointer createPath(JXPathContext context){
+        if (parent != null){
+            return parent.createPath(context);
+        }
+        throw new UnsupportedOperationException("Cannot create the root object");
     }
 
     public int hashCode(){

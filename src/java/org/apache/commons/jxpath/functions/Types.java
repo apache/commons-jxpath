@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/Attic/Types.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/Attic/Types.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,7 +67,7 @@ import org.apache.commons.jxpath.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
  */
 public class Types {
 
@@ -251,14 +251,19 @@ public class Types {
             throw new RuntimeException("Ambigous method call: " + name);
         }
         return method;
-   }
+    }
+
     public static int matchParameterTypes(Class types[], Object parameters[]){
-        if (types.length != parameters.length){
+        int pi = 0;
+        if (types.length >= 1 && ExpressionContext.class.isAssignableFrom(types[0])){
+            pi++;
+        }
+        if (types.length != parameters.length + pi){
             return NO_MATCH;
         }
         int totalMatch = EXACT_MATCH;
-        for (int i = 0; i < types.length; i++){
-            int match = matchType(types[i], parameters[i]);
+        for (int i = 0; i < parameters.length; i++){
+            int match = matchType(types[i + pi], parameters[i]);
             if (match == NO_MATCH){
                 return NO_MATCH;
             }
@@ -291,6 +296,14 @@ public class Types {
     }
 
     public static boolean canConvert(Object object, Class toType){
+        if (object == null){
+            return true;
+        }
+
+        if (toType == Object.class){
+            return true;
+        }
+
         Class fromType = object.getClass();
         if (fromType.equals(toType)){
             return true;
@@ -330,9 +343,30 @@ public class Types {
             if (Collection.class.isAssignableFrom(toType)){
                 return true;
             }
-            // TBD: array arguments
-            Object value = ((ExpressionContext)object).getContextNodePointer().getValue();
-            return canConvert(value, toType);
+            Pointer pointer = ((ExpressionContext)object).getContextNodePointer();
+            if (pointer != null){
+                Object value = pointer.getValue();
+                return canConvert(value, toType);
+            }
+        }
+        else if (fromType.isArray()){
+            if (Array.getLength(object) == 1){
+                Object value = Array.get(object, 0);
+                return canConvert(value, toType);
+            }
+        }
+        else if (object instanceof List){
+            if (((List)object).size() == 1){
+                Object value = ((List)object).get(0);
+                return canConvert(value, toType);
+            }
+        }
+        else if (object instanceof Collection){
+            if (!((Collection)object).isEmpty()){
+                Iterator it = ((Collection)object).iterator();
+                Object value = it.next();
+                return canConvert(value, toType);
+            }
         }
 
         // TBD: date conversion to/from string
@@ -342,6 +376,10 @@ public class Types {
     public static Object convert(Object object, Class toType){
         if (object == null){
             return null;
+        }
+
+        if (toType == Object.class){
+            return object;
         }
 
         if (object instanceof ExpressionContext){
@@ -426,6 +464,19 @@ public class Types {
             if (toType == double.class || toType == Double.class){
                 return new Double((String)object);
             }
+        }
+        else if (fromType.isArray()){
+            Object value = Array.get(object, 0);
+            return convert(value, toType);
+        }
+        else if (object instanceof List){
+            Object value = ((List)object).get(0);
+            return convert(value, toType);
+        }
+        else if (object instanceof Collection){
+            Iterator it = ((Collection)object).iterator();
+            Object value = it.next();
+            return convert(value, toType);
         }
         return object;
     }

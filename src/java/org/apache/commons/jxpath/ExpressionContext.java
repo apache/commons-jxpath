@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ExpressionContext.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ExpressionContext.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,8 +66,7 @@ import java.util.*;
 
 /**
  * If an extenstion function has an argument of type ExpressionContext,
- * it can gain access to the current node or all nodes of
- * an XPath expression context.
+ * it can gain access to the current node of an XPath expression context.
  * <p>
  * Example:
  * <blockquote><pre>
@@ -77,7 +76,7 @@ import java.util.*;
  *       if (value == null){
  *           return "null";
  *       }
- *       return value.getClass();
+ *       return value.getClass().getName();
  *    }
  * }
  * </pre></blockquote>
@@ -85,12 +84,19 @@ import java.util.*;
  * You can then register this extension function using a {@link ClassFunctions
  * ClassFunctions} object and call it like this:
  * <blockquote><pre>
- *   "/descendent-or-self::node()[ns:objectType(.) = 'java.util.Date']"
+ *   "/descendent-or-self::node()[ns:objectType() = 'java.util.Date']"
  * </pre></blockquote>
  * This expression will find all nodes of the graph that are dates.
  */
 public interface ExpressionContext
 {
+    /**
+     * Get the JXPathContext in which this function is being evaluated.
+     *
+     * @return A list representing the current context nodes.
+     */
+    public JXPathContext getJXPathContext();
+
     /**
      * Get the current context node.
      *
@@ -105,4 +111,9 @@ public interface ExpressionContext
      * @return A list representing the current context nodes.
      */
     public List getContextNodeList();
+
+    /**
+     * Returns the current context position.
+     */
+    public int getPosition();
 }

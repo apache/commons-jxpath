@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ClassFunctions.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ClassFunctions.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,8 +83,13 @@ import org.apache.commons.jxpath.functions.*;
  *  <dd>Equivalent to <code>new Integer(4).floatValue()</code></dd>
  * </dl>
  *
+ * <p>
+ * If the first argument of a method is ExpressionContext, the
+ * expression context in which the function is evaluated is passed to
+ * the method.
+ *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
  */
 public class ClassFunctions implements Functions {
     private Class functionClass;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/NestedTestBean.java,v 1.2 2002/04/10 03:40:21 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/AbstractFactory.java,v 1.1 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,63 +61,51 @@
  */
 package org.apache.commons.jxpath;
 
-import org.w3c.dom.*;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.*;
+import java.util.*;
 
 /**
- * A general purpose JavaBean for JUnit tests for the "jxpath" component.
+ * The {@link JXPathContext#createPath JXPathContext.createPath()} method of JXPathContext can create
+ * missing objects as it traverses an XPath; it utilizes an AbstractFactory for that purpose.
+ * Install a factory on JXPathContext by calling {@link JXPathContext#setFactory
+ * JXPathContext.setFactory()}.
+ * <p>
+ * All methods of this class return false.  Override any of them to
+ * return true to indicate that the factory has successfully created the described object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:21 $
+ * @version $Revision: 1.1 $ $Date: 2002/04/10 03:40:19 $
  */
-public class NestedTestBean {
-    private String name = "Name 0";
-    private int integer = 1;
-
-    public NestedTestBean(){
-    }
-
-    public NestedTestBean(String name){
-        this.name = name;
-    }
+public abstract class AbstractFactory {
 
     /**
-     * A read-only boolean property
+     * The parameters may describe a collection element or an individual object. It is up
+     * to the factory to infer which one it is. If it is a collection, the
+     * factory should check if the collection exists.  If not, it should create
+     * the collection. Then it should create the index'th element of the collection
+     * and return it.
+     * <p>
+     * If the parameters describe an individual object, the factory should only
+     * create an object if index == 0.
+     * <p>
+     * Return the created object or <b>null</b> if this factory cannot create
+     * the requested object.
      */
-    public boolean isBoolean(){
+    public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index){
         return false;
     }
 
     /**
-     * A read-only int property
+     * The factory should expand the collection to the specified size and return true. If
+     * it cannot expand the collection, it should return false.
      */
-    public int getInt(){
-        return integer;
-    }
-
-    public void setInt(int value){
-        this.integer = value;
+    public boolean expandCollection(JXPathContext context, Pointer pointer, Object parent, String name, int size){
+        return false;
     }
 
     /**
-     * A read-only String property
+     * Create a new object and set it on the specified variable
      */
-    public String getName(){
-        return name;
-    }
-
-    private String[] strings = new String[]{"String 1", "String 2", "String 3"};
-
-    public String[] getStrings(){
-        return strings;
-    }
-
-    public void setStrings(String[] array){
-        strings = array;
-    }
-
-    public String toString(){
-        return "Nested: " + name;
+    public boolean declareVariable(JXPathContext context, String name){
+        return false;
     }
 }

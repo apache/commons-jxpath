@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Path.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Path.java,v 1.2 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,14 +62,18 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 import java.util.*;
+import org.apache.commons.jxpath.ri.Compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:20 $
  */
 public class Path extends Expression {
 
     private Step[] steps;
+    public static final String BASIC_PATH_HINT = "basicPathHint";
+    private boolean basicKnown = false;
+    private boolean basic;
 
     public Path(int typeCode, Step[] steps){
         super(typeCode);
@@ -112,5 +116,57 @@ public class Path extends Expression {
                 }
             }
         }
+    }
+
+    /**
+     * Recognized paths formatted as <code>foo/bar[3]/baz[@name = 'biz']</code>.  The
+     * evaluation of such "simple" paths is optimized and streamlined.
+     */
+    public Object getEvaluationHint(String hint){
+        if (!hint.equals(BASIC_PATH_HINT)){
+            return null;
+        }
+
+        if (!basicKnown){
+            basicKnown = true;
+            basic = true;
+            Step[] steps = getSteps();
+            for (int i = 0; i < steps.length; i++){
+//                System.err.println("STEP: " + steps[i]);
+                if (steps[i].getAxis() != Compiler.AXIS_CHILD ||
+                        !(steps[i].getNodeTest() instanceof NodeNameTest) ||
+                        ((NodeNameTest)steps[i].getNodeTest()).getNodeName().getName().equals("*")){
+                    basic = false;
+                    break;
+                }
+                Expression predicates[] = steps[i].getPredicates();
+                basic = basic && areBasicPredicates(predicates);
+            }
+        }
+        return basic ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    protected boolean areBasicPredicates(Expression predicates[]){
+        if (predicates != null && predicates.length != 0){
+            boolean firstIndex = true;
+            for (int i = 0; i < predicates.length; i++){
+                Expression dyn = (Expression)predicates[i].getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT);
+                if (dyn != null){
+                    if (dyn.isContextDependent()){
+                        return false;
+                    }
+                }
+                else if (predicates[i].isContextDependent()){
+                    return false;
+                }
+                else {
+                    if (!firstIndex){
+                        return false;
+                    }
+                    firstIndex = false;
+                }
+            }
+        }
+        return true;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.1 2001/08/23 00:46:59 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.2 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,12 +68,17 @@ import java.util.*;
  * a path that starts with an expression like a function call: <code>getFoo(.)/bar</code>.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:59 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:20 $
  */
 public class ExpressionPath extends Path {
 
+    public static final String BASIC_PREDICATES_HINT = "basicPredicatesHint";
+
     private Expression expression;
     private Expression predicates[];
+
+    private boolean basicKnown = false;
+    private boolean basic;
 
     public ExpressionPath(Expression expression, Expression[] predicates, Step[] steps){
         super(Expression.OP_EXPRESSION_PATH, steps);
@@ -151,6 +156,23 @@ public class ExpressionPath extends Path {
                 }
             }
         }
+    }
+
+    /**
+     * Recognized paths formatted as <code>$x[3]/foo[2]</code>.  The
+     * evaluation of such "simple" paths is optimized and streamlined.
+     */
+    public Object getEvaluationHint(String hint){
+        if (!hint.equals(BASIC_PREDICATES_HINT)){
+            return super.getEvaluationHint(hint);
+        }
+
+        if (!basicKnown){
+            basicKnown = true;
+            basic = super.getEvaluationHint(BASIC_PATH_HINT).equals(Boolean.TRUE) &&
+                    areBasicPredicates(getPredicates());
+        }
+        return basic ? Boolean.TRUE : Boolean.FALSE;
     }
 
     public String toString(){

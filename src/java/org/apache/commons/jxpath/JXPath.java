@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Attic/JXPath.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Attic/JXPath.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,17 +70,17 @@ import org.w3c.dom.Node;
  * request to it. Use JXPathContext APIs instead of JXPath APIs if any of
  * the following requirements exist:
  * <ul>
- * <li>There is a need to evaluate multiple XPaths over the same object graph.
- * JXPathContext is optimized for that.
  * <li>There is a need for the support of variables.  JXPathContext has a method
  * that allows registering of a pool of variables.
  * <li>There is a need to use extension functions other than
  * Java method calls using the default syntax (see {@link PackageFunctions
  * PackageFunctions}
+ * <li>There is a need to use an AbstractFactory, which can create new objects.
+ * <li>There is a need to use a hierarchy of evaluation contexts.
  * </ul>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
  */
 public final class JXPath {
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMAttributePointer.java,v 1.2 2001/09/21 23:22:45 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/21 23:22:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMAttributePointer.java,v 1.3 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.w3c.dom.*;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:45 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/10 03:40:20 $
  */
 public class DOMAttributePointer extends NodePointer {
     private Attr attr;
@@ -113,6 +113,10 @@ public class DOMAttributePointer extends NodePointer {
             return null;
         }
         return value;
+    }
+
+    public boolean isActual(){
+        return true;
     }
 
     public boolean isLeaf(){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.4 2001/09/26 23:37:39 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2001/09/26 23:37:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.5 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -157,9 +157,6 @@ import java.util.Locale;
  * A collection can be an arbitrary array or an instance of java.util.Collection.
  * <p>
  * Note: in XPath the first element of a collection has index 1, not 0.<br>
- * Note: The root node of the context can be a collection too. If you want
- * to follow the standard XPath syntax then instead of using the ".[3]" syntax
- * you should use "self::node()[3]".
  *
  * <h3>Example 4: Map Element Access</h3>
  *
@@ -216,7 +213,7 @@ import java.util.Locale;
  * ...
  *
  * JXPathContext context = JXPathContext.newContext(auth);
- * List threeBooks = (List)context.eval("books[position() < 4]");
+ * List threeBooks = (List)context.eval("books[position() &lt; 4]");
  * </blockquote></pre>
  *
  * This returns a list of at most three books from the array of all books
@@ -246,7 +243,31 @@ import java.util.Locale;
  *
  * </blockquote></pre>
  *
- * <h3>Example 7: Using Variables</h3>
+ * <h3>Example 7: Creating objects</h3>
+ * JXPath can be used to create new objects. First, create a subclass of
+ * {@link AbstractFactory AbstractFactory} and install it on the JXPathContext.
+ * Then call {@link JXPathContext#createPath createPath()} instead of "setValue".
+ * JXPathContext will invoke your AbstractFactory when it discovers that an
+ * intermediate node of the path is <b>null</b>.  It will not override existing
+ * nodes.
+ *
+ * <pre><blockquote>
+ * public class AddressFactory extends AbstractFactory {
+ *    public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index){
+ *     if ((parent instanceof Employee) &amp;&amp; name.equals("address"){
+ *       ((Employee)parent).setAddress(new Address());
+ *       return true;
+ *     }
+ *     return false;
+ *   }
+ * }
+ *
+ * JXPathContext context = JXPathContext.newContext(emp);
+ * context.setFactory(new AddressFactory());
+ * context.createPath("address/zipCode", "90190");
+ * </blockquote></pre>
+ *
+ * <h3>Example 8: Using Variables</h3>
  * JXPath supports the notion of variables. The XPath syntax for accessing
  * variables is <i>"$varName"</i>.
  *
@@ -290,7 +311,7 @@ import java.util.Locale;
  * String title = (String)context.getValue("$books[2]/title);
  * </blockquote></pre>
  *
- * <h3>Example 8: Using Nested Contexts</h3>
+ * <h3>Example 9: Using Nested Contexts</h3>
  * If you need to use the same set of variable while interpreting
  * XPaths with different beans, it makes sense to put the variables in a separate
  * context and specify that context as a parent context every time you
@@ -334,7 +355,7 @@ import java.util.Locale;
  * As you can see, the target of the method is specified as the first parameter
  * of the function.
  *
- * <h3>Example 10: Using Custom Extension Functions</h3>
+ * <h3>Example 11: Using Custom Extension Functions</h3>
  * Collections of custom extension functions can be implemented
  * as {@link Functions Functions} objects or as Java classes, whose methods
  * become extenstion functions.
@@ -373,24 +394,26 @@ import java.util.Locale;
  *
  * <h2>Notes</h2>
  * <ul>
- * <li>The current version of JXPath does not support DOM attributes. Even though XPaths
+ * <li>JXPath does not support DOM attributes for non-DOM objects. Even though XPaths
  *     like "para[@type='warning']" are legitimate, they will always produce empty results.
- *     This may change in future versions of XPath: the related trade-offs are currently
- *     being evaluated.
+ *     The only attribute supported for JavaBeans is "name".  The XPath "foo/bar" is
+ *     equivalent to "foo[@name='bar']".
  * <li>The current version of JXPath does not support the <code>id(string)</code>
  *     and <code>key(key, value)</code> XPath functions.
  * </ul>
  *
- * See <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
+ * See <a href="http://www.w3schools.com/xpath">XPath Tutorial by W3Schools</a><br>
+ * Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2001/09/26 23:37:39 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/10 03:40:19 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
     protected Object contextBean;
     protected Variables vars;
     protected Functions functions;
+    protected AbstractFactory factory;
     protected Locale locale;
     protected boolean lenient = false;
 
@@ -458,6 +481,22 @@ public abstract class JXPathContext {
         return functions;
     }
 
+    public void setFactory(AbstractFactory factory){
+        this.factory = factory;
+    }
+
+    /**
+     * Returns the AbstractFactory installed on this context.
+     * If none has been installed, it calls getFactory() on
+     * the parent context.
+     */
+    public AbstractFactory getFactory(){
+        if (factory == null && parentContext != null){
+            return parentContext.getFactory();
+        }
+        return factory;
+    }
+
     /**
      * Set the locale for this context.  The value of the "lang"
      * attribute as well as the the lang() function will be
@@ -520,6 +559,22 @@ public abstract class JXPathContext {
      * </ul>
      */
     public abstract void setValue(String xpath, Object value);
+
+    /**
+     * The same as setValue, except it creates intermediate elements of
+     * the path by invoking an AbstractFactory, which should first be
+     * installed on the context by calling "setFactory".
+     * <p>
+     * Will throw an exception if one of the following conditions occurs:
+     * <ul>
+     * <li>Elements of the xpath aleady exist, by the path does not in
+     *  fact describe an existing property
+     * <li>The AbstractFactory fails to create an instance for an intermediate
+     * element.
+     * <li>The property is not writable (no public, non-static set method)
+     * </ul>
+     */
+    public abstract void createPath(String xpath, Object value);
 
     /**
      * Traverses the xpath and returns a List of objects. Even if

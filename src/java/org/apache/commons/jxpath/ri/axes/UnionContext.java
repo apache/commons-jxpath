@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/21 23:22:44 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java,v 1.3 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import java.util.*;
  * of a union operation like (a | b)
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/10 03:40:20 $
  */
 public class UnionContext extends EvalContext {
     private boolean startedSet = false;
@@ -85,11 +85,16 @@ public class UnionContext extends EvalContext {
     }
 
     public NodePointer getCurrentNodePointer(){
+        if (position == 0){
+            if (!setPosition(1)){
+                return null;
+            }
+        }
         return (NodePointer)list.get(position - 1);
     }
 
     public boolean setPosition(int position){
-        this.position = position;
+        super.setPosition(position);
         if (list == null){
             prepareList();
         }

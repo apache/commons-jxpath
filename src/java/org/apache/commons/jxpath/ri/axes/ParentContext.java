@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/21 23:22:44 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.3 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import java.util.*;
  * EvalContext that walks the "parent::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/10 03:40:20 $
  */
 public class ParentContext extends EvalContext {
     private NodeTest nodeTest;
@@ -94,11 +94,13 @@ public class ParentContext extends EvalContext {
         return 1;
     }
 
+    public void reset(){
+        super.reset();
+        setStarted = false;
+    }
+
     public boolean setPosition(int position){
         super.setPosition(position);
-        if (position == 0){
-            setStarted = false;
-        }
         return position == 1;
     }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/SelfContext.java,v 1.2 2001/09/21 23:22:44 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/21 23:22:44 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/SelfContext.java,v 1.3 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,7 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
+import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
@@ -73,7 +74,7 @@ import java.util.*;
  * EvalContext that returns the current node from the parent context if the test succeeds.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:44 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/10 03:40:20 $
  */
 public class SelfContext extends EvalContext {
     private NodeTest nodeTest;
@@ -86,14 +87,20 @@ public class SelfContext extends EvalContext {
         this.nodeTest = nodeTest;
     }
 
+    public ExpressionContext getExpressionContext(){
+        return parentContext.getExpressionContext();
+    }
+
     public Pointer getContextNodePointer(){
-        if (setPosition(1)){
-            return contextNodePointer;
-        }
-        return null;
+        return parentContext.getContextNodePointer();
     }
 
     public NodePointer getCurrentNodePointer(){
+        if (position == 0){
+            if (!setPosition(1)){
+                return null;
+            }
+        }
         return nodePointer;
     }
 
@@ -101,16 +108,19 @@ public class SelfContext extends EvalContext {
         return setPosition(getCurrentPosition() + 1);
     }
 
-    public boolean setPosition(int position){
-        super.setPosition(position);
-        if (position == 0){
-            startedSet = false;
-            return true;
-        }
+    public void reset(){
+        super.reset();
+        startedSet = false;
+    }
 
+    public boolean setPosition(int position){
+        if (position != 1){
+            return false;
+        }
+        super.setPosition(position);
         if (!startedSet){
             startedSet = true;
-            contextNodePointer = (NodePointer)parentContext.getContextNodePointer();
+            contextNodePointer = (NodePointer)parentContext.getCurrentNodePointer();
         }
 
         if (contextNodePointer == null){
@@ -118,10 +128,6 @@ public class SelfContext extends EvalContext {
         }
 
         nodePointer = (NodePointer)contextNodePointer.clone();
-        if (position < 1 || position > nodePointer.getLength()){
-            return false;
-        }
-        nodePointer.setIndex(position - 1);
         return nodeTest == null || nodePointer.testNode(nodeTest);
     }
 }

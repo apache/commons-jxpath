@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanPropertyPointer.java,v 1.3 2001/09/21 23:22:45 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/21 23:22:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanPropertyPointer.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,9 +73,10 @@ import java.beans.*;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:45 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
  */
 public class BeanPropertyPointer extends PropertyPointer {
+    private String propertyName;
     private JXPathBeanInfo beanInfo;
     private PropertyDescriptor propertyDescriptors[];
     private PropertyDescriptor propertyDescriptor;
@@ -111,6 +112,7 @@ public class BeanPropertyPointer extends PropertyPointer {
      * Select a property by name
      */
     public void setPropertyName(String propertyName){
+        this.propertyName = propertyName;
         setPropertyIndex(UNSPECIFIED_PROPERTY);
         String[] names = getPropertyNames();
         for (int i = 0; i < names.length; i++){
@@ -168,13 +170,17 @@ public class BeanPropertyPointer extends PropertyPointer {
         }
         else {
             if (index == WHOLE_COLLECTION){
-                value = PropertyAccessHelper.getValue(getBean(), getPropertyDescriptor());
+                value = PropertyAccessHelper.getValue(getBean(), pd);
             }
             else {
-                value = PropertyAccessHelper.getValue(getBean(), getPropertyDescriptor(), index);
+                value = PropertyAccessHelper.getValue(getBean(), pd, index);
             }
         }
         return value;
+    }
+
+    protected boolean isActualProperty(){
+        return getPropertyDescriptor() != null;
     }
 
     /**
@@ -183,12 +189,59 @@ public class BeanPropertyPointer extends PropertyPointer {
      * represented by the property.
      */
     public void setValue(Object value){
+        PropertyDescriptor pd = getPropertyDescriptor();
+        if (pd == null){
+            throw new RuntimeException("Cannot set property: " + asPath() + " - no such property");
+        }
+
         if (index == WHOLE_COLLECTION){
-            PropertyAccessHelper.setValue(getBean(), getPropertyDescriptor(), value);
+            PropertyAccessHelper.setValue(getBean(), pd, value);
         }
         else {
-            PropertyAccessHelper.setValue(getBean(), getPropertyDescriptor(), index, value);
+            PropertyAccessHelper.setValue(getBean(), pd, index, value);
         }
+    }
+
+    public NodePointer createPath(JXPathContext context){
+        if (getValue() == null){
+            AbstractFactory factory = getAbstractFactory(context);
+            int inx = (index == WHOLE_COLLECTION ? 0 : index);
+            if (!factory.createObject(context, this, getBean(), getPropertyName(), inx)){
+                throw new RuntimeException("Factory could not create an object for path: " + asPath());
+            }
+        }
+        return this;
+    }
+
+    public NodePointer createPath(JXPathContext context, int index){
+        setIndexExpandingCollection(context, index);
+        return createPath(context);
+    }
+
+    public void createPath(JXPathContext context, int index, Object value){
+        setIndexExpandingCollection(context, index);
+        setValue(value);
+    }
+
+    private void setIndexExpandingCollection(JXPathContext context, int index){
+        PropertyDescriptor pd = getPropertyDescriptor();
+        if (pd == null){
+            throw new RuntimeException("Cannot create path: " + asPath() +
+                    " - property '" + getPropertyName() + "' does not exist");
+        }
+
+        if (index < 0){
+            throw new RuntimeException("Index is less than 1: " + asPath());
+        }
+
+        if (index >= getLength()){
+            AbstractFactory factory = getAbstractFactory(context);
+            if (!factory.expandCollection(context, this, getBean(), getPropertyName(), index + 1)){
+                throw new RuntimeException("Factory could not expand collection for path " + asPath() +
+                    " to size " + (index + 1));
+            }
+        }
+        setIndex(index);
     }
 
     /**
@@ -197,7 +250,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     public String getPropertyName(){
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null){
-            return "*";
+            return propertyName != null ? propertyName : "*";
         }
         return pd.getName();
     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointer.java,v 1.4 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2001/09/26 01:21:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointer.java,v 1.5 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,6 +62,7 @@
 package org.apache.commons.jxpath.ri.pointers;
 
 import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
 
@@ -71,10 +72,10 @@ import java.beans.*;
 import org.w3c.dom.Node;
 
 /**
- * Common superclass for Poitners of all kinds.
+ * Common superclass for Pointers of all kinds.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/10 03:40:20 $
  */
 public abstract class NodePointer implements Pointer, Cloneable {
 
@@ -86,42 +87,28 @@ public abstract class NodePointer implements Pointer, Cloneable {
         if (bean == null){
             return new NullPointer(name, locale);
         }
-        if (bean instanceof Node){
-            return new DOMNodePointer((Node)bean, locale);
+        NodePointerFactory[] factories = JXPathContextReferenceImpl.getNodePointerFactories();
+        for (int i = 0; i < factories.length; i++){
+            NodePointer pointer = factories[i].createNodePointer(name, bean, locale);
+            if (pointer != null){
+                return pointer;
+            }
         }
-        if (bean instanceof Container){
-            return new ContainerPointer((Container)bean, locale);
-        }
-
-        JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
-        if (bi.isDynamic()){
-            DynamicPropertyHandler handler = PropertyAccessHelper.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
-            return new DynamicPointer(name, bean, handler, locale);
-        }
-        else {
-            return new BeanPointer(name, bean, bi, locale);
-        }
+        throw new RuntimeException("Could not allocate a NodePointer for object of " + bean.getClass());
     }
 
     public static NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
         if (bean == null){
             return new NullPointer(parent, name);
         }
-        if (bean instanceof Node){
-            return new DOMNodePointer(parent, (Node)bean);
+        NodePointerFactory[] factories = JXPathContextReferenceImpl.getNodePointerFactories();
+        for (int i = 0; i < factories.length; i++){
+            NodePointer pointer = factories[i].createNodePointer(parent, name, bean);
+            if (pointer != null){
+                return pointer;
+            }
         }
-        if (bean instanceof Container){
-            return new ContainerPointer(parent, (Container)bean);
-        }
-
-        JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
-        if (bi.isDynamic()){
-            DynamicPropertyHandler handler = PropertyAccessHelper.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
-            return new DynamicPointer(parent, name, bean, handler);
-        }
-        else {
-            return new BeanPointer(parent, name, bean, bi);
-        }
+        throw new RuntimeException("Could not allocate a NodePointer for object of " + bean.getClass());
     }
 
     /**
@@ -233,6 +220,8 @@ public abstract class NodePointer implements Pointer, Cloneable {
     }
 
     public void setIndex(int index){
+//        System.err.println("SETTING: " + this.getClass() + " " + index);
+//        new Exception().printStackTrace();
         this.index = index;
     }
 
@@ -249,10 +238,82 @@ public abstract class NodePointer implements Pointer, Cloneable {
         return PropertyAccessHelper.getLength(value);
     }
 
+    /**
+     * If this pointer manages a transparent container, like a variable,
+     * this method returns the ponter to the contents.
+     */
+    public NodePointer getValuePointer(){
+        if (this instanceof PropertyOwnerPointer){
+            return this;
+        }
+        return null;
+    }
+
+    /**
+     * An actual pointer points to an existing part of an object graph, even
+     * if it is null. A non-actual pointer represents a part that does not exist
+     * at all.
+     * For instance consider the pointer "/address/street".
+     * If both <em>address</em> and <em>street</em> are not null, the pointer is actual.
+     * If <em>address</em> is not null, but <em>street</em> is null, the pointer is still actual.
+     * If <em>address</em> is null, the pointer is not actual.
+     * (In JavaBeans) if <em>address</em> is not a property of the root bean, a Pointer
+     * for this path cannot be obtained at all - actual or otherwise.
+     */
+    public boolean isActual(){
+        if (index == WHOLE_COLLECTION){
+            return true;
+        }
+        else {
+            return index >= 0 && index < getLength();
+        }
+    }
+
+
     public abstract QName getName();
     public abstract Object getBaseValue();
     public abstract void setValue(Object value);
     public abstract boolean testNode(NodeTest nodeTest);
+
+    /**
+     *  Called directly by JXPathContext. Must create path and
+     *  set value.
+     */
+    public void createPath(JXPathContext context, Object value){
+        setValue(value);
+    }
+
+    /**
+     * Called by a child pointer if that child needs to assign the value
+     * supplied in the createPath(context, value) call to a non-existent
+     * collection element. This method must expand the collection and
+     * assign the element.
+     */
+    public void createPath(JXPathContext context, int index, Object value){
+        throw new RuntimeException("Cannot expand collection for path " + asPath() +
+                ", or it is not a collection at all");
+    }
+
+    /**
+     * Called by a child pointer when it needs to create a parent object.
+     * Must create an object described by this pointer and return
+     * a new pointer that properly describes the new object.
+     */
+    public NodePointer createPath(JXPathContext context){
+        throw new RuntimeException("Cannot create an object for path " + asPath() +
+                ", operation is not allowed for this type of node");
+    }
+
+    /**
+     * Called by a child pointer when it needs to create a parent object
+     * for a non-existent collection element.  Must expand the collection,
+     * create an element object and return a new pointer describing the
+     * newly created element.
+     */
+    public NodePointer createPath(JXPathContext context, int index){
+        throw new RuntimeException("Cannot create an object for path " + asPath() +
+                ", operation is not allowed for this type of node");
+    }
 
     public Locale getLocale(){
         if (locale == null){
@@ -304,5 +365,13 @@ public abstract class NodePointer implements Pointer, Cloneable {
 
     public String toString(){
         return asPath();
+    }
+
+    protected AbstractFactory getAbstractFactory(JXPathContext context){
+        AbstractFactory factory = context.getFactory();
+        if (factory == null){
+            throw new RuntimeException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
+        }
+        return factory;
     }
 }

@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/NestedTestBean.java,v 1.2 2002/04/10 03:40:21 dmitri Exp $
- * $Revision: 1.2 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/TestFactory.java,v 1.1 2002/04/10 03:40:21 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2002/04/10 03:40:21 $
  *
  * ====================================================================
@@ -59,65 +59,90 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+
 package org.apache.commons.jxpath;
 
-import org.w3c.dom.*;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.*;
+import java.util.*;
 
 /**
- * A general purpose JavaBean for JUnit tests for the "jxpath" component.
+ * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:21 $
+ * @version $Revision: 1.1 $ $Date: 2002/04/10 03:40:21 $
  */
-public class NestedTestBean {
-    private String name = "Name 0";
-    private int integer = 1;
-
-    public NestedTestBean(){
-    }
-
-    public NestedTestBean(String name){
-        this.name = name;
-    }
+public class TestFactory extends AbstractFactory {
 
     /**
-     * A read-only boolean property
+     * Create a new instance and put it in the collection on the parent object.
+     * Return the created object or <b>null</b> if this factory cannot create
+     * the requested object.
      */
-    public boolean isBoolean(){
+    public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index){
+        if (name.equals("testArray")){
+            ((TestBean[])parent)[index] = new TestBean();
+            return true;
+        }
+        else if (name.equals("nestedBean")){
+            ((TestBean)parent).setNestedBean(new NestedTestBean("newName"));
+            return true;
+        }
+        else if (name.equals("beans")){
+            ((TestBean)parent).getBeans()[index] = new NestedTestBean("newName");
+            return true;
+        }
+        else if (name.equals("map")){
+            ((TestBean)parent).setMap(new HashMap());
+            return true;
+        }
+        else if (name.equals("TestKey2")){
+            ((Map)parent).put(name, new NestedTestBean("newName"));
+            return true;
+        }
+        else if (name.equals("TestKey3")){
+            ((Map)parent).put(name, new Vector());
+            return true;
+        }
+        else if (name.equals("TestKey5")){
+            TestBean tb = new TestBean();
+            tb.setNestedBean(null);
+            tb.setBeans(null);
+            ((Map)parent).put(name, tb);
+            return true;
+        }
         return false;
     }
 
     /**
-     * A read-only int property
+     * Create a new object and set it on the specified variable
      */
-    public int getInt(){
-        return integer;
+    public boolean declareVariable(JXPathContext context, String name){
+        if (name.equals("test")){
+            context.getVariables().declareVariable(name, new TestBean());
+            return true;
+        }
+        else if (name.equals("testArray")){
+            context.getVariables().declareVariable(name, new TestBean[0]);
+            return true;
+        }
+        else if (name.equals("stringArray")){
+            context.getVariables().declareVariable(name, new String[]{"Value1"});
+            return true;
+        }
+        context.getVariables().declareVariable(name, null);
+        return true;
     }
 
-    public void setInt(int value){
-        this.integer = value;
-    }
-
-    /**
-     * A read-only String property
-     */
-    public String getName(){
-        return name;
-    }
-
-    private String[] strings = new String[]{"String 1", "String 2", "String 3"};
-
-    public String[] getStrings(){
-        return strings;
-    }
-
-    public void setStrings(String[] array){
-        strings = array;
-    }
-
-    public String toString(){
-        return "Nested: " + name;
+    public boolean expandCollection(JXPathContext context, Pointer pointer, Object parent, String name, int size){
+        if (name.equals("beans")){
+            TestBean bean = (TestBean)parent;
+            bean.setBeans(new NestedTestBean[size]);
+            return true;
+        }
+        else if (name.equals("strings")){
+            NestedTestBean bean = (NestedTestBean)parent;
+            bean.setStrings(new String[size]);
+            return true;
+        }
+        return false;
     }
 }

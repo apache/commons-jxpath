@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/PackageFunctions.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/PackageFunctions.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -88,14 +88,22 @@ import org.apache.commons.jxpath.functions.*;
  *  a member of the package described by this PackageFunctions object.</dd>
  * </dl>
  *
+ * <p>
+ * If the first argument of a method or constructor is ExpressionContext, the
+ * expression context in which the function is evaluated is passed to
+ * the method.
+ * </p>
+ * <p>
  * There is one PackageFunctions object registered by default with each
  * JXPathContext.  It does not have a namespace and uses no class prefix.
  * The existence of this object allows us to use XPaths like:
  * <code>"java.util.Date.new()"</code> and <code>"length('foo')"</code>
  * without the explicit registration of any extension functions.
+ * </p>
+
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
  */
 public class PackageFunctions implements Functions {
     private String classPrefix;
@@ -129,11 +137,17 @@ public class PackageFunctions implements Functions {
             Object target = parameters[0];
             if (target != null){
                 if (target instanceof ExpressionContext){
-                    target = ((ExpressionContext)target).getContextNodePointer().getValue();
+                    Pointer pointer = ((ExpressionContext)target).getContextNodePointer();
+                    if (pointer != null){
+                        target = pointer.getValue();
+                    }
+                    else {
+                        target = null;
+                    }
                 }
             }
             if (target != null){
-                Method method = Types.lookupMethod(Object.class, name, parameters);
+                Method method = Types.lookupMethod(target.getClass(), name, parameters);
                 if (method != null){
                     return new MethodFunction(method);
                 }

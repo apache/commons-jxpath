@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyAccessHelper.java,v 1.2 2001/09/09 00:52:04 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/09 00:52:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyAccessHelper.java,v 1.3 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,6 +64,7 @@ package org.apache.commons.jxpath.ri.pointers;
 import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
+import org.apache.commons.jxpath.functions.Types;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -71,7 +72,7 @@ import java.beans.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/09 00:52:04 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/10 03:40:20 $
  */
 public class PropertyAccessHelper {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -117,6 +118,27 @@ public class PropertyAccessHelper {
         }
     }
 
+    public static Object expandCollection(Object collection, int size){
+        if (collection == null){
+            return null;
+        }
+        else if (collection.getClass().isArray()){
+            Object bigger = Array.newInstance(collection.getClass().getComponentType(), size);
+            System.arraycopy(collection, 0, bigger, 0, Array.getLength(collection));
+            return bigger;
+        }
+        else if (collection instanceof Collection){
+            while (((Collection)collection).size() < size){
+                ((Collection)collection).add(null);
+            }
+            return collection;
+        }
+        else {
+            throw new RuntimeException("Cannot turn " + collection.getClass().getName() +
+                    " into a collection of size " + size);
+        }
+    }
+
     public static Object getValue(Object bean, PropertyDescriptor propertyDescriptor, int index){
         if (propertyDescriptor instanceof IndexedPropertyDescriptor){
             Object value;
@@ -143,7 +165,9 @@ public class PropertyAccessHelper {
                 IndexedPropertyDescriptor ipd = (IndexedPropertyDescriptor)propertyDescriptor;
                 Method method = ipd.getIndexedWriteMethod();
                 if (method != null){
-                    method.invoke(bean, new Object[]{new Integer(index), value});
+                    method.invoke(bean,
+                        new Object[]{new Integer(index),
+                                     convert(value, ipd.getIndexedPropertyType())});
                     return;
                 }
             }
@@ -160,15 +184,28 @@ public class PropertyAccessHelper {
         Object value = collection;
         if (collection != null){
             if (collection.getClass().isArray()){
+                if (index < 0 || index >= Array.getLength(collection)){
+                    return null;
+                }
                 value = Array.get(collection, index);
             }
             else if (collection instanceof List){
+                if (index < 0 || index >= ((List)collection).size()){
+                    return null;
+                }
                 value = ((List)collection).get(index);
             }
             else if (collection instanceof Collection){
+                int i = 0;
                 Iterator it = ((Collection)collection).iterator();
-                for (int i = 0; i <= index; i++){
+                for (; i < index; i++){
+                    it.next();
+                }
+                if (it.hasNext()){
                     value = it.next();
+                }
+                else {
+                    value = null;
                 }
             }
         }
@@ -178,7 +215,7 @@ public class PropertyAccessHelper {
     public static void setValue(Object collection, int index, Object value){
         if (collection != null){
             if (collection.getClass().isArray()){
-                Array.set(collection, index, value);
+                Array.set(collection, index, convert(value, collection.getClass().getComponentType()));
             }
             else if (collection instanceof List){
                 ((List)collection).set(index, value);
@@ -213,12 +250,22 @@ public class PropertyAccessHelper {
             if (method == null){
                 throw new RuntimeException("No write method");
             }
+            value = convert(value, propertyDescriptor.getPropertyType());
             value = method.invoke(bean, new Object[]{value});
         }
         catch (Exception ex){
             throw new RuntimeException("Cannot modify property: " + propertyDescriptor.getName() +
                 ", " + ex);
         }
+    }
+
+    private static Object convert(Object value, Class type){
+        if (!Types.canConvert(value, type)){
+            throw new RuntimeException("Cannot convert value of class " +
+                    (value == null ? "null" : value.getClass().getName()) +
+                    " to type " + type);
+        }
+        return Types.convert(value, type);
     }
 
     /**

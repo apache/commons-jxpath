@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/ContainerPointer.java,v 1.3 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/26 01:21:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/ContainerPointer.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.w3c.dom.Node;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
@@ -112,7 +112,7 @@ public class ContainerPointer extends NodePointer {
         container.setValue(value);
     }
 
-    private NodePointer getValuePointer(){
+    public NodePointer getValuePointer(){
         if (valuePointer == null){
             Object value = getValue();
             valuePointer = NodePointer.createNodePointer(this, null, value);

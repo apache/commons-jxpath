@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.3 2001/09/21 23:22:44 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/21 23:22:44 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.ri.EvalContext;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:44 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -140,6 +140,11 @@ public class PredicateContext extends EvalContext {
     }
 
     public NodePointer getCurrentNodePointer(){
+        if (position == 0){
+            if (!setPosition(1)){
+                return null;
+            }
+        }
         if (dynamicPropertyPointer != null){
             return dynamicPropertyPointer;
         }
@@ -148,9 +153,13 @@ public class PredicateContext extends EvalContext {
         }
     }
 
-    public boolean nextSet(){
-        position = 0;
+    public void reset(){
+        super.reset();
         done = false;
+    }
+
+    public boolean nextSet(){
+        reset();
         return parentContext.nextSet();
     }
 

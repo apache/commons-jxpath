@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestBean.java,v 1.1 2001/08/23 00:47:02 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:02 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestBean.java,v 1.2 2002/04/10 03:40:21 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import java.util.*;
  * General purpose test bean for JUnit tests for the "jxpath" component.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:02 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:21 $
  */
 public class TestBean {
 
@@ -79,13 +79,18 @@ public class TestBean {
      * An array of nested java beans.
      */
     private NestedTestBean[] beans;
+    {
+        beans = new NestedTestBean[2];
+        beans[0] = new NestedTestBean("Name 1");
+        beans[1] = new NestedTestBean("Name 2");
+    }
+
     public NestedTestBean[] getBeans(){
-        if (beans == null){
-            beans = new NestedTestBean[2];
-            beans[0] = new NestedTestBean("Name 1");
-            beans[1] = new NestedTestBean("Name 2");
-        }
         return beans;
+    }
+
+    public void setBeans(NestedTestBean[] beans){
+        this.beans = beans;
     }
 
     /**
@@ -146,14 +151,18 @@ public class TestBean {
      * A Map
      */
     private HashMap map;
+    {
+        map = new HashMap();
+        map.put("Key1", "Value 1");
+        map.put("Key2", new NestedTestBean("Name 6"));
+    }
+
     public Map getMap(){
-        if (map == null){
-            map = new HashMap();
-            map.put("Key1", "Value 1");
-            map.put("Key2", new NestedTestBean("Name 6"));
-//            map.put("Key3", null);
-        }
         return map;
+    }
+
+    public void setMap(HashMap map){
+        this.map = map;
     }
 
     /**
@@ -162,6 +171,10 @@ public class TestBean {
     private NestedTestBean nestedBean = new NestedTestBean("Name 0");
     public NestedTestBean getNestedBean(){
         return nestedBean;
+    }
+
+    public void setNestedBean(NestedTestBean bean){
+        this.nestedBean = bean;
     }
 
     private NestedTestBean object = new NestedTestBean("Name 5");

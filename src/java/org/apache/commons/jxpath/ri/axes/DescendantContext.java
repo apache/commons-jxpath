@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.3 2001/09/21 23:22:43 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/21 23:22:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import java.util.*;
  * axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:43 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
  */
 public class DescendantContext extends EvalContext {
     private NodeTest nodeTest;
@@ -89,13 +89,23 @@ public class DescendantContext extends EvalContext {
     }
 
     public NodePointer getCurrentNodePointer(){
+        if (position == 0){
+            if (!setPosition(1)){
+                return null;
+            }
+        }
         return currentNodePointer;
     }
 
+    public void reset(){
+        super.reset();
+        setStarted = false;
+    }
+
     public boolean setPosition(int position){
-        if (position == 0 || position < this.position){
-            stack = new Stack();
-            setStarted = false;
+//        System.err.println("POSITION: " + position + " this.position=" + this.position);
+        if (position < this.position){
+            reset();
         }
 
         while (this.position < position){
@@ -109,14 +119,17 @@ public class DescendantContext extends EvalContext {
     public boolean next(){
         if (!setStarted){
             setStarted = true;
+            stack = new Stack();
             currentNodePointer = parentContext.getCurrentNodePointer();
-            if (!currentNodePointer.isLeaf()){
-                stack.push(currentNodePointer.childIterator(null, false));
-            }
-            if (includeSelf){
-                if (currentNodePointer.testNode(nodeTest)){
-                    position++;
-                    return true;
+            if (currentNodePointer != null){
+                if (!currentNodePointer.isLeaf()){
+                    stack.push(currentNodePointer.childIterator(null, false));
+                }
+                if (includeSelf){
+                    if (currentNodePointer.testNode(nodeTest)){
+                        position++;
+                        return true;
+                    }
                 }
             }
         }

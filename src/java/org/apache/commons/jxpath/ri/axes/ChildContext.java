@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.3 2001/09/21 23:22:43 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/21 23:22:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import java.beans.*;
  * "preceding-sibling::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:43 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
  */
 public class ChildContext extends EvalContext {
     private NodeTest nodeTest;
@@ -92,6 +92,11 @@ public class ChildContext extends EvalContext {
     }
 
     public NodePointer getCurrentNodePointer(){
+        if (position == 0){
+            if (!setPosition(1)){
+                return null;
+            }
+        }
         if (iterator != null){
             return iterator.getNodePointer();
         }
@@ -127,22 +132,21 @@ public class ChildContext extends EvalContext {
         return setPosition(getCurrentPosition() + 1);
     }
 
+    public void reset(){
+        super.reset();
+        iterator = null;
+    }
+
     public boolean setPosition(int position){
         int oldPosition = getCurrentPosition();
         super.setPosition(position);
-        if (position == 0){
-            iterator = null;
-            return true;
+        if (oldPosition == 0){
+            prepare();
         }
-        else {
-            if (oldPosition == 0){
-                prepare();
-            }
-            if (iterator == null){
-                return false;
-            }
-            return iterator.setPosition(position);
+        if (iterator == null){
+            return false;
         }
+        return iterator.setPosition(position);
     }
 
     /**
@@ -150,6 +154,9 @@ public class ChildContext extends EvalContext {
      */
     private void prepare(){
         NodePointer parent = parentContext.getCurrentNodePointer();
+        if (parent == null){
+            return;
+        }
         if (startFromParentLocation){
             iterator = parent.siblingIterator(nodeTest, reverse);
         }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/NestedTestBean.java,v 1.2 2002/04/10 03:40:21 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointerFactory.java,v 1.1 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,65 +59,38 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath;
+package org.apache.commons.jxpath.ri.pointers;
 
-import org.w3c.dom.*;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.*;
+import org.apache.commons.jxpath.ri.compiler.QName;
+import java.util.*;
 
 /**
- * A general purpose JavaBean for JUnit tests for the "jxpath" component.
+ * Creates NodePointers for objects of a certain type.
+ * NodePointerFactories are ordered according to the values returned
+ * by the "getOrder" method and always queried in that order.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:21 $
+ * @version $Revision: 1.1 $ $Date: 2002/04/10 03:40:20 $
  */
-public class NestedTestBean {
-    private String name = "Name 0";
-    private int integer = 1;
-
-    public NestedTestBean(){
-    }
-
-    public NestedTestBean(String name){
-        this.name = name;
-    }
+public interface NodePointerFactory {
 
     /**
-     * A read-only boolean property
+     * The factory name determines its position between other factories.
      */
-    public boolean isBoolean(){
-        return false;
-    }
+    public int getOrder();
 
     /**
-     * A read-only int property
+     * Create a NodePointer for the supplied object.  The node will represent
+     * the "root" object a path.
+     *
+     * Return null if this factory does not recognize objects of the supplied type.
      */
-    public int getInt(){
-        return integer;
-    }
-
-    public void setInt(int value){
-        this.integer = value;
-    }
+    public NodePointer createNodePointer(QName name, Object object, Locale locale);
 
     /**
-     * A read-only String property
+     * Create a NodePointer for the supplied child object.
+     * <p>
+     * Return null if this factory does not recognize objects of the supplied type.
      */
-    public String getName(){
-        return name;
-    }
-
-    private String[] strings = new String[]{"String 1", "String 2", "String 3"};
-
-    public String[] getStrings(){
-        return strings;
-    }
-
-    public void setStrings(String[] array){
-        strings = array;
-    }
-
-    public String toString(){
-        return "Nested: " + name;
-    }
+    public NodePointer createNodePointer(NodePointer parent, QName name, Object object);
 }

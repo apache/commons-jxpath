@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.9 2001/09/26 23:37:38 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2001/09/26 23:37:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.10 2002/04/10 03:40:21 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/04/10 03:40:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -93,7 +93,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2001/09/26 23:37:38 $
+ * @version $Revision: 1.10 $ $Date: 2002/04/10 03:40:21 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -313,7 +313,7 @@ public class JXPathTestCase extends TestCase
             testGetValue(context, "$z/int",  new Integer(1));
             testGetValue(context, "$z/integers[$x - 5]",  new Integer(2));
             testGetValue(context, ".",  bean.getBeans());
-            testGetValue(context, ".[2]/name",  "Name 2");
+//            testGetValue(context, ".[2]/name",  "Name 2");        // TBD: is this even legal?
             testGetValue(context, "$t[2]",  "b");
             testGetValue(context, "$m/Key1",  "Value 1");
         }
@@ -321,7 +321,6 @@ public class JXPathTestCase extends TestCase
 
     private void testGetValue(JXPathContext context, String xpath, Object expected) {
         Object actual = context.getValue(xpath);
-//        System.err.println("xpath: " + xpath + " ACTUAL: " + actual);
         assertEquals("Evaluating <" + xpath + ">", expected, actual);
     }
 
@@ -356,7 +355,7 @@ public class JXPathTestCase extends TestCase
             testContextDependency("/foo[$x]", false);
             testContextDependency("/foo[bar]", true);
             testContextDependency("3 + 5", false);
-            testContextDependency("test:func(3, 5)", false);
+            testContextDependency("test:func(3, 5)", true);
             testContextDependency("test:func(3, foo)", true);
         }
     }
@@ -390,8 +389,14 @@ public class JXPathTestCase extends TestCase
             context.setValue("int", new Integer(3));
             assertEquals("Modified <" + "int" + ">", new Integer(3), context.getValue("int"));
 
+            context.setValue("int", new int[]{4});
+            assertEquals("Modified <" + "int" + ">", new Integer(4), context.getValue("int"));
+
             context.setValue("integers[2]", new Integer(5));
             assertEquals("Modified <" + "integers[2]" + ">", new Integer(5), context.getValue("integers[2]"));
+
+            context.setValue("integers[2]", new int[]{6});
+            assertEquals("Modified <" + "integers[2]" + ">", new Integer(6), context.getValue("integers[2]"));
 
             NestedTestBean nBean = new NestedTestBean("Name 9");
             tBean.getBeans()[1] = null;
@@ -408,6 +413,83 @@ public class JXPathTestCase extends TestCase
             context.setValue("map/Key4", new Integer(7));
             assertEquals("Modified <" + "map/Key4" + ">", new Integer(7), context.getValue("map/Key4"));
         }
+    }
+
+    /**
+     * Test JXPath.createPath() with various arguments
+     */
+    public void testCreatePath(){
+        if (enabled){
+            TestBean tBean = new TestBean();
+            tBean.setNestedBean(null);
+            tBean.setBeans(null);
+            tBean.setMap(null);
+            JXPathContext context = JXPathContext.newContext(tBean);
+            context.setFactory(new TestFactory());
+
+            // Calls factory.declareVariable("string")
+            testCreatePath(context, "$string", "Value");
+
+            // Calls factory.declareVariable("stringArray"). The factory needs to create a collection
+            testCreatePath(context, "$stringArray[2]", "Value2");
+            assertEquals("Created <" + "$stringArray[1]" + ">", "Value1", context.getValue("$stringArray[1]"));
+
+            context.getVariables().declareVariable("array", new String[]{"Value1"});
+
+            // Does not involve factory at all - just expands the collection
+            testCreatePath(context, "$array[2]", "Value2");
+            assertEquals("Created <" + "$array[1]" + ">", "Value1", context.getValue("$array[1]"));
+
+            // Calls factory.declareVariable("test"). The factory should create a TestBean
+            testCreatePath(context, "$test/boolean", Boolean.TRUE);
+
+            // Calls factory.declareVariable("testArray").
+            // The factory should create a collection of TestBeans.
+            // Then calls factory.createObject(..., collection, "testArray", 1).
+            // That one should produce an instance of TestBean and put it in the collection
+            // at index 1.
+            testCreatePath(context, "$testArray[2]/boolean", Boolean.TRUE);
+
+            // Calls factory.createObject(..., TestBean, "nestedBean")
+            testCreatePath(context, "nestedBean/int", new Integer(1));
+
+            // Calls factory.expandCollection(..., testBean, "beans", 2), then
+            // factory.createObject(..., testBean, "beans", 2)
+            testCreatePath(context, "beans[2]/int", new Integer(2));
+
+            // Another, but the collection already exists
+            testCreatePath(context, "beans[3]/int", new Integer(3));
+
+            // Calls factory.expandCollection(..., testBean, "beans", 2), then
+            // sets the value
+            testCreatePath(context, "nestedBean/strings[2]", "Test");
+
+            // Calls factory.createObject(..., testBean, "map"), then
+            // sets the value
+            testCreatePath(context, "map[@name = 'TestKey1']", "Test");
+
+            // Calls factory.createObject(..., testBean, "map"), then
+            // then factory.createObject(..., map, "TestKey2"), then
+            // sets the value
+            testCreatePath(context, "map[@name = 'TestKey2']/int", new Integer(4));
+
+            // Calls factory.expandCollection(..., map, "TestKey3", 2), then
+            testCreatePath(context, "map/TestKey3[2]", "Test");
+
+            // Should be the same as the one before
+            testCreatePath(context, "map[@name='TestKey3'][3]", "Test");
+
+            // Comprehensive tests: map & bean
+            tBean.setMap(null);
+            testCreatePath(context, "map[@name = 'TestKey5']/nestedBean/int", new Integer(5));
+            tBean.setMap(null);
+            testCreatePath(context, "map[@name = 'TestKey5']/beans[2]/int", new Integer(6));
+        }
+    }
+
+    private void testCreatePath(JXPathContext context, String path, Object value){
+        context.createPath(path, value);
+        assertEquals("Created <" + path + ">", value, context.getValue(path));
     }
 
     public void testNull(){
@@ -436,6 +518,30 @@ public class JXPathTestCase extends TestCase
         }
     }
 
+    private static class Context implements ExpressionContext {
+        private Object object;
+
+        public Context(Object object){
+            this.object = object;
+        }
+
+        public Pointer getContextNodePointer(){
+            return NodePointer.createNodePointer(null, object, Locale.getDefault());
+        }
+
+        public List getContextNodeList(){
+            return null;
+        }
+
+        public JXPathContext getJXPathContext(){
+            return null;
+        }
+
+        public int getPosition(){
+            return 0;
+        }
+    }
+
     public void testFunctions(){
         if (enabled){
             Object[] args;
@@ -446,19 +552,35 @@ public class JXPathTestCase extends TestCase
 
             args = new Object[]{new Integer(1), "x"};
             func = funcs.getFunction("test", "new", args);
-            assertEquals("test:new(1, x)", func.invoke(args).toString(), "foo=1; bar=x");
+            assertEquals("test:new(1, x)", func.invoke(new Context(null), args).toString(), "foo=1; bar=x");
+
+            args = new Object[]{"baz"};
+            func = funcs.getFunction("test", "new", args);
+            assertEquals("test:new('baz')", func.invoke(new Context(new Integer(1)), args).toString(), "foo=1; bar=baz");
 
             args = new Object[]{new Integer(1), "x"};
             func = funcs.getFunction("test", "build", args);
-            assertEquals("test:build(1, x)", func.invoke(args).toString(), "foo=1; bar=x");
+            assertEquals("test:build(1, x)", func.invoke(new Context(null), args).toString(), "foo=1; bar=x");
 
             args = new Object[]{"7", new Integer(1)};
             func = funcs.getFunction("test", "build", args);
-            assertEquals("test:build('7', 1)", func.invoke(args).toString(), "foo=7; bar=1");
+            assertEquals("test:build('7', 1)", func.invoke(new Context(null), args).toString(), "foo=7; bar=1");
 
             args = new Object[]{test};
             func = funcs.getFunction("test", "getFoo", args);
-            assertEquals("test:getFoo($test, 1, x)", func.invoke(args).toString(), "0");
+            assertEquals("test:getFoo($test, 1, x)", func.invoke(new Context(null), args).toString(), "0");
+
+            args = new Object[0];
+            func = funcs.getFunction("test", "path", args);
+            assertEquals("test:path()", func.invoke(new Context(new Integer(1)), args), "1");
+
+            args = new Object[]{test};
+            func = funcs.getFunction("test", "instancePath", args);
+            assertEquals("test:instancePath()", func.invoke(new Context(new Integer(1)), args), "1");
+
+            args = new Object[]{test, "*"};
+            func = funcs.getFunction("test", "pathWithSuffix", args);
+            assertEquals("test:pathWithSuffix('*')", func.invoke(new Context(new Integer(1)), args), "1*");
         }
     }
 
@@ -533,7 +655,6 @@ public class JXPathTestCase extends TestCase
             try {
                 if (!xpath_tests[i].path && !xpath_tests[i].eval){
                     Pointer ptr = ctx.locateValue(xpath_tests[i].xpath);
-//                  System.err.println(xpath_tests[i].xpath + " ptr: " + ptr.getClass() + "\n  " + ptr.asPath());
                     Pointer test = ctx.locateValue(ptr.asPath());
                     assertEquals("Testing pointer for <" + xpath_tests[i].xpath + ">", ptr.asPath(), test.asPath());
                 }
@@ -627,6 +748,7 @@ public class JXPathTestCase extends TestCase
         // child::
         test("count(set)", new Double(3)),
         test("boolean", Boolean.FALSE),
+//        test("boolean/class/name", "java.lang.Boolean"),
         testEval("foo:boolean", list()),
         test("count(@*)", new Double(0)),
         testPath("boolean", "/boolean"),
@@ -657,11 +779,12 @@ public class JXPathTestCase extends TestCase
         // descendant-or-self::
         testEval("//name", list("Name 1", "Name 2", "Name 3", "Name 6", "Name 0", "Name 5", "Name 4")),
         test("//Key1", "Value 1"),
+
         testEval("//self::node()[name = 'Name 0']/name", list("Name 0")),
         testEval("//self::node()[name(.) = concat('n', 'a', 'm', 'e')]",
                 list("Name 1", "Name 2", "Name 3", "Name 6", "Name 0", "Name 5", "Name 4")),
-        test("count(//self::beans)", new Double(4)),
-        test("count(nestedBean//.)", new Double(13)),
+        test("count(//self::beans)", new Double(2)),
+        test("count(nestedBean//.)", new Double(7)),
         testEval("descendant-or-self::name", list("Name 1", "Name 2", "Name 3", "Name 6", "Name 0", "Name 5", "Name 4")),
         test("count(descendant-or-self::root)", new Double(1)),
         test("count(descendant-or-self::node())", new Double(66)),
@@ -797,7 +920,10 @@ public class JXPathTestCase extends TestCase
         test("string(test:increment(8))", "9.0"),
         test("length('foo')", new Integer(3)),
         test("call:substring('foo', 1, 2)", "o"),
+        test("//.[test:isMap()]/Key1", "Value 1"),
+        test("count(//.[test:count(strings) = 3])", new Double(7)),
 
+        test("/beans[contains(test:path(), '[2]')]/name", "Name 2"),
 
         // null
         testPath("$testnull/nothing", "$testnull/nothing"),
@@ -872,9 +998,9 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testDOM(){
-//        if (!enabled){
-//            return;
-//        }
+        if (!enabled){
+            return;
+        }
         System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
                 "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
         try {
@@ -884,9 +1010,8 @@ public class JXPathTestCase extends TestCase
             ctx.setLocale(Locale.US);
             ctx.getVariables().declareVariable("dom", doc);
             ctx.getVariables().declareVariable("object", docCtr);
-            TestBeanWithDOM tbwdom = new TestBeanWithDOM();
-            tbwdom.setVendor(doc.getDocumentElement());
-            tbwdom.setObject(docCtr);
+            ctx.getVariables().declareVariable("null", null);
+            TestBeanWithDOM tbwdom = createTestBeanWithDOM();
             ctx.getVariables().declareVariable("test", tbwdom);
             testXPaths(ctx, dom_tests, false);
         }
@@ -894,6 +1019,15 @@ public class JXPathTestCase extends TestCase
             ex.printStackTrace();
             throw new RuntimeException("Test failed");
         }
+    }
+
+    private TestBeanWithDOM createTestBeanWithDOM(){
+        XMLDocumentContainer docCtr = new XMLDocumentContainer(getClass().getResource("Test.properties"));
+        Document doc = (Document)docCtr.getValue();
+        TestBeanWithDOM tbwdom = new TestBeanWithDOM();
+        tbwdom.setVendor(doc.getDocumentElement());
+        tbwdom.setObject(docCtr);
+        return tbwdom;
     }
 
     static final XP[] dom_tests = new XP[]{
@@ -946,7 +1080,7 @@ public class JXPathTestCase extends TestCase
         testLenient("//foo:x/self::x/y", null),
 
         test("//nsnode/comment()", "z"),
-        test("//nsnode/text()", "text"),
+//        test("//nsnode/text()", "text"),
         testPath("//nsnode/text()", "/vendor[1]/nsnode[1]/text()[1]"),
         test("//nsnode/processing-instruction()", "ahead"),
         test("//nsnode/processing-instruction('do')", "it"),
@@ -968,6 +1102,9 @@ public class JXPathTestCase extends TestCase
         testPath("$test/object/vendor/location[1]//street", "$test/object/vendor[1]/location[1]/address[1]/street[1]"),
         test("$object//street", "Some street"),
         testPath("$object//street", "$object/vendor[1]/location[1]/address[1]/street[1]"),
+
+        testPath("$null", "$null"),
+//        testPath("$null[3]", "$null[3]"),
     };
 }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/ConstructorFunction.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/ConstructorFunction.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,11 +69,12 @@ import org.apache.commons.jxpath.*;
  * An extension function that creates an instance using a constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
  */
 public class ConstructorFunction implements Function {
 
     private Constructor constructor;
+    private static final Object EMPTY_ARRAY[] = new Object[0];
 
     public ConstructorFunction(Constructor constructor){
         this.constructor = constructor;
@@ -82,18 +83,23 @@ public class ConstructorFunction implements Function {
     /**
      * Converts parameters to suitable types and invokes the constructor.
      */
-    public Object invoke(Object[] parameters){
+    public Object invoke(ExpressionContext context, Object[] parameters){
         try {
             Object[] args;
             if (parameters == null){
-                args = null;
+                parameters = EMPTY_ARRAY;
             }
-            else {
-                Class types[] = constructor.getParameterTypes();
-                args = new Object[parameters.length];
-                for (int i = 0; i < args.length; i++){
-                    args[i] = Types.convert(parameters[i], types[i]);
-                }
+            int pi = 0;
+            Class types[] = constructor.getParameterTypes();
+            if (types.length > 0 && ExpressionContext.class.isAssignableFrom(types[0])){
+                pi = 1;
+            }
+            args = new Object[parameters.length + pi];
+            if (pi == 1){
+                args[0] = context;
+            }
+            for (int i = 0; i < parameters.length; i++){
+                args[i + pi] = Types.convert(parameters[i], types[i]);
             }
             return constructor.newInstance(args);
         }

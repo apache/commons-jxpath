@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/NestedTestBean.java,v 1.2 2002/04/10 03:40:21 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NullElementPointer.java,v 1.1 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,65 +59,83 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath;
+package org.apache.commons.jxpath.ri.pointers;
 
-import org.w3c.dom.*;
-import java.beans.PropertyDescriptor;
+import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.ri.Compiler;
+import org.apache.commons.jxpath.ri.compiler.*;
+
 import java.lang.reflect.*;
+import java.util.*;
+import java.beans.*;
 
 /**
- * A general purpose JavaBean for JUnit tests for the "jxpath" component.
+ * Used when there is a need to construct a Pointer for
+ * a collection element that does not exist.  For example,
+ * if the path is "foo[3]", but the collection "foo" only has
+ * one element or is empty or is null, the NullElementPointer
+ * can be used to capture this situatuin without putting
+ * a regular NodePointer into an invalid state.  Just create
+ * a NullElementPointer with index 2 (= 3 - 1) and a "foo" pointer
+ * as the parent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:21 $
+ * @version $Revision: 1.1 $ $Date: 2002/04/10 03:40:20 $
  */
-public class NestedTestBean {
-    private String name = "Name 0";
-    private int integer = 1;
+public class NullElementPointer extends PropertyOwnerPointer {
 
-    public NestedTestBean(){
+    public NullElementPointer(NodePointer parent, int index){
+        super(parent);
+        this.index = index;
     }
 
-    public NestedTestBean(String name){
-        this.name = name;
+    public QName getName(){
+        return null;
     }
 
-    /**
-     * A read-only boolean property
-     */
-    public boolean isBoolean(){
+    public Object getBaseValue(){
+        return null;
+    }
+
+    public void setValue(Object value){
+        throw new UnsupportedOperationException("Cannot setValue of an object that is not some other object's property");
+    }
+
+    public boolean isActual(){
         return false;
     }
 
-    /**
-     * A read-only int property
-     */
-    public int getInt(){
-        return integer;
+    public void createPath(JXPathContext context, Object value){
+        parent.createPath(context, index, value);
     }
 
-    public void setInt(int value){
-        this.integer = value;
+    public NodePointer createPath(JXPathContext context){
+        return parent.createPath(context, index);
     }
 
-    /**
-     * A read-only String property
-     */
-    public String getName(){
-        return name;
+    public int hashCode(){
+        return getParent().hashCode() + index;
     }
 
-    private String[] strings = new String[]{"String 1", "String 2", "String 3"};
+    public boolean equals(Object object){
+        if (object == this){
+            return true;
+        }
 
-    public String[] getStrings(){
-        return strings;
+        if (!(object instanceof NullElementPointer)){
+            return false;
+        }
+
+        NullElementPointer other = (NullElementPointer)object;
+        return getParent() == other.getParent() &&
+            index == other.index;
     }
 
-    public void setStrings(String[] array){
-        strings = array;
+    public String asPath(){
+        return parent.asPath() + "[" + (index + 1) + "]";
     }
 
-    public String toString(){
-        return "Nested: " + name;
+    public int getLength(){
+        return 0;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/NestedTestBean.java,v 1.2 2002/04/10 03:40:21 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/10 03:40:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMPointerFactory.java,v 1.1 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -59,65 +59,37 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath;
+package org.apache.commons.jxpath.ri.pointers;
 
-import org.w3c.dom.*;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.*;
+import org.apache.commons.jxpath.ri.compiler.QName;
+import java.util.*;
+import org.w3c.dom.Node;
 
 /**
- * A general purpose JavaBean for JUnit tests for the "jxpath" component.
+ * Implements NodePointerFactory for DOM elements.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:21 $
+ * @version $Revision: 1.1 $ $Date: 2002/04/10 03:40:20 $
  */
-public class NestedTestBean {
-    private String name = "Name 0";
-    private int integer = 1;
+public class DOMPointerFactory implements NodePointerFactory {
 
-    public NestedTestBean(){
+    public static final int DOM_POINTER_FACTORY_ORDER = 100;
+
+    public int getOrder(){
+        return DOM_POINTER_FACTORY_ORDER;
     }
 
-    public NestedTestBean(String name){
-        this.name = name;
+    public NodePointer createNodePointer(QName name, Object bean, Locale locale){
+        if (bean instanceof Node){
+            return new DOMNodePointer((Node)bean, locale);
+        }
+        return null;
     }
 
-    /**
-     * A read-only boolean property
-     */
-    public boolean isBoolean(){
-        return false;
-    }
-
-    /**
-     * A read-only int property
-     */
-    public int getInt(){
-        return integer;
-    }
-
-    public void setInt(int value){
-        this.integer = value;
-    }
-
-    /**
-     * A read-only String property
-     */
-    public String getName(){
-        return name;
-    }
-
-    private String[] strings = new String[]{"String 1", "String 2", "String 3"};
-
-    public String[] getStrings(){
-        return strings;
-    }
-
-    public void setStrings(String[] array){
-        strings = array;
-    }
-
-    public String toString(){
-        return "Nested: " + name;
+    public NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
+        if (bean instanceof Node){
+            return new DOMNodePointer(parent, (Node)bean);
+        }
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.2 2001/09/21 23:22:43 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/21 23:22:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.3 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import java.util.*;
  * on to the parent context.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:43 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/10 03:40:20 $
  */
 public class InitialContext extends EvalContext {
     private boolean startedSet = false;
@@ -84,8 +84,11 @@ public class InitialContext extends EvalContext {
 
     public InitialContext(EvalContext parentContext){
         super(parentContext);
-        nodePointer = (NodePointer)parentContext.getCurrentNodePointer().clone();
-        collection = (nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION);
+        NodePointer ptr = parentContext.getCurrentNodePointer();
+        if (ptr != null){
+            nodePointer = (NodePointer)ptr.clone();
+            collection = (nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION);
+        }
     }
 
     public Pointer getContextNodePointer(){

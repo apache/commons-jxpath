@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.6 2001/09/26 23:37:38 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2001/09/26 23:37:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.7 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,7 +81,7 @@ import org.w3c.dom.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2001/09/26 23:37:38 $
+ * @version $Revision: 1.7 $ $Date: 2002/04/10 03:40:19 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -90,12 +90,53 @@ public class JXPathContextReferenceImpl extends JXPathContext
     private static final PackageFunctions genericFunctions = new PackageFunctions("", null);
     private static boolean useSoftCache = true;
     private static int cleanupCount = 0;
+    private static Vector nodeFactories = new Vector();
+    private static NodePointerFactory nodeFactoryArray[] = null;
+    static {
+        nodeFactories.add(new BeanPointerFactory());
+        nodeFactories.add(new DynamicPointerFactory());
+        nodeFactories.add(new DOMPointerFactory());
+        nodeFactories.add(new ContainerPointerFactory());
+        createNodeFactoryArray();
+    }
 
     // The frequency of the cache cleanup
     private static final int CLEANUP_THRESHOLD = 500;
 
     protected JXPathContextReferenceImpl(JXPathContext parentContext, Object contextBean){
         super(parentContext, contextBean);
+        synchronized (nodeFactories){
+            createNodeFactoryArray();
+        }
+    }
+
+    private static void createNodeFactoryArray(){
+        if (nodeFactoryArray == null){
+            nodeFactoryArray = (NodePointerFactory[])nodeFactories.toArray(new NodePointerFactory[0]);
+            Arrays.sort(nodeFactoryArray, new Comparator(){
+                public int compare(Object a, Object b){
+                    int orderA = ((NodePointerFactory)a).getOrder();
+                    int orderB = ((NodePointerFactory)b).getOrder();
+                    return orderA - orderB;
+                }
+            });
+        }
+    }
+
+    /**
+     * Call this with a custom NodePointerFactory to add support for
+     * additional types of objects.  Make sure the factory returns
+     * a name that puts it in the right position on the list of factories.
+     */
+    public static void addNodePointerFactory(NodePointerFactory factory){
+        synchronized (nodeFactories){
+            nodeFactories.add(factory);
+            nodeFactoryArray = null;
+        }
+    }
+
+    public static NodePointerFactory[] getNodePointerFactories(){
+        return nodeFactoryArray;
     }
 
     private static Expression compile(String xpath){
@@ -144,6 +185,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
      * types are wrapped into objects.
      */
     public Object getValue(String xpath){
+//        System.err.println("XPATH: " + xpath);
         Object result = eval(xpath, true);
         if (result == null && !lenient){
             throw new RuntimeException("No value for xpath: " + xpath);
@@ -187,6 +229,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
      * in the graph, the List will be empty.
      */
     public List eval(String xpath){
+//        System.err.println("XPATH: " + xpath);
         Object result = eval(xpath, false);
         List list = new ArrayList();
         if (result instanceof EvalContext){
@@ -208,6 +251,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
     }
 
     public Pointer locateValue(String xpath){
+//        System.err.println("XPATH: " + xpath);
         Object result = eval(xpath, true);
         if (result instanceof EvalContext){
             result = ((EvalContext)result).getContextNodePointer();
@@ -223,22 +267,55 @@ public class JXPathContextReferenceImpl extends JXPathContext
     /**
      */
     public void setValue(String xpath, Object value){
+        try {
+            setValue(xpath, value, false);
+        }
+        catch (Throwable ex){
+            throw new RuntimeException("Exception trying to set value with xpath " +
+                    xpath + ". " + ex.getMessage());
+        }
+    }
+
+    /**
+     */
+    public void createPath(String xpath, Object value){
+//        System.err.println("CREATING XPATH: " + xpath);
+        try {
+            setValue(xpath, value, true);
+        }
+        catch (Throwable ex){
+            throw new RuntimeException("Exception trying to create xpath " +
+                    xpath + ". " + ex.getMessage());
+        }
+    }
+
+    private void setValue(String xpath, Object value, boolean create){
         Object result = eval(xpath, true);
+//        System.err.println("RESULT: " + result);
+        Pointer pointer = null;
+
         if (result instanceof Pointer){
-            ((Pointer)result).setValue(value);
+            pointer = (Pointer)result;
         }
         else if (result instanceof EvalContext){
             EvalContext ctx = (EvalContext)result;
-            Pointer ptr = ctx.getContextNodePointer();
-            if (ptr != null){
-                ptr.setValue(value);
-            }
-            else {
-                throw new RuntimeException("Cannot set value for xpath: " + xpath + ": no such property");
-            }
+            pointer = ctx.getContextNodePointer();
         }
         else {
             throw new RuntimeException("Cannot set value for xpath: " + xpath);
+        }
+//        Pointer p = pointer;
+//        while (p != null){
+//            System.err.println("PTR: " + p.getClass() + " " + p.asPath());
+//            if (p instanceof NodePointer){
+//                p = ((NodePointer)p).getParent();
+//            }
+//        }
+        if (create){
+            ((NodePointer)pointer).createPath(this, value);
+        }
+        else {
+            pointer.setValue(value);
         }
     }
 
@@ -267,7 +344,6 @@ public class JXPathContextReferenceImpl extends JXPathContext
         Expression expr = compile(xpath);
         NodePointer pointer = NodePointer.createNodePointer(new QName(null, "root"), getContextBean(), getLocale());
         EvalContext ctx = new RootContext(this, pointer);
-//        System.err.println("XPATH = " + xpath);
         return ctx.eval(expr, firstMatchLookup);
     }
 
@@ -299,7 +375,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
             return new VariablePointer(vars, name);
         }
         else {
-            throw new RuntimeException("Undefined variable: " + varName);
+            return new VariablePointer(name);
         }
     }
 

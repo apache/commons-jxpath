@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Function.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Function.java,v 1.2 2002/04/10 03:40:19 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/10 03:40:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import java.util.*;
  * See {@link ClassFunctions ClassFunctions} and {@link PackageFunctions PackageFunctions}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/10 03:40:19 $
  */
 public interface Function {
 
@@ -82,6 +82,9 @@ public interface Function {
      * Computes the value of the function. Each implementation of Function
      * is responsible for conversion of supplied parameters to the required
      * argument types.
+     *
+     * @param context can be used to acquire the context in which the
+     *    function is being evaluted.
      */
-    Object invoke(Object[] parameters);
+    Object invoke(ExpressionContext context, Object[] parameters);
 }

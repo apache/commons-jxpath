@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPropertyPointer.java,v 1.3 2001/09/21 23:22:45 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/21 23:22:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPropertyPointer.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/10 03:40:20 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import java.beans.*;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:45 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -213,6 +213,14 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     /**
+     * A dynamic property is always considered actual - all keys are apparently
+     * existing with possibly the value of null.
+     */
+    protected boolean isActualProperty(){
+        return true;
+    }
+
+    /**
      * If index == WHOLE_COLLECTION, change the value of the property, otherwise
      * change the value of the index'th element of the collection
      * represented by the property.
@@ -224,6 +232,48 @@ public class DynamicPropertyPointer extends PropertyPointer {
         else {
             PropertyAccessHelper.setValue(handler.getProperty(getBean(), getPropertyName()), index, value);
         }
+    }
+
+    public void createPath(JXPathContext context, Object value){
+        createPath(context, index, value);
+    }
+
+    public void createPath(JXPathContext context, int index, Object value){
+        if (index == WHOLE_COLLECTION){
+            handler.setProperty(getBean(), getPropertyName(), value);
+        }
+        else {
+            Object collection = getBaseValue();
+            if (collection == null){
+                AbstractFactory factory = getAbstractFactory(context);
+                if (!factory.createObject(context, this, getBean(), getPropertyName(), 0)){
+                    throw new RuntimeException("Factory could not create an collection for path: " + asPath());
+                }
+                collection = getBaseValue();
+            }
+
+            if (index < 0){
+                throw new RuntimeException("Index is less than 1: " + asPath());
+            }
+
+            if (index >= getLength()){
+                collection = PropertyAccessHelper.expandCollection(collection, index + 1);
+                handler.setProperty(getBean(), getPropertyName(), collection);
+            }
+
+            PropertyAccessHelper.setValue(collection, index, value);
+        }
+    }
+
+    public NodePointer createPath(JXPathContext context){
+        if (getValue() == null){
+            AbstractFactory factory = getAbstractFactory(context);
+            int inx = (index == WHOLE_COLLECTION ? 0 : index);
+            if (!factory.createObject(context, this, getBean(), getPropertyName(), inx)){
+                throw new RuntimeException("Factory could not create an object for path: " + asPath());
+            }
+        }
+        return this;
     }
 
     public String asPath(){

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Commons - JXPath" href="http://jakarta.apache.org/commons/jxpath">
+    <title>JXPath</title>
+    <logo href="/images/logo.jpg">Commons</logo>
+    <!--
+      Note: Per the .vsl file, "/site" links will be prefixed with "http://jakarta.apache.org/site"
+            Other links starting with "/" become "./...".
+    -->
+    <body>
+       <menu name="Home">
+           <item name="Jakarta&#xA0;Commons"          href="http://jakarta.apache.org/commons/index.html" />
+           <item name="JXPath"                        href="/index.html" />
+       </menu>
+       <menu name="Information">
+<!--
+           <item name="Overview"                      href="/overview.html"/>
+           <item name="News"                          href="http://jakarta.apache.org/commons/pool/news.html"/>
+-->
+           <item name="Client API&#xA0;Documentation"   href="/api/org/apache/commons/jxpath/package-summary.html"/>
+           <item name="Complete API&#xA0;Docs"        href="/api/index.html"/>
+           <item name="User's Guide"                  href="/users-guide.html"/>
+           <!-- item name="JXPath Design"                 href="/design.html"/ -->
+       </menu>
+       <menu name="Project Files">
+           <item name="Status"                        href="http://cvs.apache.org/viewcvs/~checkout~/jakarta-commons/jxpath/STATUS.html?content-type=text/html"/>
+           <item name="CVS"                           href="http://cvs.apache.org/viewcvs/jakarta-commons/jxpath/"/>
+           <item name="Original&#xA0;Proposal"        href="http://cvs.apache.org/viewcvs/~checkout~/jakarta-commons/jxpath/PROPOSAL.html?content-type=text/html"/>
+       </menu>
+       <menu name="Downloads">
+           <item name="Nightly Build"                 href="http://jakarta.apache.org/builds/jakarta-commons/nightly/commons-jxpath/"/>
+       </menu>
+       <menu name="About Us">
+           <item name="Contributors"                  href="/contributors.html"/>
+           <item name="License"                       href="http://jakarta.apache.org/commons/license.html"/>
+       </menu>
+       <menu name="Jakarta Community">
+           <item name="Get&#xA0;Involved"             href="http://jakarta.apache.org/site/getinvolved.html"/>
+           <item name="Mailing&#xA0;Lists"            href="http://jakarta.apache.org/site/mail.html"/>
+           <item name="CVS&#xA0;Repositories"         href="http://jakarta.apache.org/site/cvsindex.html"/>
+       </menu>
+    </body>
+</project>
