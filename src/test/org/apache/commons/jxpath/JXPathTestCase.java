@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.19 2002/05/14 23:08:25 dmitri Exp $
- * $Revision: 1.19 $
- * $Date: 2002/05/14 23:08:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.20 2002/05/29 00:42:06 dmitri Exp $
+ * $Revision: 1.20 $
+ * $Date: 2002/05/29 00:42:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -95,7 +95,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.19 $ $Date: 2002/05/14 23:08:25 $
+ * @version $Revision: 1.20 $ $Date: 2002/05/29 00:42:06 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -281,6 +281,11 @@ public class JXPathTestCase extends TestCase
         testGetValue(context, "2 + 3",                  Boolean.TRUE, boolean.class);
         testGetValue(context, "'true'",                 Boolean.TRUE, Boolean.class);
 
+        Map tm = new HashMap();
+        tm.put("bar", "zz");
+        bean.getMap().put("foo", new Map[]{tm, tm});
+        testGetValue(context, "map/foo[2]/bar/../bar", "zz");
+
         boolean exception = false;
         try {
             testGetValue(context, "'foo'",              null, Date.class);
@@ -290,6 +295,32 @@ public class JXPathTestCase extends TestCase
         }
         assertTrue("Type conversion exception", exception);
     }
+
+    /**
+     * Test JXPath.iterate() with various arguments
+     */
+    public void testIterate(){
+        if (!enabled){
+            return;
+        }
+        Map map = new HashMap();
+        map.put("foo", new String[]{"a", "b", "c"});
+        JXPathContext context = JXPathContext.newContext(map);
+        testIterate(context, "foo", list("a", "b", "c"));
+
+//        context = JXPathContext.newContext(bean);
+//        testIterate(context, "nestedBean/strings[2]/following::node()", null);
+    }
+
+    private void testIterate(JXPathContext context, String xpath, List expected) {
+        Iterator it = context.iterate(xpath);
+        List actual = new ArrayList();
+        while (it.hasNext()){
+            actual.add(it.next());
+        }
+        assertEquals("Iterating <" + xpath + ">", expected, actual);
+    }
+
 
     /**
      * Test JXPath.getValue() with variables
@@ -973,7 +1004,7 @@ public class JXPathTestCase extends TestCase
     }
 
     static final XP[] xpath_tests = new XP[]{
-/*
+
         // Numbers
         test("1", new Double(1.0)),
         testEval("1", list(new Double(1.0))),
@@ -1094,9 +1125,10 @@ public class JXPathTestCase extends TestCase
         test("self::node() = /", Boolean.TRUE),
         test("self::root = /", Boolean.TRUE),
 
-        // Union
+        // Union - note corrected document order
         testEval("integers | beans[1]/strings",
-            list(new Integer(1), new Integer(2), new Integer(3), new Integer(4), "String 1", "String 2", "String 3")),
+            list("String 1", "String 2", "String 3",
+              new Integer(1), new Integer(2), new Integer(3), new Integer(4))),
 
         test("count((integers | beans[1]/strings)[contains(., '1')])", new Double(2)),
         test("count((integers | beans[1]/strings)[name(.) = 'strings'])", new Double(3)),
@@ -1113,7 +1145,7 @@ public class JXPathTestCase extends TestCase
 
         test("name(integers)", "integers"),
         testEval("*[name(.) = 'integers']", list(new Integer(1), new Integer(2), new Integer(3), new Integer(4))),
-*/
+
         // Dynamic properties
         test("nestedBean[@name = 'int']", new Integer(1)),    // Not implemented in Xalan
         testPath("nestedBean[@name = 'int']", "/nestedBean/int"),
@@ -1373,6 +1405,9 @@ public class JXPathTestCase extends TestCase
         testPath("$test/object/vendor/location[1]//street", "$test/object/vendor[1]/location[1]/address[1]/street[1]"),
         test("$object//street", "Orchard Road"),
         testPath("$object//street", "$object/vendor[1]/location[1]/address[1]/street[1]"),
+
+        testEval("vendor/contact/following::location//street",
+            list("Orchard Road", "Tangerine Drive")),
     };
 
     public void testTypeConversions(){

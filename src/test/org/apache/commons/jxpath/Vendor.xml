@@ -1,5 +1,7 @@
 <?xml version="1.0" ?>
 <vendor>
+  <contact>John</contact>
+  <contact>Jack</contact>
   <location id="100" name="local" manager="">
     <address>
       <street>Orchard Road</street>
