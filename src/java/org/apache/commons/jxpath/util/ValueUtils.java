@@ -553,13 +553,16 @@ public class ValueUtils {
             return (method);
         }
 
-        // Check the implemented interfaces and subinterfaces
-        method =
-            getAccessibleMethodFromInterfaceNest(
-                clazz,
-                method.getName(),
-                method.getParameterTypes());
-        return (method);
+        while (clazz != null) {
+            // Check the implemented interfaces and subinterfaces
+            Method aMethod = getAccessibleMethodFromInterfaceNest(clazz, 
+                    method.getName(), method.getParameterTypes());
+            if (aMethod != null) {
+                return aMethod;
+            }
+            clazz = clazz.getSuperclass();
+        }
+        return null;
     }
 
 
