@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.15 2004/01/23 01:10:21 dmitri Exp $
- * $Revision: 1.15 $
- * $Date: 2004/01/23 01:10:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.16 2004/01/24 01:12:02 dmitri Exp $
+ * $Revision: 1.16 $
+ * $Date: 2004/01/24 01:12:02 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2004/01/23 01:10:21 $
+ * @version $Revision: 1.16 $ $Date: 2004/01/24 01:12:02 $
  */
 public class NullPropertyPointer extends PropertyPointer {
 
@@ -146,8 +146,9 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     public NodePointer createPath(JXPathContext context) {
+        NodePointer newParent = parent.createPath(context);
         if (isAttribute()) {
-            return parent.createAttribute(context, getName());
+            return newParent.createAttribute(context, getName());
         }
         else {
             // Consider these two use cases:
@@ -160,11 +161,9 @@ public class NullPropertyPointer extends PropertyPointer {
             // 2. The parent pointer of NullPropertyPointer is a NullPointer.
             //    When we call createPath, it may return a PropertyOwnerPointer
             //    or it may return anything else, like a DOMNodePointer.
-            //    In the former case we need to exactly what we did in use 
+            //    In the former case we need to do exactly what we did in use 
             //    case 1.  In the latter case, we simply request that the 
             //    non-property pointer expand the collection by itself.
-
-            NodePointer newParent = parent.createPath(context);
             if (newParent instanceof PropertyOwnerPointer) {
                 PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
                 newParent = pop.getPropertyPointer();
@@ -174,13 +173,13 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     public NodePointer createPath(JXPathContext context, Object value) {
+        NodePointer newParent = parent.createPath(context);
         if (isAttribute()) {
-            NodePointer pointer = parent.createAttribute(context, getName());
+            NodePointer pointer = newParent.createAttribute(context, getName());
             pointer.setValue(value);
             return pointer;
         }
         else {
-            NodePointer newParent = parent.createPath(context);
             if (newParent instanceof PropertyOwnerPointer) {
                 PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
                 newParent = pop.getPropertyPointer();

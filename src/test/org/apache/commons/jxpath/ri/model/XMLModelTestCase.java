@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.16 2004/01/19 20:44:52 dmitri Exp $
- * $Revision: 1.16 $
- * $Date: 2004/01/19 20:44:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.17 2004/01/24 01:12:01 dmitri Exp $
+ * $Revision: 1.17 $
+ * $Date: 2004/01/24 01:12:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2004/01/19 20:44:52 $
+ * @version $Revision: 1.17 $ $Date: 2004/01/24 01:12:01 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {
@@ -230,6 +230,12 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             "/vendor[1]/location[1]/@name",
             "local",
             "/vendor[1]/location[1]/@name");
+
+         assertXPathCreatePathAndSetValue(
+            context,
+            "/vendor[1]/location[4]/@manager",
+            "",
+            "/vendor[1]/location[4]/@manager");   
     }
 
     /**
@@ -262,7 +268,13 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             "vendor/location[1]/@manager",
             "John Doe",
             "/vendor[1]/location[1]/@manager");
-
+        
+        assertXPathCreatePathAndSetValue(
+            context,
+            "/vendor[1]/location[4]/@manager",
+            "James Dow",
+            "/vendor[1]/location[4]/@manager");
+        
         assertXPathCreatePathAndSetValue(
             context,
             "vendor/product/name/attribute::price:language",
@@ -343,7 +355,10 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             "priceNS:amount");
 
         // name (non-qualified)
-        assertXPathValue(context, "name(vendor/location)", "location");
+        assertXPathValue(
+            context,
+            "name(vendor/location)",
+            "location");
 
         // namespace-uri (qualified)
         assertXPathValue(
