@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPointerFactory.java,v 1.1 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPointerFactory.java,v 1.2 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import java.util.*;
  * Implements NodePointerFactory for Dynamic classes like Map.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/12 02:28:06 $
  */
 public class DynamicPointerFactory implements NodePointerFactory {
 
@@ -89,6 +89,14 @@ public class DynamicPointerFactory implements NodePointerFactory {
     }
 
     public NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
+        if (name == null && parent instanceof PropertyPointer){
+            return (NodePointer)parent.clone();
+        }
+
+        if (bean == null){
+            return new NullPointer(parent, name);
+        }
+
         JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         if (bi.isDynamic()){
             DynamicPropertyHandler handler = PropertyAccessHelper.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());

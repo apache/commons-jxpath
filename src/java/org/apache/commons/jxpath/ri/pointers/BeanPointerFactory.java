@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanPointerFactory.java,v 1.1 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanPointerFactory.java,v 1.2 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import java.util.*;
  * Implements NodePointerFactory for JavaBeans.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/12 02:28:06 $
  */
 public class BeanPointerFactory implements NodePointerFactory {
 
@@ -85,6 +85,14 @@ public class BeanPointerFactory implements NodePointerFactory {
     }
 
     public NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
+        if (name == null && parent instanceof PropertyPointer){
+            return (NodePointer)parent.clone();
+        }
+
+        if (bean == null){
+            return new NullPointer(parent, name);
+        }
+
         JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         return new BeanPointer(parent, name, bean, bi);
     }

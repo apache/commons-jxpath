@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/VariablePointer.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/VariablePointer.java,v 1.5 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,19 +62,14 @@
 package org.apache.commons.jxpath.ri.pointers;
 
 import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
-
-import java.lang.reflect.*;
 import java.util.*;
-import java.beans.*;
-import org.w3c.dom.Node;
 
 /**
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/12 02:28:06 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;

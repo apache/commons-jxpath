@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanAttributeIterator.java,v 1.1 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/26 01:21:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanAttributeIterator.java,v 1.2 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,14 +68,13 @@ import org.apache.commons.jxpath.ri.compiler.*;
 import java.lang.reflect.*;
 import java.util.*;
 import java.beans.*;
-import org.w3c.dom.*;
 
 /**
  * An iterator of attributes of a JavaBean. Currently supports only one
  * attribute - "lang".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/12 02:28:06 $
  */
 public class BeanAttributeIterator implements NodeIterator {
     private NodePointer parent;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathBasicBeanInfo.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathBasicBeanInfo.java,v 1.2 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,7 +61,6 @@
  */
 package org.apache.commons.jxpath;
 
-import org.w3c.dom.*;
 import java.beans.*;
 import java.util.*;
 
@@ -73,7 +72,7 @@ import java.util.*;
  * See java.beans.BeanInfo, java.beans.Introspector
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/12 02:28:06 $
  */
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private boolean atomic = false;

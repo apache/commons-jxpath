@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NamespacePointer.java,v 1.1 2001/09/21 23:22:45 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/09/21 23:22:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NamespacePointer.java,v 1.2 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,20 +61,16 @@
  */
 package org.apache.commons.jxpath.ri.pointers;
 
-import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
 
-import java.lang.reflect.*;
 import java.util.*;
-import java.beans.*;
-import org.w3c.dom.*;
 
 /**
  * Represents a namespace node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/21 23:22:45 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/12 02:28:06 $
  */
 public class NamespacePointer extends NodePointer {
     private String prefix;

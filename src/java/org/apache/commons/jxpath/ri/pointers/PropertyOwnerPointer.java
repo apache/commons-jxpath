@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyOwnerPointer.java,v 1.3 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/26 01:21:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyOwnerPointer.java,v 1.4 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,17 +65,15 @@ import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
 
-import java.lang.reflect.*;
 import java.util.*;
-import java.beans.*;
-import org.w3c.dom.*;
+
 
 /**
  * A pointer describing a node that has properties, each of which could be
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.4 $ $Date: 2002/04/12 02:28:06 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 

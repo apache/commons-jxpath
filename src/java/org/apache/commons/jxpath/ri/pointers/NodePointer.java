@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointer.java,v 1.5 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointer.java,v 1.6 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,19 +63,16 @@ package org.apache.commons.jxpath.ri.pointers;
 
 import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
-import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
+import org.apache.commons.jxpath.functions.Types;
 
-import java.lang.reflect.*;
 import java.util.*;
-import java.beans.*;
-import org.w3c.dom.Node;
 
 /**
  * Common superclass for Pointers of all kinds.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.6 $ $Date: 2002/04/12 02:28:06 $
  */
 public abstract class NodePointer implements Pointer, Cloneable {
 
@@ -98,9 +95,6 @@ public abstract class NodePointer implements Pointer, Cloneable {
     }
 
     public static NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
-        if (bean == null){
-            return new NullPointer(parent, name);
-        }
         NodePointerFactory[] factories = JXPathContextReferenceImpl.getNodePointerFactories();
         for (int i = 0; i < factories.length; i++){
             NodePointer pointer = factories[i].createNodePointer(parent, name, bean);
@@ -185,6 +179,15 @@ public abstract class NodePointer implements Pointer, Cloneable {
 
     public QName getExpandedName(){
         return getName();
+    }
+
+    /**
+     * By default, returns <code>getValue()</code>, can be overridden to
+     * return a "canonical" value, like for instance a DOM element should
+     * return its string value.
+     */
+    public Object getPrimitiveValue(){
+        return getValue();
     }
 
     protected NodePointer parent;

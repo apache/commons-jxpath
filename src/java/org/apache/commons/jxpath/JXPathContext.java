@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.5 2002/04/10 03:40:19 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/10 03:40:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.6 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,7 +62,6 @@
 package org.apache.commons.jxpath;
 
 import java.util.List;
-import org.w3c.dom.Node;
 import java.util.Locale;
 
 /**
@@ -406,7 +405,7 @@ import java.util.Locale;
  * Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/10 03:40:19 $
+ * @version $Revision: 1.6 $ $Date: 2002/04/12 02:28:06 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;

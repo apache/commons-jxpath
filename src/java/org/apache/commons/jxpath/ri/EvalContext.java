@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.6 2002/04/10 03:40:19 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/04/10 03:40:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.7 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,6 @@ import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Pointer;
 import java.util.*;
-import org.w3c.dom.*;
 
 /**
  * An XPath evaluation context.
@@ -80,7 +79,7 @@ import org.w3c.dom.*;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/04/10 03:40:19 $
+ * @version $Revision: 1.7 $ $Date: 2002/04/12 02:28:06 $
  */
 public abstract class EvalContext {
     protected EvalContext parentContext;
@@ -546,11 +545,11 @@ public abstract class EvalContext {
             }
         }
 
-        if (l instanceof Pointer){
-            l = ((Pointer)l).getValue();
+        if (l instanceof NodePointer){
+            l = ((NodePointer)l).getPrimitiveValue();
         }
-        if (r instanceof Pointer){
-            r = ((Pointer)r).getValue();
+        if (r instanceof NodePointer){
+            r = ((NodePointer)r).getPrimitiveValue();
         }
 
         if (l instanceof Boolean || r instanceof Boolean){
@@ -578,8 +577,8 @@ public abstract class EvalContext {
         HashSet set = new HashSet();
         while(nextSet()){
             while(next()){
-                Pointer pointer = getCurrentNodePointer();
-                set.add(pointer.getValue());
+                NodePointer pointer = getCurrentNodePointer();
+                set.add(pointer.getPrimitiveValue());
             }
         }
         return set;
@@ -625,39 +624,8 @@ public abstract class EvalContext {
         else if (object == null){
             return "";
         }
-        else if (object instanceof Node){
-            Node node = (Node)object;
-            int nodeType = node.getNodeType();
-            if (nodeType == Node.COMMENT_NODE){
-                String text = ((Comment)node).getData();
-                return text == null ? "" : text.trim();
-            }
-            else if (nodeType == Node.TEXT_NODE ||
-                    nodeType == Node.CDATA_SECTION_NODE){
-                String text = node.getNodeValue();
-                return text == null ? "" : text.trim();
-            }
-            else if (nodeType == Node.PROCESSING_INSTRUCTION_NODE){
-                String text = ((ProcessingInstruction)node).getData();
-                return text == null ? "" : text.trim();
-            }
-            else {
-                NodeList list = node.getChildNodes();
-                StringBuffer buf = new StringBuffer(16);
-                for(int i = 0; i < list.getLength();i++) {
-                    Node child = list.item(i);
-                    if (child.getNodeType() == Node.TEXT_NODE){
-                        buf.append(child.getNodeValue());
-                    }
-                    else {
-                        buf.append(stringValue(child));
-                    }
-                }
-                return buf.toString().trim();
-            }
-        }
         else if (object instanceof NodePointer){
-            return stringValue(((NodePointer)object).getValue());
+            return stringValue(((NodePointer)object).getPrimitiveValue());
         }
         else if (object instanceof EvalContext){
             EvalContext ctx = (EvalContext)object;
@@ -690,15 +658,16 @@ public abstract class EvalContext {
             }
             return value;
         }
-        else if (object instanceof Node){
-            return number(stringValue(object));
-        }
         else if (object instanceof EvalContext){
             return number(stringValue(object));
         }
         else if (object instanceof NodePointer){
-            return number(((NodePointer)object).getValue());
+            return number(((NodePointer)object).getPrimitiveValue());
         }
+//        else if (object instanceof Node){
+//            System.err.println("HERE");
+//            return number(stringValue(object));
+//        }
         return ZERO;
     }
 
@@ -726,11 +695,8 @@ public abstract class EvalContext {
             }
             return value;
         }
-        else if (object instanceof Node){
-            return doubleValue(stringValue(object));
-        }
         else if (object instanceof NodePointer){
-            return doubleValue(((NodePointer)object).getValue());
+            return doubleValue(((NodePointer)object).getPrimitiveValue());
         }
         else if (object instanceof EvalContext){
             return doubleValue(stringValue(object));
@@ -756,11 +722,8 @@ public abstract class EvalContext {
         else if (object instanceof String){
             return ((String)object).length() != 0;
         }
-        else if (object instanceof Node){
-            return stringValue(object).length() != 0;
-        }
         else if (object instanceof NodePointer){
-            return booleanValue(((NodePointer)object).getValue());
+            return booleanValue(((NodePointer)object).getPrimitiveValue());
         }
         return false;
     }
@@ -839,8 +802,8 @@ public abstract class EvalContext {
                 if (predicate instanceof EvalContext){
                     predicate = ((EvalContext)predicate).getContextNodePointer();
                 }
-                if (predicate instanceof Pointer){
-                    predicate = ((Pointer)predicate).getValue();
+                if (predicate instanceof NodePointer){
+                    predicate = ((NodePointer)predicate).getPrimitiveValue();
                 }
                 if (predicate == null){
                     throw new RuntimeException("Predicate is null: " + predicates[i]);
@@ -1110,8 +1073,8 @@ public abstract class EvalContext {
         Expression arg1 = function.getArg1();
         int count = 0;
         Object value = eval(arg1, false);
-        if (value instanceof Pointer){
-            value = ((Pointer)value).getValue();
+        if (value instanceof NodePointer){
+            value = ((NodePointer)value).getPrimitiveValue();
         }
         if (value instanceof EvalContext){
             EvalContext ctx = (EvalContext)value;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.7 2002/04/10 03:40:19 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/04/10 03:40:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.8 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -77,11 +77,10 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.axes.*;
 import org.apache.commons.jxpath.functions.Types;
 import java.lang.ref.SoftReference;
-import org.w3c.dom.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/04/10 03:40:19 $
+ * @version $Revision: 1.8 $ $Date: 2002/04/12 02:28:06 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -196,11 +195,11 @@ public class JXPathContextReferenceImpl extends JXPathContext
             result = ctx.getContextNodePointer();
         }
 
-        if (result instanceof Pointer){
-            result = ((Pointer)result).getValue();
-        }
-        if (result instanceof Node){
-            result = EvalContext.stringValue((Node)result);
+//        if (result instanceof DOMNodePointer){
+//            result = ((DOMNodePointer)result).stringValue();
+//        }
+        if (result instanceof NodePointer){
+            result = ((NodePointer)result).getPrimitiveValue();
         }
         return result;
     }

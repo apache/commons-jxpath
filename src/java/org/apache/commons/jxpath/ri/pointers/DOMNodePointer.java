@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMNodePointer.java,v 1.5 2002/04/11 02:59:42 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/11 02:59:42 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMNodePointer.java,v 1.6 2002/04/12 02:28:06 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/04/12 02:28:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.w3c.dom.*;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/11 02:59:42 $
+ * @version $Revision: 1.6 $ $Date: 2002/04/12 02:28:06 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -444,5 +444,40 @@ public class DOMNodePointer extends NodePointer {
         }
 
         return name.substring(index + 1);
+    }
+
+    public Object getPrimitiveValue(){
+        return stringValue(node);
+    }
+
+    private String stringValue(Node node){
+        int nodeType = node.getNodeType();
+        if (nodeType == Node.COMMENT_NODE){
+            String text = ((Comment)node).getData();
+            return text == null ? "" : text.trim();
+        }
+        else if (nodeType == Node.TEXT_NODE ||
+                nodeType == Node.CDATA_SECTION_NODE){
+            String text = node.getNodeValue();
+            return text == null ? "" : text.trim();
+        }
+        else if (nodeType == Node.PROCESSING_INSTRUCTION_NODE){
+            String text = ((ProcessingInstruction)node).getData();
+            return text == null ? "" : text.trim();
+        }
+        else {
+            NodeList list = node.getChildNodes();
+            StringBuffer buf = new StringBuffer(16);
+            for(int i = 0; i < list.getLength();i++) {
+                Node child = list.item(i);
+                if (child.getNodeType() == Node.TEXT_NODE){
+                    buf.append(child.getNodeValue());
+                }
+                else {
+                    buf.append(stringValue(child));
+                }
+            }
+            return buf.toString().trim();
+        }
     }
 }
