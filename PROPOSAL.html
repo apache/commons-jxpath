@@ -1,0 +1,94 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>Proposal for BeanUtils Package</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<center>
+<h1>
+Proposal for <i>JXPath</i> Package</h1></center>
+
+<h3>
+(0) Rationale</h3>
+In heterogenous techologies like Struts, XML documents are combined with
+object graphs consisting of JavaBeans, collections, arrays, maps and primitive
+values. In such systems there is a need for a consistent way of referencing
+both parts of XML documents and elements of object graphs.&nbsp; XPath
+is a powerful language introduced by W3C (<a href="http://www.w3.org/TR/xpath">XML
+Path Language</a>) as a common format for addressing elements of XML documents.&nbsp;
+The proposed <i>JXPath </i>component provides a mechanism for applying the
+same XPath language to generic object graphs.
+<h3>
+(1) Scope of the Package</h3>
+This proposal is to create a package of Java utility methods for accessing
+and modifying the elements of arbitrary graphs consisting of JavaBeans,
+collections, arrays, maps and primitive values using the XPath syntax.
+This package will (at least initially) depend on an external implementation
+of an XPath expression processor.
+<p>This package augments BeanUtils, which provides a lighter-weight reference
+format.
+<h3>
+(1.5) Interaction With Other Packages</h3>
+JXPath relies on
+<ul>
+<li>
+Java Development Kit (Version 1.2 or later)</li>
+
+<li>
+A JAXP 1.1 implementation</li>
+
+<li>
+An XPath interpreter implementation. Initially the package will only support
+the interpreter provided by the Apache Xalan project, but will have an
+extensibility mechanism that will allow adding alternative XPath processors
+later.</li>
+</ul>
+No external configuration files are utilized.
+<h3>
+(2) Initial Source of the Package</h3>
+The original source of the component was donated by PLOTNIX, Inc (<a href="http://www.plotnix.com">www.plotnix.com</a>).
+<p>The proposed package names for the new component are
+<ul>
+<li>
+<tt>org.apache.commons.jxpath</tt> for the main API package</li>
+
+<li>
+<tt>org.apache.commons.jxpath.tree </tt>for a light-weight DOM-JavaBeans
+API adapter</li>
+
+<li>
+<tt>org.apache.commons.jxpath.xalan </tt>for a Xalan XPath interpreter adapter</li>
+</ul>
+
+<h3>
+(3) Required Jakarta-Commons Resources</h3>
+
+<ul>
+<li>
+CVS Repository - New directory jxpath in the <tt>jakarta-commons</tt> CVS
+repository. There is a requirement to setup an additional committer: Dmitri
+Plotnikov.</li>
+
+<li>
+Mailing List - Discussions will take place on the general <i>jakarta-commons@jakarta.apache.org</i>
+mailing list. To help list subscribers identify messages of interest, it
+is suggested that the message subject of messages about this component
+be prefixed with [JXPath].</li>
+
+<li>
+Bugzilla - New component "JXPath" under the "Commons" product category,
+with appropriate version identifiers as needed.</li>
+
+<li>
+Jyve FAQ - New category "commons-jxpath" (when available).</li>
+</ul>
+
+<h3>
+(4) Initial Committers</h3>
+The initial committers on the JXPath component shall be Dmitri Plotnikov
+and James Strachan.
+</body>
+</html>

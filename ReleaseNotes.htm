@@ -1,0 +1,106 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+h2 {  font-family: Arial, Helvetica, sans-serif; font-size: 18pt; clip:     rect(   ); margin-top: 40pt}
+h3 {  font-family: Arial, Helvetica, sans-serif; font-size: 14pt; margin-left: 20pt}
+p {  margin-left: 20pt}
+blockquote {  margin-left: 60px}
+-->
+</style>
+</head>
+
+<body bgcolor="#FFFFFF">
+<h1>JXPath 2.0 Release Notes </h1>
+<h2>New Functionality</h2>
+<p>JXPath 2.0 is no longer using Xalan combined with a light-weight &quot;DOM&quot; 
+  struture for interpretation of XPaths. The old model has some limitations. As 
+  a result of this change, there are many more XPaths that will work properly 
+  now. </p>
+<h3>Pointers</h3>
+<p>In addition to getting/setting values using XPaths, JXPath 2.0 can evaluate 
+  an XPath into a Pointer or a set of Pointers. A Pointer is a simple value accessor 
+  that can be used repeatedly to get/set value of an object in the graph. More 
+  importantly, it can produce a new XPath that precisely describes the object's 
+  location in the graph. For example, </p>
+<blockquote>
+  <p><code>Pointer ptr = ctx.locateValue(&quot;employees[$i]/addresses[$j]&quot;); 
+    </code></p>
+</blockquote>
+<p>will produce a Pointer that has concrete values of <code>$i</code> and <code>$j</code>. 
+  Therefore, </p>
+<blockquote>
+  <p><code>ptr.asPath()</code> </p>
+</blockquote>
+<p>will produce something like </p>
+<blockquote>
+  <p><code>&quot;/employees[1]/addresses[3]&quot;</code></p>
+</blockquote>
+<p>One possible application of these concrete paths is for names of form elements 
+  on dynamically generated HTML pages. When the POST with the values for these 
+  elements arrives to the server, all we need to do is call <code>JXPath.setValue()</code> 
+  with the concrete XPaths and the corresponding values.</p>
+<h3>Extension Functions</h3>
+<p>JXPath 2.0 fully supports extension functions. Extension functions can be implemented 
+  directly or as Java classes or packages. You can now use method calls and create 
+  objects directly from XPath expressions. For example, here's how you can call 
+  a method:</p>
+<blockquote> 
+  <p><code>&quot;bestStudent($school, $grade)&quot;</code></p>
+</blockquote>
+<p>This is equivalent to </p>
+<blockquote>
+  <p><code>school.bestStudent(grade)</code></p>
+</blockquote>
+<p>To create a new object use the keyword &quot;new&quot;:</p>
+<blockquote>
+  <p><code>&quot;'Current time is ' + java.util.Date.new()&quot;</code></p>
+</blockquote>
+<p>To call a static method:</p>
+<blockquote>
+  <p><code>&quot;java.lang.System.getProperty('companyName')&quot;</code></p>
+</blockquote>
+<p>You can also register functions with namespaces, which allow you to use abbreviated 
+  syntax like:</p>
+<blockquote> 
+  <p><code>&quot;sys:getProperty('companyName')&quot;</code></p>
+</blockquote>
+<h3>Dynamic Property Access</h3>
+<p>The new syntax for accessing dymanic properties (e.g. map values) is: </p>
+<blockquote>
+  <p><code>&quot;map[@name = expression]&quot;</code></p>
+</blockquote>
+<p>You can still use the syntax introduced by JXPath 1.0, if the key is know upfront 
+  and is a proper XPath identifier:</p>
+<blockquote>
+  <p><code>&quot;map/key&quot;</code></p>
+</blockquote>
+<h3>Indexed Properties</h3>
+<p>Indexed JavaBeans properties are now supported in accordance with the JavaBeans 
+specification.  If indexed read/write methods are missing, JXPath attempts to modify
+the collection directly.</p>
+<h2>Performance</h2>
+<p>JXPath 2.0 is a complete re-write of the implementation. The dependency on Xalan 
+  has been eliminated. JXPath 2.0 features its own parser/compiler/interpreter 
+  that are specifically tailored to the needs of Java object graph traversal. 
+</p>
+<h3>Property Access</h3>
+<p>JXPath 2.0 accesses object fields directly by name rather than &quot;searching&quot; 
+  for them. For example if you have an object with a property that is a long array 
+  followed by a property that is an int, JXPath 1.0 would enumerate through the 
+  long array before it found the integer property. JXPath 2.0 jumps directly to 
+  that variable.</p>
+<h3>Cached Parse Results</h3>
+<p>JXPath 2.0 caches results of compilation of XPaths. This way the overhead of 
+  calling the parser/compiler is significantly reduced.</p>
+<h3>Cached Intermediate Results</h3>
+<p>JXPath 2.0 avoid multiple computations of the same intermediate expression. 
+  For example, in <code>&quot;//person[name 
+  = $firstName + ' ' + $lastName]&quot;</code> the concatenation of the string 
+  will only be performed once.</p>
+<h2></h2>
+<p>&nbsp; </p>
+</body>
+</html>

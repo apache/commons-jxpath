@@ -1,0 +1,20 @@
+# -------------------------------------------------------------------
+# build.properties.sample
+#
+# This is an example "build.properties" file, used to customize 
+# building various Commons components for your local environment.  
+# Make any changes you need, and rename this file to 
+# "build.properties" 
+#
+# $Id: build.properties.sample,v 1.1 2001/08/23 00:46:57 dmitri Exp $
+# -------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------
+# EXTERNAL DEPENDENCIES 
+# -------------------------------------------------------------------
+
+junit.jar=${lib.repo}/junit-3.7.jar
+
+jaxp.jaxp.jar=${lib.repo}/jaxp-1.1.jar
+jaxp.xslt.jar=${lib.repo}/xalan-2.1.0.jar
