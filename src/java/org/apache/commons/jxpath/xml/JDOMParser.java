@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/JDOMParser.java,v 1.4 2003/10/09 21:31:42 rdonkin Exp $
- * $Revision: 1.4 $
- * $Date: 2003/10/09 21:31:42 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/JDOMParser.java,v 1.5 2004/01/18 01:42:58 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2004/01/18 01:42:58 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,16 +70,35 @@ import org.jdom.input.SAXBuilder;
  * An implementation of the XMLParser interface that produces a JDOM Document.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2003/10/09 21:31:42 $
+ * @version $Revision: 1.5 $ $Date: 2004/01/18 01:42:58 $
  */
-public class JDOMParser implements XMLParser {
-
+public class JDOMParser extends XMLParser2 {
+    
+    /**
+     * Temporary fix for JDOM problem - JDOM B9 does not properly handle
+     * isNamespaceAware = false
+     */
+    public boolean isNamespaceAware() {
+        return true;
+    }
+    
     public Object parseXML(InputStream stream) {
         try {
             SAXBuilder builder = new SAXBuilder();
+            builder.setExpandEntities(isExpandEntityReferences());
+            builder.setIgnoringElementContentWhitespace(
+                    isIgnoringElementContentWhitespace());
+            builder.setValidation(isValidating());
+            builder.setFeature(
+                    "http://xml.org/sax/features/namespaces",
+                    isNamespaceAware());
+            builder.setFeature(
+                    "http://xml.org/sax/features/namespace-prefixes",
+                    isNamespaceAware());
             return builder.build(stream);
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             throw new JXPathException("JDOM parser error", ex);
         }
     }

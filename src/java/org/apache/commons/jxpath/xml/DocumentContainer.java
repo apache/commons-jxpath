@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DocumentContainer.java,v 1.7 2003/10/09 21:31:42 rdonkin Exp $
- * $Revision: 1.7 $
- * $Date: 2003/10/09 21:31:42 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DocumentContainer.java,v 1.8 2004/01/18 01:42:58 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2004/01/18 01:42:58 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,9 +79,9 @@ import org.apache.commons.jxpath.JXPathException;
  * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/10/09 21:31:42 $
+ * @version $Revision: 1.8 $ $Date: 2004/01/18 01:42:58 $
  */
-public class DocumentContainer implements Container {
+public class DocumentContainer extends XMLParser2 implements Container {
 
     public static final String MODEL_DOM = "DOM";
     public static final String MODEL_JDOM = "JDOM";
@@ -106,6 +106,14 @@ public class DocumentContainer implements Container {
      */
     public static void registerXMLParser(String model, XMLParser parser) {
         parsers.put(model, parser);
+    }
+
+    /**
+     * Add a class of a custom XML parser. 
+     * Parsers for the models "DOM" and "JDOM" are pre-registered.
+     */    
+    public static void registerXMLParser(String model, String parserClassName) {
+        parserClasses.put(model, parserClassName);
     }
 
     /**
@@ -145,7 +153,7 @@ public class DocumentContainer implements Container {
                     if (xmlURL != null) {
                         stream = xmlURL.openStream();
                     }
-                    document = getParser(model).parseXML(stream);
+                    document = parseXML(stream);
                 }
                 finally {
                     if (stream != null) {
@@ -160,6 +168,24 @@ public class DocumentContainer implements Container {
             }
         }
         return document;
+    }
+
+    /**
+     * Parses XML using the parser for the specified model.
+     */
+    public Object parseXML(InputStream stream) {
+        XMLParser parser = getParser(model);
+        if (parser instanceof XMLParser2) {
+            XMLParser2 parser2 = (XMLParser2) parser;
+            parser2.setValidating(isValidating());
+            parser2.setNamespaceAware(isNamespaceAware());
+            parser2.setIgnoringElementContentWhitespace(
+                    isIgnoringElementContentWhitespace());
+            parser2.setExpandEntityReferences(isExpandEntityReferences());
+            parser2.setIgnoringComments(isIgnoringComments());
+            parser2.setCoalescing(isCoalescing());
+        }
+        return parser.parseXML(stream);
     }
 
     /**
@@ -181,7 +207,7 @@ public class DocumentContainer implements Container {
             }
             try {
                 Class clazz = Class.forName(className);
-                parser = (XMLParser) clazz.newInstance();
+                parser = (XMLParser) clazz.newInstance();                
             }
             catch (Exception ex) {
                 throw new JXPathException(

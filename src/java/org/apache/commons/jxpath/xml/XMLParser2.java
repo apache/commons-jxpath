@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DOMParser.java,v 1.5 2004/01/18 01:42:58 dmitri Exp $
- * $Revision: 1.5 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/XMLParser2.java,v 1.1 2004/01/18 01:42:58 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2004/01/18 01:42:58 $
  *
  * ====================================================================
@@ -63,34 +63,105 @@ package org.apache.commons.jxpath.xml;
 
 import java.io.InputStream;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.apache.commons.jxpath.JXPathException;
-
 /**
- * An implementation of the XMLParser interface that produces a DOM Document.
+ * The abstract superclass of XML parsers that produce DOM Documents.
+ * The features have the same defaults as DocumentBuilderFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/01/18 01:42:58 $
+ * @version $Revision: 1.1 $ $Date: 2004/01/18 01:42:58 $
  */
-public class DOMParser extends XMLParser2 {
-
-    public Object parseXML(InputStream stream) {
-        try {
-            DocumentBuilderFactory factory =
-                    DocumentBuilderFactory.newInstance();
-            
-            factory.setValidating(isValidating());
-            factory.setNamespaceAware(isNamespaceAware());
-            factory.setIgnoringElementContentWhitespace(
-                    isIgnoringElementContentWhitespace());
-            factory.setExpandEntityReferences(isExpandEntityReferences());
-            factory.setIgnoringComments(isIgnoringComments());
-            factory.setCoalescing(isCoalescing());
-            return factory.newDocumentBuilder().parse(stream);
-        }
-        catch (Exception ex) {
-            throw new JXPathException("DOM parser error", ex);
-        }
+public abstract class XMLParser2 implements XMLParser 
+{
+    private boolean validating = false;
+    private boolean namespaceAware = false;
+    private boolean whitespace = false;
+    private boolean expandEntityRef = true;
+    private boolean ignoreComments = false;
+    private boolean coalescing = false;
+    
+    /**
+     * @see DocumentBuilderFactory#setValidating(boolean)
+     */
+    public void setValidating(boolean validating) {
+        this.validating = validating;
     }
+    
+    /**
+     * @see DocumentBuilderFactory#isValidating()
+     */
+    public boolean isValidating() {
+        return validating;
+    }
+    
+    /**
+     * @see DocumentBuilderFactory#isNamespaceAware()
+     */
+    public boolean isNamespaceAware() {
+        return namespaceAware;
+    }
+    
+    /**
+     * @see DocumentBuilderFactory#setNamespaceAware(boolean)
+     */
+    public void setNamespaceAware(boolean namespaceAware) {
+        this.namespaceAware = namespaceAware;
+    }
+    
+    /**
+     * @see DocumentBuilderFactory#setIgnoringElementContentWhitespace(boolean)
+     */
+    public void setIgnoringElementContentWhitespace(boolean whitespace) {
+        this.whitespace = whitespace;
+    }
+    
+    /**
+     * @see DocumentBuilderFactory#isIgnoringElementContentWhitespace()
+     */
+    public boolean isIgnoringElementContentWhitespace() {
+        return whitespace;
+    }
+    
+    /**
+     * @see DocumentBuilderFactory#isExpandEntityReferences()
+     */
+    public boolean isExpandEntityReferences() {
+        return expandEntityRef;
+    }
+    
+    /**
+     * @see DocumentBuilderFactory#setExpandEntityReferences(boolean)
+     */
+    public void setExpandEntityReferences(boolean expandEntityRef) {
+        this.expandEntityRef = expandEntityRef;
+    }
+    
+    /**
+     * @see DocumentBuilderFactory#isIgnoringComments()
+     */
+    public boolean isIgnoringComments() {
+        return ignoreComments;
+    }
+    
+    /**
+     * @see DocumentBuilderFactory#setIgnoringComments(boolean)
+     */
+    public void setIgnoringComments(boolean ignoreComments) {
+        this.ignoreComments = ignoreComments;
+    }
+    
+    /**
+     * @see DocumentBuilderFactory#isCoalescing()
+     */
+    public boolean isCoalescing() {
+        return coalescing;
+    }
+    
+    /**
+     * @see DocumentBuilderFactory#setCoalescing(boolean)
+     */
+    public void setCoalescing(boolean coalescing) {
+        this.coalescing = coalescing;
+    }
+    
+    public abstract Object parseXML(InputStream stream);
 }
