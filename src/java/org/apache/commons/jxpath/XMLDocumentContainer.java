@@ -38,7 +38,7 @@ import org.w3c.dom.Document;
  * @deprecated 1.1 Please use org.apache.commons.jxpath.xml.DocumentContainer
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 public class XMLDocumentContainer implements Container {
 

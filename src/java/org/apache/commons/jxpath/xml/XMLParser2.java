@@ -22,7 +22,7 @@ import java.io.InputStream;
  * The features have the same defaults as DocumentBuilderFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2004/02/29 14:17:37 $
+ * @version $Revision$ $Date$
  */
 public abstract class XMLParser2 implements XMLParser 
 {

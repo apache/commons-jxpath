@@ -22,7 +22,7 @@ import java.io.InputStream;
  * some of the parsers we want to support may not be JAXP compliant.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2004/02/29 14:17:37 $
+ * @version $Revision$ $Date$
  */
 public interface XMLParser {
 

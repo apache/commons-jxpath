@@ -30,7 +30,7 @@ import java.util.Comparator;
  * See java.beans.BeanInfo, java.beans.Introspector
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/05/08 15:03:36 $
+ * @version $Revision$ $Date$
  */
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private boolean atomic = false;

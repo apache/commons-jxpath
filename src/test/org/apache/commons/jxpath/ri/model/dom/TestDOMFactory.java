@@ -25,7 +25,7 @@ import org.w3c.dom.Node;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/06/29 22:58:17 $
+ * @version $Revision$ $Date$
  */
 public class TestDOMFactory extends AbstractFactory {
 

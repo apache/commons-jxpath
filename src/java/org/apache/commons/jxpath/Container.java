@@ -23,7 +23,7 @@ package org.apache.commons.jxpath;
  * rather than the container itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 public interface Container {
 

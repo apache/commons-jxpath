@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.Pointer;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision$ $Date$
  */
 public class JXPathCompiledExpression implements CompiledExpression {
 

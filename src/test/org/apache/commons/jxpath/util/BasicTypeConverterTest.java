@@ -32,7 +32,7 @@ import org.apache.commons.jxpath.Pointer;
  * Tests BasicTypeConverter
  * 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2004/06/29 21:50:02 $
+ * @version $Revision$ $Date$
  */
 
 public class BasicTypeConverterTest extends TestCase {

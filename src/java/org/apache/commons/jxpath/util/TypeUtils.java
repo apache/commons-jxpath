@@ -19,7 +19,7 @@ package org.apache.commons.jxpath.util;
  * Global type conversion utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2004/02/29 14:17:43 $
+ * @version $Revision$ $Date$
  */
 public class TypeUtils {
     private static TypeConverter typeConverter = new BasicTypeConverter();

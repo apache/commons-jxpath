@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * A simple implementation of NodeSet that behaves as a collection of pointers. 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 public class BasicNodeSet implements NodeSet {
     private List pointers = new ArrayList();

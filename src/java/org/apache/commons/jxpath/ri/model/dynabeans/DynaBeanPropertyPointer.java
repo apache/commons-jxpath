@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a DynaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/04/04 22:06:35 $
+ * @version $Revision$ $Date$
  */
 public class DynaBeanPropertyPointer extends PropertyPointer {
     private DynaBean dynaBean;

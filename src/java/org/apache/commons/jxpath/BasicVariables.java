@@ -21,7 +21,7 @@ import java.util.HashMap;
  * A basic implementation of the Variables interface that uses a HashMap.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 public class BasicVariables implements Variables {
 

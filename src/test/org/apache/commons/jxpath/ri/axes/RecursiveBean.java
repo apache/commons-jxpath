@@ -21,7 +21,7 @@ package org.apache.commons.jxpath.ri.axes;
  * descendant search contexts.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 public class RecursiveBean  {
 

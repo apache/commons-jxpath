@@ -21,7 +21,7 @@ package org.apache.commons.jxpath.ri;
  * and an local name.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision$ $Date$
  */
 public class QName {
     private String prefix;

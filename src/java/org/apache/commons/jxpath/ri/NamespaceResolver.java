@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2004/12/30 21:59:36 $
+ * @version $Revision$ $Date$
  */
 public class NamespaceResolver implements Cloneable {
     final protected NamespaceResolver parent;

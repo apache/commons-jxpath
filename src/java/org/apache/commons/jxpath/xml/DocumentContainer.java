@@ -33,7 +33,7 @@ import org.apache.commons.jxpath.JXPathException;
  * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/02/29 14:17:37 $
+ * @version $Revision$ $Date$
  */
 public class DocumentContainer extends XMLParser2 implements Container {
 

@@ -32,7 +32,7 @@ import java.io.Serializable;
  * object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 public interface Pointer extends Cloneable, Comparable, Serializable {
 

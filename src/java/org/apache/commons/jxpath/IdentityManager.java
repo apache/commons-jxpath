@@ -22,7 +22,7 @@ package org.apache.commons.jxpath;
  * when the root of the context is a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 public interface IdentityManager {
 

@@ -22,7 +22,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.18 $ $Date: 2004/03/25 03:49:50 $
+ * @version $Revision$ $Date$
  */
 public class NullPropertyPointer extends PropertyPointer {
 

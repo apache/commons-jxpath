@@ -24,7 +24,7 @@ import org.jdom.Attribute;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/04/01 02:55:31 $
+ * @version $Revision$ $Date$
  */
 public class JDOMAttributePointer extends NodePointer {
     private Attribute attr;

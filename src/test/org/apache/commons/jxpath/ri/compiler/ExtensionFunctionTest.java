@@ -39,7 +39,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2004/10/06 00:34:14 $
+ * @version $Revision$ $Date$
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase {

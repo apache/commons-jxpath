@@ -30,7 +30,7 @@ import java.beans.PropertyDescriptor;
  * JXPathBeanInfo interface.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 public interface JXPathBeanInfo  {
 

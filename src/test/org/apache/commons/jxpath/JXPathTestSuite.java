@@ -51,7 +51,7 @@ import org.apache.commons.jxpath.util.BasicTypeConverterTest;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2004/04/04 22:06:35 $
+ * @version $Revision$ $Date$
  */
 
 public class JXPathTestSuite extends TestCase {

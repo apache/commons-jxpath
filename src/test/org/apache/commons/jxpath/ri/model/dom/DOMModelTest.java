@@ -31,7 +31,7 @@ import org.w3c.dom.NodeList;
  * Tests JXPath with DOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2004/03/02 01:32:20 $
+ * @version $Revision$ $Date$
  */
 
 public class DOMModelTest extends XMLModelTestCase {

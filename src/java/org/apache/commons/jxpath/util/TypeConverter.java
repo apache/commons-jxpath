@@ -23,7 +23,7 @@ package org.apache.commons.jxpath.util;
  * @see TypeUtils#setTypeConverter
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2004/02/29 14:17:43 $
+ * @version $Revision$ $Date$
  */
 public interface TypeConverter {
 

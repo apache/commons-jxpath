@@ -22,7 +22,7 @@ package org.apache.commons.jxpath.ri.compiler;
  * or maps.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:39 $
+ * @version $Revision$ $Date$
  */
 public class NameAttributeTest extends CoreOperationEqual {
 

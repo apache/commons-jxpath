@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * A Pointer that points to a DynaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision$ $Date$
  */
 public class DynaBeanPointer extends PropertyOwnerPointer {
     private QName name;

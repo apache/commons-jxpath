@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.25 $ $Date: 2004/12/30 21:59:36 $
+ * @version $Revision$ $Date$
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {

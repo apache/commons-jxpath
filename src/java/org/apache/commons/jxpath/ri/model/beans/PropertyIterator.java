@@ -24,7 +24,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Examples of such objects are JavaBeans and objects with Dynamic Properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2004/03/25 03:49:50 $
+ * @version $Revision$ $Date$
  */
 public class PropertyIterator implements NodeIterator {
     private boolean empty = false;

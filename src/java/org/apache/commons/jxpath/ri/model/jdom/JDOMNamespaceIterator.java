@@ -30,7 +30,7 @@ import org.jdom.Namespace;
  * An iterator of namespaces of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/04/01 02:55:31 $
+ * @version $Revision$ $Date$
  */
 public class JDOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;

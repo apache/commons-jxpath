@@ -33,7 +33,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * like "position()" or "number()".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2004/04/01 02:53:45 $
+ * @version $Revision$ $Date$
  */
 public class CoreFunction extends Operation {
 

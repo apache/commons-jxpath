@@ -40,7 +40,7 @@ import org.apache.commons.jxpath.Variables;
  * Tests JXPath with mixed model: beans, maps, DOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/04/04 22:06:36 $
+ * @version $Revision$ $Date$
  */
 
 public class MixedModelTest extends JXPathTestCase {

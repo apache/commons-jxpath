@@ -23,7 +23,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
  * @deprecated - no longer needed, as it is identical to PropertyIterator.
  * 
  * @author <a href="mailto:dmitri@apache.org">Dmitri Plotnikov</a>
- * @version $Id: DynamicPropertyIterator.java,v 1.5 2004/02/29 14:17:44 scolebourne Exp $
+ * @version $Id$
  */
 public class DynamicPropertyIterator extends PropertyIterator {
 

@@ -40,7 +40,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.30 $ $Date: 2004/03/25 05:42:01 $
+ * @version $Revision$ $Date$
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;

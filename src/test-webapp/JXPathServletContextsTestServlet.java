@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.servlet.JXPathServletContexts;
 /**
  * Invoke like this: http://localhost:8080/jxpath?parm=OK
  * 
- * @version $Revision: 1.1 $ $Date: 2004/05/08 15:10:49 $
+ * @version $Revision$ $Date$
  */
 public class JXPathServletContextsTestServlet extends HttpServlet {
 

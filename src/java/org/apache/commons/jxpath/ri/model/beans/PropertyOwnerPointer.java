@@ -32,7 +32,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.19 $ $Date: 2004/04/04 22:06:36 $
+ * @version $Revision$ $Date$
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 

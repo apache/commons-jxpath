@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "attribute::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision$ $Date$
  */
 public class AttributeContext extends EvalContext {
     private NodeTest nodeTest;

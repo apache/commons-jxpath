@@ -36,7 +36,7 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * attribute and only simple, context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.25 $ $Date: 2004/04/01 02:55:32 $
+ * @version $Revision$ $Date$
  */
 public abstract class NodePointer implements Pointer {
 
@@ -244,8 +244,10 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * @see #getValuePointer()
-     *      * @return NodePointer is either <code>this</code> or a pointer
-     *   for the immediately contained value.     */
+     * 
+     * @return NodePointer is either <code>this</code> or a pointer
+     *   for the immediately contained value.
+     */
     public NodePointer getImmediateValuePointer() {
         return this;
     }

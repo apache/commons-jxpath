@@ -32,7 +32,7 @@ import org.apache.commons.jxpath.JXPathTestCase;
  * Tests JXPath with containers as root or value of a variable, property, etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2004/04/04 22:06:35 $
+ * @version $Revision$ $Date$
  */
 
 public class ContainerModelTest extends JXPathTestCase {

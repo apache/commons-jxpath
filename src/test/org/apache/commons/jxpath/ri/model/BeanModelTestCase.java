@@ -36,7 +36,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.19 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision$ $Date$
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase {

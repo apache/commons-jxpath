@@ -27,7 +27,7 @@ import org.w3c.dom.Attr;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2004/04/01 02:55:32 $
+ * @version $Revision$ $Date$
  */
 public class DOMAttributePointer extends NodePointer {
     private Attr attr;

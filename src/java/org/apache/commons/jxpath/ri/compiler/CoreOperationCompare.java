@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
  * "=" and "!=".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision$ $Date$
  */
 public abstract class CoreOperationCompare extends CoreOperation {
 

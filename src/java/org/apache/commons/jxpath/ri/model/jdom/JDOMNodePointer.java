@@ -44,7 +44,7 @@ import org.jdom.Text;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2004/06/29 22:58:18 $
+ * @version $Revision$ $Date$
  */
 public class JDOMNodePointer extends NodePointer {
     private Object node;

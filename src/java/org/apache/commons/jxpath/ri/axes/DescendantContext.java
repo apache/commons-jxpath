@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision$ $Date$
  */
 public class DescendantContext extends EvalContext {
     private NodeTest nodeTest;

@@ -19,7 +19,7 @@ package org.apache.commons.jxpath;
  * Thrown in various situations by JXPath; may contain a nested exception.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 
 public class JXPathException extends RuntimeException {

@@ -25,7 +25,7 @@ import org.apache.commons.jxpath.TestBean;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2004/02/29 14:17:43 $
+ * @version $Revision$ $Date$
  */
 public class TestBeanFactory extends AbstractFactory {
 

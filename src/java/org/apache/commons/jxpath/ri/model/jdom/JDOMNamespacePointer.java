@@ -22,7 +22,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/04/01 02:55:31 $
+ * @version $Revision$ $Date$
  */
 public class JDOMNamespacePointer extends NodePointer {
     private String prefix;

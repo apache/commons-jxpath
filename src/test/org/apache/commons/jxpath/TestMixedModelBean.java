@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
  * Mixed model test bean: Java, collections, map, DOM, Container.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision$ $Date$
  */
 public class TestMixedModelBean {
     private String string;

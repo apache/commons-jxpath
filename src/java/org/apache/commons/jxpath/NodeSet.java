@@ -24,7 +24,7 @@ import java.util.List;
  * of <i>values</i> matching the path.
  * 
  * @author <a href="mailto:dmitri@apache.org">Dmitri Plotnikov</a>
- * @version $Id: NodeSet.java,v 1.3 2004/02/29 14:17:42 scolebourne Exp $
+ * @version $Id$
  */
 public interface NodeSet {
 

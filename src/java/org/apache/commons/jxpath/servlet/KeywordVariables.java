@@ -22,7 +22,7 @@ import org.apache.commons.jxpath.Variables;
  * to a single object using a reserved name (keyword).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision$ $Date$
  */
 public class KeywordVariables implements Variables {
 

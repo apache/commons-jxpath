@@ -32,7 +32,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/02/29 14:17:44 $
+ * @version $Revision$ $Date$
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;

@@ -25,7 +25,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
  * will always find that property (albeit with a null value).
  *  
  * @author <a href="mailto:dmitri@apache.org">Dmitri Plotnikov</a>
- * @version $Id: DynamicAttributeIterator.java,v 1.4 2004/02/29 14:17:44 scolebourne Exp $
+ * @version $Id$
  */
 public class DynamicAttributeIterator extends BeanAttributeIterator {
 

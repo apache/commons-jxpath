@@ -26,7 +26,7 @@ package org.apache.commons.jxpath;
  * to indicate that the factory has successfully created the described object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 public abstract class AbstractFactory {
 

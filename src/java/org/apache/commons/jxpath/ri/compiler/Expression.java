@@ -33,7 +33,7 @@ import java.util.Locale;
  * provides that hint.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision$ $Date$
  */
 public abstract class Expression {
 

@@ -24,7 +24,7 @@ import org.w3c.dom.Document;
  * Test bean for mixed model JUnit tests.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision$ $Date$
  */
 public class TestBeanWithNode extends TestBean {
     private Object node;

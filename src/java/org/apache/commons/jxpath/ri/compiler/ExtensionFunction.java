@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.QName;
  * call.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2004/03/25 05:42:01 $
+ * @version $Revision$ $Date$
  */
 public class ExtensionFunction extends Operation {
 

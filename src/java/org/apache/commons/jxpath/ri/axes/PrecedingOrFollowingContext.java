@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyIterator;
  * EvalContext that walks the "preceding::" and "following::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2004/03/25 03:49:50 $
+ * @version $Revision$ $Date$
  */
 public class PrecedingOrFollowingContext extends EvalContext {
     private NodeTest nodeTest;

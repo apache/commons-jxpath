@@ -24,7 +24,7 @@ import java.util.HashMap;
  * JXPathBeanInfo} objects for Java classes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/05/08 15:10:05 $
+ * @version $Revision$ $Date$
  */
 public class JXPathIntrospector {
 

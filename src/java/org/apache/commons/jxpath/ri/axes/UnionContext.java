@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of a union operation like (a | b)
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision$ $Date$
  */
 public class UnionContext extends NodeSetContext {
     private boolean startedSet = false;

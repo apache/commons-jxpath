@@ -34,7 +34,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2004/04/01 02:55:32 $
+ * @version $Revision$ $Date$
  */
 public abstract class Path extends Expression {
 

@@ -35,7 +35,7 @@ import org.apache.commons.jxpath.Pointer;
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2004/07/25 13:16:04 $
+ * @version $Revision$ $Date$
  */
 public class BasicTypeConverter implements TypeConverter {
 

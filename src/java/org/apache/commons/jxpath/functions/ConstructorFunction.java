@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * An extension function that creates an instance using a constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2004/02/29 14:17:44 $
+ * @version $Revision$ $Date$
  */
 public class ConstructorFunction implements Function {
 

@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * General purpose test bean for JUnit tests for the "jxpath" component.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision$ $Date$
  */
 public class TestBean {
 

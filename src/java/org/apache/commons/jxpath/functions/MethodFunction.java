@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * An XPath extension function implemented as an individual Java method.
  * 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2004/02/29 14:17:44 $
+ * @version $Revision$ $Date$
  */
 public class MethodFunction implements Function {
 

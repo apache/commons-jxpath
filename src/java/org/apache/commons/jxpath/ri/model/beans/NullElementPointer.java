@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * with index 2 (= 3 - 1) and a "foo" pointer as the parent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2004/03/25 03:49:50 $
+ * @version $Revision$ $Date$
  */
 public class NullElementPointer extends CollectionPointer {
 

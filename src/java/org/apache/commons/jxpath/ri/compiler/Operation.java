@@ -17,7 +17,7 @@ package org.apache.commons.jxpath.ri.compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2004/02/29 14:17:39 $
+ * @version $Revision$ $Date$
  */
 public abstract class Operation extends Expression {
 

@@ -24,7 +24,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of the attribute is based on the locale supplied to it in the constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2004/04/01 02:55:32 $
+ * @version $Revision$ $Date$
  */
 public class LangAttributePointer extends NodePointer {
     public LangAttributePointer(NodePointer parent) {

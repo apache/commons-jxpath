@@ -25,7 +25,7 @@ import javax.servlet.ServletRequest;
  * access to attributes and parameters of a ServletRequest.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2004/05/08 15:10:49 $
+ * @version $Revision$ $Date$
  */
 public class ServletRequestHandler extends HttpSessionHandler {
     

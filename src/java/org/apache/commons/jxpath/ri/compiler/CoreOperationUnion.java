@@ -22,7 +22,7 @@ import org.apache.commons.jxpath.ri.axes.UnionContext;
  * Implementation of Expression for the operation "|".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2004/02/29 14:17:39 $
+ * @version $Revision$ $Date$
  */
 public class CoreOperationUnion extends CoreOperation {
 

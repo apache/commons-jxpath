@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.NodeSet;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/03/25 05:42:01 $
+ * @version $Revision$ $Date$
  */
 public class TestFunctions {
 

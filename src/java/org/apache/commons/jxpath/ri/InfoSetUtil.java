@@ -23,7 +23,7 @@ import org.apache.commons.jxpath.ri.model.VariablePointer;
  * Type conversions, XPath style.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2004/07/16 22:49:33 $
+ * @version $Revision$ $Date$
  */
 public class InfoSetUtil {
 

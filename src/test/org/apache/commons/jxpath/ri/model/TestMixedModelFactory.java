@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.TestMixedModelBean;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2004/02/29 14:17:45 $
+ * @version $Revision$ $Date$
  */
 public class TestMixedModelFactory extends AbstractFactory {
 

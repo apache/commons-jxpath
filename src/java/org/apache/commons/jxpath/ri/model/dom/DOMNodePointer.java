@@ -46,7 +46,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.26 $ $Date$
+ * @version $Revision$ $Date$
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;

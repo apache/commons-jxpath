@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of a JavaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2004/04/04 22:06:36 $
+ * @version $Revision$ $Date$
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;

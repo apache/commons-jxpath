@@ -374,7 +374,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.25 $ $Date: 2004/06/29 21:15:46 $
+ * @version $Revision$ $Date$
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;

@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * "preceding-sibling::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2004/03/25 03:49:50 $
+ * @version $Revision$ $Date$
  */
 public class ChildContext extends EvalContext {
     private NodeTest nodeTest;
