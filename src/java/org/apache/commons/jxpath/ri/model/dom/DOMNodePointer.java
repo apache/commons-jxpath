@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.8 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.9 2002/08/26 22:15:26 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/08/26 22:15:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -92,7 +92,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.9 $ $Date: 2002/08/26 22:15:26 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -187,14 +187,17 @@ public class DOMNodePointer extends NodePointer {
     }
 
     public QName getName(){
+        String ln = null;
+        String ns = null;
         int type = node.getNodeType();
         if (type == Node.ELEMENT_NODE){
-            return new QName(DOMNodePointer.getPrefix(node), DOMNodePointer.getLocalName(node));
+            ns = DOMNodePointer.getPrefix(node);
+            ln = DOMNodePointer.getLocalName(node);
         }
         else if (type == Node.PROCESSING_INSTRUCTION_NODE){
-            return new QName(null, ((ProcessingInstruction)node).getTarget());
+            ln = ((ProcessingInstruction)node).getTarget();
         }
-        return null;
+        return new QName(ns, ln);
     }
 
     public String getNamespaceURI(){
@@ -364,7 +367,7 @@ public class DOMNodePointer extends NodePointer {
         else {
             NodeList children = node.getChildNodes();
             int count = children.getLength();
-            for (int i = 0; i < count; i++){
+            for (int i = count; --i >= 0;){
                 Node child = children.item(i);
                 if (child.getNodeType() == Node.TEXT_NODE ||
                         child.getNodeType() == Node.CDATA_SECTION_NODE){
