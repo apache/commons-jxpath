@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.17 2003/05/04 23:51:59 dmitri Exp $
- * $Revision: 1.17 $
- * $Date: 2003/05/04 23:51:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.18 2003/09/08 20:50:44 dmitri Exp $
+ * $Revision: 1.18 $
+ * $Date: 2003/09/08 20:50:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -418,7 +418,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2003/05/04 23:51:59 $
+ * @version $Revision: 1.18 $ $Date: 2003/09/08 20:50:44 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -426,9 +426,9 @@ public abstract class JXPathContext {
     protected Variables vars;
     protected Functions functions;
     protected AbstractFactory factory;
-    protected Locale locale;
-    protected boolean lenientSet = false;
-    protected boolean lenient = false;
+    private Locale locale;
+    private boolean lenientSet = false;
+    private boolean lenient = false;
     protected IdentityManager idManager;
     protected KeyManager keyManager;
     protected HashMap decimalFormats;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.33 2003/08/24 01:52:09 dmitri Exp $
- * $Revision: 1.33 $
- * $Date: 2003/08/24 01:52:09 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.34 2003/09/08 20:50:44 dmitri Exp $
+ * $Revision: 1.34 $
+ * $Date: 2003/09/08 20:50:44 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -99,7 +99,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.33 $ $Date: 2003/08/24 01:52:09 $
+ * @version $Revision: 1.34 $ $Date: 2003/09/08 20:50:44 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -294,13 +294,13 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         if (result instanceof EvalContext) {
             EvalContext ctx = (EvalContext) result;
             result = ctx.getSingleNodePointer();
-            if (!lenient && result == null) {
+            if (!isLenient() && result == null) {
                 throw new JXPathException("No value for xpath: " + xpath);
             }
         }
         if (result instanceof NodePointer) {
             result = ((NodePointer) result).getValuePointer();
-            if (!lenient && !((NodePointer) result).isActual()) {
+            if (!isLenient() && !((NodePointer) result).isActual()) {
                 // We need to differentiate between pointers representing
                 // a non-existing property and ones representing a property
                 // whose value is null.  In the latter case, the pointer
@@ -368,7 +368,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             result = ((EvalContext) result).getSingleNodePointer();
         }
         if (result instanceof Pointer) {
-            if (!lenient && !((NodePointer) result).isActual()) {
+            if (!isLenient() && !((NodePointer) result).isActual()) {
                 throw new JXPathException("No pointer for xpath: " + xpath);
             }
             return (Pointer) result;
