@@ -564,7 +564,7 @@ public class ValueUtils {
             }
             
             clazz = clazz.getSuperclass();
-            if (Modifier.isPublic(clazz.getModifiers())) {
+            if (clazz != null && Modifier.isPublic(clazz.getModifiers())) {
                 try {
                     return clazz.getDeclaredMethod(name, parameterTypes);
                 } 
