@@ -3,7 +3,7 @@
 
 <!--
         "JXPath" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.11 2002/06/25 22:46:15 dmitri Exp $
+        $Id: build.xml,v 1.12 2002/07/26 12:42:14 dmitri Exp $
 -->
 
 
@@ -263,7 +263,7 @@
   <!-- ================================================================== -->
   <target name="jar" depends="compile" description="Build jar">
     <mkdir      dir="${dist.home}"/>
-    <copy      file="LICENSE"
+    <copy      file="LICENSE.txt"
              tofile="${build.home}/classes/META-INF/LICENSE.txt"/>
     <jar    jarfile="${dist.home}/${jar.name}"
             basedir="${build.home}/classes"
@@ -290,7 +290,7 @@
   <target name="dist" depends="compile,jar,xdoc,javadoc"
    description="Create binary distribution">
     <mkdir      dir="${dist.home}"/>
-    <copy      file="LICENSE"
+    <copy      file="LICENSE.txt"
               todir="${dist.home}"/>
   </target>
 
