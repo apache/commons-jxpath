@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.1 2002/10/20 03:48:22 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/10/20 03:48:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.2 2002/10/20 04:00:21 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/10/20 04:00:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -82,7 +82,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/10/20 03:48:22 $
+ * @version $Revision: 1.2 $ $Date: 2002/10/20 04:00:21 $
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase
@@ -110,7 +110,8 @@ public class ExtensionFunctionTest extends JXPathTestCase
             lib.addFunctions(new ClassFunctions(TestFunctions2.class, "test"));
             lib.addFunctions(new PackageFunctions("", "call"));
             lib.addFunctions(
-                    new PackageFunctions("org.apache.commons.jxpath.", 
+                    new PackageFunctions(
+                    		"org.apache.commons.jxpath.ri.compiler.", 
                             "jxpathtest"));
             context.setFunctions(lib);
         }
