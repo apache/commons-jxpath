@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.4 2001/09/21 23:22:43 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2001/09/21 23:22:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.5 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,7 +81,7 @@ import org.w3c.dom.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2001/09/21 23:22:43 $
+ * @version $Revision: 1.5 $ $Date: 2001/09/26 01:21:54 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -212,7 +212,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
             return (Pointer)result;
         }
         else {
-            return NodePointer.createNodePointer(null, result);
+            return NodePointer.createNodePointer(null, result, getLocale());
         }
     }
 
@@ -255,14 +255,14 @@ public class JXPathContextReferenceImpl extends JXPathContext
             list.add((Pointer)result);
         }
         else {
-            list.add(NodePointer.createNodePointer(null, result));
+            list.add(NodePointer.createNodePointer(null, result, getLocale()));
         }
         return list;
     }
 
     private Object eval(String xpath, boolean firstMatchLookup) {
         Expression expr = compile(xpath);
-        NodePointer pointer = NodePointer.createNodePointer(new QName(null, "root"), getContextBean());
+        NodePointer pointer = NodePointer.createNodePointer(new QName(null, "root"), getContextBean(), getLocale());
         EvalContext ctx = new RootContext(this, pointer);
 //        System.err.println("XPATH = " + xpath);
         return ctx.eval(expr, firstMatchLookup);

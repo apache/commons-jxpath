@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.7 2001/09/21 23:30:32 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2001/09/21 23:30:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.8 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -93,7 +93,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2001/09/21 23:30:32 $
+ * @version $Revision: 1.8 $ $Date: 2001/09/26 01:21:54 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -181,7 +181,7 @@ public class JXPathTestCase extends TestCase
     }
 
     private void testIndividual(int relativePropertyIndex, int offset, boolean useStartLocation, boolean reverse, int expected){
-        PropertyOwnerPointer root = (PropertyOwnerPointer)NodePointer.createNodePointer(new QName(null, "root"), bean);
+        PropertyOwnerPointer root = (PropertyOwnerPointer)NodePointer.createNodePointer(new QName(null, "root"), bean, Locale.getDefault());
         NodeIterator it;
 
         if (useStartLocation){
@@ -219,7 +219,7 @@ public class JXPathTestCase extends TestCase
     }
 
     private void testMultiple(int propertyIndex, int offset, boolean useStartLocation, boolean reverse, int expected){
-        PropertyOwnerPointer root = (PropertyOwnerPointer)NodePointer.createNodePointer(new QName(null, "root"), bean);
+        PropertyOwnerPointer root = (PropertyOwnerPointer)NodePointer.createNodePointer(new QName(null, "root"), bean, Locale.getDefault());
         NodeIterator it;
 
         if (useStartLocation){
@@ -471,6 +471,7 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testParser(JXPathContext ctx, boolean ignorePath){
+        ctx.setLocale(Locale.US);
         ctx.getVariables().declareVariable("a", new Double(1));
         ctx.getVariables().declareVariable("b", new Double(1));
         ctx.getVariables().declareVariable("nan", new Double(Double.NaN));
@@ -618,7 +619,7 @@ public class JXPathTestCase extends TestCase
         test("count(set)", new Double(3)),
         test("boolean", Boolean.FALSE),
         testEval("foo:boolean", list()),
-        test("@*", null),
+        test("count(@*)", new Double(0)),
         testPath("boolean", "/boolean"),
         testEvalPath("boolean", list("/boolean")),
         test("nestedBean/name", "Name 0"),
@@ -764,6 +765,12 @@ public class JXPathTestCase extends TestCase
         test("round(1.5)", new Double(2)),
         test("round(-1.5)", new Double(-1)),
         test("null()", null),
+        test("@xml:lang", "en-US"),
+        test("count(@xml:*)", new Double(1)),
+        test("@foo", null),
+        test("lang('en')", Boolean.TRUE),
+        test("lang('fr')", Boolean.FALSE),
+
 
         // Extension functions
         test("string(test:new())", "foo=0; bar=null"),
@@ -865,6 +872,7 @@ public class JXPathTestCase extends TestCase
             XMLDocumentContainer docCtr = new XMLDocumentContainer(getClass().getResource("Test.properties"));
             Document doc = (Document)docCtr.getValue();
             JXPathContext ctx = JXPathContextFactory.newInstance().newContext(null, doc);
+            ctx.setLocale(Locale.US);
             ctx.getVariables().declareVariable("dom", doc);
             ctx.getVariables().declareVariable("object", docCtr);
             TestBeanWithDOM tbwdom = new TestBeanWithDOM();
@@ -936,6 +944,9 @@ public class JXPathTestCase extends TestCase
         testPath("//nsnode/processing-instruction('do')", "/vendor[1]/nsnode[1]/processing-instruction('do')[1]"),
         test("name(//nsnode/processing-instruction()[1])", "go"),
 
+        test("//nsnode/baz/@xml:lang", "fr"),
+        test("//nsnode/baz[lang('fr')]", "BAZ"),
+        test("//nsnode/foo:x[lang('en')]/y", "why"),
         test("vendor/location/@blank", ""),
         test("vendor/location/@missing", null),
         test("count(vendor/location[1]/@*)", new Double(3)),

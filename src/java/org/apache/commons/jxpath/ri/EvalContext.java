@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.3 2001/09/21 23:22:43 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/21 23:22:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.4 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.w3c.dom.*;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:43 $
+ * @version $Revision: 1.4 $ $Date: 2001/09/26 01:21:54 $
  */
 public abstract class EvalContext implements ExpressionContext {
     protected EvalContext parentContext;
@@ -922,8 +922,7 @@ public abstract class EvalContext implements ExpressionContext {
             case Compiler.FUNCTION_LAST:                return functionLast(function);
             case Compiler.FUNCTION_POSITION:            return functionPosition(function);
             case Compiler.FUNCTION_COUNT:               return functionCount(function);
-
-            case Compiler.FUNCTION_LANG:
+            case Compiler.FUNCTION_LANG:                return functionLang(function);
             case Compiler.FUNCTION_ID:
             {
                 System.err.println("UNIMPLEMENTED: " + function);
@@ -1007,6 +1006,16 @@ public abstract class EvalContext implements ExpressionContext {
             count = 1;
         }
         return new Double(count);
+    }
+
+    protected Object functionLang(CoreFunction function){
+        assertArgCount(function, 1);
+        String lang = stringValue(eval(function.getArg1()));
+        NodePointer pointer = (NodePointer)getContextNodePointer();
+        if (pointer == null){
+            return Boolean.FALSE;
+        }
+        return pointer.isLanguage(lang) ? Boolean.TRUE: Boolean.FALSE;
     }
 
     protected Object functionNamespaceURI(CoreFunction function){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.2 2001/09/08 20:59:58 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/08 20:59:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.3 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,6 +63,7 @@ package org.apache.commons.jxpath;
 
 import java.util.List;
 import org.w3c.dom.Node;
+import java.util.Locale;
 
 /**
  * JXPathContext provides APIs for the traversal of graphs of JavaBeans using
@@ -383,13 +384,14 @@ import org.w3c.dom.Node;
  * See <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/08 20:59:58 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/26 01:21:54 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
     protected Object contextBean;
     protected Variables vars;
     protected Functions functions;
+    protected Locale locale;
 
     /**
      * Creates a new JXPathContext with the specified bean as the root node.
@@ -453,6 +455,27 @@ public abstract class JXPathContext {
     public Functions getFunctions(){
         // TBD: default lib
         return functions;
+    }
+
+    /**
+     * Set the locale for this context.  The value of the "lang"
+     * attribute as well as the the lang() function will be
+     * affected by the locale.  By default, JXPath uses
+     * <code>Locale.getDefault()</code>
+     */
+    public void setLocale(Locale locale){
+        this.locale = locale;
+    }
+
+    /**
+     * Returns the locale set with setLocale or Locale.getDefault()
+     * by default.
+     */
+    protected Locale getLocale(){
+        if (locale == null){
+            locale = Locale.getDefault();
+        }
+        return locale;
     }
 
     /**

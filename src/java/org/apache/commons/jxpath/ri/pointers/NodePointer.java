@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointer.java,v 1.3 2001/09/21 23:22:45 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/21 23:22:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/NodePointer.java,v 1.4 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.w3c.dom.Node;
  * Common superclass for Poitners of all kinds.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:45 $
+ * @version $Revision: 1.4 $ $Date: 2001/09/26 01:21:54 $
  */
 public abstract class NodePointer implements Pointer, Cloneable {
 
@@ -82,24 +82,24 @@ public abstract class NodePointer implements Pointer, Cloneable {
     protected int index = WHOLE_COLLECTION;
     public static String UNKNOWN_NAMESPACE = "<<unknown namespace>>";
 
-    public static NodePointer createNodePointer(QName name, Object bean){
+    public static NodePointer createNodePointer(QName name, Object bean, Locale locale){
         if (bean == null){
-            return new NullPointer(name);
+            return new NullPointer(name, locale);
         }
         if (bean instanceof Node){
-            return new DOMNodePointer((Node)bean);
+            return new DOMNodePointer((Node)bean, locale);
         }
         if (bean instanceof Container){
-            return new ContainerPointer((Container)bean);
+            return new ContainerPointer((Container)bean, locale);
         }
 
         JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         if (bi.isDynamic()){
             DynamicPropertyHandler handler = PropertyAccessHelper.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
-            return new DynamicPointer(name, bean, handler);
+            return new DynamicPointer(name, bean, handler, locale);
         }
         else {
-            return new BeanPointer(name, bean, bi);
+            return new BeanPointer(name, bean, bi, locale);
         }
     }
 
@@ -201,9 +201,15 @@ public abstract class NodePointer implements Pointer, Cloneable {
     }
 
     protected NodePointer parent;
+    protected Locale locale;
 
     protected NodePointer(NodePointer parent){
         this.parent = parent;
+    }
+
+    protected NodePointer(NodePointer parent, Locale locale){
+        this.parent = parent;
+        this.locale = locale;
     }
 
     public NodePointer getParent(){
@@ -247,6 +253,25 @@ public abstract class NodePointer implements Pointer, Cloneable {
     public abstract Object getBaseValue();
     public abstract void setValue(Object value);
     public abstract boolean testNode(NodeTest nodeTest);
+
+    public Locale getLocale(){
+        if (locale == null){
+            if (parent != null){
+                locale = parent.getLocale();
+            }
+        }
+        return locale;
+    }
+
+    /**
+     * Returns true if the selected locale name starts
+     * with the specified prefix <i>lang</i>, case-insensitive.
+     */
+    public boolean isLanguage(String lang){
+        Locale loc = getLocale();
+        String name = loc.toString().replace('_', '-');
+        return name.toUpperCase().startsWith(lang.toUpperCase());
+    }
 
     public String asPath(){
         StringBuffer buffer = new StringBuffer();

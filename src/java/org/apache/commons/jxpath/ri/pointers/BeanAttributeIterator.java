@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.3 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.3 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/BeanAttributeIterator.java,v 1.1 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
@@ -59,106 +59,45 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.axes;
+package org.apache.commons.jxpath.ri.pointers;
 
+import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.pointers.*;
-import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
-import org.apache.commons.jxpath.Function;
+
+import java.lang.reflect.*;
 import java.util.*;
+import java.beans.*;
+import org.w3c.dom.*;
 
 /**
- * EvalContext that is used to hold the root node for the path traversal.
+ * An iterator of attributes of a JavaBean. Currently supports only one
+ * attribute - "lang".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/26 01:21:54 $
  */
-public class RootContext extends EvalContext {
-    private boolean startedSet = false;
-    private boolean started = false;
-    private JXPathContextReferenceImpl parent;
-    private NodePointer pointer;
-    private Object registers[];
-    private int availableRegister = 0;
-    public static final Object UNKNOWN_VALUE = new Object();
-    private static final int MAX_REGISTER = 4;
+public class BeanAttributeIterator implements NodeIterator {
+    private NodePointer parent;
+    private QName name;
+    private int position = 0;
 
-    public RootContext(JXPathContextReferenceImpl parent, NodePointer pointer){
-        super(null);
+    public BeanAttributeIterator(NodePointer parent, QName name){
         this.parent = parent;
-        this.pointer = pointer;
+        this.name = name;
     }
 
-    public RootContext getRootContext(){
-        return this;
+    public NodePointer getNodePointer(){
+        return new LangAttributePointer(parent);
     }
 
-    public NodePointer getCurrentNodePointer(){
-        return pointer;
-    }
-
-    public int getCurrentPosition(){
-        return 1;
-    }
-
-    public boolean next(){
-        if (started){
-            return false;
-        }
-        started = true;
-        return true;
-    }
-
-    public boolean nextSet(){
-        if (startedSet){
-            return false;
-        }
-        startedSet = true;
-        return true;
+    public int getPosition(){
+        return position;
     }
 
     public boolean setPosition(int position){
-        return position == 1;
-    }
-
-    public EvalContext getConstantContext(Object constant){
-        NodePointer pointer = NodePointer.createNodePointer(new QName(null, ""), constant, null);
-        return new InitialContext(new RootContext(parent, pointer));
-    }
-
-    public EvalContext getVariableContext(QName variableName){
-        return new InitialContext(new RootContext(parent, parent.getVariablePointer(variableName)));
-    }
-
-    public Function getFunction(QName functionName, Object[] parameters){
-        return parent.getFunction(functionName, parameters);
-    }
-
-    public Object getRegisteredValue(int id){
-        if (registers == null || id >= MAX_REGISTER || id == -1){
-            return UNKNOWN_VALUE;
-        }
-        return registers[id];
-    }
-
-    public int setRegisteredValue(Object value){
-        if (registers == null){
-            registers = new Object[MAX_REGISTER];
-            for (int i = 0; i < MAX_REGISTER; i++){
-                registers[i] = UNKNOWN_VALUE;
-            }
-        }
-        if (availableRegister >= MAX_REGISTER){
-            return -1;
-        }
-        registers[availableRegister] = value;
-        availableRegister++;
-        return availableRegister-1;
-    }
-
-    public String toString(){
-        return super.toString() + ":" + pointer.asPath();
+        this.position = position;
+        return position == 1 && name.getPrefix() != null && name.getPrefix().equals("xml") &&
+            (name.getName().equals("lang") || name.getName().equals("*"));
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMNodePointer.java,v 1.2 2001/09/21 23:22:45 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/21 23:22:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMNodePointer.java,v 1.3 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.w3c.dom.*;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:45 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/26 01:21:54 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -84,8 +84,8 @@ public class DOMNodePointer extends NodePointer {
     public static final String XML_NAMESPACE_URI = "http://www.w3.org/XML/1998/namespace";
     public static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
 
-    public DOMNodePointer(Node node){
-        super(null);
+    public DOMNodePointer(Node node, Locale locale){
+        super(null, locale);
         this.node = node;
     }
 
@@ -281,6 +281,34 @@ public class DOMNodePointer extends NodePointer {
 
     public boolean isLeaf(){
         return !node.hasChildNodes();
+    }
+
+    /**
+     * Returns true if the xml:lang attribute for the current node
+     * or its parent has the specified prefix <i>lang</i>.
+     * If no node has this prefix, calls <code>super.isLanguage(lang)</code>.
+     */
+    public boolean isLanguage(String lang){
+        String current = getLanguage();
+        if (current == null){
+            return super.isLanguage(lang);
+        }
+        return current.toUpperCase().startsWith(lang.toUpperCase());
+    }
+
+    protected String getLanguage(){
+        Node n = node;
+        while (n != null){
+            if (n.getNodeType() == Node.ELEMENT_NODE){
+                Element e = (Element)n;
+                String attr = e.getAttribute("xml:lang");
+                if (attr != null && !attr.equals("")){
+                    return attr;
+                }
+            }
+            n = n.getParentNode();
+        }
+        return null;
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPointer.java,v 1.3 2001/09/21 23:22:45 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/21 23:22:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DynamicPointer.java,v 1.4 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import java.beans.*;
  * for the first element of a path; following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/21 23:22:45 $
+ * @version $Revision: 1.4 $ $Date: 2001/09/26 01:21:54 $
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;
@@ -82,8 +82,11 @@ public class DynamicPointer extends PropertyOwnerPointer {
     private DynamicPropertyHandler handler;
     private String[] names;
 
-    public DynamicPointer(QName name, Object bean, DynamicPropertyHandler handler){
-        this(null, name, bean, handler);
+    public DynamicPointer(QName name, Object bean, DynamicPropertyHandler handler, Locale locale){
+        super(null, locale);
+        this.name = name;
+        this.bean = bean;
+        this.handler = handler;
     }
 
     public DynamicPointer(NodePointer parent, QName name, Object bean, DynamicPropertyHandler handler){

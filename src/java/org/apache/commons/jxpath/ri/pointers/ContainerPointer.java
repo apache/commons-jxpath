@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/ContainerPointer.java,v 1.2 2001/09/21 23:22:45 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/21 23:22:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/ContainerPointer.java,v 1.3 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,14 +76,15 @@ import org.w3c.dom.Node;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:45 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/26 01:21:54 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
     private NodePointer valuePointer;
 
-    public ContainerPointer(Container container){
-        this(null, container);
+    public ContainerPointer(Container container, Locale locale){
+        super(null, locale);
+        this.container = container;
     }
 
     public ContainerPointer(NodePointer parent, Container container){

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyOwnerPointer.java,v 1.2 2001/09/21 23:22:45 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/21 23:22:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyOwnerPointer.java,v 1.3 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.w3c.dom.*;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/21 23:22:45 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/26 01:21:54 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -153,7 +153,15 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         return true;
     }
 
+    public NodeIterator attributeIterator(QName name){
+        return new BeanAttributeIterator(this, name);
+    }
+
     public static int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
+
+    protected PropertyOwnerPointer(NodePointer parent, Locale locale){
+        super(parent, locale);
+    }
 
     protected PropertyOwnerPointer(NodePointer parent){
         super(parent);

@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.3 2001/09/26 01:21:54 dmitri Exp $
- * $Revision: 1.3 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/LangAttributePointer.java,v 1.1 2001/09/26 01:21:54 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2001/09/26 01:21:54 $
  *
  * ====================================================================
@@ -59,106 +59,89 @@
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath.ri.axes;
+package org.apache.commons.jxpath.ri.pointers;
 
+import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.compiler.*;
-import org.apache.commons.jxpath.ri.pointers.*;
-import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
-import org.apache.commons.jxpath.Function;
+
+import java.lang.reflect.*;
 import java.util.*;
+import java.beans.*;
+import org.w3c.dom.*;
 
 /**
- * EvalContext that is used to hold the root node for the path traversal.
+ * A Pointer that points to the "lang" attribute of a JavaBean. The value
+ * of the attribute is based on the locale supplied to it in the constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/26 01:21:54 $
+ * @version $Revision: 1.1 $ $Date: 2001/09/26 01:21:54 $
  */
-public class RootContext extends EvalContext {
-    private boolean startedSet = false;
-    private boolean started = false;
-    private JXPathContextReferenceImpl parent;
-    private NodePointer pointer;
-    private Object registers[];
-    private int availableRegister = 0;
-    public static final Object UNKNOWN_VALUE = new Object();
-    private static final int MAX_REGISTER = 4;
-
-    public RootContext(JXPathContextReferenceImpl parent, NodePointer pointer){
-        super(null);
-        this.parent = parent;
-        this.pointer = pointer;
+public class LangAttributePointer extends NodePointer {
+    public LangAttributePointer(NodePointer parent){
+        super(parent);
     }
 
-    public RootContext getRootContext(){
-        return this;
+    public QName getName(){
+        return new QName(null, "lang");
     }
 
-    public NodePointer getCurrentNodePointer(){
-        return pointer;
+    public QName getExpandedName(){
+        return getName();
     }
 
-    public int getCurrentPosition(){
-        return 1;
+    public String getNamespaceURI(){
+        return null;
     }
 
-    public boolean next(){
-        if (started){
-            return false;
-        }
-        started = true;
+    public Object getBaseValue(){
+        return parent.getLocale().toString().replace('_', '-');
+    }
+
+    public Object getValue(){
+        return getBaseValue();
+    }
+
+    public boolean isLeaf(){
         return true;
     }
 
-    public boolean nextSet(){
-        if (startedSet){
+    /**
+     * Throws UnsupportedOperationException.
+     */
+    public void setValue(Object value){
+        throw new UnsupportedOperationException("Cannot change locale using the 'lang' attribute");
+    }
+
+    /**
+     */
+    public String asPath(){
+        StringBuffer buffer = new StringBuffer();
+        if (parent != null){
+            buffer.append(parent.asPath());
+            buffer.append('/');
+        }
+        buffer.append("@xml:lang");
+        return buffer.toString();
+    }
+
+    public int hashCode(){
+        return 0;
+    }
+
+    public boolean equals(Object object){
+        if (object == this){
+            return true;
+        }
+
+        if (!(object instanceof LangAttributePointer)){
             return false;
         }
-        startedSet = true;
+
         return true;
     }
 
-    public boolean setPosition(int position){
-        return position == 1;
-    }
-
-    public EvalContext getConstantContext(Object constant){
-        NodePointer pointer = NodePointer.createNodePointer(new QName(null, ""), constant, null);
-        return new InitialContext(new RootContext(parent, pointer));
-    }
-
-    public EvalContext getVariableContext(QName variableName){
-        return new InitialContext(new RootContext(parent, parent.getVariablePointer(variableName)));
-    }
-
-    public Function getFunction(QName functionName, Object[] parameters){
-        return parent.getFunction(functionName, parameters);
-    }
-
-    public Object getRegisteredValue(int id){
-        if (registers == null || id >= MAX_REGISTER || id == -1){
-            return UNKNOWN_VALUE;
-        }
-        return registers[id];
-    }
-
-    public int setRegisteredValue(Object value){
-        if (registers == null){
-            registers = new Object[MAX_REGISTER];
-            for (int i = 0; i < MAX_REGISTER; i++){
-                registers[i] = UNKNOWN_VALUE;
-            }
-        }
-        if (availableRegister >= MAX_REGISTER){
-            return -1;
-        }
-        registers[availableRegister] = value;
-        availableRegister++;
-        return availableRegister-1;
-    }
-
-    public String toString(){
-        return super.toString() + ":" + pointer.asPath();
+    public boolean testNode(NodeTest test){
+        return false;
     }
 }
