@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyAccessHelper.java,v 1.1 2001/08/23 00:47:00 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/PropertyAccessHelper.java,v 1.2 2001/09/09 00:52:04 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/09 00:52:04 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import java.beans.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:00 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/09 00:52:04 $
  */
 public class PropertyAccessHelper {
     private static Map dynamicPropertyHandlerMap = new HashMap();
@@ -193,13 +193,14 @@ public class PropertyAccessHelper {
     public static Object getValue(Object bean, PropertyDescriptor propertyDescriptor){
         Object value;
         try {
-            Method method = propertyDescriptor.getReadMethod();
+            Method method = getAccessibleMethod(propertyDescriptor.getReadMethod());
             if (method == null){
                 throw new RuntimeException("No read method");
             }
             value = method.invoke(bean, new Object[0]);
         }
         catch (Exception ex){
+            ex.printStackTrace();
             throw new RuntimeException("Cannot access property: " + propertyDescriptor.getName() +
                 ", " + ex.getMessage());
         }
@@ -208,7 +209,7 @@ public class PropertyAccessHelper {
 
     public static void setValue(Object bean, PropertyDescriptor propertyDescriptor, Object value){
         try {
-            Method method = propertyDescriptor.getWriteMethod();
+            Method method = getAccessibleMethod(propertyDescriptor.getWriteMethod());
             if (method == null){
                 throw new RuntimeException("No write method");
             }
@@ -239,5 +240,93 @@ public class PropertyAccessHelper {
         return handler;
     }
 
+    // -------------------------------------------------------- Private Methods
+    //
+    //  The rest of the code in this file was copied FROM
+    //  org.apache.commons.beanutils.PropertyUtil. We don't want to introduce a dependency
+    //  on BeanUtils yet - DP.
+    //
 
+    /**
+     * Return an accessible method (that is, one that can be invoked via
+     * reflection) that implements the specified Method.  If no such method
+     * can be found, return <code>null</code>.
+     *
+     * @param method The method that we wish to call
+     */
+    private static Method getAccessibleMethod(Method method) {
+
+        // Make sure we have a method to check
+        if (method == null) {
+            return (null);
+        }
+
+        // If the requested method is not public we cannot call it
+        if (!Modifier.isPublic(method.getModifiers())) {
+            return (null);
+        }
+
+        // If the declaring class is public, we are done
+        Class clazz = method.getDeclaringClass();
+        if (Modifier.isPublic(clazz.getModifiers())) {
+            return (method);
+        }
+
+        // Check the implemented interfaces and subinterfaces
+        String methodName = method.getName();
+        Class[] parameterTypes = method.getParameterTypes();
+        method =
+            getAccessibleMethodFromInterfaceNest(clazz,
+                                                 method.getName(),
+                                                 method.getParameterTypes());
+        return (method);
+    }
+
+
+    /**
+     * Return an accessible method (that is, one that can be invoked via
+     * reflection) that implements the specified method, by scanning through
+     * all implemented interfaces and subinterfaces.  If no such Method
+     * can be found, return <code>null</code>.
+     *
+     * @param clazz Parent class for the interfaces to be checked
+     * @param methodName Method name of the method we wish to call
+     * @param parameterTypes The parameter type signatures
+     */
+    private static Method getAccessibleMethodFromInterfaceNest
+        (Class clazz, String methodName, Class parameterTypes[]) {
+
+        Method method = null;
+
+        // Check the implemented interfaces of the parent class
+        Class interfaces[] = clazz.getInterfaces();
+        for (int i = 0; i < interfaces.length; i++) {
+
+            // Is this interface public?
+            if (!Modifier.isPublic(interfaces[i].getModifiers()))
+                continue;
+
+            // Does the method exist on this interface?
+            try {
+                method = interfaces[i].getDeclaredMethod(methodName,
+                                                         parameterTypes);
+            } catch (NoSuchMethodException e) {
+                ;
+            }
+            if (method != null)
+                break;
+
+            // Recursively check our parent interfaces
+            method =
+                getAccessibleMethodFromInterfaceNest(interfaces[i],
+                                                     methodName,
+                                                     parameterTypes);
+            if (method != null)
+                break;
+
+        }
+
+        // Return whatever we have found
+        return (method);
+    }
 }
