@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/Attic/XMLModelTest.java,v 1.1 2002/08/26 22:33:09 dmitri Exp $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.1 2002/10/13 03:01:03 dmitri Exp $
  * $Revision: 1.1 $
- * $Date: 2002/08/26 22:33:09 $
+ * $Date: 2002/10/13 03:01:03 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -89,10 +89,10 @@ import java.beans.*;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/26 22:33:09 $
+ * @version $Revision: 1.1 $ $Date: 2002/10/13 03:01:03 $
  */
 
-public abstract class XMLModelTest extends TestCase
+public abstract class XMLModelTestCase extends TestCase
 {
     private boolean enabled = true;
 
@@ -101,7 +101,7 @@ public abstract class XMLModelTest extends TestCase
      *
      * @param name Name of the test case
      */
-    public XMLModelTest(String name)
+    public XMLModelTestCase(String name)
     {
         super(name);
     }
@@ -172,6 +172,9 @@ public abstract class XMLModelTest extends TestCase
         testCreatePath(context, "/vendor[1]/location[3]/address/street", "",
                 "/vendor[1]/location[3]/address[1]/street[1]");
 
+        // Create a DOM attribute
+        testCreatePath(context, "/vendor[1]/location[2]/@manager", "");
+        testCreatePath(context, "/vendor[1]/location[1]/@name", "local");
     }
 
     private void testCreatePath(JXPathContext context, String path, Object value){
@@ -207,6 +210,12 @@ public abstract class XMLModelTest extends TestCase
 
         // Create a DOM element with contents
         testCreatePathAndSetValue(context, "vendor/location[3]/address/street", "Lemon Circle");
+
+        // Create an attribute
+        testCreatePathAndSetValue(context, "vendor/location[2]/@manager", "John Doe");
+        testCreatePathAndSetValue(context, "vendor/location[1]/@manager", "John Doe");
+
+        testCreatePathAndSetValue(context, "vendor/product/name/attribute::price:language", "English");
     }
 
     private void testCreatePathAndSetValue(JXPathContext context, String path, Object value){

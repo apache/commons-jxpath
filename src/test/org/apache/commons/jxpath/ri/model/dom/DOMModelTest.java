@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.1 2002/08/26 22:33:10 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/08/26 22:33:10 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.2 2002/10/13 03:01:03 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/10/13 03:01:03 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import junit.framework.TestSuite;
 import org.w3c.dom.*;
 import java.util.*;
 import java.lang.reflect.*;
-import org.apache.commons.jxpath.ri.model.XMLModelTest;
+import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
 import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.util.*;
 import org.apache.commons.jxpath.ri.*;
@@ -90,10 +90,10 @@ import java.beans.*;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/26 22:33:10 $
+ * @version $Revision: 1.2 $ $Date: 2002/10/13 03:01:03 $
  */
 
-public class DOMModelTest extends XMLModelTest
+public class DOMModelTest extends XMLModelTestCase
 {
     /**
      * Exercises this test case only

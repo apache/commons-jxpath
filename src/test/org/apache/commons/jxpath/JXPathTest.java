@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.27 2002/08/26 22:33:10 dmitri Exp $
- * $Revision: 1.27 $
- * $Date: 2002/08/26 22:33:10 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/Attic/JXPathTest.java,v 1.1 2002/10/13 03:01:03 dmitri Exp $
+ * $Revision: 1.1 $
+ * $Date: 2002/10/13 03:01:03 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -96,12 +96,13 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.27 $ $Date: 2002/08/26 22:33:10 $
+ * @version $Revision: 1.1 $ $Date: 2002/10/13 03:01:03 $
  */
 
-public class JXPathTestCase extends TestCase
+public class JXPathTest extends TestCase
 {
-    private boolean enabled = true;
+    private static boolean combineTests = false;
+    private static boolean enabled = true;
 
     /**
      * Exercises this test case only
@@ -125,7 +126,7 @@ public class JXPathTestCase extends TestCase
      *
      * @param name Name of the test case
      */
-    public JXPathTestCase(String name)
+    public JXPathTest(String name)
     {
         super(name);
     }
@@ -148,7 +149,14 @@ public class JXPathTestCase extends TestCase
      */
     public static Test suite()
     {
-        return (new TestSuite(JXPathTestCase.class));
+        TestSuite suite = new TestSuite();
+        suite.addTestSuite(JXPathTest.class);
+        if (combineTests && enabled){
+            suite.addTestSuite(org.apache.commons.jxpath.ri.axes.SimplePathInterpreterTest.class);
+            suite.addTestSuite(org.apache.commons.jxpath.ri.model.dom.DOMModelTest.class);
+            suite.addTestSuite(org.apache.commons.jxpath.ri.model.jdom.JDOMModelTest.class);
+        }
+        return suite;
     }
 
     /**
@@ -302,10 +310,25 @@ public class JXPathTestCase extends TestCase
         assertTrue("Type conversion exception", exception);
     }
 
+    public void testGetPointer(){
+//        if (!enabled){
+//            return;
+//        }
+
+        JXPathContext context = JXPathContext.newContext(createTestBeanWithDOM());
+
+        NodePointer pointer = (NodePointer)context.getPointer("@int");
+        assertEquals("GetPointer <" + "@int" + ">", "/@int", pointer.toString());
+
+        pointer = (NodePointer)context.getPointer("vendor/location/@id");
+        assertEquals("GetPointer <" + "vendor/location/@id" + ">",
+                "/vendor/location[1]/@id", pointer.toString());
+    }
+
     /**
      * Test JXPath.iterate() with various arguments
      */
-    public void testIterate(){
+    public void testIterateArray(){
         if (!enabled){
             return;
         }
@@ -313,9 +336,71 @@ public class JXPathTestCase extends TestCase
         map.put("foo", new String[]{"a", "b", "c"});
 
         JXPathContext context = JXPathContext.newContext(map);
-        testIterate(context, "foo", list("a", "b", "c"));
 
-        context = JXPathContext.newContext(bean);
+        Iterator it = context.iterate("foo");
+        List actual = new ArrayList();
+        while (it.hasNext()){
+            actual.add(it.next());
+        }
+        assertEquals("Iterating <" + "foo" + ">", list("a", "b", "c"), actual);
+    }
+
+    public void testIteratePointersArray(){
+        if (!enabled){
+            return;
+        }
+        Map map = new HashMap();
+        map.put("foo", new String[]{"a", "b", "c"});
+
+        JXPathContext context = JXPathContext.newContext(map);
+
+        Iterator it = context.iteratePointers("foo");
+        List actual = new ArrayList();
+        while (it.hasNext()){
+            Pointer ptr = (Pointer)it.next();
+            actual.add(context.getValue(ptr.asPath()));
+        }
+        assertEquals("Iterating pointers <" + "foo" + ">", list("a", "b", "c"), actual);
+    }
+
+    public void testIteratePointersArrayElementWithVariable(){
+        if (!enabled){
+            return;
+        }
+        Map map = new HashMap();
+        map.put("foo", new String[]{"a", "b", "c"});
+
+        JXPathContext context = JXPathContext.newContext(map);
+        context.getVariables().declareVariable("x", new Integer(2));
+        Iterator it = context.iteratePointers("foo[$x]");
+        List actual = new ArrayList();
+        while (it.hasNext()){
+            Pointer ptr = (Pointer)it.next();
+            actual.add(context.getValue(ptr.asPath()));
+        }
+        assertEquals("Iterating pointers <" + "foo" + ">", list("b"), actual);
+    }
+
+    public void testIteratePropertyArrayWithHasNext(){
+        if (!enabled){
+            return;
+        }
+        JXPathContext context = JXPathContext.newContext(bean);
+        Iterator it = context.iteratePointers("/integers");
+        List actual = new ArrayList();
+        while(it.hasNext()){
+            actual.add(((Pointer)it.next()).asPath());
+        }
+        assertEquals("Iterating 'hasNext'/'next'<" + "/integers" + ">",
+            list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"),
+            actual);
+    }
+
+    public void testIteratePropertyArrayWithoutHasNext(){
+        if (!enabled){
+            return;
+        }
+        JXPathContext context = JXPathContext.newContext(bean);
         Iterator it = context.iteratePointers("/integers");
         List actual = new ArrayList();
         for (int i = 0; i < 4; i++){
@@ -324,26 +409,21 @@ public class JXPathTestCase extends TestCase
         assertEquals("Iterating 'next'<" + "/integers" + ">",
             list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"),
             actual);
+    }
 
-        it = context.iteratePointers("/integers");
-        actual = new ArrayList();
-        while(it.hasNext()){
-            actual.add(((Pointer)it.next()).asPath());
+    public void testIterateVector(){
+        if (!enabled){
+            return;
         }
-
-        assertEquals("Iterating 'hasNext'/'next'<" + "/integers" + ">",
-            list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"),
-            actual);
-
-        map = new HashMap();
+        Map map = new HashMap();
         Vector vec = new Vector();
         vec.add(new HashMap());
         vec.add(new HashMap());
 
         map.put("vec", vec);
-        context = JXPathContext.newContext(map);
-        it = context.iteratePointers("/vec");
-        actual = new ArrayList();
+        JXPathContext context = JXPathContext.newContext(map);
+        Iterator it = context.iteratePointers("/vec");
+        List actual = new ArrayList();
         while(it.hasNext()){
             actual.add(((Pointer)it.next()).asPath());
         }
@@ -353,23 +433,27 @@ public class JXPathTestCase extends TestCase
             actual);
     }
 
-    private void testIterate(JXPathContext context, String xpath, List expected) {
-        Iterator it = context.iterate(xpath);
+    public void testIterateAndSet(){
+        if (!enabled){
+            return;
+        }
+
+        JXPathContext context = JXPathContext.newContext(new TestBean());
+
+        Iterator it = context.iteratePointers("beans/int");
+        int i = 5;
+        while (it.hasNext()){
+            NodePointer pointer = (NodePointer)it.next();
+            pointer.setValue(new Integer(i++));
+        }
+
+        it = context.iteratePointers("beans/int");
         List actual = new ArrayList();
         while (it.hasNext()){
-            actual.add(it.next());
+            actual.add(((Pointer)it.next()).getValue());
         }
-        assertEquals("Iterating <" + xpath + ">", expected, actual);
-
-        it = context.iteratePointers(xpath);
-        actual = new ArrayList();
-        while (it.hasNext()){
-            Pointer ptr = (Pointer)it.next();
-            actual.add(context.getValue(ptr.asPath()));
-        }
-        assertEquals("Iterating pointers <" + xpath + ">", expected, actual);
+        assertEquals("Iterating <" + "beans/int" + ">", list(new Integer(5), new Integer(6)), actual);
     }
-
 
     /**
      * Test JXPath.getValue() with variables
@@ -566,6 +650,10 @@ public class JXPathTestCase extends TestCase
 
         context.setValue("beans[name = 'Name 9']/int", new Integer(9));
         assertEquals("Modified <" + "beans[name = 'Name 9']/int" + ">", new Integer(9), context.getValue("beans[name = 'Name 9']/int"));
+
+        context.setValue("@int", new Integer(10));
+        assertEquals("Modified <" + "@int" + ">", new Integer(10),
+                context.getValue("@int"));
     }
 
     /**
@@ -824,6 +912,7 @@ public class JXPathTestCase extends TestCase
                     context.getValue("nestedBean/strings[1]"));
 
         context.removePath("nestedBean");
+        context.setLenient(true);
         assertEquals("Remove property value", null,
                     context.getValue("nestedBean"));
 
@@ -1155,7 +1244,8 @@ public class JXPathTestCase extends TestCase
         test("boolean", Boolean.FALSE),
 //        test("boolean/class/name", "java.lang.Boolean"),
         testEval("foo:boolean", list()),
-        test("count(@*)", new Double(0)),
+        test("count(*)", new Double(21.0)),
+        test("count(@*)", new Double(21.0)),
         testPath("boolean", "/boolean"),
         testEvalPath("boolean", list("/boolean")),
         test("nestedBean/name", "Name 0"),
