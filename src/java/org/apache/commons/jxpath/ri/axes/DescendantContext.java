@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.8 2002/08/10 01:32:38 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/08/10 01:32:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.9 2002/10/20 03:43:38 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/10/20 03:43:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/08/10 01:32:38 $
+ * @version $Revision: 1.9 $ $Date: 2002/10/20 03:43:38 $
  */
 public class DescendantContext extends EvalContext {
     private NodeTest nodeTest;
@@ -83,7 +83,7 @@ public class DescendantContext extends EvalContext {
     private Stack stack;
     private NodePointer currentNodePointer;
     private boolean includeSelf;
-    private final static NodeTest elementNodeTest = 
+    private final static NodeTest elementNodeTest =
             new NodeNameTest(new QName(null, "*"));
 
     public DescendantContext(EvalContext parentContext, boolean includeSelf, NodeTest nodeTest){

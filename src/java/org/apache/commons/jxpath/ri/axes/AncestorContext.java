@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.8 2002/05/29 00:41:32 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/05/29 00:41:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.9 2002/10/20 03:43:39 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/10/20 03:43:39 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,14 +71,13 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/05/29 00:41:32 $
+ * @version $Revision: 1.9 $ $Date: 2002/10/20 03:43:39 $
  */
 public class AncestorContext extends EvalContext {
     private NodeTest nodeTest;
     private boolean setStarted = false;
     private NodePointer currentNodePointer;
     private boolean includeSelf;
-    private HashSet visitedNodes = new HashSet();
 
     /**
      * @param parentContext represents the previous step on the path
@@ -118,27 +117,12 @@ public class AncestorContext extends EvalContext {
     }
 
     public boolean nextNode(){
-        while (nextIgnoreDuplicates()){
-            NodePointer location = getCurrentNodePointer();
-            if (!visitedNodes.contains(location)){
-                visitedNodes.add(location.clone());
-                position++;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns true if there is another object in the current set, even
-     * if that object has already been encountered in the same iteration.
-     */
-    private boolean nextIgnoreDuplicates(){
         if (!setStarted){
             setStarted = true;
             currentNodePointer = parentContext.getCurrentNodePointer();
             if (includeSelf){
                 if (currentNodePointer.testNode(nodeTest)){
+                    position++;
                     return true;
                 }
             }
@@ -152,6 +136,7 @@ public class AncestorContext extends EvalContext {
             }
 
             if (currentNodePointer.testNode(nodeTest)){
+                position++;
                 return true;
             }
         }

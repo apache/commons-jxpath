@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.7 2002/05/29 00:41:32 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/05/29 00:41:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.8 2002/10/20 03:43:38 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/10/20 03:43:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,13 +71,12 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "parent::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/05/29 00:41:32 $
+ * @version $Revision: 1.8 $ $Date: 2002/10/20 03:43:38 $
  */
 public class ParentContext extends EvalContext {
     private NodeTest nodeTest;
     private boolean setStarted = false;
     private NodePointer currentNodePointer;
-    private HashSet visitedNodes = new HashSet();
 
     public ParentContext(EvalContext parentContext, NodeTest nodeTest){
         super(parentContext);
@@ -107,22 +106,6 @@ public class ParentContext extends EvalContext {
     }
 
     public boolean nextNode(){
-        while (nextIgnoreDuplicates()){
-            NodePointer location = getCurrentNodePointer();
-            if (!visitedNodes.contains(location)){
-                visitedNodes.add(location.clone());
-                position++;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns true if there is another object in the current set, even
-     * if that object has already been encountered in the same iteration.
-     */
-    private boolean nextIgnoreDuplicates(){
         // Each set contains exactly one node: the parent
         if (setStarted){
             return false;
@@ -133,6 +116,11 @@ public class ParentContext extends EvalContext {
         while (currentNodePointer != null && !currentNodePointer.isNode()){
             currentNodePointer = currentNodePointer.getParent();
         }
-        return currentNodePointer != null && currentNodePointer.testNode(nodeTest);
+        if (currentNodePointer != null &&
+                currentNodePointer.testNode(nodeTest)){
+            position++;
+            return true;
+        }
+        return false;
     }
 }

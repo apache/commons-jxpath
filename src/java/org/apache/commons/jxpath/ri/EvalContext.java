@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.17 2002/07/03 21:12:36 dmitri Exp $
- * $Revision: 1.17 $
- * $Date: 2002/07/03 21:12:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.18 2002/10/20 03:43:39 dmitri Exp $
+ * $Revision: 1.18 $
+ * $Date: 2002/10/20 03:43:39 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2002/07/03 21:12:36 $
+ * @version $Revision: 1.18 $ $Date: 2002/10/20 03:43:39 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
@@ -87,6 +87,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     protected int position = 0;
     private boolean startedSetIteration = false;
     private boolean done = false;
+    private boolean hasPerformedIteratorStep = false;
     private Iterator pointerIterator;
 
     // Sorts in the reverse order to the one defined by the Comparable
@@ -140,18 +141,10 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             return constructIterator();
         }
         else {
-            if (done){
-                return false;
+            if (!done && !hasPerformedIteratorStep){
+                performIteratorStep();
             }
-            if (position == 0){
-                while (nextSet()){
-                    if (nextNode()){
-                        return true;
-                    }
-                }
-                return false;
-            }
-            return true;
+            return !done;
         }
     }
 
@@ -170,21 +163,34 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             return pointerIterator.next();
         }
         else {
-            if (done || (position == 0 && !hasNext())){
+            if (!done && !hasPerformedIteratorStep){
+                performIteratorStep();
+            }
+            if (done){
                 throw new NoSuchElementException();
             }
-            NodePointer pointer = (NodePointer)getCurrentNodePointer().clone();
-            if (!nextNode()){
-                done = true;
-                while (nextSet()){
-                    if (nextNode()){
-                        done = false;
-                        break;
-                    }
+            hasPerformedIteratorStep = false;
+            return (NodePointer)getCurrentNodePointer().clone();
+        }
+    }
+
+    /**
+     * Moves the iterator forward by one position
+     */
+    private void performIteratorStep(){
+        done = true;
+        if (position != 0 && nextNode()){
+            done = false;
+        }
+        else {
+            while (nextSet()){
+                if (nextNode()){
+                    done = false;
+                    break;
                 }
             }
-            return pointer;
         }
+        hasPerformedIteratorStep = true;
     }
 
     /**
@@ -202,8 +208,9 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             while (nextNode()){
                 NodePointer pointer = getCurrentNodePointer();
                 if (!set.contains(pointer)){
-                    set.add(pointer);
-                    list.add(pointer);
+                    Pointer cln = (Pointer)pointer.clone();
+                    set.add(cln);
+                    list.add(cln);
                 }
             }
         }
