@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.8 2003/03/25 02:41:34 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2003/03/25 02:41:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.9 2003/06/26 02:17:30 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/06/26 02:17:30 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.NodeSet;
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2003/03/25 02:41:34 $
+ * @version $Revision: 1.9 $ $Date: 2003/06/26 02:17:30 $
  */
 public class BasicTypeConverter implements TypeConverter {
 
@@ -336,7 +336,7 @@ public class BasicTypeConverter implements TypeConverter {
             "Cannot convert " + object.getClass() + " to " + toType);
     }
 
-    private Object convertNullToPrimitive(Class toType) {
+    protected Object convertNullToPrimitive(Class toType) {
         if (toType == boolean.class) {
             return Boolean.FALSE;
         }
@@ -364,7 +364,7 @@ public class BasicTypeConverter implements TypeConverter {
         return null;
     }
 
-    private Object convertStringToPrimitive(Object object, Class toType) {
+    protected Object convertStringToPrimitive(Object object, Class toType) {
         if (toType == boolean.class || toType == Boolean.class) {
             return Boolean.valueOf((String) object);
         }
@@ -392,7 +392,7 @@ public class BasicTypeConverter implements TypeConverter {
         return null;
     }
     
-    private static Number allocateNumber(Class type, double value) {
+    protected Number allocateNumber(Class type, double value) {
         if (type == Byte.class || type == byte.class) {
             return new Byte((byte) value);
         }
@@ -414,7 +414,7 @@ public class BasicTypeConverter implements TypeConverter {
         return null;
     }
 
-    private static boolean canCreateCollection(Class type) {
+    protected boolean canCreateCollection(Class type) {
         if (!type.isInterface()
             && ((type.getModifiers() | Modifier.ABSTRACT) == 0)) {
             return true;
@@ -430,7 +430,7 @@ public class BasicTypeConverter implements TypeConverter {
         return false;
     }
 
-    private static Collection allocateCollection(Class type) {
+    protected Collection allocateCollection(Class type) {
         if (!type.isInterface()
             && ((type.getModifiers() | Modifier.ABSTRACT) == 0)) {
             try {
@@ -452,7 +452,7 @@ public class BasicTypeConverter implements TypeConverter {
         throw new RuntimeException("Cannot create collection of type: " + type);
     }
     
-    private Collection unmodifiableCollection(Collection collection) {
+    protected Collection unmodifiableCollection(Collection collection) {
         if (collection instanceof List) {
             return Collections.unmodifiableList((List) collection);
         }
@@ -464,7 +464,7 @@ public class BasicTypeConverter implements TypeConverter {
         return collection;
     }
     
-    static class ValueNodeSet implements NodeSet {
+    static final class ValueNodeSet implements NodeSet {
         private List values;
         private List pointers;
 
