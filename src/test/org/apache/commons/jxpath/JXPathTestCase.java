@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.16 2002/05/08 00:40:00 dmitri Exp $
- * $Revision: 1.16 $
- * $Date: 2002/05/08 00:40:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.17 2002/05/08 00:40:52 dmitri Exp $
+ * $Revision: 1.17 $
+ * $Date: 2002/05/08 00:40:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -100,12 +100,12 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2002/05/08 00:40:00 $
+ * @version $Revision: 1.17 $ $Date: 2002/05/08 00:40:52 $
  */
 
 public class JXPathTestCase extends TestCase
 {
-    private boolean enabled = false;
+    private boolean enabled = true;
 
     /**
      * Exercises this test case only
@@ -664,9 +664,9 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testParserReferenceImpl() throws Exception {
-//        if (!enabled){
-//            return;
-//        }
+        if (!enabled){
+            return;
+        }
         System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
                 "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
         testParser(JXPathContextFactory.newInstance().newContext(null, bean), false);
