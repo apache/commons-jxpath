@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMNodePointer.java,v 1.4 2002/04/10 03:40:20 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/10 03:40:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/pointers/Attic/DOMNodePointer.java,v 1.5 2002/04/11 02:59:42 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/04/11 02:59:42 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.w3c.dom.*;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/10 03:40:20 $
+ * @version $Revision: 1.5 $ $Date: 2002/04/11 02:59:42 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -150,9 +150,14 @@ public class DOMNodePointer extends NodePointer {
         if (s1 == null && s2 != null){
             return false;
         }
-        if (s1 != null && !s1.equals(s2)){
+        if (s1 != null && s2 == null){
             return false;
         }
+
+        if (s1 != null && !s1.trim().equals(s2.trim())){
+            return false;
+        }
+
         return true;
     }
 
