@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.11 2004/01/18 01:43:30 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2004/01/18 01:43:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.12 2004/01/19 20:44:52 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2004/01/19 20:44:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,6 @@ import java.util.Map;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.NamespaceManager;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
@@ -91,7 +90,7 @@ import org.jdom.Text;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2004/01/18 01:43:30 $
+ * @version $Revision: 1.12 $ $Date: 2004/01/19 20:44:52 $
  */
 public class JDOMNodePointer extends NodePointer {
     private Object node;
@@ -157,10 +156,10 @@ public class JDOMNodePointer extends NodePointer {
             Element element = (Element) node;
             Namespace ns = element.getNamespace(prefix);
             if (ns == null) {
-                NamespaceManager manager = getNamespaceManager();
-                if (manager != null) {
-                    return manager.getNamespaceURI(prefix, this);
-                }
+//                NamespaceManager manager = getNamespaceManager();
+//                if (manager != null) {
+//                    return manager.getNamespaceURI(prefix, this);
+//                }
 
                 return null;
             }

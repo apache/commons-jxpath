@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/JDOMParser.java,v 1.5 2004/01/18 01:42:58 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2004/01/18 01:42:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/JDOMParser.java,v 1.6 2004/01/19 20:44:52 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2004/01/19 20:44:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.jdom.input.SAXBuilder;
  * An implementation of the XMLParser interface that produces a JDOM Document.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2004/01/18 01:42:58 $
+ * @version $Revision: 1.6 $ $Date: 2004/01/19 20:44:52 $
  */
 public class JDOMParser extends XMLParser2 {
     
@@ -94,7 +94,7 @@ public class JDOMParser extends XMLParser2 {
                     isNamespaceAware());
             builder.setFeature(
                     "http://xml.org/sax/features/namespace-prefixes",
-                    isNamespaceAware());
+                    false);
             return builder.build(stream);
         }
         catch (Exception ex) {

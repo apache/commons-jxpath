@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.17 2004/01/18 01:43:30 dmitri Exp $
- * $Revision: 1.17 $
- * $Date: 2004/01/18 01:43:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.18 2004/01/19 20:44:52 dmitri Exp $
+ * $Revision: 1.18 $
+ * $Date: 2004/01/19 20:44:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,7 +83,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2004/01/18 01:43:30 $
+ * @version $Revision: 1.18 $ $Date: 2004/01/19 20:44:52 $
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase {
@@ -138,8 +138,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             (PropertyOwnerPointer) NodePointer.newNodePointer(
                 new QName(null, "root"),
                 createContextBean(),
-                Locale.getDefault(),
-                null);
+                Locale.getDefault());
 
         NodeIterator it;
 
@@ -201,8 +200,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             (PropertyOwnerPointer) NodePointer.newNodePointer(
                 new QName(null, "root"),
                 createContextBean(),
-                Locale.getDefault(),
-                null);
+                Locale.getDefault());
         NodeIterator it;
 
         PropertyPointer start = null;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.20 2004/01/18 01:43:30 dmitri Exp $
- * $Revision: 1.20 $
- * $Date: 2004/01/18 01:43:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.21 2004/01/19 20:44:52 dmitri Exp $
+ * $Revision: 1.21 $
+ * $Date: 2004/01/19 20:44:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,7 +65,6 @@ import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.NamespaceManager;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
@@ -82,7 +81,7 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * attribute and only simple, context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.20 $ $Date: 2004/01/18 01:43:30 $
+ * @version $Revision: 1.21 $ $Date: 2004/01/19 20:44:52 $
  */
 public abstract class NodePointer implements Pointer {
 
@@ -95,33 +94,15 @@ public abstract class NodePointer implements Pointer {
     /**
      * Allocates an entirely new NodePointer by iterating through all installed
      * NodePointerFactories until it finds one that can create a pointer.
-     * 
-     * @deprecated Use instead
-     *   {@link #newNodePointer(QName, Object, Locale, NamespaceManager) 
-     *          newNodePointer(QName, Object, Locale, NamespaceManager)}
      */
     public static NodePointer newNodePointer(
         QName name,
         Object bean,
         Locale locale) 
     {
-        return newNodePointer(name, bean, locale, null);
-    }
-    
-    /**
-     * Allocates an entirely new NodePointer by iterating through all installed
-     * NodePointerFactories until it finds one that can create a pointer.
-     */
-    public static NodePointer newNodePointer(
-            QName name,
-            Object bean,
-            Locale locale,
-            NamespaceManager namespaceManager)
-    {
         NodePointer pointer = null;
         if (bean == null) {
             pointer = new NullPointer(name, locale);
-            pointer.setNamespaceManager(namespaceManager);
             return pointer;
         }
         
@@ -130,7 +111,6 @@ public abstract class NodePointer implements Pointer {
         for (int i = 0; i < factories.length; i++) {
             pointer = factories[i].createNodePointer(name, bean, locale);
             if (pointer != null) {
-                pointer.setNamespaceManager(namespaceManager);
                 return pointer;
             }
         }
@@ -164,7 +144,7 @@ public abstract class NodePointer implements Pointer {
 
     protected NodePointer parent;
     protected Locale locale;
-    private NamespaceManager namespaceManager;
+//    private NamespaceManager namespaceManager;
 
     protected NodePointer(NodePointer parent) {
         this.parent = parent;
@@ -537,27 +517,27 @@ public abstract class NodePointer implements Pointer {
         return name.toUpperCase().startsWith(lang.toUpperCase());
     }
 
-    /**
-     * Installs the supplied manager as the namespace manager for this node
-     * pointer. The {@link #getNamespaceURI(String) getNamespaceURI(prefix)}
-     * uses this manager to resolve namespace prefixes.
-     * 
-     * @param namespaceManager
-     */
-    public void setNamespaceManager(NamespaceManager namespaceManager) {
-        this.namespaceManager = namespaceManager;
-    }
-    
-    public NamespaceManager getNamespaceManager() {
-        if (namespaceManager != null) {
-            return namespaceManager;
-        }
-        if (parent != null) {
-            return parent.getNamespaceManager();
-        }        
-        return null;
-    }
-    
+//    /**
+//     * Installs the supplied manager as the namespace manager for this node
+//     * pointer. The {@link #getNamespaceURI(String) getNamespaceURI(prefix)}
+//     * uses this manager to resolve namespace prefixes.
+//     * 
+//     * @param namespaceManager
+//     */
+//    public void setNamespaceManager(NamespaceManager namespaceManager) {
+//        this.namespaceManager = namespaceManager;
+//    }
+//    
+//    public NamespaceManager getNamespaceManager() {
+//        if (namespaceManager != null) {
+//            return namespaceManager;
+//        }
+//        if (parent != null) {
+//            return parent.getNamespaceManager();
+//        }        
+//        return null;
+//    }
+//    
     /**
      * Returns a NodeIterator that iterates over all children or all children
      * that match the given NodeTest, starting with the specified one.

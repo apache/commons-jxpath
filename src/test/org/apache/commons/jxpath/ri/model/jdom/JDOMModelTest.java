@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/JDOMModelTest.java,v 1.9 2004/01/18 01:43:30 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2004/01/18 01:43:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/JDOMModelTest.java,v 1.10 2004/01/19 20:44:52 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2004/01/19 20:44:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.jdom.Text;
  * Tests JXPath with JDOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/01/18 01:43:30 $
+ * @version $Revision: 1.10 $ $Date: 2004/01/19 20:44:52 $
  */
 
 public class JDOMModelTest extends XMLModelTestCase {
@@ -101,10 +101,6 @@ public class JDOMModelTest extends XMLModelTestCase {
 
     protected String getModel() {
         return DocumentContainer.MODEL_JDOM;
-    }
-    
-    protected boolean isExternalNamespaceSupported() {
-        return false;  // Until a bug preventing external NS in JDOM B9 is fixed
     }
         
     public void testID() {
