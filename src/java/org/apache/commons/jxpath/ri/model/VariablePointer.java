@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.12 2003/01/19 23:58:27 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2003/01/19 23:58:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.13 2003/01/20 00:07:52 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2003/01/20 00:07:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,13 +68,14 @@ import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
+import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2003/01/19 23:58:27 $
+ * @version $Revision: 1.13 $ $Date: 2003/01/20 00:07:52 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
@@ -157,12 +158,21 @@ public class VariablePointer extends NodePointer {
             Object value = null;
             if (actual) {
                 value = getImmediateNode();
+                valuePointer =
+                    NodePointer.newChildNodePointer(this, null, value);
             }
-            valuePointer = NodePointer.newChildNodePointer(this, null, value);
+            else {
+                return new NullPointer(this, getName()) {
+                    public Object getImmediateNode() {
+                        throw new JXPathException(
+                            "Undefined variable: " + name);
+                    }
+                };
+            }
         }
         return valuePointer;
     }
-
+    
     public int getLength() {
         if (actual) {
             Object value = getBaseValue();
