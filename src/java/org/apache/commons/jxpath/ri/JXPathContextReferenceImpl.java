@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.2 2001/09/03 01:22:30 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2001/09/03 01:22:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.3 2001/09/08 20:59:58 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/09/08 20:59:58 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,12 +75,13 @@ import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.pointers.*;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.axes.*;
+import org.apache.commons.jxpath.functions.Types;
 import java.lang.ref.SoftReference;
 import org.w3c.dom.*;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2001/09/03 01:22:30 $
+ * @version $Revision: 1.3 $ $Date: 2001/09/08 20:59:58 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -160,6 +161,23 @@ public class JXPathContextReferenceImpl extends JXPathContext
             result = EvalContext.stringValue((Node)result);
         }
         return result;
+    }
+
+    /**
+     * Calls getValue(xpath), converts the result to the required type
+     * and returns the result of the conversion.
+     */
+    public Object getValue(String xpath, Class requiredType){
+        Object value = getValue(xpath);
+        if (value != null && requiredType != null){
+            if (!Types.canConvert(value, requiredType)){
+                throw new RuntimeException("Invalid expression type. '" + xpath +
+                    "' returns " + value.getClass().getName() +
+                    ". It cannot be converted to " + requiredType.getName());
+            }
+            value = Types.convert(value, requiredType);
+        }
+        return value;
     }
 
     /**

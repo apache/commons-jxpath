@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xalan/Attic/JXPathContextXalanImpl.java,v 1.1 2001/08/23 00:47:01 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:47:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xalan/Attic/JXPathContextXalanImpl.java,v 1.2 2001/09/08 20:59:58 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/08 20:59:58 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -102,7 +102,7 @@ import org.apache.xpath.objects.XObject;
  * <a href="http://www.java.sun.com/xml/download.html">JAXP</a>.
  * </p>
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:47:01 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/08 20:59:58 $
  */
 public class JXPathContextXalanImpl extends JXPathContext {
 
@@ -147,12 +147,29 @@ public class JXPathContextXalanImpl extends JXPathContext {
     }
 
     /**
+     * Calls getValue(xpath) and verifies that it has returned
+     * a value of the required type.
+     */
+    public Object getValue(String xpath, Class requiredType){
+        Object value = getValue(xpath);
+        if (value != null){
+            if (!requiredType.isInstance(value)){
+                throw new RuntimeException("Invalid expression type. '" + xpath +
+                    "' returns " + value.getClass().getName() +
+                    ". Expected " + requiredType.getName());
+            }
+        }
+        return value;
+    }
+
+    /**
      * Traverses the xpath and returns the resulting object. Primitive
      * types are wrapped into objects.
      */
     public Object getValue(String xpath){
         return evalNode(getWrapper(), xpath, true);
     }
+
 
     /**
      * Traverses the xpath and returns a List of objects. Even if

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.3 2001/09/03 01:22:31 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2001/09/03 01:22:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.4 2001/09/08 20:59:58 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2001/09/08 20:59:58 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -94,7 +94,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2001/09/03 01:22:31 $
+ * @version $Revision: 1.4 $ $Date: 2001/09/08 20:59:58 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -274,6 +274,17 @@ public class JXPathTestCase extends TestCase
             testGetValue(context, ".[1]/int",                new Integer(1));
 //        testGetValue(context, "id('foo')",               new Integer(1));
 //        testGetValue(context, "key('foo', 'bar')",               new Integer(1));
+            testGetValue(context, "integers[1]",            new Double(1), Double.class);
+            testGetValue(context, "2 + 3",                  "5.0", String.class);
+            testGetValue(context, "2 + 3",                  Boolean.TRUE, boolean.class);
+            boolean exception = false;
+            try {
+                testGetValue(context, "'foo'",                  null, Date.class);
+            }
+            catch(Exception ex){
+                exception = true;
+            }
+            assertTrue("Type conversion exception", exception);
         }
     }
 
@@ -313,6 +324,11 @@ public class JXPathTestCase extends TestCase
 
     private void testGetValue(JXPathContext context, String xpath, Object expected) {
         Object actual = context.getValue(xpath);
+        assertEquals("Evaluating <" + xpath + ">", expected, actual);
+    }
+
+    private void testGetValue(JXPathContext context, String xpath, Object expected, Class requiredType) {
+        Object actual = context.getValue(xpath, requiredType);
         assertEquals("Evaluating <" + xpath + ">", expected, actual);
     }
 

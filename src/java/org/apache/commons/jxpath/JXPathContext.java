@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.2 2001/09/08 20:59:58 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/09/08 20:59:58 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -383,7 +383,7 @@ import org.w3c.dom.Node;
  * See <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2001/09/08 20:59:58 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -456,10 +456,16 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns the resulting object. Primitive
+     * Evaluates the xpath and returns the resulting object. Primitive
      * types are wrapped into objects.
      */
     public abstract Object getValue(String xpath);
+
+    /**
+     * Evaluates the xpath, converts the result to the specified class and
+     * returns the resulting object.
+     */
+    public abstract Object getValue(String xpath, Class requiredType);
 
     /**
      * Modifies the value of the property described by the supplied xpath.
