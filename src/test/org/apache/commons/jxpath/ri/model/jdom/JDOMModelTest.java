@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/JDOMModelTest.java,v 1.10 2004/01/19 20:44:52 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2004/01/19 20:44:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/jdom/JDOMModelTest.java,v 1.11 2004/01/24 02:42:22 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2004/01/24 02:42:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,6 +70,7 @@ import junit.framework.TestSuite;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.jdom.Attribute;
 import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -79,7 +80,7 @@ import org.jdom.Text;
  * Tests JXPath with JDOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/01/19 20:44:52 $
+ * @version $Revision: 1.11 $ $Date: 2004/01/24 02:42:22 $
  */
 
 public class JDOMModelTest extends XMLModelTestCase {
@@ -102,7 +103,13 @@ public class JDOMModelTest extends XMLModelTestCase {
     protected String getModel() {
         return DocumentContainer.MODEL_JDOM;
     }
-        
+    
+    public void testGetNode() {
+        assertXPathNodeType(context, "/", Document.class);
+        assertXPathNodeType(context, "/vendor/location", Element.class);
+        assertXPathNodeType(context, "//location/@name", Attribute.class);
+    }    
+    
     public void testID() {
         // id() is not supported by JDOM
     }

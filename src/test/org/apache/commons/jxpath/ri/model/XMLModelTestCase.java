@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.17 2004/01/24 01:12:01 dmitri Exp $
- * $Revision: 1.17 $
- * $Date: 2004/01/24 01:12:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.18 2004/01/24 02:42:22 dmitri Exp $
+ * $Revision: 1.18 $
+ * $Date: 2004/01/24 02:42:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,11 +76,11 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2004/01/24 01:12:01 $
+ * @version $Revision: 1.18 $ $Date: 2004/01/24 02:42:22 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {
-    private JXPathContext context;
+    protected JXPathContext context;
 
     /**
      * Construct a new instance of this test case.

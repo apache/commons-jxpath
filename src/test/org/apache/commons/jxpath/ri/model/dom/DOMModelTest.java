@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.10 2004/01/19 20:44:52 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2004/01/19 20:44:52 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dom/DOMModelTest.java,v 1.11 2004/01/24 02:42:22 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2004/01/24 02:42:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,8 +66,11 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -76,7 +79,7 @@ import org.w3c.dom.NodeList;
  * Tests JXPath with DOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2004/01/19 20:44:52 $
+ * @version $Revision: 1.11 $ $Date: 2004/01/24 02:42:22 $
  */
 
 public class DOMModelTest extends XMLModelTestCase {
@@ -103,6 +106,12 @@ public class DOMModelTest extends XMLModelTestCase {
 
     protected AbstractFactory getAbstractFactory() {
         return new TestDOMFactory();
+    }
+    
+    public void testGetNode() {
+        assertXPathNodeType(context, "/", Document.class);
+        assertXPathNodeType(context, "/vendor/location", Element.class);
+        assertXPathNodeType(context, "//location/@name", Attr.class);
     }
     
     protected String getXMLSignature(

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.33 2003/10/09 21:31:42 rdonkin Exp $
- * $Revision: 1.33 $
- * $Date: 2003/10/09 21:31:42 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.34 2004/01/24 02:42:22 dmitri Exp $
+ * $Revision: 1.34 $
+ * $Date: 2004/01/24 02:42:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -78,7 +78,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Abstract superclass for various JXPath tests.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.33 $ $Date: 2003/10/09 21:31:42 $
+ * @version $Revision: 1.34 $ $Date: 2004/01/24 02:42:22 $
  */
 
 public abstract class JXPathTestCase extends TestCase {
@@ -246,7 +246,29 @@ public abstract class JXPathTestCase extends TestCase {
             expected,
             res);
     }
-
+    
+    protected void assertXPathValueType(
+            JXPathContext ctx,
+            String xpath,
+            Class clazz) 
+    {
+        ctx.setLenient(false);
+        Object actual = ctx.getValue(xpath);
+        assertTrue("Evaluating <" + xpath + "> = " + actual.getClass(), 
+                clazz.isAssignableFrom(actual.getClass()));
+    }
+    
+    protected void assertXPathNodeType(
+            JXPathContext ctx,
+            String xpath,
+            Class clazz) 
+    {
+        ctx.setLenient(false);
+        Pointer actual = ctx.getPointer(xpath);
+        assertTrue("Evaluating <" + xpath + "> = " + actual.getNode().getClass(), 
+                clazz.isAssignableFrom(actual.getNode().getClass()));
+    }
+    
     protected static List list() {
         return Collections.EMPTY_LIST;
     }

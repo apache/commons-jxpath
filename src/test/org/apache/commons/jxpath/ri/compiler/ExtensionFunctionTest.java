@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.12 2004/01/24 02:16:51 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2004/01/24 02:16:51 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.13 2004/01/24 02:42:21 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2004/01/24 02:42:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,6 +63,7 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -83,7 +84,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/01/24 02:16:51 $
+ * @version $Revision: 1.13 $ $Date: 2004/01/24 02:42:21 $
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase {
@@ -358,10 +359,13 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         List list = new ArrayList();
         list.add("foo");
         list.add("bar");
-        context.getVariables().declareVariable("myList", list); 
-        Object
-        values = context.getValue("test:items($myList)");
-        System.err.println("Values: " + values);
+        context.getVariables().declareVariable("list", list);
+        Object values = context.getValue("test:items($list)");
+        assertTrue("Return type: ", values instanceof Collection);
+        assertEquals(
+            "Return values: ",
+            list,
+            new ArrayList((Collection) values));
     }
 
     public void testNodeSetReturn() {
