@@ -242,8 +242,6 @@ TOKEN:
 |
     <DIV:    "div">
 |
-//    <KEY:    "key">
-//|
     <NODE:    "node">
 |
     <TEXT:    "text">
@@ -271,6 +269,7 @@ TOKEN:
 |   <FUNCTION_POSITION: "position">
 |   <FUNCTION_COUNT: "count">
 |   <FUNCTION_ID: "id">
+|   <FUNCTION_KEY: "key">
 |   <FUNCTION_LOCAL_NAME: "local-name">
 |   <FUNCTION_NAMESPACE_URI: "namespace-uri">
 |   <FUNCTION_NAME: "name">
@@ -339,7 +338,7 @@ String NCName() :
     |   <FUNCTION_FLOOR>
     |   <FUNCTION_CEILING>
     |   <FUNCTION_ROUND>
-//  |   <FUNCTION_KEY>
+    |   <FUNCTION_KEY>
     )
     {
         return token.image;
@@ -395,7 +394,7 @@ int CoreFunctionName() :
     |   <FUNCTION_FLOOR>            { code = Compiler.FUNCTION_FLOOR; }
     |   <FUNCTION_CEILING>          { code = Compiler.FUNCTION_CEILING; }
     |   <FUNCTION_ROUND>            { code = Compiler.FUNCTION_ROUND; }
-//  |   <FUNCTION_KEY>              { code = Compiler.FUNCTION_KEY; }
+    |   <FUNCTION_KEY>              { code = Compiler.FUNCTION_KEY; }
     )
     {
         return code;

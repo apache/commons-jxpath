@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.18 2002/05/29 00:41:53 dmitri Exp $
- * $Revision: 1.18 $
- * $Date: 2002/05/29 00:41:53 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.19 2002/06/08 22:47:25 dmitri Exp $
+ * $Revision: 1.19 $
+ * $Date: 2002/06/08 22:47:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,7 +83,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.18 $ $Date: 2002/05/29 00:41:53 $
+ * @version $Revision: 1.19 $ $Date: 2002/06/08 22:47:25 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -404,7 +404,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
     }
 
-    private synchronized NodePointer getRootPointer(){
+    public synchronized Pointer getContextPointer(){
         if (rootPointer == null){
             rootPointer = NodePointer.newNodePointer(new QName(null, "root"),
                 getContextBean(), getLocale());
@@ -413,7 +413,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
     }
 
     private EvalContext getRootContext(){
-        return new RootContext(this, getRootPointer());
+        return new RootContext(this, (NodePointer)getContextPointer());
     }
 
     public NodePointer getVariablePointer(QName name){

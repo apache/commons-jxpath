@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.6 2002/05/29 00:40:58 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/05/29 00:40:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.7 2002/06/08 22:47:25 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/06/08 22:47:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,17 +68,20 @@ import java.util.Map;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.compiler.ProcessingInstructionTest;
+import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.TypeUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -89,12 +92,13 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/05/29 00:40:58 $
+ * @version $Revision: 1.7 $ $Date: 2002/06/08 22:47:25 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
     private Map namespaces;
     private String defaultNamespace;
+    private String id;
 
     public static final String XML_NAMESPACE_URI = "http://www.w3.org/XML/1998/namespace";
     public static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
@@ -102,6 +106,12 @@ public class DOMNodePointer extends NodePointer {
     public DOMNodePointer(Node node, Locale locale){
         super(null, locale);
         this.node = node;
+    }
+
+    public DOMNodePointer(Node node, Locale locale, String id){
+        super(null, locale);
+        this.node = node;
+        this.id = id;
     }
 
     public DOMNodePointer(NodePointer parent, Node node){
@@ -399,6 +409,10 @@ public class DOMNodePointer extends NodePointer {
     }
 
     public String asPath(){
+        if (id != null){
+            return "id('" + escape(id) + "')";
+        }
+
         StringBuffer buffer = new StringBuffer();
         if (parent != null){
             buffer.append(parent.asPath());
@@ -428,6 +442,20 @@ public class DOMNodePointer extends NodePointer {
                 // That'll be empty
         }
         return buffer.toString();
+    }
+
+    private String escape(String string){
+        int index = string.indexOf('\'');
+        while (index != -1){
+            string = string.substring(0, index) + "&apos;" + string.substring(index + 1);
+            index = string.indexOf('\'');
+        }
+        index = string.indexOf('\"');
+        while (index != -1){
+            string = string.substring(0, index) + "&quot;" + string.substring(index + 1);
+            index = string.indexOf('\"');
+        }
+        return string;
     }
 
     private int getRelativePositionByName(){
@@ -549,6 +577,26 @@ public class DOMNodePointer extends NodePointer {
                 }
             }
             return buf.toString().trim();
+        }
+    }
+
+    /**
+     * Locates a node by ID.
+     */
+    public Pointer getPointerByID(JXPathContext context, String id){
+        Document document;
+        if (node.getNodeType() == Node.DOCUMENT_NODE){
+            document = (Document)node;
+        }
+        else {
+            document = node.getOwnerDocument();
+        }
+        Element element = document.getElementById(id);
+        if (element != null){
+            return new DOMNodePointer(element, getLocale(), id);
+        }
+        else {
+            return new NullPointer(getLocale(), id);
         }
     }
 

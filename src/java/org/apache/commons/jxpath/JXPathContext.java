@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.9 2002/05/08 23:19:31 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/05/08 23:19:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.10 2002/06/08 22:47:24 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/06/08 22:47:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -198,7 +198,7 @@ import java.util.*;
  * <h3>Example 5: Retrieving Multiple Results</h3>
  *
  * JXPath can retrieve multiple objects from a graph. Note that the method
- * called in this case is not <code>getValue</code>, but <code>eval</code>.
+ * called in this case is not <code>getValue</code>, but <code>iterate</code>.
  *
  * <pre><blockquote>
  * public class Author {
@@ -211,7 +211,7 @@ import java.util.*;
  * ...
  *
  * JXPathContext context = JXPathContext.newContext(auth);
- * List threeBooks = (List)context.eval("books[position() &lt; 4]");
+ * Iterator threeBooks = context.iterate("books[position() &lt; 4]");
  * </blockquote></pre>
  *
  * This returns a list of at most three books from the array of all books
@@ -244,7 +244,7 @@ import java.util.*;
  * <h3>Example 7: Creating objects</h3>
  * JXPath can be used to create new objects. First, create a subclass of
  * {@link AbstractFactory AbstractFactory} and install it on the JXPathContext.
- * Then call {@link JXPathContext#createPath createPath()} instead of "setValue".
+ * Then call {@link JXPathContext#createPath createPathAndSetValue()} instead of "setValue".
  * JXPathContext will invoke your AbstractFactory when it discovers that an
  * intermediate node of the path is <b>null</b>.  It will not override existing
  * nodes.
@@ -262,7 +262,7 @@ import java.util.*;
  *
  * JXPathContext context = JXPathContext.newContext(emp);
  * context.setFactory(new AddressFactory());
- * context.createPath("address/zipCode", "90190");
+ * context.createPathAndSetValue("address/zipCode", "90190");
  * </blockquote></pre>
  *
  * <h3>Example 8: Using Variables</h3>
@@ -321,7 +321,7 @@ import java.util.*;
  *
  * JXPathContext context = JXPathContext.newContext(varContext, auth);
  *
- * List javaBooks = (List)context.eval("books[title = $title]");
+ * Iterator javaBooks = context.iterate("books[title = $title]");
  * </blockquote></pre>
  *
  * <h3>Using Custom Variable Pools</h3>
@@ -404,7 +404,7 @@ import java.util.*;
  * Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/05/08 23:19:31 $
+ * @version $Revision: 1.10 $ $Date: 2002/06/08 22:47:24 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -414,6 +414,8 @@ public abstract class JXPathContext {
     protected AbstractFactory factory;
     protected Locale locale;
     protected boolean lenient = false;
+    protected IdentityManager idManager;
+    protected KeyManager keyManager;
 
     private static JXPathContext compilationContext;
 
@@ -455,6 +457,11 @@ public abstract class JXPathContext {
     public Object getContextBean(){
         return contextBean;
     }
+
+    /**
+     * Returns a Pointer for the context bean.
+     */
+    public abstract Pointer getContextPointer();
 
     public void setVariables(Variables vars){
         this.vars = vars;
@@ -513,7 +520,12 @@ public abstract class JXPathContext {
      */
     protected Locale getLocale(){
         if (locale == null){
-            locale = Locale.getDefault();
+            if (parentContext != null){
+                return parentContext.getLocale();
+            }
+            else {
+                locale = Locale.getDefault();
+            }
         }
         return locale;
     }
@@ -677,4 +689,72 @@ public abstract class JXPathContext {
      * in the graph, the Iterator be empty, but not null.
      */
     public abstract Iterator iteratePointers(String xpath);
+
+    /**
+     * Install an identity manager that will be used by the context
+     * to look up a node by its ID.
+     */
+    public void setIdentityManager(IdentityManager idManager){
+        this.idManager = idManager;
+    }
+
+    /**
+     * Returns this context's identity manager. If none has been installed,
+     * returns the identity manager of the parent context.
+     */
+    public IdentityManager getIdentityManager(){
+        if (idManager == null && parentContext != null){
+            return parentContext.getIdentityManager();
+        }
+        return idManager;
+    }
+
+    /**
+     * Locates a Node by its ID.
+     *
+     * @param id is the ID of the sought node.
+     */
+    public Pointer getPointerByID(String id){
+        IdentityManager manager = getIdentityManager();
+        if (manager != null){
+            return manager.getPointerByID(this, id);
+        }
+        else {
+            throw new JXPathException("Cannot find an element by ID - " +
+                "no IdentityManager has been specified");
+        }
+    }
+
+    /**
+     * Install a key manager that will be used by the context
+     * to look up a node by a key value.
+     */
+    public void setKeyManager(KeyManager keyManager){
+        this.keyManager = keyManager;
+    }
+
+    /**
+     * Returns this context's key manager. If none has been installed,
+     * returns the key manager of the parent context.
+     */
+    public KeyManager getKeyManager(){
+        if (keyManager == null && parentContext != null){
+            return parentContext.getKeyManager();
+        }
+        return keyManager;
+    }
+
+    /**
+     * Locates a Node by a key value.
+     */
+    public Pointer getPointerByKey(String key, String value){
+        KeyManager manager = getKeyManager();
+        if (manager != null){
+            return manager.getPointerByKey(this, key, value);
+        }
+        else {
+            throw new JXPathException("Cannot find an element by key - " +
+                "no KeyManager has been specified");
+        }
+    }
 }

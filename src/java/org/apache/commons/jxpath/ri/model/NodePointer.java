@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.5 2002/05/08 23:05:04 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 23:05:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.6 2002/06/08 22:47:24 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/06/08 22:47:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -84,7 +84,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 23:05:04 $
+ * @version $Revision: 1.6 $ $Date: 2002/06/08 22:47:24 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
@@ -480,6 +480,21 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      */
     public QName getExpandedName() {
         return getName();
+    }
+
+    /**
+     * Locates a node by ID.
+     */
+    public Pointer getPointerByID(JXPathContext context, String id){
+        return context.getPointerByID(id);
+    }
+
+    /**
+     * Locates a node by key and value.
+     */
+    public Pointer getPointerByKey(JXPathContext context,
+                                      String key, String value){
+        return context.getPointerByKey(key, value);
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.4 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.5 2002/06/08 22:47:25 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/06/08 22:47:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,7 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.InfoSetUtil;
@@ -75,7 +76,7 @@ import java.util.Collection;
  * like "position()" or "number()".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.5 $ $Date: 2002/06/08 22:47:25 $
  */
 public class CoreFunction extends Operation {
 
@@ -188,7 +189,7 @@ public class CoreFunction extends Operation {
             case Compiler.FUNCTION_FLOOR:            function = "floor"; break;
             case Compiler.FUNCTION_CEILING:          function = "ceiling"; break;
             case Compiler.FUNCTION_ROUND:            function = "round"; break;
-//            case Compiler.FUNCTION_KEY:            function = "key"; break;
+            case Compiler.FUNCTION_KEY:              function = "key"; break;
         }
         return super.opCodeToString() + ':' + function;
     }
@@ -206,11 +207,7 @@ public class CoreFunction extends Operation {
             case Compiler.FUNCTION_POSITION:            return functionPosition(context);
             case Compiler.FUNCTION_COUNT:               return functionCount(context);
             case Compiler.FUNCTION_LANG:                return functionLang(context);
-            case Compiler.FUNCTION_ID:
-            {
-                System.err.println("UNIMPLEMENTED: " + this);
-                return null;
-            }
+            case Compiler.FUNCTION_ID:                  return functionID(context);
             case Compiler.FUNCTION_LOCAL_NAME:          return functionLocalName(context);
             case Compiler.FUNCTION_NAMESPACE_URI:       return functionNamespaceURI(context);
             case Compiler.FUNCTION_NAME:                return functionName(context);
@@ -234,8 +231,7 @@ public class CoreFunction extends Operation {
             case Compiler.FUNCTION_FLOOR:               return functionFloor(context);
             case Compiler.FUNCTION_CEILING:             return functionCeiling(context);
             case Compiler.FUNCTION_ROUND:               return functionRound(context);
-//            case Compiler.FUNCTION_KEY:
-//                System.err.println("UNIMPLEMENTED: " + function);
+            case Compiler.FUNCTION_KEY:                 return functionKey(context);
         }
         return null;
     }
@@ -298,6 +294,23 @@ public class CoreFunction extends Operation {
             return Boolean.FALSE;
         }
         return pointer.isLanguage(lang) ? Boolean.TRUE: Boolean.FALSE;
+    }
+
+    protected Object functionID(EvalContext context){
+        assertArgCount(1);
+        String id = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        JXPathContext jxpathContext = context.getJXPathContext();
+        NodePointer pointer = (NodePointer)jxpathContext.getContextPointer();
+        return pointer.getPointerByID(jxpathContext, id);
+    }
+
+    protected Object functionKey(EvalContext context){
+        assertArgCount(2);
+        String key = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        String value = InfoSetUtil.stringValue(getArg2().computeValue(context));
+        JXPathContext jxpathContext = context.getJXPathContext();
+        NodePointer pointer = (NodePointer)jxpathContext.getContextPointer();
+        return pointer.getPointerByKey(jxpathContext, key, value);
     }
 
     protected Object functionNamespaceURI(EvalContext context){

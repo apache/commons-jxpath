@@ -51,31 +51,32 @@ public interface XPathParserConstants {
   int FUNCTION_POSITION = 45;
   int FUNCTION_COUNT = 46;
   int FUNCTION_ID = 47;
-  int FUNCTION_LOCAL_NAME = 48;
-  int FUNCTION_NAMESPACE_URI = 49;
-  int FUNCTION_NAME = 50;
-  int FUNCTION_STRING = 51;
-  int FUNCTION_CONCAT = 52;
-  int FUNCTION_STARTS_WITH = 53;
-  int FUNCTION_CONTAINS = 54;
-  int FUNCTION_SUBSTRING_BEFORE = 55;
-  int FUNCTION_SUBSTRING_AFTER = 56;
-  int FUNCTION_SUBSTRING = 57;
-  int FUNCTION_STRING_LENGTH = 58;
-  int FUNCTION_NORMALIZE_SPACE = 59;
-  int FUNCTION_TRANSLATE = 60;
-  int FUNCTION_BOOLEAN = 61;
-  int FUNCTION_NOT = 62;
-  int FUNCTION_TRUE = 63;
-  int FUNCTION_FALSE = 64;
-  int FUNCTION_NULL = 65;
-  int FUNCTION_LANG = 66;
-  int FUNCTION_NUMBER = 67;
-  int FUNCTION_SUM = 68;
-  int FUNCTION_FLOOR = 69;
-  int FUNCTION_CEILING = 70;
-  int FUNCTION_ROUND = 71;
-  int NCName = 72;
+  int FUNCTION_KEY = 48;
+  int FUNCTION_LOCAL_NAME = 49;
+  int FUNCTION_NAMESPACE_URI = 50;
+  int FUNCTION_NAME = 51;
+  int FUNCTION_STRING = 52;
+  int FUNCTION_CONCAT = 53;
+  int FUNCTION_STARTS_WITH = 54;
+  int FUNCTION_CONTAINS = 55;
+  int FUNCTION_SUBSTRING_BEFORE = 56;
+  int FUNCTION_SUBSTRING_AFTER = 57;
+  int FUNCTION_SUBSTRING = 58;
+  int FUNCTION_STRING_LENGTH = 59;
+  int FUNCTION_NORMALIZE_SPACE = 60;
+  int FUNCTION_TRANSLATE = 61;
+  int FUNCTION_BOOLEAN = 62;
+  int FUNCTION_NOT = 63;
+  int FUNCTION_TRUE = 64;
+  int FUNCTION_FALSE = 65;
+  int FUNCTION_NULL = 66;
+  int FUNCTION_LANG = 67;
+  int FUNCTION_NUMBER = 68;
+  int FUNCTION_SUM = 69;
+  int FUNCTION_FLOOR = 70;
+  int FUNCTION_CEILING = 71;
+  int FUNCTION_ROUND = 72;
+  int NCName = 73;
 
   int DEFAULT = 0;
 
@@ -128,6 +129,7 @@ public interface XPathParserConstants {
     "\"position\"",
     "\"count\"",
     "\"id\"",
+    "\"key\"",
     "\"local-name\"",
     "\"namespace-uri\"",
     "\"name\"",

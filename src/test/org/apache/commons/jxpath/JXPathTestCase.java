@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.21 2002/05/30 01:57:35 dmitri Exp $
- * $Revision: 1.21 $
- * $Date: 2002/05/30 01:57:35 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.22 2002/06/08 22:47:24 dmitri Exp $
+ * $Revision: 1.22 $
+ * $Date: 2002/06/08 22:47:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -95,7 +95,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.21 $ $Date: 2002/05/30 01:57:35 $
+ * @version $Revision: 1.22 $ $Date: 2002/06/08 22:47:24 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -165,7 +165,9 @@ public class JXPathTestCase extends TestCase
      * Test property iterators, the core of the graph traversal engine
      */
     public void testIndividualIterators(){
-        if (true){
+        if (!enabled){
+            return;
+        }
 //        testIndividual(0, 0, true, false, 3);
             testIndividual(+1, 0, true, false, 0);
             testIndividual(-1, 0, true, false, 4);
@@ -179,7 +181,6 @@ public class JXPathTestCase extends TestCase
 
             testIndividual(0, 0, false, false, 4);
             testIndividual(0, 0, false, true, 4);
-        }
     }
 
     private void testIndividual(int relativePropertyIndex, int offset, boolean useStartLocation, boolean reverse, int expected){
@@ -206,7 +207,9 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testMultipleIterators(){
-        if (true){
+        if (!enabled){
+            return;
+        }
             testMultiple(0, 0, true, false, 20);
 
             testMultiple(3, 0, true, false, 16);
@@ -217,7 +220,6 @@ public class JXPathTestCase extends TestCase
 
             testMultiple(3, 1, true, false, 15);
             testMultiple(3, 3, true, false, 13);
-        }
     }
 
     private void testMultiple(int propertyIndex, int offset, boolean useStartLocation, boolean reverse, int expected){
@@ -309,8 +311,15 @@ public class JXPathTestCase extends TestCase
         JXPathContext context = JXPathContext.newContext(map);
         testIterate(context, "foo", list("a", "b", "c"));
 
-//        context = JXPathContext.newContext(bean);
-//        testIterate(context, "nestedBean/strings[2]/following::node()", null);
+        context = JXPathContext.newContext(bean);
+        Iterator it = context.iteratePointers("/integers");
+        List actual = new ArrayList();
+        for (int i = 0; i < 4; i++){
+            actual.add(it.next().toString());
+        }
+        assertEquals("Iterating <" + "/integers" + ">",
+            list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"),
+            actual);
     }
 
     private void testIterate(JXPathContext context, String xpath, List expected) {
@@ -431,9 +440,9 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testDocumentOrder(){
-//        if (!enabled){
-//            return;
-//        }
+        if (!enabled){
+            return;
+        }
 
         JXPathContext context = JXPathContext.newContext(createTestBeanWithDOM());
 
@@ -789,6 +798,33 @@ public class JXPathTestCase extends TestCase
         context.removePath("vendor/location[@id = '100']/@name");
         assertEquals("Remove DOM attribute", new Double(0),
                     context.getValue("count(vendor/location[@id = '100']/@name)"));
+    }
+
+    public void testIDAndKey(){
+        if (!enabled){
+            return;
+        }
+        JXPathContext context = JXPathContext.newContext(createTestBeanWithDOM());
+        context.setIdentityManager(new IdentityManager(){
+            public Pointer getPointerByID(JXPathContext context, String id){
+                NodePointer ptr = (NodePointer)context.getPointer("/vendor");
+                return ptr.getPointerByID(context, id);
+            }
+        });
+        context.setKeyManager(new KeyManager(){
+            public Pointer getPointerByKey(JXPathContext context,
+                                            String key, String value){
+                return NodePointer.newNodePointer(null, "42", null);
+            }
+        });
+        assertEquals("Test ID", "Tangerine Drive",
+            context.getValue("id(101)//street"));
+        assertEquals("Test ID Path", "id('101')/address[1]/street[1]",
+            context.getPointer("id(101)//street").asPath());
+        assertEquals("Test ID Path Null", "id(105)/address[1]/street",
+            context.getPointer("id(105)/address/street").asPath());
+        assertEquals("Test key", "42",
+            context.getValue("key('a', 'b')"));
     }
 
     public void testNull(){
@@ -1150,7 +1186,7 @@ public class JXPathTestCase extends TestCase
         test("integers[position() = last() - 1]", new Integer(3)),
         testEval("integers[position() < 3]", list(new Integer(1), new Integer(2))),
         test("count(beans/strings)", new Double(6)),
-        test("integers[string() = '2.0']", new Integer(2)),
+        test("integers[string() = '2']", new Integer(2)),
 
         test("name(integers)", "integers"),
         testEval("*[name(.) = 'integers']", list(new Integer(1), new Integer(2), new Integer(3), new Integer(4))),
@@ -1165,7 +1201,7 @@ public class JXPathTestCase extends TestCase
         testPath("map[@name = 'Key&quot;&apos;&quot;&apos;1']", "/map[@name='Key&quot;&apos;&quot;&apos;1']"),
 
         // Standard functions
-        test("string(2)", "2.0"),
+        test("string(2)", "2"),
         test("string($nan)", "NaN"),
         test("string(-$nan)", "NaN"),
         test("string(-2 div 0)", "-Infinity"),
@@ -1224,14 +1260,14 @@ public class JXPathTestCase extends TestCase
         test("string(" + TestFunctions.class.getName() + ".new())", "foo=0; bar=null"),
         test("string(test:new(3, 'baz'))", "foo=3; bar=baz"),
         test("string(test:new('3', 4))", "foo=3; bar=4.0"),
-        test("string(test:getFoo($test))", "4.0"),
-        test("string(call:getFoo($test))", "4.0"),
-        test("string(getFoo($test))", "4.0"),
+        test("string(test:getFoo($test))", "4"),
+        test("string(call:getFoo($test))", "4"),
+        test("string(getFoo($test))", "4"),
         test("string(test:setFooAndBar($test, 7, 'biz'))", "foo=7; bar=biz"),
         test("string(test:build(8, 'goober'))", "foo=8; bar=goober"),
         test("string(jxpathtest:TestFunctions.build(8, 'goober'))", "foo=8; bar=goober"),
         test("string(" + TestFunctions.class.getName() + ".build(8, 'goober'))", "foo=8; bar=goober"),
-        test("string(test:increment(8))", "9.0"),
+        test("string(test:increment(8))", "9"),
         test("length('foo')", new Integer(3)),
         test("call:substring('foo', 1, 2)", "o"),
         test("//.[test:isMap()]/Key1", "Value 1"),
@@ -1417,7 +1453,10 @@ public class JXPathTestCase extends TestCase
 
         testEval("vendor/contact/following::location//street",
             list("Orchard Road", "Tangerine Drive")),
-    };
+
+        test("id('101')//street", "Tangerine Drive"),
+        testPath("id('101')//street", "id('101')/address[1]/street[1]"),
+   };
 
     public void testTypeConversions(){
         for (int i=0; i < typeConversionTests.length; i++) {

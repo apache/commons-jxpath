@@ -1,4 +1,17 @@
 <?xml version="1.0" ?>
+
+<!DOCTYPE vendor [
+  <!ELEMENT vendor (location, contact, product)>
+  <!ELEMENT location ANY>
+  <!ATTLIST location
+      id ID #REQUIRED
+      name CDATA #IMPLIED
+      manager CDATA #IMPLIED
+  >
+  <!ELEMENT contact ANY>
+  <!ELEMENT product ANY>
+]>
+
 <vendor>
   <contact>John</contact>
   <contact>Jack</contact>

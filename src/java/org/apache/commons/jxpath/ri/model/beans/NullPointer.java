@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPointer.java,v 1.3 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPointer.java,v 1.4 2002/06/08 22:47:24 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/06/08 22:47:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,10 +69,11 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.4 $ $Date: 2002/06/08 22:47:24 $
  */
 public class NullPointer extends PropertyOwnerPointer {
     private QName name;
+    private String id;
 
     public NullPointer(QName name, Locale locale){
         super(null, locale);
@@ -85,6 +86,11 @@ public class NullPointer extends PropertyOwnerPointer {
     public NullPointer(NodePointer parent, QName name){
         super(parent);
         this.name = name;
+    }
+
+    public NullPointer(Locale locale, String id){
+        super(null, locale);
+        this.id = id;
     }
 
     public QName getName(){
@@ -179,6 +185,10 @@ public class NullPointer extends PropertyOwnerPointer {
     }
 
     public String asPath(){
+        if (id != null){
+            return "id(" + id + ")";
+        }
+
         if (parent != null){
             return super.asPath();
         }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/Compiler.java,v 1.3 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/Compiler.java,v 1.4 2002/06/08 22:47:25 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/06/08 22:47:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -86,7 +86,7 @@ package org.apache.commons.jxpath.ri;
  * </pre></blockquote>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.4 $ $Date: 2002/06/08 22:47:25 $
  */
 public interface Compiler {
 
@@ -137,7 +137,7 @@ public interface Compiler {
     public static final int FUNCTION_CEILING = 26;
     public static final int FUNCTION_ROUND = 27;
     public static final int FUNCTION_NULL = 28;
-//    public static final int FUNCTION_KEY = 29;
+    public static final int FUNCTION_KEY = 29;
 
     /**
      * Produces an EXPRESSION object that represents a numeric constant.

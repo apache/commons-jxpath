@@ -1,120 +1,154 @@
-<?xml version="1.0"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
+  <properties>
+    <title>
+       JXPath User's Guide
+    </title>
+    <author email="dmitri@apache.org">
+       Dmitri Plotnikov
+    </author>
+  </properties>
+  <body>
 
- <properties>
-  <title>JXPath User's Guide</title>
-  <author email="dmitri@apache.org">Dmitri Plotnikov</author>
- </properties>
 
- <body>
+    <section name="What's JXPath">
+      <p>
+        JXPath provides APIs for the traversal of graphs of JavaBeans,
+        DOM and other types of objects using the XPath syntax.
+      </p>
+      <p>
+        If you are not familiar with the XPath syntax, start with
+        <a href="http://www.w3schools.com/xpath">XPath Tutorial by W3Schools</a>.
+        <br/>
+         Also see
+        <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0</a> -
+        that's the official standard.
+      </p>
+      <p>
+        XPath is the official expression language of XSLT. In XSLT you
+        mostly use XPath to access various elements of XML documents.
+        You can do that with JXPath as well. In addition, you can read
+        and write properties of JavaBeans, get and set elements of
+        arrays, collections, maps, transparent containers, various
+        context objects in Servlets etc. In other words, JXPath applies
+        the concepts of XPath to alternate object models.
+      </p>
+      <p>
+        You can also have JXPath create new objects if needed.
+      </p>
+      <p>
+        The central class in the JXPath architecture is
+        <a href="api/org/apache/commons/jxpath/JXPathContext.html"><code>JXPathContext</code></a>.
+        Most of the APIs discussed in this document have to do with the
+        JXPathContext class.
+      </p>
+      <ul>
+        <li><a href="#Object Graph Traversal">Object Graph Traversal</a>
+          <ul>
+            <li><a href="#JavaBean Property Access">JavaBean Property Access</a>
+            </li>
+            <li><a href="#Lenient Mode">Lenient Mode</a>
+            </li>
+            <li><a href="#Nested Bean Property Access">Nested Bean Property Access</a>
+            </li>
+            <li><a href="#Collection Subscripts">Collection Subscripts</a>
+            </li>
+            <li><a href="#Retrieving Multiple Results">Retrieving Multiple Results</a>
+            </li>
+            <li><a href="#Map Element Access">Map Element Access</a>
+            </li>
+            <li><a href="#DOM Document Access">DOM Document Access</a>
+            </li>
+            <li><a href="#Containers">Containers</a>
+            </li>
+            <li><a href="#Functions id() and key()">Functions id() and key()</a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#Modifying Object Graphs">Modifying Object Graphs</a>
+          <ul>
+            <li><a href="#Setting Properties">Setting Properties</a>
+            </li>
+            <li><a href="#Creating Objects">Creating Objects</a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#Variables">Variables</a>
+          <ul>
+            <li><a href="#Custom Variable Pools">Custom Variable Pools</a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#Servlet Contexts">Servlet Contexts</a>
+          <ul>
+            <li><a href="#JSP Page Context">JSP Page Context</a>
+            </li>
+            <li><a href="#Servlet Request Context">Servlet Request Context</a>
+            </li>
+            <li><a href="#HttpSession Context">HttpSession Context</a>
+            </li>
+            <li><a href="#ServletContext Context">ServletContext Context</a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#Pointers">Pointers</a>
+        </li>
+        <li><a href="#Extension Functions">Extension Functions</a>
+          <ul>
+            <li><a href="#Standard Extension Functions">Standard Extension Functions</a>
+            </li>
+            <li><a href="#Custom Extension Functions">Custom Extension Functions</a>
+            </li>
+            <li><a href="#Expression Context">Expression Context</a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#Type Conversions">Type Conversions</a>
+        </li>
+        <li><a href="#Internationalization">Internationalization</a>
+        </li>
+        <li><a href="#Nested Contexts">Nested Contexts</a>
+        </li>
+        <li><a href="#Compiled Expressions">Compiled Expressions</a>
+        </li>
+        <li><a href="#Customizing JXPath">Customizing JXPath</a>
+          <ul>
+            <li><a href="#Custom JXPathBeanInfo">Custom JXPathBeanInfo</a>
+            </li>
+            <li><a href="#Custom DynamicPropertyHandler">Custom DynamicPropertyHandler</a>
+            </li>
+            <li><a href="#Custom Pointers and Iterators">Custom Pointers and Iterators</a>
+            </li>
+            <li><a href="#Alternative JXPath Implementation">Alternative JXPath Implementation</a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#Miscellaneous">Miscellaneous</a>
+        </li>
+      </ul>
+    </section>
 
-<section name="What's JXPath">
 
-    <p>
-     JXPath provides APIs for the traversal of graphs of JavaBeans, DOM and
-     other types of objects using the XPath syntax.
-    </p>
+    <section name="Object Graph Traversal">
+      <p>
+        JXPath uses JavaBeans introspection to enumerate and access
+        JavaBeans properties.
+      </p>
+      <p>
+        The interpretation of the XPath syntax in the context of Java
+        object graphs is quite intuitive: the <code>"child"</code>
+        axis of XPath is mapped to JavaBean properties.
+      </p>
 
-    <p>
-     If you are not familiar with the XPath syntax, start with
-     <a href="http://www.w3schools.com/xpath">XPath Tutorial by W3Schools</a>.<br/>
-     Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a> -
-     that's the official standard.
-    </p>
 
-    <p>
-     XPath is the official expression language of XSLT. In XSLT you mostly use
-     XPath to access various elements of XML documents.  You can do that with
-     JXPath as well. In addition, you can read and write properties of JavaBeans, get and set
-     elements of arrays, collections, maps, transparent containers, various context objects
-     in Servlets etc.  In other words, JXPath applies the concepts of XPath
-     to alternate object models.
-    </p>
+      <subsection name="JavaBean Property Access">
+        <p>
+          JXPath can be used to access properties of a JavaBean.
+        </p>
 
-    <p>
-     You can also have JXPath create new objects if needed.
-    </p>
-
-    <p>
-     The central class in the JXPath architecture is
-     <a href="api/org/apache/commons/jxpath/JXPathContext.html"><code>JXPathContext</code></a>. Most of the
-     APIs discussed in this document have to do with the JXPathContext class.
-    </p>
-<ul>
-  <li><a href="#Object Graph Traversal">Object Graph Traversal</a>
-     <ul>
-       <li><a href="#JavaBean Property Access">JavaBean Property Access</a></li>
-       <li><a href="#Lenient Mode">Lenient Mode</a></li>
-       <li><a href="#Nested Bean Property Access">Nested Bean Property Access</a></li>
-       <li><a href="#Collection Subscripts">Collection Subscripts</a></li>
-       <li><a href="#Retrieving Multiple Results">Retrieving Multiple Results</a></li>
-       <li><a href="#Map Element Access">Map Element Access</a></li>
-       <li><a href="#DOM Document Access">DOM Document Access</a></li>
-       <li><a href="#Containers">Containers</a></li>
-     </ul>
-  </li>
-  <li><a href="#Modifying Object Graphs">Modifying Object Graphs</a>
-     <ul>
-       <li><a href="#Setting Properties">Setting Properties</a></li>
-       <li><a href="#Creating Objects">Creating Objects</a></li>
-     </ul>
-  </li>
-  <li><a href="#Variables">Variables</a>
-     <ul>
-       <li><a href="#Custom Variable Pools">Custom Variable Pools</a></li>
-     </ul>
-  </li>
-  <li><a href="#Servlet Contexts">Servlet Contexts</a>
-     <ul>
-       <li><a href="#JSP Page Context">JSP Page Context</a></li>
-       <li><a href="#Servlet Request Context">Servlet Request Context</a></li>
-       <li><a href="#HttpSession Context">HttpSession Context</a></li>
-       <li><a href="#ServletContext Context">ServletContext Context</a></li>
-     </ul>
-  </li>
-  <li><a href="#Pointers">Pointers</a></li>
-  <li><a href="#Extension Functions">Extension Functions</a>
-     <ul>
-       <li><a href="#Standard Extension Functions">Standard Extension Functions</a></li>
-       <li><a href="#Custom Extension Functions">Custom Extension Functions</a></li>
-       <li><a href="#Expression Context">Expression Context</a></li>
-     </ul>
-  </li>
-  <li><a href="#Type Conversions">Type Conversions</a></li>
-  <li><a href="#Internationalization">Internationalization</a></li>
-  <li><a href="#Nested Contexts">Nested Contexts</a></li>
-  <li><a href="#Compiled Expressions">Compiled Expressions</a></li>
-  <li><a href="#Customizing JXPath">Customizing JXPath</a>
-     <ul>
-       <li><a href="#Custom JXPathBeanInfo">Custom JXPathBeanInfo</a></li>
-       <li><a href="#Custom DynamicPropertyHandler">Custom DynamicPropertyHandler</a></li>
-       <li><a href="#Custom Pointers and Iterators">Custom Pointers and Iterators</a></li>
-       <li><a href="#Alternative JXPath Implementation">Alternative JXPath Implementation</a></li>
-     </ul>
-  </li>
-  <li><a href="#Miscellaneous">Miscellaneous</a></li>
-</ul>
-
-</section>
-
-<section name="Object Graph Traversal">
-    <p>
-     JXPath uses JavaBeans introspection to enumerate and access JavaBeans
-     properties.
-    </p>
-    <p>
-     The interpretation of the XPath syntax in the context of Java object graphs
-     is quite intuitive: the <code>"child"</code> axis of XPath is mapped to
-     JavaBean properties.
-    </p>
-
-<subsection name="JavaBean Property Access">
- <p>
-    JXPath can be used to access properties of a JavaBean.
- </p>
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
 public class Employee {
     public String getFirstName(){
        ...
@@ -127,29 +161,37 @@ Employee emp = new Employee();
 JXPathContext context = JXPathContext.newContext(emp);
 String fName = (String)context.getValue("firstName");
 </source>
+<!--============================ - SOURCE - ============================-->
 
-<p>
-     In this example, we are using JXPath to access a property of the <code>emp</code> bean.
-     In this simple case the invocation of JXPath is equivalent to invocation of
-     <code>getFirstName()</code> on the bean.
-</p>
-</subsection>
+        <p>
+          In this example, we are using JXPath to access a property
+          of the <code>emp</code>  bean. In this simple case the
+          invocation of JXPath is equivalent to invocation of
+          <code>getFirstName()</code>  on the bean.
+        </p>
+      </subsection>
 
-<subsection name="Lenient Mode">
-<p>
-The <code>context.getValue(xpath)</code> method throws an exception if the
-supplied xpath does not map to an existing property.  This
-constraint can be relaxed by calling <code>context.setLenient(true)</code>.
-In the lenient mode the method merely returns null if the path maps to nothing.
-</p>
-</subsection>
 
-<subsection name="Nested Bean Property Access">
- <p>
- JXPath can traverse object graphs:
- </p>
- <source>
-                                                                       <b></b>
+      <subsection name="Lenient Mode">
+        <p>
+          The <code>context.getValue(xpath)</code>  method throws
+          an exception if the supplied xpath does not map to an
+          existing property. This constraint can be relaxed by
+          calling <code>context.setLenient(true)</code>. In the
+          lenient mode the method merely returns null if the path
+          maps to nothing.
+        </p>
+      </subsection>
+
+
+      <subsection name="Nested Bean Property Access">
+        <p>
+          JXPath can traverse object graphs:
+        </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  public class Employee {
     public Address getHomeAddress(){
        ...
@@ -167,25 +209,36 @@ In the lenient mode the method merely returns null if the path maps to nothing.
  JXPathContext context = JXPathContext.newContext(emp);
  String sNumber = (String)context.getValue("homeAddress/streetNumber");
  </source>
- <p>
- In this case XPath is used to access a property of a nested bean.
- </p>
- <p>
- A property identified by the XPath does not have to be a "leaf" property.
- For instance, we can extract the whole Address object in above example:
- </p>
- <source>
-                                                                       <b></b>
+<!--============================ - SOURCE - ============================-->
+
+        <p>
+          In this case XPath is used to access a property of a nested
+          bean.
+        </p>
+        <p>
+          A property identified by the XPath does not have to be a
+          "leaf" property. For instance, we can extract the whole
+          Address object in above example:
+        </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
     Address addr = (Address)context.getValue("homeAddress");
  </source>
- </subsection>
+<!--============================ - SOURCE - ============================-->
 
-<subsection name="Collection Subscripts">
- <p>
-  JXPath can extract elements from arrays and collections.
- </p>
- <source>
-                                                                       <b></b>
+      </subsection>
+
+
+      <subsection name="Collection Subscripts">
+        <p>
+          JXPath can extract elements from arrays and collections.
+        </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  public class Integers {
     public int[] getNumbers(){
        ...
@@ -198,21 +251,29 @@ In the lenient mode the method merely returns null if the path maps to nothing.
  JXPathContext context = JXPathContext.newContext(ints);
  Integer thirdInt = (Integer)context.getValue("numbers[3]");
  </source>
- <p>
-  A collection can be an arbitrary array or an instance of java.util.Collection.
- </p>
- <p>
-  <b>Note:</b> in XPath the first element of a collection has index 1, not 0.<br/>
- </p>
-</subsection>
+<!--============================ - SOURCE - ============================-->
 
-<subsection name="Retrieving Multiple Results">
- <p>
- JXPath can retrieve multiple objects from a graph. Note that the method
- called in this case is not <code>getValue</code>, but <code>iterate</code>.
- </p>
- <source>
-                                                                       <b></b>
+        <p>
+          A collection can be an arbitrary array or an instance of
+          java.util.Collection.
+        </p>
+        <p><b>Note:</b>  in XPath the first element of a collection has
+          index 1, not 0.
+          <br/>
+        </p>
+      </subsection>
+
+
+      <subsection name="Retrieving Multiple Results">
+        <p>
+          JXPath can retrieve multiple objects from a graph. Note
+          that the method called in this case is not <code>getValue</code>,
+          but <code>iterate</code>.
+        </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  public class Author {
     public Book[] getBooks(){
        ...
@@ -225,18 +286,23 @@ In the lenient mode the method merely returns null if the path maps to nothing.
  JXPathContext context = JXPathContext.newContext(auth);
  Iterator threeBooks = context.iterate("books[position() &lt; 4]");
  </source>
- <p>
- This returns a list of at most three books from the array of all books
- written by the author.
- </p>
-</subsection>
+<!--============================ - SOURCE - ============================-->
 
-<subsection name="Map Element Access">
- <p>
-  JXPath supports maps. To get a value use its key.
- </p>
- <source>
-                                                                       <b></b>
+        <p>
+          This returns a list of at most three books from the array
+          of all books written by the author.
+        </p>
+      </subsection>
+
+
+      <subsection name="Map Element Access">
+        <p>
+          JXPath supports maps. To get a value use its key.
+        </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  public class Employee {
     private Map addressMap = new HashMap();
     {
@@ -255,81 +321,98 @@ In the lenient mode the method merely returns null if the path maps to nothing.
  String homeZipCode =
         (String)context.getValue("addresses/home/zipCode");
  </source>
+<!--============================ - SOURCE - ============================-->
 
- <p>
- Often you will need to use the alternative syntax for accessing Map
- elements:
- </p>
- <source>
-                                                                       <b></b>
+        <p>
+          Often you will need to use the alternative syntax for
+          accessing Map elements:
+        </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  String homeZipCode = (String)context.
         getValue("addresses[@name='home']/zipCode");
  </source>
-<p>
- Unlike a child name in XPath,
- the value of the "name" attribute does <em>not</em> have to be a properly formed
- identifier.  Also, in this case the key can be an expression, e.g. a variable.
-</p>
-<p>
- The attribute "name" can be used not only with Maps, but with JavaBeans
- as well. The value of this attribute represents the name of a property.
-</p>
+<!--============================ - SOURCE - ============================-->
 
-<p>
- <b>Note:</b> At this point JXPath only supports Maps that use strings for keys.
-</p>
-<p>
- <b>Note:</b> JXPath supports the extended notion of Map: any object with
-   dynamic properties can be handled by JXPath provided that its
-   class is registered with the
-   <a href="api/org/apache/commons/jxpath/JXPathIntrospector.html"><code>JXPathIntrospector</code></a>.
-</p>
-</subsection>
+        <p>
+          Unlike a child name in XPath, the value of the "name"
+          attribute does
+          <em>
+            not
+          </em>
+           have to be a properly formed identifier. Also,
+          in this case the key can be an expression, e.g. a variable.
+        </p>
+        <p>
+          The attribute "name" can be used not only with Maps, but
+          with JavaBeans as well. The value of this attribute
+          represents the name of a property.
+        </p>
+        <p><b>Note:</b>  At this point JXPath only supports Maps that use
+          strings for keys.
+        </p>
+        <p><b>Note:</b>  JXPath supports the extended notion of Map: any
+          object with dynamic properties can be handled by JXPath
+          provided that its class is registered with the
+          <a href="api/org/apache/commons/jxpath/JXPathIntrospector.html"><code>JXPathIntrospector</code></a>.
+        </p>
+      </subsection>
 
-<subsection name="DOM Document Access">
-<p>
-JXPath supports access to DOM Nodes. The DOM node can be the
-context node of JXPathContext or it can be a value of a property,
-element of a collection,
-variable value etc.  Let's say we have a path
-<code>"$foo/bar/baz"</code>. It will work
-if, for instance, the value of the variable "foo" is a
-JavaBean, whose property "bar" contains a DOM Node,
-which has a child element named "baz".
-</p>
-<p>
-The intepretation of XPath over DOM structures is
-implemented in with the XPath specification. For
-instance, the "attribute" axis is supported for
-DOM objects, even though it is not applicable to JavaBeans.
-</p>
-</subsection>
 
-<subsection name="Containers">
-<p>
- A <a href="api/org/apache/commons/jxpath/Container.html">Container</a> is an
- object implementing an indirection mechanism transparent to JXPath.
-</p>
-<p>
- For example, if property <code>"foo"</code> of the context node has a Container
- as its value, the XPath "foo" will produce the contents of that Container,
- not the container itself.
-</p>
-<p>
- An example of a useful container is
- <a href="api/org/apache/commons/jxpath/XMLDocumentContainer.html">XMLDocumentContainer</a>.
- When you create an XMLDocumentContainer, you give it a pointer to an XML file
- (a <code>URL</code> or a <code>javax.xml.transform.Source</code>.
- It will read and parse the XML file only when it is
- accessed.  You can create XMLDocumentContainers for various XML documents
- that may or may not be accessed by XPaths.  If they are, they will be automatically
- read, parsed and traversed. If they are not - they won't be read at all.
-</p>
-<p>
-Let's say we have the the following XML file, which is stored as a Java resource.
-</p>
+      <subsection name="DOM Document Access">
+        <p>
+          JXPath supports access to DOM Nodes. The DOM node can be
+          the context node of JXPathContext or it can be a value of a
+          property, element of a collection, variable value etc.
+          Let's say we have a path <code>"$foo/bar/baz"</code>.
+          It will work if, for instance, the value of the variable
+          "foo" is a JavaBean, whose property "bar" contains a DOM
+          Node, which has a child element named "baz".
+        </p>
+        <p>
+          The intepretation of XPath over DOM structures is
+          implemented in with the XPath specification. For instance,
+          the "attribute" axis is supported for DOM objects, even
+          though it is not applicable to JavaBeans.
+        </p>
+      </subsection>
+
+
+      <subsection name="Containers">
+        <p>
+          A
+          <a href="api/org/apache/commons/jxpath/Container.html">Container</a>
+          is an object implementing an indirection mechanism
+          transparent to JXPath.
+        </p>
+        <p>
+          For example, if property <code>"foo"</code>  of the
+          context node has a Container as its value, the XPath "foo"
+          will produce the contents of that Container, not the
+          container itself.
+        </p>
+        <p>
+          An example of a useful container is
+          <a href="api/org/apache/commons/jxpath/XMLDocumentContainer.html">XMLDocumentContainer</a>.
+          When you create an XMLDocumentContainer, you give it a
+          pointer to an XML file (a <code>URL</code>  or a
+          <code>javax.xml.transform.Source</code>. It will read
+          and parse the XML file only when it is accessed. You can
+          create XMLDocumentContainers for various XML documents that
+          may or may not be accessed by XPaths. If they are, they
+          will be automatically read, parsed and traversed. If they
+          are not- they won't be read at all.
+        </p>
+        <p>
+          Let's say we have the the following XML file, which is
+          stored as a Java resource.
+        </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
     &lt;?xml version="1.0" ?&gt;
     &lt;vendor&gt;
       &lt;location id="store101"&gt;
@@ -345,11 +428,15 @@ Let's say we have the the following XML file, which is stored as a Java resource
       &lt;/location&gt;
     &lt;/vendor&gt;
 </source>
-<p>
-Here's the code that makes use of XMLDocumentContainer.
-</p>
+<!--============================ - SOURCE - ============================-->
+
+        <p>
+          Here's the code that makes use of XMLDocumentContainer.
+        </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
  class Company {
     private Container locations = null;
 
@@ -367,33 +454,68 @@ Here's the code that makes use of XMLDocumentContainer.
  String street = (String)context.getValue(
                 "locations/vendor/location[@id = 'store102']//street");
 </source>
-<p>
-Like was described before, this code will implicitly open and parse the XML
-file and find a value in it according to the XPath.
-</p>
-</subsection>
+<!--============================ - SOURCE - ============================-->
 
-<p><b>Note:</b>
-     JXPath does not support DOM attributes for non-DOM objects. Even though XPaths
-     like <code>"para[@type='warning']"</code> are legitimate, they will always produce empty results.
-     The only attributes supported for JavaBeans are <code>"name"</code> and <code>"xml:lang"</code>.
-</p>
+        <p>
+          Like was described before, this code will implicitly open
+          and parse the XML file and find a value in it according to
+          the XPath.
+        </p>
+      </subsection>
 
-</section>
+      <subsection name="Functions id() and key()">
+        <p>
+          Functions <code>id()</code> and <code>key()</code> can be
+          used with JXPath, however most of the time it requires custom
+          coding.
+        </p>
+        <p>
+          The only situation where no custom coding is needed is when
+          you want to use the <code>id()</code> function and you have
+          a DOM Node as the context node of the JXPathContext. In
+          this case, JXPath will use the standard behavior of DOM.
+        </p>
+        <p>
+          In order to evaluate the <code>id()</code> function, JXPath
+          calls a delegate object that should be implemented and installed
+          on the JXPathContext.  The object should implement the
+          <a href="api/org/apache/commons/jxpath/IdentityManager.html">IdentityManager</a>
+          interface.
+        </p>
+        <p>
+          Similarly, the <code>key()</code> function relies on a custom
+          implementation of the
+          <a href="api/org/apache/commons/jxpath/KeyManager.html">KeyManager</a>
+          interface.
+        </p>
+      </subsection>
 
-<section name="Modifying Object Graphs">
-<p>
-JXPath can also be used to modify parts of object graphs: property values,
-values for keys in Maps.  It can in some cases create intermediate
-nodes in object graphs.
-</p>
+      <p><b>Note:</b>  JXPath does not support DOM attributes for non-DOM
+        objects. Even though XPaths like
+        <code>"para[@type='warning']"</code>  are legitimate, they
+        will always produce empty results. The only attributes
+        supported for JavaBeans are <code>"name"</code>  and
+        <code>"xml:lang"</code>.
+      </p>
+    </section>
 
-<subsection name="Setting Properties">
- <p>
- JXPath can be used to modify property values.
- </p>
- <source>
-                                                                       <b></b>
+
+    <section name="Modifying Object Graphs">
+      <p>
+        JXPath can also be used to modify parts of object graphs:
+        property values, values for keys in Maps. It can in some cases
+        create intermediate nodes in object graphs.
+      </p>
+
+
+      <subsection name="Setting Properties">
+        <p>
+          JXPath can be used to modify property values.
+        </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  public class Employee {
     public Address getAddress() {
        ...
@@ -412,20 +534,26 @@ nodes in object graphs.
  context.setValue("address", addr);
  context.setValue("address/zipCode", "90190");
  </source>
-</subsection>
+<!--============================ - SOURCE - ============================-->
 
-<subsection name="Creating Objects">
-<p>
- JXPath can be used to create new objects. First, create a subclass of
- <a href="api/org/apache/commons/jxpath/AbstractFactory.html"><code>AbstractFactory</code></a>
- and install it on the JXPathContext.
- Then call <code>jxPathContext.createPath(xpath, value)</code> instead of "setValue".
- JXPathContext will invoke your AbstractFactory when it discovers that an
- intermediate node of the path is <b>null</b>.  It will not override existing
- nodes.
-</p>
- <source>
-                                                                       <b></b>
+      </subsection>
+
+
+      <subsection name="Creating Objects">
+        <p>
+          JXPath can be used to create new objects. First, create a
+          subclass of
+          <a href="api/org/apache/commons/jxpath/AbstractFactory.html"><code>AbstractFactory</code></a>
+          and install it on the JXPathContext. Then call
+          <code>jxPathContext.createPath(xpath)</code>.
+          JXPathContext will invoke your AbstractFactory when it
+          discovers that an intermediate node of the path is <b>null</b>.
+          It will not override existing nodes.
+        </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  public class AddressFactory extends AbstractFactory {
     public boolean createObject(JXPathContext context, Pointer pointer,
                                 Object parent, String name, int index){
@@ -439,33 +567,58 @@ nodes in object graphs.
 
  JXPathContext context = JXPathContext.newContext(emp);
  context.setFactory(new AddressFactory());
- context.createPath("address/zipCode", "90190");
+ context.createPath("address");
 </source>
+<!--============================ - SOURCE - ============================-->
 
-<p>
- Note that it only makes sense to use this functionality with very simple
- paths. In fact, JXPath will not attempt to create intermediate nodes
- for paths that don't follow these two rules:
- <ul>
-   <li>The only axis used is "child::", e.g. <code>"foo/bar/baz"</code></li>
-   <li>The only two types of predicates used are context-independent
-     indexing and the <code>"[@name = <i>expr</i>]"</code> construct, e.g.
-     <code>"map[@name='key1'][4/2]"</code>.</li>
-   <li>If a variable is used, it is the root of the path, e.g.
-     <code>"$object/child"</code>.</li>
- </ul>
-</p>
-</subsection>
-</section>
+        <p>
+          You can also combine creating a path with setting the value
+          of the leaf: the <code>createPathAndSetValue(path, value)</code>
+          method is used for that.
+        </p>
 
-<section name="Variables">
- <p>
- JXPath supports the notion of variables. The XPath syntax for accessing
- variables is <i>"$varName"</i>.
- </p>
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
+ context.createPathAndSetValue("address/zipCode", "90190");
+</source>
+<!--============================ - SOURCE - ============================-->
 
- <source>
-                                                                       <b></b>
+        <p>
+          Note that it only makes sense to the automatic creation of
+          nodes with very simple paths. In fact, JXPath will not
+          attempt to create intermediate nodes for paths that don't
+          follow these rules:
+          <ul>
+            <li>
+              The only axis used is "child::", e.g.
+              <code>"foo/bar/baz"</code>
+            </li>
+            <li>
+              The only two types of predicates used are
+              context-independent indexing and the
+              <code>"[@name = <i>expr</i>]"</code>
+              construct, e.g. <code>"map[@name='key1'][4/2]"</code>.
+            </li>
+            <li>
+              If a variable is used, it is the root of the path,
+              e.g. <code>"$object/child"</code>.
+            </li>
+          </ul>
+        </p>
+      </subsection>
+    </section>
+
+
+    <section name="Variables">
+      <p>
+        JXPath supports the notion of variables. The XPath syntax for
+        accessing variables is <i>"$varName"</i>.
+      </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  public class Author {
     public Book[] getBooks(){
        ...
@@ -480,30 +633,36 @@ nodes in object graphs.
 
  Book secondBook = (Book)context.getValue("books[$index]");
  </source>
+<!--============================ - SOURCE - ============================-->
 
- <p>
- You can also set variables using JXPath:
- </p>
+      <p>
+        You can also set variables using JXPath:
+      </p>
 
- <source>
-                                                                       <b></b>
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  context.setValue("$index", new Integer(3));
  </source>
+<!--============================ - SOURCE - ============================-->
 
- <p>
- <b>Note:</b> generally speaking, you can only <i>change</i> the value of an existing variable this
- way, you cannot <i>define</i> a new variable.  If you do want to define a new variable dynamically,
- implement a <code>defineVariable()</code> method on your custom AbstractFactory and call
- <code>createPath()</code> rather than <code>setValue()</code>.  The restrictions described in
- the "Creating Objects" section still apply.
- </p>
- <p>
- When a variable contains a JavaBean or a collection, you can
- traverse the bean or collection as well:
- </p>
+      <p><b>Note:</b>  generally speaking, you can only <i>change</i>  the
+        value of an existing variable this way, you cannot <i>define</i>
+        a new variable. If you do want to define a new variable
+        dynamically, implement a <code>defineVariable()</code>
+        method on your custom AbstractFactory and call
+        <code>createPathAndSetValue()</code>  rather than
+        <code>setValue()</code>. The restrictions described in the
+        "Creating Objects" section still apply.
+      </p>
+      <p>
+        When a variable contains a JavaBean or a collection, you can
+        traverse the bean or collection as well:
+      </p>
 
- <source>
-                                                                       <b></b>
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  ...
  context.getVariables().declareVariable("book", myBook);
  String title = (String)context.getValue("$book/title);
@@ -514,182 +673,233 @@ nodes in object graphs.
 
  String title = (String)context.getValue("$books[2]/title);
  </source>
-<p>
+<!--============================ - SOURCE - ============================-->
 
-</p>
+      <p/>
 
- <subsection name="Custom Variable Pools">
- <p>
- By default, JXPathContext creates a HashMap of variables. However,
- you can substitute a custom implementation of the Variables
- interface to make JXPath work with an alternative source of variables.
- For example, you can define implementations of Variables that
- cover a servlet context, HTTP request or any similar structure.
- </p>
- <p>See the
- <a href="api/org/apache/commons/jxpath/servlet/package-summary.html">org.apache.commons.jxpath.servlet</a>
- package for an example of just that.
- </p>
- </subsection>
-</section>
 
-<section name="Servlet Contexts">
-    <p>
-    The <code>org.apache.commons.jxpath.servlet</code> package contains
-    classes that make it easy to use XPath to access values in various sevlet contexts:
-    "page" (for JSPs), "request", "session" and "application".
-    </p>
-    <p>
-    See static methods of the class
-    <a href="api/org/apache/commons/jxpath/servlet/JXPathServletContexts.html"><code>JXPathServletContexts</code></a>.
-    They allocate various servlet-related JXPathContexts.
-    </p>
-
-    <subsection name="JSP Page Context">
+      <subsection name="Custom Variable Pools">
         <p>
-        The JXPathContext returned by <code>getPageContext(PageContext pageContext)</code>
-        provides access to all scopes via the <code>PageContext.findAttribute()</code>
-        method.  Thus, an expression like <code>"foo"</code> will first look for the attribute
-        named <code>"foo"</code> in the <code>"page"</code> context, then the <code>"request"</code> context, then
-        the <code>"session"</code> one and finally in the <code>"application"</code> context.
+          By default, JXPathContext creates a HashMap of variables.
+          However, you can substitute a custom implementation of the
+          Variables interface to make JXPath work with an alternative
+          source of variables. For example, you can define
+          implementations of Variables that cover a servlet context,
+          HTTP request or any similar structure.
         </p>
         <p>
-        If you need to limit the attibute lookup to just one scope, you can use the
-        pre-definded variables <code>"page"</code>, <code>"request"</code>,
-        <code>"session"</code> and <code>"application"</code>.
-        For example, the expression <code>"$session/foo"</code> extracts the value of the
-        <i>session</i> attribute named <code>"foo"</code>.
+          See the
+          <a href="api/org/apache/commons/jxpath/servlet/package-summary.html">org.apache.commons.jxpath.servlet</a>
+          package for an example of just that.
         </p>
-    </subsection>
+      </subsection>
+    </section>
 
-    <subsection name="Servlet Request Context">
+    <section name="Servlet Contexts">
+      <p>
+        The <code>org.apache.commons.jxpath.servlet</code>  package
+        contains classes that make it easy to use XPath to access
+        values in various sevlet contexts: "page" (for JSPs),
+        "request", "session" and "application".
+      </p>
+      <p>
+        See static methods of the class
+        <a href="api/org/apache/commons/jxpath/servlet/JXPathServletContexts.html"><code>JXPathServletContexts</code></a>.
+        They allocate various servlet-related JXPathContexts.
+      </p>
+
+
+      <subsection name="JSP Page Context">
         <p>
-        The <code>getRequestContext(ServletRequest request, ServletContext servletContext)</code>
-        method will give you a context that checks the request scope first, then (if there is
-        a session) the session context, then the application context.
+          The JXPathContext returned by
+          <code>getPageContext(PageContext pageContext)</code>
+          provides access to all scopes via the
+          <code>PageContext.findAttribute()</code>  method. Thus,
+          an expression like <code>"foo"</code>  will first look
+          for the attribute named <code>"foo"</code>  in the
+          <code>"page"</code>  context, then the <code>"request"</code>
+          context, then the <code>"session"</code>  one and
+          finally in the <code>"application"</code>  context.
         </p>
-    </subsection>
-
-    <subsection name="HttpSession Context">
         <p>
-        The <code>getSessionContext(HttpSession session, ServletContext servletContext)</code>
-        method will give you a context that checks the session context, then the application context.
+          If you need to limit the attibute lookup to just one scope,
+          you can use the pre-definded variables <code>"page"</code>,
+          <code>"request"</code>, <code>"session"</code>  and
+          <code>"application"</code>. For example, the
+          expression <code>"$session/foo"</code>  extracts the
+          value of the <i>session</i>  attribute named <code>"foo"</code>.
         </p>
-    </subsection>
+      </subsection>
 
-    <subsection name="ServletContext Context">
+
+      <subsection name="Servlet Request Context">
         <p>
-        Finally, <code>getApplicationContext(ServletContext servletContext)</code>
-        method will give you a context that checks the application context.
+          The
+          <code>getRequestContext(ServletRequest request, ServletContext servletContext)</code>
+          method will give you a context that checks the request
+          scope first, then (if there is a session) the session
+          context, then the application context.
         </p>
-    </subsection>
+      </subsection>
 
-    <p>
-    All these methods cache the JXPathContexts they create within the corresponding
-    scopes. Subsequent calls use the JXPathContexts created earlier.
-    </p>
-</section>
 
-<section name="Pointers">
-<p>
-JXPath supports so called Pointers. A Pointer is an
-object that represents a location of a node in an object graph.
-For example, you can call
-</p>
+      <subsection name="HttpSession Context">
+        <p>
+          The
+          <code>getSessionContext(HttpSession session, ServletContext servletContext)</code>
+          method will give you a context that checks the session
+          context, then the application context.
+        </p>
+      </subsection>
+
+
+      <subsection name="ServletContext Context">
+        <p>
+          Finally,
+          <code>getApplicationContext(ServletContext servletContext)</code>
+          method will give you a context that checks the application
+          context.
+        </p>
+      </subsection>
+      <p>
+        All these methods cache the JXPathContexts they create within
+        the corresponding scopes. Subsequent calls use the
+        JXPathContexts created earlier.
+      </p>
+    </section>
+
+
+    <section name="Pointers">
+      <p>
+        JXPath supports so called Pointers. A Pointer is an object that
+        represents a location of a node in an object graph. For
+        example, you can call
+      </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
 Pointer ptr = context.getPointer("employees[$i]/addresses[$j]")
 </source>
-<p>
-Let's say the value of the variable i is 1 and j = 3.
-If we call <code>ptr.asPath()</code>,
-it returns an XPath that describes this concrete
-location: <code>"/employees[1]/addresses[3]"</code>.
-</p>
-<p>
-If you have an XPath that finds many nodes in the graph, you can
-get JXPath to produce a collection of pointers for all of those
-found locations:
-</p>
+<!--============================ - SOURCE - ============================-->
+
+      <p>
+        Let's say the value of the variable i is 1 and j = 3. If we
+        call <code>ptr.asPath()</code>, it returns an XPath that
+        describes this concrete location:
+        <code>"/employees[1]/addresses[3]"</code>.
+      </p>
+      <p>
+        If you have an XPath that finds many nodes in the graph, you
+        can get JXPath to produce a collection of pointers for all of
+        those found locations:
+      </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
-List homeAddresses = context.locate("//employee/address[@name='home']");
+                                                                       <b/>
+List homeAddresses = context.getPointer("//employee/address[@name='home']");
 </source>
-<p>
-Each Pointer in the list will map to a home address object in the graph.
-</p>
-<p>
-It is a good idea to use pointers whenever you need
-to access the same node of a graph repeatedly.
-</p>
-<p>
-Also, when an XPath is repeatedly evaluated in different contexts (for example,
-with different variable values) and you need to preseve results of those
-evaluations.  A Pointer, as well as the XPath produced by <code>pointer.asPath()</code>
-is context-independent, it won't change if involved variables or expressions change.
-</p>
-<p>
-JXPath is optimized to interpret XPaths produced by Pointers much faster
-than many other types of XPaths.
-</p>
-</section>
+<!--============================ - SOURCE - ============================-->
 
-<section name="Extension Functions">
-<p>
- JXPath supports standard XPath functions right out of the box.
- It also supports "standard" extension functions, which are basically a bridge
- to Java as well as entirely custom extension functions.
-</p>
+      <p>
+        Each Pointer in the list will map to a home address object in
+        the graph.
+      </p>
+      <p>
+        It is a good idea to use pointers whenever you need to access
+        the same node of a graph repeatedly.
+      </p>
+      <p>
+        Also, when an XPath is repeatedly evaluated in different
+        contexts (for example, with different variable values) and you
+        need to preseve results of those evaluations. A Pointer, as
+        well as the XPath produced by <code>pointer.asPath()</code>
+        is context-independent, it won't change if involved variables
+        or expressions change.
+      </p>
+      <p>
+        JXPath is optimized to interpret XPaths produced by Pointers
+        much faster than many other types of XPaths.
+      </p>
+    </section>
 
-<subsection name="Standard Extension Functions">
-<p>
- Using the standard extension functions, you can call methods on objects,
- static methods on classes and create objects using any constructors.
- All class names should be fully qualified.
-</p>
-<p>
- Here's how you can create new objects:
-</p>
+
+    <section name="Extension Functions">
+      <p>
+        JXPath supports standard XPath functions right out of the box.
+        It also supports "standard" extension functions, which are
+        basically a bridge to Java as well as entirely custom extension
+        functions.
+      </p>
+
+
+      <subsection name="Standard Extension Functions">
+        <p>
+          Using the standard extension functions, you can call
+          methods on objects, static methods on classes and create
+          objects using any constructors. All class names should be
+          fully qualified.
+        </p>
+        <p>
+          Here's how you can create new objects:
+        </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
  Book book = (Book)context.
    getValue("com.myco.books.Book.new('John Updike')");
 </source>
+<!--============================ - SOURCE - ============================-->
 
-<p>
- Here's how you can call static methods:
-</p>
+        <p>
+          Here's how you can call static methods:
+        </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
  Book book = (Book)context.
    getValue("com.myco.books.Book.getBestBook('John Updike')");
 </source>
+<!--============================ - SOURCE - ============================-->
 
-<p>
- Here's how you can call regular methods:
-</p>
- <source>
-                                                                       <b></b>
+        <p>
+          Here's how you can call regular methods:
+        </p>
+
+<!--============================ + SOURCE + ============================-->
+<source>
+                                                                       <b/>
  String firstName = (String)context.
    getValue("getAuthorsFirstName($book)");
  </source>
-<p>
- As you can see, the target of the method is specified as the first parameter
- of the function.
-</p>
-</subsection>
+<!--============================ - SOURCE - ============================-->
 
-<subsection name="Custom Extension Functions">
-<p>
- Collections of custom extension functions can be implemented
- as <a href="api/org/apache/commons/jxpath/Functions.html"><code>Functions</code></a>
- objects or as Java classes, whose methods become extenstion functions.
-</p>
-<p>
- Let's say the following class implements various formatting operations:
-</p>
+        <p>
+          As you can see, the target of the method is specified as
+          the first parameter of the function.
+        </p>
+      </subsection>
+
+
+      <subsection name="Custom Extension Functions">
+        <p>
+          Collections of custom extension functions can be
+          implemented as
+          <a href="api/org/apache/commons/jxpath/Functions.html"><code>Functions</code></a>
+          objects or as Java classes, whose methods become extenstion
+          functions.
+        </p>
+        <p>
+          Let's say the following class implements various formatting
+          operations:
+        </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
  public class Formats {
     public static String date(Date d, String pattern){
         return new SimpleDateFormat(pattern).format(d);
@@ -697,12 +907,15 @@ than many other types of XPaths.
     ...
  }
 </source>
+<!--============================ - SOURCE - ============================-->
 
-<p>
- We can register this class with a JXPathContext:
-</p>
+        <p>
+          We can register this class with a JXPathContext:
+        </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
  context.setFunctions(new ClassFunctions(Formats.class, "format"));
  ...
 
@@ -710,28 +923,37 @@ than many other types of XPaths.
  String today =
      (String)context.getValue("format:date($today, 'MM/dd/yyyy')");
 </source>
-<p>
- You can also register whole packages of Java classes using PackageFunctions.
-</p>
-<p>
- Also, see <a href="api/org/apache/commons/jxpath/FunctionLibrary.html"><code>FunctionLibrary</code></a>,
- which is a class that allows you to register multiple sets of extension functions with
- the same JXPathContext.
-</p>
-</subsection>
+<!--============================ - SOURCE - ============================-->
 
-<subsection name="Expression Context">
-<p>
-  A custom function can get access to the context in which it is being
-  evaluated.  ClassFunctions and PackageFunctions have special support for
-  methods and constructors that have <a href="api/org/apache/commons/jxpath/ExpressionContext.html">
-  <code>ExpressionContext</code></a> as the first argument.
-  When such extension function is invoked, it is given an object
-  that implements the ExpressionContext interface.  The function can then
-  gain access to the "current" object in the currently evaluated context.
-</p>
+        <p>
+          You can also register whole packages of Java classes using
+          PackageFunctions.
+        </p>
+        <p>
+          Also, see
+          <a href="api/org/apache/commons/jxpath/FunctionLibrary.html"><code>FunctionLibrary</code></a>,
+          which is a class that allows you to register multiple sets
+          of extension functions with the same JXPathContext.
+        </p>
+      </subsection>
+
+
+      <subsection name="Expression Context">
+        <p>
+          A custom function can get access to the context in which it
+          is being evaluated. ClassFunctions and PackageFunctions
+          have special support for methods and constructors that have
+          <a href="api/org/apache/commons/jxpath/ExpressionContext.html"><code>ExpressionContext</code></a>
+          as the first argument. When such extension function is
+          invoked, it is given an object that implements the
+          ExpressionContext interface. The function can then gain
+          access to the "current" object in the currently evaluated
+          context.
+        </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
 public class MyExtenstionFunctions {
    public static boolean isDate(ExpressionContext context){
       Pointer pointer = context.getContextNodePointer();
@@ -743,28 +965,37 @@ public class MyExtenstionFunctions {
    ...
 }
 </source>
+<!--============================ - SOURCE - ============================-->
 
-<p>
-You can then register this extension function using ClassFunctions and
-call it like this:
-</p>
+        <p>
+          You can then register this extension function using
+          ClassFunctions and call it like this:
+        </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
   "//.[myext:isDate()]"
 </source>
-<p>
-This expression will find all nodes of the graph that are dates.
-</p>
-<p>
-The current context is passed to an extension function by default. Any other
-context can be passed as an explicit argument declared as ExpressionContext.
-Note, that if the first argument is ExpressionContext, it is always passed the
-current context. Therefore, you may need to declare two ExpressionContext
-arguments - one for the current and one for the parameter context.
-For example,
-</p>
+<!--============================ - SOURCE - ============================-->
+
+        <p>
+          This expression will find all nodes of the graph that are
+          dates.
+        </p>
+        <p>
+          The current context is passed to an extension function by
+          default. Any other context can be passed as an explicit
+          argument declared as ExpressionContext. Note, that if the
+          first argument is ExpressionContext, it is always passed
+          the current context. Therefore, you may need to declare two
+          ExpressionContext arguments- one for the current and one
+          for the parameter context. For example,
+        </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
 public class MyExtenstionFunctions {
    ...
    public static boolean contains(ExpressionContext current,
@@ -780,102 +1011,246 @@ public class MyExtenstionFunctions {
    }
 }
 </source>
-<p>
-You can call this function to find all people who have a certain phone number:
-</p>
+<!--============================ - SOURCE - ============================-->
+
+        <p>
+          You can call this function to find all people who have a
+          certain phone number:
+        </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
   "/addressBook/contact[myext:contains(phoneNumbers, '555-5555']"
 </source>
+<!--============================ - SOURCE - ============================-->
 
-</subsection>
-</section>
+      </subsection>
+    </section>
 
-<section name="Type Conversions">
-<p>
- JXPath automatically performs the following type convertions:
-</p>
 
-<table>
-  <tr>
-    <th>From type</th>
-    <th>To type</th>
-    <th>Operation</th>
-  </tr>
-  <tr><td><i>any</i></td><td>String</td>
-        <td>Calls toString()</td></tr>
-  <tr><td>Boolean</td><td><i>any</i> Number</td>
-        <td>True = 1, false = 0</td></tr>
-  <tr><td><i>any</i> Number</td><td><i>any other</i> Number</td>
-        <td>Truncates if needed</td></tr>
-  <tr><td>String</td><td><i>any primitive type</i></td>
-        <td>Parses the string</td></tr>
-  <tr><td><i>array of length 1</i></td><td><i>any</i></td>
-        <td>Takes the single element of the array <br/>and (recursively) converts it to the needed type</td></tr>
-  <tr><td><i>collection of size 1</i></td><td><i>any</i></td>
-        <td>Takes the single element of the array <br/>and (recursively) converts it to the needed type</td></tr>
-  <tr><td><i>array</i></td><td><i>array</i></td>
-        <td>Creates a new array of the same size and converts every element</td></tr>
-  <tr><td><i>array</i></td><td><i>Collection</i></td>
-        <td>Creates a collection and adds to it all elements of the array. Note that it will only 
-            know how to create the collection if the type is a concrete class, List or Set</td></tr>
-  <tr><td><i>Collection</i></td><td><i>array</i></td>
-        <td>Creates a new array the same size as the collection, converts and copies every element
-            of the collection into the array.</td></tr>
-  <tr><td><i>Collection</i></td><td><i>Collection</i></td>
-        <td>Creates a collection and copies the source collection into the new collection. Note that it will only 
-            know how to create the collection if the type is a concrete class, List or Set</td></tr>
-  <tr><td>ExpressionContext</td><td>Collection, List, Vector, Set</td>
-        <td>Creates a collection of type ArrayList, <br/>
-            ArrayList, Vector, HashSet respectively and <br/>
-            populates it with all current context node pointers</td></tr>
-  <tr><td>ExpressionContext</td><td><i>any</i></td>
-        <td>Obtains value of the current context node pointer <br/>and (recursively) converts it to the needed type</td></tr>
-</table>
-</section>
+    <section name="Type Conversions">
+      <p>
+        JXPath automatically performs the following type convertions:
+      </p>
+      <table>
+        <tr>
+          <th>
+            From type
+          </th>
+          <th>
+            To type
+          </th>
+          <th>
+            Operation
+          </th>
+        </tr>
+        <tr>
+          <td><i>null</i>
+          </td>
+          <td><i>primitive</i>
+          </td>
+          <td>
+            false, zero
+          </td>
+        </tr>
+        <tr>
+          <td><i>any</i>
+          </td>
+          <td>
+            String
+          </td>
+          <td>
+            Calls toString()
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Boolean
+          </td>
+          <td><i>any</i>  Number
+          </td>
+          <td>
+            True = 1, false = 0
+          </td>
+        </tr>
+        <tr>
+          <td><i>any</i>  Number
+          </td>
+          <td><i>any other</i>  Number
+          </td>
+          <td>
+            Truncates if needed
+          </td>
+        </tr>
+        <tr>
+          <td>
+            String
+          </td>
+          <td><i>any primitive type</i>
+          </td>
+          <td>
+            Parses the string
+          </td>
+        </tr>
+        <tr>
+          <td><i>array of length 1</i>
+          </td>
+          <td><i>any</i>
+          </td>
+          <td>
+            Takes the single element of the array
+            <br/>
+             and (recursively) converts it to the needed
+            type
+          </td>
+        </tr>
+        <tr>
+          <td><i>collection of size 1</i>
+          </td>
+          <td><i>any</i>
+          </td>
+          <td>
+            Takes the single element of the array
+            <br/>
+             and (recursively) converts it to the needed
+            type
+          </td>
+        </tr>
+        <tr>
+          <td><i>array</i>
+          </td>
+          <td><i>array</i>
+          </td>
+          <td>
+            Creates a new array of the same size and converts every
+            element
+          </td>
+        </tr>
+        <tr>
+          <td><i>array</i>
+          </td>
+          <td><i>Collection</i>
+          </td>
+          <td>
+            Creates a collection and adds to it all elements of the
+            array. Note that it will only know how to create the
+            collection if the type is a concrete class, List or Set
+          </td>
+        </tr>
+        <tr>
+          <td><i>Collection</i>
+          </td>
+          <td><i>array</i>
+          </td>
+          <td>
+            Creates a new array the same size as the collection,
+            converts and copies every element of the collection
+            into the array.
+          </td>
+        </tr>
+        <tr>
+          <td><i>Collection</i>
+          </td>
+          <td><i>Collection</i>
+          </td>
+          <td>
+            Creates a collection and copies the source collection
+            into the new collection. Note that it will only know
+            how to create the collection if the type is a concrete
+            class, List or Set
+          </td>
+        </tr>
+        <tr>
+          <td>
+            ExpressionContext
+          </td>
+          <td>
+            Collection, List, Vector, Set
+          </td>
+          <td>
+            Creates a collection of type ArrayList,
+            <br/>
+             ArrayList, Vector, HashSet respectively and
+            <br/>
+             populates it with all current context node
+            pointers
+          </td>
+        </tr>
+        <tr>
+          <td>
+            ExpressionContext
+          </td>
+          <td><i>any</i>
+          </td>
+          <td>
+            Obtains value of the current context node pointer
+            <br/>
+             and (recursively) converts it to the needed
+            type
+          </td>
+        </tr>
+      </table>
+    </section>
 
-<section name="Internationalization">
-<p>
-For DOM Documents JXPathContext supports internationalization XPath-style.
-A locale can be declared on an XML Element like this:
-</p>
+
+    <section name="Internationalization">
+      <p>
+        For DOM Documents JXPathContext supports internationalization
+        XPath-style. A locale can be declared on an XML Element like
+        this:
+      </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
      &lt;book xml:lang="fr"&gt;Les Miserables&lt;/book&gt;
 </source>
-<p>
-You can then use the <code>lang</code> function in XPath to find nodes
-for a specific language:
-</p>
+<!--============================ - SOURCE - ============================-->
+
+      <p>
+        You can then use the <code>lang</code>  function in XPath
+        to find nodes for a specific language:
+      </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
      "//book[lang('fr')]
 </source>
-<p>
-The <code>"lang"</code> boolean function is supported for non-DOM objects as well.  It tests
-the Locale set on the JXPathContext (or the default locale).  See
-<a href="api/org/apache/commons/jxpath/JXPathContext.html#setLocale">JXPathContext.setLocale()</a>.
-</p>
-<p>
- You can also utilize the <code>xml:lang</code> attribute, whose value is
- the name of the locale, whether in a DOM document or outside.
-</p>
-</section>
+<!--============================ - SOURCE - ============================-->
 
-<section name="Nested Contexts">
- <p>
- If you need to use the same set of variables while interpreting
- XPaths with different beans, it makes sense to put the variables in a separate
- context and specify that context as a parent context every time you
- allocate a new JXPathContext for a JavaBean.  This way you don't need
- to waste time fully configuring every context.
- </p>
- <p>The same logic
- applies to shared extension functions, abstract factories and locale.
- </p>
+      <p>
+        The <code>"lang"</code>  boolean function is supported for
+        non-DOM objects as well. It tests the Locale set on the
+        JXPathContext (or the default locale). See
+        <a href="api/org/apache/commons/jxpath/JXPathContext.html#setLocale">JXPathContext.setLocale()</a>.
+      </p>
+      <p>
+        You can also utilize the <code>xml:lang</code>  attribute,
+        whose value is the name of the locale, whether in a DOM
+        document or outside.
+      </p>
+    </section>
 
+
+    <section name="Nested Contexts">
+      <p>
+        If you need to use the same set of variables while interpreting
+        XPaths with different beans, it makes sense to put the
+        variables in a separate context and specify that context as a
+        parent context every time you allocate a new JXPathContext for
+        a JavaBean. This way you don't need to waste time fully
+        configuring every context.
+      </p>
+      <p>
+        The same logic applies to shared extension functions, abstract
+        factories and locale.
+      </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
  JXPathContext sharedContext = JXPathContext.newContext(null);
  sharedContext.getVariables().declareVariable("title", "Java");
  sharedContext.setFunctions(new MyExtensionFunctions());
@@ -886,136 +1261,175 @@ the Locale set on the JXPathContext (or the default locale).  See
 
  JXPathContext context = JXPathContext.newContext(sharedContext, auth);
 
- Iterator javaBooks = 
+ Iterator javaBooks =
       context.iterate("books[preprocessTitle(title) = $title]");
  </source>
-</section>
+<!--============================ - SOURCE - ============================-->
+
+    </section>
 
 
-<section name="Compiled Expressions">
-<p>
-When JXPath is asked to evaluate an expression for the first time,
-it compiles it and caches its compiled representation.  This mechanism
-reduces the overhead caused by compilation.  In some cases though,
-JXPath's own caching may not be sufficient - JXPath caches have
-limited size and they are cleared once in a while. 
-</p>
-<p>
-Here's how you can precompile an XPath expression:
-</p>
+    <section name="Compiled Expressions">
+      <p>
+        When JXPath is asked to evaluate an expression for the first
+        time, it compiles it and caches its compiled representation.
+        This mechanism reduces the overhead caused by compilation. In
+        some cases though, JXPath's own caching may not be sufficient-
+        JXPath caches have limited size and they are cleared once in a
+        while.
+      </p>
+      <p>
+        Here's how you can precompile an XPath expression:
+      </p>
+
+<!--============================ + SOURCE + ============================-->
 <source>
-                                                                       <b></b>
+                                                                       <b/>
      CompiledExpression expr = context.compile(xpath);
      ...
      Object value = expr.getValue(context);
 </source>
-<p>
-The following requirements can be addressed with compiled expressions:
-</p>
-<ul>
- <li>There is a relatively small number of XPaths your application
-   works with, and it needs to evaluate those XPaths multiple times.</li>
- <li>Some XPaths need to be precompiled at initialization time</li>
- <li>The syntax of some XPaths needs to be checked before they are
-   used for the first time</li>
-</ul>
-</section>
+<!--============================ - SOURCE - ============================-->
 
-<section name="Customizing JXPath">
-  <p>
-  JXPath can be customized on several levels.
-  </p>
-  <ul>
-    <li>You can provide custom JXPathBeanInfo objects to customize lists of
-        properties of JavaBeans available to JXPath.</li>
-    <li>You can easily add support for object types similar to Map. All you need
-        to do is implement the DynamicPropertyHandler interface and register
-        the implementation with JXPathIntrospector.</li>
-    <li>You can add support for types of object models JXPath does
-        not support out of the box. An example of such model would be an alternative
-        implementation of XML parse tree (e.g. JDOM etc). You will need to
-        implement one or two APIs to allow JXPath to traverse properties of these
-        custom objects.</li>
-    <li>The most dramatic customization of JXPath can be done at the level of
-        JXPathContextFactory - you can transparently provide an alternative
-        implementation of all top level APIs.</li>
-  </ul>
+      <p>
+        The following requirements can be addressed with compiled
+        expressions:
+      </p>
+      <ul>
+        <li>
+          There is a relatively small number of XPaths your
+          application works with, and it needs to evaluate those
+          XPaths multiple times.
+        </li>
+        <li>
+          Some XPaths need to be precompiled at initialization time
+        </li>
+        <li>
+          The syntax of some XPaths needs to be checked before they
+          are used for the first time
+        </li>
+      </ul>
+    </section>
 
-  <subsection name="Custom JXPathBeanInfo">
-    <p>
-     JXPath uses JavaBeans introspection to discover properties of JavaBeans.
-     You can provide alternative property lists by supplying
-     custom JXPathBeanInfo classes (see
-     <A HREF="api/org/apache/commons/jxpath/JXPathBeanInfo.html"><CODE>JXPathBeanInfo</CODE></A>).
-    </p>
-  </subsection>
 
-  <subsection name="Custom DynamicPropertyHandler">
-    <p>
-     JXPath uses various implementations of the DynamicPropertyHandler interface
-     to access properties of objects similar to Map.
-    </p>
-    <p>
-     The <code>org.apache.commons.jxpath.servlet</code> package has several
-     examples of custom DynamicPropertyHandlers.
-    </p>
-  </subsection>
+    <section name="Customizing JXPath">
+      <p>
+        JXPath can be customized on several levels.
+      </p>
+      <ul>
+        <li>
+          You can provide custom JXPathBeanInfo objects to customize
+          lists of properties of JavaBeans available to JXPath.
+        </li>
+        <li>
+          You can easily add support for object types similar to Map.
+          All you need to do is implement the DynamicPropertyHandler
+          interface and register the implementation with
+          JXPathIntrospector.
+        </li>
+        <li>
+          You can add support for types of object models JXPath does
+          not support out of the box. An example of such model would
+          be an alternative implementation of XML parse tree (e.g.
+          JDOM etc). You will need to implement one or two APIs to
+          allow JXPath to traverse properties of these custom
+          objects.
+        </li>
+        <li>
+          The most dramatic customization of JXPath can be done at
+          the level of JXPathContextFactory- you can transparently
+          provide an alternative implementation of all top level
+          APIs.
+        </li>
+      </ul>
 
-  <subsection name="Custom Pointers and Iterators">
-  <p>
-    Architecturally, multiple model support is
-    made possible by the notions of a
-    <a href="api/org/apache/commons/jxpath/ri/model/NodePointer.html">NodePointer</a> and
-    <a href="api/org/apache/commons/jxpath/ri/model/NodeIterator.html">NodeIterator</a>, which are
-    simple abstract classes that
-    are extended in different ways to traverse graphs
-    of objects of different
-    kinds.  The NodePointer/NodeIterator APIs are designed with
-    models like JavaBeans in mind.  They
-    directly support indexed collections.  As a result,
-    XPaths like <code>"foo[10]"</code>
-    can be executed as <code>"getFoo(9)"</code> or <code>"getFoo()[9]"</code>,
-    or <code>"getFoo().get(9)"</code>,
-    depending on the type of collection.  This flexibility
-    is disguised well enough by the APIs of the abstract classes,
-    so we can still have a natural implementation of traversal of
-    object models, such as DOM, that do not have the same notion of collection.
-    </p>
-    <p>
-    To add support for a new object model, build custom implementations
-    of NodePointer and NodeIterator as well as
-    <a href="api/org/apache/commons/jxpath/ri/model/NodePointerFactory.html">NodePointerFactory</a>.  Then
-    register the new factory with
-    <a href="api/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.html">JXPathContextReferenceImpl</a>.
-    </p>
-    <p>
-     See existing NodePointerFactories for examples of how that's done:
-     <ul>
-       <li>BeanPointerFactory works with JavaBeans</li>
-       <li>DynamicPointerFactory works with Dynamic beans like Map, HttpRequest and such</li>
-       <li>ContainerPointerFactory works with Container objects like XMLDocumentContainer</li>
-       <li>DOMPointerFactory works with DOM Nodes</li>
-     </ul>
-    </p>
-  </subsection>
 
-  <subsection name="Alternative JXPath Implementation">
-    <p>
-     JXPathContext allows alternative implementations. This is why instead of
-     allocating JXPathContext directly, you should call a static <code>newContext</code>
-     method.  This method will utilize the JXPathContextFactory API to locate
-     a suitable implementation of JXPath.
-     JXPath comes bundled with a default implementation called Reference Implementation.
-    </p>
-  </subsection>
-</section>
+      <subsection name="Custom JXPathBeanInfo">
+        <p>
+          JXPath uses JavaBeans introspection to discover properties
+          of JavaBeans. You can provide alternative property lists by
+          supplying custom JXPathBeanInfo classes (see
+          <A HREF="api/org/apache/commons/jxpath/JXPathBeanInfo.html"><CODE>JXPathBeanInfo</CODE></A>).
+        </p>
+      </subsection>
 
-<section name="Miscellaneous">
-<ul>
- <li>The current version of JXPath does not support the <code>id(string)</code>
-     and <code>key(key, value)</code> XPath functions.</li>
- </ul>
-</section>
 
-</body>
+      <subsection name="Custom DynamicPropertyHandler">
+        <p>
+          JXPath uses various implementations of the
+          DynamicPropertyHandler interface to access properties of
+          objects similar to Map.
+        </p>
+        <p>
+          The <code>org.apache.commons.jxpath.servlet</code>
+          package has several examples of custom
+          DynamicPropertyHandlers.
+        </p>
+      </subsection>
+
+
+      <subsection name="Custom Pointers and Iterators">
+        <p>
+          Architecturally, multiple model support is made possible by
+          the notions of a
+          <a href="api/org/apache/commons/jxpath/ri/model/NodePointer.html">NodePointer</a>
+          and
+          <a href="api/org/apache/commons/jxpath/ri/model/NodeIterator.html">NodeIterator</a>,
+          which are simple abstract classes that are extended in
+          different ways to traverse graphs of objects of different
+          kinds. The NodePointer/NodeIterator APIs are designed with
+          models like JavaBeans in mind. They directly support
+          indexed collections. As a result, XPaths like
+          <code>"foo[10]"</code>  can be executed as
+          <code>"getFoo(9)"</code>  or <code>"getFoo()[9]"</code>,
+          or <code>"getFoo().get(9)"</code>, depending on the
+          type of collection. This flexibility is disguised well
+          enough by the APIs of the abstract classes, so we can still
+          have a natural implementation of traversal of object
+          models, such as DOM, that do not have the same notion of
+          collection.
+        </p>
+        <p>
+          To add support for a new object model, build custom
+          implementations of NodePointer and NodeIterator as well as
+          <a href="api/org/apache/commons/jxpath/ri/model/NodePointerFactory.html">NodePointerFactory</a>.
+          Then register the new factory with
+          <a href="api/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.html">JXPathContextReferenceImpl</a>.
+        </p>
+        <p>
+          See existing NodePointerFactories for examples of how
+          that's done:
+          <ul>
+            <li>
+              BeanPointerFactory works with JavaBeans
+            </li>
+            <li>
+              DynamicPointerFactory works with Dynamic beans like
+              Map, HttpRequest and such
+            </li>
+            <li>
+              ContainerPointerFactory works with Container
+              objects like XMLDocumentContainer
+            </li>
+            <li>
+              DOMPointerFactory works with DOM Nodes
+            </li>
+          </ul>
+        </p>
+      </subsection>
+
+
+      <subsection name="Alternative JXPath Implementation">
+        <p>
+          JXPathContext allows alternative implementations. This is
+          why instead of allocating JXPathContext directly, you
+          should call a static <code>newContext</code>  method.
+          This method will utilize the JXPathContextFactory API to
+          locate a suitable implementation of JXPath. JXPath comes
+          bundled with a default implementation called Reference
+          Implementation.
+        </p>
+      </subsection>
+    </section>
+  </body>
 </document>
