@@ -24,7 +24,7 @@ import java.util.HashMap;
  * JXPathBeanInfo} objects for Java classes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision: 1.10 $ $Date: 2004/05/08 15:10:05 $
  */
 public class JXPathIntrospector {
 
@@ -117,10 +117,10 @@ public class JXPathIntrospector {
      * interfaces.
      */
     private static JXPathBeanInfo findDynamicBeanInfo(Class beanClass) {
-        JXPathBeanInfo beanInfo;
+        JXPathBeanInfo beanInfo = null;
         if (beanClass.isInterface()) {
             beanInfo = (JXPathBeanInfo) byInterface.get(beanClass);
-            if (beanInfo != null) {
+            if (beanInfo != null && beanInfo.isDynamic()) {
                 return beanInfo;
             }
         }
@@ -129,7 +129,7 @@ public class JXPathIntrospector {
         if (interfaces != null) {
             for (int i = 0; i < interfaces.length; i++) {
                 beanInfo = findDynamicBeanInfo(interfaces[i]);
-                if (beanInfo != null) {
+                if (beanInfo != null && beanInfo.isDynamic()) {
                     return beanInfo;
                 }
             }
@@ -137,7 +137,11 @@ public class JXPathIntrospector {
 
         Class sup = beanClass.getSuperclass();
         if (sup != null) {
-            return findDynamicBeanInfo(sup);
+            beanInfo = (JXPathBeanInfo) byClass.get(sup);
+            if (beanInfo != null && beanInfo.isDynamic()) {
+                return beanInfo;
+            }
+            return findDynamicBeanInfo(sup);                
         }
         return null;
     }
