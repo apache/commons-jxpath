@@ -1744,22 +1744,22 @@ static final long[] jjtoToken = {
 static final long[] jjtoSkip = {
    0x3eL, 0x0L, 
 };
-private JavaCharStream input_stream;
+protected SimpleCharStream input_stream;
 private final int[] jjrounds = new int[13];
 private final int[] jjstateSet = new int[26];
 protected char curChar;
-public XPathParserTokenManager(JavaCharStream stream)
+public XPathParserTokenManager(SimpleCharStream stream)
 {
-   if (JavaCharStream.staticFlag)
+   if (SimpleCharStream.staticFlag)
       throw new Error("ERROR: Cannot use a static CharStream class with a non-static lexical analyzer.");
    input_stream = stream;
 }
-public XPathParserTokenManager(JavaCharStream stream, int lexState)
+public XPathParserTokenManager(SimpleCharStream stream, int lexState)
 {
    this(stream);
    SwitchTo(lexState);
 }
-public void ReInit(JavaCharStream stream)
+public void ReInit(SimpleCharStream stream)
 {
    jjmatchedPos = jjnewStateCnt = 0;
    curLexState = defaultLexState;
@@ -1773,7 +1773,7 @@ private final void ReInitRounds()
    for (i = 13; i-- > 0;)
       jjrounds[i] = 0x80000000;
 }
-public void ReInit(JavaCharStream stream, int lexState)
+public void ReInit(SimpleCharStream stream, int lexState)
 {
    ReInit(stream);
    SwitchTo(lexState);
@@ -1786,7 +1786,7 @@ public void SwitchTo(int lexState)
       curLexState = lexState;
 }
 
-private final Token jjFillToken()
+protected Token jjFillToken()
 {
    Token t = Token.newToken(jjmatchedKind);
    t.kind = jjmatchedKind;
@@ -1806,7 +1806,7 @@ int jjround;
 int jjmatchedPos;
 int jjmatchedKind;
 
-public final Token getNextToken() 
+public Token getNextToken() 
 {
   int kind;
   Token specialToken = null;
