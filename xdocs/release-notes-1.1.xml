@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>
+       JXPath Release Notes 1.1
+    </title>
+    <author email="dmitri@apache.org">
+       Dmitri Plotnikov
+    </author>
+  </properties>
+
+  <body>
+
+  <section name="JXPath 1.1 Release Notes">
+    <p>
+      Most changes in 1.1 are in the internal implementation and do not affect
+      public APIs. However there are some new publicly visible features:
+      <ul>
+        <li>
+          Full support for JDOM. Just like with DOM, if a JDOM node
+          is the root node of a JXPathContext, the implementation strictly follows
+          the XPath 1.0 standard.  A JDOM node can also be a part of a mixed model,
+          i.e. the value of a property, variable, container, collection element
+          etc.
+        </li>
+        <li>
+          Pointer has an additional method: getNode(), which returns the raw
+          value without converting it to a primitive value.  This makes
+          a difference when you are working with DOM/JDOM and want to obtain
+          the Node itself, not the textual value of the Node.
+        </li>
+        <li>
+          Support for DynaBeans
+          (see <a href="http://jakarta.apache.org/commons/beanutils">Jakarta
+          Commons BeanUtils</a>).
+        </li>
+        <li>
+          Refactored XML parsing by container to allow for alternate parsers.
+          All you do now is specify which model you want the container to use -
+          DOM (default) or JDOM.  From that point the processing is transparent.
+          See
+          <a href="apidocs/org/apache/commons/jxpath/xml/DocumentContainer.html">
+            <code>org.apache.commons.jxpath.xml.DocumentContainer</code>
+          </a>.
+        </li>
+        <li>
+          The <code>format-number</code> XSLT function is now supported.
+          In order to provide full conformance with the standard, we also
+          needed to introduce the format customization mechanism known in
+          XSLT as <code>&lt;xsl:decimal-format&gt;</code> (see
+          <a href="http://www.w3schools.com/xsl/el_decimal-format.asp">
+          W3Schools tutorial</a>).  The new methods of JXPathContext:
+          <code>setDecimalFormatSymbols</code> and
+          <code>getDecimalFormatSymbols</code> fulfill that requirement.
+        </li>
+        <li>
+          The <code>attribute::</code> axis is now supported for models other than
+          DOM/JDOM.  For beans and maps it is interpreted the same way as
+          the <code>"child::"</code> axis.
+        </li>
+        <li>
+          In JXPath 1.0 you could only register DynamicPropertyHandlers for
+          concrete classes, now you can also register them for interfaces.
+        </li>
+        <li>
+          The implementation of <code>setValue()</code> has changed for DOM/JDOM
+          nodes.  In JXPath 1.0 it would replace text in the element, but leave
+          subelements alone.  The new implementation is more consistent: it
+          drops all subelements first.  Also, if you pass a Node as the new
+          value, it will insert the Node in the tree.
+        </li>
+        <li>
+          The JUnit tests for JXPath have been completely redisigned and
+          significantly enhanced.
+        </li>
+      </ul>
+     </p>
+
+    </section>
+
+    <section name="Acknowledgements">
+      <p>
+        Great thanks to everybody who reported problems, helped to trace them,
+        suggested changed or simply provided encouragement. Special thanks to
+        <ul>
+          <li>Trond Aasan</li>
+          <li>Bjorn Bength</li>
+          <li>Derek A. Bodin</li>
+          <li>BoD</li>
+          <li>Stephen Colebourne</li>
+          <li>Torsten Curdt</li>
+          <li>Pierre Delisle</li>
+          <li>Ruud Diterwich</li>
+          <li>Peter Donald</li>
+          <li>Kate Dvortsova</li>
+          <li>Eduardo Francos</li>
+          <li>dIon Gillard</li>
+          <li>Mike Hogan</li>
+          <li>Ivelin Ivanov</li>
+          <li>Per Kreipke</li>
+          <li>Kees Kuip</li>
+          <li>David Li</li>
+          <li>Ulrich Nicolas Lissé</li>
+          <li>Costin Manolache</li>
+          <li>Thorsten Mauch</li>
+          <li>Craig R. McClanahan</li>
+          <li>Markus Menner</li>
+          <li>Daniel Michalik</li>
+          <li>Steve Pannier</li>
+          <li>Ed Peters</li>
+          <li>Kenneth Petersen</li>
+          <li>Ovidiu Predescu</li>
+          <li>Erik Pugh</li>
+          <li>Robert Rasmussen</li>
+          <li>Vasco C. Rocha</li>
+          <li>Francois Swiegers</li>
+          <li>Joern Turner</li>
+          <li>Knut Wannheden</li>
+          <li>Andrew Wulf</li>
+          <li>Jason van Zyl</li>
+        </ul>
+        Thanks!
+      </p>
+
+    </section>
+  </body>
+</document>

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/CoreFunctionTest.java,v 1.3 2003/01/20 00:00:27 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2003/01/20 00:00:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/CoreFunctionTest.java,v 1.4 2003/01/25 01:50:37 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/25 01:50:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,6 +62,8 @@
 
 package org.apache.commons.jxpath.ri.compiler;
 
+import java.text.DecimalFormatSymbols;
+
 import org.apache.commons.jxpath.IdentityManager;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
@@ -75,7 +77,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test basic functionality of JXPath - core functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/01/20 00:00:27 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/25 01:50:37 $
  */
 
 public class CoreFunctionTest extends JXPathTestCase {
@@ -182,5 +184,43 @@ public class CoreFunctionTest extends JXPathTestCase {
         });
 
         assertEquals("Test key", "42", context.getValue("key('a', 'b')"));
+    }
+    
+    public void testFormatNumberFunction() {
+        
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDigit('D');
+        
+        context.setDecimalFormatSymbols("test", symbols);
+        
+        assertXPathValue(
+            context,
+            "format-number(123456789, '#.000000000')",
+            "123456789.000000000");
+
+        assertXPathValue(
+            context,
+            "format-number(123456789, '#.0')",
+            "123456789.0");
+
+        assertXPathValue(
+            context, 
+            "format-number(0.123456789, '##%')", 
+            "12%");
+
+        assertXPathValue(
+            context,
+            "format-number(123456789, '################')",
+            "123456789");
+
+        assertXPathValue(
+            context,
+            "format-number(123456789, 'D.0', 'test')",
+            "123456789.0");
+
+        assertXPathValue(
+            context,
+            "format-number(123456789, '$DDD,DDD,DDD.DD', 'test')",
+            "$123,456,789");
     }
 }

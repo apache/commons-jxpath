@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/LangAttributePointer.java,v 1.8 2003/01/11 05:41:24 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2003/01/11 05:41:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/LangAttributePointer.java,v 1.9 2003/01/25 01:50:37 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/01/25 01:50:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of the attribute is based on the locale supplied to it in the constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2003/01/11 05:41:24 $
+ * @version $Revision: 1.9 $ $Date: 2003/01/25 01:50:37 $
  */
 public class LangAttributePointer extends NodePointer {
     public LangAttributePointer(NodePointer parent) {
@@ -78,7 +78,7 @@ public class LangAttributePointer extends NodePointer {
     }
 
     public QName getName() {
-        return new QName(null, "lang");
+        return new QName("xml", "lang");
     }
 
     public QName getExpandedName() {
@@ -92,10 +92,10 @@ public class LangAttributePointer extends NodePointer {
     public boolean isCollection() {
         return false;
     }
-    
+
     public int getLength() {
         return 1;
-    }    
+    }
 
     public Object getBaseValue() {
         return parent.getLocale().toString().replace('_', '-');
@@ -154,7 +154,7 @@ public class LangAttributePointer extends NodePointer {
 
     public int compareChildNodePointers(
         NodePointer pointer1,
-        NodePointer pointer2) 
+        NodePointer pointer2)
     {
         // Won't happen - lang attributes don't have children
         return 0;

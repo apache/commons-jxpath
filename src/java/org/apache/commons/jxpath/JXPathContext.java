@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.12 2003/01/11 05:41:22 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2003/01/11 05:41:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.13 2003/01/25 01:50:36 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2003/01/25 01:50:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,8 @@
  */
 package org.apache.commons.jxpath;
 
+import java.text.DecimalFormatSymbols;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -416,7 +418,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2003/01/11 05:41:22 $
+ * @version $Revision: 1.13 $ $Date: 2003/01/25 01:50:36 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -428,6 +430,7 @@ public abstract class JXPathContext {
     protected boolean lenient = false;
     protected IdentityManager idManager;
     protected KeyManager keyManager;
+    protected HashMap decimalFormats;
 
     private static JXPathContext compilationContext;
 
@@ -552,7 +555,7 @@ public abstract class JXPathContext {
      * the context has a parent, returns the parent's locale.
      * Otherwise, returns Locale.getDefault().
      */
-    protected Locale getLocale() {
+    public Locale getLocale() {
         if (locale == null) {
             if (parentContext != null) {
                 return parentContext.getLocale();
@@ -563,7 +566,35 @@ public abstract class JXPathContext {
         }
         return locale;
     }
+    
+    /**
+     * Sets DecimalFormatSymbols for a given name. The DecimalFormatSymbols can
+     * be referenced as the third, optional argument in the invocation of
+     * <code>format-number (number,format,decimal-format-name)</code> function.
+     * By default, JXPath uses the symbols for the current locale.
+     * 
+     * @param name the format name or null for default format.
+     */
+    public void setDecimalFormatSymbols(
+        String name,
+        DecimalFormatSymbols symbols) 
+    {
+        if (decimalFormats == null) {
+            decimalFormats = new HashMap();
+        }
+        decimalFormats.put(name, symbols);
+    }
 
+    /**
+     * @see #setDecimalFormat(String, DecimalFormatS)
+     */
+    public DecimalFormatSymbols getDecimalFormatSymbols(String name) {
+        if (decimalFormats == null) {
+            return null;
+        }
+        return (DecimalFormatSymbols) decimalFormats.get(name);
+    }
+    
     /**
      * If the context is in the lenient mode, then getValue() returns null
      * for inexistent paths.  Otherwise, a path that does not map to

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/JXPathCompiledExpressionTest.java,v 1.1 2003/01/20 00:00:27 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2003/01/20 00:00:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/JXPathCompiledExpressionTest.java,v 1.2 2003/01/25 01:50:37 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/25 01:50:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,13 +64,34 @@ package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
-import org.apache.commons.jxpath.ri.compiler.*;
+import org.apache.commons.jxpath.ri.compiler.Constant;
+import org.apache.commons.jxpath.ri.compiler.CoreFunction;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationAdd;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationAnd;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationDivide;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationEqual;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationGreaterThan;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationGreaterThanOrEqual;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationLessThan;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationLessThanOrEqual;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationMod;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationMultiply;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationNegate;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationNotEqual;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationOr;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationSubtract;
+import org.apache.commons.jxpath.ri.compiler.CoreOperationUnion;
+import org.apache.commons.jxpath.ri.compiler.ExpressionPath;
+import org.apache.commons.jxpath.ri.compiler.ExtensionFunction;
+import org.apache.commons.jxpath.ri.compiler.LocationPath;
+import org.apache.commons.jxpath.ri.compiler.NameAttributeTest;
+import org.apache.commons.jxpath.ri.compiler.VariableReference;
 
 /**
  * Test compiler.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2003/01/20 00:00:27 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/25 01:50:37 $
  */
 
 public class JXPathCompiledExpressionTest extends JXPathTestCase {
@@ -123,6 +144,7 @@ public class JXPathCompiledExpressionTest extends JXPathTestCase {
         assertXPathExpression("ceiling(11.4)", CoreFunction.class);
         assertXPathExpression("round(11.4)", CoreFunction.class);
         assertXPathExpression("key('title', 'Hobbit')", CoreFunction.class);
+        assertXPathExpression("format-number(12, '##')", CoreFunction.class);
     }
     
     public void testCoreOperationAnd() {

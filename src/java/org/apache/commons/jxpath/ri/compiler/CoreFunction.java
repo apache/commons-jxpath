@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.10 2003/01/19 23:59:23 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2003/01/19 23:59:23 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreFunction.java,v 1.11 2003/01/25 01:50:36 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/01/25 01:50:36 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,7 +61,11 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Collection;
+import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
@@ -75,7 +79,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * like "position()" or "number()".
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2003/01/19 23:59:23 $
+ * @version $Revision: 1.11 $ $Date: 2003/01/25 01:50:36 $
  */
 public class CoreFunction extends Operation {
 
@@ -149,6 +153,8 @@ public class CoreFunction extends Operation {
                 return "round";
             case Compiler.FUNCTION_KEY :
                 return "key";
+            case Compiler.FUNCTION_FORMAT_NUMBER:
+                return "format-number";
         }
         return "unknownFunction" + functionCode + "()";
     }
@@ -215,6 +221,9 @@ public class CoreFunction extends Operation {
             case Compiler.FUNCTION_CEILING:
             case Compiler.FUNCTION_ROUND:
                 return false;
+                
+            case Compiler.FUNCTION_FORMAT_NUMBER:
+                return args != null && args.length == 2;                             
         }
 
         return false;
@@ -304,6 +313,8 @@ public class CoreFunction extends Operation {
                 return functionRound(context);
             case Compiler.FUNCTION_KEY :
                 return functionKey(context);
+            case Compiler.FUNCTION_FORMAT_NUMBER :
+                return functionFormatNumber(context);
         }
         return null;
     }
@@ -673,6 +684,42 @@ public class CoreFunction extends Operation {
         assertArgCount(1);
         double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
         return new Double(Math.round(v));
+    }
+
+    private Object functionFormatNumber(EvalContext context) {
+        int ac = getArgumentCount();
+        if (ac != 2 && ac != 3) {
+            assertArgCount(2);
+        }
+
+        double number =
+            InfoSetUtil.doubleValue(getArg1().computeValue(context));
+        String pattern =
+            InfoSetUtil.stringValue(getArg2().computeValue(context));
+
+        DecimalFormatSymbols symbols = null;
+        if (ac == 3) {
+            String symbolsName =
+                InfoSetUtil.stringValue(getArg3().computeValue(context));
+            symbols =
+                context.getJXPathContext().getDecimalFormatSymbols(symbolsName);
+        }
+        else {
+            NodePointer pointer = context.getCurrentNodePointer();
+            Locale locale;
+            if (pointer != null) {
+                locale = pointer.getLocale();
+            }
+            else {
+                locale = context.getJXPathContext().getLocale();
+            }
+            symbols = new DecimalFormatSymbols(locale);
+        }
+        
+        DecimalFormat format = (DecimalFormat) NumberFormat.getInstance();
+        format.setDecimalFormatSymbols(symbols);
+        format.applyLocalizedPattern(pattern);
+        return format.format(number);
     }
 
     private void assertArgCount(int count) {

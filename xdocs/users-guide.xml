@@ -8,9 +8,8 @@
        Dmitri Plotnikov
     </author>
   </properties>
+
   <body>
-
-
     <section name="What's JXPath">
       <p>
         JXPath provides APIs for the traversal of graphs of JavaBeans,
@@ -57,13 +56,25 @@
             </li>
             <li><a href="#Map Element Access">Map Element Access</a>
             </li>
-            <li><a href="#DOM Document Access">DOM Document Access</a>
+            <li><a href="#DOM/JDOM Document Access">DOM/JDOM Document Access</a>
             </li>
             <li><a href="#Containers">Containers</a>
             </li>
             <li><a href="#Functions id() and key()">Functions id() and key()</a>
             </li>
           </ul>
+        </li>
+        <li><a href="#XPath Axes And Object Graphs">XPath Axes And Object Graphs</a>
+          <ul>
+            <li><a href="#Parent/child Relationship">Parent/child Relationship</a>
+            </li>
+            <li><a href="#Document Order">Document Order</a>
+            </li>
+            <li><a href="#Attributes">Attributes</a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#Exceptions During XPath Evaluation">Exceptions During XPath Evaluation</a>
         </li>
         <li><a href="#Modifying Object Graphs">Modifying Object Graphs</a>
           <ul>
@@ -255,7 +266,8 @@ String fName = (String)context.getValue("firstName");
 
         <p>
           A collection can be an arbitrary array or an instance of
-          java.util.Collection.
+          java.util.Collection.  JXPath also supports indexed properties
+          according to the JavaBeans specification.
         </p>
         <p><b>Note:</b>  in XPath the first element of a collection has
           index 1, not 0.
@@ -361,21 +373,19 @@ String fName = (String)context.getValue("firstName");
       </subsection>
 
 
-      <subsection name="DOM Document Access">
+      <subsection name="DOM/JDOM Document Access">
         <p>
-          JXPath supports access to DOM Nodes. The DOM node can be
+          JXPath supports access to DOM and JDOM Nodes. The DOM/JDOM node can be
           the context node of JXPathContext or it can be a value of a
           property, element of a collection, variable value etc.
           Let's say we have a path <code>"$foo/bar/baz"</code>.
           It will work if, for instance, the value of the variable
-          "foo" is a JavaBean, whose property "bar" contains a DOM
+          "foo" is a JavaBean, whose property "bar" contains a DOM/JDOM
           Node, which has a child element named "baz".
         </p>
         <p>
-          The intepretation of XPath over DOM structures is
-          implemented in with the XPath specification. For instance,
-          the "attribute" axis is supported for DOM objects, even
-          though it is not applicable to JavaBeans.
+          The intepretation of XPath over DOM/JDOM structures is
+          implemented in accordance with the XPath specification.
         </p>
       </subsection>
 
@@ -499,6 +509,155 @@ String fName = (String)context.getValue("firstName");
       </p>
     </section>
 
+    <section name="XPath Axes And Object Graphs">
+      <p>
+        The interpretation of XPath over XML models like DOM and JDOM is governed by
+        the XPath standard.  There is no official standard for the interpretation
+        of XPaths on other types of models: beans, maps etc.
+        This part describes how JXPath performs such interpretation.
+      </p>
+
+      <subsection name="Parent/child Relationship">
+        <p>
+          In DOM/JDOM the definition of a node's parent is clear: a Node always
+          points to its parent. XML is a strict tree, so there always exactly
+          one parent for every node except the root.
+        </p>
+        <p>
+          With other models the situation is more complex. The model can no
+          longer be described as a tree.  In many cases it is a complicated
+          graph with many paths to the same node and even referential cycles
+          where node A is node B's child, but also node B is node A's child.
+          Even if the graph is a strict tree, a node of that tree may not have
+          a pointer to its parent.
+        </p>
+        <p>
+          Because of all these issues, JXPath abandons the static notion
+          of a parent/child relationship in favor of a dynamic one.
+          When an XPath is evaluated, the engine performs a series of searches
+          and computations in so called <i>evaluation contexts</i>.  For example,
+          when the <code>"/foo/bar"</code> path is evaluated, JXPath first looks
+          for a node named "foo" in the root evaluation context.
+          If such a node is found, the interpreter forms a new context
+          for the discovered node and searches for a node named "bar" in
+          that context.
+        </p>
+        <p>
+          This chain of contexts is used in JXPath to define the parent-child
+          relationship. Parent is the base node of the previous evaluation
+          context in the chain.  A more appropriate name for the "parent::" axis
+          would then be "step back".
+        </p>
+        <p>
+          Consider this example.  The evaluated path is
+          <code>"foo//bar/../baz"</code>.  In the process of evaluating of this
+          path, the engine will walk the graph forming chains of context like
+          <code>"/foo/a/b/c/bar"</code>.  Once a node with the name "bar" is found,
+          the engine will "step back": in our case it will go back to the
+          <code>"/foo/a/b/c"</code> context and then look for the node with
+          the name "baz" in that context.
+        </p>
+        <p>
+          <b>Exercise:</b> think about how the path
+          <code>"//foo[../@name='bar']"</code> would be interpreted.
+        </p>
+        <p>
+          <b>Solution:</b>
+          <ol>
+            <li>
+              Descend from the root of the graph looking for a node
+              with the name "foo".
+            </li>
+            <li>
+              Let's say the engine has found such a node in the context of
+              a node called "biz".  The "biz" node is the dynamic parent
+              of the node "foo".
+            </li>
+            <li>
+              Form a new context for the "foo" node.
+            </li>
+            <li>
+              To evaluate the predicate <code>"../@name='bar'"</code>, step back
+              to the previous context, which is the context of
+              the node "biz" to see if it has an attribute called "name". If so,
+              compare the value of that attribute to "bar". If it is equal,
+              include the current "foo" node in the result set.
+            </li>
+          </ol>
+        </p>
+        <p>
+          The dynamic interpretation of the parent/child relationship affects
+          most axes including "parent::", "ancestor::",
+          "preceding::", "following::" etc.
+        </p>
+      </subsection>
+
+      <subsection name="Document Order">
+        <p>
+          The XPath standard defines the term "document order" as the order
+          in which pieces of XML follow each other in the textual representation.
+          This definition is not applicable directly to non-XML models.
+        </p>
+        <p>
+          Results of many types of xpaths depend on the document order, so
+          we cannot leave it as "unpredictable" or "undefined" for such nodes
+          as JavaBeans or Maps.  In order to have a predictable order,
+          JXPath sorts properties of beans and keys of maps alphabetically.
+        </p>
+      </subsection>
+
+      <subsection name="Attributes">
+        <p>
+          For JavaBeans and Maps the "attribute::" axis is interpreted
+          the same as the "child::" axis.
+        </p>
+        <p>
+          The only two distinctions are the "xml:lang" and "name".
+        </p>
+        <p>
+          Attribute <code><b>xml:lang</b></code> refers to the name of the locale
+          associated with the node.  In XML the <code>xml:lang</code> attribute
+          can be specifed for an element explicitly. In non-XML models,
+          the locale is associated with the whole JXPathContext.  Unless
+          explicitly set it is the application's default locale.
+        </p>
+        <p>
+          The <code><b>name</b></code> attribute is primarily used when
+          working with Maps.  Often elements of a Map can be retrieved
+          using the "child::" axis.  For example, if "foo" in <code>"foo/bar"</code>
+          refers to a Map then the path extracts from the map the value for the key
+          "bar".  The syntax of XPath requires that a child name be a properly
+          formed identifier.  Now, what if the key we are looking for is "?%$",
+          which is not an identifier.  In this case we can use the "name"
+          attribute like this:  <code>"foo[@name='?%$']"</code>.  This path
+          is not interpreted as "find a 'foo' that has the name '?%$'". It is
+          interpreted as "find a 'foo' and get the value for the key '?%$'"
+          from it.  This interpretation is used for maps and beans only.
+          In the case of XML, "name" is treated like any other attribute.
+        </p>
+      </subsection>
+
+    </section>
+
+    <section name="Exceptions During XPath Evaluation">
+      <p>
+        Exceptions thrown by accessor methods are treated differently depending
+        on the evaluated xpath and the particular method used to do the
+        evaluation.
+      </p>
+      <p>
+        The basic idea is that if JXPath is <i>looking</i> for something by
+        iterating over all properties of a bean and during that iteration
+        an accessor method for one of these properties throws an exception,
+        JXPath ignores the exception and moves on to the next property.
+        This could happen if the method is <code>iterate()</code> or
+        if the path contains search axes like "descendant::", "ancestor::" etc.
+      </p>
+      <p>
+        In all other cases, an exception thrown by an accessor method is
+        wrapped into a JXPathException and re-thrown.
+      </p>
+    </section>
 
     <section name="Modifying Object Graphs">
       <p>
@@ -1349,7 +1508,7 @@ public class MyExtenstionFunctions {
           JXPath uses JavaBeans introspection to discover properties
           of JavaBeans. You can provide alternative property lists by
           supplying custom JXPathBeanInfo classes (see
-          <A HREF="apidocs/org/apache/commons/jxpath/JXPathBeanInfo.html"><CODE>JXPathBeanInfo</CODE></A>).
+          <a href="apidocs/org/apache/commons/jxpath/JXPathBeanInfo.html"><code>JXPathBeanInfo</code></a>).
         </p>
       </subsection>
 
