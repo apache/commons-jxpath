@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.3 2003/01/11 05:41:27 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2003/01/11 05:41:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.4 2003/01/29 17:55:01 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/29 17:55:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,15 +63,8 @@ package org.apache.commons.jxpath.util;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
-import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
 
@@ -79,7 +72,7 @@ import org.apache.commons.jxpath.Pointer;
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:27 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/29 17:55:01 $
  */
 public class BasicTypeConverter implements TypeConverter {
 
@@ -141,17 +134,6 @@ public class BasicTypeConverter implements TypeConverter {
                 return true;
             }
         }
-        else if (object instanceof ExpressionContext) {
-            if (Collection.class.isAssignableFrom(toType)) {
-                return true;
-            }
-            Pointer pointer =
-                ((ExpressionContext) object).getContextNodePointer();
-            if (pointer != null) {
-                Object value = pointer.getValue();
-                return canConvert(value, toType);
-            }
-        }
         else if (fromType.isArray()) {
             // Collection -> array
             if (toType.isArray()) {
@@ -201,6 +183,9 @@ public class BasicTypeConverter implements TypeConverter {
                 return canConvert(value, toType);
             }
         }
+        else if (object instanceof Pointer) {
+            return canConvert(((Pointer) object).getValue(), toType);
+        }
         return false;
     }
     /**
@@ -218,35 +203,6 @@ public class BasicTypeConverter implements TypeConverter {
 
         if (toType == Object.class) {
             return object;
-        }
-
-        if (object instanceof ExpressionContext) {
-            if (Collection.class.isAssignableFrom(toType)) {
-                List list = ((ExpressionContext) object).getContextNodeList();
-                Collection result = new ArrayList();
-                if (toType == List.class || toType == ArrayList.class) {
-                    result = new ArrayList();
-                }
-                else if (toType == Vector.class) {
-                    result = new Vector();
-                }
-                else if (toType == Set.class || toType == HashSet.class) {
-                    result = new HashSet();
-                }
-                int count = list.size();
-                for (int i = 0; i < count; i++) {
-                    Pointer ptr = (Pointer) list.get(i);
-                    result.add(ptr.getValue());
-                }
-                return result;
-            }
-            else {
-                Object value =
-                    ((ExpressionContext) object)
-                        .getContextNodePointer()
-                        .getValue();
-                return convert(value, toType);
-            }
         }
 
         Class fromType = object.getClass();
@@ -338,7 +294,19 @@ public class BasicTypeConverter implements TypeConverter {
                 }
                 return convert(value, toType);
             }
+            else {
+                throw new RuntimeException(
+                    "Cannot convert collection to "
+                        + toType
+                        + ", it contains "
+                        + length
+                        + " elements");
+            }
         }
+        else if (object instanceof Pointer) {
+            return convert(((Pointer) object).getValue(), toType);
+        }
+        
         throw new RuntimeException(
             "Cannot convert " + object.getClass() + " to " + toType);
     }

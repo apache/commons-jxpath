@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExtensionFunction.java,v 1.7 2003/01/19 23:59:24 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/01/19 23:59:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExtensionFunction.java,v 1.8 2003/01/29 17:55:00 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/01/29 17:55:00 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,17 +63,19 @@ package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.EvalContext;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Represents  an element of the parse tree representing an extension function
  * call.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/01/19 23:59:24 $
+ * @version $Revision: 1.8 $ $Date: 2003/01/29 17:55:00 $
  */
 public class ExtensionFunction extends Operation {
 
@@ -122,8 +124,7 @@ public class ExtensionFunction extends Operation {
         if (args != null) {
             parameters = new Object[args.length];
             for (int i = 0; i < args.length; i++) {
-                Object param = args[i].compute(context);
-                parameters[i] = param;
+                parameters[i] = convert(args[i].compute(context));
             }
         }
         Function function =
@@ -137,4 +138,13 @@ public class ExtensionFunction extends Operation {
 
         return function.invoke(context, parameters);
     }
+    
+    private Object convert(Object object) {
+        if (object instanceof EvalContext) {
+            return ((EvalContext) object).getPointerList();
+        }
+        return object;
+    }
+    
+    
 }

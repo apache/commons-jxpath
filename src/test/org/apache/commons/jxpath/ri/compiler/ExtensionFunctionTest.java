@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.4 2003/01/20 00:00:27 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2003/01/20 00:00:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/compiler/ExtensionFunctionTest.java,v 1.5 2003/01/29 17:55:00 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/29 17:55:00 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -82,7 +82,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2003/01/20 00:00:27 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/29 17:55:00 $
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase {
@@ -225,7 +225,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
 
         // Invoke a function implemented as a regular method
         assertXPathValue(context, "string(test:getFoo($test))", "4");
-
+        
         // Note that the prefix is ignored anyway, we are just calling a method
         assertXPathValue(context, "string(call:getFoo($test))", "4");
 
@@ -268,7 +268,10 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         // Execute an extension function for each node while searching
         // The function uses ExpressionContext to get to the current
         // node.
-        assertXPathValue(context, "//.[test:isMap()]/Key1", "Value 1");
+        assertXPathValue(
+            context, 
+            "//.[test:isMap()]/Key1", 
+            "Value 1");
 
         // The function uses ExpressionContext to get to all
         // nodes in the context that is passed to it.
@@ -276,6 +279,12 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             context,
             "count(//.[test:count(strings) = 3])",
             new Double(7));
+
+        // Another example of the same            
+        assertXPathValue(
+            context,
+            "test:count(//strings)",
+            new Integer(21));
 
         // The function uses ExpressionContext to get to the current
         // pointer and returns its path.

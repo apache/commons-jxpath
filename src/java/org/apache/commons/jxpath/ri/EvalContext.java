@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.20 2003/01/11 05:41:22 dmitri Exp $
- * $Revision: 1.20 $
- * $Date: 2003/01/11 05:41:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.21 2003/01/29 17:55:00 dmitri Exp $
+ * $Revision: 1.21 $
+ * $Date: 2003/01/29 17:55:00 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,6 +69,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
@@ -83,7 +84,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.20 $ $Date: 2003/01/11 05:41:22 $
+ * @version $Revision: 1.21 $ $Date: 2003/01/29 17:55:00 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
@@ -256,24 +257,22 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Returns the list of all Pointers in this context for all positions
-     * of the parent contexts.
+     * of the parent contexts.  If there was an ongoing iteration over
+     * this context, the method should not be called.
      */
     public List getPointerList() {
-        int pos = position;
-        if (pos != 0) {
-            reset();
+        if (position != 0) {
+            throw new JXPathException(
+                "Simultaneous operations: "
+                    + "should not request pointer list while "
+                    + "iterating over an EvalContext");
         }
+        
         List list = new ArrayList();
         while (nextSet()) {
             while (nextNode()) {
                 list.add(getCurrentNodePointer());
             }
-        }
-        if (pos != 0) {
-            setPosition(pos);
-        }
-        else {
-            reset();
         }
         return list;
     }
