@@ -32,7 +32,6 @@ import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.PackageFunctions;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.axes.InitialContext;
@@ -54,7 +53,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.42 $ $Date: 2004/04/04 22:06:36 $
+ * @version $Revision: 1.43 $ $Date: 2004/04/04 23:16:23 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -66,8 +65,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     
     private static final Compiler COMPILER = new TreeCompiler();
     private static Map compiled = new HashMap();
-    private static final PackageFunctions GENERIC_FUNCTIONS =
-        new PackageFunctions("", null);
     private static int cleanupCount = 0;
     
     private static Vector nodeFactories = new Vector();
@@ -644,10 +641,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 }
             }
             funcCtx = funcCtx.getParentContext();
-        }
-        func = GENERIC_FUNCTIONS.getFunction(namespace, name, parameters);
-        if (func != null) {
-            return func;
         }
         throw new JXPathException(
             "Undefined function: " + functionName.toString());

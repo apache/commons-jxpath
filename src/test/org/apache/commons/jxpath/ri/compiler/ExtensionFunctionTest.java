@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import junit.textui.TestRunner;
+
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
@@ -37,13 +39,17 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2004/03/25 05:42:01 $
+ * @version $Revision: 1.16 $ $Date: 2004/04/04 23:16:24 $
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase {
     private Functions functions;
     private JXPathContext context;
 
+    public static void main(String[] args) {
+        TestRunner.run(ExtensionFunctionTest.class);
+    }
+    
     /**
      * Construct a new instance of this test case.
      *
@@ -67,6 +73,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
                 new PackageFunctions(
                     "org.apache.commons.jxpath.ri.compiler.",
                     "jxpathtest"));
+            lib.addFunctions(new PackageFunctions("", null));
             context.setFunctions(lib);
         }
         functions = new ClassFunctions(TestFunctions.class, "test");
@@ -146,7 +153,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     }
 
     public void testAllocation() {
-
+        
         // Allocate new object using the default constructor
         assertXPathValue(context, "string(test:new())", "foo=0; bar=null");
 

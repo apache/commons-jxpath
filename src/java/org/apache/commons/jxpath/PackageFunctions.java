@@ -65,7 +65,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2004/03/25 05:42:01 $
+ * @version $Revision: 1.14 $ $Date: 2004/04/04 23:16:23 $
  */
 public class PackageFunctions implements Functions {
     private String classPrefix;
@@ -189,7 +189,7 @@ public class PackageFunctions implements Functions {
                 ex);
         }
 
-        if (methodName.endsWith("new")) {
+        if (methodName.equals("new")) {
             Constructor constructor =
                 MethodLookupUtils.lookupConstructor(functionClass, parameters);
             if (constructor != null) {

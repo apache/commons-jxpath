@@ -372,7 +372,7 @@ import java.util.Locale;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.23 $ $Date: 2004/04/01 02:55:31 $
+ * @version $Revision: 1.24 $ $Date: 2004/04/04 23:16:23 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -389,6 +389,9 @@ public abstract class JXPathContext {
 
     private static JXPathContextFactory contextFactory;
     private static JXPathContext compilationContext;
+    
+    private static final PackageFunctions GENERIC_FUNCTIONS =
+        new PackageFunctions("", null);
 
     /**
      * Creates a new JXPathContext with the specified object as the root node.
@@ -488,7 +491,13 @@ public abstract class JXPathContext {
      * Returns the set of functions installed on the context.
      */
     public Functions getFunctions() {
-        return functions;
+        if (functions != null) {
+            return functions;
+        }
+        if (parentContext == null) {
+            return GENERIC_FUNCTIONS;
+        }
+        return null;
     }
 
     /**
