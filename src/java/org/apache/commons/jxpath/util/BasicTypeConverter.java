@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.10 2003/10/09 21:31:42 rdonkin Exp $
- * $Revision: 1.10 $
- * $Date: 2003/10/09 21:31:42 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.11 2003/11/02 23:21:06 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/11/02 23:21:06 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.NodeSet;
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2003/10/09 21:31:42 $
+ * @version $Revision: 1.11 $ $Date: 2003/11/02 23:21:06 $
  */
 public class BasicTypeConverter implements TypeConverter {
 
@@ -416,7 +416,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     protected boolean canCreateCollection(Class type) {
         if (!type.isInterface()
-            && ((type.getModifiers() | Modifier.ABSTRACT) == 0)) {
+            && ((type.getModifiers() & Modifier.ABSTRACT) == 0)) {
             return true;
         }
 
@@ -432,7 +432,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     protected Collection allocateCollection(Class type) {
         if (!type.isInterface()
-            && ((type.getModifiers() | Modifier.ABSTRACT) == 0)) {
+            && ((type.getModifiers() & Modifier.ABSTRACT) == 0)) {
             try {
                 return (Collection) type.newInstance();
             }
