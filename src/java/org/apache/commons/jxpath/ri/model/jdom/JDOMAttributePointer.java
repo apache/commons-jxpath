@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributePointer.java,v 1.7 2003/10/09 21:31:41 rdonkin Exp $
- * $Revision: 1.7 $
- * $Date: 2003/10/09 21:31:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributePointer.java,v 1.8 2003/11/02 23:19:43 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/11/02 23:19:43 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.jdom.Attribute;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/10/09 21:31:41 $
+ * @version $Revision: 1.8 $ $Date: 2003/11/02 23:19:43 $
  */
 public class JDOMAttributePointer extends NodePointer {
     private Attribute attr;
@@ -98,6 +98,10 @@ public class JDOMAttributePointer extends NodePointer {
         return uri;
     }
 
+    public Object getValue() {
+        return attr.getValue();
+    }    
+    
     public Object getBaseValue() {
         return attr;
     }
@@ -111,11 +115,7 @@ public class JDOMAttributePointer extends NodePointer {
     }    
 
     public Object getImmediateNode() {
-        String value = attr.getValue();
-        if (value == null) {
-            return null;
-        }
-        return value;
+        return attr;
     }
 
     public boolean isActual() {

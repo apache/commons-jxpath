@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributePointer.java,v 1.12 2003/10/09 21:31:41 rdonkin Exp $
- * $Revision: 1.12 $
- * $Date: 2003/10/09 21:31:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributePointer.java,v 1.13 2003/11/02 23:19:33 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2003/11/02 23:19:33 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.w3c.dom.Attr;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2003/10/09 21:31:41 $
+ * @version $Revision: 1.13 $ $Date: 2003/11/02 23:19:33 $
  */
 public class DOMAttributePointer extends NodePointer {
     private Attr attr;
@@ -101,6 +101,17 @@ public class DOMAttributePointer extends NodePointer {
         return parent.getNamespaceURI(prefix);
     }
 
+    public Object getValue() {
+        String value = attr.getValue();
+        if (value == null) {
+            return null;
+        }
+        if (value.equals("") && !attr.getSpecified()) {
+            return null;
+        }
+        return value;
+    }
+    
     public Object getBaseValue() {
         return attr;
     }
@@ -114,14 +125,7 @@ public class DOMAttributePointer extends NodePointer {
     }    
 
     public Object getImmediateNode() {
-        String value = attr.getValue();
-        if (value == null) {
-            return null;
-        }
-        if (value.equals("") && !attr.getSpecified()) {
-            return null;
-        }
-        return value;
+        return attr;
     }
 
     public boolean isActual() {
