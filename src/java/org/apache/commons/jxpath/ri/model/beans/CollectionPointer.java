@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.4 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointer.java,v 1.5 2002/08/10 01:46:19 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/08/10 01:46:19 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.5 $ $Date: 2002/08/10 01:46:19 $
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;
@@ -98,6 +98,10 @@ public class CollectionPointer extends NodePointer {
         return collection;
     }
 
+    public boolean isNode(){
+        return index == WHOLE_COLLECTION;
+    }
+
     public Object getNodeValue(){
         if (index != WHOLE_COLLECTION){
             return ValueUtils.getValue(collection, index);
@@ -114,10 +118,20 @@ public class CollectionPointer extends NodePointer {
         }
     }
 
+    public void setIndex(int index){
+        super.setIndex(index);
+        valuePointer = null;
+    }
+
     public NodePointer getValuePointer(){
         if (valuePointer == null){
-            Object value = getNodeValue();
-            valuePointer = NodePointer.newChildNodePointer(this, getName(), value);
+            if (index == WHOLE_COLLECTION){
+                valuePointer = this;
+            }
+            else {
+                Object value = getNodeValue();
+                valuePointer = NodePointer.newChildNodePointer(this, getName(), value);
+            }
         }
         return valuePointer;
     }
@@ -190,14 +204,23 @@ public class CollectionPointer extends NodePointer {
     }
 
     public NodeIterator attributeIterator(QName name){
+        if (index == WHOLE_COLLECTION){
+            return null;
+        }
         return getValuePointer().attributeIterator(name);
     }
 
     public NodeIterator namespaceIterator(){
+        if (index == WHOLE_COLLECTION){
+            return null;
+        }
         return getValuePointer().namespaceIterator();
     }
 
     public NodePointer namespacePointer(String namespace){
+        if (index == WHOLE_COLLECTION){
+            return null;
+        }
         return getValuePointer().namespacePointer(namespace);
     }
 
