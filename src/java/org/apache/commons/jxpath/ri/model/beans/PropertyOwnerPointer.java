@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.4 2002/05/08 23:05:05 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/05/08 23:05:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.5 2002/06/18 00:01:15 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/06/18 00:01:15 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/05/08 23:05:05 $
+ * @version $Revision: 1.5 $ $Date: 2002/06/18 00:01:15 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -154,14 +154,6 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     public abstract PropertyPointer getPropertyPointer();
-
-    /**
-     * If has an index, returns a pointer to the collection element,
-     * otherwise returns the pointer itself.
-     */
-    public NodePointer getValuePointer() {
-        return NodePointer.newChildNodePointer(this, getName(), getNodeValue());
-    }
 
     public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
         PropertyPointer prop = getPropertyPointer();

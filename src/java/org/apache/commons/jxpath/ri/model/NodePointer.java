@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.6 2002/06/08 22:47:24 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/06/08 22:47:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.7 2002/06/18 00:01:15 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/06/18 00:01:15 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -84,7 +84,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/06/08 22:47:24 $
+ * @version $Revision: 1.7 $ $Date: 2002/06/18 00:01:15 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
@@ -407,9 +407,11 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * that match the given NodeTest, starting with the specified one.
      */
     public NodeIterator childIterator(
-        NodeTest test,
-        boolean reverse,
-        NodePointer startWith) {
+                    NodeTest test, boolean reverse, NodePointer startWith) {
+        NodePointer valuePointer = getValuePointer();
+        if (valuePointer != null && valuePointer != this){
+            return valuePointer.childIterator(test, reverse, startWith);
+        }
         return null;
     }
 

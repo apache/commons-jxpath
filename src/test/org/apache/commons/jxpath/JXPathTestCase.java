@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.23 2002/06/09 01:58:41 dmitri Exp $
- * $Revision: 1.23 $
- * $Date: 2002/06/09 01:58:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.24 2002/06/18 00:01:16 dmitri Exp $
+ * $Revision: 1.24 $
+ * $Date: 2002/06/18 00:01:16 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -95,7 +95,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.23 $ $Date: 2002/06/09 01:58:41 $
+ * @version $Revision: 1.24 $ $Date: 2002/06/18 00:01:16 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -286,7 +286,10 @@ public class JXPathTestCase extends TestCase
         Map tm = new HashMap();
         tm.put("bar", "zz");
         bean.getMap().put("foo", new Map[]{tm, tm});
+        bean.getMap().put("biz", tm);
+
         testGetValue(context, "map/foo[2]/bar/../bar", "zz");
+        testGetValue(context, "map[@name='biz'][@name='bar']", "zz");
 
         boolean exception = false;
         try {
@@ -921,9 +924,9 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testParserReferenceImpl() throws Exception {
-        if (!enabled){
-            return;
-        }
+//        if (!enabled){
+//            return;
+//        }
         System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
                 "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
         testParser(JXPathContextFactory.newInstance().newContext(null, bean), false);
@@ -1201,6 +1204,14 @@ public class JXPathTestCase extends TestCase
         test("map/Key1", "Value 1"),
         testPath("map/Key1", "/map[@name='Key1']"),
         testPath("map[@name = 'Key&quot;&apos;&quot;&apos;1']", "/map[@name='Key&quot;&apos;&quot;&apos;1']"),
+        test("map/Key2/name", "Name 6"),
+        testPath("map/Key2/name", "/map[@name='Key2']/name"),
+        test("/.[@name='map']/Key2/name", "Name 6"),
+        testPath("/.[@name='map']/Key2/name", "/map[@name='Key2']/name"),
+        test("/map[@name='Key2'][@name='name']", "Name 6"),
+        testPath("/map[@name='Key2'][@name='name']", "/map[@name='Key2']/name"),
+        test("/.[@name='map'][@name='Key2'][@name='name']", "Name 6"),
+        testPath("/.[@name='map'][@name='Key2'][@name='name']", "/map[@name='Key2']/name"),
 
         // Standard functions
         test("string(2)", "2"),
