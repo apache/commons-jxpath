@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.23 $ $Date: 2004/06/30 00:29:13 $
+ * @version $Revision: 1.24 $ $Date: 2004/10/06 00:34:14 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {
@@ -375,6 +375,10 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
 
         // child:: with a qualified name
         assertXPathValue(context, "vendor/product/price:amount", "45.95");
+        
+        // null default namespace
+        context.registerNamespace("x", "temp");
+        assertXPathValue(context, "vendor/x:pos//number", "109");
     }
 
     public void testAxisChildIndexPredicate() {

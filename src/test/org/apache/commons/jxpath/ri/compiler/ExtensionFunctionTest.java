@@ -39,7 +39,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test extension functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2004/04/04 23:16:24 $
+ * @version $Revision: 1.17 $ $Date: 2004/10/06 00:34:14 $
  */
 
 public class ExtensionFunctionTest extends JXPathTestCase {
@@ -225,6 +225,10 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             
         context.getValue("add($myList, 'hello')");
         assertEquals("After adding an element", 2, list.size());
+        
+        JXPathContext context = JXPathContext.newContext(new ArrayList());
+        assertEquals("Extension function on root collection", "0", String
+                .valueOf(context.getValue("size(/)")));
     }
 
     public void testStaticMethodCall() {

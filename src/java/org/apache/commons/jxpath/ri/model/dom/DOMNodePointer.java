@@ -46,7 +46,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.24 $ $Date: 2004/06/29 22:58:17 $
+ * @version $Revision: 1.25 $ $Date: 2004/10/06 00:34:14 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -130,11 +130,12 @@ public class DOMNodePointer extends NodePointer {
     }
 
     private static boolean equalStrings(String s1, String s2) {
-        if (s1 == null && s2 != null) {
-            return false;
+        if (s1 == null) {
+            return s2 == null || s2.trim().length() == 0;
         }
-        if (s1 != null && s2 == null) {
-            return false;
+        
+        if (s2 == null) {
+            return s1 == null || s1.trim().length() == 0;
         }
 
         if (s1 != null && !s1.trim().equals(s2.trim())) {
