@@ -19,7 +19,7 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2004/02/29 14:17:38 $
+ * @version $Revision: 1.10 $ $Date: 2004/03/25 05:41:29 $
  */
 public class NodeNameTest extends NodeTest {
     private QName qname;
@@ -30,6 +30,10 @@ public class NodeNameTest extends NodeTest {
 
     public QName getNodeName() {
         return qname;
+    }
+    
+    public boolean isWildcard() {
+        return qname.getName().equals("*");
     }
 
     public String toString() {

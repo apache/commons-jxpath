@@ -46,7 +46,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.21 $ $Date: 2004/02/29 14:17:44 $
+ * @version $Revision: 1.22 $ $Date: 2004/03/25 05:41:29 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -90,16 +90,17 @@ public class DOMNodePointer extends NodePointer {
                 return false;
             }
 
-            QName testName = ((NodeNameTest) test).getNodeName();
-            String testLocalName = testName.getName();
-            boolean wildcard = testLocalName.equals("*");
+            NodeNameTest nodeNameTest = (NodeNameTest) test;
+            QName testName = nodeNameTest.getNodeName();
+            boolean wildcard = nodeNameTest.isWildcard();
             String testPrefix = testName.getPrefix();
             if (wildcard && testPrefix == null) {
                 return true;
             }
 
             if (wildcard
-                || testLocalName.equals(DOMNodePointer.getLocalName(node))) {
+                || testName.getName()
+                        .equals(DOMNodePointer.getLocalName(node))) {
                 String nodePrefix = DOMNodePointer.getPrefix(node);
                 if (equalStrings(testPrefix, nodePrefix)) {
                     return true;

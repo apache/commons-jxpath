@@ -32,7 +32,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.17 $ $Date: 2004/02/29 14:17:41 $
+ * @version $Revision: 1.18 $ $Date: 2004/03/25 05:41:29 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -45,12 +45,13 @@ public abstract class PropertyOwnerPointer extends NodePointer {
             return createNodeIterator(null, reverse, startWith);
         }
         else if (test instanceof NodeNameTest) {
-            QName testName = ((NodeNameTest) test).getNodeName();
+            NodeNameTest nodeNameTest = (NodeNameTest) test;
+            QName testName = nodeNameTest.getNodeName();
             String property;
             if (!isDefaultNamespace(testName.getPrefix())) {
                 return null;
             }
-            else if (testName.getName().equals("*")) {
+            else if (nodeNameTest.isWildcard()) {
                 property = null;
             }
             else {

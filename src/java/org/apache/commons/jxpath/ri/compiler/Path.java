@@ -33,7 +33,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2004/02/29 14:17:39 $
+ * @version $Revision: 1.13 $ $Date: 2004/03/25 05:41:29 $
  */
 public abstract class Path extends Expression {
 
@@ -105,8 +105,7 @@ public abstract class Path extends Expression {
                 return false;
             }
             
-            String name = ((NodeNameTest) nodeTest).getNodeName().getName();
-            if (name.equals("*")) {
+            if (((NodeNameTest) nodeTest).isWildcard()) {
                 return false;
             }
             return areBasicPredicates(step.getPredicates());
