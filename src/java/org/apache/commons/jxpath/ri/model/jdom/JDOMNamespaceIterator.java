@@ -29,7 +29,7 @@ import org.jdom.Namespace;
  * An iterator of namespaces of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2004/02/29 14:17:40 $
+ * @version $Revision: 1.8 $ $Date: 2004/03/04 01:01:27 $
  */
 public class JDOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;
@@ -61,9 +61,9 @@ public class JDOMNamespaceIterator implements NodeIterator {
                 prefixes.add(ns.getPrefix());
             }
         }
-        Element parent = (Element) element.getParent();
-        if (parent != null) {
-            collectNamespaces(parent);
+        Object parent = element.getParent();
+        if (parent instanceof Element) {
+            collectNamespaces((Element)parent);
         }
     }
 
