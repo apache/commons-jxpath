@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynabeans/TestDynaBeanFactory.java,v 1.3 2002/11/26 01:33:35 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/11/26 01:33:35 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/dynabeans/TestDynaBeanFactory.java,v 1.4 2003/01/11 05:41:27 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import org.apache.commons.jxpath.*;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/11/26 01:33:35 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:27 $
  */
 public class TestDynaBeanFactory extends AbstractFactory {
 
@@ -87,7 +87,8 @@ public class TestDynaBeanFactory extends AbstractFactory {
                 "nestedBean",
                 new NestedTestBean("newName"));
             return true;
-        } else if (name.equals("beans")) {
+        }
+        else if (name.equals("beans")) {
             DynaBean bean = (DynaBean) parent;
             Object beans[] = (Object[]) bean.get("beans");
             if (beans == null || index >= beans.length) {
@@ -95,6 +96,11 @@ public class TestDynaBeanFactory extends AbstractFactory {
                 bean.set("beans", beans);
             }
             beans[index] = new NestedTestBean("newName");
+            return true;
+        }
+        else if (name.equals("integers")) {
+            DynaBean bean = (DynaBean) parent;
+            bean.set("integers", index, new Integer(0));
             return true;
         }
         return false;

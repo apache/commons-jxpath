@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/LocationPath.java,v 1.5 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/LocationPath.java,v 1.6 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,43 +66,43 @@ import org.apache.commons.jxpath.ri.axes.InitialContext;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:23 $
  */
 public class LocationPath extends Path {
 
     private boolean absolute;
 
-    public LocationPath(boolean absolute, Step[] steps){
+    public LocationPath(boolean absolute, Step[] steps) {
         super(Expression.OP_LOCATION_PATH, steps);
         this.absolute = absolute;
     }
 
-    public boolean isAbsolute(){
+    public boolean isAbsolute() {
         return absolute;
     }
 
-    public boolean computeContextDependent(){
-        if (!absolute){
+    public boolean computeContextDependent() {
+        if (!absolute) {
             return true;
         }
 
         return super.computeContextDependent();
     }
 
-    public String toString(){
+    public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("(PATH");
-        if (absolute){
+        if (absolute) {
             buffer.append("[absolute] ");
         }
-        else{
+        else {
             buffer.append("[relative] ");
         }
         Step args[] = getSteps();
-        if (args != null){
+        if (args != null) {
             buffer.append(' ');
-            for (int i = 0; i < args.length; i++){
-                if (i > 0){
+            for (int i = 0; i < args.length; i++) {
+                if (i > 0) {
                     buffer.append(", ");
                 }
                 buffer.append(args[i]);
@@ -112,10 +112,10 @@ public class LocationPath extends Path {
         return buffer.toString();
     }
 
-    public Object compute(EvalContext context){
+    public Object compute(EvalContext context) {
         // Create a chain of contexts
         EvalContext rootContext;
-        if (isAbsolute()){
+        if (isAbsolute()) {
             rootContext = context.getRootContext();
         }
         else {
@@ -125,7 +125,7 @@ public class LocationPath extends Path {
     }
 
 
-    public Object computeValue(EvalContext context){
+    public Object computeValue(EvalContext context) {
         // Create a chain of contexts
         EvalContext rootContext;
         if (isAbsolute()) {

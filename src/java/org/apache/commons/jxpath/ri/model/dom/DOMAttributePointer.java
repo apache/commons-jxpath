@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributePointer.java,v 1.9 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributePointer.java,v 1.10 2003/01/11 05:41:25 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2003/01/11 05:41:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,88 +73,91 @@ import org.w3c.dom.Attr;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.10 $ $Date: 2003/01/11 05:41:25 $
  */
 public class DOMAttributePointer extends NodePointer {
     private Attr attr;
 
-    public DOMAttributePointer(NodePointer parent, Attr attr){
+    public DOMAttributePointer(NodePointer parent, Attr attr) {
         super(parent);
         this.attr = attr;
     }
 
-    public QName getName(){
-        return new QName(DOMNodePointer.getPrefix(attr), DOMNodePointer.getLocalName(attr));
+    public QName getName() {
+        return new QName(
+            DOMNodePointer.getPrefix(attr),
+            DOMNodePointer.getLocalName(attr));
     }
 
-    public QName getExpandedName(){
+    public QName getExpandedName() {
         return new QName(getNamespaceURI(),  DOMNodePointer.getLocalName(attr));
     }
 
-    public String getNamespaceURI(){
+    public String getNamespaceURI() {
         String prefix = DOMNodePointer.getPrefix(attr);
-        if (prefix == null){
+        if (prefix == null) {
             return null;
         }
         return parent.getNamespaceURI(prefix);
     }
 
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return attr;
     }
     
-    public boolean isCollection(){
+    public boolean isCollection() {
         return false;
     }
     
-    public int getLength(){
+    public int getLength() {
         return 1;
     }    
 
-    public Object getImmediateNode(){
+    public Object getImmediateNode() {
         String value = attr.getValue();
-        if (value == null){
+        if (value == null) {
             return null;
         }
-        if (value.equals("") && !attr.getSpecified()){
+        if (value.equals("") && !attr.getSpecified()) {
             return null;
         }
         return value;
     }
 
-    public boolean isActual(){
+    public boolean isActual() {
         return true;
     }
 
-    public boolean isLeaf(){
+    public boolean isLeaf() {
         return true;
     }
 
-    public boolean testNode(NodeTest nodeTest){
-        return nodeTest == null ||
-                ((nodeTest instanceof NodeTypeTest) &&
-                    ((NodeTypeTest)nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE);
+    public boolean testNode(NodeTest nodeTest) {
+        return nodeTest == null
+            || ((nodeTest instanceof NodeTypeTest)
+                && ((NodeTypeTest) nodeTest).getNodeType()
+                    == Compiler.NODE_TYPE_NODE);
     }
 
     /**
      * Sets the value of this attribute.
      */
-    public void setValue(Object value){
-        attr.setValue((String)TypeUtils.convert(value, String.class));
+    public void setValue(Object value) {
+        attr.setValue((String) TypeUtils.convert(value, String.class));
     }
 
-    public void remove(){
+    public void remove() {
         attr.getOwnerElement().removeAttributeNode(attr);
     }
 
     /**
      */
-    public String asPath(){
+    public String asPath() {
         StringBuffer buffer = new StringBuffer();
-        if (parent != null){
+        if (parent != null) {
             buffer.append(parent.asPath());
-            if (buffer.length() == 0 ||
-                    buffer.charAt(buffer.length()-1) != '/'){
+            if (buffer.length() == 0
+                || buffer.charAt(buffer.length() - 1) != '/') {
                 buffer.append('/');
             }
         }
@@ -163,24 +166,27 @@ public class DOMAttributePointer extends NodePointer {
         return buffer.toString();
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return System.identityHashCode(attr);
     }
 
-    public boolean equals(Object object){
-        if (object == this){
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof DOMAttributePointer)){
+        if (!(object instanceof DOMAttributePointer)) {
             return false;
         }
 
-        DOMAttributePointer other = (DOMAttributePointer)object;
+        DOMAttributePointer other = (DOMAttributePointer) object;
         return attr == other.attr;
     }
 
-    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+    public int compareChildNodePointers(
+        NodePointer pointer1,
+        NodePointer pointer2) 
+    {
         // Won't happen - attributes don't have children
         return 0;
     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestBean.java,v 1.3 2002/10/20 03:48:21 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/10/20 03:48:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/TestBean.java,v 1.4 2003/01/11 05:41:27 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,11 +64,13 @@ package org.apache.commons.jxpath;
 
 import java.util.*;
 
+import org.apache.commons.jxpath.util.ValueUtils;
+
 /**
  * General purpose test bean for JUnit tests for the "jxpath" component.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/10/20 03:48:21 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:27 $
  */
 public class TestBean {
 
@@ -131,6 +133,9 @@ public class TestBean {
     }
 
     public void setIntegers(int index, int value){
+        if (index >= array.length){
+            array = (int[])ValueUtils.expandCollection(array, index + 1);
+        }
         array[index] = value;
     }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java,v 1.7 2002/05/29 00:41:32 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/05/29 00:41:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/UnionContext.java,v 1.8 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,64 +73,64 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of a union operation like (a | b)
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/05/29 00:41:32 $
+ * @version $Revision: 1.8 $ $Date: 2003/01/11 05:41:23 $
  */
 public class UnionContext extends EvalContext {
     private boolean startedSet = false;
     private EvalContext contexts[];
     private List list;
 
-    public UnionContext(EvalContext parentContext, EvalContext contexts[]){
+    public UnionContext(EvalContext parentContext, EvalContext contexts[]) {
         super(parentContext);
         this.contexts = contexts;
     }
 
-    public int getDocumentOrder(){
-        if (contexts.length > 1){
+    public int getDocumentOrder() {
+        if (contexts.length > 1) {
             return 1;
         }
         return super.getDocumentOrder();
     }
 
-    public NodePointer getCurrentNodePointer(){
-        if (position == 0){
-            if (!setPosition(1)){
+    public NodePointer getCurrentNodePointer() {
+        if (position == 0) {
+            if (!setPosition(1)) {
                 return null;
             }
         }
-        return (NodePointer)list.get(position - 1);
+        return (NodePointer) list.get(position - 1);
     }
 
-    public boolean setPosition(int position){
+    public boolean setPosition(int position) {
         super.setPosition(position);
-        if (list == null){
+        if (list == null) {
             prepareList();
         }
         return position >= 1 && position <= list.size();
     }
 
-    public boolean nextSet(){
-        if (startedSet){
+    public boolean nextSet() {
+        if (startedSet) {
             return false;
         }
         startedSet = true;
         return true;
     }
 
-    public boolean nextNode(){
+    public boolean nextNode() {
         return setPosition(position + 1);
     }
 
-    private void prepareList(){
+    private void prepareList() {
         list = new ArrayList();
         HashSet set = new HashSet();
-        for (int i = 0; i < contexts.length; i++){
-            EvalContext ctx = (EvalContext)contexts[i];
-            while (ctx.nextSet()){
-                while (ctx.nextNode()){
+        for (int i = 0; i < contexts.length; i++) {
+            EvalContext ctx = (EvalContext) contexts[i];
+            while (ctx.nextSet()) {
+                while (ctx.nextNode()) {
                     NodePointer ptr = ctx.getCurrentNodePointer();
-                    if (!set.contains(ptr)){
-                        ptr = (NodePointer)ptr.clone();
+                    if (!set.contains(ptr)) {
+                        ptr = (NodePointer) ptr.clone();
                         list.add(ptr);
                         set.add(ptr);
                     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/KeyManager.java,v 1.1 2002/06/08 22:47:24 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/06/08 22:47:24 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/KeyManager.java,v 1.2 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,12 +66,15 @@ package org.apache.commons.jxpath;
  * function.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/06/08 22:47:24 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/11 05:41:22 $
  */
 public interface KeyManager {
 
     /**
      * Finds a node by a key value.
      */
-    Pointer getPointerByKey(JXPathContext context, String keyName, String keyValue);
+    Pointer getPointerByKey(
+        JXPathContext context,
+        String keyName,
+        String keyValue);
 }

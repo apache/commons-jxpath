@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AttributeContext.java,v 1.6 2002/04/28 04:35:48 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/04/28 04:35:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AttributeContext.java,v 1.7 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "attribute::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/04/28 04:35:48 $
+ * @version $Revision: 1.7 $ $Date: 2003/01/11 05:41:23 $
  */
 public class AttributeContext extends EvalContext {
     private NodeTest nodeTest;
@@ -84,49 +84,50 @@ public class AttributeContext extends EvalContext {
      * @param parentContext represents the previous step on the path
      * @param nameTest is the name of the attribute we are looking for
      */
-    public AttributeContext(EvalContext parentContext, NodeTest nodeTest){
+    public AttributeContext(EvalContext parentContext, NodeTest nodeTest) {
         super(parentContext);
         this.nodeTest = nodeTest;
     }
 
-    public NodePointer getCurrentNodePointer(){
+    public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
-    public void reset(){
+    public void reset() {
         setStarted = false;
         iterator = null;
         super.reset();
     }
 
-    public boolean setPosition(int position){
-        if (position < getCurrentPosition()){
+    public boolean setPosition(int position) {
+        if (position < getCurrentPosition()) {
             reset();
         }
 
-        while (getCurrentPosition() < position){
-            if (!nextNode()){
+        while (getCurrentPosition() < position) {
+            if (!nextNode()) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean nextNode(){
+    public boolean nextNode() {
         super.setPosition(getCurrentPosition() + 1);
-        if (!setStarted){
+        if (!setStarted) {
             setStarted = true;
-            if (!(nodeTest instanceof NodeNameTest)){
+            if (!(nodeTest instanceof NodeNameTest)) {
                 return false;
             }
-            QName name = ((NodeNameTest)nodeTest).getNodeName();
-            iterator = parentContext.getCurrentNodePointer().attributeIterator(name);
+            QName name = ((NodeNameTest) nodeTest).getNodeName();
+            iterator =
+                parentContext.getCurrentNodePointer().attributeIterator(name);
         }
 
-        if (iterator == null){
+        if (iterator == null) {
             return false;
         }
-        if (!iterator.setPosition(iterator.getPosition() + 1)){
+        if (!iterator.setPosition(iterator.getPosition() + 1)) {
             return false;
         }
         currentNodePointer = iterator.getNodePointer();

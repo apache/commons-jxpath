@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Step.java,v 1.4 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Step.java,v 1.5 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,35 +65,35 @@ import org.apache.commons.jxpath.ri.Compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:23 $
  */
 public class Step {
     private int axis;
     private NodeTest nodeTest;
     private Expression[] predicates;
 
-    protected Step(int axis, NodeTest nodeTest, Expression[] predicates){
+    protected Step(int axis, NodeTest nodeTest, Expression[] predicates) {
         this.axis = axis;
         this.nodeTest = nodeTest;
         this.predicates = predicates;
     }
 
-    public int getAxis(){
+    public int getAxis() {
         return axis;
     }
 
-    public NodeTest getNodeTest(){
+    public NodeTest getNodeTest() {
         return nodeTest;
     }
 
-    public Expression[] getPredicates(){
+    public Expression[] getPredicates() {
         return predicates;
     }
 
-    public boolean isContextDependent(){
-        if (predicates != null){
-            for (int i = 0; i < predicates.length; i++){
-                if (predicates[i].isContextDependent()){
+    public boolean isContextDependent() {
+        if (predicates != null) {
+            for (int i = 0; i < predicates.length; i++) {
+                if (predicates[i].isContextDependent()) {
                     return true;
                 }
             }
@@ -101,14 +101,14 @@ public class Step {
         return false;
     }
 
-    public String toString(){
+    public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(axisToString(getAxis()));
         buffer.append("::");
         buffer.append(nodeTest);
         Expression[] predicates = getPredicates();
-        if (predicates != null){
-            for (int i = 0; i < predicates.length; i++){
+        if (predicates != null) {
+            for (int i = 0; i < predicates.length; i++) {
                 buffer.append('[');
                 buffer.append(predicates[i]);
                 buffer.append(']');
@@ -117,21 +117,34 @@ public class Step {
         return buffer.toString();
     }
 
-    public static String axisToString(int axis){
-        switch (axis){
-            case Compiler.AXIS_SELF:                 return "self";
-            case Compiler.AXIS_CHILD:                return "child";
-            case Compiler.AXIS_PARENT:               return "parent";
-            case Compiler.AXIS_ANCESTOR:             return "ancestor";
-            case Compiler.AXIS_ATTRIBUTE:            return "attribute";
-            case Compiler.AXIS_NAMESPACE:            return "namespace";
-            case Compiler.AXIS_PRECEDING:            return "preceding";
-            case Compiler.AXIS_FOLLOWING:            return "following";
-            case Compiler.AXIS_DESCENDANT:           return "descendant";
-            case Compiler.AXIS_ANCESTOR_OR_SELF:     return "ancestor-or-self";
-            case Compiler.AXIS_FOLLOWING_SIBLING:    return "following-sibling";
-            case Compiler.AXIS_PRECEDING_SIBLING:    return "preceding-sibling";
-            case Compiler.AXIS_DESCENDANT_OR_SELF:   return "descendant-or-self";
+    public static String axisToString(int axis) {
+        switch (axis) {
+            case Compiler.AXIS_SELF :
+                return "self";
+            case Compiler.AXIS_CHILD :
+                return "child";
+            case Compiler.AXIS_PARENT :
+                return "parent";
+            case Compiler.AXIS_ANCESTOR :
+                return "ancestor";
+            case Compiler.AXIS_ATTRIBUTE :
+                return "attribute";
+            case Compiler.AXIS_NAMESPACE :
+                return "namespace";
+            case Compiler.AXIS_PRECEDING :
+                return "preceding";
+            case Compiler.AXIS_FOLLOWING :
+                return "following";
+            case Compiler.AXIS_DESCENDANT :
+                return "descendant";
+            case Compiler.AXIS_ANCESTOR_OR_SELF :
+                return "ancestor-or-self";
+            case Compiler.AXIS_FOLLOWING_SIBLING :
+                return "following-sibling";
+            case Compiler.AXIS_PRECEDING_SIBLING :
+                return "preceding-sibling";
+            case Compiler.AXIS_DESCENDANT_OR_SELF :
+                return "descendant-or-self";
         }
         return "UNKNOWN";
     }

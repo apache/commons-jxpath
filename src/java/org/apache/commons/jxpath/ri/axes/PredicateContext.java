@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.16 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.16 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.17 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.17 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.16 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.17 $ $Date: 2003/01/11 05:41:23 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -83,16 +83,16 @@ public class PredicateContext extends EvalContext {
     private Expression nameTestExpression;
     private PropertyPointer dynamicPropertyPointer;
 
-    public PredicateContext(EvalContext parentContext, Expression expression){
+    public PredicateContext(EvalContext parentContext, Expression expression) {
         super(parentContext);
         this.expression = expression;
-        if (expression instanceof NameAttributeTest){
+        if (expression instanceof NameAttributeTest) {
             nameTestExpression =
-                ((NameAttributeTest)expression).getNameTestExpression();
+                ((NameAttributeTest) expression).getNameTestExpression();
         }
     }
 
-    public boolean nextNode(){
+    public boolean nextNode() {
         if (done) {
             return false;
         }
@@ -140,25 +140,25 @@ public class PredicateContext extends EvalContext {
      * Used for an optimized access to dynamic properties using the
      * "map[@name = 'name']" syntax
      */
-    private boolean setupDynamicPropertyPointer(){
-        if (nameTestExpression == null){
+    private boolean setupDynamicPropertyPointer() {
+        if (nameTestExpression == null) {
             return false;
         }
 
         NodePointer parent = parentContext.getCurrentNodePointer();
-        if (parent == null){
+        if (parent == null) {
             return false;
         }
         parent = parent.getValuePointer();
-        if (!(parent instanceof PropertyOwnerPointer)){
+        if (!(parent instanceof PropertyOwnerPointer)) {
             return false;
         }
         dynamicPropertyPointer =
-            ((PropertyOwnerPointer)parent).getPropertyPointer();
+            ((PropertyOwnerPointer) parent).getPropertyPointer();
         return true;
     }
 
-    public boolean setPosition(int position){
+    public boolean setPosition(int position) {
         if (nameTestExpression == null) {
             return setPositionStandard(position);
         }
@@ -177,13 +177,13 @@ public class PredicateContext extends EvalContext {
         }
     }
 
-    public NodePointer getCurrentNodePointer(){
-        if (position == 0){
-            if (!setPosition(1)){
+    public NodePointer getCurrentNodePointer() {
+        if (position == 0) {
+            if (!setPosition(1)) {
                 return null;
             }
         }
-        if (dynamicPropertyPointer != null){
+        if (dynamicPropertyPointer != null) {
             return dynamicPropertyPointer.getValuePointer();
         }
         else {
@@ -191,23 +191,23 @@ public class PredicateContext extends EvalContext {
         }
     }
 
-    public void reset(){
+    public void reset() {
         super.reset();
         done = false;
     }
 
-    public boolean nextSet(){
+    public boolean nextSet() {
         reset();
         return parentContext.nextSet();
     }
 
-    private boolean setPositionStandard(int position){
-        if (this.position > position){
+    private boolean setPositionStandard(int position) {
+        if (this.position > position) {
             reset();
         }
 
-        while (this.position < position){
-            if (!nextNode()){
+        while (this.position < position) {
+            if (!nextNode()) {
                 return false;
             }
         }

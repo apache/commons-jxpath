@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.12 2003/01/10 02:11:28 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2003/01/10 02:11:28 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullElementPointer.java,v 1.13 2003/01/11 05:41:24 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2003/01/11 05:41:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,39 +62,36 @@
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * Used when there is a need to construct a Pointer for
- * a collection element that does not exist.  For example,
- * if the path is "foo[3]", but the collection "foo" only has
- * one element or is empty or is null, the NullElementPointer
- * can be used to capture this situatuin without putting
- * a regular NodePointer into an invalid state.  Just create
- * a NullElementPointer with index 2 (= 3 - 1) and a "foo" pointer
- * as the parent.
+ * Used when there is a need to construct a Pointer for a collection element
+ * that does not exist.  For example, if the path is "foo[3]", but the
+ * collection "foo" only has one element or is empty or is null, the
+ * NullElementPointer can be used to capture this situation without putting a
+ * regular NodePointer into an invalid state.  Just create a NullElementPointer
+ * with index 2 (= 3 - 1) and a "foo" pointer as the parent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2003/01/10 02:11:28 $
+ * @version $Revision: 1.13 $ $Date: 2003/01/11 05:41:24 $
  */
 public class NullElementPointer extends CollectionPointer {
 
-    public NullElementPointer(NodePointer parent, int index){
-        super(parent, (Object)null);
+    public NullElementPointer(NodePointer parent, int index) {
+        super(parent, (Object) null);
         this.index = index;
     }
 
-    public QName getName(){
+    public QName getName() {
         return null;
     }
 
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return null;
     }
 
-    public Object getImmediateNode(){
+    public Object getImmediateNode() {
         return null;
     }
     
@@ -102,121 +99,57 @@ public class NullElementPointer extends CollectionPointer {
         return true;
     }    
     
-    public boolean isCollection(){
+    public boolean isCollection() {
         return false;
     }
 
-    public PropertyPointer getPropertyPointer(){
+    public PropertyPointer getPropertyPointer() {
         return new NullPropertyPointer(this);
     }
 
-    public NodePointer getValuePointer(){
+    public NodePointer getValuePointer() {
         return new NullPointer(this, getName());
     }
 
-    public void setValue(Object value){
+    public void setValue(Object value) {
         throw new UnsupportedOperationException(
             "Collection element does not exist: " + this);
     }
 
-    public boolean isActual(){
+    public boolean isActual() {
         return false;
     }
 
-    public boolean isContainer(){
+    public boolean isContainer() {
         return true;
     }
 
-    public NodePointer createPath(JXPathContext context, Object value){
-        if (parent instanceof PropertyPointer) {
-            return parent.getParent().createChild(
-                context,
-                parent.getName(),
-                index,
-                value);
-        }
-        else {
-            return parent.createChild(context, null, index, value);
-        }
+    public NodePointer createPath(JXPathContext context) {
+        return parent.createChild(context, null, index);
+    }
+    
+    public NodePointer createPath(JXPathContext context, Object value) {
+        return parent.createChild(context, null, index, value);
     }
 
-    public NodePointer createPath(JXPathContext context){
-        if (parent instanceof PropertyPointer) {
-            return parent.getParent().createChild(
-                context,
-                parent.getName(),
-                index);
-        }
-        else {
-            return parent.createChild(context, null, index);
-        }
-    }
-
-    public NodePointer createChild(
-        JXPathContext context,
-        QName name,
-        int index,
-        Object value) 
-    {
-        if (index != 0 && index != WHOLE_COLLECTION) {
-            throw new JXPathException(
-                "Internal error. Indexed passed to "
-                    + "NullElementPointer.createChild() is not 0: "
-                    + index);
-        }
-        if (parent instanceof PropertyPointer) {
-            return parent.getParent().createChild(
-                context,
-                parent.getName(),
-                getIndex(),
-                value);
-        }
-        else {
-            return parent.createChild(context, name, getIndex(), value);
-        }
-    }
-
-    public NodePointer createChild(
-        JXPathContext context,
-        QName name,
-        int index) 
-    {
-        if (index != 0 && index != WHOLE_COLLECTION) {
-            throw new JXPathException(
-                "Internal error. Indexed passed to "
-                    + "NullElementPointer.createChild() is not 0: "
-                    + index);
-        }
-        if (parent instanceof PropertyPointer) {
-            return parent.getParent().createChild(
-                context,
-                parent.getName(),
-                getIndex());
-        }
-        else {
-            return parent.createChild(context, name, getIndex());
-        }
-    }
-
-    public int hashCode(){
+    public int hashCode() {
         return getParent().hashCode() + index;
     }
 
-    public boolean equals(Object object){
-        if (object == this){
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof NullElementPointer)){
+        if (!(object instanceof NullElementPointer)) {
             return false;
         }
 
-        NullElementPointer other = (NullElementPointer)object;
-        return getParent() == other.getParent() &&
-            index == other.index;
+        NullElementPointer other = (NullElementPointer) object;
+        return getParent() == other.getParent() && index == other.index;
     }
 
-    public int getLength(){
+    public int getLength() {
         return 0;
     }
     

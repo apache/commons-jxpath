@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.8 2002/07/03 21:12:36 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/07/03 21:12:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/InitialContext.java,v 1.9 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * on to the parent context.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/07/03 21:12:36 $
+ * @version $Revision: 1.9 $ $Date: 2003/01/11 05:41:23 $
  */
 public class InitialContext extends EvalContext {
     private boolean startedSet = false;
@@ -79,30 +79,31 @@ public class InitialContext extends EvalContext {
     private boolean collection;
     private NodePointer nodePointer;
 
-    public InitialContext(EvalContext parentContext){
+    public InitialContext(EvalContext parentContext) {
         super(parentContext);
         nodePointer = parentContext.getCurrentNodePointer();
-        if (nodePointer != null){
-            collection = (nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION);
+        if (nodePointer != null) {
+            collection =
+                (nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION);
         }
     }
 
-    public Pointer getSingleNodePointer(){
+    public Pointer getSingleNodePointer() {
         return nodePointer;
     }
 
-    public NodePointer getCurrentNodePointer(){
+    public NodePointer getCurrentNodePointer() {
         return nodePointer;
     }
 
-    public boolean nextNode(){
+    public boolean nextNode() {
         return setPosition(position + 1);
     }
 
-    public boolean setPosition(int position){
+    public boolean setPosition(int position) {
         this.position = position;
-        if (collection){
-            if (position >= 1 && position <= nodePointer.getLength()){
+        if (collection) {
+            if (position >= 1 && position <= nodePointer.getLength()) {
                 nodePointer.setIndex(position - 1);
                 return true;
             }
@@ -113,8 +114,8 @@ public class InitialContext extends EvalContext {
         }
     }
 
-    public boolean nextSet(){
-        if (started){
+    public boolean nextSet() {
+        if (started) {
             return false;
         }
         started = true;

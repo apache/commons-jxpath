@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.10 2002/11/28 01:02:04 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/11/28 01:02:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ParentContext.java,v 1.11 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,53 +69,54 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "parent::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/11/28 01:02:04 $
+ * @version $Revision: 1.11 $ $Date: 2003/01/11 05:41:23 $
  */
 public class ParentContext extends EvalContext {
     private NodeTest nodeTest;
     private boolean setStarted = false;
     private NodePointer currentNodePointer;
 
-    public ParentContext(EvalContext parentContext, NodeTest nodeTest){
+    public ParentContext(EvalContext parentContext, NodeTest nodeTest) {
         super(parentContext);
         this.nodeTest = nodeTest;
     }
 
-    public NodePointer getCurrentNodePointer(){
+    public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
-    public int getCurrentPosition(){
+    public int getCurrentPosition() {
         return 1;
     }
 
-    public int getDocumentOrder(){
+    public int getDocumentOrder() {
         return -1;
     }
 
-    public void reset(){
+    public void reset() {
         super.reset();
         setStarted = false;
     }
 
-    public boolean setPosition(int position){
+    public boolean setPosition(int position) {
         super.setPosition(position);
         return position == 1;
     }
 
-    public boolean nextNode(){
+    public boolean nextNode() {
         // Each set contains exactly one node: the parent
-        if (setStarted){
+        if (setStarted) {
             return false;
         }
         setStarted = true;
         NodePointer thisLocation = parentContext.getCurrentNodePointer();
         currentNodePointer = thisLocation.getParent();
-        while (currentNodePointer != null && currentNodePointer.isContainer()){
+        while (currentNodePointer != null
+            && currentNodePointer.isContainer()) {
             currentNodePointer = currentNodePointer.getParent();
         }
-        if (currentNodePointer != null &&
-                currentNodePointer.testNode(nodeTest)){
+        if (currentNodePointer != null
+            && currentNodePointer.testNode(nodeTest)) {
             position++;
             return true;
         }

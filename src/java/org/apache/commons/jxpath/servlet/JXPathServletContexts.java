@@ -79,37 +79,38 @@ import org.apache.commons.jxpath.JXPathIntrospector;
  * For example, the expression "$session/foo" extracts the value of the
  * session attribute named "foo".
  * <p>
- * Following are some implementation details.
- * There is a separate JXPathContext for each of the four scopes. These contexts are chained
- * according to the nesting of the scopes.  So, the parent of the "page"
- * JXPathContext is a "request" JXPathContext, whose parent is a "session"
- * JXPathContext (that is if there is a session), whose parent is an "application"
- * context.
+ * Following are some implementation details. There is a separate JXPathContext
+ * for each of the four scopes. These contexts are chained according to the
+ * nesting of the scopes.  So, the parent of the "page" JXPathContext is a
+ * "request" JXPathContext, whose parent is a "session" JXPathContext (that is
+ * if there is a session), whose parent is an "application" context.
  * <p>
- * The XPath context node for each context is the corresponding object: PageContext,
- * ServletRequest, HttpSession or ServletContext.  This feature can be used by
- * servlets.  A servlet can use one of the methods declared by this class and
- * work with a specific JXPathContext for any scope.
+ * The  XPath context node for each context is the corresponding object:
+ * PageContext, ServletRequest, HttpSession or ServletContext.  This feature can
+ * be used by servlets.  A servlet can use one of the methods declared by this
+ * class and work with a specific JXPathContext for any scope.
  * <p>
  * Since JXPath chains lookups for variables and extension functions, variables
  * and extension function declared in the outer scopes are also available in
  * the inner scopes.
  * <p>
- * Each of the four context declares exactly one variable, the value of which is the corresponding
- * object: PageContext, etc.
+ * Each  of the four context declares exactly one variable, the value of which
+ * is the corresponding object: PageContext, etc.
  * <p>
- * The "session" variable will be undefined if there is no session for this servlet.
- * JXPath does not automatically create sessions.
+ * The  "session" variable will be undefined if there is no session for this
+ * servlet. JXPath does not automatically create sessions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:26 $
  */
 public final class JXPathServletContexts {
 
     private static JXPathContextFactory factory;
 
     static {
-        JXPathIntrospector.registerDynamicClass(PageScopeContext.class, PageScopeContextHandler.class);
+        JXPathIntrospector.registerDynamicClass(
+            PageScopeContext.class,
+            PageScopeContextHandler.class);
         factory = JXPathContextFactory.newInstance();
     }
 
@@ -117,14 +118,22 @@ public final class JXPathServletContexts {
      * Returns a JXPathContext bound to the "page" scope. Caches that context
      * within the PageContext itself.
      */
-    public static JXPathContext getPageContext(PageContext pageContext){
-        JXPathContext context = (JXPathContext)pageContext.getAttribute(Constants.JXPATH_CONTEXT);
-        if (context == null){
-            JXPathIntrospector.registerDynamicClass(pageContext.getClass(), PageContextHandler.class);
-            JXPathContext parentContext = getRequestContext(
-                    pageContext.getRequest(), pageContext.getServletContext());
+    public static JXPathContext getPageContext(PageContext pageContext) {
+        JXPathContext context =
+            (JXPathContext) pageContext.getAttribute(Constants.JXPATH_CONTEXT);
+        if (context == null) {
+            JXPathIntrospector.registerDynamicClass(
+                pageContext.getClass(),
+                PageContextHandler.class);
+            JXPathContext parentContext =
+                getRequestContext(
+                    pageContext.getRequest(),
+                    pageContext.getServletContext());
             context = factory.newContext(parentContext, pageContext);
-            context.setVariables(new KeywordVariables(Constants.PAGE_SCOPE, new PageScopeContext(pageContext)));
+            context.setVariables(
+                new KeywordVariables(
+                    Constants.PAGE_SCOPE,
+                    new PageScopeContext(pageContext)));
             pageContext.setAttribute(Constants.JXPATH_CONTEXT, context);
         }
         return context;
@@ -134,22 +143,30 @@ public final class JXPathServletContexts {
      * Returns a JXPathContext bound to the "request" scope. Caches that context
      * within the request itself.
      */
-    public static JXPathContext getRequestContext(ServletRequest request, ServletContext servletContext){
-        JXPathContext context = (JXPathContext)request.getAttribute(Constants.JXPATH_CONTEXT);
-        if (context == null){
+    public static JXPathContext getRequestContext(
+        ServletRequest request,
+        ServletContext servletContext) 
+    {
+        JXPathContext context =
+            (JXPathContext) request.getAttribute(Constants.JXPATH_CONTEXT);
+        if (context == null) {
             JXPathContext parentContext = null;
-            if (request instanceof HttpServletRequest){
-                HttpSession session = ((HttpServletRequest)request).getSession(false);
-                if (session != null){
+            if (request instanceof HttpServletRequest) {
+                HttpSession session =
+                    ((HttpServletRequest) request).getSession(false);
+                if (session != null) {
                     parentContext = getSessionContext(session, servletContext);
                 }
                 else {
                     parentContext = getApplicationContext(servletContext);
                 }
             }
-            JXPathIntrospector.registerDynamicClass(request.getClass(), ServletRequestHandler.class);
+            JXPathIntrospector.registerDynamicClass(
+                request.getClass(),
+                ServletRequestHandler.class);
             context = factory.newContext(parentContext, request);
-            context.setVariables(new KeywordVariables(Constants.REQUEST_SCOPE, request));
+            context.setVariables(
+                new KeywordVariables(Constants.REQUEST_SCOPE, request));
             request.setAttribute(Constants.JXPATH_CONTEXT, context);
         }
         return context;
@@ -159,28 +176,44 @@ public final class JXPathServletContexts {
      * Returns a JXPathContext bound to the "session" scope. Caches that context
      * within the session itself.
      */
-    public static JXPathContext getSessionContext(HttpSession session, ServletContext servletContext){
-        JXPathContext context = (JXPathContext)session.getAttribute(Constants.JXPATH_CONTEXT);
-        if (context == null){
-            JXPathIntrospector.registerDynamicClass(session.getClass(), HttpSessionHandler.class);
+    public static JXPathContext getSessionContext(
+        HttpSession session,
+        ServletContext servletContext) 
+    {
+        JXPathContext context =
+            (JXPathContext) session.getAttribute(Constants.JXPATH_CONTEXT);
+        if (context == null) {
+            JXPathIntrospector.registerDynamicClass(
+                session.getClass(),
+                HttpSessionHandler.class);
             JXPathContext parentContext = getApplicationContext(servletContext);
             context = factory.newContext(parentContext, session);
-            context.setVariables(new KeywordVariables(Constants.SESSION_SCOPE, session));
+            context.setVariables(
+                new KeywordVariables(Constants.SESSION_SCOPE, session));
             session.setAttribute(Constants.JXPATH_CONTEXT, context);
         }
         return context;
     }
 
     /**
-     * Returns a JXPathContext bound to the "application" scope. Caches that context
-     * within the servlet context itself.
+     * Returns  a JXPathContext bound to the "application" scope. Caches that
+     * context within the servlet context itself.
      */
-    public static JXPathContext getApplicationContext(ServletContext servletContext){
-        JXPathContext context = (JXPathContext)servletContext.getAttribute(Constants.JXPATH_CONTEXT);
-        if (context == null){
-            JXPathIntrospector.registerDynamicClass(servletContext.getClass(), ServletContextHandler.class);
+    public static JXPathContext getApplicationContext(
+            ServletContext servletContext) 
+    {
+        JXPathContext context =
+            (JXPathContext) servletContext.getAttribute(
+                Constants.JXPATH_CONTEXT);
+        if (context == null) {
+            JXPathIntrospector.registerDynamicClass(
+                servletContext.getClass(),
+                ServletContextHandler.class);
             context = factory.newContext(null, servletContext);
-            context.setVariables(new KeywordVariables(Constants.APPLICATION_SCOPE, servletContext));
+            context.setVariables(
+                new KeywordVariables(
+                    Constants.APPLICATION_SCOPE,
+                    servletContext));
             servletContext.setAttribute(Constants.JXPATH_CONTEXT, context);
         }
         return context;

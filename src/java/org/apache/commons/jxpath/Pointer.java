@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Pointer.java,v 1.4 2002/08/10 16:13:03 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/08/10 16:13:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Pointer.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,17 +65,18 @@ package org.apache.commons.jxpath;
  * Pointers represent locations of objects and their properties
  * in Java object graphs. JXPathContext has methods
  * ({@link JXPathContext#getPointer(java.lang.String) getPointer()}
- * and ({@link JXPathContext#iteratePointers(java.lang.String) iteratePointers()},
- * which, given an XPath, produce Pointers for the objects or properties
- * described the the path. For example, <code>ctx.getPointer("foo/bar")</code>
- * will produce a Pointer that can get and set the property "bar" of
- * the object which is the value of the property "foo" of the root object.
- * The value of <code>ctx.getPointer("aMap/aKey[3]")</code> will be a pointer
- * to the 3'rd element of the array, which is the value for the key "aKey" of
- * the map, which is the value of the property "aMap" of the root object.
+ * and  ({@link JXPathContext#iteratePointers(java.lang.String)
+ * iteratePointers()}, which, given an XPath, produce Pointers for the objects
+ * or properties described the the path. For example, <code>ctx.getPointer
+ * ("foo/bar")</code> will produce a Pointer that can get and set the property
+ * "bar" of the object which is the value of the property "foo" of the root
+ * object. The value of <code>ctx.getPointer("aMap/aKey[3]")</code> will be a
+ * pointer to the 3'rd element of the array, which is the value for the key
+ * "aKey" of the map, which is the value of the property "aMap" of the root
+ * object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/08/10 16:13:03 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:22 $
  */
 public interface Pointer {
 
@@ -109,13 +110,14 @@ public interface Pointer {
     /**
      * Returns a string that is a proper "canonical" XPath that corresponds to
      * this pointer.  Consider this example:
-     * <p><code>Pointer ptr = ctx.getPointer("//employees[firstName = 'John']")</code>
-     * <p>The value of <code>ptr.asPath()</code> will look something like
-     * <code>"/departments[2]/employees[3]"</code>, so, basically, it represents the
-     * concrete location(s) of the result of a search performed by JXPath.
-     * If an object in the pointer's path is a Dynamic Property object (like a Map),
-     * the asPath method generates an XPath that looks like this:
-     * <code>"/departments[@name = 'HR']/employees[3]"</code>.
+     * <p><code>Pointer  ptr = ctx.getPointer("//employees[firstName = 'John']")
+     * </code>
+     * <p>The  value of <code>ptr.asPath()</code> will look something like
+     * <code>"/departments[2]/employees[3]"</code>, so, basically, it represents
+     * the concrete location(s) of the result of a search performed by JXPath.
+     * If an object in the pointer's path is a Dynamic Property object (like a
+     * Map), the asPath method generates an XPath that looks like this: <code>"
+     * /departments[@name = 'HR']/employees[3]"</code>.
      */
     String asPath();
 }

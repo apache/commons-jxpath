@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointerFactory.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/CollectionPointerFactory.java,v 1.3 2003/01/11 05:41:24 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/11 05:41:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,25 +72,33 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Implements NodePointerFactory for stand-alone collections.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:24 $
  */
 public class CollectionPointerFactory implements NodePointerFactory {
 
     public static final int COLLECTION_POINTER_FACTORY_ORDER = 10;
 
-    public int getOrder(){
+    public int getOrder() {
         return COLLECTION_POINTER_FACTORY_ORDER;
     }
 
-    public NodePointer createNodePointer(QName name, Object bean, Locale locale){
-        if (ValueUtils.isCollection(bean)){
+    public NodePointer createNodePointer(
+        QName name,
+        Object bean,
+        Locale locale) 
+    {
+        if (ValueUtils.isCollection(bean)) {
             return new CollectionPointer(bean, locale);
         }
         return null;
     }
 
-    public NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
-        if (ValueUtils.isCollection(bean)){
+    public NodePointer createNodePointer(
+        NodePointer parent,
+        QName name,
+        Object bean) 
+    {
+        if (ValueUtils.isCollection(bean)) {
             return new CollectionPointer(parent, bean);
         }
         return null;

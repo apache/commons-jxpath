@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.19 2002/11/26 01:20:06 dmitri Exp $
- * $Revision: 1.19 $
- * $Date: 2002/11/26 01:20:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.20 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.20 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,7 +61,13 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.JXPathContext;
@@ -72,12 +78,12 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * An XPath evaluation context.
  *
- * When evaluating a path, a chain of EvalContexts is created, each
- * context in the chain representing a step of the path. Subclasses of EvalContext
+ * When  evaluating a path, a chain of EvalContexts is created, each context in
+ * the chain representing a step of the path. Subclasses of EvalContext
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.19 $ $Date: 2002/11/26 01:20:06 $
+ * @version $Revision: 1.20 $ $Date: 2003/01/11 05:41:22 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
@@ -90,25 +96,25 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     // Sorts in the reverse order to the one defined by the Comparable
     // interface.
-    private static final Comparator REVERSE_COMPARATOR = new Comparator(){
-        public int compare(Object o1, Object o2){
-            return ((Comparable)o2).compareTo(o1);
+    private static final Comparator REVERSE_COMPARATOR = new Comparator() {
+        public int compare(Object o1, Object o2) {
+            return ((Comparable) o2).compareTo(o1);
         }
     };
 
-    public EvalContext(EvalContext parentContext){
+    public EvalContext(EvalContext parentContext) {
         this.parentContext = parentContext;
     }
 
-    public Pointer getContextNodePointer(){
+    public Pointer getContextNodePointer() {
         return getCurrentNodePointer();
     }
 
-    public JXPathContext getJXPathContext(){
+    public JXPathContext getJXPathContext() {
         return getRootContext().getJXPathContext();
     }
 
-    public int getPosition(){
+    public int getPosition() {
         return position;
     }
 
@@ -118,10 +124,10 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * @return 1 ascending order, -1 descending order,
      *  0 - does not require ordering
      */
-    public int getDocumentOrder(){
+    public int getDocumentOrder() {
         // Default behavior: if the parent needs to be ordered,
         // this one needs to be ordered too
-        if (parentContext != null && parentContext.getDocumentOrder() != 0){
+        if (parentContext != null && parentContext.getDocumentOrder() != 0) {
             return 1;
         }
         return 0;
@@ -130,16 +136,16 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Returns true if there are mode nodes matching the context's constraints.
      */
-    public boolean hasNext(){
-        if (pointerIterator != null){
+    public boolean hasNext() {
+        if (pointerIterator != null) {
             return pointerIterator.hasNext();
         }
 
-        if (getDocumentOrder() != 0){
+        if (getDocumentOrder() != 0) {
             return constructIterator();
         }
         else {
-            if (!done && !hasPerformedIteratorStep){
+            if (!done && !hasPerformedIteratorStep) {
                 performIteratorStep();
             }
             return !done;
@@ -149,40 +155,40 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Returns the next node pointer in the context
      */
-    public Object next(){
-        if (pointerIterator != null){
+    public Object next() {
+        if (pointerIterator != null) {
             return pointerIterator.next();
         }
 
-        if (getDocumentOrder() != 0){
-            if (!constructIterator()){
+        if (getDocumentOrder() != 0) {
+            if (!constructIterator()) {
                 throw new NoSuchElementException();
             }
             return pointerIterator.next();
         }
         else {
-            if (!done && !hasPerformedIteratorStep){
+            if (!done && !hasPerformedIteratorStep) {
                 performIteratorStep();
             }
-            if (done){
+            if (done) {
                 throw new NoSuchElementException();
             }
             hasPerformedIteratorStep = false;
-            return (NodePointer)getCurrentNodePointer().clone();
+            return (NodePointer) getCurrentNodePointer().clone();
         }
     }
 
     /**
      * Moves the iterator forward by one position
      */
-    private void performIteratorStep(){
+    private void performIteratorStep() {
         done = true;
-        if (position != 0 && nextNode()){
+        if (position != 0 && nextNode()) {
             done = false;
         }
         else {
-            while (nextSet()){
-                if (nextNode()){
+            while (nextSet()) {
+                if (nextNode()) {
                     done = false;
                     break;
                 }
@@ -194,29 +200,29 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Operation is not supported
      */
-    public void remove(){
+    public void remove() {
         throw new UnsupportedOperationException(
             "JXPath iterators cannot remove nodes");
     }
 
-    private boolean constructIterator(){
+    private boolean constructIterator() {
         HashSet set = new HashSet();
         ArrayList list = new ArrayList();
-        while (nextSet()){
-            while (nextNode()){
+        while (nextSet()) {
+            while (nextNode()) {
                 NodePointer pointer = getCurrentNodePointer();
-                if (!set.contains(pointer)){
-                    Pointer cln = (Pointer)pointer.clone();
+                if (!set.contains(pointer)) {
+                    Pointer cln = (Pointer) pointer.clone();
                     set.add(cln);
                     list.add(cln);
                 }
             }
         }
-        if (list.isEmpty()){
+        if (list.isEmpty()) {
             return false;
         }
 
-        if (getDocumentOrder() == 1){
+        if (getDocumentOrder() == 1) {
             Collections.sort(list);
         }
         else {
@@ -258,7 +264,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             reset();
         }
         List list = new ArrayList();
-        while (nextSet()){
+        while (nextSet()) {
             while (nextNode()) {
                 list.add(getCurrentNodePointer());
             }
@@ -286,8 +292,8 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * Returns the root context of the path, which provides easy
      * access to variables and functions.
      */
-    public RootContext getRootContext(){
-        if (rootContext == null){
+    public RootContext getRootContext() {
+        if (rootContext == null) {
             rootContext = parentContext.getRootContext();
         }
         return rootContext;
@@ -296,11 +302,11 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Sets current position = 0, which is the pre-iteration state.
      */
-    public void reset(){
+    public void reset() {
         position = 0;
     }
 
-    public int getCurrentPosition(){
+    public int getCurrentPosition() {
         return position;
     }
 
@@ -308,10 +314,10 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * Returns the first encountered Pointer that matches the current
      * context's criteria.
      */
-    public Pointer getSingleNodePointer(){
+    public Pointer getSingleNodePointer() {
         reset();
-        while(nextSet()){
-            if (nextNode()){
+        while (nextSet()) {
+            if (nextNode()) {
                 return getCurrentNodePointer();
             }
         }
@@ -372,7 +378,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * Returns false if the position is out of the node set range.
      * You can call it with 0 as the position argument to restart the iteration.
      */
-    public boolean setPosition(int position){
+    public boolean setPosition(int position) {
         this.position = position;
         return true;
     }

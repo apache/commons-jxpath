@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ProcessingInstructionTest.java,v 1.3 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ProcessingInstructionTest.java,v 1.4 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,20 +63,20 @@ package org.apache.commons.jxpath.ri.compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:23 $
  */
 public class ProcessingInstructionTest extends NodeTest {
     private String target;
 
-    public ProcessingInstructionTest(String target){
+    public ProcessingInstructionTest(String target) {
         this.target = target;
     }
 
-    public String getTarget(){
+    public String getTarget() {
         return target;
     }
 
-    public String toString(){
+    public String toString() {
         return "processing-instruction(" + target + ")";
     }
 }

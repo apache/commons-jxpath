@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/TestBeanFactory.java,v 1.3 2002/11/26 01:33:35 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/11/26 01:33:35 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/TestBeanFactory.java,v 1.4 2003/01/11 05:41:27 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.*;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/11/26 01:33:35 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:27 $
  */
 public class TestBeanFactory extends AbstractFactory {
 
@@ -81,16 +81,22 @@ public class TestBeanFactory extends AbstractFactory {
         if (name.equals("nestedBean")) {
             ((TestBean) parent).setNestedBean(new NestedTestBean("newName"));
             return true;
-        } else if (name.equals("beans")) {
+        }
+        else if (name.equals("beans")) {
             TestBean bean = (TestBean) parent;
             if (bean.getBeans() == null || index >= bean.getBeans().length) {
                 bean.setBeans(new NestedTestBean[index + 1]);
             }
-            ((TestBean) parent).getBeans()[index] =
-                new NestedTestBean("newName");
+            bean.getBeans()[index] = new NestedTestBean("newName");
             return true;
         }
-        return false;   }
+        else if (name.equals("integers")){    
+            // This will implicitly expand the collection        
+            ((TestBean)parent).setIntegers(index, 0);
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Create a new object and set it on the specified variable

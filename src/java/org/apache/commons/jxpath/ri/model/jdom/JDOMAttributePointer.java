@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributePointer.java,v 1.4 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMAttributePointer.java,v 1.5 2003/01/11 05:41:26 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,12 +70,12 @@ import org.jdom.Attribute;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:26 $
  */
 public class JDOMAttributePointer extends NodePointer {
     private Attribute attr;
 
-    public JDOMAttributePointer(NodePointer parent, Attribute attr){
+    public JDOMAttributePointer(NodePointer parent, Attribute attr) {
         super(parent);
         this.attr = attr;
     }
@@ -86,65 +86,65 @@ public class JDOMAttributePointer extends NodePointer {
             JDOMNodePointer.getLocalName(attr));
     }
 
-    public QName getExpandedName(){
+    public QName getExpandedName() {
         return new QName(getNamespaceURI(),  attr.getName());
     }
 
-    public String getNamespaceURI(){
+    public String getNamespaceURI() {
         String uri = attr.getNamespaceURI();
-        if (uri != null && uri.equals("")){
+        if (uri != null && uri.equals("")) {
             uri = null;
         }
         return uri;
     }
 
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return attr;
     }
     
-    public boolean isCollection(){
+    public boolean isCollection() {
         return false;
     }
 
-    public int getLength(){
+    public int getLength() {
         return 1;
     }    
 
-    public Object getImmediateNode(){
+    public Object getImmediateNode() {
         String value = attr.getValue();
-        if (value == null){
+        if (value == null) {
             return null;
         }
         return value;
     }
 
-    public boolean isActual(){
+    public boolean isActual() {
         return true;
     }
 
-    public boolean isLeaf(){
+    public boolean isLeaf() {
         return true;
     }
 
     /**
      * Sets the value of this attribute.
      */
-    public void setValue(Object value){
-        attr.setValue((String)TypeUtils.convert(value, String.class));
+    public void setValue(Object value) {
+        attr.setValue((String) TypeUtils.convert(value, String.class));
     }
 
-    public void remove(){
+    public void remove() {
         attr.getParent().removeAttribute(attr);
     }
 
     /**
      */
-    public String asPath(){
+    public String asPath() {
         StringBuffer buffer = new StringBuffer();
-        if (parent != null){
+        if (parent != null) {
             buffer.append(parent.asPath());
-            if (buffer.length() == 0 ||
-                    buffer.charAt(buffer.length()-1) != '/'){
+            if (buffer.length() == 0
+                || buffer.charAt(buffer.length() - 1) != '/') {
                 buffer.append('/');
             }
         }
@@ -153,20 +153,20 @@ public class JDOMAttributePointer extends NodePointer {
         return buffer.toString();
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return System.identityHashCode(attr);
     }
 
-    public boolean equals(Object object){
-        if (object == this){
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof JDOMAttributePointer)){
+        if (!(object instanceof JDOMAttributePointer)) {
             return false;
         }
 
-        JDOMAttributePointer other = (JDOMAttributePointer)object;
+        JDOMAttributePointer other = (JDOMAttributePointer) object;
         return attr == other.attr;
     }
 

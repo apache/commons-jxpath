@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExtensionFunction.java,v 1.5 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExtensionFunction.java,v 1.6 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,21 +69,22 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import java.util.Arrays;
 
 /**
- * Represents an element of the parse tree representing an extension function call.
+ * Represents  an element of the parse tree representing an extension function
+ * call.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:23 $
  */
 public class ExtensionFunction extends Operation {
 
     private QName functionName;
 
-    public ExtensionFunction(QName functionName, Expression args[]){
+    public ExtensionFunction(QName functionName, Expression args[]) {
         super(Expression.OP_FUNCTION, args);
         this.functionName = functionName;
     }
 
-    public QName getFunctionName(){
+    public QName getFunctionName() {
         return functionName;
     }
 
@@ -91,31 +92,34 @@ public class ExtensionFunction extends Operation {
      * An extension function gets the current context, therefore it MAY be
      * context dependent.
      */
-    public boolean computeContextDependent(){
+    public boolean computeContextDependent() {
         return true;
     }
 
-    public String opCodeToString(){
+    public String opCodeToString() {
         return super.opCodeToString() + ':' + functionName;
     }
 
-    public Object compute(EvalContext context){
+    public Object compute(EvalContext context) {
         return computeValue(context);
     }
 
-    public Object computeValue(EvalContext context){
+    public Object computeValue(EvalContext context) {
         Object[] parameters = null;
-        if (args != null){
+        if (args != null) {
             parameters = new Object[args.length];
-            for (int i = 0; i < args.length; i++){
+            for (int i = 0; i < args.length; i++) {
                 Object param = args[i].compute(context);
                 parameters[i] = param;
             }
         }
-        Function function = context.getRootContext().getFunction(functionName, parameters);
-        if (function == null){
-            throw new JXPathException("No such function: " + functionName +
-                 Arrays.asList(parameters));
+        Function function =
+            context.getRootContext().getFunction(functionName, parameters);
+        if (function == null) {
+            throw new JXPathException(
+                "No such function: "
+                    + functionName
+                    + Arrays.asList(parameters));
         }
 
         return function.invoke(context, parameters);

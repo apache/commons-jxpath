@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.9 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointer.java,v 1.10 2003/01/11 05:41:24 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2003/01/11 05:41:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * in the chain.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.10 $ $Date: 2003/01/11 05:41:24 $
  */
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;
@@ -109,32 +109,32 @@ public class BeanPointer extends PropertyOwnerPointer {
         this.beanInfo = beanInfo;
     }
 
-    public PropertyPointer getPropertyPointer(){
+    public PropertyPointer getPropertyPointer() {
         return new BeanPropertyPointer(this, beanInfo);
     }
 
-    public QName getName(){
+    public QName getName() {
         return name;
     }
 
     /**
      * Returns the bean itself
      */
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return bean;
     }
 
     /**
      * Returns false
      */
-    public boolean isCollection(){
+    public boolean isCollection() {
         return false;
     }
 
     /**
      * Returns 1.
      */
-    public int getLength(){
+    public int getLength() {
         return 1;
     }
 
@@ -144,7 +144,7 @@ public class BeanPointer extends PropertyOwnerPointer {
             || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return name == null ? 0 : name.hashCode();
     }
 
@@ -169,9 +169,9 @@ public class BeanPointer extends PropertyOwnerPointer {
             return false;
         }
 
-        int i_this = (index == WHOLE_COLLECTION ? 0 : index);
-        int i_other = (other.index == WHOLE_COLLECTION ? 0 : other.index);
-        if (i_this != i_other) {
+        int iThis = (index == WHOLE_COLLECTION ? 0 : index);
+        int iOther = (other.index == WHOLE_COLLECTION ? 0 : other.index);
+        if (iThis != iOther) {
             return false;
         }
 

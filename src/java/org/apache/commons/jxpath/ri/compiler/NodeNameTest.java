@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/NodeNameTest.java,v 1.4 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/NodeNameTest.java,v 1.5 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,20 +65,20 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:23 $
  */
 public class NodeNameTest extends NodeTest {
     private QName qname;
 
-    public NodeNameTest(QName qname){
+    public NodeNameTest(QName qname) {
         this.qname = qname;
     }
 
-    public QName getNodeName(){
+    public QName getNodeName() {
         return qname;
     }
 
-    public String toString(){
+    public String toString() {
         return qname.toString();
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPointer.java,v 1.7 2002/10/20 03:47:17 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/10/20 03:47:17 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPointer.java,v 1.8 2003/01/11 05:41:24 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/01/11 05:41:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,13 +69,13 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/10/20 03:47:17 $
+ * @version $Revision: 1.8 $ $Date: 2003/01/11 05:41:24 $
  */
 public class NullPointer extends PropertyOwnerPointer {
     private QName name;
     private String id;
 
-    public NullPointer(QName name, Locale locale){
+    public NullPointer(QName name, Locale locale) {
         super(null, locale);
         this.name = name;
     }
@@ -83,25 +83,25 @@ public class NullPointer extends PropertyOwnerPointer {
     /**
      * Used for the root node
      */
-    public NullPointer(NodePointer parent, QName name){
+    public NullPointer(NodePointer parent, QName name) {
         super(parent);
         this.name = name;
     }
 
-    public NullPointer(Locale locale, String id){
+    public NullPointer(Locale locale, String id) {
         super(null, locale);
         this.id = id;
     }
 
-    public QName getName(){
+    public QName getName() {
         return name;
     }
 
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return null;
     }
     
-    public boolean isCollection(){
+    public boolean isCollection() {
         return false;
     }
 
@@ -109,91 +109,81 @@ public class NullPointer extends PropertyOwnerPointer {
         return true;
     }        
 
-    public boolean isActual(){
+    public boolean isActual() {
         return false;
     }
 
-    public PropertyPointer getPropertyPointer(){
+    public PropertyPointer getPropertyPointer() {
         return new NullPropertyPointer(this);
     }
 
-    public NodePointer createPath(JXPathContext context, Object value){
-        if (parent != null){
-            if (parent instanceof PropertyPointer){
-                return parent.createPath(context, value);
-            }
-            else {
-                return parent.createChild(context, getName(), 0, value);
-            }
+    public NodePointer createPath(JXPathContext context, Object value) {
+        if (parent != null) {
+            return parent.createPath(context, value).getValuePointer();
         }
         else {
-            throw new UnsupportedOperationException("Cannot create the root object: " + asPath());
+            throw new UnsupportedOperationException(
+                "Cannot create the root object: " + asPath());
         }
     }
 
-    public NodePointer createPath(JXPathContext context){
-        if (parent != null){
-            if (parent instanceof PropertyPointer){
-                return parent.createPath(context).getValuePointer();
-            }
-            else {
-                return parent.createChild(context, getName(), 0).getValuePointer();
-            }
+    public NodePointer createPath(JXPathContext context) {
+        if (parent != null) {
+            return parent.createPath(context).getValuePointer();
         }
-        throw new UnsupportedOperationException("Cannot create the root object: " + asPath());
+        else {
+            throw new UnsupportedOperationException(
+                "Cannot create the root object: " + asPath());
+        }
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
-        if (parent != null){
-            NodePointer pointer = createPath(context);
-            if (pointer != null){
-                pointer = pointer.getValuePointer().createChild(context, name, index, value);
-                return pointer;
-            }
-        }
-        throw new UnsupportedOperationException("Cannot create the root object: " + asPath());
+    public NodePointer createChild(
+        JXPathContext context,
+        QName name,
+        int index) 
+    {
+        return createPath(context).createChild(context, name, index);
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index){
-        if (parent != null){
-            NodePointer pointer = createPath(context);
-            if (pointer != null){
-                return pointer.createChild(context, name, index);
-            }
-        }
-        throw new UnsupportedOperationException("Cannot create the root object: " + asPath());
+    public NodePointer createChild(
+        JXPathContext context,
+        QName name, 
+        int index,
+        Object value) 
+    {
+        return createPath(context).createChild(context, name, index, value);
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return name == null ? 0 : name.hashCode();
     }
 
-    public boolean equals(Object object){
-        if (object == this){
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof NullPointer)){
+        if (!(object instanceof NullPointer)) {
             return false;
         }
 
-        NullPointer other = (NullPointer)object;
-        return (name == null && other.name == null) ||
-               (name != null && name.equals(other.name));
+        NullPointer other = (NullPointer) object;
+        return (name == null && other.name == null)
+            || (name != null && name.equals(other.name));
     }
 
-    public String asPath(){
-        if (id != null){
+    public String asPath() {
+        if (id != null) {
             return "id(" + id + ")";
         }
 
-        if (parent != null){
+        if (parent != null) {
             return super.asPath();
         }
         return "null()";
     }
 
-    public int getLength(){
+    public int getLength() {
         return 0;
     }
 }

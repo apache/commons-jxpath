@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/BasicVariables.java,v 1.3 2002/05/08 23:02:42 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/05/08 23:02:42 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/BasicVariables.java,v 1.4 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,7 +67,7 @@ import java.util.HashMap;
  * A basic implementation of the Variables interface that uses a HashMap.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/05/08 23:02:42 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:22 $
  */
 public class BasicVariables implements Variables {
 
@@ -84,7 +84,7 @@ public class BasicVariables implements Variables {
      *
      * @return true if the variable is declared
      */
-    public boolean isDeclaredVariable(String varName){
+    public boolean isDeclaredVariable(String varName) {
         return vars.containsKey(varName);
     }
 
@@ -96,14 +96,15 @@ public class BasicVariables implements Variables {
      *
      * @return the value of the variable
      */
-    public Object getVariable(String varName){
+    public Object getVariable(String varName) {
         // Note that a variable may be defined with a null value
 
-        if (vars.containsKey(varName)){
+        if (vars.containsKey(varName)) {
             return vars.get(varName);
         }
 
-        throw new IllegalArgumentException("No such variable: '" + varName + "'");
+        throw new IllegalArgumentException(
+            "No such variable: '" + varName + "'");
     }
 
     /**
@@ -113,7 +114,7 @@ public class BasicVariables implements Variables {
      * @param varName is a variable name without the "$" sign
      * @param value is the new value for the variable, which can be null
      */
-    public void declareVariable(String varName, Object value){
+    public void declareVariable(String varName, Object value) {
         vars.put(varName, value);
     }
 
@@ -122,10 +123,11 @@ public class BasicVariables implements Variables {
      *
      * @param varName is a variable name without the "$" sign
      */
-    public void undeclareVariable(String varName){
+    public void undeclareVariable(String varName) {
         vars.remove(varName);
     }
-    public String toString(){
+    
+    public String toString() {
         return vars.toString();
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPointer.java,v 1.1 2002/11/28 01:01:30 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/11/28 01:01:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPointer.java,v 1.2 2003/01/11 05:41:26 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/11 05:41:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,11 +72,12 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
 /**
- * A Pointer that points to an object with Dynamic Properties. It is used
- * for the first element of a path; following elements will by of type PropertyPointer.
+ * A  Pointer that points to an object with Dynamic Properties. It is used for
+ * the first element of a path; following elements will by of type
+ * PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/11/28 01:01:30 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/11 05:41:26 $
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;
@@ -102,7 +103,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
         this.handler = handler;
     }
 
-    public PropertyPointer getPropertyPointer(){
+    public PropertyPointer getPropertyPointer() {
         return new DynamicPropertyPointer(this, handler);
     }
 
@@ -112,18 +113,18 @@ public class DynamicPointer extends PropertyOwnerPointer {
         return new DynamicPropertyIterator(this, property, reverse, startWith);
     }
 
-    public NodeIterator attributeIterator(QName name){
+    public NodeIterator attributeIterator(QName name) {
         return new DynamicAttributeIterator(this, name);
     }
 
-    public QName getName(){
+    public QName getName() {
         return name;
     }
 
     /**
      * Returns the DP object iself.
      */
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return bean;
     }
     
@@ -133,38 +134,38 @@ public class DynamicPointer extends PropertyOwnerPointer {
             || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }    
     
-    public boolean isCollection(){
+    public boolean isCollection() {
         return false;
     }
 
     /**
      * Returns 1.
      */
-    public int getLength(){
+    public int getLength() {
         return 1;
     }
 
-    public String asPath(){
-        if (parent != null){
+    public String asPath() {
+        if (parent != null) {
             return super.asPath();
         }
         return "/";
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return System.identityHashCode(bean) + name.hashCode();
     }
 
-    public boolean equals(Object object){
-        if (object == this){
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof DynamicPointer)){
+        if (!(object instanceof DynamicPointer)) {
             return false;
         }
 
-        DynamicPointer other = (DynamicPointer)object;
+        DynamicPointer other = (DynamicPointer) object;
         return bean == other.bean && name.equals(other.name);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/InfoSetUtil.java,v 1.5 2002/11/29 07:22:02 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/11/29 07:22:02 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/InfoSetUtil.java,v 1.6 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,43 +68,43 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Type conversions, XPath style.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/11/29 07:22:02 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:22 $
  */
 public class InfoSetUtil {
 
     private static final Double ZERO = new Double(0);
     private static final Double ONE = new Double(1);
-    private static final Double NaN = new Double(Double.NaN);
+    private static final Double NOT_A_NUMBER = new Double(Double.NaN);
 
 
     /**
      * Converts the supplied object to String
      */
-    public static String stringValue(Object object){
-        if (object instanceof String){
-            return (String)object;
+    public static String stringValue(Object object) {
+        if (object instanceof String) {
+            return (String) object;
         }
-        else if (object instanceof Number){
-            double d = ((Number)object).doubleValue();
-            long l = ((Number)object).longValue();
-            if (d == l){
+        else if (object instanceof Number) {
+            double d = ((Number) object).doubleValue();
+            long l = ((Number) object).longValue();
+            if (d == l) {
                 return String.valueOf(l);
             }
             return String.valueOf(d);
         }
-        else if (object instanceof Boolean){
-            return ((Boolean)object).booleanValue() ? "true" : "false";
+        else if (object instanceof Boolean) {
+            return ((Boolean) object).booleanValue() ? "true" : "false";
         }
-        else if (object == null){
+        else if (object == null) {
             return "";
         }
-        else if (object instanceof NodePointer){
-            return stringValue(((NodePointer)object).getValue());
+        else if (object instanceof NodePointer) {
+            return stringValue(((NodePointer) object).getValue());
         }
-        else if (object instanceof EvalContext){
-            EvalContext ctx = (EvalContext)object;
+        else if (object instanceof EvalContext) {
+            EvalContext ctx = (EvalContext) object;
             Pointer ptr = ctx.getSingleNodePointer();
-            if (ptr != null){
+            if (ptr != null) {
                 return stringValue(ptr);
             }
             return "";
@@ -115,28 +115,28 @@ public class InfoSetUtil {
     /**
      * Converts the supplied object to Number
      */
-    public static Number number(Object object){
-        if (object instanceof Number){
-            return (Number)object;
+    public static Number number(Object object) {
+        if (object instanceof Number) {
+            return (Number) object;
         }
-        else if (object instanceof Boolean){
-            return ((Boolean)object).booleanValue() ? ONE : ZERO;
+        else if (object instanceof Boolean) {
+            return ((Boolean) object).booleanValue() ? ONE : ZERO;
         }
-        else if (object instanceof String){
+        else if (object instanceof String) {
             Double value;
             try {
-                value = new Double((String)object);
+                value = new Double((String) object);
             }
-            catch (NumberFormatException ex){
-                value = NaN;
+            catch (NumberFormatException ex) {
+                value = NOT_A_NUMBER;
             }
             return value;
         }
-        else if (object instanceof EvalContext){
+        else if (object instanceof EvalContext) {
             return number(stringValue(object));
         }
-        else if (object instanceof NodePointer){
-            return number(((NodePointer)object).getValue());
+        else if (object instanceof NodePointer) {
+            return number(((NodePointer) object).getValue());
         }
         return number(stringValue(object));
     }
@@ -144,31 +144,31 @@ public class InfoSetUtil {
     /**
      * Converts the supplied object to double
      */
-    public static double doubleValue(Object object){
-        if (object instanceof Number){
-            return ((Number)object).doubleValue();
+    public static double doubleValue(Object object) {
+        if (object instanceof Number) {
+            return ((Number) object).doubleValue();
         }
-        else if (object instanceof Boolean){
-            return ((Boolean)object).booleanValue() ? 0.0 : 1.0;
+        else if (object instanceof Boolean) {
+            return ((Boolean) object).booleanValue() ? 0.0 : 1.0;
         }
-        else if (object instanceof String){
-            if (object.equals("")){
+        else if (object instanceof String) {
+            if (object.equals("")) {
                 return 0.0;
             }
 
             double value;
             try {
-                value = Double.parseDouble((String)object);
+                value = Double.parseDouble((String) object);
             }
-            catch (NumberFormatException ex){
+            catch (NumberFormatException ex) {
                 value = Double.NaN;
             }
             return value;
         }
-        else if (object instanceof NodePointer){
-            return doubleValue(((NodePointer)object).getValue());
+        else if (object instanceof NodePointer) {
+            return doubleValue(((NodePointer) object).getValue());
         }
-        else if (object instanceof EvalContext){
+        else if (object instanceof EvalContext) {
             return doubleValue(stringValue(object));
         }
         return doubleValue(stringValue(object));
@@ -177,25 +177,25 @@ public class InfoSetUtil {
     /**
      * Converts the supplied object to boolean
      */
-    public static boolean booleanValue(Object object){
-        if (object instanceof Number){
-            double value = ((Number)object).doubleValue();
+    public static boolean booleanValue(Object object) {
+        if (object instanceof Number) {
+            double value = ((Number) object).doubleValue();
             return value != 0 && value != -0 && !Double.isNaN(value);
         }
-        else if (object instanceof Boolean){
-            return ((Boolean)object).booleanValue();
+        else if (object instanceof Boolean) {
+            return ((Boolean) object).booleanValue();
         }
-        else if (object instanceof EvalContext){
-            EvalContext ctx = (EvalContext)object;
+        else if (object instanceof EvalContext) {
+            EvalContext ctx = (EvalContext) object;
             return ctx.nextSet() && ctx.nextNode();
         }
-        else if (object instanceof String){
-            return ((String)object).length() != 0;
+        else if (object instanceof String) {
+            return ((String) object).length() != 0;
         }
-        else if (object instanceof NodePointer){
-            return ((NodePointer)object).isActual();
+        else if (object instanceof NodePointer) {
+            return ((NodePointer) object).isActual();
         }
-        else if (object == null){
+        else if (object == null) {
             return false;
         }
         return true;

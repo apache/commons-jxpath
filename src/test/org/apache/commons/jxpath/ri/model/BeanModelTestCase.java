@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.5 2003/01/10 02:11:29 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2003/01/10 02:11:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.6 2003/01/11 05:41:27 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/11 05:41:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2003/01/10 02:11:29 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:27 $
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase
@@ -833,8 +833,8 @@ public abstract class BeanModelTestCase extends JXPathTestCase
     public void testCreatePathExpandNewCollection(){
         context.setValue("beans", null);
 
-        // Calls factory.expandCollection(..., testBean, "beans", 2), then
-        // factory.createObject(..., testBean, "beans", 2)
+        // Calls factory.createObject(..., testBean, "beans", 2), 
+        // then  factory.createObject(..., testBean, "beans", 2)
         assertXPathCreatePath(context,
                 "/beans[2]/int",
                 new Integer(1),
@@ -844,8 +844,8 @@ public abstract class BeanModelTestCase extends JXPathTestCase
     public void testCreatePathAndSetValueExpandNewCollection(){
         context.setValue("beans", null);
 
-        // Calls factory.expandCollection(..., testBean, "beans", 2), then
-        // factory.createObject(..., testBean, "beans", 2)
+        // Calls factory.createObject(..., testBean, "beans", 2), 
+        // then factory.createObject(..., testBean, "beans", 2)
         assertXPathCreatePathAndSetValue(context,
                 "/beans[2]/int",
                 new Integer(2),
@@ -853,6 +853,15 @@ public abstract class BeanModelTestCase extends JXPathTestCase
     }
 
     public void testCreatePathExpandExistingCollection(){
+        // Calls factory.createObject(..., TestBean, "integers", 5)
+        // to expand collection
+        assertXPathCreatePathAndSetValue(context,
+            "/integers[5]",
+            new Integer(3),
+            "/integers[5]");     
+    }
+    
+    public void testCreatePathExpandExistingCollectionAndSetProperty(){
         // Another, but the collection already exists
         assertXPathCreatePath(context,
                 "/beans[3]/int",
@@ -872,7 +881,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase
         context.setValue("nestedBean", null);
 
         // Calls factory.createObject(..., TestBean, "nestedBean")
-        // Calls factory.expandCollection(..., nestedBean, "strings", 2)
+        // Calls factory.createObject(..., nestedBean, "strings", 2)
         assertXPathCreatePath(context,
                 "/nestedBean/strings[2]",
                 "String 2",
@@ -883,13 +892,13 @@ public abstract class BeanModelTestCase extends JXPathTestCase
         context.setValue("nestedBean", null);
 
         // Calls factory.createObject(..., TestBean, "nestedBean")
-        // Calls factory.expandCollection(..., nestedBean, "strings", 2)
+        // Calls factory.createObject(..., nestedBean, "strings", 2)
         assertXPathCreatePathAndSetValue(context,
                 "/nestedBean/strings[2]",
                 "Test",
                 "/nestedBean/strings[2]");
     }
-
+        
     public void testRemovePathPropertyValue(){
         // Remove property value
         context.removePath("nestedBean/int");

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/Compiler.java,v 1.4 2002/06/08 22:47:25 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/06/08 22:47:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/Compiler.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,9 +66,9 @@ package org.apache.commons.jxpath.ri;
  * produced and consumed by the APIs.  Arguments and return values are
  * declared as java.lang.Object.
  * <p>
- * Since objects returned by Compiler methods are passed as arguments to
- * other Compiler methods, the descriptions of these methods use virtual
- * types.  There are four virtual object types: EXPRESSION, QNAME, STEP and NODE_TEST.
+ * Since  objects returned by Compiler methods are passed as arguments to other
+ * Compiler methods, the descriptions of these methods use virtual types.  There
+ * are four virtual object types: EXPRESSION, QNAME, STEP and NODE_TEST.
  * <p>
  * The following example illustrates this notion.  This sequence compiles
  * the xpath "foo[round(1 div 2)]/text()":
@@ -77,16 +77,18 @@ package org.apache.commons.jxpath.ri;
  *      Object expr1 = compiler.number("1");
  *      Object expr2 = compiler.number("2");
  *      Object expr3 = compiler.div(expr1, expr2);
- *      Object expr4 = compiler.coreFunction(Compiler.FUNCTION_ROUND, new Object[]{expr3});
+ *      Object expr4 = compiler.
+ *              coreFunction(Compiler.FUNCTION_ROUND, new Object[]{expr3});
  *      Object test1 = compiler.nodeNameTest(qname1);
- *      Object step1 = compiler.step(Compiler.AXIS_CHILD, test1, new Object[]{expr4});
+ *      Object step1 = compiler.
+ *              step(Compiler.AXIS_CHILD, test1, new Object[]{expr4});
  *      Object test2 = compiler.nodeTypeTest(Compiler.NODE_TYPE_TEXT);
  *      Object step2 = compiler.nodeTypeTest(Compiler.AXIS_CHILD, test2, null);
  *      Object expr5 = compiler.locationPath(false, new Object[]{step1, step2});
  * </pre></blockquote>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/06/08 22:47:25 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:22 $
  */
 public interface Compiler {
 
@@ -170,7 +172,8 @@ public interface Compiler {
     Object minus(Object left, Object right);
 
     /**
-     * Produces an EXPRESSION object representing <i>left</i> multiplied by <i>right</i>
+     * Produces  an EXPRESSION object representing <i>left</i> multiplied by
+     * <i>right</i>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -178,7 +181,8 @@ public interface Compiler {
     Object multiply(Object left, Object right);
 
     /**
-     * Produces an EXPRESSION object representing <i>left</i> divided by <i>right</i>
+     * Produces  an EXPRESSION object representing <i>left</i> divided by
+     * <i>right</i>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -186,7 +190,8 @@ public interface Compiler {
     Object divide(Object left, Object right);
 
     /**
-     * Produces an EXPRESSION object representing <i>left</i> modulo <i>right</i>
+     * Produces  an EXPRESSION object representing <i>left</i> modulo
+     * <i>right</i>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -317,7 +322,8 @@ public interface Compiler {
     Object nodeTypeTest(int nodeType);
 
     /**
-     * Produces a NODE_TEST object that represents a processing instruction test.
+     * Produces  a NODE_TEST object that represents a processing instruction
+     * test.
      *
      * @param qname is a QNAME object
      */
@@ -347,5 +353,8 @@ public interface Compiler {
      * @param predicates are EXPRESSION objects
      * @param steps are STEP objects
      */
-    Object expressionPath(Object expression, Object[] predicates, Object[] steps);
+    Object expressionPath(
+        Object expression,
+        Object[] predicates,
+        Object[] steps);
 }

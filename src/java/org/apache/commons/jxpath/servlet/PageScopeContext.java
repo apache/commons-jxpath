@@ -66,27 +66,27 @@ import javax.servlet.jsp.PageContext;
  * "$page/foo" would only look in the "page" scope.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:26 $
  */
 public class PageScopeContext {
     private PageContext pageContext;
 
-    public PageScopeContext(PageContext pageContext){
+    public PageScopeContext(PageContext pageContext) {
         this.pageContext = pageContext;
     }
 
     /**
      * Returns attributes of the pageContext declared in the "page" scope.
      */
-    public Enumeration getAttributeNames(){
+    public Enumeration getAttributeNames() {
         return pageContext.getAttributeNamesInScope(PageContext.PAGE_SCOPE);
     }
 
-    public Object getAttribute(String attribute){
+    public Object getAttribute(String attribute) {
         return pageContext.getAttribute(attribute, PageContext.PAGE_SCOPE);
     }
 
-    public void setAttribute(String attribute, Object value){
+    public void setAttribute(String attribute, Object value) {
         pageContext.setAttribute(attribute, value, PageContext.PAGE_SCOPE);
     }
 }

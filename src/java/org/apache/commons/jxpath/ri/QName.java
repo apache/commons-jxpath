@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/QName.java,v 1.4 2002/10/13 02:25:36 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/10/13 02:25:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/QName.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,15 +68,15 @@ import org.apache.commons.jxpath.JXPathException;
  * and an local name.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/10/13 02:25:36 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:22 $
  */
 public class QName {
     private String prefix;
     private String name;
 
-    public QName(String qualifiedName){
+    public QName(String qualifiedName) {
         int index = qualifiedName.indexOf(':');
-        if (index == -1){
+        if (index == -1) {
             prefix = null;
             name = qualifiedName;
         }
@@ -86,47 +86,48 @@ public class QName {
         }
     }
 
-    public QName(String prefix, String localName){
-        if (localName.indexOf(':') != -1){
-            throw new JXPathException("The 'localName' part of a QName cannot contain colons");
+    public QName(String prefix, String localName) {
+        if (localName.indexOf(':') != -1) {
+            throw new JXPathException(
+                "The 'localName' part of a QName cannot contain colons");
         }
         this.prefix = prefix;
         this.name = localName;
     }
 
-    public String getPrefix(){
+    public String getPrefix() {
         return prefix;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public String toString(){
-        if (prefix != null){
+    public String toString() {
+        if (prefix != null) {
             return prefix + ':' + name;
         }
         return name;
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return name.hashCode();
     }
 
-    public boolean equals(Object object){
-        if (!(object instanceof QName)){
+    public boolean equals(Object object) {
+        if (!(object instanceof QName)) {
             return false;
         }
-        if (this == object){
+        if (this == object) {
             return true;
         }
-        QName that = (QName)object;
-        if (!this.name.equals(that.name)){
+        QName that = (QName) object;
+        if (!this.name.equals(that.name)) {
             return false;
         }
 
-        if ((this.prefix == null && that.prefix != null) ||
-            (this.prefix != null && !this.prefix.equals(that.prefix))){
+        if ((this.prefix == null && that.prefix != null)
+            || (this.prefix != null && !this.prefix.equals(that.prefix))) {
             return false;
         }
 

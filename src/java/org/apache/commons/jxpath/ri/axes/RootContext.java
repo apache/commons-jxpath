@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.8 2002/06/08 22:45:25 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/06/08 22:45:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/RootContext.java,v 1.9 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that is used to hold the root node for the path traversal.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/06/08 22:45:25 $
+ * @version $Revision: 1.9 $ $Date: 2003/01/11 05:41:23 $
  */
 public class RootContext extends EvalContext {
     private boolean startedSet = false;
@@ -84,90 +84,92 @@ public class RootContext extends EvalContext {
     public static final Object UNKNOWN_VALUE = new Object();
     private static final int MAX_REGISTER = 4;
 
-    public RootContext(JXPathContextReferenceImpl parent, NodePointer pointer){
+    public RootContext(JXPathContextReferenceImpl parent, NodePointer pointer) {
         super(null);
         this.parent = parent;
         this.pointer = pointer;
     }
 
-    public JXPathContext getJXPathContext(){
+    public JXPathContext getJXPathContext() {
         return parent;
     }
 
-    public RootContext getRootContext(){
+    public RootContext getRootContext() {
         return this;
     }
 
-    public NodePointer getCurrentNodePointer(){
+    public NodePointer getCurrentNodePointer() {
         return pointer;
     }
 
-    public int getCurrentPosition(){
+    public int getCurrentPosition() {
         return 1;
     }
 
-    public boolean nextNode(){
-        if (started){
+    public boolean nextNode() {
+        if (started) {
             return false;
         }
         started = true;
         return true;
     }
 
-    public boolean nextSet(){
-        if (startedSet){
+    public boolean nextSet() {
+        if (startedSet) {
             return false;
         }
         startedSet = true;
         return true;
     }
 
-    public boolean setPosition(int position){
+    public boolean setPosition(int position) {
         return position == 1;
     }
 
-    public EvalContext getConstantContext(Object constant){
+    public EvalContext getConstantContext(Object constant) {
         NodePointer pointer;
-        if (constant instanceof NodePointer){
-            pointer = (NodePointer)constant;
+        if (constant instanceof NodePointer) {
+            pointer = (NodePointer) constant;
         }
         else {
-            pointer = NodePointer.newNodePointer(new QName(null, ""), constant, null);
+            pointer =
+                NodePointer.newNodePointer(new QName(null, ""), constant, null);
         }
         return new InitialContext(new RootContext(parent, pointer));
     }
 
-    public EvalContext getVariableContext(QName variableName){
-        return new InitialContext(new RootContext(parent, parent.getVariablePointer(variableName)));
+    public EvalContext getVariableContext(QName variableName) {
+        return new InitialContext(
+            new RootContext(parent, parent.getVariablePointer(variableName)));
     }
 
-    public Function getFunction(QName functionName, Object[] parameters){
+    public Function getFunction(QName functionName, Object[] parameters) {
         return parent.getFunction(functionName, parameters);
     }
 
-    public Object getRegisteredValue(int id){
-        if (registers == null || id >= MAX_REGISTER || id == -1){
+    public Object getRegisteredValue(int id) {
+        if (registers == null || id >= MAX_REGISTER || id == -1) {
             return UNKNOWN_VALUE;
         }
         return registers[id];
     }
 
-    public int setRegisteredValue(Object value){
-        if (registers == null){
+    public int setRegisteredValue(Object value) {
+        if (registers == null) {
             registers = new Object[MAX_REGISTER];
-            for (int i = 0; i < MAX_REGISTER; i++){
+            for (int i = 0; i < MAX_REGISTER; i++) {
                 registers[i] = UNKNOWN_VALUE;
             }
         }
-        if (availableRegister >= MAX_REGISTER){
+        if (availableRegister >= MAX_REGISTER) {
             return -1;
         }
         registers[availableRegister] = value;
         availableRegister++;
-        return availableRegister-1;
+        return availableRegister - 1;
     }
 
-    public String toString(){
+    public String toString() {
         return super.toString() + ":" + pointer.asPath();
     }
 }

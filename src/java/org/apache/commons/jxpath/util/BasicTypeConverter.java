@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.2 2002/06/16 03:22:21 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/06/16 03:22:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/BasicTypeConverter.java,v 1.3 2003/01/11 05:41:27 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/11 05:41:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,17 +61,25 @@
  */
 package org.apache.commons.jxpath.util;
 
-import org.apache.commons.jxpath.JXPathException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
+
 import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
-import java.util.*;
-import java.lang.reflect.*;
 
 /**
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/06/16 03:22:21 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:27 $
  */
 public class BasicTypeConverter implements TypeConverter {
 
@@ -79,114 +87,115 @@ public class BasicTypeConverter implements TypeConverter {
      * Returns true if it can convert the supplied
      * object to the specified class.
      */
-    public boolean canConvert(Object object, Class toType){
-        if (object == null){
+    public boolean canConvert(Object object, Class toType) {
+        if (object == null) {
             return true;
         }
 
-        if (toType == Object.class){
+        if (toType == Object.class) {
             return true;
         }
 
         Class fromType = object.getClass();
-        if (fromType.equals(toType)){
+        if (fromType.equals(toType)) {
             return true;
         }
 
-        if (toType.isAssignableFrom(fromType)){
+        if (toType.isAssignableFrom(fromType)) {
             return true;
         }
 
-        if (toType == String.class){
+        if (toType == String.class) {
             return true;
         }
 
-        if (object instanceof Boolean){
-            if (toType == boolean.class ||
-                    Number.class.isAssignableFrom(toType)){
+        if (object instanceof Boolean) {
+            if (toType == boolean.class
+                || Number.class.isAssignableFrom(toType)) {
                 return true;
             }
         }
-        else if (object instanceof Number){
-            if (toType.isPrimitive() ||
-                    Number.class.isAssignableFrom(toType)){
+        else if (object instanceof Number) {
+            if (toType.isPrimitive()
+                || Number.class.isAssignableFrom(toType)) {
                 return true;
             }
         }
-        else if (object instanceof Character){
-            if (toType == char.class){
+        else if (object instanceof Character) {
+            if (toType == char.class) {
                 return true;
             }
         }
-        else if (object instanceof String){
-            if (toType.isPrimitive()){
+        else if (object instanceof String) {
+            if (toType.isPrimitive()) {
                 return true;
             }
-            if (toType == Boolean.class ||
-                    toType == Character.class ||
-                    toType == Byte.class ||
-                    toType == Short.class ||
-                    toType == Integer.class ||
-                    toType == Long.class ||
-                    toType == Float.class ||
-                    toType == Double.class){
+            if (toType == Boolean.class
+                || toType == Character.class
+                || toType == Byte.class
+                || toType == Short.class
+                || toType == Integer.class
+                || toType == Long.class
+                || toType == Float.class
+                || toType == Double.class) {
                 return true;
             }
         }
-        else if (object instanceof ExpressionContext){
-            if (Collection.class.isAssignableFrom(toType)){
+        else if (object instanceof ExpressionContext) {
+            if (Collection.class.isAssignableFrom(toType)) {
                 return true;
             }
-            Pointer pointer = ((ExpressionContext)object).getContextNodePointer();
-            if (pointer != null){
+            Pointer pointer =
+                ((ExpressionContext) object).getContextNodePointer();
+            if (pointer != null) {
                 Object value = pointer.getValue();
                 return canConvert(value, toType);
             }
         }
-        else if (fromType.isArray()){
+        else if (fromType.isArray()) {
             // Collection -> array
-            if (toType.isArray()){
+            if (toType.isArray()) {
                 Class cType = toType.getComponentType();
                 int length = Array.getLength(object);
-                for (int i = 0; i < length; i++){
+                for (int i = 0; i < length; i++) {
                     Object value = Array.get(object, i);
-                    if (!canConvert(value, cType)){
+                    if (!canConvert(value, cType)) {
                         return false;
                     }
                 }
                 return true;
             }
-            else if (Collection.class.isAssignableFrom(toType)){
+            else if (Collection.class.isAssignableFrom(toType)) {
                 return canCreateCollection(toType);
             }
-            else if (Array.getLength(object) == 1){
+            else if (Array.getLength(object) == 1) {
                 Object value = Array.get(object, 0);
                 return canConvert(value, toType);
             }
         }
-        else if (object instanceof Collection){
+        else if (object instanceof Collection) {
             // Collection -> array
-            if (toType.isArray()){
+            if (toType.isArray()) {
                 Class cType = toType.getComponentType();
-                Iterator it = ((Collection)object).iterator();
-                while (it.hasNext()){
+                Iterator it = ((Collection) object).iterator();
+                while (it.hasNext()) {
                     Object value = it.next();
-                    if (!canConvert(value, cType)){
+                    if (!canConvert(value, cType)) {
                         return false;
                     }
                 }
                 return true;
             }
-            else if (Collection.class.isAssignableFrom(toType)){
+            else if (Collection.class.isAssignableFrom(toType)) {
                 return canCreateCollection(toType);
             }
-            else if (((Collection)object).size() == 1){
+            else if (((Collection) object).size() == 1) {
                 Object value;
-                if (object instanceof List){
-                    value = ((List)object).get(0);
+                if (object instanceof List) {
+                    value = ((List) object).get(0);
                 }
                 else {
-                    Iterator it = ((Collection)object).iterator();
+                    Iterator it = ((Collection) object).iterator();
                     value = it.next();
                 }
                 return canConvert(value, toType);
@@ -194,240 +203,257 @@ public class BasicTypeConverter implements TypeConverter {
         }
         return false;
     }
-
     /**
      * Converts the supplied object to the specified
      * type. Throws a runtime exception if the conversion is
      * not possible.
      */
-    public Object convert(Object object, Class toType){
-        if (object == null){
-            if (toType.isPrimitive()){
-                if (toType == boolean.class){
-                    return Boolean.FALSE;
-                }
-                if (toType == char.class){
-                    return new Character('\0');
-                }
-                if (toType == byte.class){
-                    return new Byte((byte)0);
-                }
-                if (toType == short.class){
-                    return new Short((short)0);
-                }
-                if (toType == int.class){
-                    return new Integer(0);
-                }
-                if (toType == long.class){
-                    return new Long(0l);
-                }
-                if (toType == float.class){
-                    return new Float(0.0f);
-                }
-                if (toType == double.class){
-                    return new Double(0.0);
-                }
+    public Object convert(Object object, Class toType) {
+        if (object == null) {
+            if (toType.isPrimitive()) {
+                return convertNullToPrimitive(toType);
             }
             return null;
         }
 
-        if (toType == Object.class){
+        if (toType == Object.class) {
             return object;
         }
 
-        if (object instanceof ExpressionContext){
-            if (Collection.class.isAssignableFrom(toType)){
-                List list = ((ExpressionContext)object).getContextNodeList();
+        if (object instanceof ExpressionContext) {
+            if (Collection.class.isAssignableFrom(toType)) {
+                List list = ((ExpressionContext) object).getContextNodeList();
                 Collection result = new ArrayList();
-                if (toType == List.class || toType == ArrayList.class){
+                if (toType == List.class || toType == ArrayList.class) {
                     result = new ArrayList();
                 }
-                else if (toType == Vector.class){
+                else if (toType == Vector.class) {
                     result = new Vector();
                 }
-                else if (toType == Set.class || toType == HashSet.class){
+                else if (toType == Set.class || toType == HashSet.class) {
                     result = new HashSet();
                 }
                 int count = list.size();
-                for (int i = 0; i < count; i++){
-                    Pointer ptr = (Pointer)list.get(i);
+                for (int i = 0; i < count; i++) {
+                    Pointer ptr = (Pointer) list.get(i);
                     result.add(ptr.getValue());
                 }
                 return result;
             }
             else {
-                Object value = ((ExpressionContext)object).getContextNodePointer().getValue();
+                Object value =
+                    ((ExpressionContext) object)
+                        .getContextNodePointer()
+                        .getValue();
                 return convert(value, toType);
             }
         }
 
         Class fromType = object.getClass();
-        if (fromType.equals(toType) || toType.isAssignableFrom(fromType)){
+        if (fromType.equals(toType) || toType.isAssignableFrom(fromType)) {
             return object;
         }
 
-        if (toType == String.class){
+        if (toType == String.class) {
             return object.toString();
         }
 
-        if (object instanceof Boolean){
-            if (toType == boolean.class){
+        if (object instanceof Boolean) {
+            if (toType == boolean.class) {
                 return object;
             }
-            boolean value = ((Boolean)object).booleanValue();
+            boolean value = ((Boolean) object).booleanValue();
             return allocateNumber(toType, value ? 1 : 0);
         }
-        else if (object instanceof Number){
-            double value = ((Number)object).doubleValue();
-            if (toType == boolean.class || toType == Boolean.class){
+        else if (object instanceof Number) {
+            double value = ((Number) object).doubleValue();
+            if (toType == boolean.class || toType == Boolean.class) {
                 return value == 0.0 ? Boolean.FALSE : Boolean.TRUE;
             }
-            if (toType.isPrimitive() ||
-                    Number.class.isAssignableFrom(toType)){
+            if (toType.isPrimitive()
+                || Number.class.isAssignableFrom(toType)) {
                 return allocateNumber(toType, value);
             }
         }
-        else if (object instanceof Character){
-            if (toType == char.class){
+        else if (object instanceof Character) {
+            if (toType == char.class) {
                 return object;
             }
         }
-        else if (object instanceof String){
-            if (toType == boolean.class || toType == Boolean.class){
-                return Boolean.valueOf((String)object);
-            }
-            if (toType == char.class || toType == Character.class){
-                return new Character(((String)object).charAt(0));
-            }
-            if (toType == byte.class || toType == Byte.class){
-                return new Byte((String)object);
-            }
-            if (toType == short.class || toType == Short.class){
-                return new Short((String)object);
-            }
-            if (toType == int.class || toType == Integer.class){
-                return new Integer((String)object);
-            }
-            if (toType == long.class || toType == Long.class){
-                return new Long((String)object);
-            }
-            if (toType == float.class || toType == Float.class){
-                return new Float((String)object);
-            }
-            if (toType == double.class || toType == Double.class){
-                return new Double((String)object);
+        else if (object instanceof String) {
+            Object value = convertStringToPrimitive(object, toType);
+            if (value != null) {
+                return value;
             }
         }
-        else if (fromType.isArray()){
+        else if (fromType.isArray()) {
             int length = Array.getLength(object);
-            if (toType.isArray()){
+            if (toType.isArray()) {
                 Class cType = toType.getComponentType();
 
                 Object array = Array.newInstance(cType, length);
-                for (int i = 0; i < length; i++){
+                for (int i = 0; i < length; i++) {
                     Object value = Array.get(object, i);
                     Array.set(array, i, convert(value, cType));
                 }
                 return array;
             }
-            else if (Collection.class.isAssignableFrom(toType)){
+            else if (Collection.class.isAssignableFrom(toType)) {
                 Collection collection = allocateCollection(toType);
-                for (int i = 0; i < length; i++){
+                for (int i = 0; i < length; i++) {
                     collection.add(Array.get(object, i));
                 }
                 return collection;
             }
-            else if (length == 1){
+            else if (length == 1) {
                 Object value = Array.get(object, 0);
                 return convert(value, toType);
             }
         }
-        else if (object instanceof Collection){
+        else if (object instanceof Collection) {
             int length = ((Collection) object).size();
-            if (toType.isArray()){
+            if (toType.isArray()) {
                 Class cType = toType.getComponentType();
                 Object array = Array.newInstance(cType, length);
                 Iterator it = ((Collection) object).iterator();
-                for (int i = 0; i < length; i++){
+                for (int i = 0; i < length; i++) {
                     Object value = it.next();
                     Array.set(array, i, convert(value, cType));
                 }
                 return array;
             }
-            else if (Collection.class.isAssignableFrom(toType)){
+            else if (Collection.class.isAssignableFrom(toType)) {
                 Collection collection = allocateCollection(toType);
                 collection.addAll((Collection) object);
                 return collection;
             }
-            else if (length == 1){
+            else if (length == 1) {
                 Object value;
-                if (object instanceof List){
-                    value = ((List)object).get(0);
+                if (object instanceof List) {
+                    value = ((List) object).get(0);
                 }
                 else {
-                    Iterator it = ((Collection)object).iterator();
+                    Iterator it = ((Collection) object).iterator();
                     value = it.next();
                 }
                 return convert(value, toType);
             }
         }
-        throw new RuntimeException("Cannot convert " + object.getClass() +
-                " to " + toType);
+        throw new RuntimeException(
+            "Cannot convert " + object.getClass() + " to " + toType);
     }
 
-    private static Number allocateNumber(Class type, double value){
-        if (type == Byte.class || type == byte.class){
-            return new Byte((byte)value);
+    private Object convertNullToPrimitive(Class toType) {
+        if (toType == boolean.class) {
+            return Boolean.FALSE;
         }
-        if (type == Short.class || type == short.class){
-            return new Short((short)value);
+        if (toType == char.class) {
+            return new Character('\0');
         }
-        if (type == Integer.class || type == int.class){
-            return new Integer((int)value);
+        if (toType == byte.class) {
+            return new Byte((byte) 0);
         }
-        if (type == Long.class || type == long.class){
-            return new Long((long)value);
+        if (toType == short.class) {
+            return new Short((short) 0);
         }
-        if (type == Float.class || type == float.class){
-            return new Float((float)value);
+        if (toType == int.class) {
+            return new Integer(0);
         }
-        if (type == Double.class || type == double.class){
+        if (toType == long.class) {
+            return new Long(0L);
+        }
+        if (toType == float.class) {
+            return new Float(0.0f);
+        }
+        if (toType == double.class) {
+            return new Double(0.0);
+        }
+        return null;
+    }
+
+    private Object convertStringToPrimitive(Object object, Class toType) {
+        if (toType == boolean.class || toType == Boolean.class) {
+            return Boolean.valueOf((String) object);
+        }
+        if (toType == char.class || toType == Character.class) {
+            return new Character(((String) object).charAt(0));
+        }
+        if (toType == byte.class || toType == Byte.class) {
+            return new Byte((String) object);
+        }
+        if (toType == short.class || toType == Short.class) {
+            return new Short((String) object);
+        }
+        if (toType == int.class || toType == Integer.class) {
+            return new Integer((String) object);
+        }
+        if (toType == long.class || toType == Long.class) {
+            return new Long((String) object);
+        }
+        if (toType == float.class || toType == Float.class) {
+            return new Float((String) object);
+        }
+        if (toType == double.class || toType == Double.class) {
+            return new Double((String) object);
+        }
+        return null;
+    }
+    
+    private static Number allocateNumber(Class type, double value) {
+        if (type == Byte.class || type == byte.class) {
+            return new Byte((byte) value);
+        }
+        if (type == Short.class || type == short.class) {
+            return new Short((short) value);
+        }
+        if (type == Integer.class || type == int.class) {
+            return new Integer((int) value);
+        }
+        if (type == Long.class || type == long.class) {
+            return new Long((long) value);
+        }
+        if (type == Float.class || type == float.class) {
+            return new Float((float) value);
+        }
+        if (type == Double.class || type == double.class) {
             return new Double(value);
         }
         return null;
     }
 
-    private static boolean canCreateCollection(Class type){
-        if (!type.isInterface() && ((type.getModifiers() | Modifier.ABSTRACT) == 0)){
+    private static boolean canCreateCollection(Class type) {
+        if (!type.isInterface()
+            && ((type.getModifiers() | Modifier.ABSTRACT) == 0)) {
             return true;
         }
 
-        if (type == List.class){
+        if (type == List.class) {
             return true;
         }
 
-        if (type == Set.class){
+        if (type == Set.class) {
             return true;
         }
         return false;
     }
 
-    private static Collection allocateCollection(Class type){
-        if (!type.isInterface() &&
-                ((type.getModifiers() | Modifier.ABSTRACT) == 0)){
+    private static Collection allocateCollection(Class type) {
+        if (!type.isInterface()
+            && ((type.getModifiers() | Modifier.ABSTRACT) == 0)) {
             try {
-                return (Collection)type.newInstance();
+                return (Collection) type.newInstance();
             }
-            catch(Exception ex){
-                throw new JXPathException("Cannot create collection of type: "
-                        + type, ex);
+            catch (Exception ex) {
+                throw new JXPathException(
+                    "Cannot create collection of type: " + type,
+                    ex);
             }
         }
 
-        if (type == List.class){
+        if (type == List.class) {
             return new ArrayList();
         }
-        if (type == Set.class){
+        if (type == Set.class) {
             return new HashSet();
         }
         throw new RuntimeException("Cannot create collection of type: " + type);

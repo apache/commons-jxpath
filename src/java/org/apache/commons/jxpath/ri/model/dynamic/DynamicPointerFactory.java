@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPointerFactory.java,v 1.1 2002/11/28 01:01:30 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/11/28 01:01:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPointerFactory.java,v 1.2 2003/01/11 05:41:26 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/11 05:41:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,33 +76,45 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Implements NodePointerFactory for Dynamic classes like Map.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/11/28 01:01:30 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/11 05:41:26 $
  */
 public class DynamicPointerFactory implements NodePointerFactory {
 
     public static final int DYNAMIC_POINTER_FACTORY_ORDER = 800;
 
-    public int getOrder(){
+    public int getOrder() {
         return DYNAMIC_POINTER_FACTORY_ORDER;
     }
 
-    public NodePointer createNodePointer(QName name, Object bean, Locale locale){
+    public NodePointer createNodePointer(
+        QName name,
+        Object bean,
+        Locale locale) 
+    {
         JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
-        if (bi.isDynamic()){
-            DynamicPropertyHandler handler = ValueUtils.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
+        if (bi.isDynamic()) {
+            DynamicPropertyHandler handler =
+                ValueUtils.getDynamicPropertyHandler(
+                    bi.getDynamicPropertyHandlerClass());
             return new DynamicPointer(name, bean, handler, locale);
         }
         return null;
     }
 
-    public NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
-        if (bean == null){
+    public NodePointer createNodePointer(
+        NodePointer parent,
+        QName name,
+        Object bean) 
+    {
+        if (bean == null) {
             return new NullPointer(parent, name);
         }
 
         JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
-        if (bi.isDynamic()){
-            DynamicPropertyHandler handler = ValueUtils.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
+        if (bi.isDynamic()) {
+            DynamicPropertyHandler handler =
+                ValueUtils.getDynamicPropertyHandler(
+                    bi.getDynamicPropertyHandlerClass());
             return new DynamicPointer(parent, name, bean, handler);
         }
         return null;

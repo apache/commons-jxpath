@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPointer.java,v 1.2 2002/11/26 01:20:07 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/11/26 01:20:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPointer.java,v 1.3 2003/01/11 05:41:25 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/11 05:41:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,14 +74,13 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * A Pointer that points to a DynaBean.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:07 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:25 $
  */
 public class DynaBeanPointer extends PropertyOwnerPointer {
     private QName name;
     private DynaBean dynaBean;
 
-    public DynaBeanPointer(QName name, DynaBean dynaBean, Locale locale)
-    {
+    public DynaBeanPointer(QName name, DynaBean dynaBean, Locale locale) {
         super(null, locale);
         this.name = name;
         this.dynaBean = dynaBean;
@@ -96,33 +95,33 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
         this.dynaBean = dynaBean;
     }
 
-    public PropertyPointer getPropertyPointer(){
+    public PropertyPointer getPropertyPointer() {
         return new DynaBeanPropertyPointer(this, dynaBean);
     }
 
-    public QName getName(){
+    public QName getName() {
         return name;
     }
 
     /**
      * Returns the bean itself
      */
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return dynaBean;
     }
 
-    public Object getImmediateNode(){
+    public Object getImmediateNode() {
         return dynaBean;
     }
 
-    public boolean isCollection(){
+    public boolean isCollection() {
         return false;
     }
 
     /**
      * Returns 1.
      */
-    public int getLength(){
+    public int getLength() {
         return 1;
     }
 
@@ -130,34 +129,34 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
         return false;
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return name == null ? 0 : name.hashCode();
     }
 
-    public boolean equals(Object object){
-        if (object == this){
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof DynaBeanPointer)){
+        if (!(object instanceof DynaBeanPointer)) {
             return false;
         }
 
-        DynaBeanPointer other = (DynaBeanPointer)object;
-        if (parent != other.parent){
-            if (parent == null || !parent.equals(other.parent)){
+        DynaBeanPointer other = (DynaBeanPointer) object;
+        if (parent != other.parent) {
+            if (parent == null || !parent.equals(other.parent)) {
                 return false;
             }
         }
 
-        if ((name == null && other.name != null) ||
-                (name != null && !name.equals(other.name))){
+        if ((name == null && other.name != null)
+            || (name != null && !name.equals(other.name))) {
             return false;
         }
 
-        int i_this = (index == WHOLE_COLLECTION ? 0 : index);
-        int i_other = (other.index == WHOLE_COLLECTION ? 0 : other.index);
-        if (i_this != i_other){
+        int iThis = (index == WHOLE_COLLECTION ? 0 : index);
+        int iOther = (other.index == WHOLE_COLLECTION ? 0 : other.index);
+        if (iThis != iOther) {
             return false;
         }
 
@@ -167,8 +166,8 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
     /**
      * If there's a parent - parent's path, otherwise "/".
      */
-    public String asPath(){
-        if (parent != null){
+    public String asPath() {
+        if (parent != null) {
             return super.asPath();
         }
         return "/";

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.12 2003/01/10 02:11:28 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2003/01/10 02:11:28 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.13 2003/01/11 05:41:25 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2003/01/11 05:41:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,7 +63,6 @@ package org.apache.commons.jxpath.ri.model.beans;
 
 import java.util.Locale;
 
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
@@ -79,21 +78,25 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2003/01/10 02:11:28 $
+ * @version $Revision: 1.13 $ $Date: 2003/01/11 05:41:25 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
-    public NodeIterator childIterator(NodeTest test, boolean reverse, NodePointer startWith){
-        if (test == null){
+    public NodeIterator childIterator(
+        NodeTest test,
+        boolean reverse,
+        NodePointer startWith) 
+    {
+        if (test == null) {
             return createNodeIterator(null, reverse, startWith);
         }
-        else if (test instanceof NodeNameTest){
-            QName testName = ((NodeNameTest)test).getNodeName();
+        else if (test instanceof NodeNameTest) {
+            QName testName = ((NodeNameTest) test).getNodeName();
             String property;
-            if (!isDefaultNamespace(testName.getPrefix())){
+            if (!isDefaultNamespace(testName.getPrefix())) {
                 return null;
             }
-            else if (testName.getName().equals("*")){
+            else if (testName.getName().equals("*")) {
                 property = null;
             }
             else {
@@ -101,8 +104,9 @@ public abstract class PropertyOwnerPointer extends NodePointer {
             }
             return createNodeIterator(property, reverse, startWith);
         }
-        else if (test instanceof NodeTypeTest){
-            if (((NodeTypeTest)test).getNodeType() == Compiler.NODE_TYPE_NODE){
+        else if (test instanceof NodeTypeTest) {
+            if (((NodeTypeTest) test).getNodeType()
+                == Compiler.NODE_TYPE_NODE) {
                 return createNodeIterator(null, reverse, startWith);
             }
         }
@@ -117,20 +121,20 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         return new PropertyIterator(this, property, reverse, startWith);
     }
 
-    public NodeIterator attributeIterator(QName name){
+    public NodeIterator attributeIterator(QName name) {
         return new BeanAttributeIterator(this, name);
     }
 
-    protected PropertyOwnerPointer(NodePointer parent, Locale locale){
+    protected PropertyOwnerPointer(NodePointer parent, Locale locale) {
         super(parent, locale);
     }
 
-    protected PropertyOwnerPointer(NodePointer parent){
+    protected PropertyOwnerPointer(NodePointer parent) {
         super(parent);
     }
 
-    public void setIndex(int index){
-        if (this.index != index){
+    public void setIndex(int index) {
+        if (this.index != index) {
             super.setIndex(index);
             value = UNINITIALIZED;
         }
@@ -139,9 +143,9 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     private static final Object UNINITIALIZED = new Object();
 
     private Object value = UNINITIALIZED;
-    public Object getImmediateNode(){
-        if (value == UNINITIALIZED){
-            if (index == WHOLE_COLLECTION){
+    public Object getImmediateNode() {
+        if (value == UNINITIALIZED) {
+            if (index == WHOLE_COLLECTION) {
                 value = getBaseValue();
             }
             else {
@@ -157,16 +161,16 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      * Throws an exception if you try to change the root element, otherwise
      * forwards the call to the parent pointer.
      */
-    public void setValue(Object value){
+    public void setValue(Object value) {
         this.value = value;
-        if (parent.isContainer()){
+        if (parent.isContainer()) {
             parent.setValue(value);
         }
-        else if (parent != null){
-            if (index == WHOLE_COLLECTION){
+        else if (parent != null) {
+            if (index == WHOLE_COLLECTION) {
                 throw new UnsupportedOperationException(
-                    "Cannot setValue of an object that is not " +
-                    "some other object's property");
+                    "Cannot setValue of an object that is not "
+                        + "some other object's property");
             }
             else {
                 throw new JXPathException(
@@ -183,37 +187,28 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      * If this is a root node pointer, throws an exception; otherwise
      * forwards the call to the parent node.
      */
-    public void remove(){
+    public void remove() {
         this.value = null;
-        if (parent != null){
+        if (parent != null) {
             parent.remove();
         }
         else {
             throw new UnsupportedOperationException(
-                "Cannot remove an object that is not " +
-                "some other object's property or a collection element");
+                "Cannot remove an object that is not "
+                    + "some other object's property or a collection element");
         }
     }
 
     public abstract PropertyPointer getPropertyPointer();
 
-    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
-        PropertyPointer prop = getPropertyPointer();
-        prop.setPropertyName(name.getName());
-        prop.setIndex(index);
-        return prop.createPath(context, value);
-    }
-
-    public NodePointer createChild(JXPathContext context, QName name, int index){
-        PropertyPointer prop = getPropertyPointer();
-        prop.setPropertyName(name.getName());
-        prop.setIndex(index);
-        return prop.createPath(context);
-    }
-
-    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
-        int r = pointer1.getName().toString().compareTo(pointer2.getName().toString());
-        if (r != 0){
+    public int compareChildNodePointers(
+        NodePointer pointer1,
+        NodePointer pointer2) 
+    {
+        int r =
+            pointer1.getName().toString().compareTo(
+                pointer2.getName().toString());
+        if (r != 0) {
             return r;
         }
         return pointer1.getIndex() - pointer2.getIndex();

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Functions.java,v 1.3 2002/06/16 03:22:22 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/06/16 03:22:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Functions.java,v 1.4 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,11 +66,12 @@ import java.util.Set;
 /**
  * A group of Function objects sharing a common namespace or a set of
  * common namespaces. Use the classes
- * {@link ClassFunctions ClassFunctions} and {@link PackageFunctions PackageFunctions}
+ * {@link ClassFunctions ClassFunctions} and 
+ * {@link PackageFunctions PackageFunctions}
  * to register extension functions implemented as Java methods.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/06/16 03:22:22 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:22 $
  */
 public interface Functions {
 

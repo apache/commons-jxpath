@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.5 2002/08/10 01:39:29 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/08/10 01:39:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.6 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,15 +62,19 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.axes.*;
+import org.apache.commons.jxpath.ri.axes.InitialContext;
+import org.apache.commons.jxpath.ri.axes.PredicateContext;
+import org.apache.commons.jxpath.ri.axes.SimplePathInterpreter;
+import org.apache.commons.jxpath.ri.axes.UnionContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * An element of the parse tree that represents an expression path, which is
- * a path that starts with an expression like a function call: <code>getFoo(.)/bar</code>.
+ * An  element of the parse tree that represents an expression path, which is a
+ * path that starts with an expression like a function call: <code>getFoo(.)
+ * /bar</code>.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/08/10 01:39:29 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:23 $
  */
 public class ExpressionPath extends Path {
 
@@ -80,13 +84,17 @@ public class ExpressionPath extends Path {
     private boolean basicKnown = false;
     private boolean basic;
 
-    public ExpressionPath(Expression expression, Expression[] predicates, Step[] steps){
+    public ExpressionPath(
+        Expression expression,
+        Expression[] predicates,
+        Step[] steps) 
+    {
         super(Expression.OP_EXPRESSION_PATH, steps);
         this.expression = expression;
         this.predicates = predicates;
     }
 
-    public Expression getExpression(){
+    public Expression getExpression() {
         return expression;
     }
 
@@ -94,7 +102,7 @@ public class ExpressionPath extends Path {
      * Predicates are the expressions in brackets that may follow
      * the root expression of the path.
      */
-    public Expression[] getPredicates(){
+    public Expression[] getPredicates() {
         return predicates;
     }
 
@@ -102,13 +110,13 @@ public class ExpressionPath extends Path {
      * Returns true if the root expression or any of the
      * predicates or the path steps are context dependent.
      */
-    public boolean computeContextDependent(){
-        if (expression.isContextDependent()){
+    public boolean computeContextDependent() {
+        if (expression.isContextDependent()) {
             return true;
         }
-        if (predicates != null){
-            for (int i = 0; i < predicates.length; i++){
-                if (predicates[i].isContextDependent()){
+        if (predicates != null) {
+            for (int i = 0; i < predicates.length; i++) {
+                if (predicates[i].isContextDependent()) {
                     return true;
                 }
             }
@@ -120,22 +128,22 @@ public class ExpressionPath extends Path {
      * Recognized paths formatted as <code>$x[3]/foo[2]</code>.  The
      * evaluation of such "simple" paths is optimized and streamlined.
      */
-    public boolean isSimpleExpressionPath(){
-        if (!basicKnown){
+    public boolean isSimpleExpressionPath() {
+        if (!basicKnown) {
             basicKnown = true;
             basic = isSimplePath() && areBasicPredicates(getPredicates());
         }
         return basic;
     }
 
-    public String toString(){
+    public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("(EXPRESSION-PATH ");
         buffer.append(expression);
 
-        if (predicates != null){
+        if (predicates != null) {
             buffer.append(' ');
-            for (int i = 0; i < predicates.length; i++){
+            for (int i = 0; i < predicates.length; i++) {
                 buffer.append('[');
                 buffer.append(predicates[i]);
                 buffer.append(']');
@@ -143,10 +151,10 @@ public class ExpressionPath extends Path {
         }
 
         Step steps[] = getSteps();
-        if (steps != null){
+        if (steps != null) {
             buffer.append(' ');
-            for (int i = 0; i < steps.length; i++){
-                if (i > 0){
+            for (int i = 0; i < steps.length; i++) {
+                if (i > 0) {
                     buffer.append(", ");
                 }
                 buffer.append(steps[i]);
@@ -156,53 +164,62 @@ public class ExpressionPath extends Path {
         return buffer.toString();
     }
 
-    public Object compute(EvalContext context){
+    public Object compute(EvalContext context) {
         return expressionPath(context, false);
     }
 
-    public Object computeValue(EvalContext context){
+    public Object computeValue(EvalContext context) {
         return expressionPath(context, true);
     }
 
     /**
      * Walks an expression path (a path that starts with an expression)
      */
-    protected Object expressionPath(EvalContext evalContext, boolean firstMatch){
+    protected Object expressionPath(
+        EvalContext evalContext,
+        boolean firstMatch) 
+    {
         Object value = expression.compute(evalContext);
         EvalContext context;
-        if (value instanceof InitialContext){
-            // This is an optimization. We can avoid iterating through a collection
-            // if the context bean is in fact one.
-            context = (InitialContext)value;
+        if (value instanceof InitialContext) {
+            // This is an optimization. We can avoid iterating through a 
+            // collection if the context bean is in fact one.
+            context = (InitialContext) value;
         }
-        else if (value instanceof EvalContext){
+        else if (value instanceof EvalContext) {
             // UnionContext will collect all values from the "value" context
             // and treat the whole thing as a big collection.
-            context = new UnionContext(evalContext, new EvalContext[]{(EvalContext)value});
+            context =
+                new UnionContext(
+                    evalContext,
+                    new EvalContext[] {(EvalContext) value });
         }
         else {
             context = evalContext.getRootContext().getConstantContext(value);
         }
 
-
-        if (firstMatch && isSimpleExpressionPath() &&
-                !(context instanceof UnionContext)){
+        if (firstMatch
+            && isSimpleExpressionPath()
+            && !(context instanceof UnionContext)) {
             EvalContext ctx = context;
-            NodePointer ptr = (NodePointer)ctx.getSingleNodePointer();
-            if (ptr != null &&
-                    (ptr.getIndex() == NodePointer.WHOLE_COLLECTION ||
-                     predicates == null || predicates.length == 0)){
-                return SimplePathInterpreter.
-                    interpretSimpleExpressionPath(
-                            evalContext, ptr, predicates, getSteps());
+            NodePointer ptr = (NodePointer) ctx.getSingleNodePointer();
+            if (ptr != null
+                && (ptr.getIndex() == NodePointer.WHOLE_COLLECTION
+                    || predicates == null
+                    || predicates.length == 0)) {
+                return SimplePathInterpreter.interpretSimpleExpressionPath(
+                    evalContext,
+                    ptr,
+                    predicates,
+                    getSteps());
             }
         }
-        if (predicates != null){
-            for (int j = 0; j < predicates.length; j++){
+        if (predicates != null) {
+            for (int j = 0; j < predicates.length; j++) {
                 context = new PredicateContext(context, predicates[j]);
             }
         }
-        if (firstMatch){
+        if (firstMatch) {
             return getSingleNodePointerForSteps(context);
         }
         else {

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/SelfContext.java,v 1.8 2002/07/03 21:12:36 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/07/03 21:12:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/SelfContext.java,v 1.9 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,54 +67,55 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * EvalContext that returns the current node from the parent context if the test succeeds.
+ * EvalContext  that returns the current node from the parent context if the
+ * test succeeds.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/07/03 21:12:36 $
+ * @version $Revision: 1.9 $ $Date: 2003/01/11 05:41:23 $
  */
 public class SelfContext extends EvalContext {
     private NodeTest nodeTest;
     private boolean startedSet = false;
     private NodePointer nodePointer;
 
-    public SelfContext(EvalContext parentContext, NodeTest nodeTest){
+    public SelfContext(EvalContext parentContext, NodeTest nodeTest) {
         super(parentContext);
         this.nodeTest = nodeTest;
     }
 
-    public Pointer getSingleNodePointer(){
+    public Pointer getSingleNodePointer() {
         return parentContext.getSingleNodePointer();
     }
 
-    public NodePointer getCurrentNodePointer(){
-        if (position == 0){
-            if (!setPosition(1)){
+    public NodePointer getCurrentNodePointer() {
+        if (position == 0) {
+            if (!setPosition(1)) {
                 return null;
             }
         }
         return nodePointer;
     }
 
-    public boolean nextNode(){
+    public boolean nextNode() {
         return setPosition(getCurrentPosition() + 1);
     }
 
-    public void reset(){
+    public void reset() {
         super.reset();
         startedSet = false;
     }
 
-    public boolean setPosition(int position){
-        if (position != 1){
+    public boolean setPosition(int position) {
+        if (position != 1) {
             return false;
         }
         super.setPosition(position);
-        if (!startedSet){
+        if (!startedSet) {
             startedSet = true;
-            nodePointer = (NodePointer)parentContext.getCurrentNodePointer();
+            nodePointer = (NodePointer) parentContext.getCurrentNodePointer();
         }
 
-        if (nodePointer == null){
+        if (nodePointer == null) {
             return false;
         }
 

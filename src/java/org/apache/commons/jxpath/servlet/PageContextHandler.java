@@ -66,39 +66,54 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * access to attributes of a PageContext in all scopes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:26 $
  */
 public class PageContextHandler implements DynamicPropertyHandler {
 
-    public String[] getPropertyNames(Object pageContext){
+    public String[] getPropertyNames(Object pageContext) {
         ArrayList list = new ArrayList();
-        Enumeration e = ((PageContext)pageContext).getAttributeNamesInScope(PageContext.PAGE_SCOPE);
-        while (e.hasMoreElements()){
+        Enumeration e =
+            ((PageContext) pageContext).getAttributeNamesInScope(
+                PageContext.PAGE_SCOPE);
+        while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        e = ((PageContext)pageContext).getAttributeNamesInScope(PageContext.REQUEST_SCOPE);
-        while (e.hasMoreElements()){
+        e =
+            ((PageContext) pageContext).getAttributeNamesInScope(
+                PageContext.REQUEST_SCOPE);
+        while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        e = ((PageContext)pageContext).getAttributeNamesInScope(PageContext.SESSION_SCOPE);
-        while (e.hasMoreElements()){
+        e =
+            ((PageContext) pageContext).getAttributeNamesInScope(
+                PageContext.SESSION_SCOPE);
+        while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        e = ((PageContext)pageContext).getAttributeNamesInScope(PageContext.APPLICATION_SCOPE);
-        while (e.hasMoreElements()){
+        e =
+            ((PageContext) pageContext).getAttributeNamesInScope(
+                PageContext.APPLICATION_SCOPE);
+        while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        return (String[])list.toArray(new String[0]);
+        return (String[]) list.toArray(new String[0]);
     }
 
     /**
      * Returns <code>pageContext.findAttribute(property)</code>.
      */
-    public Object getProperty(Object pageContext, String property){
-        return ((PageContext)pageContext).findAttribute(property);
+    public Object getProperty(Object pageContext, String property) {
+        return ((PageContext) pageContext).findAttribute(property);
     }
 
-    public void setProperty(Object pageContext, String property, Object value){
-        ((PageContext)pageContext).setAttribute(property, value, PageContext.PAGE_SCOPE);
+    public void setProperty(
+        Object pageContext,
+        String property,
+        Object value) 
+    {
+        ((PageContext) pageContext).setAttribute(
+            property,
+            value,
+            PageContext.PAGE_SCOPE);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointerFactory.java,v 1.3 2002/07/03 21:12:36 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/07/03 21:12:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/BeanPointerFactory.java,v 1.4 2003/01/11 05:41:24 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,23 +73,31 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * Implements NodePointerFactory for JavaBeans.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/07/03 21:12:36 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:24 $
  */
 public class BeanPointerFactory implements NodePointerFactory {
 
     public static final int BEAN_POINTER_FACTORY_ORDER = 900;
 
-    public int getOrder(){
+    public int getOrder() {
         return BEAN_POINTER_FACTORY_ORDER;
     }
 
-    public NodePointer createNodePointer(QName name, Object bean, Locale locale){
+    public NodePointer createNodePointer(
+        QName name,
+        Object bean,
+        Locale locale)
+    {
         JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         return new BeanPointer(name, bean, bi, locale);
     }
 
-    public NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
-        if (bean == null){
+    public NodePointer createNodePointer(
+        NodePointer parent,
+        QName name,
+        Object bean) 
+    {
+        if (bean == null) {
             return new NullPointer(parent, name);
         }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/TreeCompiler.java,v 1.5 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/TreeCompiler.java,v 1.6 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,164 +66,214 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:23 $
  */
 public class TreeCompiler implements Compiler {
 
     private static final QName QNAME_NAME = new QName(null, "name");
 
-    public Object number(String value){
+    public Object number(String value) {
         return new Constant(new Double(value));
     }
 
-    public Object literal(String value){
+    public Object literal(String value) {
         return new Constant(value);
     }
 
-    public Object qname(String prefix, String name){
+    public Object qname(String prefix, String name) {
         return new QName(prefix, name);
     }
 
-    public Object sum(Object[] arguments){
-        return new CoreOperation(Expression.OP_SUM, toExpressionArray(arguments));
+    public Object sum(Object[] arguments) {
+        return new CoreOperation(
+            Expression.OP_SUM,
+            toExpressionArray(arguments));
     }
 
-    public Object minus(Object left, Object right){
-        return new CoreOperation(Expression.OP_MINUS, (Expression)left, (Expression)right);
+    public Object minus(Object left, Object right) {
+        return new CoreOperation(
+            Expression.OP_MINUS,
+            (Expression) left,
+            (Expression) right);
     }
 
-    public Object multiply(Object left, Object right){
-        return new CoreOperation(Expression.OP_MULT, (Expression)left, (Expression)right);
+    public Object multiply(Object left, Object right) {
+        return new CoreOperation(
+            Expression.OP_MULT,
+            (Expression) left,
+            (Expression) right);
     }
 
-    public Object divide(Object left, Object right){
-        return new CoreOperation(Expression.OP_DIV, (Expression)left, (Expression)right);
+    public Object divide(Object left, Object right) {
+        return new CoreOperation(
+            Expression.OP_DIV,
+            (Expression) left,
+            (Expression) right);
     }
 
-    public Object mod(Object left, Object right){
-        return new CoreOperation(Expression.OP_MOD, (Expression)left, (Expression)right);
+    public Object mod(Object left, Object right) {
+        return new CoreOperation(
+            Expression.OP_MOD,
+            (Expression) left,
+            (Expression) right);
     }
 
-    public Object lessThan(Object left, Object right){
-        return new CoreOperation(Expression.OP_LT, (Expression)left, (Expression)right);
+    public Object lessThan(Object left, Object right) {
+        return new CoreOperation(
+            Expression.OP_LT,
+            (Expression) left,
+            (Expression) right);
     }
 
-    public Object lessThanOrEqual(Object left, Object right){
-        return new CoreOperation(Expression.OP_LTE, (Expression)left, (Expression)right);
+    public Object lessThanOrEqual(Object left, Object right) {
+        return new CoreOperation(
+            Expression.OP_LTE,
+            (Expression) left,
+            (Expression) right);
     }
 
-    public Object greaterThan(Object left, Object right){
-        return new CoreOperation(Expression.OP_GT, (Expression)left, (Expression)right);
+    public Object greaterThan(Object left, Object right) {
+        return new CoreOperation(
+            Expression.OP_GT,
+            (Expression) left,
+            (Expression) right);
     }
 
-    public Object greaterThanOrEqual(Object left, Object right){
-        return new CoreOperation(Expression.OP_GTE, (Expression)left, (Expression)right);
+    public Object greaterThanOrEqual(Object left, Object right) {
+        return new CoreOperation(
+            Expression.OP_GTE,
+            (Expression) left,
+            (Expression) right);
     }
 
-    public Object equal(Object left, Object right){
-        if (isNameAttributeTest((Expression)left)){
-            return new NameAttributeTest((Expression)left, (Expression)right);
+    public Object equal(Object left, Object right) {
+        if (isNameAttributeTest((Expression) left)) {
+            return new NameAttributeTest((Expression) left, (Expression) right);
         }
         else {
-            return new CoreOperation(Expression.OP_EQ, (Expression)left, (Expression)right);
+            return new CoreOperation(
+                Expression.OP_EQ,
+                (Expression) left,
+                (Expression) right);
         }
     }
 
-    public Object notEqual(Object left, Object right){
-        return new CoreOperation(Expression.OP_NE, (Expression)left, (Expression)right);
+    public Object notEqual(Object left, Object right) {
+        return new CoreOperation(
+            Expression.OP_NE,
+            (Expression) left,
+            (Expression) right);
     }
 
-    public Object minus(Object argument){
-        return new CoreOperation(Expression.OP_UNARY_MINUS, (Expression)argument);
+    public Object minus(Object argument) {
+        return new CoreOperation(
+            Expression.OP_UNARY_MINUS,
+            (Expression) argument);
     }
 
-    public Object variableReference(Object qName){
-        return new VariableReference((QName)qName);
+    public Object variableReference(Object qName) {
+        return new VariableReference((QName) qName);
     }
 
-    public Object function(int code, Object[] args){
+    public Object function(int code, Object[] args) {
         return new CoreFunction(code, toExpressionArray(args));
     }
 
-    public Object function(Object name, Object[] args){
-        return new ExtensionFunction((QName)name, toExpressionArray(args));
+    public Object function(Object name, Object[] args) {
+        return new ExtensionFunction((QName) name, toExpressionArray(args));
     }
 
-    public Object and(Object arguments[]){
-        return new CoreOperation(Expression.OP_AND, toExpressionArray(arguments));
+    public Object and(Object arguments[]) {
+        return new CoreOperation(
+            Expression.OP_AND,
+            toExpressionArray(arguments));
     }
 
-    public Object or(Object arguments[]){
-        return new CoreOperation(Expression.OP_OR, toExpressionArray(arguments));
+    public Object or(Object arguments[]) {
+        return new CoreOperation(
+            Expression.OP_OR,
+            toExpressionArray(arguments));
     }
 
-    public Object union(Object[] arguments){
-        return new CoreOperation(Expression.OP_UNION, toExpressionArray(arguments));
+    public Object union(Object[] arguments) {
+        return new CoreOperation(
+            Expression.OP_UNION,
+            toExpressionArray(arguments));
     }
 
-    public Object locationPath(boolean absolute, Object[] steps){
+    public Object locationPath(boolean absolute, Object[] steps) {
         return new LocationPath(absolute, toStepArray(steps));
     }
 
-    public Object expressionPath(Object expression, Object[] predicates, Object[] steps){
-        return new ExpressionPath((Expression)expression, toExpressionArray(predicates), toStepArray(steps));
+    public Object expressionPath(
+        Object expression,
+        Object[] predicates,
+        Object[] steps) 
+    {
+        return new ExpressionPath(
+            (Expression) expression,
+            toExpressionArray(predicates),
+            toStepArray(steps));
     }
 
-    public Object nodeNameTest(Object qname){
-        return new NodeNameTest((QName)qname);
+    public Object nodeNameTest(Object qname) {
+        return new NodeNameTest((QName) qname);
     }
 
-    public Object nodeTypeTest(int nodeType){
+    public Object nodeTypeTest(int nodeType) {
         return new NodeTypeTest(nodeType);
     }
 
-    public Object processingInstructionTest(String instruction){
+    public Object processingInstructionTest(String instruction) {
         return new ProcessingInstructionTest(instruction);
     }
 
-    public Object step(int axis, Object nodeTest, Object[] predicates){
-        return new Step(axis, (NodeTest)nodeTest, toExpressionArray(predicates));
+    public Object step(int axis, Object nodeTest, Object[] predicates) {
+        return new Step(
+            axis,
+            (NodeTest) nodeTest,
+            toExpressionArray(predicates));
     }
 
-    private Expression[] toExpressionArray(Object[] array){
+    private Expression[] toExpressionArray(Object[] array) {
         Expression expArray[] = null;
-        if (array != null){
+        if (array != null) {
             expArray = new Expression[array.length];
-            for (int i = 0; i < expArray.length; i++){
-                expArray[i] = (Expression)array[i];
+            for (int i = 0; i < expArray.length; i++) {
+                expArray[i] = (Expression) array[i];
             }
         }
         return expArray;
     }
 
-    private Step[] toStepArray(Object[] array){
+    private Step[] toStepArray(Object[] array) {
         Step stepArray[] = null;
-        if (array != null){
+        if (array != null) {
             stepArray = new Step[array.length];
-            for (int i = 0; i < stepArray.length; i++){
-                stepArray[i] = (Step)array[i];
+            for (int i = 0; i < stepArray.length; i++) {
+                stepArray[i] = (Step) array[i];
             }
         }
         return stepArray;
     }
-    
-    private boolean isNameAttributeTest(Expression arg){
-        if (arg.getExpressionTypeCode() != Expression.OP_LOCATION_PATH){
+
+    private boolean isNameAttributeTest(Expression arg) {
+        if (arg.getExpressionTypeCode() != Expression.OP_LOCATION_PATH) {
             return false;
         }
-        
-        Step[] steps = ((LocationPath)arg).getSteps();
-        if (steps.length != 1){
+
+        Step[] steps = ((LocationPath) arg).getSteps();
+        if (steps.length != 1) {
             return false;
         }
-        if (steps[0].getAxis() != Compiler.AXIS_ATTRIBUTE){
+        if (steps[0].getAxis() != Compiler.AXIS_ATTRIBUTE) {
             return false;
         }
         NodeTest test = steps[0].getNodeTest();
-        if (!(test instanceof NodeNameTest)){
+        if (!(test instanceof NodeNameTest)) {
             return false;
         }
-        if (!((NodeNameTest)test).getNodeName().equals(QNAME_NAME)){
+        if (!((NodeNameTest) test).getNodeName().equals(QNAME_NAME)) {
             return false;
         }
         return true;

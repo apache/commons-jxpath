@@ -63,7 +63,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
  * will always find that property (albeit with a null value).
  * 
  * @author <a href="mailto:dmitri@apache.org">Dmitri Plotnikov</a>
- * @version $Id: DynamicPropertyIterator.java,v 1.1 2002/11/28 01:01:30 dmitri Exp $
+ * @version $Id: DynamicPropertyIterator.java,v 1.2 2003/01/11 05:41:26 dmitri Exp $
  */
 public class DynamicPropertyIterator extends PropertyIterator {
 
@@ -76,8 +76,8 @@ public class DynamicPropertyIterator extends PropertyIterator {
         super(pointer, name, reverse, startWith);
     }
 
-    protected void prepareForIndividualProperty(String name){
-        ((DynamicPropertyPointer)getPropertyPointer()).setPropertyName(name);
+    protected void prepareForIndividualProperty(String name) {
+        ((DynamicPropertyPointer) getPropertyPointer()).setPropertyName(name);
         super.prepareForIndividualProperty(name);
    }
 }

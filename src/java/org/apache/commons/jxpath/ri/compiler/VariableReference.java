@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/VariableReference.java,v 1.4 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/VariableReference.java,v 1.5 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,41 +68,41 @@ import org.apache.commons.jxpath.ri.EvalContext;
  * An element of the compile tree holding a variable reference.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:23 $
  */
 public class VariableReference extends Expression {
 
     private QName varName;
 
-    public VariableReference(QName varName){
+    public VariableReference(QName varName) {
         super(Expression.OP_VAR);
         this.varName = varName;
     }
 
-    public QName getVariableName(){
+    public QName getVariableName() {
         return varName;
     }
 
-    public String toString(){
+    public String toString() {
         return "(VAR " + varName + ")";
     }
 
-    public boolean isContextDependent(){
+    public boolean isContextDependent() {
         return false;
     }
 
-    public boolean computeContextDependent(){
+    public boolean computeContextDependent() {
         return false;
     }
 
-    public Object compute(EvalContext context){
+    public Object compute(EvalContext context) {
         return computeValue(context);
     }
 
     /**
      * Returns the value of the variable.
      */
-    public Object computeValue(EvalContext context){
+    public Object computeValue(EvalContext context) {
         return context.getRootContext().getVariableContext(varName);
     }
 }

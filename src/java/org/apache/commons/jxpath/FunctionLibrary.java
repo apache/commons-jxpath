@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/FunctionLibrary.java,v 1.1 2001/08/23 00:46:58 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2001/08/23 00:46:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/FunctionLibrary.java,v 1.2 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,7 +61,11 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * An object that aggregates Functions objects into a group Functions object.
@@ -70,7 +74,7 @@ import java.util.*;
  * that need to be registered.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/08/23 00:46:58 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/11 05:41:22 $
  */
 public class FunctionLibrary implements Functions {
     private List allFunctions = new ArrayList();
@@ -79,7 +83,7 @@ public class FunctionLibrary implements Functions {
     /**
      * Add functions to the library
      */
-    public void addFunctions(Functions functions){
+    public void addFunctions(Functions functions) {
         allFunctions.add(functions);
         byNamespace = null;
     }
@@ -87,7 +91,7 @@ public class FunctionLibrary implements Functions {
     /**
      * Remove functions from the library.
      */
-    public void removeFunctions(Functions functions){
+    public void removeFunctions(Functions functions) {
         allFunctions.remove(functions);
         byNamespace = null;
     }
@@ -96,8 +100,8 @@ public class FunctionLibrary implements Functions {
      * Returns a set containing all namespaces used by the aggregated
      * Functions.
      */
-    public Set getUsedNamespaces(){
-        if (byNamespace == null){
+    public Set getUsedNamespaces() {
+        if (byNamespace == null) {
             prepareCache();
         }
         return byNamespace.keySet();
@@ -107,20 +111,31 @@ public class FunctionLibrary implements Functions {
      * Returns a Function, if any, for the specified namespace,
      * name and parameter types.
      */
-    public Function getFunction(String namespace, String name, Object[] parameters){
-        if (byNamespace == null){
+    public Function getFunction(
+        String namespace,
+        String name,
+        Object[] parameters) 
+    {
+        if (byNamespace == null) {
             prepareCache();
         }
         Object candidates = byNamespace.get(namespace);
-        if (candidates instanceof Functions){
-            return ((Functions)candidates).getFunction(namespace, name, parameters);
+        if (candidates instanceof Functions) {
+            return ((Functions) candidates).getFunction(
+                namespace,
+                name,
+                parameters);
         }
-        else if (candidates instanceof List){
-            List list = (List)candidates;
+        else if (candidates instanceof List) {
+            List list = (List) candidates;
             int count = list.size();
-            for (int i = 0; i < count; i++){
-                Function function = ((Functions)list.get(i)).getFunction(namespace, name, parameters);
-                if (function != null){
+            for (int i = 0; i < count; i++) {
+                Function function =
+                    ((Functions) list.get(i)).getFunction(
+                        namespace,
+                        name,
+                        parameters);
+                if (function != null) {
                     return function;
                 }
             }
@@ -128,26 +143,26 @@ public class FunctionLibrary implements Functions {
         return null;
     }
 
-    private void prepareCache(){
+    private void prepareCache() {
         byNamespace = new HashMap();
         int count = allFunctions.size();
-        for (int i = 0; i < count; i++){
-            Functions funcs = (Functions)allFunctions.get(i);
+        for (int i = 0; i < count; i++) {
+            Functions funcs = (Functions) allFunctions.get(i);
             Set namespaces = funcs.getUsedNamespaces();
-            for (Iterator it = namespaces.iterator(); it.hasNext();){
-                String ns = (String)it.next();
+            for (Iterator it = namespaces.iterator(); it.hasNext();) {
+                String ns = (String) it.next();
                 Object candidates = byNamespace.get(ns);
-                if (candidates == null){
+                if (candidates == null) {
                     byNamespace.put(ns, funcs);
                 }
-                else if (candidates instanceof Functions){
+                else if (candidates instanceof Functions) {
                     List lst = new ArrayList();
                     lst.add(candidates);
                     lst.add(funcs);
                     byNamespace.put(ns, lst);
                 }
                 else {
-                    ((List)candidates).add(funcs);
+                    ((List) candidates).add(funcs);
                 }
             }
         }

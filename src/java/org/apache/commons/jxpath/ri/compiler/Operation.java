@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Operation.java,v 1.3 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Operation.java,v 1.4 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,25 +63,25 @@ package org.apache.commons.jxpath.ri.compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:23 $
  */
 public abstract class Operation extends Expression {
 
     protected Expression args[];
 
-    public Operation(int code, Expression args[]){
+    public Operation(int code, Expression args[]) {
         super(code);
         this.args = args;
     }
 
-    public Expression[] getArguments(){
+    public Expression[] getArguments() {
         return args;
     }
 
-    public boolean computeContextDependent(){
-        if (args != null){
-            for (int i = 0; i < args.length; i++){
-                if (args[i].isContextDependent()){
+    public boolean computeContextDependent() {
+        if (args != null) {
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].isContextDependent()) {
                     return true;
                 }
             }

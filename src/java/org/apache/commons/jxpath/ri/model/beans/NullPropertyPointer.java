@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.11 2002/11/28 01:02:04 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2002/11/28 01:02:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/NullPropertyPointer.java,v 1.12 2003/01/11 05:41:24 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2003/01/11 05:41:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2002/11/28 01:02:04 $
+ * @version $Revision: 1.12 $ $Date: 2003/01/11 05:41:24 $
  */
 public class NullPropertyPointer extends PropertyPointer {
 
@@ -77,26 +77,26 @@ public class NullPropertyPointer extends PropertyPointer {
 
     /**
      */
-    public NullPropertyPointer(NodePointer parent){
+    public NullPropertyPointer(NodePointer parent) {
         super(parent);
     }
 
-    public QName getName(){
+    public QName getName() {
         return new QName(propertyName);
     }
 
-    public void setPropertyIndex(int index){
+    public void setPropertyIndex(int index) {
     }
 
-    public int getLength(){
+    public int getLength() {
         return 0;
     }
 
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return null;
     }
 
-    public Object getImmediateNode(){
+    public Object getImmediateNode() {
         return null;
     }
 
@@ -104,90 +104,125 @@ public class NullPropertyPointer extends PropertyPointer {
         return true;
     }    
 
-    public NodePointer getValuePointer(){
+    public NodePointer getValuePointer() {
         return new NullPointer(this,  new QName(getPropertyName()));
     }
 
-    protected boolean isActualProperty(){
+    protected boolean isActualProperty() {
         return false;
     }
 
-    public boolean isActual(){
+    public boolean isActual() {
         return false;
     }
 
-    public boolean isContainer(){
+    public boolean isContainer() {
         return true;
     }
 
-    public void setValue(Object value){
-        if (parent == null || parent.isContainer()){
-            throw new JXPathException("Cannot set property " + asPath() +
-                ", the target object is null");
+    public void setValue(Object value) {
+        if (parent == null || parent.isContainer()) {
+            throw new JXPathException(
+                "Cannot set property "
+                    + asPath()
+                    + ", the target object is null");
         }
         else {
-            throw new JXPathException("Cannot set property " + asPath() +
-                ", path does not match a changeable location");
+            throw new JXPathException(
+                "Cannot set property "
+                    + asPath()
+                    + ", path does not match a changeable location");
         }
     }
 
-    public NodePointer createPath(JXPathContext context){
-        if (isAttribute()){
+    public NodePointer createPath(JXPathContext context) {
+        if (isAttribute()) {
             return parent.createAttribute(context, getName());
         }
         else {
-            return parent.createChild(context, getName(), getIndex());
+            // Consider these two use cases:
+            // 1. The parent pointer of NullPropertyPointer is 
+            //    a PropertyOwnerPointer other than NullPointer. When we call 
+            //    createPath on it, it most likely returns itself. We then
+            //    take a PropertyPointer from it and get the PropertyPointer
+            //    to expand the collection for the corresponsing property.
+            //
+            // 2. The parent pointer of NullPropertyPointer is a NullPointer.
+            //    When we call createPath, it may return a PropertyOwnerPointer
+            //    or it may return anything else, like a DOMNodePointer.
+            //    In the former case we need to exactly what we did in use 
+            //    case 1.  In the latter case, we simply request that the 
+            //    non-property pointer expand the collection by itself.
+
+            NodePointer newParent = parent.createPath(context);
+            if (newParent instanceof PropertyOwnerPointer) {
+                PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+                newParent = pop.getPropertyPointer();
+            }
+            return newParent.createChild(context, getName(), getIndex());
         }
     }
 
-    public NodePointer createPath(JXPathContext context, Object value){
-        if (isAttribute()){
+    public NodePointer createPath(JXPathContext context, Object value) {
+        if (isAttribute()) {
             NodePointer pointer = parent.createAttribute(context, getName());
             pointer.setValue(value);
             return pointer;
         }
         else {
-            return parent.createChild(context, getName(), getIndex(), value);
+            NodePointer newParent = parent.createPath(context);
+            if (newParent instanceof PropertyOwnerPointer) {
+                PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+                newParent = pop.getPropertyPointer();
+            }
+            return newParent.createChild(context, getName(), index, value);
         }
     }
-
-    public NodePointer createChild(JXPathContext context,
-            QName name, int index, Object value){
+    
+    public NodePointer createChild(
+            JXPathContext context,
+            QName name, 
+            int index)
+    {
+        return createPath(context).createChild(context, name, index);
+    }
+        
+    public NodePointer createChild(
+            JXPathContext context,
+            QName name, 
+            int index,
+            Object value) 
+    {
         return createPath(context).createChild(context, name, index, value);
     }
 
-    public NodePointer createChild(JXPathContext context,
-            QName name, int index){
-        return createPath(context).createChild(context, name, index);
-    }
-
-    public String getPropertyName(){
+    public String getPropertyName() {
         return propertyName;
     }
 
-    public void setPropertyName(String propertyName){
+    public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
 
-    public void setNameAttributeValue(String attributeValue){
+    public void setNameAttributeValue(String attributeValue) {
         this.propertyName = attributeValue;
         byNameAttribute = true;
     }
 
-    public boolean isCollection(){
+    public boolean isCollection() {
         return getIndex() != WHOLE_COLLECTION;
     }
 
-    public int getPropertyCount(){
+    public int getPropertyCount() {
         return 0;
     }
 
-    public String[] getPropertyNames(){
+    public String[] getPropertyNames() {
         return new String[0];
     }
 
-    public String asPath(){
-        if (!byNameAttribute){
+    public String asPath() {
+        if (!byNameAttribute) {
             return super.asPath();
         }
         else {
@@ -196,24 +231,28 @@ public class NullPropertyPointer extends PropertyPointer {
             buffer.append("[@name='");
             buffer.append(escape(getPropertyName()));
             buffer.append("']");
-            if (index != WHOLE_COLLECTION){
+            if (index != WHOLE_COLLECTION) {
                 buffer.append('[').append(index + 1).append(']');
             }
             return buffer.toString();
         }
     }
 
-    private String escape(String string){
+    private String escape(String string) {
         int index = string.indexOf('\'');
-        while (index != -1){
-            string = string.substring(0, index) + "&apos;" +
-                    string.substring(index + 1);
+        while (index != -1) {
+            string =
+                string.substring(0, index)
+                    + "&apos;"
+                    + string.substring(index + 1);
             index = string.indexOf('\'');
         }
         index = string.indexOf('\"');
-        while (index != -1){
-            string = string.substring(0, index) + "&quot;" +
-                    string.substring(index + 1);
+        while (index != -1) {
+            string =
+                string.substring(0, index)
+                    + "&quot;"
+                    + string.substring(index + 1);
             index = string.indexOf('\"');
         }
         return string;

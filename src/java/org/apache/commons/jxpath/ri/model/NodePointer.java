@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.14 2002/11/28 01:02:04 dmitri Exp $
- * $Revision: 1.14 $
- * $Date: 2002/11/28 01:02:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.15 2003/01/11 05:41:24 dmitri Exp $
+ * $Revision: 1.15 $
+ * $Date: 2003/01/11 05:41:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,13 +81,13 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * attribute and only simple, context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2002/11/28 01:02:04 $
+ * @version $Revision: 1.15 $ $Date: 2003/01/11 05:41:24 $
  */
 public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
-    public static int WHOLE_COLLECTION = Integer.MIN_VALUE;
+    public static final int WHOLE_COLLECTION = Integer.MIN_VALUE;
     protected int index = WHOLE_COLLECTION;
-    public static String UNKNOWN_NAMESPACE = "<<unknown namespace>>";
+    public static final String UNKNOWN_NAMESPACE = "<<unknown namespace>>";
     private boolean attribute = false;
 
     /**
@@ -95,7 +95,9 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * NodePointerFactories until it finds one that can create a pointer.
      */
     public static NodePointer newNodePointer(
-            QName name, Object bean, Locale locale)
+        QName name,
+        Object bean,
+        Locale locale) 
     {
         if (bean == null) {
             return new NullPointer(name, locale);
@@ -103,15 +105,15 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
         NodePointerFactory[] factories =
             JXPathContextReferenceImpl.getNodePointerFactories();
         for (int i = 0; i < factories.length; i++) {
-            NodePointer pointer = factories[i].
-                    createNodePointer(name, bean, locale);
+            NodePointer pointer =
+                factories[i].createNodePointer(name, bean, locale);
             if (pointer != null) {
                 return pointer;
             }
         }
         throw new JXPathException(
-            "Could not allocate a NodePointer for object of " +
-            bean.getClass());
+            "Could not allocate a NodePointer for object of "
+                + bean.getClass());
     }
 
     /**
@@ -119,20 +121,22 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * NodePointerFactories until it finds one that can create a pointer.
      */
     public static NodePointer newChildNodePointer(
-            NodePointer parent, QName name, Object bean)
+        NodePointer parent,
+        QName name,
+        Object bean) 
     {
         NodePointerFactory[] factories =
             JXPathContextReferenceImpl.getNodePointerFactories();
         for (int i = 0; i < factories.length; i++) {
-            NodePointer pointer = factories[i].
-                    createNodePointer(parent, name, bean);
+            NodePointer pointer =
+                factories[i].createNodePointer(parent, name, bean);
             if (pointer != null) {
                 return pointer;
             }
         }
         throw new JXPathException(
-            "Could not allocate a NodePointer for object of " +
-            bean.getClass());
+            "Could not allocate a NodePointer for object of "
+                + bean.getClass());
     }
 
     protected NodePointer parent;
@@ -154,14 +158,14 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
     /**
      * Set to true if the pointer represents the "attribute::" axis.
      */
-    public void setAttribute(boolean attribute){
+    public void setAttribute(boolean attribute) {
         this.attribute = attribute;
     }
 
     /**
      * Returns true if the pointer represents the "attribute::" axis.
      */
-    public boolean isAttribute(){
+    public boolean isAttribute() {
         return attribute;
     }
 
@@ -180,7 +184,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
     /**
      * @deprecated Please use !isContainer()
      */
-    public boolean isNode(){
+    public boolean isNode() {
         return !isContainer();
     }
      
@@ -227,7 +231,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      */
     public Object getValue() {
         NodePointer valuePointer = getValuePointer();
-        if (valuePointer != this){
+        if (valuePointer != this) {
             return valuePointer.getValue();
         }
         // Default behavior is to return the same as getNode() 
@@ -253,7 +257,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      */
     public NodePointer getValuePointer() {
         NodePointer ivp = getImmediateValuePointer();
-        if (ivp != this){
+        if (ivp != this) {
             return ivp.getValuePointer();
         }
         return this;
@@ -307,7 +311,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      *
      * @deprecated 1.1 Please use getNode()
      */
-    public Object getNodeValue(){
+    public Object getNodeValue() {
         return getNode();
     }
 
@@ -316,7 +320,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * to a "canonical" type. Opens containers, properties etc and returns
      * the ultimate contents.
      */
-    public Object getNode(){
+    public Object getNode() {
         return getValuePointer().getImmediateNode();
     }
     
@@ -368,7 +372,8 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
             return testLocalName.equals(nodeName.getName());
         }
         else if (test instanceof NodeTypeTest) {
-            if (((NodeTypeTest) test).getNodeType() == Compiler.NODE_TYPE_NODE){
+            if (((NodeTypeTest) test).getNodeType()
+                == Compiler.NODE_TYPE_NODE) {
                 return isNode();
             }
         }
@@ -397,7 +402,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
     /**
      * Remove the node of the object graph this pointer points to.
      */
-    public void remove(){
+    public void remove() {
         // It is a no-op
 
 //        System.err.println("REMOVING: " + asPath() + " " + getClass());
@@ -416,14 +421,23 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
     /**
      * Called by a child pointer if that child needs to assign the value
      * supplied in the createPath(context, value) call to a non-existent
-     * node. This method must may have to expand the collection in order to
-     * assign the element.
+     * node. This method may have to expand the collection in order to assign
+     * the element.
      */
-    public NodePointer createChild(JXPathContext context, QName name,
-                            int index, Object value) {
+    public NodePointer createChild(
+        JXPathContext context,
+        QName name,
+        int index,
+        Object value) 
+    {
         throw new JXPathException(
             "Cannot create an object for path "
-                + asPath() + "/" + name + "[" + (index + 1) + "]"
+                + asPath()
+                + "/"
+                + name
+                + "["
+                + (index + 1)
+                + "]"
                 + ", operation is not allowed for this type of node");
     }
 
@@ -434,17 +448,25 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * describing the newly created element.
      */
     public NodePointer createChild(
-            JXPathContext context, QName name, int index) {
+        JXPathContext context,
+        QName name,
+        int index) 
+    {
         throw new JXPathException(
             "Cannot create an object for path "
-                + asPath() + "/" + name + "[" + (index + 1) + "]"
+                + asPath()
+                + "/"
+                + name
+                + "["
+                + (index + 1)
+                + "]"
                 + ", operation is not allowed for this type of node");
     }
-
+    
     /**
      * Called to create a non-existing attribute
      */
-    public NodePointer createAttribute(JXPathContext context, QName name){
+    public NodePointer createAttribute(JXPathContext context, QName name) {
         throw new JXPathException(
             "Cannot create an attribute for path "
                 + asPath() + "/@" + name
@@ -480,9 +502,12 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      * that match the given NodeTest, starting with the specified one.
      */
     public NodeIterator childIterator(
-                    NodeTest test, boolean reverse, NodePointer startWith) {
+        NodeTest test,
+        boolean reverse,
+        NodePointer startWith) 
+    {
         NodePointer valuePointer = getValuePointer();
-        if (valuePointer != null && valuePointer != this){
+        if (valuePointer != null && valuePointer != this) {
             return valuePointer.childIterator(test, reverse, startWith);
         }
         return null;
@@ -495,7 +520,7 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
      */
     public NodeIterator attributeIterator(QName qname) {
         NodePointer valuePointer = getValuePointer();
-        if (valuePointer != null && valuePointer != this){
+        if (valuePointer != null && valuePointer != this) {
             return valuePointer.attributeIterator(qname);
         }
         return null;
@@ -565,15 +590,18 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
     /**
      * Locates a node by ID.
      */
-    public Pointer getPointerByID(JXPathContext context, String id){
+    public Pointer getPointerByID(JXPathContext context, String id) {
         return context.getPointerByID(id);
     }
 
     /**
      * Locates a node by key and value.
      */
-    public Pointer getPointerByKey(JXPathContext context,
-                                      String key, String value){
+    public Pointer getPointerByKey(
+        JXPathContext context,
+        String key,
+        String value) 
+    {
         return context.getPointerByKey(key, value);
     }
 
@@ -609,9 +637,9 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
     public Object clone() {
         try {
-            NodePointer ptr = (NodePointer)super.clone();
-            if (parent != null){
-                ptr.parent = (NodePointer)parent.clone();
+            NodePointer ptr = (NodePointer) super.clone();
+            if (parent != null) {
+                ptr.parent = (NodePointer) parent.clone();
             }
             return ptr;
         }
@@ -626,11 +654,11 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
         return asPath();
     }
 
-    public int compareTo(Object object){
+    public int compareTo(Object object) {
         // Let it throw a ClassCastException
         NodePointer pointer = (NodePointer) object;
-        if (parent == pointer.parent){
-            if (parent == null){
+        if (parent == pointer.parent) {
+            if (parent == null) {
                 return 0;
             }
             return parent.compareChildNodePointers(this, pointer);
@@ -639,52 +667,58 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
         // Task 1: find the common parent
         int depth1 = 0;
         NodePointer p1 = this;
-        while (p1 != null){
-            depth1 ++;
+        while (p1 != null) {
+            depth1++;
             p1 = p1.parent;
         }
         int depth2 = 0;
         NodePointer p2 = pointer;
-        while (p2 != null){
-            depth2 ++;
+        while (p2 != null) {
+            depth2++;
             p2 = p2.parent;
         }
         return compareNodePointers(this, depth1, pointer, depth2);
     }
 
     private int compareNodePointers(
-            NodePointer p1, int depth1, NodePointer p2, int depth2)
+        NodePointer p1,
+        int depth1,
+        NodePointer p2,
+        int depth2) 
     {
-        if (depth1 < depth2){
-            int r = compareNodePointers(p1, depth1, p2.parent, depth2-1);
-            if (r != 0){
+        if (depth1 < depth2) {
+            int r = compareNodePointers(p1, depth1, p2.parent, depth2 - 1);
+            if (r != 0) {
                 return r;
             }
             return -1;
         }
-        else if (depth1 > depth2){
-            int r = compareNodePointers(p1.parent, depth1-1, p2, depth2);
-            if (r != 0){
+        else if (depth1 > depth2) {
+            int r = compareNodePointers(p1.parent, depth1 - 1, p2, depth2);
+            if (r != 0) {
                 return r;
             }
             return 1;
         }
-        if (p1 == null && p2 == null){
+        if (p1 == null && p2 == null) {
             return 0;
         }
 
-        if (p1 != null && p1.equals(p2)){
+        if (p1 != null && p1.equals(p2)) {
             return 0;
         }
 
-        if (depth1 == 1){
+        if (depth1 == 1) {
             throw new JXPathException(
                 "Cannot compare pointers that do not belong to the same tree: '"
-                + p1 + "' and '" + p2 + "'");
+                    + p1
+                    + "' and '"
+                    + p2
+                    + "'");
         }
-        int r = compareNodePointers(
-                p1.parent, depth1 - 1, p2.parent, depth2 - 1);
-        if (r != 0){
+        int r =
+            compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);
+        if (r != 0) {
             return r;
         }
 
@@ -694,20 +728,29 @@ public abstract class NodePointer implements Pointer, Cloneable, Comparable {
     /**
      * Print internal structure of a pointer for debugging
      */
-    public void printPointerChain(){
+    public void printPointerChain() {
         printDeep(this, "");
     }
 
-    private static void printDeep(NodePointer pointer, String indent){
-        if (indent.length() == 0){
-            System.err.println("POINTER: " + pointer + "(" +
-                    pointer.getClass().getName() + ")");
+    private static void printDeep(NodePointer pointer, String indent) {
+        if (indent.length() == 0) {
+            System.err.println(
+                "POINTER: "
+                    + pointer
+                    + "("
+                    + pointer.getClass().getName()
+                    + ")");
         }
         else {
-            System.err.println(indent + " of " + pointer + "(" +
-                    pointer.getClass().getName() + ")");
+            System.err.println(
+                indent
+                    + " of "
+                    + pointer
+                    + "("
+                    + pointer.getClass().getName()
+                    + ")");
         }
-        if (pointer.getParent() != null){
+        if (pointer.getParent() != null) {
             printDeep(pointer.getParent(), indent + "  ");
         }
     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.9 2002/11/26 01:20:07 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2002/11/26 01:20:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/TypeUtils.java,v 1.10 2003/01/11 05:41:27 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2003/01/11 05:41:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,7 +65,7 @@ package org.apache.commons.jxpath.util;
  * Global type conversion utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2002/11/26 01:20:07 $
+ * @version $Revision: 1.10 $ $Date: 2003/01/11 05:41:27 $
  */
 public class TypeUtils {
     private static TypeConverter typeConverter = new BasicTypeConverter();
@@ -73,14 +73,14 @@ public class TypeUtils {
     /**
      * Install an alternative type converter.
      */
-    public static synchronized void setTypeConverter(TypeConverter converter){
+    public static synchronized void setTypeConverter(TypeConverter converter) {
         typeConverter = converter;
     }
 
     /**
      * Returns the current type converter.
      */
-    public static TypeConverter getTypeConverter(){
+    public static TypeConverter getTypeConverter() {
         return typeConverter;
     }
 
@@ -88,7 +88,7 @@ public class TypeUtils {
      * Returns true if the global converter can convert the supplied
      * object to the specified type.
      */
-    public static boolean canConvert(Object object, Class toType){
+    public static boolean canConvert(Object object, Class toType) {
         return typeConverter.canConvert(object, toType);
     }
 
@@ -96,7 +96,7 @@ public class TypeUtils {
      * Converts the supplied object to the specified type. May
      * throw a RuntimeException.
      */
-    public static Object convert(Object object, Class toType){
+    public static Object convert(Object object, Class toType) {
         return typeConverter.convert(object, toType);
     }
 }

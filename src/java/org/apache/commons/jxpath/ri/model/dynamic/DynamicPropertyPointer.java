@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertyPointer.java,v 1.1 2002/11/28 01:01:30 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/11/28 01:01:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynamic/DynamicPropertyPointer.java,v 1.2 2003/01/11 05:41:26 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/11 05:41:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,8 +63,10 @@ package org.apache.commons.jxpath.ri.model.dynamic;
 
 import java.util.Arrays;
 
-import org.apache.commons.jxpath.*;
-import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.DynamicPropertyHandler;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 import org.apache.commons.jxpath.util.ValueUtils;
@@ -73,7 +75,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/11/28 01:01:30 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/11 05:41:26 $
  */
 public class DynamicPropertyPointer extends PropertyPointer {
     private DynamicPropertyHandler handler;
@@ -91,31 +93,31 @@ public class DynamicPropertyPointer extends PropertyPointer {
     /**
      * This type of node is auxiliary.
      */
-    public boolean isContainer(){
+    public boolean isContainer() {
         return true;
     }
 
     /**
      * Number of the DP object's properties.
      */
-    public int getPropertyCount(){
+    public int getPropertyCount() {
         return getPropertyNames().length;
     }
 
     /**
      * Names of all properties, sorted alphabetically
      */
-    public String[] getPropertyNames(){
-        if (names == null){
+    public String[] getPropertyNames() {
+        if (names == null) {
             String allNames[] = handler.getPropertyNames(getBean());
             names = new String[allNames.length];
-            for (int i = 0; i < names.length; i++){
+            for (int i = 0; i < names.length; i++) {
                 names[i] = allNames[i];
             }
             Arrays.sort(names);
-            if (requiredPropertyName != null){
+            if (requiredPropertyName != null) {
                 int inx = Arrays.binarySearch(names, requiredPropertyName);
-                if (inx < 0){
+                if (inx < 0) {
                     allNames = names;
                     names = new String[allNames.length + 1];
                     names[0] = requiredPropertyName;
@@ -131,10 +133,10 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * Returns the name of the currently selected property or "*"
      * if none has been selected.
      */
-    public String getPropertyName(){
-        if (name == null){
+    public String getPropertyName() {
+        if (name == null) {
             String names[] = getPropertyNames();
-            if (propertyIndex >=0 && propertyIndex < names.length){
+            if (propertyIndex >= 0 && propertyIndex < names.length) {
                 name = names[propertyIndex];
             }
             else {
@@ -151,11 +153,11 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * set the property value though. In order to set the property
      * value, call setValue().
      */
-    public void setPropertyName(String propertyName){
+    public void setPropertyName(String propertyName) {
         setPropertyIndex(UNSPECIFIED_PROPERTY);
         this.name = propertyName;
         requiredPropertyName = propertyName;
-        if (names != null && Arrays.binarySearch(names, propertyName) < 0){
+        if (names != null && Arrays.binarySearch(names, propertyName) < 0) {
             names = null;
         }
     }
@@ -164,11 +166,11 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * Index of the currently selected property in the list of all
      * properties sorted alphabetically.
      */
-    public int getPropertyIndex(){
-        if (propertyIndex == UNSPECIFIED_PROPERTY){
+    public int getPropertyIndex() {
+        if (propertyIndex == UNSPECIFIED_PROPERTY) {
             String names[] = getPropertyNames();
-            for (int i = 0; i < names.length; i++){
-                if (names[i].equals(name)){
+            for (int i = 0; i < names.length; i++) {
+                if (names[i].equals(name)) {
                     setPropertyIndex(i);
                     break;
                 }
@@ -181,8 +183,8 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * Index a property by its index in the list of all
      * properties sorted alphabetically.
      */
-    public void setPropertyIndex(int index){
-        if (propertyIndex != index){
+    public void setPropertyIndex(int index) {
+        if (propertyIndex != index) {
             super.setPropertyIndex(index);
             name = null;
         }
@@ -192,7 +194,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * Returns the value of the property, not an element of the collection
      * represented by the property, if any.
      */
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return handler.getProperty(getBean(), getPropertyName());
     }
 
@@ -202,7 +204,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * property. If the property is not a collection, index should be zero
      * and the value will be the property itself.
      */
-    public Object getImmediateNode(){
+    public Object getImmediateNode() {
         Object value;
         if (index == WHOLE_COLLECTION) {
             value = handler.getProperty(getBean(), getPropertyName());
@@ -220,7 +222,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * A dynamic property is always considered actual - all keys are apparently
      * existing with possibly the value of null.
      */
-    protected boolean isActualProperty(){
+    protected boolean isActualProperty() {
         return true;
     }
 
@@ -229,7 +231,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * change the value of the index'th element of the collection
      * represented by the property.
      */
-    public void setValue(Object value){
+    public void setValue(Object value) {
         if (index == WHOLE_COLLECTION) {
             handler.setProperty(getBean(), getPropertyName(), value);
         }
@@ -241,95 +243,51 @@ public class DynamicPropertyPointer extends PropertyPointer {
         }
     }
 
-    public NodePointer createPath(JXPathContext context, Object value){
-        return createChild(context, getName(), index, value);
-    }
-
-    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
-        // Ignore the name passed to us, use our own data
-        if (index == WHOLE_COLLECTION) {
-            handler.setProperty(getBean(), getPropertyName(), value);
-        }
-        else {
-            Object collection = getBaseValue();
-            if (collection == null) {
-                AbstractFactory factory = getAbstractFactory(context);
-                if (!factory
-                    .createObject(
-                        context,
-                        this,
-                        getBean(),
-                        getPropertyName(),
-                        0)) {
-                    throw new JXPathException(
-                        "Factory could not create an object for path: "
-                            + asPath());
-                }
-                collection = getBaseValue();
-            }
-
-            if (index < 0) {
-                throw new JXPathException("Index is less than 1: " + asPath());
-            }
-
-            if (index >= getLength()) {
-                collection = ValueUtils.expandCollection(collection, index + 1);
-                handler.setProperty(getBean(), getPropertyName(), collection);
-            }
-
-            ValueUtils.setValue(collection, index, value);
-        }
-        NodePointer ptr = (NodePointer) clone();
-        ptr.setIndex(index);
-        return ptr;
-    }
-
-    public NodePointer createChild(JXPathContext context, QName name, int index){
+    public NodePointer createPath(JXPathContext context) {
         // Ignore the name passed to us, use our own data
         Object collection = getBaseValue();
         if (collection == null) {
             AbstractFactory factory = getAbstractFactory(context);
-            if (!factory
-                .createObject(context, this, getBean(), getPropertyName(), 0)) {
+            boolean success =
+                factory.createObject(
+                    context,
+                    this,
+                    getBean(),
+                    getPropertyName(),
+                    0);
+            if (!success) {
                 throw new JXPathException(
                     "Factory could not create an object for path: " + asPath());
             }
             collection = getBaseValue();
         }
 
-        if (index < 0) {
-            throw new JXPathException("Index is less than 1: " + asPath());
-        }
-
-        if (index >= getLength()) {
-            collection = ValueUtils.expandCollection(collection, index + 1);
-            handler.setProperty(getBean(), getPropertyName(), collection);
-        }
-
-        DynamicPropertyPointer pointer = (DynamicPropertyPointer) this.clone();
-        pointer.setIndex(index);
-        return pointer;
-    }
-
-    public NodePointer createPath(JXPathContext context){
-        if (getNode() == null) {
-            AbstractFactory factory = getAbstractFactory(context);
-            int inx = (index == WHOLE_COLLECTION ? 0 : index);
-            if (!factory
-                .createObject(
-                    context,
-                    this,
-                    getBean(),
-                    getPropertyName(),
-                    inx)) {
-                throw new JXPathException(
-                    "Factory could not create an object for path: " + asPath());
+        if (index != WHOLE_COLLECTION) {
+            if (index < 0) {
+                throw new JXPathException("Index is less than 1: " + asPath());
             }
+    
+            if (index >= getLength()) {
+                collection = ValueUtils.expandCollection(collection, index + 1);
+                handler.setProperty(getBean(), getPropertyName(), collection);
+            }
+        }
+        
+        return this;
+    }
+    
+    public NodePointer createPath(JXPathContext context, Object value) {
+        if (index == WHOLE_COLLECTION) {
+            handler.setProperty(getBean(), getPropertyName(), value);
+        }
+        else {
+            createPath(context);
+            ValueUtils.setValue(getBaseValue(), index, value);
         }
         return this;
     }
 
-    public void remove(){
+    public void remove() {
         if (index == WHOLE_COLLECTION) {
             handler.setProperty(getBean(), getPropertyName(), null);
         }
@@ -342,7 +300,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
         }
     }
 
-    public String asPath(){
+    public String asPath() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(getParent().asPath());
         if (buffer.length() == 0) {
@@ -360,24 +318,32 @@ public class DynamicPropertyPointer extends PropertyPointer {
         return buffer.toString();
     }
 
-    private String escape(String string){
+    private String escape(String string) {
         int index = string.indexOf('\'');
-        while (index != -1){
-            string = string.substring(0, index) + "&apos;" + string.substring(index + 1);
+        while (index != -1) {
+            string =
+                string.substring(0, index)
+                    + "&apos;"
+                    + string.substring(index + 1);
             index = string.indexOf('\'');
         }
         index = string.indexOf('\"');
-        while (index != -1){
-            string = string.substring(0, index) + "&quot;" + string.substring(index + 1);
+        while (index != -1) {
+            string =
+                string.substring(0, index)
+                    + "&quot;"
+                    + string.substring(index + 1);
             index = string.indexOf('\"');
         }
         return string;
     }
 
-    private AbstractFactory getAbstractFactory(JXPathContext context){
+    private AbstractFactory getAbstractFactory(JXPathContext context) {
         AbstractFactory factory = context.getFactory();
-        if (factory == null){
-            throw new JXPathException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
+        if (factory == null) {
+            throw new JXPathException(
+                "Factory is not set on the JXPathContext - cannot create path: "
+                    + asPath());
         }
         return factory;
     }

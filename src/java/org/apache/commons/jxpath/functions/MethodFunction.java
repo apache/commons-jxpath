@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.6 2002/05/08 00:40:00 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/05/08 00:40:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.7 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,62 +70,68 @@ import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
+ * An XPath extension function implemented as an individual Java method.
+ * 
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/05/08 00:40:00 $
+ * @version $Revision: 1.7 $ $Date: 2003/01/11 05:41:22 $
  */
 public class MethodFunction implements Function {
 
     private Method method;
     private static final Object EMPTY_ARRAY[] = new Object[0];
 
-    public MethodFunction(Method method){
+    public MethodFunction(Method method) {
         this.method = method;
     }
 
-    public Object invoke(ExpressionContext context, Object[] parameters){
+    public Object invoke(ExpressionContext context, Object[] parameters) {
         try {
             Object target;
             Object[] args;
-            if (Modifier.isStatic(method.getModifiers())){
+            if (Modifier.isStatic(method.getModifiers())) {
                 target = null;
-                if (parameters == null){
+                if (parameters == null) {
                     parameters = EMPTY_ARRAY;
                 }
                 int pi = 0;
                 Class types[] = method.getParameterTypes();
-                if (types.length >= 1 && ExpressionContext.class.isAssignableFrom(types[0])){
+                if (types.length >= 1
+                    && ExpressionContext.class.isAssignableFrom(types[0])) {
                     pi = 1;
                 }
                 args = new Object[parameters.length + pi];
-                if (pi == 1){
+                if (pi == 1) {
                     args[0] = context;
                 }
-                for (int i = 0; i < parameters.length; i++){
-                    args[i + pi] = TypeUtils.convert(parameters[i], types[i + pi]);
+                for (int i = 0; i < parameters.length; i++) {
+                    args[i + pi] =
+                        TypeUtils.convert(parameters[i], types[i + pi]);
                 }
             }
             else {
                 int pi = 0;
                 Class types[] = method.getParameterTypes();
-                if (types.length >= 1 &&
-                        ExpressionContext.class.isAssignableFrom(types[0])){
+                if (types.length >= 1
+                    && ExpressionContext.class.isAssignableFrom(types[0])) {
                     pi = 1;
                 }
-                target = TypeUtils.
-                        convert(parameters[0], method.getDeclaringClass());
+                target =
+                    TypeUtils.convert(
+                        parameters[0],
+                        method.getDeclaringClass());
                 args = new Object[parameters.length - 1 + pi];
-                if (pi == 1){
+                if (pi == 1) {
                     args[0] = context;
                 }
-                for (int i = 1; i < parameters.length; i++){
+                for (int i = 1; i < parameters.length; i++) {
                     args[pi + i - 1] =
-                            TypeUtils.convert(parameters[i], types[i + pi - 1]);
+                        TypeUtils.convert(parameters[i], types[i + pi - 1]);
                 }
             }
 
             return method.invoke(target, args);
         }
-        catch (Exception exception){
+        catch (Exception exception) {
             throw new JXPathException("Cannot invoke " + method, exception);
         }
     }

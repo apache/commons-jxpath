@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.10 2002/11/26 01:20:06 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/11/26 01:20:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/AncestorContext.java,v 1.11 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -69,7 +69,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/11/26 01:20:06 $
+ * @version $Revision: 1.11 $ $Date: 2003/01/11 05:41:23 $
  */
 public class AncestorContext extends EvalContext {
     private NodeTest nodeTest;
@@ -79,61 +79,66 @@ public class AncestorContext extends EvalContext {
 
     /**
      * @param parentContext represents the previous step on the path
-     * @param includeSelf differentiates between "ancestor::" and "ancestor-or-self::" axes
+     * @param  includeSelf differentiates between "ancestor::" and "ancestor-
+     * or-self::" axes
      * @param nameTest is the name of the element(s) we are looking for
      */
-    public AncestorContext(EvalContext parentContext, boolean includeSelf, NodeTest nodeTest){
+    public AncestorContext(
+        EvalContext parentContext,
+        boolean includeSelf,
+        NodeTest nodeTest) 
+    {
         super(parentContext);
         this.includeSelf = includeSelf;
         this.nodeTest = nodeTest;
     }
 
-    public NodePointer getCurrentNodePointer(){
+    public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
-    public int getDocumentOrder(){
+    public int getDocumentOrder() {
         return -1;
     }
 
-    public void reset(){
+    public void reset() {
         super.reset();
         setStarted = false;
     }
 
-    public boolean setPosition(int position){
-        if (position < getCurrentPosition()){
+    public boolean setPosition(int position) {
+        if (position < getCurrentPosition()) {
             reset();
         }
 
-        while (getCurrentPosition() < position){
-            if (!nextNode()){
+        while (getCurrentPosition() < position) {
+            if (!nextNode()) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean nextNode(){
-        if (!setStarted){
+    public boolean nextNode() {
+        if (!setStarted) {
             setStarted = true;
             currentNodePointer = parentContext.getCurrentNodePointer();
-            if (includeSelf){
-                if (currentNodePointer.testNode(nodeTest)){
+            if (includeSelf) {
+                if (currentNodePointer.testNode(nodeTest)) {
                     position++;
                     return true;
                 }
             }
         }
 
-        while(true){
+        while (true) {
             currentNodePointer = currentNodePointer.getParent();
 
-            if (currentNodePointer == null){
+            if (currentNodePointer == null) {
                 return false;
             }
 
-            if (currentNodePointer.testNode(nodeTest)){
+            if (currentNodePointer.testNode(nodeTest)) {
                 position++;
                 return true;
             }

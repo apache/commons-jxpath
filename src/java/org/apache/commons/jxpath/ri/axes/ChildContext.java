@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.11 2002/11/28 01:02:04 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2002/11/28 01:02:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/ChildContext.java,v 1.12 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * "preceding-sibling::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2002/11/28 01:02:04 $
+ * @version $Revision: 1.12 $ $Date: 2003/01/11 05:41:23 $
  */
 public class ChildContext extends EvalContext {
     private NodeTest nodeTest;
@@ -80,20 +80,25 @@ public class ChildContext extends EvalContext {
     private boolean reverse;
     private NodeIterator iterator;
 
-    public ChildContext(EvalContext parentContext, NodeTest nodeTest, boolean startFromParentLocation, boolean reverse){
+    public ChildContext(
+        EvalContext parentContext,
+        NodeTest nodeTest,
+        boolean startFromParentLocation,
+        boolean reverse) 
+    {
         super(parentContext);
         this.nodeTest = nodeTest;
         this.startFromParentLocation = startFromParentLocation;
         this.reverse = reverse;
     }
 
-    public NodePointer getCurrentNodePointer(){
-        if (position == 0){
-            if (!setPosition(1)){
+    public NodePointer getCurrentNodePointer() {
+        if (position == 0) {
+            if (!setPosition(1)) {
                 return null;
             }
         }
-        if (iterator != null){
+        if (iterator != null) {
             return iterator.getNodePointer();
         }
         else {
@@ -108,16 +113,16 @@ public class ChildContext extends EvalContext {
      * of the collection.  For example, "books" will return the collection
      * of books rather than the first book from that collection.
      */
-    public Pointer getSingleNodePointer(){
-        if (position == 0){
-            while(nextSet()){
+    public Pointer getSingleNodePointer() {
+        if (position == 0) {
+            while (nextSet()) {
                 prepare();
-                if (iterator == null){
+                if (iterator == null) {
                     return null;
                 }
                 // See if there is a property there, singular or collection
                 NodePointer pointer = iterator.getNodePointer();
-                if (pointer != null){
+                if (pointer != null) {
                     return pointer;
                 }
             }
@@ -126,22 +131,22 @@ public class ChildContext extends EvalContext {
         return getCurrentNodePointer();
     }
 
-    public boolean nextNode(){
+    public boolean nextNode() {
         return setPosition(getCurrentPosition() + 1);
     }
 
-    public void reset(){
+    public void reset() {
         super.reset();
         iterator = null;
     }
 
-    public boolean setPosition(int position){
+    public boolean setPosition(int position) {
         int oldPosition = getCurrentPosition();
         super.setPosition(position);
-        if (oldPosition == 0){
+        if (oldPosition == 0) {
             prepare();
         }
-        if (iterator == null){
+        if (iterator == null) {
             return false;
         }
         return iterator.setPosition(position);
@@ -150,14 +155,14 @@ public class ChildContext extends EvalContext {
     /**
      * Allocates a PropertyIterator.
      */
-    private void prepare(){
+    private void prepare() {
         NodePointer parent = parentContext.getCurrentNodePointer();
-        if (parent == null){
+        if (parent == null) {
             return;
         }
-        if (startFromParentLocation){
+        if (startFromParentLocation) {
             NodePointer pointer = parent.getParent();
-            while (pointer != null && pointer.isContainer()){
+            while (pointer != null && pointer.isContainer()) {
                 pointer = pointer.getParent();
             }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPointerFactory.java,v 1.2 2002/11/26 01:20:07 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/11/26 01:20:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dynabeans/DynaBeanPointerFactory.java,v 1.3 2003/01/11 05:41:26 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/11 05:41:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,21 +75,21 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:07 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:26 $
  */
 public class DynaBeanPointerFactory implements NodePointerFactory {
 
     public static final int DYNA_BEAN_POINTER_FACTORY_ORDER = 700;
 
-    public int getOrder(){
+    public int getOrder() {
         return DYNA_BEAN_POINTER_FACTORY_ORDER;
     }
 
     public NodePointer createNodePointer(
             QName name, Object bean, Locale locale)
     {
-        if (bean instanceof DynaBean){
-            return new DynaBeanPointer(name, (DynaBean)bean, locale);
+        if (bean instanceof DynaBean) {
+            return new DynaBeanPointer(name, (DynaBean) bean, locale);
         }
         return null;
     }
@@ -97,8 +97,8 @@ public class DynaBeanPointerFactory implements NodePointerFactory {
     public NodePointer createNodePointer(
             NodePointer parent, QName name, Object bean)
     {
-        if (bean instanceof DynaBean){
-            return new DynaBeanPointer(parent, name, (DynaBean)bean);
+        if (bean instanceof DynaBean) {
+            return new DynaBeanPointer(parent, name, (DynaBean) bean);
         }
         return null;
     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.10 2002/11/29 06:44:16 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/11/29 06:44:16 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/DescendantContext.java,v 1.11 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,7 +75,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/11/29 06:44:16 $
+ * @version $Revision: 1.11 $ $Date: 2003/01/11 05:41:23 $
  */
 public class DescendantContext extends EvalContext {
     private NodeTest nodeTest;
@@ -83,7 +83,7 @@ public class DescendantContext extends EvalContext {
     private Stack stack;
     private NodePointer currentNodePointer;
     private boolean includeSelf;
-    private final static NodeTest elementNodeTest =
+    private static final NodeTest ELEMENT_NODE_TEST =
             new NodeTypeTest(Compiler.NODE_TYPE_NODE);
 
     public DescendantContext(
@@ -96,34 +96,34 @@ public class DescendantContext extends EvalContext {
         this.nodeTest = nodeTest;
     }
 
-    public NodePointer getCurrentNodePointer(){
-        if (position == 0){
-            if (!setPosition(1)){
+    public NodePointer getCurrentNodePointer() {
+        if (position == 0) {
+            if (!setPosition(1)) {
                 return null;
             }
         }
         return currentNodePointer;
     }
 
-    public void reset(){
+    public void reset() {
         super.reset();
         setStarted = false;
     }
 
-    public boolean setPosition(int position){
-        if (position < this.position){
+    public boolean setPosition(int position) {
+        if (position < this.position) {
             reset();
         }
 
-        while (this.position < position){
-            if (!nextNode()){
+        while (this.position < position) {
+            if (!nextNode()) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean nextNode(){
+    public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;
             stack = new Stack();
@@ -132,7 +132,7 @@ public class DescendantContext extends EvalContext {
                 if (!currentNodePointer.isLeaf()) {
                     stack.push(
                         currentNodePointer.childIterator(
-                            elementNodeTest,
+                            ELEMENT_NODE_TEST,
                             false,
                             null));
                 }
@@ -152,7 +152,7 @@ public class DescendantContext extends EvalContext {
                 if (!currentNodePointer.isLeaf()) {
                     stack.push(
                         currentNodePointer.childIterator(
-                            elementNodeTest,
+                            ELEMENT_NODE_TEST,
                             false,
                             null));
                 }

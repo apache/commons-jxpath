@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointerFactory.java,v 1.2 2002/04/24 04:05:41 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointerFactory.java,v 1.3 2003/01/11 05:41:25 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/11 05:41:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,26 +72,34 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * Implements NodePointerFactory for Container objects.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:41 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:25 $
  */
 public class ContainerPointerFactory implements NodePointerFactory {
 
     public static final int CONTAINER_POINTER_FACTORY_ORDER = 200;
 
-    public int getOrder(){
+    public int getOrder() {
         return CONTAINER_POINTER_FACTORY_ORDER;
     }
 
-    public NodePointer createNodePointer(QName name, Object bean, Locale locale){
-        if (bean instanceof Container){
-            return new ContainerPointer((Container)bean, locale);
+    public NodePointer createNodePointer(
+        QName name,
+        Object bean,
+        Locale locale) 
+    {
+        if (bean instanceof Container) {
+            return new ContainerPointer((Container) bean, locale);
         }
         return null;
     }
 
-    public NodePointer createNodePointer(NodePointer parent, QName name, Object bean){
-        if (bean instanceof Container){
-            return new ContainerPointer(parent, (Container)bean);
+    public NodePointer createNodePointer(
+        NodePointer parent,
+        QName name,
+        Object bean) 
+    {
+        if (bean instanceof Container) {
+            return new ContainerPointer(parent, (Container) bean);
         }
         return null;
     }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathBasicBeanInfo.java,v 1.4 2002/06/16 03:22:22 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/06/16 03:22:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathBasicBeanInfo.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,8 +61,12 @@
  */
 package org.apache.commons.jxpath;
 
-import java.beans.*;
-import java.util.*;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * An implementation of JXPathBeanInfo based on JavaBeans' BeanInfo. Properties
@@ -72,7 +76,7 @@ import java.util.*;
  * See java.beans.BeanInfo, java.beans.Introspector
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/06/16 03:22:22 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:22 $
  */
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private boolean atomic = false;
@@ -81,16 +85,16 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private String[] propertyNames;
     private Class dynamicPropertyHandlerClass;
 
-    public JXPathBasicBeanInfo(Class clazz){
+    public JXPathBasicBeanInfo(Class clazz) {
         this.clazz = clazz;
     }
 
-    public JXPathBasicBeanInfo(Class clazz, boolean atomic){
+    public JXPathBasicBeanInfo(Class clazz, boolean atomic) {
         this.clazz = clazz;
         this.atomic = atomic;
     }
 
-    public JXPathBasicBeanInfo(Class clazz, Class dynamicPropertyHandlerClass){
+    public JXPathBasicBeanInfo(Class clazz, Class dynamicPropertyHandlerClass) {
         this.clazz = clazz;
         this.atomic = false;
         this.dynamicPropertyHandlerClass = dynamicPropertyHandlerClass;
@@ -100,7 +104,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
      * Returns true if objects of this class are treated as atomic
      * objects which have no properties of their own.
      */
-    public boolean isAtomic(){
+    public boolean isAtomic() {
         return atomic;
     }
 
@@ -112,10 +116,10 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     }
 
     public PropertyDescriptor[] getPropertyDescriptors() {
-        if (propertyDescriptors == null){
+        if (propertyDescriptors == null) {
             try {
                 BeanInfo bi = null;
-                if (clazz.isInterface()){
+                if (clazz.isInterface()) {
                     bi = Introspector.getBeanInfo(clazz);
                 }
                 else {
@@ -124,37 +128,37 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
                 PropertyDescriptor[] pds = bi.getPropertyDescriptors();
                 propertyDescriptors = new PropertyDescriptor[pds.length];
                 System.arraycopy(pds, 0, propertyDescriptors, 0, pds.length);
-                Arrays.sort(propertyDescriptors, new Comparator(){
-                    public int compare(Object left, Object right){
-                        return ((PropertyDescriptor)left).getName().
-                            compareTo(((PropertyDescriptor)right).getName());
+                Arrays.sort(propertyDescriptors, new Comparator() {
+                    public int compare(Object left, Object right) {
+                        return ((PropertyDescriptor) left).getName().compareTo(
+                            ((PropertyDescriptor) right).getName());
                     }
                 });
             }
-            catch (IntrospectionException ex){
+            catch (IntrospectionException ex) {
                 ex.printStackTrace();
             }
         }
         return propertyDescriptors;
     }
 
-    public PropertyDescriptor getPropertyDescriptor(String propertyName){
-        if (propertyNames == null){
+    public PropertyDescriptor getPropertyDescriptor(String propertyName) {
+        if (propertyNames == null) {
             PropertyDescriptor[] pds = getPropertyDescriptors();
             propertyNames = new String[pds.length];
-            for (int i = 0; i < pds.length; i++){
+            for (int i = 0; i < pds.length; i++) {
                 propertyNames[i] = pds[i].getName();
             }
         }
 
-        for (int i = 0; i < propertyNames.length; i++){
-            if (propertyNames[i] == propertyName){
+        for (int i = 0; i < propertyNames.length; i++) {
+            if (propertyNames[i] == propertyName) {
                 return propertyDescriptors[i];
             }
         }
 
-        for (int i = 0; i < propertyNames.length; i++){
-            if (propertyNames[i].equals(propertyName)){
+        for (int i = 0; i < propertyNames.length; i++) {
+            if (propertyNames[i].equals(propertyName)) {
                 return propertyDescriptors[i];
             }
         }
@@ -162,19 +166,20 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     }
 
     /**
-     * For a dynamic class, returns the corresponding DynamicPropertyHandler class.
+     * For  a dynamic class, returns the corresponding DynamicPropertyHandler
+     * class.
      */
     public Class getDynamicPropertyHandlerClass() {
         return dynamicPropertyHandlerClass;
     }
 
-    public String toString(){
+    public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("BeanInfo [class = ");
         buffer.append(clazz.getName());
         buffer.append(", properties = ");
         PropertyDescriptor[] jpds = getPropertyDescriptors();
-        for (int i = 0; i < jpds.length; i++){
+        for (int i = 0; i < jpds.length; i++) {
             buffer.append("\n    ");
             buffer.append(jpds[i].getPropertyType());
             buffer.append(": ");

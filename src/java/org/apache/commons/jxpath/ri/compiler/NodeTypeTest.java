@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/NodeTypeTest.java,v 1.3 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/NodeTypeTest.java,v 1.4 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,29 +65,33 @@ import org.apache.commons.jxpath.ri.Compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:23 $
  */
 public class NodeTypeTest extends NodeTest {
     private int nodeType;
 
-    public NodeTypeTest(int nodeType){
+    public NodeTypeTest(int nodeType) {
         this.nodeType = nodeType;
     }
 
-    public int getNodeType(){
+    public int getNodeType() {
         return nodeType;
     }
 
-    public String toString(){
+    public String toString() {
         return nodeTypeToString(nodeType) + "()";
     }
 
-    public static String nodeTypeToString(int code){
-        switch(code){
-            case Compiler.NODE_TYPE_NODE: return "node";
-            case Compiler.NODE_TYPE_TEXT: return "text";
-            case Compiler.NODE_TYPE_COMMENT: return "comment";
-            case Compiler.NODE_TYPE_PI: return "processing-instruction";
+    public static String nodeTypeToString(int code) {
+        switch (code) {
+            case Compiler.NODE_TYPE_NODE :
+                return "node";
+            case Compiler.NODE_TYPE_TEXT :
+                return "text";
+            case Compiler.NODE_TYPE_COMMENT :
+                return "comment";
+            case Compiler.NODE_TYPE_PI :
+                return "processing-instruction";
         }
         return "UNKNOWN";
     }

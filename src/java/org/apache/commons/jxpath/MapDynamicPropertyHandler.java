@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/MapDynamicPropertyHandler.java,v 1.2 2002/04/24 03:29:33 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 03:29:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/MapDynamicPropertyHandler.java,v 1.3 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -68,7 +68,7 @@ import java.util.Map;
  * Implements the DynamicPropertyHandler interface for java.util.Map.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 03:29:33 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:22 $
  */
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
@@ -77,11 +77,11 @@ public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
     /**
      * Returns string representations of all keys in the map.
      */
-    public String[] getPropertyNames(Object object){
+    public String[] getPropertyNames(Object object) {
         Map map = (Map) object;
         String names[] = new String[map.size()];
         Iterator it = map.keySet().iterator();
-        for (int i = 0; i < names.length; i++){
+        for (int i = 0; i < names.length; i++) {
             names[i] = String.valueOf(it.next());
         }
         return names;
@@ -97,7 +97,7 @@ public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
     /**
      * Sets the specified key value.
      */
-    public void setProperty(Object object, String propertyName, Object value){
-        ((Map)object).put(propertyName, value);
+    public void setProperty(Object object, String propertyName, Object value) {
+        ((Map) object).put(propertyName, value);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.4 2002/08/10 01:27:38 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/08/10 01:27:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathIntrospector.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,11 +66,11 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * JXPathIntrospector maintains a registry of {@link JXPathBeanInfo JXPathBeanInfo} objects
- * for Java classes.
+ * JXPathIntrospector  maintains a registry of {@link JXPathBeanInfo
+ * JXPathBeanInfo} objects for Java classes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/08/10 01:27:38 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:22 $
  */
 public class JXPathIntrospector {
 
@@ -116,10 +116,12 @@ public class JXPathIntrospector {
      * for the specified class. That object returns true to isDynamic().
      */
     public static void registerDynamicClass(
-            Class beanClass, Class dynamicPropertyHandlerClass) {
+        Class beanClass,
+        Class dynamicPropertyHandlerClass) 
+    {
         JXPathBasicBeanInfo bi =
             new JXPathBasicBeanInfo(beanClass, dynamicPropertyHandlerClass);
-        if (beanClass.isInterface()){
+        if (beanClass.isInterface()) {
             byInterface.put(beanClass, bi);
         }
         else {
@@ -128,23 +130,23 @@ public class JXPathIntrospector {
     }
 
     /**
-     * Creates and registers a JXPathBeanInfo object for the supplied class.
-     * If the class has already been registered, returns the registered JXPathBeanInfo
-     * object.
+     * Creates  and registers a JXPathBeanInfo object for the supplied class. If
+     * the class has already been registered, returns the registered
+     * JXPathBeanInfo object.
      * <p>
      * The process of creation of JXPathBeanInfo is as follows:
      * <ul>
      * <li>If class named <code>&lt;beanClass&gt;XBeanInfo</code> exists,
      *     an instance of that class is allocated.
-     * <li>Otherwise, an instance of {@link JXPathBasicBeanInfo JXPathBasicBeanInfo} is
-     *     allocated.
+     * <li>Otherwise, an instance of {@link JXPathBasicBeanInfo
+     *     JXPathBasicBeanInfo}  is allocated.
      * </ul>
      */
     public static JXPathBeanInfo getBeanInfo(Class beanClass) {
         JXPathBeanInfo beanInfo = (JXPathBeanInfo) byClass.get(beanClass);
         if (beanInfo == null) {
             beanInfo = findDynamicBeanInfo(beanClass);
-            if (beanInfo == null){
+            if (beanInfo == null) {
                 beanInfo = findInformant(beanClass);
                 if (beanInfo == null) {
                     beanInfo = new JXPathBasicBeanInfo(beanClass);
@@ -159,27 +161,27 @@ public class JXPathIntrospector {
      * Find a dynamic bean info if available for any superclasses or
      * interfaces.
      */
-    private static JXPathBeanInfo findDynamicBeanInfo(Class beanClass){
+    private static JXPathBeanInfo findDynamicBeanInfo(Class beanClass) {
         JXPathBeanInfo beanInfo;
-        if (beanClass.isInterface()){
+        if (beanClass.isInterface()) {
             beanInfo = (JXPathBeanInfo) byInterface.get(beanClass);
-            if (beanInfo != null){
+            if (beanInfo != null) {
                 return beanInfo;
             }
         }
 
         Class interfaces[] = beanClass.getInterfaces();
-        if (interfaces != null){
-            for (int i = 0; i < interfaces.length; i++){
+        if (interfaces != null) {
+            for (int i = 0; i < interfaces.length; i++) {
                 beanInfo = findDynamicBeanInfo(interfaces[i]);
-                if (beanInfo != null){
+                if (beanInfo != null) {
                     return beanInfo;
                 }
             }
         }
 
         Class sup = beanClass.getSuperclass();
-        if (sup != null){
+        if (sup != null) {
             return findDynamicBeanInfo(sup);
         }
         return null;
@@ -213,7 +215,8 @@ public class JXPathIntrospector {
      * classloader.
      */
     private static Object instantiate(Class sibling, String className)
-        throws Exception {
+        throws Exception 
+    {
 
         // First check with sibling's classloader (if any).
         ClassLoader cl = sibling.getClassLoader();

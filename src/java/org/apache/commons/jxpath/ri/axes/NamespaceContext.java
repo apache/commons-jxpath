@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/NamespaceContext.java,v 1.5 2002/04/28 04:35:48 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/28 04:35:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/NamespaceContext.java,v 1.6 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "namespace::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/28 04:35:48 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:23 $
  */
 public class NamespaceContext extends EvalContext {
     private NodeTest nodeTest;
@@ -84,60 +84,63 @@ public class NamespaceContext extends EvalContext {
      * @param parentContext represents the previous step on the path
      * @param nodeTest is the name of the namespace we are looking for
      */
-    public NamespaceContext(EvalContext parentContext, NodeTest nodeTest){
+    public NamespaceContext(EvalContext parentContext, NodeTest nodeTest) {
         super(parentContext);
         this.nodeTest = nodeTest;
     }
 
-    public NodePointer getCurrentNodePointer(){
+    public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
-    public void reset(){
+    public void reset() {
         setStarted = false;
         iterator = null;
         super.reset();
     }
 
-    public boolean setPosition(int position){
-        if (position < getCurrentPosition()){
+    public boolean setPosition(int position) {
+        if (position < getCurrentPosition()) {
             reset();
         }
 
-        while (getCurrentPosition() < position){
-            if (!nextNode()){
+        while (getCurrentPosition() < position) {
+            if (!nextNode()) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean nextNode(){
+    public boolean nextNode() {
         super.setPosition(getCurrentPosition() + 1);
-        if (!setStarted){
+        if (!setStarted) {
             setStarted = true;
-            if (!(nodeTest instanceof NodeNameTest)){
+            if (!(nodeTest instanceof NodeNameTest)) {
                 return false;
             }
 
-            QName testName = ((NodeNameTest)nodeTest).getNodeName();
-            if (testName.getPrefix() != null){
+            QName testName = ((NodeNameTest) nodeTest).getNodeName();
+            if (testName.getPrefix() != null) {
                 return false;
             }
             String testLocalName = testName.getName();
-            if (testLocalName.equals("*")){
-                iterator = parentContext.getCurrentNodePointer().namespaceIterator();
+            if (testLocalName.equals("*")) {
+                iterator =
+                    parentContext.getCurrentNodePointer().namespaceIterator();
             }
             else {
-                currentNodePointer = parentContext.getCurrentNodePointer().namespacePointer(testLocalName);
+                currentNodePointer =
+                    parentContext.getCurrentNodePointer().namespacePointer(
+                        testLocalName);
                 return currentNodePointer != null;
             }
         }
 
-        if (iterator == null){
+        if (iterator == null) {
             return false;
         }
-        if (!iterator.setPosition(iterator.getPosition() + 1)){
+        if (!iterator.setPosition(iterator.getPosition() + 1)) {
             return false;
         }
         currentNodePointer = iterator.getNodePointer();

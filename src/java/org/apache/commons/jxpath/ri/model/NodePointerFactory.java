@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointerFactory.java,v 1.2 2002/04/24 04:05:39 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointerFactory.java,v 1.3 2003/01/11 05:41:24 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/11 05:41:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,27 +71,32 @@ import org.apache.commons.jxpath.ri.QName;
  * by the "getOrder" method and always queried in that order.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:24 $
  */
 public interface NodePointerFactory {
 
     /**
      * The factory name determines its position between other factories.
      */
-    public int getOrder();
+    int getOrder();
 
     /**
      * Create a NodePointer for the supplied object.  The node will represent
      * the "root" object a path.
      *
-     * Return null if this factory does not recognize objects of the supplied type.
+     * @return  null if this factory does not recognize objects of the supplied
+     * type.
      */
-    public NodePointer createNodePointer(QName name, Object object, Locale locale);
+    NodePointer createNodePointer(QName name, Object object, Locale locale);
 
     /**
      * Create a NodePointer for the supplied child object.
      * <p>
-     * Return null if this factory does not recognize objects of the supplied type.
+     * @return null if this factory does not recognize objects of the supplied
+     * type.
      */
-    public NodePointer createNodePointer(NodePointer parent, QName name, Object object);
+    NodePointer createNodePointer(
+        NodePointer parent,
+        QName name,
+        Object object);
 }

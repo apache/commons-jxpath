@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/LangAttributePointer.java,v 1.7 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/LangAttributePointer.java,v 1.8 2003/01/11 05:41:24 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/01/11 05:41:24 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,60 +70,61 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of the attribute is based on the locale supplied to it in the constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.8 $ $Date: 2003/01/11 05:41:24 $
  */
 public class LangAttributePointer extends NodePointer {
-    public LangAttributePointer(NodePointer parent){
+    public LangAttributePointer(NodePointer parent) {
         super(parent);
     }
 
-    public QName getName(){
+    public QName getName() {
         return new QName(null, "lang");
     }
 
-    public QName getExpandedName(){
+    public QName getExpandedName() {
         return getName();
     }
 
-    public String getNamespaceURI(){
+    public String getNamespaceURI() {
         return null;
     }
 
-    public boolean isCollection(){
+    public boolean isCollection() {
         return false;
     }
     
-    public int getLength(){
+    public int getLength() {
         return 1;
     }    
 
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return parent.getLocale().toString().replace('_', '-');
     }
 
-    public Object getImmediateNode(){
+    public Object getImmediateNode() {
         return getBaseValue();
     }
 
-    public boolean isLeaf(){
+    public boolean isLeaf() {
         return true;
     }
 
     /**
      * Throws UnsupportedOperationException.
      */
-    public void setValue(Object value){
-        throw new UnsupportedOperationException("Cannot change locale using the 'lang' attribute");
+    public void setValue(Object value) {
+        throw new UnsupportedOperationException(
+                "Cannot change locale using the 'lang' attribute");
     }
 
     /**
      */
-    public String asPath(){
+    public String asPath() {
         StringBuffer buffer = new StringBuffer();
-        if (parent != null){
+        if (parent != null) {
             buffer.append(parent.asPath());
-            if (buffer.length() == 0 ||
-                    buffer.charAt(buffer.length()-1) != '/'){
+            if (buffer.length() == 0
+                || buffer.charAt(buffer.length() - 1) != '/') {
                 buffer.append('/');
             }
         }
@@ -131,27 +132,30 @@ public class LangAttributePointer extends NodePointer {
         return buffer.toString();
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return 0;
     }
 
-    public boolean equals(Object object){
-        if (object == this){
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof LangAttributePointer)){
+        if (!(object instanceof LangAttributePointer)) {
             return false;
         }
 
         return true;
     }
 
-    public boolean testNode(NodeTest test){
+    public boolean testNode(NodeTest test) {
         return false;
     }
 
-    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+    public int compareChildNodePointers(
+        NodePointer pointer1,
+        NodePointer pointer2) 
+    {
         // Won't happen - lang attributes don't have children
         return 0;
     }

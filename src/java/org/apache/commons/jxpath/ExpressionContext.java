@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ExpressionContext.java,v 1.4 2002/04/24 04:05:41 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/24 04:05:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ExpressionContext.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -87,21 +87,21 @@ import java.util.List;
  * </pre></blockquote>
  * This expression will find all nodes of the graph that are dates.
  */
-public interface ExpressionContext
-{
+public interface ExpressionContext {
+    
     /**
      * Get the JXPathContext in which this function is being evaluated.
      *
      * @return A list representing the current context nodes.
      */
-    public JXPathContext getJXPathContext();
+    JXPathContext getJXPathContext();
 
     /**
      * Get the current context node.
      *
      * @return The current context node pointer.
      */
-    public Pointer getContextNodePointer();
+    Pointer getContextNodePointer();
 
     /**
      * Get the current context node list.  Each element of the list is
@@ -109,10 +109,10 @@ public interface ExpressionContext
      *
      * @return A list representing the current context nodes.
      */
-    public List getContextNodeList();
+    List getContextNodeList();
 
     /**
      * Returns the current context position.
      */
-    public int getPosition();
+    int getPosition();
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/AbstractFactory.java,v 1.4 2002/06/16 03:22:22 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/06/16 03:22:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/AbstractFactory.java,v 1.5 2003/01/11 05:41:21 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:21 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,52 +62,57 @@
 package org.apache.commons.jxpath;
 
 /**
- * The {@link JXPathContext#createPath JXPathContext.createPath()} method of JXPathContext can 
- * create missing objects as it traverses an XPath; it utilizes an AbstractFactory for that purpose.
- * Install a factory on JXPathContext by calling {@link JXPathContext#setFactory
- * JXPathContext.setFactory()}.
+ * The  {@link JXPathContext#createPath JXPathContext.createPath()} method of
+ * JXPathContext can create missing objects as it traverses an XPath; it
+ * utilizes an AbstractFactory for that purpose. Install a factory on
+ * JXPathContext by calling {@link JXPathContext#setFactory JXPathContext.
+ * setFactory()}.
  * <p>
- * All methods of this class return false.  Override any of them to
- * return true to indicate that the factory has successfully created the described object.
+ * All  methods of this class return false.  Override any of them to return true
+ * to indicate that the factory has successfully created the described object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/06/16 03:22:22 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:21 $
  */
 public abstract class AbstractFactory {
 
     /**
-     * The parameters may describe a collection element or an individual object. It is up
-     * to the factory to infer which one it is. If it is a collection, the
-     * factory should check if the collection exists.  If not, it should create
-     * the collection. Then it should create the index'th element of the collection
-     * and return true.
+     * The  parameters may describe a collection element or an individual
+     * object. It is up to the factory to infer which one it is. If it is a
+     * collection, the factory should check if the collection exists.  If not,
+     * it should create the collection. Then it should create the index'th
+     * element of the collection and return true.
      * <p>
      * 
-     * @param context can be used to evaluate other XPaths, get to variables etc.
+     * @param context can be used to evaluate other XPaths, get to variables
+     * etc.
      * @param pointer describes the location of the node to be created
-     * @param parent is the object that will server as a parent of the new object
-     * @param name is the name of the child of the parent that needs to be created. 
-     *        In the case of DOM may be qualified.
-     * @param index is used if the pointer represents a collection element. You may
-     *        need to expand or even create the collection to accomodate the new element.
+     * @param parent is the object that will server as a parent of the new
+     * object
+     * @param name is the name of the child of the parent that needs to be
+     * created. In the case of DOM may be qualified.
+     * @param index is used if the pointer represents a collection element. You
+     * may need to expand or even create the collection to accomodate the new
+     * element.
      * 
      * @return true if the object was successfully created
      */
     public boolean createObject(JXPathContext context, Pointer pointer, 
-                                Object parent, String name, int index){
+                                Object parent, String name, int index) 
+    {
         return false;
     }
 
     /**
      * Declare the specified variable
      * 
-     * @param context hosts variable pools. See {@link JXPathContext#getVariables() 
-     *        JXPathContext.getVariables()}
+     * @param context hosts variable pools. See 
+     * {@link JXPathContext#getVariables() JXPathContext.getVariables()}
      * @param name is the name of the variable without the "$" sign
      * 
      * @return true if the variable was successfully defined
      */
-    public boolean declareVariable(JXPathContext context, String name){
+    public boolean declareVariable(JXPathContext context, String name) {
         return false;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Expression.java,v 1.3 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Expression.java,v 1.4 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import java.util.Locale;
  * provides that hint.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:23 $
  */
 public abstract class Expression {
 
@@ -116,24 +116,24 @@ public abstract class Expression {
 
     public static final int OP_KEY_LOOKUP = 23;
 
-    protected static Double ZERO = new Double(0);
-    protected static Double ONE = new Double(1);
-    protected static Double NaN = new Double(Double.NaN);
+    protected static final Double ZERO = new Double(0);
+    protected static final Double ONE = new Double(1);
+    protected static final Double NOT_A_NUMBER = new Double(Double.NaN);
 
     private int typeCode;
 
     private boolean contextDependencyKnown = false;
     private boolean contextDependent;
 
-    protected Expression(int typeCode){
+    protected Expression(int typeCode) {
         this.typeCode = typeCode;
     }
 
-    public int getExpressionTypeCode(){
+    public int getExpressionTypeCode() {
         return typeCode;
     }
 
-    protected Expression[] getArguments(){
+    protected Expression[] getArguments() {
         return null;
     }
 
@@ -141,8 +141,8 @@ public abstract class Expression {
      * Returns true if this expression should be re-evaluated
      * each time the current position in the context changes.
      */
-    public boolean isContextDependent(){
-        if (!contextDependencyKnown){
+    public boolean isContextDependent() {
+        if (!contextDependencyKnown) {
             contextDependent = computeContextDependent();
             contextDependencyKnown = true;
         }
@@ -154,15 +154,15 @@ public abstract class Expression {
      */
     public abstract boolean computeContextDependent();
 
-    public String toString(){
+    public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append('(');
         buffer.append(opCodeToString());
         Expression args[] = getArguments();
-        if (args != null){
+        if (args != null) {
             buffer.append(' ');
-            for (int i = 0; i < args.length; i++){
-                if (i > 0){
+            for (int i = 0; i < args.length; i++) {
+                if (i > 0) {
                     buffer.append(", ");
                 }
                 buffer.append(args[i]);
@@ -172,8 +172,8 @@ public abstract class Expression {
         return buffer.toString();
     }
 
-    protected String opCodeToString(){
-        switch(typeCode){
+    protected String opCodeToString() {
+        switch(typeCode) {
             case OP_CONSTANT: return "CONST";
             case OP_STEP: return "STEP";
             case OP_SUM: return "SUM";
@@ -207,21 +207,21 @@ public abstract class Expression {
     public abstract Object computeValue(EvalContext context);
     public abstract Object compute(EvalContext context);
 
-    public Iterator iterate(EvalContext context){
+    public Iterator iterate(EvalContext context) {
         Object result = compute(context);
-        if (result instanceof EvalContext){
-            return new ValueIterator((EvalContext)result);
+        if (result instanceof EvalContext) {
+            return new ValueIterator((EvalContext) result);
         }
         return ValueUtils.iterate(result);
     }
 
-    public Iterator iteratePointers(EvalContext context){
+    public Iterator iteratePointers(EvalContext context) {
         Object result = compute(context);
-        if (result == null){
+        if (result == null) {
             return Collections.EMPTY_LIST.iterator();
         }
-        if (result instanceof EvalContext){
-            return (EvalContext)result;
+        if (result instanceof EvalContext) {
+            return (EvalContext) result;
         }
         return new PointerIterator(ValueUtils.iterate(result),
                 new QName(null, "value"),
@@ -233,22 +233,22 @@ public abstract class Expression {
         private QName qname;
         private Locale locale;
 
-        public PointerIterator(Iterator it, QName qname, Locale locale){
+        public PointerIterator(Iterator it, QName qname, Locale locale) {
             this.iterator = it;
             this.qname = qname;
             this.locale = locale;
         }
 
-        public boolean hasNext(){
+        public boolean hasNext() {
             return iterator.hasNext();
         }
 
-        public Object next(){
+        public Object next() {
             Object o = iterator.next();
             return NodePointer.newNodePointer(qname, o, locale);
         }
 
-        public void remove(){
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }
@@ -256,23 +256,23 @@ public abstract class Expression {
     public static class ValueIterator implements Iterator {
         private Iterator iterator;
 
-        public ValueIterator(Iterator it){
+        public ValueIterator(Iterator it) {
             this.iterator = it;
         }
 
-        public boolean hasNext(){
+        public boolean hasNext() {
             return iterator.hasNext();
         }
 
-        public Object next(){
+        public Object next() {
             Object o = iterator.next();
-            if (o instanceof Pointer){
-                return ((Pointer)o).getValue();
+            if (o instanceof Pointer) {
+                return ((Pointer) o).getValue();
             }
             return o;
         }
 
-        public void remove(){
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }

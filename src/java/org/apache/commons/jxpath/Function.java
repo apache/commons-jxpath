@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Function.java,v 1.3 2002/04/24 04:05:41 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/24 04:05:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Function.java,v 1.4 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -64,15 +64,17 @@ package org.apache.commons.jxpath;
 /**
  * Extension function interface. Extension functions are grouped into
  * {@link Functions Functions} objects, which are installed on
- * JXPathContexts using the {@link JXPathContext#setFunctions JXPathContext.setFunctions()}
+ * JXPathContexts using the 
+ * {@link JXPathContext#setFunctions JXPathContext.setFunctions()}
  * call.
  * <p>
  * The Function interface can be implemented directly. However,
  * most of the time JXPath's built-in implementations should suffice.
- * See {@link ClassFunctions ClassFunctions} and {@link PackageFunctions PackageFunctions}.
+ * See {@link ClassFunctions ClassFunctions} and 
+ * {@link PackageFunctions PackageFunctions}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:41 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:22 $
  */
 public interface Function {
 

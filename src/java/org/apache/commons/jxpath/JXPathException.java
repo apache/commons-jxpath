@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathException.java,v 1.1 2002/04/26 03:28:36 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/26 03:28:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathException.java,v 1.2 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,7 +65,7 @@ package org.apache.commons.jxpath;
  * Thrown in various situations by JXPath; may contain a nested exception.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/26 03:28:36 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/11 05:41:22 $
  */
 
 public class JXPathException extends RuntimeException {
@@ -128,12 +128,12 @@ public class JXPathException extends RuntimeException {
      *
      * @return The error message.
      */
-    public String getMessage () {
-        String message = super.getMessage ();
+    public String getMessage() {
+        String message = super.getMessage();
 
         if (exception != null) {
-            if (message == null){
-                if (exception.getMessage() != null){
+            if (message == null) {
+                if (exception.getMessage() != null) {
                     return exception.getMessage();
                 }
                 else {
@@ -141,7 +141,7 @@ public class JXPathException extends RuntimeException {
                 }
             }
             else {
-                if (exception.getMessage() != null){
+                if (exception.getMessage() != null) {
                     return message + "; " + exception.getMessage();
                 }
                 else {
@@ -159,7 +159,7 @@ public class JXPathException extends RuntimeException {
      *
      * @return The encapsulated exception, or null if there is none.
      */
-    public Throwable getException () {
+    public Throwable getException() {
         return exception;
     }
 }

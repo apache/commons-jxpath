@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributeIterator.java,v 1.7 2002/12/02 01:12:20 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/12/02 01:12:20 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributeIterator.java,v 1.8 2003/01/11 05:41:25 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/01/11 05:41:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.w3c.dom.Node;
  * An iterator of attributes of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/12/02 01:12:20 $
+ * @version $Revision: 1.8 $ $Date: 2003/01/11 05:41:25 $
  */
 public class DOMAttributeIterator implements NodeIterator {
     private NodePointer parent;
@@ -84,25 +84,25 @@ public class DOMAttributeIterator implements NodeIterator {
     private List attributes;
     private int position = 0;
 
-    public DOMAttributeIterator(NodePointer parent, QName name){
+    public DOMAttributeIterator(NodePointer parent, QName name) {
         this.parent = parent;
         this.name = name;
         attributes = new ArrayList();
-        Node node = (Node)parent.getNode();
-        if (node.getNodeType() == Node.ELEMENT_NODE){
+        Node node = (Node) parent.getNode();
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
             String lname = name.getName();
-            if (!lname.equals("*")){
-                Attr attr = getAttribute((Element)node, name);
-                if (attr != null){
+            if (!lname.equals("*")) {
+                Attr attr = getAttribute((Element) node, name);
+                if (attr != null) {
                     attributes.add(attr);
                 }
             }
             else {
                 NamedNodeMap map = node.getAttributes();
                 int count = map.getLength();
-                for (int i = 0; i < count; i++){
-                    Attr attr = (Attr)map.item(i);
-                    if (testAttr(attr, name)){
+                for (int i = 0; i < count; i++) {
+                    Attr attr = (Attr) map.item(i);
+                    if (testAttr(attr, name)) {
                         attributes.add(attr);
                     }
                 }
@@ -110,33 +110,33 @@ public class DOMAttributeIterator implements NodeIterator {
         }
     }
 
-    private boolean testAttr(Attr attr, QName testName){
+    private boolean testAttr(Attr attr, QName testName) {
         String nodePrefix = DOMNodePointer.getPrefix(attr);
         String nodeLocalName = DOMNodePointer.getLocalName(attr);
 
-        if (nodePrefix != null && nodePrefix.equals("xmlns")){
+        if (nodePrefix != null && nodePrefix.equals("xmlns")) {
             return false;
         }
 
-        if (nodePrefix == null && nodeLocalName.equals("xmlns")){
+        if (nodePrefix == null && nodeLocalName.equals("xmlns")) {
             return false;
         }
 
         String testLocalName = name.getName();
-        if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)){
+        if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)) {
             String testPrefix = testName.getPrefix();
 
-            if (equalStrings(testPrefix, nodePrefix)){
+            if (equalStrings(testPrefix, nodePrefix)) {
                 return true;
             }
 
             String testNS = null;
-            if (testPrefix != null){
+            if (testPrefix != null) {
                 testNS = parent.getNamespaceURI(testPrefix);
             }
 
             String nodeNS = null;
-            if (nodePrefix != null){
+            if (nodePrefix != null) {
                 nodeNS = parent.getNamespaceURI(nodePrefix);
             }
             return equalStrings(testNS, nodeNS);
@@ -144,37 +144,37 @@ public class DOMAttributeIterator implements NodeIterator {
         return false;
     }
 
-    private static boolean equalStrings(String s1, String s2){
-        if (s1 == null && s2 != null){
+    private static boolean equalStrings(String s1, String s2) {
+        if (s1 == null && s2 != null) {
             return false;
         }
-        if (s1 != null && !s1.equals(s2)){
+        if (s1 != null && !s1.equals(s2)) {
             return false;
         }
         return true;
     }
 
-    private Attr getAttribute(Element element, QName name){
+    private Attr getAttribute(Element element, QName name) {
         String testPrefix = name.getPrefix();
         String testNS = null;
 
-        if (testPrefix != null){
+        if (testPrefix != null) {
             testNS = parent.getNamespaceURI(testPrefix);
         }
 
-        if (testNS != null){
+        if (testNS != null) {
             Attr attr = element.getAttributeNodeNS(testNS, name.getName());
-            if (attr != null){
+            if (attr != null) {
                 return attr;
             }
-            
+
             // This may mean that the parser does not support NS for
             // attributes, example - the version of Crimson bundled
             // with JDK 1.4.0
             NamedNodeMap nnm = element.getAttributes();
-            for (int i = 0; i < nnm.getLength(); i++){
-                attr = (Attr)nnm.item(i);
-                if (testAttr(attr, name)){
+            for (int i = 0; i < nnm.getLength(); i++) {
+                attr = (Attr) nnm.item(i);
+                if (testAttr(attr, name)) {
                     return attr;
                 }
             }
@@ -185,25 +185,25 @@ public class DOMAttributeIterator implements NodeIterator {
         }
     }
 
-    public NodePointer getNodePointer(){
-        if (position == 0){
-            if (!setPosition(1)){
+    public NodePointer getNodePointer() {
+        if (position == 0) {
+            if (!setPosition(1)) {
                 return null;
             }
             position = 0;
         }
         int index = position - 1;
-        if (index < 0){
+        if (index < 0) {
             index = 0;
         }
-        return new DOMAttributePointer(parent, (Attr)attributes.get(index));
+        return new DOMAttributePointer(parent, (Attr) attributes.get(index));
     }
 
-    public int getPosition(){
+    public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position){
+    public boolean setPosition(int position) {
         this.position = position;
         return position >= 1 && position <= attributes.size();
     }

@@ -62,34 +62,36 @@ import org.apache.commons.jxpath.Variables;
  * to a single object using a reserved name (keyword).
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/05/08 23:19:09 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:26 $
  */
 public class KeywordVariables implements Variables {
 
     private String keyword;
     private Object object;
 
-    public KeywordVariables(String keyword, Object object){
+    public KeywordVariables(String keyword, Object object) {
         this.keyword = keyword;
         this.object = object;
     }
 
-    public boolean isDeclaredVariable(String variable){
+    public boolean isDeclaredVariable(String variable) {
         return variable.equals(keyword);
     }
 
-    public Object getVariable(String variable){
-        if (variable.equals(keyword)){
+    public Object getVariable(String variable) {
+        if (variable.equals(keyword)) {
             return object;
         }
         return null;
     }
 
-    public void declareVariable(String variable, Object value){
-        throw new UnsupportedOperationException("Cannot declare new keyword variables.");
+    public void declareVariable(String variable, Object value) {
+        throw new UnsupportedOperationException(
+            "Cannot declare new keyword variables.");
     }
 
-    public void undeclareVariable(String variable){
-        throw new UnsupportedOperationException("Cannot declare new keyword variables.");
+    public void undeclareVariable(String variable) {
+        throw new UnsupportedOperationException(
+            "Cannot declare new keyword variables.");
     }
 }

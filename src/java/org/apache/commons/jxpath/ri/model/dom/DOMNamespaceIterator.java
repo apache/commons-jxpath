@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNamespaceIterator.java,v 1.4 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNamespaceIterator.java,v 1.5 2003/01/11 05:41:25 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,64 +74,64 @@ import org.w3c.dom.Node;
  * An iterator of namespaces of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:25 $
  */
 public class DOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;
     private List attributes;
     private int position = 0;
 
-    public DOMNamespaceIterator(NodePointer parent){
+    public DOMNamespaceIterator(NodePointer parent) {
         this.parent = parent;
         attributes = new ArrayList();
-        collectNamespaces(attributes, (Node)parent.getNode());
+        collectNamespaces(attributes, (Node) parent.getNode());
     }
 
-    private void collectNamespaces(List attributes, Node node){
+    private void collectNamespaces(List attributes, Node node) {
         Node parent = node.getParentNode();
-        if (parent != null){
+        if (parent != null) {
             collectNamespaces(attributes, parent);
         }
-        if (node.getNodeType() == Node.ELEMENT_NODE){
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
             NamedNodeMap map = node.getAttributes();
             int count = map.getLength();
-            for (int i = 0; i < count; i++){
-                Attr attr = (Attr)map.item(i);
+            for (int i = 0; i < count; i++) {
+                Attr attr = (Attr) map.item(i);
                 String prefix = DOMNodePointer.getPrefix(attr);
                 String name = DOMNodePointer.getLocalName(attr);
-                if ((prefix != null && prefix.equals("xmlns")) ||
-                        (prefix == null && name.equals("xmlns"))){
+                if ((prefix != null && prefix.equals("xmlns"))
+                    || (prefix == null && name.equals("xmlns"))) {
                     attributes.add(attr);
                 }
             }
         }
     }
 
-    public NodePointer getNodePointer(){
-        if (position == 0){
-            if (!setPosition(1)){
+    public NodePointer getNodePointer() {
+        if (position == 0) {
+            if (!setPosition(1)) {
                 return null;
             }
             position = 0;
         }
         int index = position - 1;
-        if (index < 0){
+        if (index < 0) {
             index = 0;
         }
         String prefix = "";
-        Attr attr = (Attr)attributes.get(index);
+        Attr attr = (Attr) attributes.get(index);
         String name = attr.getPrefix();
-        if (name != null && name.equals("xmlns")){
+        if (name != null && name.equals("xmlns")) {
             prefix = DOMNodePointer.getLocalName(attr);
         }
         return new NamespacePointer(parent, prefix, attr.getValue());
     }
 
-    public int getPosition(){
+    public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position){
+    public boolean setPosition(int position) {
         this.position = position;
         return position >= 1 && position <= attributes.size();
     }

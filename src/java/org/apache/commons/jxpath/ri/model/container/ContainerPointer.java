@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.7 2002/11/28 01:02:04 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/11/28 01:02:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.8 2003/01/11 05:41:25 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/01/11 05:41:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,18 +76,18 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/11/28 01:02:04 $
+ * @version $Revision: 1.8 $ $Date: 2003/01/11 05:41:25 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
     private NodePointer valuePointer;
 
-    public ContainerPointer(Container container, Locale locale){
+    public ContainerPointer(Container container, Locale locale) {
         super(null, locale);
         this.container = container;
     }
 
-    public ContainerPointer(NodePointer parent, Container container){
+    public ContainerPointer(NodePointer parent, Container container) {
         super(parent);
         this.container = container;
     }
@@ -95,24 +95,24 @@ public class ContainerPointer extends NodePointer {
     /**
      * This type of node is auxiliary.
      */
-    public boolean isContainer(){
+    public boolean isContainer() {
         return true;
     }
 
-    public QName getName(){
+    public QName getName() {
         return null;
     }
 
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return container.getValue();
     }
     
-    public boolean isCollection(){
+    public boolean isCollection() {
         Object value = getBaseValue();
         return value != null && ValueUtils.isCollection(value);
     }
     
-    public int getLength(){
+    public int getLength() {
         Object value = getBaseValue();
         if (value == null) {
             return 1;
@@ -124,10 +124,10 @@ public class ContainerPointer extends NodePointer {
         return getValuePointer().isLeaf();
     }    
 
-    public Object getImmediateNode(){
+    public Object getImmediateNode() {
         Object value = getBaseValue();
-        if (index != WHOLE_COLLECTION){
-            if (index >= 0 && index < getLength()){
+        if (index != WHOLE_COLLECTION) {
+            if (index >= 0 && index < getLength()) {
                 return ValueUtils.getValue(value, index);
             }
             else {
@@ -137,11 +137,11 @@ public class ContainerPointer extends NodePointer {
         return value;
     }
 
-    public void setValue(Object value){
+    public void setValue(Object value) {
         container.setValue(value);
     }
 
-    public NodePointer getImmediateValuePointer(){
+    public NodePointer getImmediateValuePointer() {
         if (valuePointer == null) {
             Object value = getImmediateNode();
             valuePointer =
@@ -150,50 +150,56 @@ public class ContainerPointer extends NodePointer {
         return valuePointer;
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return System.identityHashCode(container) + index;
     }
 
-    public boolean equals(Object object){
-        if (object == this){
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof ContainerPointer)){
+        if (!(object instanceof ContainerPointer)) {
             return false;
         }
 
-        ContainerPointer other = (ContainerPointer)object;
-        return container == other.container &&
-                index == other.index;
+        ContainerPointer other = (ContainerPointer) object;
+        return container == other.container && index == other.index;
     }
 
-    public NodeIterator childIterator(NodeTest test, boolean reverse, NodePointer startWith){
+    public NodeIterator childIterator(
+        NodeTest test,
+        boolean reverse,
+        NodePointer startWith) 
+    {
         return getValuePointer().childIterator(test, reverse, startWith);
     }
 
-    public NodeIterator attributeIterator(QName name){
+    public NodeIterator attributeIterator(QName name) {
         return getValuePointer().attributeIterator(name);
     }
 
-    public NodeIterator namespaceIterator(){
+    public NodeIterator namespaceIterator() {
         return getValuePointer().namespaceIterator();
     }
 
-    public NodePointer namespacePointer(String namespace){
+    public NodePointer namespacePointer(String namespace) {
         return getValuePointer().namespacePointer(namespace);
     }
 
-    public boolean testNode(NodeTest nodeTest){
+    public boolean testNode(NodeTest nodeTest) {
         return getValuePointer().testNode(nodeTest);
     }
 
-    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+    public int compareChildNodePointers(
+        NodePointer pointer1,
+        NodePointer pointer2) 
+    {
         return pointer1.getIndex() - pointer2.getIndex();
     }
 
-    public String asPath(){
-        if (parent != null){
+    public String asPath() {
+        if (parent != null) {
             return parent.asPath();
         }
         return "/";

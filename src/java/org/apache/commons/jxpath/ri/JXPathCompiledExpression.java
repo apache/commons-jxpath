@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.4 2002/06/16 03:22:21 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/06/16 03:22:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.5 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,14 +70,14 @@ import org.apache.commons.jxpath.Pointer;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/06/16 03:22:21 $
+ * @version $Revision: 1.5 $ $Date: 2003/01/11 05:41:22 $
  */
 public class JXPathCompiledExpression implements CompiledExpression {
 
     private String xpath;
     private Expression expression;
 
-    public JXPathCompiledExpression(String xpath, Expression expression){
+    public JXPathCompiledExpression(String xpath, Expression expression) {
         this.xpath = xpath;
         this.expression = expression;
     }
@@ -86,7 +86,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
      * @see CompiledExpression#getValue(JXPathContext)
      */
     public Object getValue(JXPathContext context) {
-        return ((JXPathContextReferenceImpl)context).
+        return ((JXPathContextReferenceImpl) context).
                     getValue(xpath, expression);
     }
 
@@ -94,7 +94,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
      * @see CompiledExpression#getValue(JXPathContext, Class)
      */
     public Object getValue(JXPathContext context, Class requiredType) {
-        return ((JXPathContextReferenceImpl)context).
+        return ((JXPathContextReferenceImpl) context).
                     getValue(xpath, expression, requiredType);
     }
 
@@ -102,7 +102,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
      * @see CompiledExpression#setValue(JXPathContext, Object)
      */
     public void setValue(JXPathContext context, Object value) {
-        ((JXPathContextReferenceImpl)context).
+        ((JXPathContextReferenceImpl) context).
                     setValue(xpath, expression, value);
     }
 
@@ -110,7 +110,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
      * @see CompiledExpression#createPath(JXPathContext)
      */
     public Pointer createPath(JXPathContext context) {
-        return ((JXPathContextReferenceImpl)context).
+        return ((JXPathContextReferenceImpl) context).
                     createPath(xpath, expression);
     }
 
@@ -118,7 +118,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
      * @see CompiledExpression#createPathAndSetValue(JXPathContext, Object)
      */
     public Pointer createPathAndSetValue(JXPathContext context, Object value) {
-        return ((JXPathContextReferenceImpl)context).
+        return ((JXPathContextReferenceImpl) context).
                     createPathAndSetValue(xpath, expression, value);
     }
 
@@ -126,7 +126,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
      * @see CompiledExpression#iterate(JXPathContext)
      */
     public Iterator iterate(JXPathContext context) {
-        return ((JXPathContextReferenceImpl)context).
+        return ((JXPathContextReferenceImpl) context).
                     iterate(xpath, expression);
     }
 
@@ -134,7 +134,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
      * @see CompiledExpression#getPointer(JXPathContext, String)
      */
     public Pointer getPointer(JXPathContext context, String xpath) {
-        return ((JXPathContextReferenceImpl)context).
+        return ((JXPathContextReferenceImpl) context).
                     getPointer(xpath, expression);
     }
 
@@ -142,21 +142,21 @@ public class JXPathCompiledExpression implements CompiledExpression {
      * @see CompiledExpression#iteratePointers(JXPathContext)
      */
     public Iterator iteratePointers(JXPathContext context) {
-        return ((JXPathContextReferenceImpl)context).
+        return ((JXPathContextReferenceImpl) context).
                     iteratePointers(xpath, expression);
     }
 
     /**
      * @see CompiledExpression#removePath(JXPathContext)
      */
-    public void removePath(JXPathContext context){
-        ((JXPathContextReferenceImpl)context).removePath(xpath, expression);
+    public void removePath(JXPathContext context) {
+        ((JXPathContextReferenceImpl) context).removePath(xpath, expression);
     }
 
     /**
      * @see CompiledExpression#removeAll(JXPathContext)
      */
-    public void removeAll(JXPathContext context){
-        ((JXPathContextReferenceImpl)context).removeAll(xpath, expression);
+    public void removeAll(JXPathContext context) {
+        ((JXPathContextReferenceImpl) context).removeAll(xpath, expression);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.7 2002/11/26 01:20:06 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2002/11/26 01:20:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.8 2003/01/11 05:41:25 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/01/11 05:41:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,9 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
+import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
@@ -71,10 +74,10 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a property of the parent object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2002/11/26 01:20:06 $
+ * @version $Revision: 1.8 $ $Date: 2003/01/11 05:41:25 $
  */
 public abstract class PropertyPointer extends NodePointer {
-    public static int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
+    public static final int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
 
     protected int propertyIndex = UNSPECIFIED_PROPERTY;
     protected Object bean;
@@ -83,27 +86,27 @@ public abstract class PropertyPointer extends NodePointer {
      * Takes a javabean, a descriptor of a property of that object and
      * an offset within that property (starting with 0).
      */
-    public PropertyPointer(NodePointer parent){
+    public PropertyPointer(NodePointer parent) {
         super(parent);
     }
 
-    public int getPropertyIndex(){
+    public int getPropertyIndex() {
         return propertyIndex;
     }
 
-    public void setPropertyIndex(int index){
+    public void setPropertyIndex(int index) {
         propertyIndex = index;
         index = WHOLE_COLLECTION;
     }
 
-    public Object getBean(){
-        if (bean == null){
+    public Object getBean() {
+        if (bean == null) {
             bean = getParent().getNode();
         }
         return bean;
     }
 
-    public QName getName(){
+    public QName getName() {
         return new QName(null, getPropertyName());
     }
 
@@ -117,8 +120,8 @@ public abstract class PropertyPointer extends NodePointer {
 
     protected abstract boolean isActualProperty();
 
-    public boolean isActual(){
-        if (!isActualProperty()){
+    public boolean isActual() {
+        if (!isActualProperty()) {
             return false;
         }
 
@@ -128,9 +131,9 @@ public abstract class PropertyPointer extends NodePointer {
     private static final Object UNINITIALIZED = new Object();
 
     private Object value = UNINITIALIZED;
-    public Object getImmediateNode(){
-        if (value == UNINITIALIZED){
-            if (index == WHOLE_COLLECTION){
+    public Object getImmediateNode() {
+        if (value == UNINITIALIZED) {
+            if (index == WHOLE_COLLECTION) {
                 value = getBaseValue();
             }
             else {
@@ -140,7 +143,7 @@ public abstract class PropertyPointer extends NodePointer {
         return value;
     }
     
-    public boolean isCollection(){
+    public boolean isCollection() {
         Object value = getBaseValue();
         return value != null && ValueUtils.isCollection(value);
     }
@@ -155,7 +158,7 @@ public abstract class PropertyPointer extends NodePointer {
      * If the property contains a collection, then the length of that
      * collection, otherwise - 1.
      */
-    public int getLength(){
+    public int getLength() {
         return ValueUtils.getLength(getBaseValue());
     }
 
@@ -164,44 +167,116 @@ public abstract class PropertyPointer extends NodePointer {
      * Returns a NodePointer that can be used to access the currently
      * selected property value.
      */
-    public NodePointer getImmediateValuePointer(){
+    public NodePointer getImmediateValuePointer() {
         return NodePointer.newChildNodePointer(
             this,
             getName(),
             getImmediateNode());
     }
 
-    public int hashCode(){
+    public NodePointer createPath(JXPathContext context) {
+        if (getImmediateNode() == null) {
+            AbstractFactory factory = getAbstractFactory(context);
+            int inx = (index == WHOLE_COLLECTION ? 0 : index);
+            boolean success =
+                factory.createObject(
+                    context,
+                    this,
+                    getBean(),
+                    getPropertyName(),
+                    inx);
+            if (!success) {
+                throw new JXPathException(
+                    "Factory "
+                        + factory
+                        + " could not create an object for path: "
+                        + asPath());
+            }
+        }
+        return this;
+    }
+
+    public NodePointer createPath(JXPathContext context, Object value) {
+        // If neccessary, expand collection
+        if (index != WHOLE_COLLECTION && index >= getLength()) {
+            createPath(context);
+        }
+        setValue(value);            
+        return this;
+    }
+
+    public NodePointer createChild(
+        JXPathContext context,
+        QName name,
+        int index,
+        Object value) 
+    {
+        PropertyPointer prop = (PropertyPointer) clone();
+        if (name != null) {
+            prop.setPropertyName(name.toString());
+        }
+        prop.setIndex(index);
+        return prop.createPath(context, value);
+    }
+
+    public NodePointer createChild(
+        JXPathContext context,
+        QName name,
+        int index) 
+    {
+        PropertyPointer prop = (PropertyPointer) clone();
+        if (name != null) {
+            prop.setPropertyName(name.toString());
+        }
+        prop.setIndex(index);
+        return prop.createPath(context);
+    }
+
+    public int hashCode() {
         return getParent().hashCode() + propertyIndex + index;
     }
 
-    public boolean equals(Object object){
-        if (object == this){
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof PropertyPointer)){
+        if (!(object instanceof PropertyPointer)) {
             return false;
         }
 
-        PropertyPointer other = (PropertyPointer)object;
-        if (parent != other.parent){
-            if (parent == null || !parent.equals(other.parent)){
+        PropertyPointer other = (PropertyPointer) object;
+        if (parent != other.parent) {
+            if (parent == null || !parent.equals(other.parent)) {
                 return false;
             }
         }
 
-        if (getPropertyIndex() != other.getPropertyIndex() ||
-               !getPropertyName().equals(other.getPropertyName())){
+        if (getPropertyIndex() != other.getPropertyIndex()
+            || !getPropertyName().equals(other.getPropertyName())) {
             return false;
         }
 
-        int i_this = (index == WHOLE_COLLECTION ? 0 : index);
-        int i_other = (other.index == WHOLE_COLLECTION ? 0 : other.index);
-        return i_this == i_other;
+        int iThis = (index == WHOLE_COLLECTION ? 0 : index);
+        int iOther = (other.index == WHOLE_COLLECTION ? 0 : other.index);
+        return iThis == iOther;
     }
 
-    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+    public int compareChildNodePointers(
+        NodePointer pointer1,
+        NodePointer pointer2) 
+    {
         return getValuePointer().compareChildNodePointers(pointer1, pointer2);
+    }
+    
+    private AbstractFactory getAbstractFactory(JXPathContext context) {
+        AbstractFactory factory = context.getFactory();
+        if (factory == null) {
+            throw new JXPathException(
+                "Factory is not set on the "
+                    + "JXPathContext - cannot create path: "
+                    + asPath());
+        }
+        return factory;
     }
 }

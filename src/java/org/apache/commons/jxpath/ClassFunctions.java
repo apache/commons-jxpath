@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ClassFunctions.java,v 1.5 2002/06/16 03:22:22 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/06/16 03:22:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ClassFunctions.java,v 1.6 2003/01/11 05:41:22 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/01/11 05:41:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -94,14 +94,14 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * the method.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/06/16 03:22:22 $
+ * @version $Revision: 1.6 $ $Date: 2003/01/11 05:41:22 $
  */
 public class ClassFunctions implements Functions {
     private Class functionClass;
     private String namespace;
     private static final Object[] EMPTY_ARRAY = new Object[0];
 
-    public ClassFunctions(Class functionClass, String namespace){
+    public ClassFunctions(Class functionClass, String namespace) {
         this.functionClass = functionClass;
         this.namespace = namespace;
     }
@@ -111,7 +111,7 @@ public class ClassFunctions implements Functions {
      *
      * @returns a singleton
      */
-    public Set getUsedNamespaces(){
+    public Set getUsedNamespaces() {
         return Collections.singleton(namespace);
     }
 
@@ -126,7 +126,11 @@ public class ClassFunctions implements Functions {
      * @return a MethodFunction, a ConstructorFunction or null if there is no
      *      such function.
      */
-    public Function getFunction(String namespace, String name, Object[] parameters) {
+    public Function getFunction(
+        String namespace,
+        String name,
+        Object[] parameters) 
+    {
         if (!namespace.equals(this.namespace)) {
             return null;
         }

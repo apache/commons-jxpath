@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMPointerFactory.java,v 1.1 2002/08/26 22:29:48 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/08/26 22:29:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMPointerFactory.java,v 1.2 2003/01/11 05:41:26 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/01/11 05:41:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,23 +73,23 @@ import org.jdom.Element;
  * Implements NodePointerFactory for DOM elements.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/08/26 22:29:48 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/11 05:41:26 $
  */
 public class JDOMPointerFactory implements NodePointerFactory {
 
     public static final int JDOM_POINTER_FACTORY_ORDER = 110;
 
-    public int getOrder(){
+    public int getOrder() {
         return JDOM_POINTER_FACTORY_ORDER;
     }
 
     public NodePointer createNodePointer(
             QName name, Object bean, Locale locale)
     {
-        if (bean instanceof Document){
+        if (bean instanceof Document) {
             return new JDOMNodePointer(bean, locale);
         }
-        else if (bean instanceof Element){
+        else if (bean instanceof Element) {
             return new JDOMNodePointer(bean, locale);
         }
         return null;
@@ -98,10 +98,10 @@ public class JDOMPointerFactory implements NodePointerFactory {
     public NodePointer createNodePointer(
             NodePointer parent, QName name, Object bean)
     {
-        if (bean instanceof Document){
+        if (bean instanceof Document) {
             return new JDOMNodePointer(parent, bean);
         }
-        else if (bean instanceof Element){
+        else if (bean instanceof Element) {
             return new JDOMNodePointer(parent, bean);
         }
         return null;

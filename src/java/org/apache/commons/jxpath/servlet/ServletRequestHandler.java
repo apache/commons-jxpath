@@ -65,20 +65,20 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * access to attributes of a ServletRequest.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:26 $
  */
 public class ServletRequestHandler implements DynamicPropertyHandler {
 
-    public String[] getPropertyNames(Object request){
-        Enumeration e = ((ServletRequest)request).getAttributeNames();
+    public String[] getPropertyNames(Object request) {
+        Enumeration e = ((ServletRequest) request).getAttributeNames();
         return Util.toStrings(e);
     }
 
-    public Object getProperty(Object request, String property){
-        return ((ServletRequest)request).getAttribute(property);
+    public Object getProperty(Object request, String property) {
+        return ((ServletRequest) request).getAttribute(property);
     }
 
-    public void setProperty(Object request, String property, Object value){
-        ((ServletRequest)request).setAttribute(property, value);
+    public void setProperty(Object request, String property, Object value) {
+        ((ServletRequest) request).setAttribute(property, value);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/NamespacePointer.java,v 1.8 2002/11/26 01:33:34 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/11/26 01:33:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/NamespacePointer.java,v 1.9 2003/01/11 05:41:25 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/01/11 05:41:25 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,73 +71,78 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/11/26 01:33:34 $
+ * @version $Revision: 1.9 $ $Date: 2003/01/11 05:41:25 $
  */
 public class NamespacePointer extends NodePointer {
     private String prefix;
     private String namespaceURI;
 
-    public NamespacePointer(NodePointer parent, String prefix){
+    public NamespacePointer(NodePointer parent, String prefix) {
         super(parent);
         this.prefix = prefix;
     }
 
-    public NamespacePointer(NodePointer parent, String prefix, String namespaceURI){
+    public NamespacePointer(
+        NodePointer parent,
+        String prefix,
+        String namespaceURI) 
+    {
         super(parent);
         this.prefix = prefix;
         this.namespaceURI = namespaceURI;
     }
 
-    public QName getName(){
+    public QName getName() {
         return new QName(getNamespaceURI(), prefix);
     }
 
-    public Object getBaseValue(){
+    public Object getBaseValue() {
         return null;
     }
     
-    public boolean isCollection(){
+    public boolean isCollection() {
         return false;
     }
     
-    public int getLength(){
+    public int getLength() {
         return 1;
     }    
 
-    public Object getImmediateNode(){
+    public Object getImmediateNode() {
         return getNamespaceURI();
     }
 
-    public String getNamespaceURI(){
-        if (namespaceURI == null){
+    public String getNamespaceURI() {
+        if (namespaceURI == null) {
             namespaceURI = parent.getNamespaceURI(prefix);
         }
         return namespaceURI;
     }
 
-    public boolean isLeaf(){
+    public boolean isLeaf() {
         return true;
     }
 
     /**
      * Throws UnsupportedOperationException.
      */
-    public void setValue(Object value){
+    public void setValue(Object value) {
         throw new UnsupportedOperationException("Cannot modify DOM trees");
     }
 
-    public boolean testNode(NodeTest nodeTest){
-        return nodeTest == null ||
-                ((nodeTest instanceof NodeTypeTest) &&
-                    ((NodeTypeTest)nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE);
+    public boolean testNode(NodeTest nodeTest) {
+        return nodeTest == null
+            || ((nodeTest instanceof NodeTypeTest)
+                && ((NodeTypeTest) nodeTest).getNodeType()
+                    == Compiler.NODE_TYPE_NODE);
     }
 
-    public String asPath(){
+    public String asPath() {
         StringBuffer buffer = new StringBuffer();
-        if (parent != null){
+        if (parent != null) {
             buffer.append(parent.asPath());
-            if (buffer.length() == 0 ||
-                    buffer.charAt(buffer.length()-1) != '/'){
+            if (buffer.length() == 0
+                || buffer.charAt(buffer.length() - 1) != '/') {
                 buffer.append('/');
             }
         }
@@ -146,24 +151,27 @@ public class NamespacePointer extends NodePointer {
         return buffer.toString();
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return prefix.hashCode();
     }
 
-    public boolean equals(Object object){
-        if (object == this){
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof NamespacePointer)){
+        if (!(object instanceof NamespacePointer)) {
             return false;
         }
 
-        NamespacePointer other = (NamespacePointer)object;
+        NamespacePointer other = (NamespacePointer) object;
         return prefix.equals(other.prefix);
     }
 
-    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+    public int compareChildNodePointers(
+        NodePointer pointer1,
+        NodePointer pointer2) 
+    {
         // Won't happen - namespaces don't have children
         return 0;
     }

@@ -55,23 +55,24 @@
 
 package org.apache.commons.jxpath.servlet;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 /**
  * Turns an Enumeration of Strings into an array of Strings.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2001/09/08 21:01:00 $
+ * @version $Revision: 1.2 $ $Date: 2003/01/11 05:41:26 $
  */
 public final class Util {
 
     private static final String[] STRING_ARRAY = new String[0];
 
-    public static String[] toStrings(Enumeration e){
+    public static String[] toStrings(Enumeration e) {
         ArrayList list = new ArrayList(16);
-        while (e.hasMoreElements()){
+        while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        return (String[])list.toArray(STRING_ARRAY);
+        return (String[]) list.toArray(STRING_ARRAY);
     }
 }

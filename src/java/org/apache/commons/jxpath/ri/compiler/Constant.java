@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Constant.java,v 1.3 2002/05/08 00:39:59 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/05/08 00:39:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Constant.java,v 1.4 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -67,48 +67,48 @@ import org.apache.commons.jxpath.ri.EvalContext;
  * A compile tree element containing a constant number or string.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/05/08 00:39:59 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:23 $
  */
 public class Constant extends Expression {
 
     private Object value;
 
-    public Constant(Number number){
+    public Constant(Number number) {
         super(Expression.OP_CONSTANT);
         this.value = number;
     }
 
-    public Constant(String string){
+    public Constant(String string) {
         super(Expression.OP_CONSTANT);
         this.value = string;
     }
 
-    public Object compute(EvalContext context){
+    public Object compute(EvalContext context) {
         return value;
     }
 
     /**
      * Returns the value of the constant.
      */
-    public Object computeValue(EvalContext context){
+    public Object computeValue(EvalContext context) {
         return value;
     }
 
     /**
      * Returns false
      */
-    public boolean isContextDependent(){
+    public boolean isContextDependent() {
         return false;
     }
 
     /**
      * Returns false
      */
-    public boolean computeContextDependent(){
+    public boolean computeContextDependent() {
         return false;
     }
 
-    public String toString(){
+    public String toString() {
         return "(CONST " + value + ")";
     }
 }

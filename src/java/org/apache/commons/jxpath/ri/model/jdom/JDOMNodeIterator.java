@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodeIterator.java,v 1.2 2002/10/20 03:47:18 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/10/20 03:47:18 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodeIterator.java,v 1.3 2003/01/11 05:41:26 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/11 05:41:26 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.jdom.Element;
  * An iterator of children of a JDOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/10/20 03:47:18 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:26 $
  */
 public class JDOMNodeIterator implements NodeIterator {
     private NodePointer parent;
@@ -91,16 +91,16 @@ public class JDOMNodeIterator implements NodeIterator {
             boolean reverse, NodePointer startWith)
     {
         this.parent = parent;
-        if (startWith != null){
+        if (startWith != null) {
             this.child = startWith.getNode();
         }
         // TBD: optimize me for different node tests
         Object node = parent.getNode();
-        if (node instanceof Document){
-            this.children = ((Document)node).getContent();
+        if (node instanceof Document) {
+            this.children = ((Document) node).getContent();
         }
-        else if (node instanceof Element){
-            this.children = ((Element)node).getContent();
+        else if (node instanceof Element) {
+            this.children = ((Element) node).getContent();
         }
         else {
             this.children = Collections.EMPTY_LIST;
@@ -109,9 +109,9 @@ public class JDOMNodeIterator implements NodeIterator {
         this.reverse = reverse;
     }
 
-    public NodePointer getNodePointer(){
-        if (child == null){
-            if (!setPosition(1)){
+    public NodePointer getNodePointer() {
+        if (child == null) {
+            if (!setPosition(1)) {
                 return null;
             }
             position = 0;
@@ -120,18 +120,18 @@ public class JDOMNodeIterator implements NodeIterator {
         return new JDOMNodePointer(parent, child);
     }
 
-    public int getPosition(){
+    public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position){
-        while (this.position < position){
-            if (!next()){
+    public boolean setPosition(int position) {
+        while (this.position < position) {
+            if (!next()) {
                 return false;
             }
         }
-        while (this.position > position){
-            if (!previous()){
+        while (this.position > position) {
+            if (!previous()) {
                 return false;
             }
         }
@@ -144,20 +144,20 @@ public class JDOMNodeIterator implements NodeIterator {
      * So, this is implemented only for completeness and perhaps for
      * those who use these iterators outside of XPath evaluation.
      */
-    private boolean previous(){
+    private boolean previous() {
         position--;
-        if (!reverse){
-            while (--index >= 0){
+        if (!reverse) {
+            while (--index >= 0) {
                 child = children.get(index);
-                if (testChild()){
+                if (testChild()) {
                     return true;
                 }
             }
         }
         else {
-            for (;index < children.size(); index++){
+            for (; index < children.size(); index++) {
                 child = children.get(index);
-                if (testChild()){
+                if (testChild()) {
                     return true;
                 }
             }
@@ -165,39 +165,39 @@ public class JDOMNodeIterator implements NodeIterator {
         return false;
     }
 
-    private boolean next(){
+    private boolean next() {
         position++;
-        if (!reverse){
-            if (position == 1){
+        if (!reverse) {
+            if (position == 1) {
                 index = 0;
-                if (child != null){
+                if (child != null) {
                     index = children.indexOf(child) + 1;
                 }
             }
             else {
                 index++;
             }
-            for (;index < children.size(); index++){
+            for (; index < children.size(); index++) {
                 child = children.get(index);
-                if (testChild()){
+                if (testChild()) {
                     return true;
                 }
             }
             return false;
         }
         else {
-            if (position == 1){
+            if (position == 1) {
                 index = children.size() - 1;
-                if (child != null){
+                if (child != null) {
                     index = children.indexOf(child) - 1;
                 }
             }
             else {
                 index--;
             }
-            for (;index >= 0; index--){
+            for (; index >= 0; index--) {
                 child = children.get(index);
-                if (testChild()){
+                if (testChild()) {
                     return true;
                 }
             }
@@ -205,7 +205,7 @@ public class JDOMNodeIterator implements NodeIterator {
         }
     }
 
-    private boolean testChild(){
+    private boolean testChild() {
         return JDOMNodePointer.testNode(parent, child, nodeTest);
     }
 }

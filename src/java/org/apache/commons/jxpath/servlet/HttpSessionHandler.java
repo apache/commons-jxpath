@@ -65,20 +65,20 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * access to attributes of a HttpSession.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:26 $
  */
 public class HttpSessionHandler implements DynamicPropertyHandler {
 
-    public String[] getPropertyNames(Object session){
-        Enumeration e = ((HttpSession)session).getAttributeNames();
+    public String[] getPropertyNames(Object session) {
+        Enumeration e = ((HttpSession) session).getAttributeNames();
         return Util.toStrings(e);
     }
 
-    public Object getProperty(Object session, String property){
-        return ((HttpSession)session).getAttribute(property);
+    public Object getProperty(Object session, String property) {
+        return ((HttpSession) session).getAttribute(property);
     }
 
-    public void setProperty(Object session, String property, Object value){
-        ((HttpSession)session).setAttribute(property, value);
+    public void setProperty(Object session, String property, Object value) {
+        ((HttpSession) session).setAttribute(property, value);
     }
 }

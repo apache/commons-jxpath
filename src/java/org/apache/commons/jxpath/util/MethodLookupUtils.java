@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/MethodLookupUtils.java,v 1.2 2002/11/26 01:20:07 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/11/26 01:20:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/util/MethodLookupUtils.java,v 1.3 2003/01/11 05:41:27 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/01/11 05:41:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,7 +74,7 @@ import org.apache.commons.jxpath.JXPathException;
  * as constructors based on a name and list of parameters.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/11/26 01:20:07 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:27 $
  */
 public class MethodLookupUtils {
 
@@ -83,13 +83,16 @@ public class MethodLookupUtils {
     private static final int EXACT_MATCH = 2;
     private static final Object[] EMPTY_ARRAY = new Object[0];
 
-    public static Constructor lookupConstructor(Class targetClass, Object[] parameters){
+     public static Constructor lookupConstructor(
+        Class targetClass,
+        Object[] parameters) 
+     {
         boolean tryExact = true;
         int count = parameters.length;
         Class types[] = new Class[count];
-        for (int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             Object param = parameters[i];
-            if (param != null){
+            if (param != null) {
                 types[i] = param.getClass();
             }
             else {
@@ -100,15 +103,16 @@ public class MethodLookupUtils {
 
         Constructor constructor = null;
 
-        if (tryExact){
+        if (tryExact) {
             // First - without type conversion
             try {
                 constructor = targetClass.getConstructor(types);
-                if (constructor != null){
+                if (constructor != null) {
                     return constructor;
                 }
             }
-            catch (NoSuchMethodException ex){
+            catch (NoSuchMethodException ex) {
+                // Ignore
             }
         }
 
@@ -117,32 +121,40 @@ public class MethodLookupUtils {
 
         // Then - with type conversion
         Constructor[] constructors = targetClass.getConstructors();
-        for (int i = 0; i < constructors.length; i++){
-            int match = matchParameterTypes(constructors[i].getParameterTypes(), parameters);
-            if (match != NO_MATCH){
-                if (match > currentMatch){
+        for (int i = 0; i < constructors.length; i++) {
+            int match =
+                matchParameterTypes(
+                    constructors[i].getParameterTypes(),
+                    parameters);
+            if (match != NO_MATCH) {
+                if (match > currentMatch) {
                     constructor = constructors[i];
                     currentMatch = match;
                     ambiguous = false;
                 }
-                else if (match == currentMatch){
+                else if (match == currentMatch) {
                     ambiguous = true;
                 }
             }
         }
-        if (ambiguous){
-            throw new JXPathException("Ambigous constructor " + Arrays.asList(parameters));
+        if (ambiguous) {
+            throw new JXPathException(
+                "Ambigous constructor " + Arrays.asList(parameters));
         }
         return constructor;
     }
 
-    public static Method lookupStaticMethod(Class targetClass, String name, Object[] parameters){
+    public static Method lookupStaticMethod(
+        Class targetClass,
+        String name,
+        Object[] parameters) 
+    {
         boolean tryExact = true;
         int count = parameters.length;
         Class types[] = new Class[count];
-        for (int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             Object param = parameters[i];
-            if (param != null){
+            if (param != null) {
                 types[i] = param.getClass();
             }
             else {
@@ -153,15 +165,17 @@ public class MethodLookupUtils {
 
         Method method = null;
 
-        if (tryExact){
+        if (tryExact) {
             // First - without type conversion
             try {
                 method = targetClass.getMethod(name, types);
-                if (method != null && Modifier.isStatic(method.getModifiers())){
+                if (method != null
+                    && Modifier.isStatic(method.getModifiers())) {
                     return method;
                 }
             }
-            catch (NoSuchMethodException ex){
+            catch (NoSuchMethodException ex) {
+                // Ignore
             }
         }
 
@@ -170,34 +184,41 @@ public class MethodLookupUtils {
 
         // Then - with type conversion
         Method[] methods = targetClass.getMethods();
-        for (int i = 0; i < methods.length; i++){
-            if (Modifier.isStatic(methods[i].getModifiers()) &&
-                    methods[i].getName().equals(name)){
-                int match = matchParameterTypes(methods[i].getParameterTypes(), parameters);
-                if (match != NO_MATCH){
-                    if (match > currentMatch){
+        for (int i = 0; i < methods.length; i++) {
+            if (Modifier.isStatic(methods[i].getModifiers())
+                && methods[i].getName().equals(name)) {
+                int match =
+                    matchParameterTypes(
+                        methods[i].getParameterTypes(),
+                        parameters);
+                if (match != NO_MATCH) {
+                    if (match > currentMatch) {
                         method = methods[i];
                         currentMatch = match;
                         ambiguous = false;
                     }
-                    else if (match == currentMatch){
+                    else if (match == currentMatch) {
                         ambiguous = true;
                     }
                 }
             }
         }
-        if (ambiguous){
+        if (ambiguous) {
             throw new JXPathException("Ambigous method call: " + name);
         }
         return method;
     }
 
-    public static Method lookupMethod(Class targetClass, String name, Object[] parameters){
-        if (parameters.length < 1 || parameters[0] == null){
+    public static Method lookupMethod(
+        Class targetClass,
+        String name,
+        Object[] parameters) 
+    {
+        if (parameters.length < 1 || parameters[0] == null) {
             return null;
         }
 
-        if (matchType(targetClass, parameters[0]) == NO_MATCH){
+        if (matchType(targetClass, parameters[0]) == NO_MATCH) {
             return null;
         }
 
@@ -207,10 +228,10 @@ public class MethodLookupUtils {
         int count = parameters.length - 1;
         Class types[] = new Class[count];
         Object arguments[] = new Object[count];
-        for (int i = 0; i < count; i++){
-            Object param = parameters[i+1];
+        for (int i = 0; i < count; i++) {
+            Object param = parameters[i + 1];
             arguments[i] = param;
-            if (param != null){
+            if (param != null) {
                 types[i] = param.getClass();
             }
             else {
@@ -221,15 +242,17 @@ public class MethodLookupUtils {
 
         Method method = null;
 
-        if (tryExact){
+        if (tryExact) {
             // First - without type conversion
             try {
                 method = targetClass.getMethod(name, types);
-                if (method != null && !Modifier.isStatic(method.getModifiers())){
+                if (method != null
+                    && !Modifier.isStatic(method.getModifiers())) {
                     return method;
                 }
             }
-            catch (NoSuchMethodException ex){
+            catch (NoSuchMethodException ex) {
+                // Ignore
             }
         }
 
@@ -238,64 +261,71 @@ public class MethodLookupUtils {
 
         // Then - with type conversion
         Method[] methods = targetClass.getMethods();
-        for (int i = 0; i < methods.length; i++){
-            if (!Modifier.isStatic(methods[i].getModifiers()) &&
-                    methods[i].getName().equals(name)){
-                int match = matchParameterTypes(methods[i].getParameterTypes(), arguments);
-                if (match != NO_MATCH){
-                    if (match > currentMatch){
+        for (int i = 0; i < methods.length; i++) {
+            if (!Modifier.isStatic(methods[i].getModifiers())
+                && methods[i].getName().equals(name)) {
+                int match =
+                    matchParameterTypes(
+                        methods[i].getParameterTypes(),
+                        arguments);
+                if (match != NO_MATCH) {
+                    if (match > currentMatch) {
                         method = methods[i];
                         currentMatch = match;
                         ambiguous = false;
                     }
-                    else if (match == currentMatch){
+                    else if (match == currentMatch) {
                         ambiguous = true;
                     }
                 }
             }
         }
-        if (ambiguous){
+        if (ambiguous) {
             throw new JXPathException("Ambigous method call: " + name);
         }
         return method;
     }
 
-    private static int matchParameterTypes(Class types[], Object parameters[]){
+    private static int matchParameterTypes(
+        Class types[],
+        Object parameters[]) 
+    {
         int pi = 0;
-        if (types.length >= 1 && ExpressionContext.class.isAssignableFrom(types[0])){
+        if (types.length >= 1
+            && ExpressionContext.class.isAssignableFrom(types[0])) {
             pi++;
         }
-        if (types.length != parameters.length + pi){
+        if (types.length != parameters.length + pi) {
             return NO_MATCH;
         }
         int totalMatch = EXACT_MATCH;
-        for (int i = 0; i < parameters.length; i++){
+        for (int i = 0; i < parameters.length; i++) {
             int match = matchType(types[i + pi], parameters[i]);
-            if (match == NO_MATCH){
+            if (match == NO_MATCH) {
                 return NO_MATCH;
             }
-            if (match < totalMatch){
+            if (match < totalMatch) {
                 totalMatch = match;
             }
         }
         return totalMatch;
     }
 
-    private static int matchType(Class expected, Object object){
-        if (object == null){
+    private static int matchType(Class expected, Object object) {
+        if (object == null) {
             return APPROXIMATE_MATCH;
         }
 
         Class actual = object.getClass();
 
-        if (expected.equals(actual)){
+        if (expected.equals(actual)) {
             return EXACT_MATCH;
         }
-        if (expected.isAssignableFrom(actual)){
+        if (expected.isAssignableFrom(actual)) {
             return EXACT_MATCH;
         }
 
-        if (TypeUtils.canConvert(object, expected)){
+        if (TypeUtils.canConvert(object, expected)) {
             return APPROXIMATE_MATCH;
         }
 

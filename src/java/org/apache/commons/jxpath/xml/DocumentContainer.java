@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DocumentContainer.java,v 1.3 2002/08/26 22:52:09 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/08/26 22:52:09 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/xml/DocumentContainer.java,v 1.4 2003/01/11 05:41:27 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/01/11 05:41:27 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.JXPathException;
  * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/08/26 22:52:09 $
+ * @version $Revision: 1.4 $ $Date: 2003/01/11 05:41:27 $
  */
 public class DocumentContainer implements Container {
 
@@ -107,20 +107,20 @@ public class DocumentContainer implements Container {
      * Use getClass().getResource(resourceName) to load XML from a
      * resource file.
      */
-    public DocumentContainer(URL xmlURL){
+    public DocumentContainer(URL xmlURL) {
         this(xmlURL, MODEL_DOM);
     }
 
     /**
-     * @param URL is a URL for an XML file. Use getClass().getResource(resourceName)
-     * to load XML from a resource file.
+     * @param  URL is a URL for an XML file. Use getClass().getResource
+     * (resourceName) to load XML from a resource file.
      *
      * @param model is one of the MODEL_* constants defined in this class. It
      *   determines which parser should be used to load the XML.
      */
-    public DocumentContainer(URL xmlURL, String model){
+    public DocumentContainer(URL xmlURL, String model) {
         this.xmlURL = xmlURL;
-        if (xmlURL == null){
+        if (xmlURL == null) {
             throw new JXPathException("XML URL is null");
         }
         this.model = model;
@@ -129,23 +129,23 @@ public class DocumentContainer implements Container {
     /**
      * Reads XML, caches it internally and returns the Document.
      */
-    public Object getValue(){
-        if (document == null){
+    public Object getValue() {
+        if (document == null) {
             try {
                 InputStream stream = null;
                 try {
-                    if (xmlURL != null){
+                    if (xmlURL != null) {
                         stream = xmlURL.openStream();
                     }
                     document = getParser(model).parseXML(stream);
                 }
                 finally {
-                    if (stream != null){
+                    if (stream != null) {
                         stream.close();
                     }
                 }
             }
-            catch (Exception ex){
+            catch (Exception ex) {
                 throw new JXPathException(
                     "Cannot read XML from: " + xmlURL.toString(),
                     ex);
@@ -157,27 +157,27 @@ public class DocumentContainer implements Container {
     /**
      * Throws an UnsupportedOperationException
      */
-    public void setValue(Object value){
+    public void setValue(Object value) {
         throw new UnsupportedOperationException();
     }
 
     /**
      * Maps a model type to a parser.
      */
-    private static final XMLParser getParser(String model){
-        XMLParser parser = (XMLParser)parsers.get(model);
-        if (parser == null){
-            String className = (String)parserClasses.get(model);
-            if (className == null){
+    private static final XMLParser getParser(String model) {
+        XMLParser parser = (XMLParser) parsers.get(model);
+        if (parser == null) {
+            String className = (String) parserClasses.get(model);
+            if (className == null) {
                 throw new JXPathException("Unsupported XML model: " + model);
             }
             try {
                 Class clazz = Class.forName(className);
-                parser = (XMLParser)clazz.newInstance();
+                parser = (XMLParser) clazz.newInstance();
             }
-            catch (Exception ex){
-                throw new JXPathException("Cannot allocate XMLParser: " +
-                        className);
+            catch (Exception ex) {
+                throw new JXPathException(
+                    "Cannot allocate XMLParser: " + className);
             }
             parsers.put(model, parser);
         }

@@ -59,7 +59,7 @@ package org.apache.commons.jxpath.servlet;
  * String constants for this package.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.3 $ $Date: 2003/01/11 05:41:26 $
  */
 public final class Constants {
 
@@ -84,9 +84,10 @@ public final class Constants {
     public static final String PAGE_SCOPE = "page";
 
     /**
-     * Attribute name used in page context, requst, session, and servlet context to store
-     * the corresponding JXPathContext.
+     * Attribute  name used in page context, requst, session, and servlet
+     * context to store the corresponding JXPathContext.
      */
-    public static final String JXPATH_CONTEXT = "org.apache.commons.jxpath.JXPATH_CONTEXT";
+    public static final String JXPATH_CONTEXT =
+        "org.apache.commons.jxpath.JXPATH_CONTEXT";
 
 }

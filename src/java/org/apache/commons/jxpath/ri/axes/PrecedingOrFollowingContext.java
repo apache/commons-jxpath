@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.10 2002/11/28 01:02:04 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/11/28 01:02:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PrecedingOrFollowingContext.java,v 1.11 2003/01/11 05:41:23 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/01/11 05:41:23 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyIterator;
  * EvalContext that walks the "preceding::" and "following::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/11/28 01:02:04 $
+ * @version $Revision: 1.11 $ $Date: 2003/01/11 05:41:23 $
  */
 public class PrecedingOrFollowingContext extends EvalContext {
     private NodeTest nodeTest;
@@ -85,100 +85,122 @@ public class PrecedingOrFollowingContext extends EvalContext {
     private NodePointer currentRootLocation;
     private boolean reverse;
 
-    public PrecedingOrFollowingContext(EvalContext parentContext, NodeTest nodeTest, boolean reverse){
+    public PrecedingOrFollowingContext(
+        EvalContext parentContext,
+        NodeTest nodeTest,
+        boolean reverse) 
+    {
         super(parentContext);
         this.nodeTest = nodeTest;
         this.reverse = reverse;
     }
 
-    public NodePointer getCurrentNodePointer(){
+    public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
-    public int getDocumentOrder(){
+    public int getDocumentOrder() {
         return reverse ? -1 : 1;
     }
 
-    public void reset(){
+    public void reset() {
         super.reset();
         stack = new Stack();
         setStarted = false;
     }
 
-    public boolean setPosition(int position){
-        if (position < this.position){
+    public boolean setPosition(int position) {
+        if (position < this.position) {
             reset();
         }
 
-        while (this.position < position){
-            if (!nextNode()){
+        while (this.position < position) {
+            if (!nextNode()) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean nextNode(){
-        if (!setStarted){
+    public boolean nextNode() {
+        if (!setStarted) {
             setStarted = true;
             currentRootLocation = parentContext.getCurrentNodePointer();
-            NodePointer parent = getMaterialPointer(currentRootLocation.getParent());
-            if (parent != null){
+            NodePointer parent =
+                getMaterialPointer(currentRootLocation.getParent());
+            if (parent != null) {
                 // TBD: check type
-                stack.push(parent.childIterator(null, reverse, currentRootLocation));
+                stack.push(
+                    parent.childIterator(null, reverse, currentRootLocation));
             }
         }
 
-        while (true){
-            if (stack.isEmpty()){
-                currentRootLocation = getMaterialPointer(currentRootLocation.getParent());
+        while (true) {
+            if (stack.isEmpty()) {
+                currentRootLocation =
+                    getMaterialPointer(currentRootLocation.getParent());
 
-                if (currentRootLocation == null || currentRootLocation.isRoot()){
+                if (currentRootLocation == null
+                    || currentRootLocation.isRoot()) {
                     break;
                 }
 
-                NodePointer parent = getMaterialPointer(currentRootLocation.getParent());
-                if (parent != null){
-                    stack.push(parent.childIterator(null, reverse, currentRootLocation));
+                NodePointer parent =
+                    getMaterialPointer(currentRootLocation.getParent());
+                if (parent != null) {
+                    stack.push(
+                        parent.childIterator(
+                            null,
+                            reverse,
+                            currentRootLocation));
                 }
             }
 
-            while (!stack.isEmpty()){
-                if (!reverse){
-                    NodeIterator it = (NodeIterator)stack.peek();
-                    if (it.setPosition(it.getPosition() + 1)){
+            while (!stack.isEmpty()) {
+                if (!reverse) {
+                    NodeIterator it = (NodeIterator) stack.peek();
+                    if (it.setPosition(it.getPosition() + 1)) {
                         currentNodePointer = it.getNodePointer();
-                        if (!currentNodePointer.isLeaf()){
-                            stack.push(currentNodePointer.childIterator(null, reverse, null));
+                        if (!currentNodePointer.isLeaf()) {
+                            stack.push(
+                                currentNodePointer.childIterator(
+                                    null,
+                                    reverse,
+                                    null));
                         }
-                        if (currentNodePointer.testNode(nodeTest)){
+                        if (currentNodePointer.testNode(nodeTest)) {
                             super.setPosition(getCurrentPosition() + 1);
                             return true;
                         }
                     }
                     else {
-                        // We get here only if the name test failed and the iterator ended
+                        // We get here only if the name test failed 
+                        // and the iterator ended
                         stack.pop();
                     }
                 }
                 else {
-                    NodeIterator it = (NodeIterator)stack.peek();
-                    if (it.setPosition(it.getPosition() + 1)){
+                    NodeIterator it = (NodeIterator) stack.peek();
+                    if (it.setPosition(it.getPosition() + 1)) {
                         currentNodePointer = it.getNodePointer();
-                        if (!currentNodePointer.isLeaf()){
-                            stack.push(currentNodePointer.childIterator(null, reverse, null));
+                        if (!currentNodePointer.isLeaf()) {
+                            stack.push(
+                                currentNodePointer.childIterator(
+                                    null,
+                                    reverse,
+                                    null));
                         }
-                        else if (currentNodePointer.testNode(nodeTest)){
+                        else if (currentNodePointer.testNode(nodeTest)) {
                             super.setPosition(getCurrentPosition() + 1);
                             return true;
                         }
                     }
                     else {
                         stack.pop();
-                        if (!stack.isEmpty()){
-                            it = (PropertyIterator)stack.peek();
+                        if (!stack.isEmpty()) {
+                            it = (PropertyIterator) stack.peek();
                             currentNodePointer = it.getNodePointer();
-                            if (currentNodePointer.testNode(nodeTest)){
+                            if (currentNodePointer.testNode(nodeTest)) {
                                 super.setPosition(getCurrentPosition() + 1);
                                 return true;
                             }
@@ -191,10 +213,11 @@ public class PrecedingOrFollowingContext extends EvalContext {
     }
 
     /**
-     * If the pointer is auxiliary, return the parent; otherwise - the pointer itself
+     * If  the pointer is auxiliary, return the parent; otherwise - the pointer
+     * itself
      */
-    private NodePointer getMaterialPointer(NodePointer pointer){
-        while (pointer != null && pointer.isContainer()){
+    private NodePointer getMaterialPointer(NodePointer pointer) {
+        while (pointer != null && pointer.isContainer()) {
             pointer = pointer.getParent();
         }
         return pointer;
