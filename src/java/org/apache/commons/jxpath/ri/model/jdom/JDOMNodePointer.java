@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.2 2002/10/13 02:59:02 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/10/13 02:59:02 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/jdom/JDOMNodePointer.java,v 1.3 2002/10/20 03:44:51 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/10/20 03:44:51 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,6 +81,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 import org.jdom.Attribute;
 import org.jdom.CDATA;
 import org.jdom.Comment;
+import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.ProcessingInstruction;
@@ -90,7 +91,7 @@ import org.jdom.Text;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/10/13 02:59:02 $
+ * @version $Revision: 1.3 $ $Date: 2002/10/20 03:44:51 $
  */
 public class JDOMNodePointer extends NodePointer {
     private Object node;
@@ -139,7 +140,11 @@ public class JDOMNodePointer extends NodePointer {
     public String getNamespaceURI(){
         if (node instanceof Element){
             Element element = (Element)node;
-            return element.getNamespaceURI();
+            String ns = element.getNamespaceURI();
+            if (ns != null && ns.equals("")){
+                ns = null;
+            }
+            return ns;
         }
         return null;
     }
@@ -148,7 +153,6 @@ public class JDOMNodePointer extends NodePointer {
         if (node instanceof Element){
             Element element = (Element)node;
             Namespace ns = element.getNamespace(prefix);
-//            System.err.println("PREFIX: " + prefix + " NS: " + ns);
             if (ns == null){
                 return null;
             }
@@ -215,6 +219,23 @@ public class JDOMNodePointer extends NodePointer {
         return node;
     }
 
+    public boolean isCollection(){
+        return false;
+    }
+    
+    public int getLength(){
+        return 1;
+    }    
+
+    public boolean isLeaf(){
+        if (node instanceof Element){
+            return ((Element)node).getContent().size() == 0;
+        }
+        else if (node instanceof Document){
+            return ((Document)node).getContent().size() == 0;
+        }
+        return true;
+    }
 
     /**
      * @see org.apache.commons.jxpath.ri.model.NodePointer#getName()
@@ -277,17 +298,44 @@ public class JDOMNodePointer extends NodePointer {
     /**
      * @see org.apache.commons.jxpath.Pointer#setValue(Object)
      */
-    public void setValue(Object value) {
-        String string = null;
-        if (value != null){
-            string = (String)TypeUtils.convert(value, String.class);
-            if (string.equals("")){
-                string = null;
-            }
-        }
+//        String string = null;
+//        if (value != null){
+//            string = (String)TypeUtils.convert(value, String.class);
+//            if (string.equals("")){
+//                string = null;
+//            }
+//        }
+//
+//        if (node instanceof Text){
+//            if (string != null){
+//                ((Text)node).setText(string);
+//            }
+//            else {
+//                nodeParent(node).removeContent((Text)node);
+//            }
+//        }
+//        else {
+//            Element element = (Element)node;
+//            // First remove all text from the element
+//            List content = new ArrayList(element.getContent());
+//            for (int i = content.size(); --i >= 0;){
+//                Object child = content.get(i);
+//                if (child instanceof Text){
+//                    element.removeContent((Text)node);
+//                }
+//                else if (child instanceof CDATA){
+//                    element.removeContent((CDATA)node);
+//                }
+//            }
+//            if (string != null){
+//                element.addContent(new Text(string));
+//            }
+//        }
 
+    public void setValue(Object value) {
         if (node instanceof Text){
-            if (string != null){
+            String string = (String)TypeUtils.convert(value, String.class);
+            if (string != null && !string.equals("")){
                 ((Text)node).setText(string);
             }
             else {
@@ -295,24 +343,69 @@ public class JDOMNodePointer extends NodePointer {
             }
         }
         else {
-            Element element = (Element)node;
-            // First remove all text from the element
-            List content = new ArrayList(element.getContent());
-            for (int i = content.size(); --i >= 0;){
-                Object child = content.get(i);
-                if (child instanceof Text){
-                    element.removeContent((Text)node);
-                }
-                else if (child instanceof CDATA){
-                    element.removeContent((CDATA)node);
-                }
-            }
-            if (string != null){
-                element.addContent(new Text(string));
-            }
+        	Element element = (Element)node;
+        	element.getContent().clear();
+        	            
+        	if (value instanceof Element){
+        		Element valueElement = (Element)value;
+        		addContent(valueElement.getContent());
+        	}
+        	else if (value instanceof Document){
+        		Document valueDocument = (Document)value;        		
+        		addContent(valueDocument.getContent());
+        	}
+        	else if (value instanceof Text ||
+        			 value instanceof CDATA){
+        		String string = ((Text)value).getText();
+        		element.addContent(new Text(string));
+			}
+			else if (value instanceof ProcessingInstruction){
+				ProcessingInstruction pi = (ProcessingInstruction)
+						((ProcessingInstruction)value).clone();
+				element.addContent(pi);
+			}
+			else if (value instanceof Comment){
+				Comment comment = (Comment)((Comment)value).clone();
+				element.addContent(comment);
+			}
+        	else {
+	            String string = (String)TypeUtils.convert(value, String.class);
+	            if (string != null && !string.equals("")){
+	                element.addContent(new Text(string));
+	            }
+        	}
         }
     }
-
+    
+    private void addContent(List content){
+    	Element element = (Element)node;
+    	int count = content.size();
+    	
+    	for (int i = 0; i < count; i++){
+    		Object child = content.get(i);
+    		if (child instanceof Element){
+    			child = ((Element)child).clone();
+    			element.addContent((Element)child);
+    		}
+	        else if (child instanceof Text){
+    			child = ((Text)child).clone();
+    			element.addContent((Text)child);
+	        }
+	        else if (node instanceof CDATA){
+    			child = ((CDATA)child).clone();
+    			element.addContent((CDATA)child);
+	        }
+	        else if (node instanceof ProcessingInstruction){
+    			child = ((ProcessingInstruction)child).clone();
+    			element.addContent((ProcessingInstruction)child);
+	        }
+	        else if (node instanceof Comment){
+    			child = ((Comment)child).clone();
+    			element.addContent((Comment)child);
+	        }
+    	}
+    }
+    
     public boolean testNode(NodeTest test){
         return testNode(this, node, test);
     }
@@ -536,7 +629,10 @@ public class JDOMNodePointer extends NodePointer {
             // the parent's responsibility to produce the node test part
             // of the path
             if (parent instanceof JDOMNodePointer){
-                buffer.append('/');
+                if (buffer.length() == 0 ||
+                        buffer.charAt(buffer.length()-1) != '/'){
+                	buffer.append('/');
+                }
                 buffer.append(getName());
                 buffer.append('[');
                 buffer.append(getRelativePositionByName());

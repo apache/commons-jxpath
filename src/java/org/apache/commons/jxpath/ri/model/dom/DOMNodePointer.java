@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.10 2002/10/13 02:59:02 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/10/13 02:59:02 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.11 2002/10/20 03:44:52 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/10/20 03:44:52 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -92,7 +92,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/10/13 02:59:02 $
+ * @version $Revision: 1.11 $ $Date: 2002/10/20 03:44:52 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -100,8 +100,10 @@ public class DOMNodePointer extends NodePointer {
     private String defaultNamespace;
     private String id;
 
-    public static final String XML_NAMESPACE_URI = "http://www.w3.org/XML/1998/namespace";
-    public static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
+    public static final String XML_NAMESPACE_URI = 
+    		"http://www.w3.org/XML/1998/namespace";
+    public static final String XMLNS_NAMESPACE_URI = 
+    		"http://www.w3.org/2000/xmlns/";
 
     public DOMNodePointer(Node node, Locale locale){
         super(null, locale);
@@ -123,7 +125,9 @@ public class DOMNodePointer extends NodePointer {
         return testNode(this, node, test);
     }
 
-    public static boolean testNode(NodePointer pointer, Node node, NodeTest test){
+    public static boolean testNode(
+    		NodePointer pointer, Node node, NodeTest test)
+    {
         if (test == null){
             return true;
         }
@@ -134,7 +138,8 @@ public class DOMNodePointer extends NodePointer {
 
             QName testName = ((NodeNameTest)test).getNodeName();
             String testLocalName = testName.getName();
-            if (testLocalName.equals("*") || testLocalName.equals(DOMNodePointer.getLocalName(node))){
+            if (testLocalName.equals("*") || 
+            		testLocalName.equals(DOMNodePointer.getLocalName(node))){
                 String testPrefix = testName.getPrefix();
                 String nodePrefix = DOMNodePointer.getPrefix(node);
                 if (equalStrings(testPrefix, nodePrefix)){
@@ -345,19 +350,16 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Sets text contents of the node to the specified value
+     * Sets contents of the node to the specified value. If the value is
+     * a String, the contents of the node are replaced with this text.
+     * If the value is an Element or Document, the children of the
+     * node are replaced with the children of the passed node.
      */
     public void setValue(Object value){
-        String string = null;
-        if (value != null){
-            string = (String)TypeUtils.convert(value, String.class);
-            if (string.equals("")){
-                string = null;
-            }
-        }
-
-        if (node.getNodeType() == Node.TEXT_NODE){
-            if (string != null){
+        if (node.getNodeType() == Node.TEXT_NODE ||
+        		node.getNodeType() == Node.CDATA_SECTION_NODE){
+            String string = (String)TypeUtils.convert(value, String.class);
+            if (string != null && !string.equals("")){
                 node.setNodeValue(string);
             }
             else {
@@ -367,37 +369,60 @@ public class DOMNodePointer extends NodePointer {
         else {
             NodeList children = node.getChildNodes();
             int count = children.getLength();
-            for (int i = count; --i >= 0;){
-                Node child = children.item(i);
-                if (child.getNodeType() == Node.TEXT_NODE ||
-                        child.getNodeType() == Node.CDATA_SECTION_NODE){
-                    node.removeChild(child);
-                }
-            }
-            if (string != null){
-                Node text = node.getOwnerDocument().createTextNode(string);
-                node.appendChild(text);
-            }
+	        for (int i = count; --i >= 0;){
+	            Node child = children.item(i);
+	            node.removeChild(child);
+	        }
+            
+        	if (value instanceof Node){
+        		Node valueNode = (Node)value;
+        		if (valueNode instanceof Element ||
+        				valueNode instanceof Document){
+        			children = valueNode.getChildNodes();
+        			for (int i = 0; i < children.getLength(); i++){
+        				Node child = children.item(i);
+        				node.appendChild(child.cloneNode(true));
+        			}
+				}
+				else {
+					node.appendChild(valueNode.cloneNode(true));
+				}        	
+        	}
+        	else {
+	            String string = (String)TypeUtils.convert(value, String.class);
+	            if (string != null && !string.equals("")){
+	            	Node textNode = 
+	            			node.getOwnerDocument().createTextNode(string);
+	                node.appendChild(textNode);
+	            }
+        	}
         }
     }
-
-    public NodePointer createChild(JXPathContext context, QName name, int index){
+    
+    public NodePointer createChild(JXPathContext context, 
+    			QName name, int index)
+    {
         if (index == WHOLE_COLLECTION){
             index = 0;
         }
-        if (!getAbstractFactory(context).createObject(context, this, node, name.toString(), index)){
-            throw new JXPathException("Factory could not create a child node for path: " +
+        if (!getAbstractFactory(context).
+                createObject(context, this, node, name.toString(), index)){
+            throw new JXPathException(
+                    "Factory could not create a child node for path: " +
                     asPath() + "/" + name + "[" + (index+1) + "]");
         }
         NodeIterator it = childIterator(new NodeNameTest(name), false, null);
         if (it == null || !it.setPosition(index + 1)){
-            throw new JXPathException("Factory could not create a child node for path: " +
+            throw new JXPathException(
+                    "Factory could not create a child node for path: " +
                     asPath() + "/" + name + "[" + (index+1) + "]");
         }
         return it.getNodePointer();
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index, Object value){
+    public NodePointer createChild(JXPathContext context, 
+                QName name, int index, Object value)
+    {
         NodePointer ptr = createChild(context, name, index);
         ptr.setValue(value);
         return ptr;
@@ -412,7 +437,8 @@ public class DOMNodePointer extends NodePointer {
         if (prefix != null){
             String ns = getNamespaceURI(prefix);
             if (ns == null){
-                throw new JXPathException("Unknown namespace prefix: " + prefix);
+                throw new JXPathException(
+                	"Unknown namespace prefix: " + prefix);
             }
             element.setAttributeNS(ns, name.toString(), "");
         }
@@ -449,20 +475,27 @@ public class DOMNodePointer extends NodePointer {
                 // the parent's responsibility to produce the node test part
                 // of the path
                 if (parent instanceof DOMNodePointer){
-                    buffer.append('/');
+                    if (buffer.length() == 0 ||
+                            buffer.charAt(buffer.length()-1) != '/'){
+                    	buffer.append('/');
+                    }
                     buffer.append(getName());
-                    buffer.append('[').append(getRelativePositionByName()).append(']');
+                    buffer.append('[');
+                    buffer.append(getRelativePositionByName()).append(']');
                 }
                 break;
             case Node.TEXT_NODE:
             case Node.CDATA_SECTION_NODE:
                 buffer.append("/text()");
-                buffer.append('[').append(getRelativePositionOfTextNode()).append(']');
+                buffer.append('[');
+                buffer.append(getRelativePositionOfTextNode()).append(']');
                 break;
             case Node.PROCESSING_INSTRUCTION_NODE:
                 String target = ((ProcessingInstruction)node).getTarget();
-                buffer.append("/processing-instruction(\'").append(target).append("')");
-                buffer.append('[').append(getRelativePositionOfPI(target)).append(']');
+                buffer.append("/processing-instruction(\'");
+                buffer.append(target).append("')");
+                buffer.append('[');
+                buffer.append(getRelativePositionOfPI(target)).append(']');
                 break;
             case Node.DOCUMENT_NODE:
                 // That'll be empty
@@ -473,12 +506,14 @@ public class DOMNodePointer extends NodePointer {
     private String escape(String string){
         int index = string.indexOf('\'');
         while (index != -1){
-            string = string.substring(0, index) + "&apos;" + string.substring(index + 1);
+            string = string.substring(0, index) + 
+            	"&apos;" + string.substring(index + 1);
             index = string.indexOf('\'');
         }
         index = string.indexOf('\"');
         while (index != -1){
-            string = string.substring(0, index) + "&quot;" + string.substring(index + 1);
+            string = string.substring(0, index) + 
+            	"&quot;" + string.substring(index + 1);
             index = string.indexOf('\"');
         }
         return string;
@@ -503,7 +538,8 @@ public class DOMNodePointer extends NodePointer {
         int count = 1;
         Node n = node.getPreviousSibling();
         while (n != null){
-            if (n.getNodeType() == Node.TEXT_NODE || n.getNodeType() == Node.CDATA_SECTION_NODE){
+            if (n.getNodeType() == Node.TEXT_NODE || 
+            			n.getNodeType() == Node.CDATA_SECTION_NODE){
                 count ++;
             }
             n = n.getPreviousSibling();
@@ -629,12 +665,16 @@ public class DOMNodePointer extends NodePointer {
     private AbstractFactory getAbstractFactory(JXPathContext context){
         AbstractFactory factory = context.getFactory();
         if (factory == null){
-            throw new JXPathException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
+            throw new JXPathException(
+            	"Factory is not set on the JXPathContext - " +
+            	"cannot create path: " + asPath());
         }
         return factory;
     }
 
-    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+    public int compareChildNodePointers(
+    		NodePointer pointer1, NodePointer pointer2)
+    {
         Node node1 = (Node)pointer1.getBaseValue();
         Node node2 = (Node)pointer2.getBaseValue();
         if (node1 == node2){
