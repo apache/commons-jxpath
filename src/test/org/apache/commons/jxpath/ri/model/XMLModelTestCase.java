@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.11 2003/06/26 02:18:46 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2003/06/26 02:18:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.12 2003/09/08 20:50:57 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2003/09/08 20:50:57 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,8 +62,6 @@
 
 package org.apache.commons.jxpath.ri.model;
 
-import java.util.Iterator;
-
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.IdentityManager;
 import org.apache.commons.jxpath.JXPathContext;
@@ -78,7 +76,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2003/06/26 02:18:46 $
+ * @version $Revision: 1.12 $ $Date: 2003/09/08 20:50:57 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {

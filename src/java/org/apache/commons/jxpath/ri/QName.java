@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/QName.java,v 1.7 2003/08/24 03:46:01 dmitri Exp $
- * $Revision: 1.7 $
- * $Date: 2003/08/24 03:46:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/QName.java,v 1.8 2003/09/08 20:50:57 dmitri Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/09/08 20:50:57 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,14 +61,13 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import org.apache.commons.jxpath.JXPathException;
 
 /**
  * A qualified name: a combination of an optional namespace prefix
  * and an local name.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.7 $ $Date: 2003/08/24 03:46:01 $
+ * @version $Revision: 1.8 $ $Date: 2003/09/08 20:50:57 $
  */
 public class QName {
     private String prefix;

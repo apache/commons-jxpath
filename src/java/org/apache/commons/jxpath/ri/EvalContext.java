@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.25 2003/06/26 02:18:46 dmitri Exp $
- * $Revision: 1.25 $
- * $Date: 2003/06/26 02:18:46 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.26 2003/09/08 20:50:57 dmitri Exp $
+ * $Revision: 1.26 $
+ * $Date: 2003/09/08 20:50:57 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -75,9 +75,6 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.axes.*;
-import org.apache.commons.jxpath.ri.axes.AncestorContext;
-import org.apache.commons.jxpath.ri.axes.DescendantContext;
 import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
@@ -89,7 +86,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.25 $ $Date: 2003/06/26 02:18:46 $
+ * @version $Revision: 1.26 $ $Date: 2003/09/08 20:50:57 $
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;

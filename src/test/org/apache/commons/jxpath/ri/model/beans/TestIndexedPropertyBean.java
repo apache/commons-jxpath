@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/TestIndexedPropertyBean.java,v 1.1 2003/06/17 01:39:51 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2003/06/17 01:39:51 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/beans/TestIndexedPropertyBean.java,v 1.2 2003/09/08 20:50:57 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/09/08 20:50:57 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -62,20 +62,12 @@
 
 package org.apache.commons.jxpath.ri.model.beans;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Test bean for JUnit tests of indexed property handling.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2003/06/17 01:39:51 $
+ * @version $Revision: 1.2 $ $Date: 2003/09/08 20:50:57 $
  */
 public class TestIndexedPropertyBean {
 
