@@ -549,18 +549,29 @@ public class ValueUtils {
 
         // If the declaring class is public, we are done
         Class clazz = method.getDeclaringClass();
-        while (clazz != null) {
-            if (Modifier.isPublic(clazz.getModifiers())) {
-                return (method);
-            }
+        if (Modifier.isPublic(clazz.getModifiers())) {
+            return (method);
+        }
 
+        String name = method.getName();
+        Class[] parameterTypes = method.getParameterTypes();
+        while (clazz != null) {
             // Check the implemented interfaces and subinterfaces
             Method aMethod = getAccessibleMethodFromInterfaceNest(clazz, 
-                    method.getName(), method.getParameterTypes());
+                    name, parameterTypes);
             if (aMethod != null) {
                 return aMethod;
             }
+            
             clazz = clazz.getSuperclass();
+            if (Modifier.isPublic(clazz.getModifiers())) {
+                try {
+                    return clazz.getDeclaredMethod(name, parameterTypes);
+                } 
+                catch (NoSuchMethodException e) {
+                    ;
+                }
+            }
         }
         return null;
     }
