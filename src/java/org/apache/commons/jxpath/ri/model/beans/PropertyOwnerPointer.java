@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.5 2002/06/18 00:01:15 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/06/18 00:01:15 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.6 2002/07/11 01:17:16 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/07/11 01:17:16 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/06/18 00:01:15 $
+ * @version $Revision: 1.6 $ $Date: 2002/07/11 01:17:16 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -149,8 +149,23 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     public abstract QName getName();
+
     public void setValue(Object value){
         this.value = value;
+        if (parent != null){
+            if (!parent.isNode()){
+                parent.setValue(value);
+            }
+            else {
+                throw new UnsupportedOperationException(
+                  "Cannot setValue of an object that is not " +
+                  "some other object's property");
+            }
+        }
+        else {
+            throw new UnsupportedOperationException(
+              "Cannot replace the root object");
+        }
     }
 
     public abstract PropertyPointer getPropertyPointer();

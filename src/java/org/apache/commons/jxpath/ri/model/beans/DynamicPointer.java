@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPointer.java,v 1.3 2002/05/30 02:04:57 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/05/30 02:04:57 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/Attic/DynamicPointer.java,v 1.4 2002/07/11 01:17:16 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/07/11 01:17:16 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * for the first element of a path; following elements will by of type PropertyPointer.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/05/30 02:04:57 $
+ * @version $Revision: 1.4 $ $Date: 2002/07/11 01:17:16 $
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;
@@ -108,13 +108,6 @@ public class DynamicPointer extends PropertyOwnerPointer {
      */
     public Object getBaseValue(){
         return bean;
-    }
-
-    /**
-     * Throws UnsupportedOperationException.
-     */
-    public void setValue(Object value){
-        throw new UnsupportedOperationException("Cannot replace the root object");
     }
 
     /**
