@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.15 2003/10/09 21:31:43 rdonkin Exp $
- * $Revision: 1.15 $
- * $Date: 2003/10/09 21:31:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.16 2004/01/17 03:25:14 dmitri Exp $
+ * $Revision: 1.16 $
+ * $Date: 2004/01/17 03:25:14 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,7 +83,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2003/10/09 21:31:43 $
+ * @version $Revision: 1.16 $ $Date: 2004/01/17 03:25:14 $
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase {
@@ -99,11 +99,11 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
     }
 
     public void setUp() {
-        if (context == null) {
+//        if (context == null) {
             context = JXPathContext.newContext(createContextBean());
             context.setLocale(Locale.US);
             context.setFactory(getAbstractFactory());
-        }
+//        }
     }
 
     protected abstract Object createContextBean();
@@ -673,7 +673,19 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             "boolean(integers[position() > 4])",
             Boolean.FALSE);
 
-        assertXPathValue(context, "sum(integers)", new Double(10));
+        assertXPathValue(context, "sum(integers)", new Double(10));        
+
+        assertXPathValueAndPointer(
+                context,
+                "integers[last()]",
+                new Integer(4),
+                "/integers[4]");
+
+        assertXPathValueAndPointer(
+                context,
+                "//strings[last()]",
+                "String 3",
+                "/beans[1]/strings[3]");
     }
 
     public void testBooleanPredicate() {

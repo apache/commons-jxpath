@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodeIterator.java,v 1.8 2003/10/09 21:31:41 rdonkin Exp $
- * $Revision: 1.8 $
- * $Date: 2003/10/09 21:31:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodeIterator.java,v 1.9 2004/01/17 03:25:14 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2004/01/17 03:25:14 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.w3c.dom.Node;
  * An iterator of children of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2003/10/09 21:31:41 $
+ * @version $Revision: 1.9 $ $Date: 2004/01/17 03:25:14 $
  */
 public class DOMNodeIterator implements NodeIterator {
     private NodePointer parent;
@@ -97,13 +97,12 @@ public class DOMNodeIterator implements NodeIterator {
     }
 
     public NodePointer getNodePointer() {
-        if (child == null) {
-            if (!setPosition(1)) {
-                return null;
-            }
-            position = 0;
+        if (position == 0) {
+            setPosition(1);
         }
-
+        if (child == null) {
+            return null;
+        }
         return new DOMNodePointer(parent, child);
     }
 
@@ -128,7 +127,15 @@ public class DOMNodeIterator implements NodeIterator {
     private boolean previous() {
         position--;
         if (!reverse) {
-            child = child.getPreviousSibling();
+            if (position == 0) {
+                child = null;
+            }
+            else if (child == null) {
+                child = node.getLastChild();
+            }
+            else {
+                child = child.getPreviousSibling();
+            }
             while (child != null && !testChild()) {
                 child = child.getPreviousSibling();
             }

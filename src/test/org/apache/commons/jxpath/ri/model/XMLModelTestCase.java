@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.13 2003/10/09 21:31:43 rdonkin Exp $
- * $Revision: 1.13 $
- * $Date: 2003/10/09 21:31:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/XMLModelTestCase.java,v 1.14 2004/01/17 03:25:14 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2004/01/17 03:25:14 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2003/10/09 21:31:43 $
+ * @version $Revision: 1.14 $ $Date: 2004/01/17 03:25:14 $
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {
@@ -108,10 +108,10 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
 
     protected DocumentContainer createDocumentContainer() {
         return new DocumentContainer(
-            JXPathTestCase.class.getResource("Vendor.xml"),
-            getModel());
+                JXPathTestCase.class.getResource("Vendor.xml"),
+                getModel());
     }
-
+    
     protected abstract AbstractFactory getAbstractFactory();
 
     protected JXPathContext createContext() {
@@ -759,5 +759,12 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             context,
             "boolean(vendor//promotion[../@stores = 'some'])",
             Boolean.FALSE);
+    }
+    
+    public void testFunctionsLastAndPosition() {
+        assertXPathPointer(
+                context,
+                "vendor//location[last()]",
+                "/vendor[1]/location[2]");
     }
 }
