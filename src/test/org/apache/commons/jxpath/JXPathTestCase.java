@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.14 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.14 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.15 2002/04/28 04:37:01 dmitri Exp $
+ * $Revision: 1.15 $
+ * $Date: 2002/04/28 04:37:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -99,7 +99,7 @@ import org.apache.xml.utils.PrefixResolverDefault;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.15 $ $Date: 2002/04/28 04:37:01 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -330,12 +330,20 @@ public class JXPathTestCase extends TestCase
     private void testGetValue(JXPathContext context, String xpath, Object expected) {
         Object actual = context.getValue(xpath);
         assertEquals("Evaluating <" + xpath + ">", expected, actual);
+        
+        CompiledExpression expr = context.compile(xpath);
+        actual = expr.getValue(context);
+        assertEquals("Evaluating CE <" + xpath + ">", expected, actual);
     }
 
     private void testGetValue(JXPathContext context, String xpath, Object expected, Class requiredType) {
         Object actual = context.getValue(xpath, requiredType);
         assertEquals("Evaluating <" + xpath + ">", expected, actual);
-    }
+ 
+        CompiledExpression expr = context.compile(xpath);
+        actual = expr.getValue(context, requiredType);
+        assertEquals("Evaluating CE <" + xpath + ">", expected, actual);
+     }
 
     /**
      * Test JXPath.eval() with various arguments
@@ -349,8 +357,20 @@ public class JXPathTestCase extends TestCase
     }
 
     private void testEval(JXPathContext context, String xpath, Object expected) {
-        Object actual = context.eval(xpath);
+        Iterator it = context.iterate(xpath);
+        ArrayList actual = new ArrayList();
+        while (it.hasNext()){
+            actual.add(it.next());
+        }
         assertEquals("Evaluating <" + xpath + ">", expected, actual);
+
+        CompiledExpression expr = context.compile(xpath);
+        it = expr.iterate(context);
+        actual = new ArrayList();
+        while (it.hasNext()){
+            actual.add(it.next());
+        }
+        assertEquals("Evaluating CE <" + xpath + ">", expected, actual);
     }
 
     public void testContextDependency(){
@@ -392,8 +412,8 @@ public class JXPathTestCase extends TestCase
     }
 
     private void testDocumentOrder(JXPathContext context, String path1, String path2, int expected){
-        NodePointer np1 = (NodePointer)context.locateValue(path1);
-        NodePointer np2 = (NodePointer)context.locateValue(path2);
+        NodePointer np1 = (NodePointer)context.getPointer(path1);
+        NodePointer np2 = (NodePointer)context.getPointer(path2);
         int res = np1.compareTo(np2);
         if (res < 0){
             res = -1;
@@ -678,21 +698,26 @@ public class JXPathTestCase extends TestCase
                     }
                     else {
                         if (xpath_tests[i].eval){
-                            List list = ctx.locate(xpath_tests[i].xpath);
+                            Iterator it = ctx.iteratePointers(xpath_tests[i].xpath);
                             List paths = new ArrayList();
-                            for (Iterator it = list.iterator(); it.hasNext();){
+                            while (it.hasNext()){
                                 paths.add(((Pointer)it.next()).asPath());
                             }
                             actual = paths;
                         }
                         else {
-                            actual = ctx.locateValue(xpath_tests[i].xpath).asPath();
+                            actual = ctx.getPointer(xpath_tests[i].xpath).asPath();
                         }
                     }
                 }
                 else {
                     if (xpath_tests[i].eval){
-                        actual = ctx.eval(xpath_tests[i].xpath);
+                        ArrayList list = new ArrayList();
+                        Iterator it = ctx.iterate(xpath_tests[i].xpath);
+                        while (it.hasNext()){
+                            list.add(it.next());
+                        }
+                        actual = list;
                     }
                     else {
                         ctx.setLenient(xpath_tests[i].lenient);
@@ -716,8 +741,8 @@ public class JXPathTestCase extends TestCase
         for (int i=0; i < xpath_tests.length; i++) {
             try {
                 if (!xpath_tests[i].path && !xpath_tests[i].eval){
-                    Pointer ptr = ctx.locateValue(xpath_tests[i].xpath);
-                    Pointer test = ctx.locateValue(ptr.asPath());
+                    Pointer ptr = ctx.getPointer(xpath_tests[i].xpath);
+                    Pointer test = ctx.getPointer(ptr.asPath());
                     assertEquals("Testing pointer for <" + xpath_tests[i].xpath + ">", ptr.asPath(), test.asPath());
                 }
             }

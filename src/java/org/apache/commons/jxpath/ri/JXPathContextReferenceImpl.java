@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.13 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.13 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.14 2002/04/28 04:37:01 dmitri Exp $
+ * $Revision: 1.14 $
+ * $Date: 2002/04/28 04:37:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -84,7 +84,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.13 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.14 $ $Date: 2002/04/28 04:37:01 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -146,8 +146,12 @@ public class JXPathContextReferenceImpl extends JXPathContext
     public static NodePointerFactory[] getNodePointerFactories(){
         return nodeFactoryArray;
     }
+    
+    public CompiledExpression compile(String xpath){
+        return new JXPathCompiledExpression(xpath, compileExpression(xpath));
+    }
 
-    private static Expression compile(String xpath){
+    private static Expression compileExpression(String xpath){
         Expression expr;
         if (useSoftCache){
             expr = null;
@@ -172,12 +176,10 @@ public class JXPathContextReferenceImpl extends JXPathContext
                 compiled.put(xpath, expr);
             }
         }
-//        }
         return expr;
     }
 
     private static void cleanupCache(){
-//        System.gc();
         Iterator it = compiled.entrySet().iterator();
         while (it.hasNext()){
             Map.Entry me = (Map.Entry)it.next();
@@ -193,8 +195,11 @@ public class JXPathContextReferenceImpl extends JXPathContext
      * types are wrapped into objects.
      */
     public Object getValue(String xpath){
-//        System.err.println("XPATH: " + xpath);
-        Object result = eval(xpath, true);
+        return getValue(xpath, compileExpression(xpath));
+    }
+    
+    public Object getValue(String xpath, Expression expr){    
+        Object result = getRootContext().eval(expr);        
         if (result == null && !lenient){
             throw new JXPathException("No value for xpath: " + xpath);
         }
@@ -214,7 +219,12 @@ public class JXPathContextReferenceImpl extends JXPathContext
      * and returns the result of the conversion.
      */
     public Object getValue(String xpath, Class requiredType){
-        Object value = getValue(xpath);
+        Expression expr = compileExpression(xpath);
+        return getValue(xpath, expr, requiredType);
+    }
+    
+    public Object getValue(String xpath, Expression expr, Class requiredType){
+        Object value = getValue(xpath, expr);
         if (value != null && requiredType != null){
             if (!TypeUtils.canConvert(value, requiredType)){
                 throw new JXPathException("Invalid expression type. '" + xpath +
@@ -227,28 +237,24 @@ public class JXPathContextReferenceImpl extends JXPathContext
     }
 
     /**
-     * Traverses the xpath and returns a List of objects. Even if
-     * there is only one object that matches the xpath, it will be returned
-     * as a collection with one element.  If the xpath matches no properties
-     * in the graph, the List will be empty.
+     * Traverses the xpath and returns a Iterator of all results found
+     * for the path. If the xpath matches no properties
+     * in the graph, the Iterator will not be null.
      */
-    public List eval(String xpath){
-//        System.err.println("XPATH: " + xpath);
-        Object result = eval(xpath, false);
-        if (result instanceof EvalContext){
-            return ((EvalContext)result).getValueList();
-        }
-        else if (result instanceof Pointer){
-            return Collections.singletonList(((Pointer)result).getValue());
-        }
-        else {
-            return Collections.singletonList(result);
-        }
+    public Iterator iterate(String xpath){
+        return iterate(xpath, compileExpression(xpath));
+    }
+    
+    public Iterator iterate(String xpath, Expression expr){
+        return getRootContext().iterate(expr);        
     }
 
-    public Pointer locateValue(String xpath){
-//        System.err.println("XPATH: " + xpath);
-        Object result = eval(xpath, true);
+    public Pointer getPointer(String xpath){
+        return getPointer(xpath, compileExpression(xpath));
+    }
+    
+    public Pointer getPointer(String xpath, Expression expr){
+        Object result = getRootContext().eval(expr);        
         if (result instanceof EvalContext){
             result = ((EvalContext)result).getSingleNodePointer();
         }
@@ -260,11 +266,14 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
     }
 
-    /**
-     */
     public void setValue(String xpath, Object value){
+        setValue(xpath, compileExpression(xpath), value);
+    }
+    
+    
+    public void setValue(String xpath, Expression expr, Object value){
         try {
-            setValue(xpath, value, false);
+            setValue(xpath, expr, value, false);
         }
         catch (Throwable ex){
             throw new JXPathException(
@@ -272,12 +281,13 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
     }
 
-    /**
-     */
     public void createPath(String xpath, Object value){
-//        System.err.println("CREATING XPATH: " + xpath);
+        createPath(xpath, compileExpression(xpath), value);
+    }
+    
+    public void createPath(String xpath, Expression expr, Object value){
         try {
-            setValue(xpath, value, true);
+            setValue(xpath, expr, value, true);
         }
         catch (Throwable ex){
             throw new JXPathException(
@@ -285,8 +295,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
     }
 
-    private void setValue(String xpath, Object value, boolean create){
-        Object result = eval(xpath, true);
+    private void setValue(String xpath, Expression expr, Object value, boolean create){
+        Object result = getRootContext().eval(expr);        
 //        System.err.println("RESULT: " + result);
         Pointer pointer = null;
 
@@ -309,25 +319,20 @@ public class JXPathContextReferenceImpl extends JXPathContext
         }
     }
 
-    public List locate(String xpath){
-        Object result = eval(xpath, false);
-        if (result instanceof EvalContext){
-            return ((EvalContext)result).getPointerList();
-        }
-        else if (result instanceof Pointer){
-            return Collections.singletonList((Pointer)result);
-        }
-        else {
-            return Collections.singletonList(
-                    NodePointer.newNodePointer(null, result, getLocale()));
-        }
+    /**
+     * Traverses the xpath and returns an Iterator of Pointers.
+     * A Pointer provides easy access to a property.
+     * If the xpath matches no properties
+     * in the graph, the Iterator be empty, but not null.
+     */
+    public Iterator iteratePointers(String xpath){
+        return iteratePointers(xpath, compileExpression(xpath));
     }
 
-    private Object eval(String xpath, boolean firstMatchLookup) {
-        Expression expr = compile(xpath);
-        return getRootContext().eval(expr, firstMatchLookup);
+    public Iterator iteratePointers(String xpath, Expression expr){
+        return getRootContext().iteratePointers(expr);
     }
-
+    
     private void printPointer(NodePointer pointer){
         Pointer p = pointer;
         while (p != null){
@@ -349,18 +354,6 @@ public class JXPathContextReferenceImpl extends JXPathContext
 
     private EvalContext getRootContext(){
         return new RootContext(this, getRootPointer());
-    }
-
-    private List resolveNodeSet(List list){
-        List result = new ArrayList();
-        for (int i = 0; i < list.size(); i++){
-            Object element = list.get(i);
-            if (element instanceof NodePointer){
-                element = ((NodePointer)element).getNodeValue();
-            }
-            result.add(element);
-        }
-        return result;
     }
 
     public NodePointer getVariablePointer(QName name){

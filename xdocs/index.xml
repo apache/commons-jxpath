@@ -3,8 +3,8 @@
    <properties>
       <title>Home</title>
       <author email="commons-dev@jakarta.apache.org">Commons Documentation Team</author>
-      <author email="dmitri@plotnix.com">Dmitri Plotnikov</author>
-      <revision>$Id: index.xml,v 1.1 2002/04/10 03:40:21 dmitri Exp $</revision>
+      <author email="dmitri@apache.org">Dmitri Plotnikov</author>
+      <revision>$Id: index.xml,v 1.2 2002/04/28 04:37:01 dmitri Exp $</revision>
    </properties>
 
    <body>
@@ -18,10 +18,10 @@
           <p>
              Consider this example:
           </p>
-              <blockquote><pre>
-Address address = (Address)JXPath.getValue(vendor,
-         "locations[address/zipCode='90210']/address");
-              </pre></blockquote>
+<blockquote><pre>
+Address address = (Address)JXPathContext.newContext(vendor).
+         getValue("locations[address/zipCode='90210']/address");
+</pre></blockquote>
           <p>
             This XPath expression is equvalent to the following Java code:
           </p>
@@ -42,7 +42,7 @@ while (it.hasNext()){
             XPath was standardized by W3C and is used in both XSLT and XPointer.
           </p>
           <p>
-            If you want to find out more about XPath, a good place to start is
+            If you want to find out more about XPath, a good place to start
             is an excellent XPath Tutorial by <a href="http://www.w3schools.com/xpath">W3Schools</a>
           </p>
           <p>
@@ -51,7 +51,7 @@ while (it.hasNext()){
           </p>
           <p>
             Primary applications of JXPath are in scripting: JSP and similar template/script based technologies.
-            However, programmers who like a more XML-flavored APIs, should consider JXPath as
+            However, programmers who prefer XML-flavored APIs, should consider JXPath as
             an alternative to other expression languages as well. JXPath is a must-have tool
             for those who work with mixtures of Java objects and XML and need to frequently
             traverse through graphs of those.

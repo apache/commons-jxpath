@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.6 2002/04/12 02:28:06 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/04/12 02:28:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/JXPathContext.java,v 1.7 2002/04/28 04:37:01 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/04/28 04:37:01 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,8 +61,7 @@
  */
 package org.apache.commons.jxpath;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * JXPathContext provides APIs for the traversal of graphs of JavaBeans using
@@ -405,7 +404,7 @@ import java.util.Locale;
  * Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0 </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/04/12 02:28:06 $
+ * @version $Revision: 1.7 $ $Date: 2002/04/28 04:37:01 $
  */
 public abstract class JXPathContext {
     protected JXPathContext parentContext;
@@ -538,6 +537,15 @@ public abstract class JXPathContext {
     }
 
     /**
+     * Compiles the supplied XPath and returns an internal representation
+     * of the path that can then be evaluated.  Use CompiledExpressions
+     * when you need to evaluate the same expression multiple times
+     * and there is a convenient place to cache CompiledExpression
+     * between invocations.
+     */
+    public abstract CompiledExpression compile(String xpath);
+    
+    /**
      * Evaluates the xpath and returns the resulting object. Primitive
      * types are wrapped into objects.
      */
@@ -576,26 +584,57 @@ public abstract class JXPathContext {
     public abstract void createPath(String xpath, Object value);
 
     /**
-     * Traverses the xpath and returns a List of objects. Even if
-     * there is only one object that matches the xpath, it will be returned
-     * as a collection with one element.  If the xpath matches no properties
-     * in the graph, the List will be empty.
+     * @deprecated Please use iterate
      */
-    public abstract List eval(String xpath);
+    public List eval(String xpath){
+        ArrayList list = new ArrayList();
+        Iterator it = iterate(xpath);
+        while (it.hasNext()){
+            list.add(it.next());
+        }
+        return list;
+    }
+
+    /**
+     * Traverses the xpath and returns a Iterator of all results found
+     * for the path. If the xpath matches no properties
+     * in the graph, the Iterator will not be null.
+     */
+    public abstract Iterator iterate(String xpath);
+
+
+    /**
+     * @deprecated Please use getPointer(String xpath)
+     */
+    public Pointer locateValue(String xpath){
+        return getPointer(xpath);
+    }
 
     /**
      * Traverses the xpath and returns a Pointer.
      * A Pointer provides easy access to a property.
      * If the xpath matches no properties
-     * in the graph, the List will be empty.
+     * in the graph, the pointer will be null.
      */
-    public abstract Pointer locateValue(String xpath);
+    public abstract Pointer getPointer(String xpath);
+    
+    /**
+     * @deprecated Please use iteratePointers
+     */
+    public List locate(String xpath){
+        ArrayList list = new ArrayList();
+        Iterator it = iteratePointers(xpath);
+        while (it.hasNext()){
+            list.add(it.next());
+        }
+        return list;
+    }
 
     /**
-     * Traverses the xpath and returns a List of Pointers.
+     * Traverses the xpath and returns an Iterator of Pointers.
      * A Pointer provides easy access to a property.
      * If the xpath matches no properties
-     * in the graph, the List will be empty.
+     * in the graph, the Iterator be empty, but not null.
      */
-    public abstract List locate(String xpath);
+    public abstract Iterator iteratePointers(String xpath);
 }

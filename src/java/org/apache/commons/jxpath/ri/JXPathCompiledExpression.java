@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Attic/JXPath.java,v 1.4 2002/04/28 04:37:01 dmitri Exp $
- * $Revision: 1.4 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathCompiledExpression.java,v 1.1 2002/04/28 04:37:01 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2002/04/28 04:37:01 $
  *
  * ====================================================================
@@ -53,71 +53,88 @@
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation and was
- * originally based on software copyright (c) 2001, Plotnix, Inc,
- * <http://www.plotnix.com/>.
+ * individuals on behalf of the Apache Software Foundation.
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.commons.jxpath;
+package org.apache.commons.jxpath.ri;
 
-import java.util.List;
+import java.util.Iterator;
+
+import org.apache.commons.jxpath.ri.compiler.Expression;
+import org.apache.commons.jxpath.CompiledExpression;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.Pointer;
 
 /**
- * This class defines convenience methods for XPath traversal. Each method
- * creates a temporary {@link JXPathContext JXPathContext} and forwards the
- * request to it. Use JXPathContext APIs instead of JXPath APIs if any of
- * the following requirements exist:
- * <ul>
- * <li>There is a need for the support of variables.  JXPathContext has a method
- * that allows registering of a pool of variables.
- * <li>There is a need to use extension functions other than
- * Java method calls using the default syntax (see {@link PackageFunctions
- * PackageFunctions}
- * <li>There is a need to use an AbstractFactory, which can create new objects.
- * <li>There is a need to use a hierarchy of evaluation contexts.
- * </ul>
  * 
- * @deprecated This class will soon be removed - use JXPathContext.newInstance()
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/28 04:37:01 $
+ * @version $Revision: 1.1 $ $Date: 2002/04/28 04:37:01 $
  */
-public final class JXPath {
+public class JXPathCompiledExpression implements CompiledExpression {
 
+    private String xpath;
+    private Expression expression;
+    
+    public JXPathCompiledExpression(String xpath, Expression expression){
+        this.xpath = xpath;
+        this.expression = expression;
+    }
+    
     /**
-     * Traverses the xpath and returns the resulting object. Primitive
-     * types are wrapped into objects.
-     * 
-     * @deprecated This class is going away
+     * @see CompiledExpression#getValue(JXPathContext)
      */
-    public static Object getValue(Object bean, String xpath){
-        return JXPathContext.newContext(bean).getValue(xpath);
+    public Object getValue(JXPathContext context) {
+        return ((JXPathContextReferenceImpl)context).
+                    getValue(xpath, expression);
     }
 
     /**
-     * Modifies the value of the property described by the supplied xpath.
-     * Will throw an exception if one of the following conditions occurs:
-     * <ul>
-     * <li>The xpath does not in fact describe an existing property
-     * <li>The property is not writable (no public, non-static set method)
-     * </ul>
-     * 
-     * @deprecated This class is going away
+     * @see CompiledExpression#getValue(JXPathContext, Class)
      */
-    public static void setValue(Object bean, String xpath, Object value){
-        JXPathContext.newContext(bean).setValue(xpath, value);
+    public Object getValue(JXPathContext context, Class requiredType) {
+        return ((JXPathContextReferenceImpl)context).
+                    getValue(xpath, expression, requiredType);
     }
 
     /**
-     * Traverses the xpath and returns a List of objects. Even if
-     * there is only one object that matches the xpath, it will be returned
-     * as a collection with one element.  If the xpath matches no properties
-     * in the graph, the List will be empty.
-     * 
-     * @deprecated This class is going away
+     * @see CompiledExpression#setValue(JXPathContext, Object)
      */
-    public static List eval(Object bean, String xpath){
-        return JXPathContext.newContext(bean).eval(xpath);
+    public void setValue(JXPathContext context, Object value) {
+        ((JXPathContextReferenceImpl)context).
+                    setValue(xpath, expression, value);
+    }
+
+    /**
+     * @see CompiledExpression#createPath(JXPathContext, Object)
+     */
+    public void createPath(JXPathContext context, Object value) {
+        ((JXPathContextReferenceImpl)context).
+                    createPath(xpath, expression, value);
+    }
+
+    /**
+     * @see CompiledExpression#iterate(JXPathContext)
+     */
+    public Iterator iterate(JXPathContext context) {
+        return ((JXPathContextReferenceImpl)context).
+                    iterate(xpath, expression);
+    }
+
+    /**
+     * @see CompiledExpression#getPointer(JXPathContext, String)
+     */
+    public Pointer getPointer(JXPathContext context, String xpath) {
+        return ((JXPathContextReferenceImpl)context).
+                    getPointer(xpath, expression);
+    }
+
+    /**
+     * @see CompiledExpression#iteratePointers(JXPathContext)
+     */
+    public Iterator iteratePointers(JXPathContext context) {
+        return ((JXPathContextReferenceImpl)context).
+                    iteratePointers(xpath, expression);
     }
 }

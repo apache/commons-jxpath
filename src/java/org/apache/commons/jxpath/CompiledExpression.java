@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/Attic/JXPath.java,v 1.4 2002/04/28 04:37:01 dmitri Exp $
- * $Revision: 1.4 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/CompiledExpression.java,v 1.1 2002/04/28 04:37:01 dmitri Exp $
+ * $Revision: 1.1 $
  * $Date: 2002/04/28 04:37:01 $
  *
  * ====================================================================
@@ -53,47 +53,44 @@
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation and was
- * originally based on software copyright (c) 2001, Plotnix, Inc,
- * <http://www.plotnix.com/>.
+ * individuals on behalf of the Apache Software Foundation.
  * For more information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
 package org.apache.commons.jxpath;
 
-import java.util.List;
+import java.util.Iterator;
 
 /**
- * This class defines convenience methods for XPath traversal. Each method
- * creates a temporary {@link JXPathContext JXPathContext} and forwards the
- * request to it. Use JXPathContext APIs instead of JXPath APIs if any of
- * the following requirements exist:
- * <ul>
- * <li>There is a need for the support of variables.  JXPathContext has a method
- * that allows registering of a pool of variables.
- * <li>There is a need to use extension functions other than
- * Java method calls using the default syntax (see {@link PackageFunctions
- * PackageFunctions}
- * <li>There is a need to use an AbstractFactory, which can create new objects.
- * <li>There is a need to use a hierarchy of evaluation contexts.
- * </ul>
- * 
- * @deprecated This class will soon be removed - use JXPathContext.newInstance()
+ * Represents a compiled XPath. The interpretation of compiled XPaths
+ * may be faster, because it bypasses the compilation step. The reference
+ * implementation of JXPathContext also globally caches some of the
+ * results of compilation, so the direct use of JXPathContext is not
+ * always less efficient than the use of CompiledExpression.
+ * <p>
+ * Use CompiledExpression only when there is a need to evaluate the
+ * same expression multiple times and the CompiledExpression can be
+ * conveniently cached.  
+ * <p>
+ * To acqure a CompiledExpression, call {@link JXPathContext#compile
+ * JXPathContext.compile}
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/28 04:37:01 $
+ * @version $Revision: 1.1 $ $Date: 2002/04/28 04:37:01 $
  */
-public final class JXPath {
+public interface CompiledExpression {
+    
+    /**
+     * Evaluates the xpath and returns the resulting object. Primitive
+     * types are wrapped into objects.
+     */
+    Object getValue(JXPathContext context);
 
     /**
-     * Traverses the xpath and returns the resulting object. Primitive
-     * types are wrapped into objects.
-     * 
-     * @deprecated This class is going away
+     * Evaluates the xpath, converts the result to the specified class and
+     * returns the resulting object.
      */
-    public static Object getValue(Object bean, String xpath){
-        return JXPathContext.newContext(bean).getValue(xpath);
-    }
+    Object getValue(JXPathContext context, Class requiredType);
 
     /**
      * Modifies the value of the property described by the supplied xpath.
@@ -102,22 +99,45 @@ public final class JXPath {
      * <li>The xpath does not in fact describe an existing property
      * <li>The property is not writable (no public, non-static set method)
      * </ul>
-     * 
-     * @deprecated This class is going away
      */
-    public static void setValue(Object bean, String xpath, Object value){
-        JXPathContext.newContext(bean).setValue(xpath, value);
-    }
+    void setValue(JXPathContext context, Object value);
 
     /**
-     * Traverses the xpath and returns a List of objects. Even if
-     * there is only one object that matches the xpath, it will be returned
-     * as a collection with one element.  If the xpath matches no properties
-     * in the graph, the List will be empty.
-     * 
-     * @deprecated This class is going away
+     * The same as setValue, except it creates intermediate elements of
+     * the path by invoking an AbstractFactory, which should first be
+     * installed on the context by calling "setFactory".
+     * <p>
+     * Will throw an exception if one of the following conditions occurs:
+     * <ul>
+     * <li>Elements of the xpath aleady exist, by the path does not in
+     *  fact describe an existing property
+     * <li>The AbstractFactory fails to create an instance for an intermediate
+     * element.
+     * <li>The property is not writable (no public, non-static set method)
+     * </ul>
      */
-    public static List eval(Object bean, String xpath){
-        return JXPathContext.newContext(bean).eval(xpath);
-    }
+    void createPath(JXPathContext context, Object value);
+
+    /**
+     * Traverses the xpath and returns a Iterator of all results found
+     * for the path. If the xpath matches no properties
+     * in the graph, the Iterator will not be null.
+     */
+    Iterator iterate(JXPathContext context);
+
+    /**
+     * Traverses the xpath and returns a Pointer.
+     * A Pointer provides easy access to a property.
+     * If the xpath matches no properties
+     * in the graph, the pointer will be null.
+     */
+    Pointer getPointer(JXPathContext context, String xpath);
+    
+    /**
+     * Traverses the xpath and returns an Iterator of Pointers.
+     * A Pointer provides easy access to a property.
+     * If the xpath matches no properties
+     * in the graph, the Iterator be empty, but not null.
+     */
+    Iterator iteratePointers(JXPathContext context);
 }

@@ -154,7 +154,7 @@ In the lenient mode the method merely returns null if the path maps to nothing.
 <subsection name="Retrieving Multiple Results">
  <p>
  JXPath can retrieve multiple objects from a graph. Note that the method
- called in this case is not <code>getValue</code>, but <code>eval</code>.
+ called in this case is not <code>getValue</code>, but <code>iterate</code>.
  </p>
  <source>
                                                                        &#xA0;
@@ -168,7 +168,7 @@ In the lenient mode the method merely returns null if the path maps to nothing.
  ...
 
  JXPathContext context = JXPathContext.newContext(auth);
- List threeBooks = (List)context.eval("books[position() &lt; 4]");
+ Iterator threeBooks = context.iterate("books[position() &lt; 4]");
  </source>
  <p>
  This returns a list of at most three books from the array of all books
@@ -543,7 +543,7 @@ For example, you can call
 </p>
 <source>
                                                                        &#xA0;
-Pointer ptr = context.locateValue("employees[$i]/addresses[$j]")
+Pointer ptr = context.getPointer("employees[$i]/addresses[$j]")
 </source>
 <p>
 Let's say the value of the variable i is 1 and j = 3.
@@ -820,11 +820,40 @@ the Locale set on the JXPathContext (or the default locale).  See
 
  JXPathContext context = JXPathContext.newContext(sharedContext, auth);
 
- List javaBooks = (List)context.
-        eval("books[preprocessTitle(title) = $title]");
+ Iterator javaBooks = 
+      context.iterate("books[preprocessTitle(title) = $title]");
  </source>
 </section>
 
+
+<section name="Compiled Expressions">
+<p>
+When JXPath is asked to evaluate an expression for the first time,
+it compiles it and caches its compiled representation.  This mechanism
+reduces the overhead caused by compilation.  In some cases though,
+JXPath's own caching may not be sufficient - JXPath caches have
+limited size and they are cleared once in a while. 
+</p>
+<p>
+Here's how you can precompile an XPath expression:
+</p>
+<source>
+                                                                       &#xA0;
+     CompiledExpression expr = context.compile(xpath);
+     ...
+     Object value = expr.getValue(context);
+</source>
+<p>
+The following requirements can be addressed with compiled expressions:
+</p>
+<ul>
+ <li>There is a relatively small number of XPaths your application
+   works with, and it needs to evaluate those XPaths multiple times.</li>
+ <li>Some XPaths need to be precompiled at initialization time</li>
+ <li>The syntax of some XPaths needs to be checked before they are
+   used for the first time</li>
+</ul>
+</section>
 
 <section name="Customizing JXPath">
   <p>
