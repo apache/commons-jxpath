@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Expression.java,v 1.2 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Expression.java,v 1.3 2002/05/08 00:39:59 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/05/08 00:39:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,6 +61,16 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.util.ValueUtils;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Locale;
+
 /**
  * Common superclass for several types of nodes in the parse tree. Provides
  * APIs for optimization of evaluation of expressions.  Specifically, an
@@ -69,7 +79,7 @@ package org.apache.commons.jxpath.ri.compiler;
  * provides that hint.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/08 00:39:59 $
  */
 public abstract class Expression {
 
@@ -104,36 +114,19 @@ public abstract class Expression {
 
     public static final int OP_CORE_FUNCTION = 22;
 
+    public static final int OP_KEY_LOOKUP = 23;
+
+    protected static Double ZERO = new Double(0);
+    protected static Double ONE = new Double(1);
+    protected static Double NaN = new Double(Double.NaN);
+
     private int typeCode;
 
     private boolean contextDependencyKnown = false;
     private boolean contextDependent;
 
-    public static final int EVALUATION_MODE_ONCE = 0;
-    public static final int EVALUATION_MODE_ONCE_AND_SAVE = 1;
-    public static final int EVALUATION_MODE_ALWAYS = 2;
-    private int evaluationMode;
-
-    private int id = -1;
-
     protected Expression(int typeCode){
         this.typeCode = typeCode;
-    }
-
-    /**
-     * Expression IDs are used with context-independent expressions
-     * for identifying the register holding the intermediate result of
-     * this expression evaluation.
-     */
-    public void setID(int id){
-        this.id = id;
-    }
-
-    /**
-     * @see #setID
-     */
-    public int getID(){
-        return id;
     }
 
     public int getExpressionTypeCode(){
@@ -160,34 +153,6 @@ public abstract class Expression {
      * Implemented by subclasses and result is cached by isContextDependent()
      */
     public abstract boolean computeContextDependent();
-
-    /**
-     * Evaluation mode can be EVALUATION_MODE_ONCE, EVALUATION_MODE_ONCE_AND_SAVE
-     * or EVALUATION_MODE_ALWAYS, depending on whether or not this expression
-     * is context-dependent.  The compiler calls setEvaluationMode(EVALUATION_MODE_ONCE)
-     * on the root Expression.  That expression recursively computes
-     * the evaluation mode for its children and calls setEvaluationMode on
-     * each of them.
-     */
-    public void setEvaluationMode(int mode){
-        this.evaluationMode = mode;
-    }
-
-    /**
-     * @see #setEvaluationMode
-     */
-    public int getEvaluationMode(){
-        return evaluationMode;
-    }
-
-    /**
-     * Some expressions return optimization hints that
-     * help the interpreter choose between alternative
-     * evaluation algorithms.
-     */
-    public Object getEvaluationHint(String hint){
-        return null;
-    }
 
     public String toString(){
         StringBuffer buffer = new StringBuffer();
@@ -233,5 +198,82 @@ public abstract class Expression {
             case OP_CORE_FUNCTION: return "CORE_FUNCTION";
         }
         return "UNKNOWN";
+    }
+
+    /**
+     * Evaluates the expression. If the result is a node set, returns
+     * the first element of the node set.
+     */
+    public abstract Object computeValue(EvalContext context);
+    public abstract Object compute(EvalContext context);
+
+    public Iterator iterate(EvalContext context){
+        Object result = compute(context);
+        if (result instanceof EvalContext){
+            return new ValueIterator((EvalContext)result);
+        }
+        return ValueUtils.iterate(result);
+    }
+
+    public Iterator iteratePointers(EvalContext context){
+        Object result = compute(context);
+        if (result == null){
+            return Collections.EMPTY_LIST.iterator();
+        }
+        if (result instanceof EvalContext){
+            return (EvalContext)result;
+        }
+        return new PointerIterator(ValueUtils.iterate(result),
+                new QName(null, "value"),
+                context.getRootContext().getCurrentNodePointer().getLocale());
+    }
+
+    public static class PointerIterator implements Iterator {
+        private Iterator iterator;
+        private QName qname;
+        private Locale locale;
+
+        public PointerIterator(Iterator it, QName qname, Locale locale){
+            this.iterator = it;
+            this.qname = qname;
+            this.locale = locale;
+        }
+
+        public boolean hasNext(){
+            return iterator.hasNext();
+        }
+
+        public Object next(){
+            Object o = iterator.next();
+            return NodePointer.newNodePointer(qname, o, locale);
+        }
+
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    public static class ValueIterator implements Iterator {
+        private Iterator iterator;
+
+        public ValueIterator(Iterator it){
+            this.iterator = it;
+        }
+
+        public boolean hasNext(){
+            return iterator.hasNext();
+        }
+
+        public Object next(){
+            Object o = iterator.next();
+            if (o instanceof Pointer){
+                return ((Pointer)o).getValue();
+            }
+            return o;
+        }
+
+        public void remove(){
+            throw new UnsupportedOperationException();
+        }
     }
 }

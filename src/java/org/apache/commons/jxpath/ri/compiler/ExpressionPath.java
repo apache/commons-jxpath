@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.3 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExpressionPath.java,v 1.4 2002/05/08 00:39:59 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/05/08 00:39:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,12 +61,16 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.ri.axes.*;
+import org.apache.commons.jxpath.ri.model.NodePointer;
+
 /**
  * An element of the parse tree that represents an expression path, which is
  * a path that starts with an expression like a function call: <code>getFoo(.)/bar</code>.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.4 $ $Date: 2002/05/08 00:39:59 $
  */
 public class ExpressionPath extends Path {
 
@@ -115,62 +119,15 @@ public class ExpressionPath extends Path {
     }
 
     /**
-     * Based on the supplied argument computes the evaluation mode
-     * for the base expression, predicates and steps.
-     */
-    public void setEvaluationMode(int mode){
-        super.setEvaluationMode(mode);
-
-        switch(mode){
-            case EVALUATION_MODE_ALWAYS:
-                if (expression.isContextDependent()){
-                    expression.setEvaluationMode(Expression.EVALUATION_MODE_ALWAYS);
-                }
-                else {
-                    expression.setEvaluationMode(Expression.EVALUATION_MODE_ONCE_AND_SAVE);
-                }
-                break;
-            case EVALUATION_MODE_ONCE:
-            case EVALUATION_MODE_ONCE_AND_SAVE:
-                expression.setEvaluationMode(Expression.EVALUATION_MODE_ONCE);
-                break;
-        }
-
-        if (predicates != null){
-            for (int i = 0; i < predicates.length; i++){
-                switch(mode){
-                    case EVALUATION_MODE_ALWAYS:
-                        if (predicates[i].isContextDependent()){
-                            predicates[i].setEvaluationMode(Expression.EVALUATION_MODE_ALWAYS);
-                        }
-                        else {
-                            predicates[i].setEvaluationMode(Expression.EVALUATION_MODE_ONCE_AND_SAVE);
-                        }
-                        break;
-                    case EVALUATION_MODE_ONCE:
-                    case EVALUATION_MODE_ONCE_AND_SAVE:
-                        predicates[i].setEvaluationMode(Expression.EVALUATION_MODE_ONCE);
-                        break;
-                }
-            }
-        }
-    }
-
-    /**
      * Recognized paths formatted as <code>$x[3]/foo[2]</code>.  The
      * evaluation of such "simple" paths is optimized and streamlined.
      */
-    public Object getEvaluationHint(String hint){
-        if (!hint.equals(BASIC_PREDICATES_HINT)){
-            return super.getEvaluationHint(hint);
-        }
-
+    public boolean isSimpleExpressionPath(){
         if (!basicKnown){
             basicKnown = true;
-            basic = super.getEvaluationHint(BASIC_PATH_HINT).equals(Boolean.TRUE) &&
-                    areBasicPredicates(getPredicates());
+            basic = isSimplePath() && areBasicPredicates(getPredicates());
         }
-        return basic ? Boolean.TRUE : Boolean.FALSE;
+        return basic;
     }
 
     public String toString(){
@@ -199,5 +156,61 @@ public class ExpressionPath extends Path {
         }
         buffer.append(')');
         return buffer.toString();
+    }
+
+    public Object compute(EvalContext context){
+        return expressionPath(context, false);
+    }
+
+    public Object computeValue(EvalContext context){
+        return expressionPath(context, true);
+    }
+
+    /**
+     * Walks an expression path (a path that starts with an expression)
+     */
+    protected Object expressionPath(EvalContext evalContext, boolean firstMatch){
+        Object value = expression.compute(evalContext);
+        EvalContext context;
+        if (value instanceof InitialContext){
+            // This is an optimization. We can avoid iterating through a collection
+            // if the context bean is in fact one.
+            context = (InitialContext)value;
+        }
+        else if (value instanceof EvalContext){
+            // UnionContext will collect all values from the "value" context
+            // and treat the whole thing as a big collection.
+            context = new UnionContext(evalContext, new EvalContext[]{(EvalContext)value});
+        }
+        else {
+            context = evalContext.getRootContext().getConstantContext(value);
+        }
+
+        if (firstMatch && isSimpleExpressionPath() &&
+                !(context instanceof UnionContext)){
+            EvalContext ctx = context;
+            NodePointer ptr = (NodePointer)ctx.getSingleNodePointer();
+            if (ptr != null &&
+                    (ptr.getIndex() == NodePointer.WHOLE_COLLECTION ||
+                     predicates == null || predicates.length == 0)){
+                NodePointer pointer = SimplePathInterpreter.
+                    interpretPredicates(evalContext, ptr, predicates);
+                return SimplePathInterpreter.interpretPath(evalContext,
+                    pointer, getSteps());
+            }
+        }
+
+        if (predicates != null){
+            for (int j = 0; j < predicates.length; j++){
+//                System.err.println("PREDICATE: " + predicates[j]);
+                context = new PredicateContext(context, predicates[j]);
+            }
+        }
+        if (firstMatch){
+            return getSingleNodePointerForSteps(context);
+        }
+        else {
+            return evalSteps(context);
+        }
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Operation.java,v 1.2 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Operation.java,v 1.3 2002/05/08 00:39:59 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/05/08 00:39:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -63,9 +63,9 @@ package org.apache.commons.jxpath.ri.compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/08 00:39:59 $
  */
-public class Operation extends Expression {
+public abstract class Operation extends Expression {
 
     protected Expression args[];
 
@@ -87,27 +87,5 @@ public class Operation extends Expression {
             }
         }
         return false;
-    }
-
-    public void setEvaluationMode(int mode){
-        super.setEvaluationMode(mode);
-        if (args != null){
-            for (int i = 0; i < args.length; i++){
-                switch(mode){
-                    case EVALUATION_MODE_ALWAYS:
-                        if (args[i].isContextDependent()){
-                            args[i].setEvaluationMode(Expression.EVALUATION_MODE_ALWAYS);
-                        }
-                        else {
-                            args[i].setEvaluationMode(Expression.EVALUATION_MODE_ONCE_AND_SAVE);
-                        }
-                        break;
-                    case EVALUATION_MODE_ONCE:
-                    case EVALUATION_MODE_ONCE_AND_SAVE:
-                        args[i].setEvaluationMode(Expression.EVALUATION_MODE_ONCE);
-                        break;
-                }
-            }
-        }
     }
 }

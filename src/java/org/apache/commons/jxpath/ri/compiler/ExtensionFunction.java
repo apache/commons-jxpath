@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExtensionFunction.java,v 1.4 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/ExtensionFunction.java,v 1.5 2002/05/08 00:39:59 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 00:39:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,13 +61,18 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import org.apache.commons.jxpath.Function;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.ri.EvalContext;
+
+import java.util.Arrays;
 
 /**
  * Represents an element of the parse tree representing an extension function call.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 00:39:59 $
  */
 public class ExtensionFunction extends Operation {
 
@@ -92,5 +97,27 @@ public class ExtensionFunction extends Operation {
 
     public String opCodeToString(){
         return super.opCodeToString() + ':' + functionName;
+    }
+
+    public Object compute(EvalContext context){
+        return computeValue(context);
+    }
+
+    public Object computeValue(EvalContext context){
+        Object[] parameters = null;
+        if (args != null){
+            parameters = new Object[args.length];
+            for (int i = 0; i < args.length; i++){
+                Object param = args[i].compute(context);
+                parameters[i] = param;
+            }
+        }
+        Function function = context.getRootContext().getFunction(functionName, parameters);
+        if (function == null){
+            throw new JXPathException("No such function: " + functionName +
+                 Arrays.asList(parameters));
+        }
+
+        return function.invoke(context, parameters);
     }
 }

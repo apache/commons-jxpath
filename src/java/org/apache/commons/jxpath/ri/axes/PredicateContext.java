@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.8 2002/04/28 04:35:48 dmitri Exp $
- * $Revision: 1.8 $
- * $Date: 2002/04/28 04:35:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.9 2002/05/08 00:40:00 dmitri Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/05/08 00:40:00 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,27 +65,31 @@ package org.apache.commons.jxpath.ri.axes;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.CoreOperation;
 import org.apache.commons.jxpath.ri.compiler.Expression;
+import org.apache.commons.jxpath.ri.compiler.NameAttributeTest;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
+import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2002/04/28 04:35:48 $
+ * @version $Revision: 1.9 $ $Date: 2002/05/08 00:40:00 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
     private boolean done = false;
-    private Expression dynamicPropertyNameExpression;
+    private Expression nameTestExpression;
     private PropertyPointer dynamicPropertyPointer;
 
     public PredicateContext(EvalContext parentContext, Expression expression){
         super(parentContext);
         this.expression = expression;
-        dynamicPropertyNameExpression = (Expression)expression.
-            getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT);
+        if (expression instanceof NameAttributeTest){
+            nameTestExpression = 
+                ((NameAttributeTest)expression).getNameTestExpression();
+        }
     }
 
     public boolean nextNode(){
@@ -94,26 +98,26 @@ public class PredicateContext extends EvalContext {
         }
         while (parentContext.nextNode()){
             if (setupDynamicPropertyPointer()){
-                Object pred = parentContext.eval(dynamicPropertyNameExpression);
+                Object pred = nameTestExpression.computeValue(parentContext);
                 if (pred instanceof NodePointer){
                     pred = ((NodePointer)pred).getValue();
                 }
-                dynamicPropertyPointer.setPropertyName(stringValue(pred));
+                dynamicPropertyPointer.setPropertyName(InfoSetUtil.stringValue(pred));
                 done = true;
                 return true;
             }
             else {
-                Object pred = parentContext.eval(expression);
+                Object pred = expression.computeValue(parentContext);
                 if (pred instanceof NodePointer){
                     pred = ((NodePointer)pred).getNodeValue();
                 }
                 if (pred instanceof Number){
-                    int pos = (int)doubleValue(pred);
+                    int pos = (int)InfoSetUtil.doubleValue(pred);
                     position++;
                     done = true;
                     return parentContext.setPosition(pos);
                 }
-                else if (booleanValue(pred)){
+                else if (InfoSetUtil.booleanValue(pred)){
                     position++;
                     return true;
                 }
@@ -127,7 +131,7 @@ public class PredicateContext extends EvalContext {
      * "map[@name = 'name']" syntax
      */
     private boolean setupDynamicPropertyPointer(){
-        if (dynamicPropertyNameExpression == null){
+        if (nameTestExpression == null){
             return false;
         }
 

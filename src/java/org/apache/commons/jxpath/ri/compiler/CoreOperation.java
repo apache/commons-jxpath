@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperation.java,v 1.4 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/CoreOperation.java,v 1.5 2002/05/08 00:39:59 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 00:39:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,23 +61,25 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
+import org.apache.commons.jxpath.ri.InfoSetUtil;
 import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.axes.UnionContext;
+
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * A compile tree element representing one of the core operations like "+",
  * "-", "*" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 00:39:59 $
  */
 public class CoreOperation extends Operation {
-
-    private Object dynamicPropertyAccessHint;
-    public static final String DYNAMIC_PROPERTY_ACCESS_HINT = "dynamicPropertyAccessHint";
-    private static final Object NO_HINT = new Object();
-    private static QName QNAME_NAME = new QName(null, "name");
-
     public CoreOperation(int code, Expression args[]){
         super(code, args);
     }
@@ -98,32 +100,277 @@ public class CoreOperation extends Operation {
         return args[1];
     }
 
+    public Object compute(EvalContext context){
+        return computeValue(context);
+    }
+
+    public Object computeValue(EvalContext context){
+        switch (getExpressionTypeCode()){
+            case Expression.OP_UNION:
+                return union(context, args[0], args[1]);
+
+            case Expression.OP_UNARY_MINUS:
+                return minus(context, args[0]);
+
+            case Expression.OP_SUM:
+                return sum(context, args);
+
+            case Expression.OP_MINUS:
+                return minus(context, args[0], args[1]);
+
+            case Expression.OP_MULT:
+                return mult(context, args[0], args[1]);
+
+            case Expression.OP_DIV:
+                return div(context, args[0], args[1]);
+
+            case Expression.OP_MOD:
+                return mod(context, args[0], args[1]);
+
+            case Expression.OP_LT:
+                return lt(context, args[0], args[1]);
+
+            case Expression.OP_GT:
+                return gt(context, args[0], args[1]);
+
+            case Expression.OP_LTE:
+                return lte(context, args[0], args[1]);
+
+            case Expression.OP_GTE:
+                return gte(context, args[0], args[1]);
+
+            case Expression.OP_EQ:
+                return eq(context, args[0], args[1]);
+
+            case Expression.OP_NE:
+                return ne(context, args[0], args[1]);
+
+            case Expression.OP_AND:
+                return and(context, args);
+
+            case Expression.OP_OR:
+                return or(context, args);
+        }
+        return null; // Should never happen
+    }
+
     /**
-     * Recognized predicated formatted as <code>[@name = <i>expr</i>]</code>
+     * Computes <code>"left | right"<code>
      */
-    public Object getEvaluationHint(String hint){
-        if (getExpressionTypeCode() != OP_EQ ||
-                !hint.equals(DYNAMIC_PROPERTY_ACCESS_HINT)){
-            return null;
+    protected Object union(EvalContext context, Expression left, Expression right){
+        Object l = left.compute(context);
+        Object r = right.compute(context);
+        EvalContext lctx;
+        if (l instanceof EvalContext){
+            lctx = (EvalContext)l;
+        }
+        else {
+            lctx = context.getRootContext().getConstantContext(l);
+        }
+        EvalContext rctx;
+        if (r instanceof EvalContext){
+            rctx = (EvalContext)r;
+        }
+        else {
+            rctx = context.getRootContext().getConstantContext(r);
+        }
+        return new UnionContext(context.getRootContext(), new EvalContext[]{lctx, rctx});
+    }
+
+    /**
+     * Computes <code>"-arg"<code>
+     */
+    protected Object minus(EvalContext context, Expression arg){
+        double a = InfoSetUtil.doubleValue(arg.computeValue(context));
+        return new Double(-a);
+    }
+
+    /**
+     * Computes <code>"a + b + c + d"<code>
+     */
+    protected Object sum(EvalContext context, Expression[] arguments){
+        double s = 0.0;
+        for (int i = 0; i < arguments.length; i++){
+            s += InfoSetUtil.doubleValue(arguments[i].computeValue(context));
+        }
+        return new Double(s);
+    }
+
+    /**
+     * Computes <code>"left - right"<code>
+     */
+    protected Object minus(EvalContext context, Expression left, Expression right){
+        double l = InfoSetUtil.doubleValue(left.computeValue(context));
+        double r = InfoSetUtil.doubleValue(right.computeValue(context));
+        return new Double(l - r);
+    }
+
+    /**
+     * Computes <code>"left div right"<code>
+     */
+    protected Object div(EvalContext context, Expression left, Expression right){
+        double l = InfoSetUtil.doubleValue(left.computeValue(context));
+        double r = InfoSetUtil.doubleValue(right.computeValue(context));
+        return new Double(l/r);
+    }
+
+    /**
+     * Computes <code>"left * right"<code>
+     */
+    protected Object mult(EvalContext context, Expression left, Expression right){
+        double l = InfoSetUtil.doubleValue(left.computeValue(context));
+        double r = InfoSetUtil.doubleValue(right.computeValue(context));
+        return new Double(l*r);
+    }
+
+    /**
+     * Computes <code>"left mod right"<code>
+     */
+    protected Object mod(EvalContext context, Expression left, Expression right){
+        long l = (long)InfoSetUtil.doubleValue(left.computeValue(context));
+        long r = (long)InfoSetUtil.doubleValue(right.computeValue(context));
+        return new Double(l%r);
+    }
+
+    /**
+     * Computes <code>"left &lt; right"<code>
+     */
+    protected Object lt(EvalContext context, Expression left, Expression right){
+        double l = InfoSetUtil.doubleValue(left.computeValue(context));
+        double r = InfoSetUtil.doubleValue(right.computeValue(context));
+        return l < r ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    /**
+     * Computes <code>"left &gt; right"<code>
+     */
+    protected Object gt(EvalContext context, Expression left, Expression right){
+        double l = InfoSetUtil.doubleValue(left.computeValue(context));
+        double r = InfoSetUtil.doubleValue(right.computeValue(context));
+        return l > r ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    /**
+     * Computes <code>"left &lt;= right"<code>
+     */
+    protected Object lte(EvalContext context, Expression left, Expression right){
+        double l = InfoSetUtil.doubleValue(left.computeValue(context));
+        double r = InfoSetUtil.doubleValue(right.computeValue(context));
+        return l <= r ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    /**
+     * Computes <code>"left &gt;= right"<code>
+     */
+    protected Object gte(EvalContext context, Expression left, Expression right){
+        double l = InfoSetUtil.doubleValue(left.computeValue(context));
+        double r = InfoSetUtil.doubleValue(right.computeValue(context));
+        return l >= r ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    /**
+     * Computes <code>"left = right"<code>
+     */
+    protected Object eq(EvalContext context, Expression left, Expression right){
+        return equal(context, left, right) ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    /**
+     * Computes <code>"left != right"<code>
+     */
+    protected Object ne(EvalContext context, Expression left, Expression right){
+        return equal(context, left, right) ? Boolean.FALSE : Boolean.TRUE;
+    }
+
+    /**
+     * Compares two values
+     */
+    protected boolean equal(EvalContext context, Expression left, Expression right){
+        Object l = left.computeValue(context);
+        Object r = right.computeValue(context);
+        boolean result;
+        if (l == r){
+            return true;
         }
 
-        if (dynamicPropertyAccessHint == null){
-            dynamicPropertyAccessHint = NO_HINT;
+        if (l instanceof EvalContext && r instanceof EvalContext){
+            Set lset = new HashSet(valueSet(((EvalContext)l)));
+            Set rset = new HashSet(valueSet(((EvalContext)r)));
+            return lset.equals(rset);
+        }
 
-            Expression arg1 = getArg1();
-            if (arg1.getExpressionTypeCode() == Expression.OP_LOCATION_PATH){
-                Step[] steps = ((LocationPath)arg1).getSteps();
-                if (steps.length == 1 &&
-                        steps[0].getAxis() == Compiler.AXIS_ATTRIBUTE &&
-                        steps[0].getNodeTest() instanceof NodeNameTest &&
-                        ((NodeNameTest)steps[0].getNodeTest()).getNodeName().equals(QNAME_NAME)){
-                    dynamicPropertyAccessHint = getArg2();
-                }
+        if (l instanceof EvalContext){
+            l = ((EvalContext)l).getSingleNodePointer();
+        }
+        if (r instanceof EvalContext){
+            r = ((EvalContext)r).getSingleNodePointer();
+        }
+
+        if (l instanceof Pointer && r instanceof Pointer){
+            if (l.equals(r)){
+                return true;
             }
         }
-        if (dynamicPropertyAccessHint == NO_HINT){
-            return null;
+
+        if (l instanceof NodePointer){
+            l = ((NodePointer)l).getValue();
         }
-        return dynamicPropertyAccessHint;
+        if (r instanceof NodePointer){
+            r = ((NodePointer)r).getValue();
+        }
+
+        if (l instanceof Boolean || r instanceof Boolean){
+            result = (InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r));
+        }
+        else if (l instanceof Number || r instanceof Number){
+            result = (InfoSetUtil.doubleValue(l) == InfoSetUtil.doubleValue(r));
+        }
+        else if (l instanceof String || r instanceof String){
+            result = (InfoSetUtil.stringValue(l).equals(InfoSetUtil.stringValue(r)));
+        }
+        else if (l == null){
+            return r == null;
+        }
+        else {
+            result = l.equals(r);
+        }
+        return result;
+    }
+
+    /**
+     * Extracts all values from a context
+     */
+    private Set valueSet(EvalContext context){
+        HashSet set = new HashSet();
+        while(context.hasNext()){
+            context.next();
+            NodePointer pointer = context.getCurrentNodePointer();
+            set.add(pointer.getValue());
+        }
+        return set;
+    }
+
+    /**
+     * Computes <code>"left and right"<code>
+     */
+    protected Object and(EvalContext context, Expression[] arguments){
+        for (int i = 0; i < arguments.length; i++){
+            if (!InfoSetUtil.booleanValue(arguments[i].computeValue(context))){
+                return Boolean.FALSE;
+            }
+        }
+        return Boolean.TRUE;
+    }
+
+    /**
+     * Computes <code>"left or right"<code>
+     */
+    protected Object or(EvalContext context, Expression[] arguments){
+        for (int i = 0; i < arguments.length; i++){
+            if (InfoSetUtil.booleanValue(arguments[i].computeValue(context))){
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
     }
 }

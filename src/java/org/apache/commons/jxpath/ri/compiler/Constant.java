@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Constant.java,v 1.2 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Constant.java,v 1.3 2002/05/08 00:39:59 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/05/08 00:39:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -61,11 +61,13 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import org.apache.commons.jxpath.ri.EvalContext;
+
 /**
  * A compile tree element containing a constant number or string.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/08 00:39:59 $
  */
 public class Constant extends Expression {
 
@@ -81,10 +83,14 @@ public class Constant extends Expression {
         this.value = string;
     }
 
+    public Object compute(EvalContext context){
+        return value;
+    }
+
     /**
      * Returns the value of the constant.
      */
-    public Object getValue(){
+    public Object computeValue(EvalContext context){
         return value;
     }
 
@@ -100,14 +106,6 @@ public class Constant extends Expression {
      */
     public boolean computeContextDependent(){
         return false;
-    }
-
-    /**
-     * Ignores the argument, sets the evaluation mode to EVALUATION_MODE_ALWAYS.
-     * There is no reason to store the constant value in a temporary register
-     */
-    public void setEvaluationMode(int evalMode){
-        super.setEvaluationMode(EVALUATION_MODE_ALWAYS);
     }
 
     public String toString(){

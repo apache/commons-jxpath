@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.5 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/MethodFunction.java,v 1.6 2002/05/08 00:40:00 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/05/08 00:40:00 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.6 $ $Date: 2002/05/08 00:40:00 $
  */
 public class MethodFunction implements Function {
 
@@ -107,16 +107,19 @@ public class MethodFunction implements Function {
             else {
                 int pi = 0;
                 Class types[] = method.getParameterTypes();
-                if (types.length >= 1 && ExpressionContext.class.isAssignableFrom(types[0])){
+                if (types.length >= 1 &&
+                        ExpressionContext.class.isAssignableFrom(types[0])){
                     pi = 1;
                 }
-                target = TypeUtils.convert(parameters[0], method.getDeclaringClass());
+                target = TypeUtils.
+                        convert(parameters[0], method.getDeclaringClass());
                 args = new Object[parameters.length - 1 + pi];
                 if (pi == 1){
                     args[0] = context;
                 }
                 for (int i = 1; i < parameters.length; i++){
-                    args[pi + i - 1] = TypeUtils.convert(parameters[i], types[i - 1]);
+                    args[pi + i - 1] =
+                            TypeUtils.convert(parameters[i], types[i + pi - 1]);
                 }
             }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Step.java,v 1.3 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/Step.java,v 1.4 2002/05/08 00:39:59 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/05/08 00:39:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -65,7 +65,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.4 $ $Date: 2002/05/08 00:39:59 $
  */
 public class Step {
     private int axis;
@@ -99,27 +99,6 @@ public class Step {
             }
         }
         return false;
-    }
-
-    public void setEvaluationMode(int mode){
-        if (predicates != null){
-            for (int i = 0; i < predicates.length; i++){
-                switch(mode){
-                    case Expression.EVALUATION_MODE_ALWAYS:
-                        if (predicates[i].isContextDependent()){
-                            predicates[i].setEvaluationMode(Expression.EVALUATION_MODE_ALWAYS);
-                        }
-                        else {
-                            predicates[i].setEvaluationMode(Expression.EVALUATION_MODE_ONCE_AND_SAVE);
-                        }
-                        break;
-                    case Expression.EVALUATION_MODE_ONCE:
-                    case Expression.EVALUATION_MODE_ONCE_AND_SAVE:
-                        predicates[i].setEvaluationMode(Expression.EVALUATION_MODE_ONCE);
-                        break;
-                }
-            }
-        }
     }
 
     public String toString(){

@@ -70,6 +70,7 @@ import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.beans.*;
+import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
  * An simple XPath evaluation mechanism, which works only for some xpaths
@@ -119,8 +120,7 @@ public class SimplePathInterpreter {
             }
             else {
                 Expression lastIndexPredicate = null;
-                if (predicates[count - 1].
-                            getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT) == null){
+                if (!(predicates[count - 1] instanceof NameAttributeTest)){
                     lastIndexPredicate = predicates[count - 1];
                 }
 
@@ -176,8 +176,7 @@ public class SimplePathInterpreter {
 
         int count = predicates.length;
         Expression lastIndexPredicate = null;
-        if (predicates[count - 1].
-                    getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT) == null){
+        if (!(predicates[count - 1] instanceof NameAttributeTest)){
             lastIndexPredicate = predicates[count - 1];
         }
 
@@ -269,7 +268,7 @@ public class SimplePathInterpreter {
     }
 
     private static int indexFromPredicate(EvalContext context, Expression predicate){
-        Object value = context.eval(predicate);
+        Object value = predicate.computeValue(context);
         if (value instanceof EvalContext){
             value = ((EvalContext)value).getSingleNodePointer();
         }
@@ -281,18 +280,19 @@ public class SimplePathInterpreter {
         }
 
         if (value instanceof Number){
-            return (int)(context.doubleValue(value) + 0.5) - 1;
+            return (int)(InfoSetUtil.doubleValue(value) + 0.5) - 1;
         }
-        else if (context.booleanValue(value)){
+        else if (InfoSetUtil.booleanValue(value)){
             return 0;
         }
 
         return -1;
     }
 
-    private static String keyFromPredicate(EvalContext context, Expression predicate){
-        Expression expr = (Expression)predicate.
-                getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT);
-        return context.stringValue(context.eval(expr));
+    private static String keyFromPredicate(EvalContext context,
+                Expression predicate){
+        Expression expr = ((NameAttributeTest)predicate).
+                                    getNameTestExpression();
+        return InfoSetUtil.stringValue(expr.computeValue(context));
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/ConstructorFunction.java,v 1.5 2002/04/26 03:28:37 dmitri Exp $
- * $Revision: 1.5 $
- * $Date: 2002/04/26 03:28:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/functions/ConstructorFunction.java,v 1.6 2002/05/08 00:40:00 dmitri Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/05/08 00:40:00 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * An extension function that creates an instance using a constructor.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.5 $ $Date: 2002/04/26 03:28:37 $
+ * @version $Revision: 1.6 $ $Date: 2002/05/08 00:40:00 $
  */
 public class ConstructorFunction implements Function {
 
@@ -102,7 +102,7 @@ public class ConstructorFunction implements Function {
                 args[0] = context;
             }
             for (int i = 0; i < parameters.length; i++){
-                args[i + pi] = TypeUtils.convert(parameters[i], types[i]);
+                args[i + pi] = TypeUtils.convert(parameters[i], types[i + pi]);
             }
             return constructor.newInstance(args);
         }

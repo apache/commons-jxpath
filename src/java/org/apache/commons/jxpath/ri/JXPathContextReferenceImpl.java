@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.14 2002/04/28 04:37:01 dmitri Exp $
- * $Revision: 1.14 $
- * $Date: 2002/04/28 04:37:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.15 2002/05/08 00:40:00 dmitri Exp $
+ * $Revision: 1.15 $
+ * $Date: 2002/05/08 00:40:00 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -84,7 +84,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.14 $ $Date: 2002/04/28 04:37:01 $
+ * @version $Revision: 1.15 $ $Date: 2002/05/08 00:40:00 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -146,7 +146,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
     public static NodePointerFactory[] getNodePointerFactories(){
         return nodeFactoryArray;
     }
-    
+
     public CompiledExpression compile(String xpath){
         return new JXPathCompiledExpression(xpath, compileExpression(xpath));
     }
@@ -161,7 +161,6 @@ public class JXPathContextReferenceImpl extends JXPathContext
             }
             if (expr == null){
                 expr = (Expression)Parser.parseExpression(xpath, compiler);
-                expr.setEvaluationMode(Expression.EVALUATION_MODE_ONCE);
                 compiled.put(xpath, new SoftReference(expr));
                 if (cleanupCount++ >= CLEANUP_THRESHOLD){
                     cleanupCache();
@@ -172,7 +171,6 @@ public class JXPathContextReferenceImpl extends JXPathContext
             expr = (Expression)compiled.get(xpath);
             if (expr == null){
                 expr = (Expression)Parser.parseExpression(xpath, compiler);
-                expr.setEvaluationMode(Expression.EVALUATION_MODE_ONCE);
                 compiled.put(xpath, expr);
             }
         }
@@ -197,9 +195,9 @@ public class JXPathContextReferenceImpl extends JXPathContext
     public Object getValue(String xpath){
         return getValue(xpath, compileExpression(xpath));
     }
-    
-    public Object getValue(String xpath, Expression expr){    
-        Object result = getRootContext().eval(expr);        
+
+    public Object getValue(String xpath, Expression expr){
+        Object result = expr.computeValue(getRootContext());
         if (result == null && !lenient){
             throw new JXPathException("No value for xpath: " + xpath);
         }
@@ -222,7 +220,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
         Expression expr = compileExpression(xpath);
         return getValue(xpath, expr, requiredType);
     }
-    
+
     public Object getValue(String xpath, Expression expr, Class requiredType){
         Object value = getValue(xpath, expr);
         if (value != null && requiredType != null){
@@ -244,17 +242,17 @@ public class JXPathContextReferenceImpl extends JXPathContext
     public Iterator iterate(String xpath){
         return iterate(xpath, compileExpression(xpath));
     }
-    
+
     public Iterator iterate(String xpath, Expression expr){
-        return getRootContext().iterate(expr);        
+        return expr.iterate(getRootContext());
     }
 
     public Pointer getPointer(String xpath){
         return getPointer(xpath, compileExpression(xpath));
     }
-    
+
     public Pointer getPointer(String xpath, Expression expr){
-        Object result = getRootContext().eval(expr);        
+        Object result = expr.computeValue(getRootContext());
         if (result instanceof EvalContext){
             result = ((EvalContext)result).getSingleNodePointer();
         }
@@ -269,8 +267,8 @@ public class JXPathContextReferenceImpl extends JXPathContext
     public void setValue(String xpath, Object value){
         setValue(xpath, compileExpression(xpath), value);
     }
-    
-    
+
+
     public void setValue(String xpath, Expression expr, Object value){
         try {
             setValue(xpath, expr, value, false);
@@ -284,7 +282,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
     public void createPath(String xpath, Object value){
         createPath(xpath, compileExpression(xpath), value);
     }
-    
+
     public void createPath(String xpath, Expression expr, Object value){
         try {
             setValue(xpath, expr, value, true);
@@ -296,7 +294,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
     }
 
     private void setValue(String xpath, Expression expr, Object value, boolean create){
-        Object result = getRootContext().eval(expr);        
+        Object result = expr.computeValue(getRootContext());
 //        System.err.println("RESULT: " + result);
         Pointer pointer = null;
 
@@ -330,9 +328,9 @@ public class JXPathContextReferenceImpl extends JXPathContext
     }
 
     public Iterator iteratePointers(String xpath, Expression expr){
-        return getRootContext().iteratePointers(expr);
+        return expr.iteratePointers(getRootContext());
     }
-    
+
     private void printPointer(NodePointer pointer){
         Pointer p = pointer;
         while (p != null){

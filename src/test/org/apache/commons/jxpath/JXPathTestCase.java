@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.15 2002/04/28 04:37:01 dmitri Exp $
- * $Revision: 1.15 $
- * $Date: 2002/04/28 04:37:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.16 2002/05/08 00:40:00 dmitri Exp $
+ * $Revision: 1.16 $
+ * $Date: 2002/05/08 00:40:00 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,8 @@ import junit.framework.TestSuite;
 
 import org.w3c.dom.*;
 import java.util.*;
-
+import java.lang.reflect.*;
+import org.apache.commons.jxpath.util.*;
 import org.apache.commons.jxpath.ri.*;
 import org.apache.commons.jxpath.ri.parser.*;
 import org.apache.commons.jxpath.ri.model.*;
@@ -80,10 +81,10 @@ import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.ri.compiler.Expression;
 import java.beans.*;
 
-import org.apache.xpath.XPath;
-import org.apache.xpath.XPathContext;
-import org.apache.xml.utils.PrefixResolver;
-import org.apache.xml.utils.PrefixResolverDefault;
+//import org.apache.xpath.XPath;
+//import org.apache.xpath.XPathContext;
+//import org.apache.xml.utils.PrefixResolver;
+//import org.apache.xml.utils.PrefixResolverDefault;
 
 /**
  * <p>
@@ -99,12 +100,12 @@ import org.apache.xml.utils.PrefixResolverDefault;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.15 $ $Date: 2002/04/28 04:37:01 $
+ * @version $Revision: 1.16 $ $Date: 2002/05/08 00:40:00 $
  */
 
 public class JXPathTestCase extends TestCase
 {
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     /**
      * Exercises this test case only
@@ -330,7 +331,7 @@ public class JXPathTestCase extends TestCase
     private void testGetValue(JXPathContext context, String xpath, Object expected) {
         Object actual = context.getValue(xpath);
         assertEquals("Evaluating <" + xpath + ">", expected, actual);
-        
+
         CompiledExpression expr = context.compile(xpath);
         actual = expr.getValue(context);
         assertEquals("Evaluating CE <" + xpath + ">", expected, actual);
@@ -339,7 +340,7 @@ public class JXPathTestCase extends TestCase
     private void testGetValue(JXPathContext context, String xpath, Object expected, Class requiredType) {
         Object actual = context.getValue(xpath, requiredType);
         assertEquals("Evaluating <" + xpath + ">", expected, actual);
- 
+
         CompiledExpression expr = context.compile(xpath);
         actual = expr.getValue(context, requiredType);
         assertEquals("Evaluating CE <" + xpath + ">", expected, actual);
@@ -394,11 +395,12 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testDocumentOrder(){
-        if (!enabled){
-            return;
-        }
+//        if (!enabled){
+//            return;
+//        }
 
         JXPathContext context = JXPathContext.newContext(createTestBeanWithDOM());
+
         testDocumentOrder(context, "boolean", "int", -1);
         testDocumentOrder(context, "integers[1]", "integers[2]", -1);
         testDocumentOrder(context, "integers[1]", "integers[1]", 0);
@@ -478,9 +480,9 @@ public class JXPathTestCase extends TestCase
      * Test JXPath.createPath() with various arguments
      */
     public void testCreatePath(){
-//        if (!enabled){
-//            return;
-//        }
+        if (!enabled){
+            return;
+        }
         TestBean tBean = createTestBeanWithDOM();
         tBean.setNestedBean(null);
         tBean.setBeans(null);
@@ -662,9 +664,9 @@ public class JXPathTestCase extends TestCase
     }
 
     public void testParserReferenceImpl() throws Exception {
-        if (!enabled){
-            return;
-        }
+//        if (!enabled){
+//            return;
+//        }
         System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
                 "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
         testParser(JXPathContextFactory.newInstance().newContext(null, bean), false);
@@ -790,7 +792,7 @@ public class JXPathTestCase extends TestCase
     }
 
     static final XP[] xpath_tests = new XP[]{
-
+/*
         // Numbers
         test("1", new Double(1.0)),
         testEval("1", list(new Double(1.0))),
@@ -930,7 +932,7 @@ public class JXPathTestCase extends TestCase
 
         test("name(integers)", "integers"),
         testEval("*[name(.) = 'integers']", list(new Integer(1), new Integer(2), new Integer(3), new Integer(4))),
-
+*/
         // Dynamic properties
         test("nestedBean[@name = 'int']", new Integer(1)),    // Not implemented in Xalan
         testPath("nestedBean[@name = 'int']", "/nestedBean/int"),
@@ -1190,5 +1192,57 @@ public class JXPathTestCase extends TestCase
         testPath("$test/object/vendor/location[1]//street", "$test/object/vendor[1]/location[1]/address[1]/street[1]"),
         test("$object//street", "Orchard Road"),
         testPath("$object//street", "$object/vendor[1]/location[1]/address[1]/street[1]"),
+    };
+
+    public void testTypeConversions(){
+        for (int i=0; i < typeConversionTests.length; i++) {
+            TypeConversionTest test = typeConversionTests[i];
+            try {
+                boolean can = TypeUtils.canConvert(test.from, test.toType);
+                assertTrue("Can convert: " + test, can);
+                Object result = TypeUtils.convert(test.from, test.toType);
+                if (result.getClass().isArray()){
+                    ArrayList list = new ArrayList();
+                    for (int j = 0; j < Array.getLength(result); j++){
+                        list.add(Array.get(result, j));
+                    }
+                    result = list;
+                }
+                assertEquals("Convert: " + test, test.expected, result);
+            }
+            catch (Exception ex){
+                System.err.println("Exception during conversion test <" + test + ">");
+                ex.printStackTrace();
+            }
+        }
+
+    }
+
+    private static class TypeConversionTest {
+        public Object from;
+        public Class toType;
+        public Object expected;
+
+        public TypeConversionTest(Object from, Class toType, Object expected){
+            this.from = from;
+            this.toType = toType;
+            this.expected = expected;
+        }
+        public String toString(){
+            return from.getClass() + " to " + toType;
+        }
+    }
+
+    private TypeConversionTest[] typeConversionTests = new TypeConversionTest[]{
+        new TypeConversionTest(new Integer(1), String.class, "1"),
+
+        new TypeConversionTest(new int[]{1, 2}, List.class,
+                Arrays.asList(new Object[]{new Integer(1), new Integer(2)})),
+
+        new TypeConversionTest(new int[]{1, 2}, String[].class,
+                list("1", "2")),
+
+        new TypeConversionTest(list(new Integer(1), new Integer(2)), String[].class,
+                list("1", "2")),
     };
 }

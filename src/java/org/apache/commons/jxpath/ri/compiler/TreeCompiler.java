@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/TreeCompiler.java,v 1.4 2002/04/24 04:05:38 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/04/24 04:05:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/compiler/TreeCompiler.java,v 1.5 2002/05/08 00:39:59 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/05/08 00:39:59 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -66,9 +66,11 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/04/24 04:05:38 $
+ * @version $Revision: 1.5 $ $Date: 2002/05/08 00:39:59 $
  */
 public class TreeCompiler implements Compiler {
+
+    private static final QName QNAME_NAME = new QName(null, "name");
 
     public Object number(String value){
         return new Constant(new Double(value));
@@ -82,19 +84,6 @@ public class TreeCompiler implements Compiler {
         return new QName(prefix, name);
     }
 
-    /*
-    public Object nodeTypeTest(int nodeType){
-        return new NodeTypeTest(nodeType);
-    }
-
-    public Object processingInstructionTest(String value){
-        return new ProcessingInstructionTest(value);
-    }
-
-    public Object traverse(boolean recursive, int axis, Object nodeTest, Object[] predicates){
-        return new Step(recursive, axis, (NodeTest)nodeTest, toExpressionArray(predicates));
-    }
-*/
     public Object sum(Object[] arguments){
         return new CoreOperation(Expression.OP_SUM, toExpressionArray(arguments));
     }
@@ -132,7 +121,12 @@ public class TreeCompiler implements Compiler {
     }
 
     public Object equal(Object left, Object right){
-        return new CoreOperation(Expression.OP_EQ, (Expression)left, (Expression)right);
+        if (isNameAttributeTest((Expression)left)){
+            return new NameAttributeTest((Expression)left, (Expression)right);
+        }
+        else {
+            return new CoreOperation(Expression.OP_EQ, (Expression)left, (Expression)right);
+        }
     }
 
     public Object notEqual(Object left, Object right){
@@ -211,5 +205,27 @@ public class TreeCompiler implements Compiler {
             }
         }
         return stepArray;
+    }
+    
+    private boolean isNameAttributeTest(Expression arg){
+        if (arg.getExpressionTypeCode() != Expression.OP_LOCATION_PATH){
+            return false;
+        }
+        
+        Step[] steps = ((LocationPath)arg).getSteps();
+        if (steps.length != 1){
+            return false;
+        }
+        if (steps[0].getAxis() != Compiler.AXIS_ATTRIBUTE){
+            return false;
+        }
+        NodeTest test = steps[0].getNodeTest();
+        if (!(test instanceof NodeNameTest)){
+            return false;
+        }
+        if (!((NodeNameTest)test).getNodeName().equals(QNAME_NAME)){
+            return false;
+        }
+        return true;
     }
 }
