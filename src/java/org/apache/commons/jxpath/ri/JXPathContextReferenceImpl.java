@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.26 2003/01/30 23:41:29 dmitri Exp $
- * $Revision: 1.26 $
- * $Date: 2003/01/30 23:41:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.27 2003/02/18 18:11:37 dmitri Exp $
+ * $Revision: 1.27 $
+ * $Date: 2003/02/18 18:11:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -82,6 +82,7 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.compiler.Expression;
+import org.apache.commons.jxpath.ri.compiler.LocationPath;
 import org.apache.commons.jxpath.ri.compiler.TreeCompiler;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
@@ -96,7 +97,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * The reference implementation of JXPathContext.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.26 $ $Date: 2003/01/30 23:41:29 $
+ * @version $Revision: 1.27 $ $Date: 2003/02/18 18:11:37 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
     
@@ -357,13 +358,13 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 pointer = ctx.getSingleNodePointer();
             }
             else {
+                checkSimplePath(expr);
                 // This should never happen
-                throw new JXPathException("Expression is not a path:" + xpath);
+                throw new JXPathException("Cannot create path:" + xpath);
             }
             return ((NodePointer) pointer).createPath(this);
         }
         catch (Throwable ex) {
-            ex.printStackTrace();
             throw new JXPathException(
                 "Exception trying to create xpath " + xpath,
                 ex);
@@ -383,7 +384,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             return setValue(xpath, expr, value, true);
         }
         catch (Throwable ex) {
-            ex.printStackTrace();
             throw new JXPathException(
                 "Exception trying to create xpath " + xpath,
                 ex);
@@ -408,6 +408,10 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             pointer = ctx.getSingleNodePointer();
         }
         else {
+            if (create) {
+                checkSimplePath(expr);
+            }
+            
             // This should never happen
             throw new JXPathException("Cannot set value for xpath: " + xpath);
         }
@@ -418,6 +422,20 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             pointer.setValue(value);
         }
         return pointer;
+    }
+
+    /**
+     * Checks if the path follows the JXPath restrictions on the type
+     * of path that can be passed to create... methods.
+     */
+    private void checkSimplePath(Expression expr) {
+        if (!(expr instanceof LocationPath)
+            || !((LocationPath) expr).isSimplePath()) {
+            throw new JXPathException(
+                "JXPath can only create a path if it uses exclusively "
+                    + "the child:: and attribute:: axes and has "
+                    + "no context-dependent predicates");
+        }
     }
 
     /**

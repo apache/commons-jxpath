@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.9 2003/01/25 01:50:37 dmitri Exp $
- * $Revision: 1.9 $
- * $Date: 2003/01/25 01:50:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/ri/model/BeanModelTestCase.java,v 1.10 2003/02/18 18:11:37 dmitri Exp $
+ * $Revision: 1.10 $
+ * $Date: 2003/02/18 18:11:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,7 +81,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.9 $ $Date: 2003/01/25 01:50:37 $
+ * @version $Revision: 1.10 $ $Date: 2003/02/18 18:11:37 $
  */
 
 public abstract class BeanModelTestCase extends JXPathTestCase {
@@ -828,6 +828,20 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             "/nestedBean/int",
             new Integer(1),
             "/nestedBean/int");
+
+        boolean ex = false;
+        try {
+            assertXPathCreatePath(
+                context,
+                "/nestedBean/beans[last() + 1]",
+                new Integer(1),
+                "/nestedBean/beans[last() + 1]");
+        }
+        catch (Exception e){
+            ex = true;
+        }
+        assertTrue("Exception thrown on invalid path for creation", ex);
+        
     }
 
     public void testCreatePathAndSetValue() {
