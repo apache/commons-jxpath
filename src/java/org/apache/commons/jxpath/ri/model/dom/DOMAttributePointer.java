@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributePointer.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributePointer.java,v 1.3 2002/04/26 01:00:38 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/26 01:00:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.w3c.dom.Attr;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:38 $
  */
 public class DOMAttributePointer extends NodePointer {
     private Attr attr;
@@ -103,7 +103,7 @@ public class DOMAttributePointer extends NodePointer {
         return attr;
     }
 
-    public Object getValue(){
+    public Object getNodeValue(){
         String value = attr.getValue();
         if (value == null){
             return null;
@@ -164,4 +164,9 @@ public class DOMAttributePointer extends NodePointer {
         DOMAttributePointer other = (DOMAttributePointer)object;
         return attr == other.attr;
     }
+    
+    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+        // Won't happen - attributes don't have children
+        return 0;
+    }    
 }

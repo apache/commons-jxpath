@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.11 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.11 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/JXPathContextReferenceImpl.java,v 1.12 2002/04/26 01:00:38 dmitri Exp $
+ * $Revision: 1.12 $
+ * $Date: 2002/04/26 01:00:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -81,7 +81,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision: 1.11 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.12 $ $Date: 2002/04/26 01:00:38 $
  */
 public class JXPathContextReferenceImpl extends JXPathContext
 {
@@ -199,7 +199,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
             result = ctx.getSingleNodePointer();
         }
         if (result instanceof NodePointer){
-            result = ((NodePointer)result).getCanonicalValue();
+            result = ((NodePointer)result).getValue();
         }
         return result;
     }
@@ -230,23 +230,15 @@ public class JXPathContextReferenceImpl extends JXPathContext
     public List eval(String xpath){
 //        System.err.println("XPATH: " + xpath);
         Object result = eval(xpath, false);
-        List list = new ArrayList();
         if (result instanceof EvalContext){
-            EvalContext context = (EvalContext)result;
-            while (context.nextSet()){
-                while (context.next()){
-                    Pointer pointer = context.getCurrentNodePointer();
-                    list.add(pointer.getValue());
-                }
-            }
+            return ((EvalContext)result).getValueList();
         }
         else if (result instanceof Pointer){
-            list.add(((Pointer)result).getValue());
+            return Collections.singletonList(((Pointer)result).getValue());
         }
         else {
-            list.add(result);
+            return Collections.singletonList(result);
         }
-        return list;
     }
 
     public Pointer locateValue(String xpath){
@@ -315,23 +307,15 @@ public class JXPathContextReferenceImpl extends JXPathContext
 
     public List locate(String xpath){
         Object result = eval(xpath, false);
-        List list = new ArrayList();
         if (result instanceof EvalContext){
-            EvalContext context = (EvalContext)result;
-            while (context.nextSet()){
-                while (context.next()){
-                    Pointer pointer = context.getCurrentNodePointer();
-                    list.add(pointer);
-                }
-            }
+            return ((EvalContext)result).getPointerList();
         }
         else if (result instanceof Pointer){
-            list.add((Pointer)result);
+            return Collections.singletonList((Pointer)result);
         }
         else {
-            list.add(NodePointer.newNodePointer(null, result, getLocale()));
+            return Collections.singletonList(NodePointer.newNodePointer(null, result, getLocale()));
         }
-        return list;
     }
 
     private Object eval(String xpath, boolean firstMatchLookup) {
@@ -366,7 +350,7 @@ public class JXPathContextReferenceImpl extends JXPathContext
         for (int i = 0; i < list.size(); i++){
             Object element = list.get(i);
             if (element instanceof NodePointer){
-                element = ((NodePointer)element).getValue();
+                element = ((NodePointer)element).getNodeValue();
             }
             result.add(element);
         }

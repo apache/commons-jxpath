@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/NamespacePointer.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/NamespacePointer.java,v 1.3 2002/04/26 01:00:38 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/26 01:00:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -71,7 +71,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:38 $
  */
 public class NamespacePointer extends NodePointer {
     private String prefix;
@@ -96,7 +96,7 @@ public class NamespacePointer extends NodePointer {
         return null;
     }
 
-    public Object getValue(){
+    public Object getNodeValue(){
         return getNamespaceURI();
     }
 
@@ -160,4 +160,9 @@ public class NamespacePointer extends NodePointer {
         return (nsURI == null && otherNSURI == null) ||
                (nsURI != null && nsURI.endsWith(otherNSURI));
     }
-}
+ 
+    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+        // Won't happen - namespaces don't have children
+        return 0;
+    }
+ }

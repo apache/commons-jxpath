@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.6 2002/04/24 04:05:39 dmitri Exp $
- * $Revision: 1.6 $
- * $Date: 2002/04/24 04:05:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/axes/PredicateContext.java,v 1.7 2002/04/26 01:00:37 dmitri Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/04/26 01:00:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -73,7 +73,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.6 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.7 $ $Date: 2002/04/26 01:00:37 $
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;
@@ -96,7 +96,7 @@ public class PredicateContext extends EvalContext {
             if (setupDynamicPropertyPointer()){
                 Object pred = parentContext.eval(dynamicPropertyNameExpression);
                 if (pred instanceof NodePointer){
-                    pred = ((NodePointer)pred).getCanonicalValue();
+                    pred = ((NodePointer)pred).getValue();
                 }
                 dynamicPropertyPointer.setPropertyName(stringValue(pred));
                 done = true;
@@ -105,7 +105,7 @@ public class PredicateContext extends EvalContext {
             else {
                 Object pred = parentContext.eval(expression);
                 if (pred instanceof NodePointer){
-                    pred = ((NodePointer)pred).getValue();
+                    pred = ((NodePointer)pred).getNodeValue();
                 }
                 if (pred instanceof Number){
                     int pos = (int)doubleValue(pred);

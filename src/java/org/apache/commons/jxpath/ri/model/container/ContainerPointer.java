@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.1 2002/04/21 21:52:33 dmitri Exp $
- * $Revision: 1.1 $
- * $Date: 2002/04/21 21:52:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.2 2002/04/26 01:00:38 dmitri Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/26 01:00:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.1 $ $Date: 2002/04/21 21:52:33 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/26 01:00:38 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
@@ -107,7 +107,7 @@ public class ContainerPointer extends NodePointer {
         return container.getValue();
     }
 
-    public Object getValue(){
+    public Object getNodeValue(){
         Object value = getBaseValue();
         if (index != WHOLE_COLLECTION){
             return ValueUtils.getValue(value, index);
@@ -121,7 +121,7 @@ public class ContainerPointer extends NodePointer {
 
     public NodePointer getValuePointer(){
         if (valuePointer == null){
-            Object value = getValue();
+            Object value = getNodeValue();
             valuePointer = NodePointer.newChildNodePointer(this, getName(), value).getValuePointer();
         }
         return valuePointer;
@@ -164,4 +164,8 @@ public class ContainerPointer extends NodePointer {
     public boolean testNode(NodeTest nodeTest){
         return getValuePointer().testNode(nodeTest);
     }
-}
+ 
+    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+        return pointer1.getIndex() - pointer2.getIndex();
+    }
+ }

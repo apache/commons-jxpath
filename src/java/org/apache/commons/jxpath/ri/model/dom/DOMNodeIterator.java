@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodeIterator.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodeIterator.java,v 1.3 2002/04/26 01:00:38 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/26 01:00:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.w3c.dom.Node;
  * An iterator of children of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:38 $
  */
 public class DOMNodeIterator implements NodeIterator {
     private NodePointer parent;
@@ -83,9 +83,9 @@ public class DOMNodeIterator implements NodeIterator {
 
     public DOMNodeIterator(NodePointer parent, NodeTest nodeTest, boolean reverse, NodePointer startWith){
         this.parent = parent;
-        this.node = (Node)parent.getValue();
+        this.node = (Node)parent.getNodeValue();
         if (startWith != null){
-            this.child = (Node)startWith.getValue();
+            this.child = (Node)startWith.getNodeValue();
         }
         this.nodeTest = nodeTest;
         this.reverse = reverse;

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.12 2002/04/21 21:52:34 dmitri Exp $
- * $Revision: 1.12 $
- * $Date: 2002/04/21 21:52:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.13 2002/04/26 01:00:38 dmitri Exp $
+ * $Revision: 1.13 $
+ * $Date: 2002/04/26 01:00:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -99,7 +99,7 @@ import org.apache.xml.utils.PrefixResolverDefault;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.12 $ $Date: 2002/04/21 21:52:34 $
+ * @version $Revision: 1.13 $ $Date: 2002/04/26 01:00:38 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -283,9 +283,10 @@ public class JXPathTestCase extends TestCase
         testGetValue(context, "integers[1]",            new Double(1), Double.class);
         testGetValue(context, "2 + 3",                  "5.0", String.class);
         testGetValue(context, "2 + 3",                  Boolean.TRUE, boolean.class);
+        testGetValue(context, "'true'",                 Boolean.TRUE, Boolean.class);
         boolean exception = false;
         try {
-            testGetValue(context, "'foo'",                  null, Date.class);
+            testGetValue(context, "'foo'",              null, Date.class);
         }
         catch(Exception ex){
             exception = true;
@@ -370,6 +371,37 @@ public class JXPathTestCase extends TestCase
     public void testContextDependency(String xpath, boolean expected){
         Expression expr = (Expression)Parser.parseExpression(xpath, new TreeCompiler());
         assertEquals("Evaluating <" + xpath + ">", expected, expr.isContextDependent());
+    }
+
+    public void testDocumentOrder(){
+        if (!enabled){
+            return;
+        }
+
+        JXPathContext context = JXPathContext.newContext(createTestBeanWithDOM());
+        testDocumentOrder(context, "boolean", "int", -1);
+        testDocumentOrder(context, "integers[1]", "integers[2]", -1);
+        testDocumentOrder(context, "integers[1]", "integers[1]", 0);
+        testDocumentOrder(context, "nestedBean/int", "nestedBean", 1);
+        testDocumentOrder(context, "nestedBean/int", "nestedBean/strings", -1);
+        testDocumentOrder(context, "nestedBean/int", "object/int", -1);
+        testDocumentOrder(context, "vendor/location", "vendor/location/address/street", -1);
+        testDocumentOrder(context, "vendor/location[@id = '100']", "vendor/location[@id = '101']", -1);
+        testDocumentOrder(context, "vendor//price:amount", "vendor/location", 1);
+//        testDocumentOrder(context, "nonexistent//foo", "vendor/location", 1);     // Will throw an exception
+    }
+
+    private void testDocumentOrder(JXPathContext context, String path1, String path2, int expected){
+        NodePointer np1 = (NodePointer)context.locateValue(path1);
+        NodePointer np2 = (NodePointer)context.locateValue(path2);
+        int res = np1.compareTo(np2);
+        if (res < 0){
+            res = -1;
+        }
+        else if (res > 0){
+            res = 1;
+        }
+        assertEquals("Comparing paths '" + path1 + "' and '" + path2 + "'", expected, res);
     }
 
     /**
@@ -609,7 +641,7 @@ public class JXPathTestCase extends TestCase
         }
     }
 
-    public void testParserReferenceImpl(){
+    public void testParserReferenceImpl() throws Exception {
         if (!enabled){
             return;
         }
@@ -618,7 +650,7 @@ public class JXPathTestCase extends TestCase
         testParser(JXPathContextFactory.newInstance().newContext(null, bean), false);
     }
 
-    public void testParser(JXPathContext ctx, boolean ignorePath){
+    public void testParser(JXPathContext ctx, boolean ignorePath) throws Exception {
         ctx.setLocale(Locale.US);
         ctx.getVariables().declareVariable("a", new Double(1));
         ctx.getVariables().declareVariable("b", new Double(1));
@@ -634,7 +666,8 @@ public class JXPathTestCase extends TestCase
         testXPaths(ctx, xpath_tests, ignorePath);
     }
 
-    private void testXPaths(JXPathContext ctx, XP xpath_tests[], boolean ignorePath){
+    private void testXPaths(JXPathContext ctx, XP xpath_tests[], boolean ignorePath) throws Exception{
+        Exception exception = null;
         for  (int i=0; i < xpath_tests.length; i++) {
             try {
                 Object actual;
@@ -672,6 +705,10 @@ public class JXPathTestCase extends TestCase
             catch (Exception ex){
                 System.err.println("Exception during <" + xpath_tests[i].xpath + ">");
                 ex.printStackTrace();
+                exception = ex;
+            }
+            if (exception != null){
+                throw exception;
             }
         }
 

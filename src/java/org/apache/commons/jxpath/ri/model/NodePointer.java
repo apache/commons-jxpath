@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.2 2002/04/24 03:31:59 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 03:31:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/NodePointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/26 01:00:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -83,9 +83,9 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 03:31:59 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
  */
-public abstract class NodePointer implements Pointer, Cloneable {
+public abstract class NodePointer implements Pointer, Cloneable, Comparable {
 
     public static int WHOLE_COLLECTION = Integer.MIN_VALUE;
     protected int index = WHOLE_COLLECTION;
@@ -158,7 +158,7 @@ public abstract class NodePointer implements Pointer, Cloneable {
      * If true, this node does not have children
      */
     public boolean isLeaf() {
-        Object value = getValue();
+        Object value = getNodeValue();
         return value == null
             || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
@@ -208,12 +208,12 @@ public abstract class NodePointer implements Pointer, Cloneable {
     }
 
     /**
-     * By default, returns <code>getValue()</code>, can be overridden to
+     * By default, returns <code>getNodeValue()</code>, can be overridden to
      * return a "canonical" value, like for instance a DOM element should
      * return its string value.
      */
-    public Object getCanonicalValue() {
-        return getValue();
+    public Object getValue() {
+        return getNodeValue();
     }
 
     /**
@@ -258,7 +258,23 @@ public abstract class NodePointer implements Pointer, Cloneable {
      */
     public abstract Object getBaseValue();
 
+    /**
+     * Returns the object the pointer points to; does not convert it
+     * to a "canonical" type.
+     */
+    public abstract Object getNodeValue();
+    
+    /**
+     * Converts the value to the required type and changes the corresponding
+     * object to that value.
+     */
     public abstract void setValue(Object value);
+
+    /**
+     * Compares two child NodePointers and returns a positive number,
+     * zero or a positive number according to the order of the pointers.
+     */
+    public abstract int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2);
 
     /**
      * Checks if this Pointer matches the supplied NodeTest.
@@ -499,5 +515,67 @@ public abstract class NodePointer implements Pointer, Cloneable {
 
     public String toString() {
         return asPath();
+    }
+
+    public int compareTo(Object object){
+        NodePointer pointer = (NodePointer) object;         // Let it throw a ClassCastException
+        if (parent == pointer.parent){
+            if (parent == null){
+                return 0;
+            }
+            return parent.compareChildNodePointers(this, pointer);
+        }
+
+        // Task 1: find the common parent
+        int depth1 = 0;
+        NodePointer p1 = this;
+        while (p1 != null){
+            depth1 ++;
+            p1 = p1.parent;
+        }
+        int depth2 = 0;
+        NodePointer p2 = pointer;
+        while (p2 != null){
+            depth2 ++;
+            p2 = p2.parent;
+        }
+        return compareNodePointers(this, depth1, pointer, depth2);
+    }
+
+    private int compareNodePointers(NodePointer p1, int depth1, NodePointer p2, int depth2){
+//        System.err.println("Comparing " + p1.asPath() + " (" + depth1 + ") ~ " +
+//                p2.asPath() + " (" + depth2 + ")");
+        if (depth1 < depth2){
+            int r = compareNodePointers(p1, depth1, p2.parent, depth2-1);
+            if (r != 0){
+                return r;
+            }
+            return -1;
+        }
+        else if (depth1 > depth2){
+            int r = compareNodePointers(p1.parent, depth1-1, p2, depth2);
+            if (r != 0){
+                return r;
+            }
+            return 1;
+        }
+        if (p1 == null && p2 == null){
+            return 0;
+        }
+
+        if (p1 != null && p1.equals(p2)){
+            return 0;
+        }
+
+        if (depth1 == 1){
+            throw new RuntimeException(
+                "Cannot compare pointers that do not belong to the same tree");
+        }
+        int r = compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);
+        if (r != 0){
+            return r;
+        }
+
+        return p1.parent.compareChildNodePointers(p1, p2);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMNodePointer.java,v 1.3 2002/04/26 01:00:38 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/26 01:00:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -87,7 +87,7 @@ import org.w3c.dom.ProcessingInstruction;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:38 $
  */
 public class DOMNodePointer extends NodePointer {
     private Node node;
@@ -281,7 +281,7 @@ public class DOMNodePointer extends NodePointer {
         return node;
     }
 
-    public Object getValue(){
+    public Object getNodeValue(){
         return node;
     }
 
@@ -505,7 +505,7 @@ public class DOMNodePointer extends NodePointer {
         return name.substring(index + 1);
     }
 
-    public Object getCanonicalValue(){
+    public Object getValue(){
         return stringValue(node);
     }
 
@@ -547,4 +547,25 @@ public class DOMNodePointer extends NodePointer {
         }
         return factory;
     }
+    
+    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+        Node node1 = (Node)pointer1.getNodeValue();
+        Node node2 = (Node)pointer2.getNodeValue();
+        if (node1 == node2){
+            return 0;
+        }
+        
+        Node current = node.getFirstChild();
+        while (current != null){
+            if (current == node1){
+                return -1;
+            }
+            else if (current == node2){
+                return 1;
+            }
+            current = current.getNextSibling();
+        }
+
+        return 0;
+    }    
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyOwnerPointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/26 01:00:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -79,7 +79,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
 
@@ -136,7 +136,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     private static final Object UNINITIALIZED = new Object();
 
     private Object value = UNINITIALIZED;
-    public Object getValue(){
+    public Object getNodeValue(){
         if (value == UNINITIALIZED){
             if (index == WHOLE_COLLECTION){
                 value = getBaseValue();
@@ -158,7 +158,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      * otherwise returns the pointer itself.
      */
     public NodePointer getValuePointer() {
-        return NodePointer.newChildNodePointer(this, getName(), getValue());
+        return NodePointer.newChildNodePointer(this, getName(), getNodeValue());
     }
 
     public void createChild(JXPathContext context, QName name, int index, Object value){
@@ -173,5 +173,13 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         prop.setPropertyName(name.getName());
         prop.setIndex(index);
         return prop.createPath(context);
+    }
+
+    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+        int r = pointer1.getName().toString().compareTo(pointer2.getName().toString());
+        if (r != 0){
+            return r;
+        }
+        return pointer1.getIndex() - pointer2.getIndex();
     }
 }

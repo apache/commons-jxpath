@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.2 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/beans/PropertyPointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/26 01:00:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -70,7 +70,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a property of the parent object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
  */
 public abstract class PropertyPointer extends NodePointer {
     public static int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
@@ -102,7 +102,7 @@ public abstract class PropertyPointer extends NodePointer {
 
     public Object getBean(){
         if (bean == null){
-            bean = getParent().getValue();
+            bean = getParent().getNodeValue();
         }
         return bean;
     }
@@ -132,7 +132,7 @@ public abstract class PropertyPointer extends NodePointer {
     private static final Object UNINITIALIZED = new Object();
 
     private Object value = UNINITIALIZED;
-    public Object getValue(){
+    public Object getNodeValue(){
         if (value == UNINITIALIZED){
             if (index == WHOLE_COLLECTION){
                 value = getBaseValue();
@@ -149,7 +149,7 @@ public abstract class PropertyPointer extends NodePointer {
      * selected property value.
      */
     public NodePointer getValuePointer(){
-        return NodePointer.newChildNodePointer(this, getName(), getValue());
+        return NodePointer.newChildNodePointer(this, getName(), getNodeValue());
     }
 
     public int hashCode(){
@@ -171,22 +171,7 @@ public abstract class PropertyPointer extends NodePointer {
                 index == other.index;
     }
 
-    public String toString(){
-        StringBuffer buffer = new StringBuffer();
-        if (getBean() == null){
-            buffer.append("null");
-        }
-        else {
-            buffer.append(getBean().getClass().getName());
-        }
-        buffer.append('@');
-        buffer.append(System.identityHashCode(getBean()));
-        buffer.append('.');
-        buffer.append(getPropertyName());
-        if (index != WHOLE_COLLECTION){
-            buffer.append('[').append(index).append(']');
-        }
-        buffer.append(" = ").append(getValue());
-        return buffer.toString();
+    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+        return getValuePointer().compareChildNodePointers(pointer1, pointer2);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.10 2002/04/24 04:05:40 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/04/24 04:05:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/EvalContext.java,v 1.11 2002/04/26 01:00:38 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/04/26 01:00:38 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -78,7 +78,7 @@ import org.apache.commons.jxpath.ri.model.beans.*;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/04/24 04:05:40 $
+ * @version $Revision: 1.11 $ $Date: 2002/04/26 01:00:38 $
  */
 public abstract class EvalContext implements ExpressionContext {
     protected EvalContext parentContext;
@@ -113,6 +113,52 @@ public abstract class EvalContext implements ExpressionContext {
         List list = new ArrayList();
         while (next()) {
             list.add(getCurrentNodePointer());
+        }
+        if (pos != 0) {
+            setPosition(pos);
+        }
+        else {
+            reset();
+        }
+        return list;
+    }
+
+    /**
+     * Returns the list of all node values in this context
+     */
+    public List getPointerList() {
+        int pos = position;
+        if (pos != 0) {
+            reset();
+        }
+        List list = new ArrayList();
+        while (nextSet()){
+            while (next()) {
+                list.add(getCurrentNodePointer());
+            }
+        }
+        if (pos != 0) {
+            setPosition(pos);
+        }
+        else {
+            reset();
+        }
+        return list;
+    }
+    
+    /**
+     * Returns the list of all node values in this context
+     */
+    public List getValueList() {
+        int pos = position;
+        if (pos != 0) {
+            reset();
+        }
+        List list = new ArrayList();
+        while (nextSet()){
+            while (next()) {
+                list.add(getCurrentNodePointer().getValue());
+            }
         }
         if (pos != 0) {
             setPosition(pos);
@@ -518,10 +564,10 @@ public abstract class EvalContext implements ExpressionContext {
         }
 
         if (l instanceof NodePointer){
-            l = ((NodePointer)l).getCanonicalValue();
+            l = ((NodePointer)l).getValue();
         }
         if (r instanceof NodePointer){
-            r = ((NodePointer)r).getCanonicalValue();
+            r = ((NodePointer)r).getValue();
         }
 
         if (l instanceof Boolean || r instanceof Boolean){
@@ -550,7 +596,7 @@ public abstract class EvalContext implements ExpressionContext {
         while(nextSet()){
             while(next()){
                 NodePointer pointer = getCurrentNodePointer();
-                set.add(pointer.getCanonicalValue());
+                set.add(pointer.getValue());
             }
         }
         return set;
@@ -597,7 +643,7 @@ public abstract class EvalContext implements ExpressionContext {
             return "";
         }
         else if (object instanceof NodePointer){
-            return stringValue(((NodePointer)object).getCanonicalValue());
+            return stringValue(((NodePointer)object).getValue());
         }
         else if (object instanceof EvalContext){
             EvalContext ctx = (EvalContext)object;
@@ -634,7 +680,7 @@ public abstract class EvalContext implements ExpressionContext {
             return number(stringValue(object));
         }
         else if (object instanceof NodePointer){
-            return number(((NodePointer)object).getCanonicalValue());
+            return number(((NodePointer)object).getValue());
         }
 //        else if (object instanceof Node){
 //            System.err.println("HERE");
@@ -668,7 +714,7 @@ public abstract class EvalContext implements ExpressionContext {
             return value;
         }
         else if (object instanceof NodePointer){
-            return doubleValue(((NodePointer)object).getCanonicalValue());
+            return doubleValue(((NodePointer)object).getValue());
         }
         else if (object instanceof EvalContext){
             return doubleValue(stringValue(object));
@@ -695,7 +741,7 @@ public abstract class EvalContext implements ExpressionContext {
             return ((String)object).length() != 0;
         }
         else if (object instanceof NodePointer){
-            return booleanValue(((NodePointer)object).getCanonicalValue());
+            return booleanValue(((NodePointer)object).getValue());
         }
         return false;
     }
@@ -715,219 +761,6 @@ public abstract class EvalContext implements ExpressionContext {
             rootContext = this;
         }
         return evalSteps(new InitialContext(rootContext), path, firstMatch);
-    }
-
-    /**
-     * Walks a location path in a highly simplified fashion: from pointer to
-     * pointer, no contexts.  This is only possible if the path consists of
-     * simple steps like "/foo[3]" and is context-independent.
-     */
-    private NodePointer interpretBasicPath(NodePointer parentPointer, Step steps[]){
-        if (parentPointer == null){
-            return null;
-        }
-
-        NodePointer pointer = (NodePointer)parentPointer.clone();
-        while (pointer != null && !pointer.isNode()){
-            pointer = pointer.getValuePointer();
-        }
-
-        for (int i = 0; i < steps.length; i++){
-            Step step = steps[i];
-            int defaultIndex = (i == steps.length - 1 ? -1 : 0);
-            QName name = ((NodeNameTest)step.getNodeTest()).getNodeName();
-            Expression predicates[] = step.getPredicates();
-
-            // The following complicated logic is designed to translate
-            // an xpath like "foo[@name='x'][@name='y'][3]/bar/baz[4]" into
-            // a sequence of "single steps", each of which takes a node pointer,
-            // a name and an optional index and gets you another node pointer.
-
-            // Note: if the last step is not indexed, the default index used
-            // for that very last step is "-1", that is "do not index at all",
-            // not "0" as in all preceeding steps.
-
-            int count = (predicates == null ? 0 : predicates.length);
-            if (count == 0){
-                pointer = singleStep(pointer, name, defaultIndex, false);
-            }
-            else {
-                Expression lastIndexPredicate = null;
-                if (predicates[count - 1].
-                            getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT) == null){
-                    lastIndexPredicate = predicates[count - 1];
-                }
-
-                if (lastIndexPredicate != null){
-                    int index = indexFromPredicate(lastIndexPredicate);
-                    if (count == 1){
-                        pointer = singleStep(pointer, name, index, false);
-                    }
-                    else {
-                        pointer = singleStep(pointer, name, -1, false);
-                        for (int j = 0; j < count - 1; j++){
-                            String key = keyFromPredicate(predicates[j]);
-                            if (j < count - 2){
-                                pointer = singleStep(pointer, key, -1, true);
-                            }
-                            else {
-                                pointer = singleStep(pointer, key, index, true);
-                            }
-                        }
-                    }
-                }
-                else {
-                    pointer = singleStep(pointer, name, -1, false);
-                    for (int j = 0; j < count; j++){
-                        String key = keyFromPredicate(predicates[j]);
-                        if (j < count - 1){
-                            pointer = singleStep(pointer, key, -1, true);
-                        }
-                        else {
-                            pointer = singleStep(pointer, key, defaultIndex, true);
-                        }
-                    }
-                }
-            }
-        }
-        return pointer;
-    }
-
-    /**
-     * Interprets predicates for the root expression of an Expression Path without creating
-     * any intermediate contexts.  This is an option used for optimization when the path
-     * has a simple structure and predicates are context-independent.
-     */
-    private NodePointer interpretBasicPredicates(NodePointer pointer, Expression predicates[]){
-        if (predicates == null || predicates.length == 0 || pointer == null){
-            return pointer;
-        }
-
-        // The following complicated logic is designed to translate
-        // an xpath like "$foo[@name='x'][@name='y'][3]" into
-        // a sequence of "single steps", each of which takes a node pointer,
-        // a name and an optional index and gets you another node pointer.
-
-        int count = predicates.length;
-        Expression lastIndexPredicate = null;
-        if (predicates[count - 1].
-                    getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT) == null){
-            lastIndexPredicate = predicates[count - 1];
-        }
-
-        if (lastIndexPredicate != null){
-            int index = indexFromPredicate(lastIndexPredicate);
-            if (count == 1){
-                if (index >= 0 && index < pointer.getLength()){
-                    pointer.setIndex(index);
-                }
-                else {
-                    pointer = new NullElementPointer(pointer, index);
-                }
-            }
-            else {
-                for (int j = 0; j < count - 1; j++){
-                    String key = keyFromPredicate(predicates[j]);
-                    if (j < count - 2){
-                        pointer = singleStep(pointer, key, -1, true);
-                    }
-                    else {
-                        pointer = singleStep(pointer, key, index, true);
-                    }
-                }
-            }
-        }
-        else {
-            for (int j = 0; j < count; j++){
-                String key = keyFromPredicate(predicates[j]);
-                if (j < count - 1){
-                    pointer = singleStep(pointer, key, -1, true);
-                }
-                else {
-                    pointer = singleStep(pointer, key, -1, true);
-                }
-            }
-        }
-        return pointer;
-    }
-
-    /**
-     * @param property can be either a name or a QName
-     */
-    private NodePointer singleStep(NodePointer parent, Object property, int index, boolean dynamic){
-        if (parent instanceof PropertyOwnerPointer){
-            PropertyPointer pointer = ((PropertyOwnerPointer)parent).getPropertyPointer();
-            String name;
-            if (property instanceof QName){
-                name = ((QName)property).getName();
-            }
-            else {
-                name = (String)property;
-            }
-            pointer.setPropertyName(name);
-            if (pointer instanceof NullPropertyPointer && dynamic){
-                ((NullPropertyPointer)pointer).setDynamic(true);
-            }
-            if (index != -1){
-                if (index >= 0 && index < pointer.getLength()){
-                    pointer.setIndex(index);
-                    return pointer.getValuePointer();
-                }
-                else {
-                    return new NullElementPointer(pointer, index).getValuePointer();
-                }
-            }
-            else {
-                return pointer.getValuePointer();
-            }
-        }
-        else {
-            QName name;
-            if (property instanceof QName){
-                name = (QName)property;
-            }
-            else {
-                name = new QName(null, (String)property);
-            }
-            NodeIterator it = parent.childIterator(new NodeNameTest(name), false, null);
-            if (it != null && it.setPosition(index == -1 ? 1 : index + 1)){
-                return it.getNodePointer();
-            }
-            else {
-                PropertyPointer pointer = new NullPropertyPointer(parent);
-                pointer.setPropertyName(name.toString());
-                pointer.setIndex(index);
-                return pointer.getValuePointer();
-            }
-        }
-    }
-
-    private int indexFromPredicate(Expression predicate){
-        Object value = eval(predicate, true);
-        if (value instanceof EvalContext){
-            value = ((EvalContext)value).getSingleNodePointer();
-        }
-        if (value instanceof NodePointer){
-            value = ((NodePointer)value).getCanonicalValue();
-        }
-        if (value == null){
-            throw new RuntimeException("Predicate is null: " + value);
-        }
-
-        if (value instanceof Number){
-            return (int)(doubleValue(value) + 0.5) - 1;
-        }
-        else if (booleanValue(value)){
-            return 0;
-        }
-
-        return -1;
-    }
-
-    private String keyFromPredicate(Expression predicate){
-        Expression expr = (Expression)predicate.
-                getEvaluationHint(CoreOperation.DYNAMIC_PROPERTY_ACCESS_HINT);
-        return stringValue(eval(expr));
     }
 
     /**
@@ -961,8 +794,8 @@ public abstract class EvalContext implements ExpressionContext {
             if (ptr != null &&
                     (ptr.getIndex() == NodePointer.WHOLE_COLLECTION ||
                      predicates == null || predicates.length == 0)){
-                NodePointer pointer = interpretBasicPredicates(ptr, predicates);
-                return interpretBasicPath(pointer, path.getSteps());
+                NodePointer pointer = SimplePathInterpreter.interpretPredicates(this, ptr, predicates);
+                return SimplePathInterpreter.interpretPath(this, pointer, path.getSteps());
             }
         }
 
@@ -985,7 +818,7 @@ public abstract class EvalContext implements ExpressionContext {
             boolean basic = path.getEvaluationHint(Path.BASIC_PATH_HINT).equals(Boolean.TRUE);
             if (basic){
                 NodePointer ptr = (NodePointer)context.getSingleNodePointer();
-                return interpretBasicPath(ptr, steps);
+                return SimplePathInterpreter.interpretPath(this, ptr, steps);
             }
         }
 
@@ -1139,7 +972,7 @@ public abstract class EvalContext implements ExpressionContext {
         int count = 0;
         Object value = eval(arg1, false);
         if (value instanceof NodePointer){
-            value = ((NodePointer)value).getCanonicalValue();
+            value = ((NodePointer)value).getValue();
         }
         if (value instanceof EvalContext){
             EvalContext ctx = (EvalContext)value;

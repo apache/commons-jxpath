@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.2 2002/04/24 04:05:39 dmitri Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/24 04:05:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/VariablePointer.java,v 1.3 2002/04/26 01:00:37 dmitri Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/04/26 01:00:37 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -72,7 +72,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.2 $ $Date: 2002/04/24 04:05:39 $
+ * @version $Revision: 1.3 $ $Date: 2002/04/26 01:00:37 $
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
@@ -108,7 +108,7 @@ public class VariablePointer extends NodePointer {
         return variables.getVariable(name.getName());
     }
 
-    public Object getValue(){
+    public Object getNodeValue(){
         Object value = getBaseValue();
         if (index != WHOLE_COLLECTION){
             return ValueUtils.getValue(value, index);
@@ -138,7 +138,7 @@ public class VariablePointer extends NodePointer {
         if (valuePointer == null){
             Object value = null;
             if (actual){
-                value = getValue();
+                value = getNodeValue();
             }
             valuePointer = NodePointer.newChildNodePointer(this, null, value);
         }
@@ -257,7 +257,7 @@ public class VariablePointer extends NodePointer {
                 buffer.append('[').append(index + 1).append(']');
             }
         }
-        else if (index != WHOLE_COLLECTION && (getValue() == null || isCollection())){
+        else if (index != WHOLE_COLLECTION && (getNodeValue() == null || isCollection())){
             buffer.append('[').append(index + 1).append(']');
         }
         return buffer.toString();
@@ -289,5 +289,9 @@ public class VariablePointer extends NodePointer {
             throw new RuntimeException("Factory is not set on the JXPathContext - cannot create path: " + asPath());
         }
         return factory;
+    }
+
+    public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
+        return pointer1.getIndex() - pointer2.getIndex();
     }
 }
