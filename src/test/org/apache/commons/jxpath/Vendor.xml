@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<vendor>
+  <location id="100" name="local" manager="">
+    <address>
+      <street>Orchard Road</street>
+    </address>
+    <employeeCount>10</employeeCount>
+  </location>
+
+  <location id="101">
+    <address>
+      <street>Tangerine Drive</street>
+    </address>
+  </location>
+
+  <product xmlns="productNS" xmlns:price="priceNS" xmlns:value="priceNS">
+     <name>Box of oranges</name>
+     We love this product.
+     <!-- We are not buying this product, ever -->
+     <price:amount price:discount="10%" discount="20%">45.95</price:amount>
+     <prix xml:lang="fr">934.99</prix>
+     <price:sale>
+        <saleEnds>never</saleEnds>
+     </price:sale>
+     <?security do not show anybody ?>
+     <?report average only ?>
+  </product>
+</vendor>

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.10 2002/04/10 03:40:21 dmitri Exp $
- * $Revision: 1.10 $
- * $Date: 2002/04/10 03:40:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/test/org/apache/commons/jxpath/JXPathTestCase.java,v 1.11 2002/04/11 02:57:41 dmitri Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/04/11 02:57:41 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -93,7 +93,7 @@ import java.beans.*;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.10 $ $Date: 2002/04/10 03:40:21 $
+ * @version $Revision: 1.11 $ $Date: 2002/04/11 02:57:41 $
  */
 
 public class JXPathTestCase extends TestCase
@@ -1004,7 +1004,7 @@ public class JXPathTestCase extends TestCase
         System.setProperty(JXPathContextFactory.FACTORY_NAME_PROPERTY,
                 "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
         try {
-            XMLDocumentContainer docCtr = new XMLDocumentContainer(getClass().getResource("Test.properties"));
+            XMLDocumentContainer docCtr = new XMLDocumentContainer(getClass().getResource("Vendor.xml"));
             Document doc = (Document)docCtr.getValue();
             JXPathContext ctx = JXPathContextFactory.newInstance().newContext(null, doc);
             ctx.setLocale(Locale.US);
@@ -1022,7 +1022,7 @@ public class JXPathTestCase extends TestCase
     }
 
     private TestBeanWithDOM createTestBeanWithDOM(){
-        XMLDocumentContainer docCtr = new XMLDocumentContainer(getClass().getResource("Test.properties"));
+        XMLDocumentContainer docCtr = new XMLDocumentContainer(getClass().getResource("Vendor.xml"));
         Document doc = (Document)docCtr.getValue();
         TestBeanWithDOM tbwdom = new TestBeanWithDOM();
         tbwdom.setVendor(doc.getDocumentElement());
@@ -1031,14 +1031,14 @@ public class JXPathTestCase extends TestCase
     }
 
     static final XP[] dom_tests = new XP[]{
-        test("vendor/location/address/street", "Some street"),
-        test("vendor/location[2]/address/street", "Other street"),
-        test("//street", "Some street"),
+        test("vendor/location/address/street", "Orchard Road"),
+        test("vendor/location[2]/address/street", "Tangerine Drive"),
+        test("//street", "Orchard Road"),
         test("local-name(//street/..)", "address"),
         test("number(vendor/location/employeeCount)", new Double(10)),
         test("vendor/location/employeeCount + 1", new Double(11)),
         test("vendor/location/employeeCount and true()", Boolean.TRUE),
-        test("vendor/location[.//employeeCount = 10]/following-sibling::location//street", "Other street"),
+        test("vendor/location[.//employeeCount = 10]/following-sibling::location//street", "Tangerine Drive"),
         testPath("vendor/location[.//employeeCount = 10]/following-sibling::location//street",
                 "/vendor[1]/location[2]/address[1]/street[1]"),
         testPath("//location[2]/preceding-sibling::location//street",
@@ -1046,61 +1046,61 @@ public class JXPathTestCase extends TestCase
         test("vendor/location/@id", "100"),
         testPath("vendor/location/@id", "/vendor[1]/location[1]/@id"),
         testEval("vendor/location/@id", list("100", "101")),
-        test("vendor/nsnode/foo:bar", "BAR"),
-        test("namespace-uri(vendor/nsnode/foo:bar)", "foonamespace"),
-        test("local-name(vendor/nsnode/foo:bar)", "bar"),
-        test("name(vendor/nsnode/foo:bar)", "foonamespace:bar"),
-        test("vendor/nsnode/baz", "BAZ"),
-        test("vendor/nsnode/baz/namespace::foo", "foonamespace"),
-        testPath("vendor/nsnode/baz/namespace::foo", "/vendor[1]/nsnode[1]/baz[1]/namespace::foo"),
-        test("count(vendor/nsnode/namespace::*)", new Double(3)),
-        test("name(vendor/nsnode/baz/namespace::foo)", "foonamespace:foo"),
-        test("local-name(vendor/nsnode/baz/namespace::foo)", "foo"),
-        test("vendor/nsnode/foo:bar/@foo:attr", "A"),
-        test("vendor/nsnode/zoo:bar/@zoo:attr", "A"),
-        test("namespace-uri(vendor/nsnode/foo:bar/@foo:attr)", "foonamespace"),
-        test("local-name(vendor/nsnode/foo:bar/@foo:attr)", "attr"),
-        test("name(vendor/nsnode/foo:bar/@foo:attr)", "foonamespace:attr"),
-        test("vendor/nsnode/foo:bar/@attr", "B"),
-        test("namespace-uri(vendor/nsnode/foo:bar/@attr)", ""),
-        test("local-name(vendor/nsnode/foo:bar/@attr)", "attr"),
-        test("name(vendor/nsnode/foo:bar/@attr)", "attr"),
-        test("vendor/nsnode/foo:x/y/ancestor::foo:x/y", "why"),
-        test("vendor/nsnode/foo:x/ancestor-or-self::foo:x/y", "why"),
-        test("vendor/nsnode/foo:x/y/ancestor::foo:*" + "/y", "why"),
-        test("count(vendor/nsnode/foo:*)", new Double(2)),
-        test("count(vendor/nsnode/zoo:*)", new Double(2)),
-        test("count(vendor/nsnode/*)", new Double(1)),
-        testEval("vendor/nsnode/foo:bar/@foo:*", list("A")),
-        testEval("vendor/nsnode/foo:bar/@*", list("B")),
-        test("count(//foo:*)", new Double(2)),
-        test("vendor/nsnode/foo:x/y/parent::foo:*" + "/y", "why"),
-        test("//location/following::foo:x/y", "why"),
-        test("//foo:x/self::foo:x/y", "why"),
-        testLenient("//foo:x/self::x/y", null),
+        test("vendor/product/price:amount", "45.95"),
+        test("namespace-uri(vendor/product/price:amount)", "priceNS"),
+        test("local-name(vendor/product/price:amount)", "amount"),
+        test("name(vendor/product/price:amount)", "priceNS:amount"),
+        test("vendor/product/prix", "934.99"),
+        test("vendor/product/prix/namespace::price", "priceNS"),
+        testPath("vendor/product/prix/namespace::price", "/vendor[1]/product[1]/prix[1]/namespace::price"),
+        test("count(vendor/product/namespace::*)", new Double(3)),
+        test("name(vendor/product/prix/namespace::price)", "priceNS:price"),
+        test("local-name(vendor/product/prix/namespace::price)", "price"),
+        test("vendor/product/price:amount/@price:discount", "10%"),
+        test("vendor/product/value:amount/@value:discount", "10%"),
+        test("namespace-uri(vendor/product/price:amount/@price:discount)", "priceNS"),
+        test("local-name(vendor/product/price:amount/@price:discount)", "discount"),
+        test("name(vendor/product/price:amount/@price:discount)", "priceNS:discount"),
+        test("vendor/product/price:amount/@discount", "20%"),
+        test("namespace-uri(vendor/product/price:amount/@discount)", ""),
+        test("local-name(vendor/product/price:amount/@discount)", "discount"),
+        test("name(vendor/product/price:amount/@discount)", "discount"),
+        test("vendor/product/price:sale/saleEnds/ancestor::price:sale/saleEnds", "never"),
+        test("vendor/product/price:sale/ancestor-or-self::price:sale/saleEnds", "never"),
+        test("vendor/product/price:sale/saleEnds/ancestor::price:*" + "/saleEnds", "never"),
+        test("count(vendor/product/price:*)", new Double(2)),
+        test("count(vendor/product/value:*)", new Double(2)),
+        test("count(vendor/product/*)", new Double(2)),
+        testEval("vendor/product/price:amount/@price:*", list("10%")),
+        testEval("vendor/product/price:amount/@*", list("20%")),
+        test("count(//price:*)", new Double(2)),
+        test("vendor/product/price:sale/saleEnds/parent::price:*" + "/saleEnds", "never"),
+        test("//location/following::price:sale/saleEnds", "never"),
+        test("//price:sale/self::price:sale/saleEnds", "never"),
+        testLenient("//price:sale/self::x/saleEnds", null),
 
-        test("//nsnode/comment()", "z"),
-//        test("//nsnode/text()", "text"),
-        testPath("//nsnode/text()", "/vendor[1]/nsnode[1]/text()[1]"),
-        test("//nsnode/processing-instruction()", "ahead"),
-        test("//nsnode/processing-instruction('do')", "it"),
-        testPath("//nsnode/processing-instruction('do')", "/vendor[1]/nsnode[1]/processing-instruction('do')[1]"),
-        test("name(//nsnode/processing-instruction()[1])", "go"),
+        test("//product/comment()", "We are not buying this product, ever"),
+        test("//product/text()[. != '']", "We love this product."),
+        testPath("//product/text()", "/vendor[1]/product[1]/text()[1]"),
+        test("//product/processing-instruction()", "do not show anybody"),
+        test("//product/processing-instruction('report')", "average only"),
+        testPath("//product/processing-instruction('report')", "/vendor[1]/product[1]/processing-instruction('report')[1]"),
+        test("name(//product/processing-instruction()[1])", "security"),
 
-        test("//nsnode/baz/@xml:lang", "fr"),
-        test("//nsnode/baz[lang('fr')]", "BAZ"),
-        test("//nsnode/foo:x[lang('en')]/y", "why"),
-        test("vendor/location/@blank", ""),
+        test("//product/prix/@xml:lang", "fr"),
+        test("//product/prix[lang('fr')]", "934.99"),
+        test("//product/price:sale[lang('en')]/saleEnds", "never"),
+        test("vendor/location/@manager", ""),
         testLenient("vendor/location/@missing", null),
         test("count(vendor/location[1]/@*)", new Double(3)),
-        test("vendor/location[@id='101']//street", "Other street"),
+        test("vendor/location[@id='101']//street", "Tangerine Drive"),
         test("$test/int", new Integer(1)),
-        test("$test/vendor/location[1]//street", "Some street"),
+        test("$test/vendor/location[1]//street", "Orchard Road"),
         testPath("$test/vendor/location[1]//street", "$test/vendor/location[1]/address[1]/street[1]"),
-        test("$dom/vendor//street", "Some street"),
-        test("$test/object/vendor/location[1]//street", "Some street"),
+        test("$dom/vendor//street", "Orchard Road"),
+        test("$test/object/vendor/location[1]//street", "Orchard Road"),
         testPath("$test/object/vendor/location[1]//street", "$test/object/vendor[1]/location[1]/address[1]/street[1]"),
-        test("$object//street", "Some street"),
+        test("$object//street", "Orchard Road"),
         testPath("$object//street", "$object/vendor[1]/location[1]/address[1]/street[1]"),
 
         testPath("$null", "$null"),
