@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributeIterator.java,v 1.4 2002/06/18 00:03:16 dmitri Exp $
- * $Revision: 1.4 $
- * $Date: 2002/06/18 00:03:16 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/dom/DOMAttributeIterator.java,v 1.5 2002/06/18 11:50:35 dmitri Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/06/18 11:50:35 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.w3c.dom.Node;
  * An iterator of attributes of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.4 $ $Date: 2002/06/18 00:03:16 $
+ * @version $Revision: 1.5 $ $Date: 2002/06/18 11:50:35 $
  */
 public class DOMAttributeIterator implements NodeIterator {
     private NodePointer parent;
@@ -176,7 +176,7 @@ public class DOMAttributeIterator implements NodeIterator {
                     }
                 }
             }
-            return null;
+            return attr;
         }
         else {
             return element.getAttributeNode(name.getName());
