@@ -30,7 +30,7 @@ import java.util.Comparator;
  * See java.beans.BeanInfo, java.beans.Introspector
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.8 $ $Date: 2004/02/29 14:17:42 $
+ * @version $Revision: 1.9 $ $Date: 2004/05/08 15:03:36 $
  */
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private boolean atomic = false;
@@ -131,6 +131,12 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
         StringBuffer buffer = new StringBuffer();
         buffer.append("BeanInfo [class = ");
         buffer.append(clazz.getName());
+        if (isDynamic()) {
+            buffer.append(", dynamic");
+        }
+        if (isAtomic()) {
+            buffer.append(", atomic");
+        }
         buffer.append(", properties = ");
         PropertyDescriptor[] jpds = getPropertyDescriptors();
         for (int i = 0; i < jpds.length; i++) {
