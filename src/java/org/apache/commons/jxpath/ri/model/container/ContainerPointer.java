@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.3 2002/08/10 16:13:04 dmitri Exp $
- * $Revision: 1.3 $
- * $Date: 2002/08/10 16:13:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//jxpath/src/java/org/apache/commons/jxpath/ri/model/container/ContainerPointer.java,v 1.4 2002/08/26 22:29:22 dmitri Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/08/26 22:29:22 $
  *
  * ====================================================================
  * The Apache Software License, Version 1.1
@@ -76,7 +76,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 1.3 $ $Date: 2002/08/10 16:13:04 $
+ * @version $Revision: 1.4 $ $Date: 2002/08/26 22:29:22 $
  */
 public class ContainerPointer extends NodePointer {
     private Container container;
@@ -169,8 +169,15 @@ public class ContainerPointer extends NodePointer {
     public boolean testNode(NodeTest nodeTest){
         return getValuePointer().testNode(nodeTest);
     }
- 
+
     public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2){
         return pointer1.getIndex() - pointer2.getIndex();
+    }
+
+    public String asPath(){
+        if (parent != null){
+            return parent.asPath();
+        }
+        return "";
     }
  }
