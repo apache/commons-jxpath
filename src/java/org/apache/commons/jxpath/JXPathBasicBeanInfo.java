@@ -80,14 +80,15 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
                     bi = Introspector.getBeanInfo(clazz, Object.class);
                 }
                 PropertyDescriptor[] pds = bi.getPropertyDescriptors();
-                propertyDescriptors = new PropertyDescriptor[pds.length];
-                System.arraycopy(pds, 0, propertyDescriptors, 0, pds.length);
-                Arrays.sort(propertyDescriptors, new Comparator() {
+                PropertyDescriptor[] descriptors = new PropertyDescriptor[pds.length];
+                System.arraycopy(pds, 0, descriptors, 0, pds.length);
+                Arrays.sort(descriptors, new Comparator() {
                     public int compare(Object left, Object right) {
                         return ((PropertyDescriptor) left).getName().compareTo(
                             ((PropertyDescriptor) right).getName());
                     }
                 });
+                propertyDescriptors = descriptors;
             }
             catch (IntrospectionException ex) {
                 ex.printStackTrace();
@@ -99,10 +100,11 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     public PropertyDescriptor getPropertyDescriptor(String propertyName) {
         if (propertyNames == null) {
             PropertyDescriptor[] pds = getPropertyDescriptors();
-            propertyNames = new String[pds.length];
+            String[] names = new String[pds.length];
             for (int i = 0; i < pds.length; i++) {
-                propertyNames[i] = pds[i].getName();
+                names[i] = pds[i].getName();
             }
+            propertyNames = names;
         }
 
         for (int i = 0; i < propertyNames.length; i++) {
