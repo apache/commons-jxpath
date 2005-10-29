@@ -164,6 +164,7 @@ public class PredicateContext extends EvalContext {
 
     public void reset() {
         super.reset();
+        parentContext.reset();
         done = false;
     }
 
