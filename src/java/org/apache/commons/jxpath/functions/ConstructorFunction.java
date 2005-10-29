@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
@@ -66,7 +66,7 @@ public class ConstructorFunction implements Function {
             if (ex instanceof InvocationTargetException) {
                 ex = ((InvocationTargetException) ex).getTargetException();
             }
-            throw new JXPathException(
+            throw new JXPathInvalidAccessException(
                 "Cannot invoke constructor " + constructor,
                 ex);
         }

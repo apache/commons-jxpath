@@ -17,7 +17,7 @@ package org.apache.commons.jxpath.ri;
 
 import java.io.StringReader;
 
-import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 import org.apache.commons.jxpath.ri.parser.ParseException;
 import org.apache.commons.jxpath.ri.parser.TokenMgrError;
 import org.apache.commons.jxpath.ri.parser.XPathParser;
@@ -48,7 +48,7 @@ public class Parser {
                 expr = parser.parseExpression();
             }
             catch (TokenMgrError e) {
-                throw new JXPathException(
+                throw new JXPathInvalidSyntaxException(
                     "Invalid XPath: '"
                         + addEscapes(expression)
                         + "'. Invalid symbol '"
@@ -57,7 +57,7 @@ public class Parser {
                         + describePosition(expression, e.getPosition()));
             }
             catch (ParseException e) {
-                throw new JXPathException(
+                throw new JXPathInvalidSyntaxException(
                     "Invalid XPath: '"
                         + addEscapes(expression)
                         + "'. Syntax error "

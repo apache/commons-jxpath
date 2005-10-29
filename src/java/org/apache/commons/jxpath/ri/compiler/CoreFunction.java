@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.InfoSetUtil;
@@ -682,7 +683,8 @@ public class CoreFunction extends Operation {
 
     private void assertArgCount(int count) {
         if (getArgumentCount() != count) {
-            throw new JXPathException("Incorrect number of argument: " + this);
+            throw new JXPathInvalidSyntaxException(
+                    "Incorrect number of argument: " + this);
         }
     }
 }

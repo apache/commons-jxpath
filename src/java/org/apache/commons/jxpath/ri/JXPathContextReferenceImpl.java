@@ -32,6 +32,10 @@ import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathFunctionNotFoundException;
+import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
+import org.apache.commons.jxpath.JXPathNotFoundException;
+import org.apache.commons.jxpath.JXPathTypeConversionException;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.axes.InitialContext;
@@ -320,7 +324,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         if (result == null) {
             if (expr instanceof Path) {
                 if (!isLenient()) {
-                    throw new JXPathException("No value for xpath: " + xpath);
+                    throw new JXPathNotFoundException("No value for xpath: "
+                            + xpath);
                 }
             }
             return null;
@@ -329,7 +334,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             EvalContext ctx = (EvalContext) result;
             result = ctx.getSingleNodePointer();
             if (!isLenient() && result == null) {
-                throw new JXPathException("No value for xpath: " + xpath);
+                throw new JXPathNotFoundException("No value for xpath: "
+                        + xpath);
             }
         }
         if (result instanceof NodePointer) {
@@ -346,7 +352,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 if (parent == null
                     || !parent.isContainer()
                     || !parent.isActual()) {
-                    throw new JXPathException("No value for xpath: " + xpath);
+                    throw new JXPathNotFoundException("No value for xpath: "
+                            + xpath);
                 }
             }
             result = ((NodePointer) result).getValue();
@@ -367,7 +374,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         Object value = getValue(xpath, expr);
         if (value != null && requiredType != null) {
             if (!TypeUtils.canConvert(value, requiredType)) {
-                throw new JXPathException(
+                throw new JXPathTypeConversionException(
                     "Invalid expression type. '"
                         + xpath
                         + "' returns "
@@ -404,7 +411,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
         if (result instanceof Pointer) {
             if (!isLenient() && !((NodePointer) result).isActual()) {
-                throw new JXPathException("No pointer for xpath: " + xpath);
+                throw new JXPathNotFoundException("No pointer for xpath: "
+                        + xpath);
             }
             return (Pointer) result;
         }
@@ -517,7 +525,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     private void checkSimplePath(Expression expr) {
         if (!(expr instanceof LocationPath)
             || !((LocationPath) expr).isSimplePath()) {
-            throw new JXPathException(
+            throw new JXPathInvalidSyntaxException(
                 "JXPath can only create a path if it uses exclusively "
                     + "the child:: and attribute:: axes and has "
                     + "no context-dependent predicates");
@@ -647,7 +655,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             }
             funcCtx = funcCtx.getParentContext();
         }
-        throw new JXPathException(
+        throw new JXPathFunctionNotFoundException(
             "Undefined function: " + functionName.toString());
     }
     

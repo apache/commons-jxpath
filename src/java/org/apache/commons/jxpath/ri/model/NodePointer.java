@@ -427,36 +427,21 @@ public abstract class NodePointer implements Pointer {
         int index,
         Object value) 
     {
-        throw new JXPathException(
-            "Cannot create an object for path "
-                + asPath()
-                + "/"
-                + name
-                + "["
-                + (index + 1)
-                + "]"
+        throw new JXPathException("Cannot create an object for path "
+                + asPath() + "/" + name + "[" + (index + 1) + "]"
                 + ", operation is not allowed for this type of node");
     }
 
     /**
-     * Called by a child pointer when it needs to create a parent object
-     * for a non-existent collection element.  It may have to expand the
-     * collection, then create an element object and return a new pointer
-     * describing the newly created element.
+     * Called by a child pointer when it needs to create a parent object for a
+     * non-existent collection element. It may have to expand the collection,
+     * then create an element object and return a new pointer describing the
+     * newly created element.
      */
-    public NodePointer createChild(
-        JXPathContext context,
-        QName name,
-        int index) 
+    public NodePointer createChild(JXPathContext context, QName name, int index)
     {
-        throw new JXPathException(
-            "Cannot create an object for path "
-                + asPath()
-                + "/"
-                + name
-                + "["
-                + (index + 1)
-                + "]"
+        throw new JXPathException("Cannot create an object for path "
+                + asPath() + "/" + name + "[" + (index + 1) + "]"
                 + ", operation is not allowed for this type of node");
     }
     
@@ -464,16 +449,14 @@ public abstract class NodePointer implements Pointer {
      * Called to create a non-existing attribute
      */
     public NodePointer createAttribute(JXPathContext context, QName name) {
-        throw new JXPathException(
-            "Cannot create an attribute for path "
+        throw new JXPathException("Cannot create an attribute for path "
                 + asPath() + "/@" + name
                 + ", operation is not allowed for this type of node");
     }
 
     /**
-     * If the Pointer has a parent, returns the parent's locale;
-     * otherwise returns the locale specified when this Pointer
-     * was created.
+     * If the Pointer has a parent, returns the parent's locale; otherwise
+     * returns the locale specified when this Pointer was created.
      */
     public Locale getLocale() {
         if (locale == null) {
@@ -720,11 +703,8 @@ public abstract class NodePointer implements Pointer {
 
         if (depth1 == 1) {
             throw new JXPathException(
-                "Cannot compare pointers that do not belong to the same tree: '"
-                    + p1
-                    + "' and '"
-                    + p2
-                    + "'");
+                    "Cannot compare pointers that do not belong to the same tree: '"
+                            + p1 + "' and '" + p2 + "'");
         }
         int r =
             compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);

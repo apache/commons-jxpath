@@ -27,7 +27,8 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
-import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathInvalidAccessException;
+import org.apache.commons.jxpath.JXPathTypeConversionException;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 
@@ -299,8 +300,8 @@ public class BasicTypeConverter implements TypeConverter {
             return converter.convert(toType, object);
         }
 
-        throw new RuntimeException(
-            "Cannot convert " + object.getClass() + " to " + toType);
+        throw new JXPathTypeConversionException("Cannot convert "
+                + object.getClass() + " to " + toType);
     }
 
     protected Object convertNullToPrimitive(Class toType) {
@@ -404,9 +405,8 @@ public class BasicTypeConverter implements TypeConverter {
                 return (Collection) type.newInstance();
             }
             catch (Exception ex) {
-                throw new JXPathException(
-                    "Cannot create collection of type: " + type,
-                    ex);
+                throw new JXPathInvalidAccessException(
+                        "Cannot create collection of type: " + type, ex);
             }
         }
 
@@ -416,7 +416,8 @@ public class BasicTypeConverter implements TypeConverter {
         if (type == Set.class) {
             return new HashSet();
         }
-        throw new RuntimeException("Cannot create collection of type: " + type);
+        throw new JXPathInvalidAccessException(
+                "Cannot create collection of type: " + type);
     }
     
     protected Collection unmodifiableCollection(Collection collection) {

@@ -18,7 +18,7 @@ package org.apache.commons.jxpath.ri.compiler;
 import java.util.Arrays;
 
 import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathFunctionNotFoundException;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.QName;
 
@@ -83,10 +83,8 @@ public class ExtensionFunction extends Operation {
         Function function =
             context.getRootContext().getFunction(functionName, parameters);
         if (function == null) {
-            throw new JXPathException(
-                "No such function: "
-                    + functionName
-                    + Arrays.asList(parameters));
+            throw new JXPathFunctionNotFoundException("No such function: "
+                    + functionName + Arrays.asList(parameters));
         }
 
         return function.invoke(context, parameters);

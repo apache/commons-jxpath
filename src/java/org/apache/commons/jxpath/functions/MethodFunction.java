@@ -21,7 +21,7 @@ import java.lang.reflect.Modifier;
 
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.util.TypeUtils;
 import org.apache.commons.jxpath.util.ValueUtils;
 
@@ -91,7 +91,8 @@ public class MethodFunction implements Function {
             if (ex instanceof InvocationTargetException) {
                 ex = ((InvocationTargetException) ex).getTargetException();
             }
-            throw new JXPathException("Cannot invoke " + method, ex);
+            throw new JXPathInvalidAccessException("Cannot invoke " + method,
+                    ex);
         }
     }
     

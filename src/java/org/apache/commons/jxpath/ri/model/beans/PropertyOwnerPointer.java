@@ -17,7 +17,7 @@ package org.apache.commons.jxpath.ri.model.beans;
 
 import java.util.Locale;
 
-import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
@@ -128,7 +128,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
                         + "some other object's property");
             }
             else {
-                throw new JXPathException(
+                throw new JXPathInvalidAccessException(
                     "The specified collection element does not exist: " + this);
             }
         }

@@ -20,7 +20,7 @@ import java.util.Arrays;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaClass;
 import org.apache.commons.beanutils.DynaProperty;
-import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathTypeConversionException;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 import org.apache.commons.jxpath.util.TypeUtils;
@@ -254,12 +254,10 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
             return TypeUtils.convert(value, type);
         }
         catch (Exception ex) {
-            throw new JXPathException(
-                "Cannot convert value of class "
-                    + (value == null ? "null" : value.getClass().getName())
-                    + " to type "
-                    + type,
-                ex);
+            String string = value == null ? "null" : value.getClass().getName();
+            throw new JXPathTypeConversionException(
+                    "Cannot convert value of class " + string + " to type "
+                            + type, ex);
         }
     }
 }

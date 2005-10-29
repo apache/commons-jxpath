@@ -20,7 +20,7 @@ import java.beans.PropertyDescriptor;
 
 import org.apache.commons.jxpath.JXPathBeanInfo;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
@@ -204,7 +204,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     public void setValue(Object value) {
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null) {
-            throw new JXPathException(
+            throw new JXPathInvalidAccessException(
                 "Cannot set property: " + asPath() + " - no such property");
         }
 

@@ -20,8 +20,10 @@ import java.util.Map;
 
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
+import org.apache.commons.jxpath.JXPathAbstractFactoryException;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 import org.apache.commons.jxpath.util.ValueUtils;
@@ -33,6 +35,9 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * @version $Revision$ $Date$
  */
 public class DynamicPropertyPointer extends PropertyPointer {
+
+    private static final long serialVersionUID = -5720585681149150822L;
+    
     private DynamicPropertyHandler handler;
     private String name;
     private String[] names;
@@ -212,7 +217,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
                     getPropertyName(),
                     0);
             if (!success) {
-                throw new JXPathException(
+                throw new JXPathAbstractFactoryException(
                     "Factory could not create an object for path: " + asPath());
             }
             collection = getBaseValue();
@@ -220,9 +225,10 @@ public class DynamicPropertyPointer extends PropertyPointer {
 
         if (index != WHOLE_COLLECTION) {
             if (index < 0) {
-                throw new JXPathException("Index is less than 1: " + asPath());
+                throw new JXPathInvalidAccessException("Index is less than 1: "
+                        + asPath());
             }
-    
+
             if (index >= getLength()) {
                 collection = ValueUtils.expandCollection(collection, index + 1);
                 handler.setProperty(getBean(), getPropertyName(), collection);

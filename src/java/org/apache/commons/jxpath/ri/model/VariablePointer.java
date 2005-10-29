@@ -16,9 +16,11 @@
 package org.apache.commons.jxpath.ri.model;
 
 import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathAbstractFactoryException;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathIntrospector;
+import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
@@ -154,11 +156,9 @@ public class VariablePointer extends NodePointer {
         if (!actual) {
             AbstractFactory factory = getAbstractFactory(context);
             if (!factory.declareVariable(context, name.toString())) {
-                throw new JXPathException(
-                    "Factory cannot define variable '"
-                        + name
-                        + "' for path: "
-                        + asPath());
+                throw new JXPathAbstractFactoryException(
+                        "Factory cannot define variable '" + name
+                                + "' for path: " + asPath());
             }
             findVariables(context);
             // Assert: actual == true
@@ -182,8 +182,8 @@ public class VariablePointer extends NodePointer {
                     getName().toString(),
                     index);
             if (!success) {
-                throw new JXPathException(
-                    "Factory could not create object path: " + asPath());
+                throw new JXPathAbstractFactoryException(
+                        "Factory could not create object path: " + asPath());
             }
             NodePointer cln = (NodePointer) clone();
             cln.setIndex(index);
@@ -210,7 +210,7 @@ public class VariablePointer extends NodePointer {
 
         Object collection = getBaseValue();
         if (collection == null) {
-            throw new JXPathException(
+            throw new JXPathAbstractFactoryException(
                 "Factory did not assign a collection to variable '"
                     + name
                     + "' for path: "
@@ -221,7 +221,8 @@ public class VariablePointer extends NodePointer {
             index = 0;
         }
         else if (index < 0) {
-            throw new JXPathException("Index is less than 1: " + asPath());
+            throw new JXPathInvalidAccessException("Index is less than 1: "
+                    + asPath());
         }
 
         if (index >= getLength()) {
@@ -239,7 +240,7 @@ public class VariablePointer extends NodePointer {
             }
             else {
                 if (index < 0) {
-                    throw new JXPathException(
+                    throw new JXPathInvalidAccessException(
                         "Index is less than 1: " + asPath());
                 }
 

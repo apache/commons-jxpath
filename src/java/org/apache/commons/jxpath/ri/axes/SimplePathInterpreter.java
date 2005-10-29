@@ -661,7 +661,7 @@ public class SimplePathInterpreter {
             value = ((NodePointer) value).getValue();
         }
         if (value == null) {
-            throw new JXPathException("Predicate value is null");
+            throw new JXPathException("Predicate value is null: " + predicate);
         }
 
         if (value instanceof Number) {

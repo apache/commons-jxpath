@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathAbstractFactoryException;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
@@ -405,14 +406,9 @@ public class DOMNodePointer extends NodePointer {
                 return it.getNodePointer();
             }
         }
-        throw new JXPathException(
-            "Factory could not create a child node for path: "
-                + asPath()
-                + "/"
-                + name
-                + "["
-                + (index + 1)
-                + "]");
+        throw new JXPathAbstractFactoryException(
+                "Factory could not create a child node for path: " + asPath()
+                        + "/" + name + "[" + (index + 1) + "]");
     }
 
     public NodePointer createChild(JXPathContext context, 

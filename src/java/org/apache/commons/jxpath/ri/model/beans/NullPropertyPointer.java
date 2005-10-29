@@ -16,7 +16,7 @@
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
@@ -76,7 +76,7 @@ public class NullPropertyPointer extends PropertyPointer {
 
     public void setValue(Object value) {
         if (parent == null || parent.isContainer()) {
-            throw new JXPathException(
+            throw new JXPathInvalidAccessException(
                 "Cannot set property "
                     + asPath()
                     + ", the target object is null");
@@ -92,7 +92,7 @@ public class NullPropertyPointer extends PropertyPointer {
             propertyPointer.setValue(value);
         }
         else {
-            throw new JXPathException(
+            throw new JXPathInvalidAccessException(
                 "Cannot set property "
                     + asPath()
                     + ", path does not match a changeable location");

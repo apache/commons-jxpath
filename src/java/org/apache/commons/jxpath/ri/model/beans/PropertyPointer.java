@@ -16,6 +16,7 @@
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathAbstractFactoryException;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathIntrospector;
@@ -142,11 +143,8 @@ public abstract class PropertyPointer extends NodePointer {
                     getPropertyName(),
                     inx);
             if (!success) {
-                throw new JXPathException(
-                    "Factory "
-                        + factory
-                        + " could not create an object for path: "
-                        + asPath());
+                throw new JXPathAbstractFactoryException("Factory " + factory
+                        + " could not create an object for path: " + asPath());
             }
         }
         return this;

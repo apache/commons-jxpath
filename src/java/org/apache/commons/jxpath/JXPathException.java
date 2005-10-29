@@ -23,7 +23,8 @@ package org.apache.commons.jxpath;
  */
 
 public class JXPathException extends RuntimeException {
-
+    private static final long serialVersionUID = 4306409701468017766L;
+    
     /** @serial */
     private Throwable exception;
 
@@ -116,4 +117,12 @@ public class JXPathException extends RuntimeException {
     public Throwable getException() {
         return exception;
     }
+
+    /**
+     * Same as {@link #getException() getException()}
+     */
+    public Throwable getCause() {
+        return exception;
+    }
+
 }
