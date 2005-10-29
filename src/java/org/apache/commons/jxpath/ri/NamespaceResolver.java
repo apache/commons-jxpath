@@ -96,8 +96,11 @@ public class NamespaceResolver implements Cloneable {
             if (ni != null) {
                 for (int position = 1; ni.setPosition(position); position++) {
                     NodePointer nsPointer = ni.getNodePointer();
-                    reverseMap.put(nsPointer.getNamespaceURI(), 
-                            nsPointer.getName().getName());
+                    String uri = nsPointer.getNamespaceURI();                    
+                    String prefix = nsPointer.getName().getName();
+                    if (!"".equals(prefix)) {
+                        reverseMap.put(uri, prefix);
+                    }
                 }
             }
             Iterator it = namespaceMap.entrySet().iterator();
