@@ -20,7 +20,6 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
-import org.apache.commons.jxpath.ri.NamespaceResolver;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
@@ -35,7 +34,6 @@ public class RootContext extends EvalContext {
     private NodePointer pointer;
     private Object registers[];
     private int availableRegister = 0;
-    private NamespaceResolver namespaceResolver;
     public static final Object UNKNOWN_VALUE = new Object();
     private static final int MAX_REGISTER = 4;
 

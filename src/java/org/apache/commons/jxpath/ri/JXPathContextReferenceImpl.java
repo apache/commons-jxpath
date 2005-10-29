@@ -108,6 +108,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     private Pointer contextPointer;
     
     protected NamespaceResolver namespaceResolver;
+    private boolean defaultNamespaceIgnored;
 
     // The frequency of the cache cleanup
     private static final int CLEANUP_THRESHOLD = 500;
@@ -674,9 +675,25 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     public NamespaceResolver getNamespaceResolver() {
         namespaceResolver.seal();
+        namespaceResolver.setDefaultNamespaceIgnored(isDefaultNamespaceIgnored());
         return namespaceResolver;
     }
     
+    public boolean isDefaultNamespaceIgnored() {
+        if (defaultNamespaceIgnored) {
+            return true;
+        }
+        if (parentContext != null) {
+            return parentContext.isDefaultNamespaceIgnored();
+        }
+        
+        return false;
+    }
+
+    public void setDefaultNamespaceIgnored(boolean flag) {
+        defaultNamespaceIgnored = flag;
+    }
+
     /**
      * Checks if existenceCheckClass exists on the class path. If so, allocates
      * an instance of the specified class, otherwise returns null.

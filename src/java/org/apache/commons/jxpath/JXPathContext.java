@@ -860,4 +860,34 @@ public abstract class JXPathContext {
         throw new UnsupportedOperationException(
                 "Namespace registration is not implemented by " + getClass());
     }
+
+    /**
+     * If true, default namespace declarations in XML are ignored. Thus, if you
+     * have this XML: 
+     * <pre>
+     *   &lt;a xmlns="myns"&gt; 
+     *     &lt;b&gt;109&lt;/b&gt;
+     *   &lt;/a&gt; 
+     * </pos>
+     * you can use the path "/a/b" to retrieve the contents of the nested element.
+     * <p>
+     * If false (default), you have to do the default thing, which is this:
+     * <pre>
+     *   context.registerNamespace("ns", "myns");
+     *   context.getValue("/ns:a/ns:b");
+     * </pre>
+     */
+    public boolean isDefaultNamespaceIgnored() {
+        return false;        
+    }
+    
+    
+    /**
+     * Changing this flag to true makes jxpath forgive missing default namespace specification.
+     * @see #isDefaultNamespaceIgnored(boolean)
+     */
+    public void setDefaultNamespaceIgnored(boolean flag) {
+        throw new UnsupportedOperationException(
+                "Namespace registration is not implemented by " + getClass());        
+    }
 }

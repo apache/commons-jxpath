@@ -29,9 +29,9 @@ import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.compiler.ProcessingInstructionTest;
-import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.jxpath.util.TypeUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
@@ -49,6 +49,9 @@ import org.w3c.dom.ProcessingInstruction;
  * @version $Revision$ $Date$
  */
 public class DOMNodePointer extends NodePointer {
+
+    private static final long serialVersionUID = -8751046933894857319L;
+    
     private Node node;
     private Map namespaces;
     private String defaultNamespace;
@@ -76,10 +79,17 @@ public class DOMNodePointer extends NodePointer {
     }
     
     public boolean testNode(NodeTest test) {
-        return testNode(node, test);
+        return testNode(node, test, 
+                getNamespaceResolver().isDefaultNamespaceIgnored());
     }
 
     public static boolean testNode(Node node, NodeTest test) {
+        return testNode(node, test, false);
+    }
+
+    public static boolean testNode(Node node, NodeTest test,
+            boolean ignoreDefaultNamespace)
+    {
         if (test == null) {
             return true;
         }
@@ -100,6 +110,10 @@ public class DOMNodePointer extends NodePointer {
             if (wildcard
                 || testName.getName()
                         .equals(DOMNodePointer.getLocalName(node))) {
+                if (ignoreDefaultNamespace && testPrefix == null
+                        && node.getPrefix() == null) {
+                    return true;
+                }
                 String nodeNS = DOMNodePointer.getNamespaceURI(node);
                 return equalStrings(namespaceURI, nodeNS);
             }
@@ -231,25 +245,6 @@ public class DOMNodePointer extends NodePointer {
         }
         
         // TBD: We are supposed to resolve relative URIs to absolute ones.
-        return namespace;
-    }
-
-    private String getNamespaceURI(String prefix, String namespace) {
-        String qname = "xmlns:" + prefix;
-        Node aNode = node;
-        if (aNode instanceof Document) {
-            aNode = ((Document)aNode).getDocumentElement();
-        }
-        while (aNode != null) {
-            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
-                Attr attr = ((Element) aNode).getAttributeNode(qname);
-                if (attr != null) {
-                    namespace = attr.getValue();
-                    break;
-                }
-            }
-            aNode = aNode.getParentNode();
-        }
         return namespace;
     }
 

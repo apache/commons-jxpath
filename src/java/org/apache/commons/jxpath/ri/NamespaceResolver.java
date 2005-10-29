@@ -36,6 +36,7 @@ public class NamespaceResolver implements Cloneable {
     protected HashMap reverseMap;
     protected NodePointer pointer;
     private boolean sealed;
+    private boolean defaultNamespaceIgnored;
         
     public NamespaceResolver(NamespaceResolver parent) {
         this.parent = parent;
@@ -95,8 +96,8 @@ public class NamespaceResolver implements Cloneable {
             if (ni != null) {
                 for (int position = 1; ni.setPosition(position); position++) {
                     NodePointer nsPointer = ni.getNodePointer();
-                    QName qname = nsPointer.getName();
-                    reverseMap.put(qname.getPrefix(), qname.getName());
+                    reverseMap.put(nsPointer.getNamespaceURI(), 
+                            nsPointer.getName().getName());
                 }
             }
             Iterator it = namespaceMap.entrySet().iterator();
@@ -110,6 +111,14 @@ public class NamespaceResolver implements Cloneable {
             return parent.getPrefix(namespaceURI);
         }
         return prefix;
+    }
+        
+    public boolean isDefaultNamespaceIgnored() {
+        return defaultNamespaceIgnored;
+    }
+
+    public void setDefaultNamespaceIgnored(boolean flag) {
+        this.defaultNamespaceIgnored = flag;
     }
     
     public boolean isSealed() {
@@ -133,4 +142,5 @@ public class NamespaceResolver implements Cloneable {
             return null;
         }
     }
+
 }

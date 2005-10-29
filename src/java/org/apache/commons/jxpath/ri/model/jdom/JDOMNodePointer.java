@@ -17,7 +17,6 @@ package org.apache.commons.jxpath.ri.model.jdom;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
@@ -47,9 +46,9 @@ import org.jdom.Text;
  * @version $Revision$ $Date$
  */
 public class JDOMNodePointer extends NodePointer {
+    private static final long serialVersionUID = -6346532297491082651L;
+    
     private Object node;
-    private Map namespaces;
-    private String defaultNamespace;
     private String id;
 
     public static final String XML_NAMESPACE_URI =
@@ -336,13 +335,20 @@ public class JDOMNodePointer extends NodePointer {
     }
     
     public boolean testNode(NodeTest test) {
-        return testNode(this, node, test);
+        return testNode(this, node, test, 
+                getNamespaceResolver().isDefaultNamespaceIgnored());
     }
-
+    
     public static boolean testNode(
         NodePointer pointer,
         Object node,
         NodeTest test) 
+    {
+        return testNode(pointer, node, test, false);
+    }
+    
+    public static boolean testNode(NodePointer pointer, Object node,
+            NodeTest test, boolean ignoreDefaultNamespace)
     {
         if (test == null) {
             return true;
@@ -364,6 +370,10 @@ public class JDOMNodePointer extends NodePointer {
             if (wildcard
                 || testName.getName()
                         .equals(JDOMNodePointer.getLocalName(node))) {
+                if (ignoreDefaultNamespace && testPrefix == null
+                        && ((Element)node).getNamespacePrefix().equals("")) {
+                    return true;
+                }
                 String nodeNS = JDOMNodePointer.getNamespaceURI(node);
                 return equalStrings(namespaceURI, nodeNS);
             }
