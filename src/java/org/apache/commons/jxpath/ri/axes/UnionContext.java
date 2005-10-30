@@ -29,7 +29,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * @version $Revision$ $Date$
  */
 public class UnionContext extends NodeSetContext {
-    private boolean startedSet = false;
     private EvalContext contexts[];
     private boolean prepared = false;
 

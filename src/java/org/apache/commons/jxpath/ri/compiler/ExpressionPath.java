@@ -15,6 +15,7 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import org.apache.commons.jxpath.BasicNodeSet;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.axes.InitialContext;
 import org.apache.commons.jxpath.ri.axes.NodeSetContext;
@@ -173,6 +174,9 @@ public class ExpressionPath extends Path {
         }
         if (predicates != null) {
             for (int j = 0; j < predicates.length; j++) {
+                if (j != 0) {
+                    context = new UnionContext(context, new EvalContext[]{context});
+                }
                 context = new PredicateContext(context, predicates[j]);
             }
         }

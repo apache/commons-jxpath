@@ -30,6 +30,7 @@ import org.apache.commons.jxpath.ri.axes.PrecedingOrFollowingContext;
 import org.apache.commons.jxpath.ri.axes.PredicateContext;
 import org.apache.commons.jxpath.ri.axes.SelfContext;
 import org.apache.commons.jxpath.ri.axes.SimplePathInterpreter;
+import org.apache.commons.jxpath.ri.axes.UnionContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
@@ -238,6 +239,9 @@ public abstract class Path extends Expression {
             Expression predicates[] = steps[i].getPredicates();
             if (predicates != null) {
                 for (int j = 0; j < predicates.length; j++) {
+                    if (j != 0) {
+                        context = new UnionContext(context, new EvalContext[]{context});
+                    }
                     context = new PredicateContext(context, predicates[j]);
                 }
             }
