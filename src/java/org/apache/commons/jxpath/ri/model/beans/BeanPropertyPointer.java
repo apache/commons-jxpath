@@ -40,7 +40,6 @@ public class BeanPropertyPointer extends PropertyPointer {
     private Object baseValue = UNINITIALIZED;
     private Object value = UNINITIALIZED;
     
-    private static final int UNKNOWN_LENGTH_MAX_COUNT = 10000;
 
     public BeanPropertyPointer(NodePointer parent, JXPathBeanInfo beanInfo) {
         super(parent);
@@ -58,6 +57,9 @@ public class BeanPropertyPointer extends PropertyPointer {
      * Number of the bean's properties.
      */
     public int getPropertyCount() {
+        if (beanInfo.isAtomic()) {
+            return 0;
+        }
         return getPropertyDescriptors().length;
     }
 
