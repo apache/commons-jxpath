@@ -80,17 +80,10 @@ public class DOMNodePointer extends NodePointer {
     }
     
     public boolean testNode(NodeTest test) {
-        return testNode(node, test, 
-                getNamespaceResolver().isDefaultNamespaceIgnored());
+        return testNode(node, test);
     }
 
     public static boolean testNode(Node node, NodeTest test) {
-        return testNode(node, test, false);
-    }
-
-    public static boolean testNode(Node node, NodeTest test,
-            boolean ignoreDefaultNamespace)
-    {
         if (test == null) {
             return true;
         }
@@ -111,10 +104,6 @@ public class DOMNodePointer extends NodePointer {
             if (wildcard
                 || testName.getName()
                         .equals(DOMNodePointer.getLocalName(node))) {
-                if (ignoreDefaultNamespace && testPrefix == null
-                        && node.getPrefix() == null) {
-                    return true;
-                }
                 String nodeNS = DOMNodePointer.getNamespaceURI(node);
                 return equalStrings(namespaceURI, nodeNS);
             }
@@ -393,13 +382,10 @@ public class DOMNodePointer extends NodePointer {
         if (success) {
             NodeTest nodeTest;
             String prefix = name.getPrefix();
-            if (prefix != null) {
-                String namespaceURI = context.getNamespaceURI(prefix);
-                nodeTest = new NodeNameTest(name, namespaceURI);
-            }
-            else {
-                nodeTest = new NodeNameTest(name);
-            }
+            String namespaceURI = prefix != null 
+                ? context.getNamespaceURI(prefix) 
+                : context.getDefaultNamespaceURI();
+            nodeTest = new NodeNameTest(name, namespaceURI);
 
             NodeIterator it = childIterator(nodeTest, false, null);
             if (it != null && it.setPosition(index + 1)) {
@@ -470,10 +456,10 @@ public class DOMNodePointer extends NodePointer {
                             || buffer.charAt(buffer.length() - 1) != '/') {
                         buffer.append('/');
                     }
-                    String nsURI = getNamespaceURI();
                     String ln = DOMNodePointer.getLocalName(node);
-                    
-                    if (nsURI == null) {
+                    String nsURI = getNamespaceURI();
+                    if (equalStrings(nsURI, 
+                            getNamespaceResolver().getDefaultNamespaceURI())) {
                         buffer.append(ln);
                         buffer.append('[');
                         buffer.append(getRelativePositionByName()).append(']');

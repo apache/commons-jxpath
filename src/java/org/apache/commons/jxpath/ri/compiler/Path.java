@@ -261,9 +261,10 @@ public abstract class Path extends Expression {
         if (nodeTest instanceof NodeNameTest) {
             QName qname = ((NodeNameTest) nodeTest).getNodeName();
             String prefix = qname.getPrefix();
-            if (prefix != null) {
-                String namespaceURI = context.getJXPathContext()
-                        .getNamespaceURI(prefix);
+            String namespaceURI = prefix != null 
+                ? context.getJXPathContext().getNamespaceURI(prefix) 
+                : context.getJXPathContext().getDefaultNamespaceURI();
+            if (namespaceURI != null) {
                 nodeTest = new NodeNameTest(qname, namespaceURI);
             }
         }

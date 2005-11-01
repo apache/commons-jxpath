@@ -862,32 +862,29 @@ public abstract class JXPathContext {
     }
 
     /**
-     * If true, default namespace declarations in XML are ignored. Thus, if you
-     * have this XML: 
+     * Binds a namespace URI for XPath QNames that are missing the prefix.
+     * If you have this XML: 
      * <pre>
      *   &lt;a xmlns="myns"&gt; 
      *     &lt;b&gt;109&lt;/b&gt;
      *   &lt;/a&gt; 
-     * </pos>
-     * you can use the path "/a/b" to retrieve the contents of the nested element.
-     * <p>
-     * If false (default), you have to do the default thing, which is this:
-     * <pre>
-     *   context.registerNamespace("ns", "myns");
-     *   context.getValue("/ns:a/ns:b");
      * </pre>
-     */
-    public boolean isDefaultNamespaceIgnored() {
-        return false;        
-    }
-    
-    
-    /**
-     * Changing this flag to true makes jxpath forgive missing default namespace specification.
-     * @see #isDefaultNamespaceIgnored(boolean)
-     */
-    public void setDefaultNamespaceIgnored(boolean flag) {
+     * and
+     * <pre>
+     *   context.setDefaultNamespaceURI("myns");
+     * </pre>
+     * you can use the path "/a/b" instead of "/foo:a/foo:b" (the assumption
+     * here is that the prefix "foo" is bound to "myns" by calling 
+     * registerNamespace).
+      */
+    public void registerDefaultNamespace(String uri) {
         throw new UnsupportedOperationException(
                 "Namespace registration is not implemented by " + getClass());        
     }
+
+    /**
+    */
+    public String getDefaultNamespaceURI() {
+        return null;        
+    }    
 }

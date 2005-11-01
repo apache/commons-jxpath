@@ -336,20 +336,13 @@ public class JDOMNodePointer extends NodePointer {
     }
     
     public boolean testNode(NodeTest test) {
-        return testNode(this, node, test, 
-                getNamespaceResolver().isDefaultNamespaceIgnored());
+        return testNode(this, node, test);
     }
     
     public static boolean testNode(
         NodePointer pointer,
         Object node,
         NodeTest test) 
-    {
-        return testNode(pointer, node, test, false);
-    }
-    
-    public static boolean testNode(NodePointer pointer, Object node,
-            NodeTest test, boolean ignoreDefaultNamespace)
     {
         if (test == null) {
             return true;
@@ -371,10 +364,6 @@ public class JDOMNodePointer extends NodePointer {
             if (wildcard
                 || testName.getName()
                         .equals(JDOMNodePointer.getLocalName(node))) {
-                if (ignoreDefaultNamespace && testPrefix == null
-                        && ((Element)node).getNamespacePrefix().equals("")) {
-                    return true;
-                }
                 String nodeNS = JDOMNodePointer.getNamespaceURI(node);
                 return equalStrings(namespaceURI, nodeNS);
             }
@@ -510,13 +499,10 @@ public class JDOMNodePointer extends NodePointer {
         if (success) {
             NodeTest nodeTest;
             String prefix = name.getPrefix();
-            if (prefix != null) {
-                String namespaceURI = context.getNamespaceURI(prefix);
-                nodeTest = new NodeNameTest(name, namespaceURI);
-            }
-            else {
-                nodeTest = new NodeNameTest(name);
-            }
+            String namespaceURI = prefix != null 
+                ? context.getNamespaceURI(prefix) 
+                : context.getDefaultNamespaceURI();
+            nodeTest = new NodeNameTest(name, namespaceURI);
 
             NodeIterator it =
                 childIterator(nodeTest, false, null);
@@ -595,7 +581,8 @@ public class JDOMNodePointer extends NodePointer {
                 String nsURI = getNamespaceURI();
                 String ln = JDOMNodePointer.getLocalName(node);
                 
-                if (nsURI == null) {
+                if (equalStrings(nsURI, 
+                        getNamespaceResolver().getDefaultNamespaceURI())) {
                     buffer.append(ln);
                     buffer.append('[');
                     buffer.append(getRelativePositionByName()).append(']');

@@ -35,8 +35,8 @@ public class NamespaceResolver implements Cloneable {
     protected HashMap namespaceMap = new HashMap();
     protected HashMap reverseMap;
     protected NodePointer pointer;
+    private String defaultNamespaceURI;
     private boolean sealed;
-    private boolean defaultNamespaceIgnored;
         
     public NamespaceResolver(NamespaceResolver parent) {
         this.parent = parent;
@@ -116,12 +116,12 @@ public class NamespaceResolver implements Cloneable {
         return prefix;
     }
         
-    public boolean isDefaultNamespaceIgnored() {
-        return defaultNamespaceIgnored;
+    public String getDefaultNamespaceURI() {
+        return defaultNamespaceURI;
     }
 
-    public void setDefaultNamespaceIgnored(boolean flag) {
-        this.defaultNamespaceIgnored = flag;
+    public void registerDefaultNamespaceURI(String uri) {
+        this.defaultNamespaceURI = uri;
     }
     
     public boolean isSealed() {

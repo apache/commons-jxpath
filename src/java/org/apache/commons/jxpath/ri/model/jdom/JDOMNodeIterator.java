@@ -160,8 +160,6 @@ public class JDOMNodeIterator implements NodeIterator {
     }
 
     private boolean testChild() {
-        boolean ignoreNS = 
-            parent.getNamespaceResolver().isDefaultNamespaceIgnored();
-        return JDOMNodePointer.testNode(parent, child, nodeTest, ignoreNS);
+        return JDOMNodePointer.testNode(parent, child, nodeTest);
     }
 }

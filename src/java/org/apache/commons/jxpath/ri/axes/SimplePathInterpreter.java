@@ -815,11 +815,11 @@ public class SimplePathInterpreter {
             NodeTest nodeTest = step.getNodeTest();
             QName qname = ((NodeNameTest) nodeTest).getNodeName();
             String prefix = qname.getPrefix();
-            if (prefix != null) {
-                String namespaceURI = context.getJXPathContext()
-                        .getNamespaceURI(prefix);
+            String namespaceURI = prefix != null 
+                ? context.getJXPathContext().getNamespaceURI(prefix) 
+                : context.getJXPathContext().getDefaultNamespaceURI();
+            if (namespaceURI != null) {
                 nodeTest = new NodeNameTest(qname, namespaceURI);
-
             }
             return pointer.childIterator(nodeTest, false, null);
         }

@@ -140,8 +140,6 @@ public class DOMNodeIterator implements NodeIterator {
     }
 
     private boolean testChild() {
-        boolean ignoreNS = 
-            parent.getNamespaceResolver().isDefaultNamespaceIgnored();
-        return DOMNodePointer.testNode(child, nodeTest, ignoreNS);
+        return DOMNodePointer.testNode(child, nodeTest);
     }
 }

@@ -47,10 +47,16 @@
      <?report average only ?>
   </product>
 
-  <pos xmlns="temp">  
+  <pos xmlns="temp">
     <register xmlns="">
        <number>109</number>
     </register>
   </pos>
 
+  <pos xmlns="temp">
+    <register>
+       <number>110</number>
+    </register>
+  </pos>
+  
 </vendor>
