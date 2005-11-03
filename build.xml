@@ -161,7 +161,7 @@
     </get>
     <get dest="${libdir}/xml-apis-2.0.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xml-apis/jars/xml-apis-2.0.2.jar">
     </get>
-    <get dest="${libdir}/jdom-b9.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/jdom/jars/jdom-b9.jar">
+    <get dest="${libdir}/jdom-1.0.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/jdom/jars/jdom-1.0.jar">
     </get>
     <get dest="${libdir}/commons-beanutils-1.4.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-beanutils/jars/commons-beanutils-1.4.jar">
     </get>

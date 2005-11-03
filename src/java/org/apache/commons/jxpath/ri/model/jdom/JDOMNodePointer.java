@@ -668,11 +668,17 @@ public class JDOMNodePointer extends NodePointer {
     }
     
     private int getRelativePositionOfElement() {
-        Element parent = (Element) ((Element) node).getParent();
+        Object parent = ((Element) node).getParent();
         if (parent == null) {
             return 1;
         }
-        List children = parent.getContent();
+        List children;
+        if (parent instanceof Element) {
+            children = ((Element) parent).getContent();
+        }
+        else {
+            children = ((Document) parent).getContent();
+        }
         int count = 0;
         for (int i = 0; i < children.size(); i++) {
             Object child = children.get(i);
