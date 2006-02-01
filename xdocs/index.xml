@@ -104,7 +104,7 @@ while (it.hasNext()){
 
       <section name="Nightly Build">
         <p>
-          Nightly build can be found <a href="http://cvs.apache.org/builds/jakarta-commons/nightly/commons-jxpath/">here</a>.
+          Nightly build can be found <a href="http://svn.apache.org/builds/jakarta-commons/nightly/commons-jxpath/">here</a>.
         </p>
       </section>
 
