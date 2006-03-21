@@ -82,6 +82,9 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValue(context, "substring('12345', 1, 0 div 0)", "");
         assertXPathValue(context, "substring('12345', -42, 1 div 0)", "12345");
         assertXPathValue(context, "substring('12345', -1 div 0, 1 div 0)", "");
+        assertXPathValue(context, "substring('12345', 6, 6)", "");
+        assertXPathValue(context, "substring('12345', 7, 8)", "");
+        assertXPathValue(context, "substring('12345', 7)", "");
         assertXPathValue(context, "string-length('12345')", new Double(5));
         assertXPathValue(context, "normalize-space(' abc  def  ')", "abc def");
         assertXPathValue(context, "normalize-space('abc def')", "abc def");

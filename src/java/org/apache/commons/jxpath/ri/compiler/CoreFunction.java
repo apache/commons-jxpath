@@ -473,6 +473,9 @@ public class CoreFunction extends Operation {
         }
 
         from = Math.round(from);
+        if (from > s1.length() + 1) {
+            return "";
+        }
         if (ac == 2) {
             if (from < 1) {
                 from = 1;
