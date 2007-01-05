@@ -87,20 +87,9 @@ while (it.hasNext()){
       </section>
 
       <section name="Releases">
-        <ul>
-          <li>
-            <a href="http://jakarta.apache.org/site/binindex.cgi#commons-jxpath">Version 1.2 (mirror, bin)</a>
-          </li>
-          <li>
-            <a href="http://jakarta.apache.org/site/sourceindex.cgi#commons-jxpath">Version 1.2 (mirror, source)</a>
-          </li>
-          <li>
-            <a href="http://archive.apache.org/dist/jakarta/commons/jxpath/old/v1.1/">Version 1.1</a>
-          </li>
-          <li>
-            <a href="http://archive.apache.org/dist/jakarta/commons/jxpath/old/v1.0/">Version 1.0</a>
-          </li>
-        </ul>
+        <p>See the <a href="http://jakarta.apache.org/site/downloads/downloads_commons-jxpath.cgi">JXPath Downloads</a>
+           page for current/previous releases.
+        </p>
       </section>
 
    </body>
