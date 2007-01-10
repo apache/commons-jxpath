@@ -36,12 +36,11 @@ public class MethodLookupUtils {
     private static final int NO_MATCH = 0;
     private static final int APPROXIMATE_MATCH = 1;
     private static final int EXACT_MATCH = 2;
-    private static final Object[] EMPTY_ARRAY = new Object[0];
 
-     public static Constructor lookupConstructor(
+    public static Constructor lookupConstructor(
         Class targetClass,
-        Object[] parameters) 
-     {
+        Object[] parameters)  
+    {
         boolean tryExact = true;
         int count = parameters == null ? 0 : parameters.length;
         Class types[] = new Class[count];
