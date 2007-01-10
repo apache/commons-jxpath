@@ -16,6 +16,8 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
+import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathAbstractFactoryException;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.ri.QName;
@@ -106,12 +108,15 @@ public class NullPropertyPointer extends PropertyPointer {
             return newParent.createAttribute(context, getName());
         }
         else {
+            if (parent instanceof NullPointer && parent.equals(newParent)) {
+                throw createBadFactoryException(context.getFactory());
+            }
             // Consider these two use cases:
             // 1. The parent pointer of NullPropertyPointer is 
             //    a PropertyOwnerPointer other than NullPointer. When we call 
             //    createPath on it, it most likely returns itself. We then
             //    take a PropertyPointer from it and get the PropertyPointer
-            //    to expand the collection for the corresponsing property.
+            //    to expand the collection for the corresponding property.
             //
             // 2. The parent pointer of NullPropertyPointer is a NullPointer.
             //    When we call createPath, it may return a PropertyOwnerPointer
@@ -135,6 +140,9 @@ public class NullPropertyPointer extends PropertyPointer {
             return pointer;
         }
         else {
+            if (parent instanceof NullPointer && parent.equals(newParent)) {
+                throw createBadFactoryException(context.getFactory());
+            }
             if (newParent instanceof PropertyOwnerPointer) {
                 PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
                 newParent = pop.getPropertyPointer();
@@ -220,5 +228,11 @@ public class NullPropertyPointer extends PropertyPointer {
             index = string.indexOf('\"');
         }
         return string;
+    }
+
+    private JXPathAbstractFactoryException createBadFactoryException(AbstractFactory factory) {
+        return new JXPathAbstractFactoryException("Factory " + factory
+                + " reported success creating object for path: " + asPath()
+                + " but object was null.  Terminating to avoid stack recursion.");
     }
 }
