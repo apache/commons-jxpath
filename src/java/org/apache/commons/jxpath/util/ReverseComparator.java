@@ -6,7 +6,7 @@ import java.util.Comparator;
  * Reverse comparator.
  *
  * @author Dmitri Plotnikov
- * @version $Revision:$ $Date:$
+ * @version $Revision$ $Date$
  */
 public class ReverseComparator implements Comparator {
     /**
