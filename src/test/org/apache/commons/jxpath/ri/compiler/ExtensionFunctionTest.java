@@ -30,11 +30,15 @@ import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.PackageFunctions;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.TestBean;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.util.JXPath11CompatibleTypeConverter;
+import org.apache.commons.jxpath.util.TypeConverter;
+import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * Test extension functions.
@@ -47,6 +51,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     private Functions functions;
     private JXPathContext context;
     private TestBean testBean;
+    private TypeConverter typeConverter;
 
     public static void main(String[] args) {
         TestRunner.run(ExtensionFunctionTest.class);
@@ -78,8 +83,15 @@ public class ExtensionFunctionTest extends JXPathTestCase {
                     "jxpathtest"));
             lib.addFunctions(new PackageFunctions("", null));
             context.setFunctions(lib);
+            context.getVariables().declareVariable("List.class", List.class);
+            context.getVariables().declareVariable("NodeSet.class", NodeSet.class);
         }
         functions = new ClassFunctions(TestFunctions.class, "test");
+        typeConverter = TypeUtils.getTypeConverter();
+    }
+
+    public void tearDown() {
+        TypeUtils.setTypeConverter(typeConverter);
     }
 
     public void testConstructorLookup() {
@@ -360,6 +372,29 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             "test:nodeSet()/@name",
             "Name 1",
             "/beans[1]/@name");
+    }
+
+    public void testEstablishNodeSetBaseline() {
+        assertXPathValue(
+            context,
+            "test:isInstance(//strings, $List.class)",
+            Boolean.TRUE);
+        assertXPathValue(
+            context,
+            "test:isInstance(//strings, $NodeSet.class)",
+            Boolean.FALSE);
+    }
+
+    public void testBCNodeSetHack() {
+        TypeUtils.setTypeConverter(new JXPath11CompatibleTypeConverter());
+        assertXPathValue(
+            context,
+            "test:isInstance(//strings, $List.class)",
+            Boolean.FALSE);
+        assertXPathValue(
+            context,
+            "test:isInstance(//strings, $NodeSet.class)",
+            Boolean.TRUE);
     }
 
     private static class Context implements ExpressionContext {

@@ -149,4 +149,9 @@ public class TestFunctions {
     public static Collection items(Collection arg) {
         return arg;
     }
+
+    public static Boolean isInstance(Object o, Class c) {
+        return c.isInstance(o) ? Boolean.TRUE : Boolean.FALSE;
+    }
+
 }
