@@ -90,6 +90,11 @@
       <email>Craig.McClanahan@eng.sun.com</email>
       <organization>Sun Microsystems</organization>
     </developer>
+    <developer>
+      <name>Matt Benson</name>
+      <id>mbenson</id>
+      <email>mbenson@apache.org</email>
+    </developer>
   </developers>
   
   <dependencies>
