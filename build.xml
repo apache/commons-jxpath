@@ -158,7 +158,7 @@
     </javadoc>
   </target>
   <target name="get-deps" unless="noget" depends="init">
-    <get dest="${libdir}/xerces-1.2.3.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xerces/jars/xerces-1.2.3.jar">
+    <get dest="${libdir}/xerces-2.4.0.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xerces/jars/xerces-2.4.0.jar">
     </get>
     <get dest="${libdir}/servletapi-2.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/servletapi/jars/servletapi-2.2.jar">
     </get>
