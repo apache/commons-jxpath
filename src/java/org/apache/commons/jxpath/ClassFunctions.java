@@ -86,7 +86,11 @@ public class ClassFunctions implements Functions {
         String name,
         Object[] parameters) 
     {
-        if (!namespace.equals(this.namespace)) {
+        if (namespace == null) {
+            if (this.namespace != null) {
+                return null;
+            }
+        } else if (!namespace.equals(this.namespace)) {
             return null;
         }
 
