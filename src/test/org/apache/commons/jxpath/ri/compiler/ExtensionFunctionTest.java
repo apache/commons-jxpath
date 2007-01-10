@@ -46,6 +46,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class ExtensionFunctionTest extends JXPathTestCase {
     private Functions functions;
     private JXPathContext context;
+    private TestBean testBean;
 
     public static void main(String[] args) {
         TestRunner.run(ExtensionFunctionTest.class);
@@ -62,7 +63,8 @@ public class ExtensionFunctionTest extends JXPathTestCase {
 
     public void setUp() {
         if (context == null) {
-            context = JXPathContext.newContext(new TestBean());
+            testBean = new TestBean();
+            context = JXPathContext.newContext(testBean);
             Variables vars = context.getVariables();
             vars.declareVariable("test", new TestFunctions(4, "test"));
 
@@ -336,6 +338,11 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             context,
             "test:nodeSet()/name",
             list("Name 1", "Name 2"));
+
+        assertXPathValueIterator(
+            context,
+            "test:nodeSet()",
+            list(testBean.getBeans()[0], testBean.getBeans()[1]));
 
         assertXPathPointerIterator(
             context,
