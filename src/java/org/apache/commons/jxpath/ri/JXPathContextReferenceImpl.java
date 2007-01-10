@@ -52,6 +52,7 @@ import org.apache.commons.jxpath.ri.model.beans.BeanPointerFactory;
 import org.apache.commons.jxpath.ri.model.beans.CollectionPointerFactory;
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointerFactory;
+import org.apache.commons.jxpath.util.ReverseComparator;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
@@ -576,10 +577,14 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             while (it.hasNext()) {
                 list.add(it.next());
             }
-            Collections.sort(list);
-            for (int i = list.size() - 1; i >= 0; i--) {
-                NodePointer pointer = (NodePointer) list.get(i);
+            Collections.sort(list, ReverseComparator.INSTANCE);
+            it = list.iterator();
+            if (it.hasNext()) {
+                NodePointer pointer = (NodePointer) it.next();
                 pointer.remove();
+                while (it.hasNext()) {
+                    removePath(((NodePointer) it.next()).asPath());
+                }
             }
         }
         catch (Throwable ex) {
