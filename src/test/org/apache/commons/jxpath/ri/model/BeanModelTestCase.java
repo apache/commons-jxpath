@@ -17,6 +17,7 @@
 package org.apache.commons.jxpath.ri.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -32,6 +33,7 @@ import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.TestFunctions;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
+import org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanModelTest;
 
 /**
  * Abstract superclass for Bean access with JXPath.
@@ -915,6 +917,30 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             "Remove array element",
             "String 2",
             context.getValue("nestedBean/strings[1]"));
+    }
+
+    public void testRemoveAllArrayElements() {
+        context.removeAll("nestedBean/strings");
+        assertXPathValueIterator(
+            context,
+            "nestedBean/strings",
+            list());
+    }
+
+    public void testRemoveAllListElements() {
+        context.removeAll("list");
+        assertXPathValueIterator(
+            context,
+            "list",
+            this instanceof DynaBeanModelTest ? list(null, null, null) : list());
+    }
+
+    public void testRemoveAllMapEntries() {
+        context.removeAll("map/*");
+        assertXPathValue(
+            context,
+            "map",
+            Collections.EMPTY_MAP);
     }
 
     public void testRemovePathBeanValue() {
