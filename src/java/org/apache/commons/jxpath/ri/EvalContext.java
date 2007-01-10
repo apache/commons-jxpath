@@ -32,6 +32,7 @@ import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.apache.commons.jxpath.util.ReverseComparator;
 
 /**
  * An XPath evaluation context.
@@ -51,14 +52,6 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     private boolean done = false;
     private boolean hasPerformedIteratorStep = false;
     private Iterator pointerIterator;
-
-    // Sorts in the reverse order to the one defined by the Comparable
-    // interface.
-    private static final Comparator REVERSE_COMPARATOR = new Comparator() {
-        public int compare(Object o1, Object o2) {
-            return ((Comparable) o2).compareTo(o1);
-        }
-    };
 
     public EvalContext(EvalContext parentContext) {
         this.parentContext = parentContext;
@@ -196,7 +189,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             Collections.sort(list);
         }
         else {
-            Collections.sort(list, REVERSE_COMPARATOR);
+            Collections.sort(list, ReverseComparator.INSTANCE);
         }
         pointerIterator = list.iterator();
         return true;
