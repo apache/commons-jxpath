@@ -76,6 +76,13 @@
     <fail message="There were test failures.">
     </fail>
   </target>
+  <target name="test-reports" description="junitreport">
+    <mkdir dir="${testreportdir}/html" />
+    <junitreport todir="${testreportdir}/html">
+      <fileset dir="${testreportdir}" includes="TEST-*.xml" />
+      <report format="frames" todir="${testreportdir}/html" />
+    </junitreport>
+  </target>
   <target name="internal-test" depends="compile-tests">
     <mkdir dir="${testreportdir}">
     </mkdir>
@@ -157,8 +164,6 @@
     </get>
     <get dest="${libdir}/junit-3.8.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.8.jar">
     </get>
-    <get dest="${libdir}/ant-optional-1.5.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/ant/jars/ant-optional-1.5.1.jar">
-    </get>
     <get dest="${libdir}/xml-apis-2.0.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/xml-apis/jars/xml-apis-2.0.2.jar">
     </get>
     <get dest="${libdir}/jdom-1.0.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/jdom/jars/jdom-1.0.jar">
@@ -170,10 +175,6 @@
     <get dest="${libdir}/commons-collections-2.0.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-collections/jars/commons-collections-2.0.jar">
     </get>
     <get dest="${libdir}/junit-3.8.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.8.1.jar">
-    </get>
-    <get dest="${libdir}/ant-1.5.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/ant/jars/ant-1.5.jar">
-    </get>
-    <get dest="${libdir}/ant-optional-1.5.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/ant/jars/ant-optional-1.5.jar">
     </get>
   </target>
   <target name="install-maven">
