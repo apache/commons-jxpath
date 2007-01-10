@@ -421,7 +421,7 @@ public class ValueUtils {
             catch (InvocationTargetException ex) {
                 Throwable t =
                     ((InvocationTargetException) ex).getTargetException();
-                if (t instanceof ArrayIndexOutOfBoundsException) {
+                if (t instanceof IndexOutOfBoundsException) {
                     return null;
                 }
                 
