@@ -62,7 +62,8 @@ public class JDOMModelTest extends XMLModelTestCase {
         assertXPathNodeType(context, "/", Document.class);
         assertXPathNodeType(context, "/vendor/location", Element.class);
         assertXPathNodeType(context, "//location/@name", Attribute.class);
-    }    
+        assertXPathNodeType(context, "//vendor", Element.class); //bugzilla #38586
+    }
     
     public void testID() {
         // id() is not supported by JDOM

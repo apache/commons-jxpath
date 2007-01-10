@@ -65,6 +65,7 @@ public class DOMModelTest extends XMLModelTestCase {
         assertXPathNodeType(context, "/", Document.class);
         assertXPathNodeType(context, "/vendor/location", Element.class);
         assertXPathNodeType(context, "//location/@name", Attr.class);
+        assertXPathNodeType(context, "//vendor", Element.class);
     }
     
     protected String getXMLSignature(
