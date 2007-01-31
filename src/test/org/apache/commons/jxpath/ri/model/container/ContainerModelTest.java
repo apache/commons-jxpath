@@ -37,7 +37,6 @@ import org.apache.commons.jxpath.JXPathTestCase;
  */
 
 public class ContainerModelTest extends JXPathTestCase {
-    private JXPathContext context;
 
     /**
      * Construct a new instance of this test case.

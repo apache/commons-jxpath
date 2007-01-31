@@ -37,7 +37,6 @@ public class PropertyIterator implements NodeIterator {
     private PropertyPointer propertyNodePointer;
     private int startPropertyIndex;
 
-    private boolean ready = false;
     private boolean includeStart = false;
 
     public PropertyIterator(

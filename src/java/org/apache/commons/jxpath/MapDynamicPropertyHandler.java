@@ -28,8 +28,6 @@ import java.util.Set;
  */
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
-    private static final String[] STRING_ARRAY = new String[0];
-
     /**
      * Returns string representations of all keys in the map.
      */

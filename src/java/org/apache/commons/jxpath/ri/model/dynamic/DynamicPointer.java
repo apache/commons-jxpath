@@ -39,7 +39,6 @@ public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;
     private Object bean;
     private DynamicPropertyHandler handler;
-    private String[] names;
 
     public DynamicPointer(QName name, Object bean,
             DynamicPropertyHandler handler, Locale locale)

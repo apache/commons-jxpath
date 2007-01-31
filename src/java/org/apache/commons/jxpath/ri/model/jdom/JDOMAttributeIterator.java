@@ -35,13 +35,13 @@ import org.jdom.Namespace;
  */
 public class JDOMAttributeIterator implements NodeIterator {
     private NodePointer parent;
-    private QName name;
+//    private QName name;
     private List attributes;
     private int position = 0;
 
     public JDOMAttributeIterator(NodePointer parent, QName name) {
         this.parent = parent;
-        this.name = name;
+//        this.name = name;
         if (parent.getNode() instanceof Element) {
             Element element = (Element) parent.getNode();
             String prefix = name.getPrefix();

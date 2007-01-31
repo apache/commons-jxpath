@@ -33,9 +33,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyIterator;
 public class PrecedingOrFollowingContext extends EvalContext {
     private NodeTest nodeTest;
     private boolean setStarted = false;
-    private boolean started = false;
     private Stack stack;
-    private Stack nameStack;
     private NodePointer currentNodePointer;
     private NodePointer currentRootLocation;
     private boolean reverse;

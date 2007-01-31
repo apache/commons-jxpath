@@ -47,7 +47,6 @@ public class XMLDocumentContainer implements Container {
     private Object document;
     private URL xmlURL;
     private Source source;
-    private String parser;
 
     /**
      * @param  URL is a URL for an XML file. Use getClass().getResource

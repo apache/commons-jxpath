@@ -33,7 +33,6 @@ import org.apache.commons.jxpath.TestBean;
  */
 
 public class DynamicPropertiesModelTest extends JXPathTestCase {
-    private static boolean enabled = true;
     private JXPathContext context;
 
     /**

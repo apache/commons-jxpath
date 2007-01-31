@@ -56,7 +56,6 @@ import org.apache.commons.jxpath.util.BasicTypeConverterTest;
  */
 
 public class JXPathTestSuite extends TestCase {
-    private static boolean enabled = true;
 
     /**
      * Exercise the whole suite
