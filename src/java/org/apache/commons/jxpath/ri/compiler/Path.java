@@ -69,7 +69,7 @@ public abstract class Path extends Expression {
      * </code>.  The evaluation of such "simple" paths is optimized and
      * streamlined.
      */
-    public boolean isSimplePath() {
+    public synchronized boolean isSimplePath() {
         if (!basicKnown) {
             basicKnown = true;
             basic = true;

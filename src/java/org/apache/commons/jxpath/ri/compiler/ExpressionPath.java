@@ -85,7 +85,7 @@ public class ExpressionPath extends Path {
      * Recognized paths formatted as <code>$x[3]/foo[2]</code>.  The
      * evaluation of such "simple" paths is optimized and streamlined.
      */
-    public boolean isSimpleExpressionPath() {
+    public synchronized boolean isSimpleExpressionPath() {
         if (!basicKnown) {
             basicKnown = true;
             basic = isSimplePath() && areBasicPredicates(getPredicates());
