@@ -22,6 +22,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * An implementation of JXPathBeanInfo based on JavaBeans' BeanInfo. Properties
@@ -37,8 +38,8 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private boolean atomic = false;
     private Class clazz;
     private PropertyDescriptor propertyDescriptors[];
-    private String[] propertyNames;
     private Class dynamicPropertyHandlerClass;
+    private HashMap propertyDescriptorMap;
 
     public JXPathBasicBeanInfo(Class clazz) {
         this.clazz = clazz;
@@ -70,7 +71,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
         return dynamicPropertyHandlerClass != null;
     }
 
-    public PropertyDescriptor[] getPropertyDescriptors() {
+    public synchronized PropertyDescriptor[] getPropertyDescriptors() {
         if (propertyDescriptors == null) {
             try {
                 BeanInfo bi = null;
@@ -98,28 +99,15 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
         return propertyDescriptors;
     }
 
-    public PropertyDescriptor getPropertyDescriptor(String propertyName) {
-        if (propertyNames == null) {
+    public synchronized PropertyDescriptor getPropertyDescriptor(String propertyName) {
+        if (propertyDescriptorMap == null) {
+            propertyDescriptorMap = new HashMap();
             PropertyDescriptor[] pds = getPropertyDescriptors();
-            String[] names = new String[pds.length];
             for (int i = 0; i < pds.length; i++) {
-                names[i] = pds[i].getName();
-            }
-            propertyNames = names;
-        }
-
-        for (int i = 0; i < propertyNames.length; i++) {
-            if (propertyNames[i] == propertyName) {
-                return propertyDescriptors[i];
+                propertyDescriptorMap.put(pds[i].getName(), pds[i]);
             }
         }
-
-        for (int i = 0; i < propertyNames.length; i++) {
-            if (propertyNames[i].equals(propertyName)) {
-                return propertyDescriptors[i];
-            }
-        }
-        return null;
+        return (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
     }
 
     /**
