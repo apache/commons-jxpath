@@ -58,7 +58,7 @@ public class TestBean {
      * A boolean property.
      */
     private boolean bool = false;
-    public boolean getBoolean() {
+    public boolean isBoolean() {
         return bool;
     }
 
