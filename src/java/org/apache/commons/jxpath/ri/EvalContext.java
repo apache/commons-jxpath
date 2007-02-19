@@ -75,10 +75,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      *  0 - does not require ordering
      */
     public int getDocumentOrder() {
-        if (parentContext != null && parentContext.isChildOrderingRequired()) {
-            return 1;
-        }
-        return 0;
+        return parentContext != null && parentContext.isChildOrderingRequired() ? 1 : 0;
     }
     
     /**
@@ -89,10 +86,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     public boolean isChildOrderingRequired() {
         // Default behavior: if this context needs to be ordered,
         // the children need to be ordered too
-        if (getDocumentOrder() != 0) {
-            return true;
-        }
-        return false;
+        return getDocumentOrder() != 0;
     }
 
     /**
@@ -102,16 +96,13 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         if (pointerIterator != null) {
             return pointerIterator.hasNext();
         }
-
         if (getDocumentOrder() != 0) {
             return constructIterator();
         }
-        else {
-            if (!done && !hasPerformedIteratorStep) {
-                performIteratorStep();
-            }
-            return !done;
+        if (!done && !hasPerformedIteratorStep) {
+            performIteratorStep();
         }
+        return !done;
     }
 
     /**
@@ -128,16 +119,14 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             }
             return pointerIterator.next();
         }
-        else {
-            if (!done && !hasPerformedIteratorStep) {
-                performIteratorStep();
-            }
-            if (done) {
-                throw new NoSuchElementException();
-            }
-            hasPerformedIteratorStep = false;
-            return getCurrentNodePointer();
+        if (!done && !hasPerformedIteratorStep) {
+            performIteratorStep();
         }
+        if (done) {
+            throw new NoSuchElementException();
+        }
+        hasPerformedIteratorStep = false;
+        return getCurrentNodePointer();
     }
 
     /**
@@ -174,7 +163,6 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             while (nextNode()) {
                 NodePointer pointer = getCurrentNodePointer();
                 if (!set.contains(pointer)) {
-//                    Pointer cln = (Pointer) pointer.clone();
                     set.add(pointer);
                     list.add(pointer);
                 }
@@ -249,12 +237,8 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     public String toString() {
         Pointer ptr = getContextNodePointer();
-        if (ptr == null) {
-            return "Empty expression context";
-        }
-        else {
-            return "Expression context [" + getPosition() + "] " + ptr.asPath();
-        }
+        return ptr == null ? "Empty expression context" : "Expression context [" + getPosition()
+                + "] " + ptr.asPath();
     }
 
     /**

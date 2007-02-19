@@ -88,15 +88,7 @@ public class LangAttributePointer extends NodePointer {
     }
 
     public boolean equals(Object object) {
-        if (object == this) {
-            return true;
-        }
-
-        if (!(object instanceof LangAttributePointer)) {
-            return false;
-        }
-
-        return true;
+        return object instanceof LangAttributePointer;
     }
 
     public boolean testNode(NodeTest test) {

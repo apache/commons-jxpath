@@ -86,7 +86,6 @@ public class NamespaceResolver implements Cloneable {
         if (uri == null && parent != null) {
             return parent.getNamespaceURI(prefix);
         }
-//        System.err.println("For prefix " + prefix + " URI=" + uri);
         return uri;
     }
     

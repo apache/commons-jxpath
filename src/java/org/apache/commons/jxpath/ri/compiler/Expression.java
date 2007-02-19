@@ -141,10 +141,7 @@ public abstract class Expression {
 
         public Object next() {
             Object o = iterator.next();
-            if (o instanceof Pointer) {
-                return ((Pointer) o).getValue();
-            }
-            return o;
+            return o instanceof Pointer ? ((Pointer) o).getValue() : o;
         }
 
         public void remove() {

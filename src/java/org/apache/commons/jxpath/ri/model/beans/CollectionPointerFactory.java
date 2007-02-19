@@ -42,10 +42,7 @@ public class CollectionPointerFactory implements NodePointerFactory {
         Object bean,
         Locale locale) 
     {
-        if (ValueUtils.isCollection(bean)) {
-            return new CollectionPointer(bean, locale);
-        }
-        return null;
+        return ValueUtils.isCollection(bean) ? new CollectionPointer(bean, locale) : null;
     }
 
     public NodePointer createNodePointer(
@@ -53,9 +50,6 @@ public class CollectionPointerFactory implements NodePointerFactory {
         QName name,
         Object bean) 
     {
-        if (ValueUtils.isCollection(bean)) {
-            return new CollectionPointer(parent, bean);
-        }
-        return null;
+        return ValueUtils.isCollection(bean) ? new CollectionPointer(parent, bean) : null;
     }
 }

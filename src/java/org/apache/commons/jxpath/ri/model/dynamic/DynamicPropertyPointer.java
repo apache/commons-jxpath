@@ -97,12 +97,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     public String getPropertyName() {
         if (name == null) {
             String names[] = getPropertyNames();
-            if (propertyIndex >= 0 && propertyIndex < names.length) {
-                name = names[propertyIndex];
-            }
-            else {
-                name = "*";
-            }
+            name = propertyIndex >= 0 && propertyIndex < names.length ? names[propertyIndex] : "*";
         }
         return name;
     }

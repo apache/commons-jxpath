@@ -84,20 +84,13 @@ public class TreeCompiler implements Compiler {
     }
 
     public Object equal(Object left, Object right) {
-        if (isNameAttributeTest((Expression) left)) {
-            return new NameAttributeTest((Expression) left, (Expression) right);
-        }
-        else {
-            return new CoreOperationEqual(
-                (Expression) left,
-                (Expression) right);
-        }
+        return isNameAttributeTest((Expression) left)
+                ? new NameAttributeTest((Expression) left, (Expression) right)
+                : new CoreOperationEqual((Expression) left, (Expression) right);
     }
 
     public Object notEqual(Object left, Object right) {
-        return new CoreOperationNotEqual(
-            (Expression) left,
-            (Expression) right);
+        return new CoreOperationNotEqual((Expression) left, (Expression) right);
     }
 
     public Object minus(Object argument) {
@@ -117,18 +110,15 @@ public class TreeCompiler implements Compiler {
     }
 
     public Object and(Object arguments[]) {
-        return new CoreOperationAnd(
-            toExpressionArray(arguments));
+        return new CoreOperationAnd(toExpressionArray(arguments));
     }
 
     public Object or(Object arguments[]) {
-        return new CoreOperationOr(
-            toExpressionArray(arguments));
+        return new CoreOperationOr(toExpressionArray(arguments));
     }
 
     public Object union(Object[] arguments) {
-        return new CoreOperationUnion(
-            toExpressionArray(arguments));
+        return new CoreOperationUnion(toExpressionArray(arguments));
     }
 
     public Object locationPath(boolean absolute, Object[] steps) {

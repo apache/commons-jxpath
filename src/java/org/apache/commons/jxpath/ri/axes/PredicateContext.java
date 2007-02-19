@@ -97,7 +97,7 @@ public class PredicateContext extends EvalContext {
                     done = true;
                     return parentContext.setPosition(pos);
                 }
-                else if (InfoSetUtil.booleanValue(pred)) {
+                if (InfoSetUtil.booleanValue(pred)) {
                     position++;
                     return true;
                 }
@@ -158,9 +158,7 @@ public class PredicateContext extends EvalContext {
         if (dynamicPropertyPointer != null) {
             return dynamicPropertyPointer.getValuePointer();
         }
-        else {
-            return parentContext.getCurrentNodePointer();
-        }
+        return parentContext.getCurrentNodePointer();
     }
 
     public void reset() {

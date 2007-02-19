@@ -55,7 +55,7 @@ public class ValueUtils {
         if (value.getClass().isArray()) {
             return true;
         }
-        else if (value instanceof Collection) {
+        if (value instanceof Collection) {
             return true;
         }
         return false;
@@ -138,12 +138,10 @@ public class ValueUtils {
         if (collection.getClass().isArray()) {
             return Array.getLength(collection);
         }
-        else if (collection instanceof Collection) {
+        if (collection instanceof Collection) {
             return ((Collection) collection).size();
         }
-        else {
-            return 1;
-        }
+        return 1;
     }
 
     /**
@@ -166,12 +164,10 @@ public class ValueUtils {
             }
             return list.iterator();
         }
-        else if (collection instanceof Collection) {
+        if (collection instanceof Collection) {
             return ((Collection) collection).iterator();
         }
-        else {
-            return Collections.singletonList(collection).iterator();
-        }
+        return Collections.singletonList(collection).iterator();
     }
 
     /**
@@ -182,7 +178,7 @@ public class ValueUtils {
         if (collection == null) {
             return null;
         }
-        else if (collection.getClass().isArray()) {
+        if (collection.getClass().isArray()) {
             Object bigger =
                 Array.newInstance(
                     collection.getClass().getComponentType(),
@@ -195,19 +191,17 @@ public class ValueUtils {
                 Array.getLength(collection));
             return bigger;
         }
-        else if (collection instanceof Collection) {
+        if (collection instanceof Collection) {
             while (((Collection) collection).size() < size) {
                 ((Collection) collection).add(null);
             }
             return collection;
         }
-        else {
-            throw new JXPathException(
-                "Cannot turn "
-                    + collection.getClass().getName()
-                    + " into a collection of size "
-                    + size);
-        }
+        throw new JXPathException(
+            "Cannot turn "
+                + collection.getClass().getName()
+                + " into a collection of size "
+                + size);
     }
 
     /**
@@ -218,7 +212,7 @@ public class ValueUtils {
         if (collection == null) {
             return null;
         }
-        else if (collection.getClass().isArray()) {
+        if (collection.getClass().isArray()) {
             int length = Array.getLength(collection);
             Object smaller =
                 Array.newInstance(
@@ -237,14 +231,14 @@ public class ValueUtils {
             }
             return smaller;
         }
-        else if (collection instanceof List) {
+        if (collection instanceof List) {
             int size = ((List) collection).size();
             if (index < size) {
                 ((List) collection).remove(index);
             }
             return collection;
         }
-        else if (collection instanceof Collection) {
+        if (collection instanceof Collection) {
             Iterator it = ((Collection) collection).iterator();
             for (int i = 0; i < index; i++) {
                 if (!it.hasNext()) {
@@ -258,14 +252,12 @@ public class ValueUtils {
             }
             return collection;
         }
-        else {
-            throw new JXPathException(
-                "Cannot remove "
-                    + collection.getClass().getName()
-                    + "["
-                    + index
-                    + "]");
-        }
+        throw new JXPathException(
+            "Cannot remove "
+                + collection.getClass().getName()
+                + "["
+                + index
+                + "]");
     }
 
     /**

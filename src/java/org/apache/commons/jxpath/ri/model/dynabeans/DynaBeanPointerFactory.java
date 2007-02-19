@@ -43,18 +43,12 @@ public class DynaBeanPointerFactory implements NodePointerFactory {
     public NodePointer createNodePointer(
             QName name, Object bean, Locale locale)
     {
-        if (bean instanceof DynaBean) {
-            return new DynaBeanPointer(name, (DynaBean) bean, locale);
-        }
-        return null;
+        return bean instanceof DynaBean ? new DynaBeanPointer(name, (DynaBean) bean, locale) : null;
     }
 
     public NodePointer createNodePointer(
             NodePointer parent, QName name, Object bean)
     {
-        if (bean instanceof DynaBean) {
-            return new DynaBeanPointer(parent, name, (DynaBean) bean);
-        }
-        return null;
+        return bean instanceof DynaBean ? new DynaBeanPointer(parent, name, (DynaBean) bean) : null;
     }
 }

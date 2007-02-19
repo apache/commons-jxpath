@@ -483,31 +483,29 @@ public class CoreFunction extends Operation {
             }
             return s1.substring((int) from - 1);
         }
-        else {
-            double length =
-                InfoSetUtil.doubleValue(getArg3().computeValue(context));
-            length = Math.round(length);
-            if (length < 0) {
-                return "";
-            }
+        double length =
+            InfoSetUtil.doubleValue(getArg3().computeValue(context));
+        length = Math.round(length);
+        if (length < 0) {
+            return "";
+        }
 
-            double to = from + length;
-            if (to < 1) {
-                return "";
-            }
+        double to = from + length;
+        if (to < 1) {
+            return "";
+        }
 
-            if (to > s1.length() + 1) {
-                if (from < 1) {
-                    from = 1;
-                }
-                return s1.substring((int) from - 1);
-            }
-
+        if (to > s1.length() + 1) {
             if (from < 1) {
                 from = 1;
             }
-            return s1.substring((int) from - 1, (int) (to - 1));
+            return s1.substring((int) from - 1);
         }
+
+        if (from < 1) {
+            from = 1;
+        }
+        return s1.substring((int) from - 1, (int) (to - 1));
     }
 
     protected Object functionStringLength(EvalContext context) {
@@ -618,7 +616,7 @@ public class CoreFunction extends Operation {
         if (v == null) {
             return ZERO;
         }
-        else if (v instanceof EvalContext) {
+        if (v instanceof EvalContext) {
             double sum = 0.0;
             EvalContext ctx = (EvalContext) v;
             while (ctx.hasNext()) {

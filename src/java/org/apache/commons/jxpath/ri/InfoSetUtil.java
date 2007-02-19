@@ -40,30 +40,24 @@ public class InfoSetUtil {
         if (object instanceof String) {
             return (String) object;
         }
-        else if (object instanceof Number) {
+        if (object instanceof Number) {
             double d = ((Number) object).doubleValue();
             long l = ((Number) object).longValue();
-            if (d == l) {
-                return String.valueOf(l);
-            }
-            return String.valueOf(d);
+            return d == l ? String.valueOf(l) : String.valueOf(d);
         }
-        else if (object instanceof Boolean) {
+        if (object instanceof Boolean) {
             return ((Boolean) object).booleanValue() ? "true" : "false";
         }
-        else if (object == null) {
+        if (object == null) {
             return "";
         }
-        else if (object instanceof NodePointer) {
+        if (object instanceof NodePointer) {
             return stringValue(((NodePointer) object).getValue());
         }
-        else if (object instanceof EvalContext) {
+        if (object instanceof EvalContext) {
             EvalContext ctx = (EvalContext) object;
             Pointer ptr = ctx.getSingleNodePointer();
-            if (ptr != null) {
-                return stringValue(ptr);
-            }
-            return "";
+            return ptr == null ? "" : stringValue(ptr);
         }
         return String.valueOf(object);
     }
@@ -75,28 +69,23 @@ public class InfoSetUtil {
         if (object instanceof Number) {
             return (Number) object;
         }
-        else if (object instanceof Boolean) {
+        if (object instanceof Boolean) {
             return ((Boolean) object).booleanValue() ? ONE : ZERO;
         }
-        else if (object instanceof String) {
-            Double value;
+        if (object instanceof String) {
             try {
-                value = new Double((String) object);
+                return new Double((String) object);
             }
             catch (NumberFormatException ex) {
-                value = NOT_A_NUMBER;
+                return NOT_A_NUMBER;
             }
-            return value;
         }
-        else if (object instanceof EvalContext) {
+        if (object instanceof EvalContext) {
             EvalContext ctx = (EvalContext) object;
             Pointer ptr = ctx.getSingleNodePointer();
-            if (ptr != null) {
-                return number(ptr);
-            }
-            return NOT_A_NUMBER;
+            return ptr == null ? NOT_A_NUMBER : number(ptr);
         }
-        else if (object instanceof NodePointer) {
+        if (object instanceof NodePointer) {
             return number(((NodePointer) object).getValue());
         }
         return number(stringValue(object));
@@ -109,33 +98,27 @@ public class InfoSetUtil {
         if (object instanceof Number) {
             return ((Number) object).doubleValue();
         }
-        else if (object instanceof Boolean) {
+        if (object instanceof Boolean) {
             return ((Boolean) object).booleanValue() ? 0.0 : 1.0;
         }
-        else if (object instanceof String) {
+        if (object instanceof String) {
             if (object.equals("")) {
                 return 0.0;
             }
-
-            double value;
             try {
-                value = Double.parseDouble((String) object);
+                return Double.parseDouble((String) object);
             }
             catch (NumberFormatException ex) {
-                value = Double.NaN;
+                return Double.NaN;
             }
-            return value;
         }
-        else if (object instanceof NodePointer) {
+        if (object instanceof NodePointer) {
             return doubleValue(((NodePointer) object).getValue());
         }
-        else if (object instanceof EvalContext) {
+        if (object instanceof EvalContext) {
             EvalContext ctx = (EvalContext) object;
             Pointer ptr = ctx.getSingleNodePointer();
-            if (ptr != null) {
-                return doubleValue(ptr);
-            }
-            return Double.NaN;
+            return ptr == null ? Double.NaN : doubleValue(ptr);
         }
         return doubleValue(stringValue(object));
     }
@@ -148,21 +131,18 @@ public class InfoSetUtil {
             double value = ((Number) object).doubleValue();
             return value != 0 && value != -0 && !Double.isNaN(value);
         }
-        else if (object instanceof Boolean) {
+        if (object instanceof Boolean) {
             return ((Boolean) object).booleanValue();
         }
-        else if (object instanceof EvalContext) {
+        if (object instanceof EvalContext) {
             EvalContext ctx = (EvalContext) object;
             Pointer ptr = ctx.getSingleNodePointer();
-            if (ptr == null) {
-                return false;
-            }
-            return booleanValue(ptr);
+            return ptr == null ? false : booleanValue(ptr);
         }
-        else if (object instanceof String) {
+        if (object instanceof String) {
             return ((String) object).length() != 0;
         }
-        else if (object instanceof NodePointer) {
+        if (object instanceof NodePointer) {
             NodePointer pointer = (NodePointer) object;
             if (pointer instanceof VariablePointer) {
                 return booleanValue(pointer.getNode());
@@ -170,9 +150,6 @@ public class InfoSetUtil {
             pointer = pointer.getValuePointer();
             return pointer.isActual();
         }
-        else if (object == null) {
-            return false;
-        }
-        return true;
+        return object != null;
     }
 }

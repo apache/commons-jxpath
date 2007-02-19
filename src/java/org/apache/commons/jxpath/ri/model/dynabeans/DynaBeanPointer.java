@@ -98,33 +98,23 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
         }
 
         DynaBeanPointer other = (DynaBeanPointer) object;
-        if (parent != other.parent) {
-            if (parent == null || !parent.equals(other.parent)) {
-                return false;
-            }
-        }
-
-        if ((name == null && other.name != null)
-            || (name != null && !name.equals(other.name))) {
+        if (!(equalObjects(parent, other.parent) && equalObjects(name, other.name))) {
             return false;
         }
 
         int iThis = (index == WHOLE_COLLECTION ? 0 : index);
         int iOther = (other.index == WHOLE_COLLECTION ? 0 : other.index);
-        if (iThis != iOther) {
-            return false;
-        }
-
-        return dynaBean == other.dynaBean;
+        return iThis == iOther && dynaBean == other.dynaBean;
     }
 
     /**
      * If there's a parent - parent's path, otherwise "/".
      */
     public String asPath() {
-        if (parent != null) {
-            return super.asPath();
-        }
-        return "/";
+        return parent == null ? "/" : super.asPath();
+    }
+
+    private static boolean equalObjects(Object o1, Object o2) {
+        return o1 == o2 || o1 != null && o1.equals(o2);
     }
 }

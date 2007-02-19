@@ -67,8 +67,7 @@ public class CollectionPointer extends NodePointer {
 
     public boolean isLeaf() {
         Object value = getNode();
-        return value == null
-            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
+        return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
     public boolean isContainer() {
@@ -76,12 +75,8 @@ public class CollectionPointer extends NodePointer {
     }
 
     public Object getImmediateNode() {
-        if (index != WHOLE_COLLECTION) {
-            return ValueUtils.getValue(collection, index);
-        }
-        else {
-            return ValueUtils.getValue(collection);
-        }
+        return index == WHOLE_COLLECTION ? ValueUtils.getValue(collection)
+                : ValueUtils.getValue(collection, index);
     }
 
     public void setValue(Object value) {
@@ -174,30 +169,20 @@ public class CollectionPointer extends NodePointer {
                 reverse,
                 startWith);
         }
-        else {
-            return getValuePointer().childIterator(test, reverse, startWith);
-        }
+        return getValuePointer().childIterator(test, reverse, startWith);
     }
 
     public NodeIterator attributeIterator(QName name) {
-        if (index == WHOLE_COLLECTION) {
-            return new CollectionAttributeNodeIterator(this, name);
-        }
-        return getValuePointer().attributeIterator(name);
+        return index == WHOLE_COLLECTION ? new CollectionAttributeNodeIterator(this, name)
+                : getValuePointer().attributeIterator(name);
     }
 
     public NodeIterator namespaceIterator() {
-        if (index == WHOLE_COLLECTION) {
-            return null;
-        }
-        return getValuePointer().namespaceIterator();
+        return index == WHOLE_COLLECTION ? null : getValuePointer().namespaceIterator();
     }
 
     public NodePointer namespacePointer(String namespace) {
-        if (index == WHOLE_COLLECTION) {
-            return null;
-        }
-        return getValuePointer().namespacePointer(namespace);
+        return index == WHOLE_COLLECTION ? null : getValuePointer().namespacePointer(namespace);
     }
 
     public boolean testNode(NodeTest test) {
@@ -205,15 +190,10 @@ public class CollectionPointer extends NodePointer {
             if (test == null) {
                 return true;
             }
-            else if (test instanceof NodeNameTest) {
+            if (test instanceof NodeNameTest) {
                 return false;
             }
-            else if (test instanceof NodeTypeTest) {
-                if (((NodeTypeTest) test).getNodeType() == Compiler.NODE_TYPE_NODE) {
-                    return true;
-                }
-            }
-            return false;
+            return test instanceof NodeTypeTest && ((NodeTypeTest) test).getNodeType() == Compiler.NODE_TYPE_NODE;
         }
         return getValuePointer().testNode(test);
     }
@@ -248,7 +228,6 @@ public class CollectionPointer extends NodePointer {
                 buffer.append("/");
             }
         }
-        
         return buffer.toString();
     }
 }

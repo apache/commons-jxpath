@@ -91,12 +91,10 @@ public class JXPathContextFactoryConfigurationError extends Error {
      */
 
     public String getMessage () {
-        String message = super.getMessage ();
-
+        String message = super.getMessage();
         if (message == null && exception != null) {
             return exception.getMessage();
         }
-
         return message;
     }
 

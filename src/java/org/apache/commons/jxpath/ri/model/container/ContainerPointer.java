@@ -69,11 +69,8 @@ public class ContainerPointer extends NodePointer {
     
     public int getLength() {
         Object value = getBaseValue();
-        if (value == null) {
-            return 1;
-        }
-        return ValueUtils.getLength(value);
-    }    
+        return value == null ? 1 : ValueUtils.getLength(value);
+    }
 
     public boolean isLeaf() {
         return getValuePointer().isLeaf();
@@ -82,16 +79,9 @@ public class ContainerPointer extends NodePointer {
     public Object getImmediateNode() {
         Object value = getBaseValue();
         if (index != WHOLE_COLLECTION) {
-            if (index >= 0 && index < getLength()) {
-                return ValueUtils.getValue(value, index);
-            }
-            else {
-                return null;
-            }
+            return index >= 0 && index < getLength() ? ValueUtils.getValue(value, index) : null;
         }
-        else {
-            return ValueUtils.getValue(value);
-        }
+        return ValueUtils.getValue(value);
     }
 
     public void setValue(Object value) {
@@ -102,8 +92,7 @@ public class ContainerPointer extends NodePointer {
     public NodePointer getImmediateValuePointer() {
         if (valuePointer == null) {
             Object value = getImmediateNode();
-            valuePointer =
-                NodePointer.newChildNodePointer(this, getName(), value);
+            valuePointer = NodePointer.newChildNodePointer(this, getName(), value);
         }
         return valuePointer;
     }
@@ -161,9 +150,6 @@ public class ContainerPointer extends NodePointer {
     }
     
     public String asPath() {
-        if (parent != null) {
-            return parent.asPath();
-        }
-        return "/";
+        return parent == null ? "/" : parent.asPath();
     }
  }

@@ -17,6 +17,7 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
  * A compile tree element containing a constant number or string.
@@ -63,17 +64,8 @@ public class Constant extends Expression {
 
     public String toString() {
         if (value instanceof Number) {
-            double doubleValue = ((Number) value).doubleValue();
-            long longValue = ((Number) value).longValue();
-            if (doubleValue == longValue) {
-                return String.valueOf(longValue);
-            }
-            else {
-                return String.valueOf(doubleValue);
-            }
+            return InfoSetUtil.stringValue(value);
         }
-        else {
-            return "'" + value + "'";
-        }
+        return "'" + value + "'";
     }
 }

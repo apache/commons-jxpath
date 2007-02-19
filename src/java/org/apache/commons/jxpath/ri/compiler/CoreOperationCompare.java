@@ -73,13 +73,12 @@ public abstract class CoreOperationCompare extends CoreOperation {
         if ((l instanceof Iterator) && !(r instanceof Iterator)) {
             return contains((Iterator) l, r);
         }
-        else if (!(l instanceof Iterator) && (r instanceof Iterator)) {
+        if (!(l instanceof Iterator) && (r instanceof Iterator)) {
             return contains((Iterator) r, l);
         }
-        else if (l instanceof Iterator && r instanceof Iterator) {
+        if (l instanceof Iterator && r instanceof Iterator) {
             return findMatch((Iterator) l, (Iterator) r);
         }
-
         return equal(l, r);
     }
 
@@ -129,17 +128,14 @@ public abstract class CoreOperationCompare extends CoreOperation {
         if (l instanceof Boolean || r instanceof Boolean) {
             return (InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r));
         }
-        else if (l instanceof Number || r instanceof Number) {
+        if (l instanceof Number || r instanceof Number) {
             return (InfoSetUtil.doubleValue(l) == InfoSetUtil.doubleValue(r));
         }
-        else if (l instanceof String || r instanceof String) {
+        if (l instanceof String || r instanceof String) {
             return (
                 InfoSetUtil.stringValue(l).equals(InfoSetUtil.stringValue(r)));
         }
-        else if (l == null) {
-            return r == null;
-        }
-        return l.equals(r);
+        return l != null && l.equals(r);
     }
 
 }

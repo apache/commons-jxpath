@@ -53,12 +53,7 @@ public class ChildContext extends EvalContext {
                 return null;
             }
         }
-        if (iterator != null) {
-            return iterator.getNodePointer();
-        }
-        else {
-            return null;
-        }
+        return iterator == null ? null : iterator.getNodePointer();
     }
 
     /**
@@ -101,10 +96,7 @@ public class ChildContext extends EvalContext {
         if (oldPosition == 0) {
             prepare();
         }
-        if (iterator == null) {
-            return false;
-        }
-        return iterator.setPosition(position);
+        return iterator == null ? false : iterator.setPosition(position);
     }
 
     /**
@@ -115,12 +107,7 @@ public class ChildContext extends EvalContext {
         if (parent == null) {
             return;
         }
-        if (startFromParentLocation) {
-            NodePointer pointer = parent.getParent();
-            iterator = pointer.childIterator(nodeTest, reverse, parent);
-        }
-        else {
-            iterator = parent.childIterator(nodeTest, reverse, null);
-        }
+        iterator = (startFromParentLocation ? parent.getParent() : parent).childIterator(nodeTest,
+                reverse, startFromParentLocation ? parent : null);
     }
 }

@@ -46,23 +46,17 @@ public class DOMAttributePointer extends NodePointer {
 
     public String getNamespaceURI() {
         String prefix = DOMNodePointer.getPrefix(attr);
-        if (prefix == null) {
-            return null;
-        }
-        return parent.getNamespaceURI(prefix);
+        return prefix == null ? null : parent.getNamespaceURI(prefix);
     }
 
     public Object getValue() {
         String value = attr.getValue();
-        if (value == null) {
-            return null;
-        }
-        if (value.equals("") && !attr.getSpecified()) {
+        if (value == null || (value.equals("") && !attr.getSpecified())) {
             return null;
         }
         return value;
     }
-    
+
     public Object getBaseValue() {
         return attr;
     }
@@ -90,8 +84,7 @@ public class DOMAttributePointer extends NodePointer {
     public boolean testNode(NodeTest nodeTest) {
         return nodeTest == null
             || ((nodeTest instanceof NodeTypeTest)
-                && ((NodeTypeTest) nodeTest).getNodeType()
-                    == Compiler.NODE_TYPE_NODE);
+                && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE);
     }
 
     /**
@@ -126,16 +119,8 @@ public class DOMAttributePointer extends NodePointer {
     }
 
     public boolean equals(Object object) {
-        if (object == this) {
-            return true;
-        }
-
-        if (!(object instanceof DOMAttributePointer)) {
-            return false;
-        }
-
-        DOMAttributePointer other = (DOMAttributePointer) object;
-        return attr == other.attr;
+        return object == this || object instanceof DOMAttributePointer
+                && attr == ((DOMAttributePointer) object).attr;
     }
 
     public int compareChildNodePointers(

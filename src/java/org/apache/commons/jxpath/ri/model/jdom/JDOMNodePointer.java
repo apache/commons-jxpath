@@ -141,11 +141,11 @@ public class JDOMNodePointer extends NodePointer {
         if ((node1 instanceof Attribute) && !(node2 instanceof Attribute)) {
             return -1;
         }
-        else if (
+        if (
             !(node1 instanceof Attribute) && (node2 instanceof Attribute)) {
             return 1;
         }
-        else if (
+        if (
             (node1 instanceof Attribute) && (node2 instanceof Attribute)) {
             List list = ((Element) getNode()).getAttributes();
             int length = list.size();
@@ -175,7 +175,7 @@ public class JDOMNodePointer extends NodePointer {
             if (n == node1) {
                 return -1;
             }
-            else if (n == node2) {
+            if (n == node2) {
                 return 1;
             }
         }
@@ -203,7 +203,7 @@ public class JDOMNodePointer extends NodePointer {
         if (node instanceof Element) {
             return ((Element) node).getContent().size() == 0;
         }
-        else if (node instanceof Document) {
+        if (node instanceof Document) {
             return ((Document) node).getContent().size() == 0;
         }
         return true;
@@ -239,20 +239,20 @@ public class JDOMNodePointer extends NodePointer {
         if (node instanceof Element) {
             return ((Element) node).getTextTrim();
         }
-        else if (node instanceof Comment) {
+        if (node instanceof Comment) {
             String text = ((Comment) node).getText();
             if (text != null) {
                 text = text.trim();
             }
             return text;
         }
-        else if (node instanceof Text) {
+        if (node instanceof Text) {
             return ((Text) node).getTextTrim();
         }
-        else if (node instanceof CDATA) {
+        if (node instanceof CDATA) {
             return ((CDATA) node).getTextTrim();
         }
-        else if (node instanceof ProcessingInstruction) {
+        if (node instanceof ProcessingInstruction) {
             String text = ((ProcessingInstruction) node).getData();
             if (text != null) {
                 text = text.trim();
@@ -348,7 +348,7 @@ public class JDOMNodePointer extends NodePointer {
         if (test == null) {
             return true;
         }
-        else if (test instanceof NodeNameTest) {
+        if (test instanceof NodeNameTest) {
             if (!(node instanceof Element)) {
                 return false;
             }
@@ -368,9 +368,9 @@ public class JDOMNodePointer extends NodePointer {
                 String nodeNS = JDOMNodePointer.getNamespaceURI(node);
                 return equalStrings(namespaceURI, nodeNS);
             }
-
+            return false;
         }
-        else if (test instanceof NodeTypeTest) {
+        if (test instanceof NodeTypeTest) {
             switch (((NodeTypeTest) test).getNodeType()) {
                 case Compiler.NODE_TYPE_NODE :
                     return (node instanceof Element) || (node instanceof Document);
@@ -383,30 +383,21 @@ public class JDOMNodePointer extends NodePointer {
             }
             return false;
         }
-        else if (test instanceof ProcessingInstructionTest) {
-            if (node instanceof ProcessingInstruction) {
-                String testPI = ((ProcessingInstructionTest) test).getTarget();
-                String nodePI = ((ProcessingInstruction) node).getTarget();
-                return testPI.equals(nodePI);
-            }
+        if (test instanceof ProcessingInstructionTest && node instanceof ProcessingInstruction) {
+            String testPI = ((ProcessingInstructionTest) test).getTarget();
+            String nodePI = ((ProcessingInstruction) node).getTarget();
+            return testPI.equals(nodePI);
         }
-
         return false;
     }
 
     private static boolean equalStrings(String s1, String s2) {
-        if (s1 == null && s2 != null) {
-            return false;
+        if (s1 == s2) {
+            return true;
         }
-        if (s1 != null && s2 == null) {
-            return false;
-        }
-
-        if (s1 != null && !s1.trim().equals(s2.trim())) {
-            return false;
-        }
-
-        return true;
+        s1 = s1 == null ? "" : s1.trim();
+        s2 = s2 == null ? "" : s2.trim();
+        return s1.equals(s2);
     }
 
     public static String getPrefix(Object node) {
@@ -414,7 +405,7 @@ public class JDOMNodePointer extends NodePointer {
             String prefix = ((Element) node).getNamespacePrefix();
             return (prefix == null || prefix.equals("")) ? null : prefix;
         }
-        else if (node instanceof Attribute) {
+        if (node instanceof Attribute) {
             String prefix = ((Attribute) node).getNamespacePrefix();
             return (prefix == null || prefix.equals("")) ? null : prefix;
         }
@@ -425,7 +416,7 @@ public class JDOMNodePointer extends NodePointer {
         if (node instanceof Element) {
             return ((Element) node).getName();
         }
-        else if (node instanceof Attribute) {
+        if (node instanceof Attribute) {
             return ((Attribute) node).getName();
         }
         return null;
@@ -438,10 +429,7 @@ public class JDOMNodePointer extends NodePointer {
      */
     public boolean isLanguage(String lang) {
         String current = getLanguage();
-        if (current == null) {
-            return super.isLanguage(lang);
-        }
-        return current.toUpperCase().startsWith(lang.toUpperCase());
+        return current == null ? super.isLanguage(lang) : current.toUpperCase().startsWith(lang.toUpperCase());
     }
 
     protected String getLanguage() {
@@ -463,20 +451,18 @@ public class JDOMNodePointer extends NodePointer {
     private Element nodeParent(Object node) {
         if (node instanceof Element) {
             Object parent = ((Element) node).getParent();
-            if (parent instanceof Element) {
-                return (Element) parent;
-            }
+            return parent instanceof Element ? (Element) parent : null;
         }
-        else if (node instanceof Text) {
+        if (node instanceof Text) {
             return (Element) ((Text) node).getParent();
         }
-        else if (node instanceof CDATA) {
+        if (node instanceof CDATA) {
             return (Element) ((CDATA) node).getParent();
         }
-        else if (node instanceof ProcessingInstruction) {
+        if (node instanceof ProcessingInstruction) {
             return (Element) ((ProcessingInstruction) node).getParent();
         }
-        else if (node instanceof Comment) {
+        if (node instanceof Comment) {
             return (Element) ((Comment) node).getParent();
         }
         return null;

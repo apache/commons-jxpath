@@ -60,7 +60,6 @@ public abstract class Path extends Expression {
                 }
             }
         }
-
         return false;
     }
 
@@ -101,13 +100,12 @@ public abstract class Path extends Expression {
             }
             return areBasicPredicates(step.getPredicates());
         }
-        else if (step.getAxis() == Compiler.AXIS_CHILD
+        if (step.getAxis() == Compiler.AXIS_CHILD
                 || step.getAxis() == Compiler.AXIS_ATTRIBUTE) {
             NodeTest nodeTest = step.getNodeTest();
             if (!(nodeTest instanceof NodeNameTest)){
                 return false;
             }
-            
             if (((NodeNameTest) nodeTest).isWildcard()) {
                 return false;
             }
@@ -157,9 +155,7 @@ public abstract class Path extends Expression {
                 ptr,
                 steps);
         }
-        else {
-            return searchForPath(context);
-        }
+        return searchForPath(context);
     }
 
     /**

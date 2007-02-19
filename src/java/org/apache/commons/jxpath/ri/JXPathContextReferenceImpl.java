@@ -418,15 +418,12 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             }
             return (Pointer) result;
         }
-        else {
-            return NodePointer.newNodePointer(null, result, getLocale());
-        }
+        return NodePointer.newNodePointer(null, result, getLocale());
     }
 
     public void setValue(String xpath, Object value) {
         setValue(xpath, compileExpression(xpath), value);
     }
-
 
     public void setValue(String xpath, Expression expr, Object value) {
         try {
@@ -700,7 +697,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         if (parentContext != null) {
             return parentContext.getDefaultNamespaceURI();
         }
-        
         return null;
     }
 
@@ -723,7 +719,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             catch (ClassNotFoundException ex) {
                 return null;
             }
-
             Class cls = Class.forName(className);
             return cls.newInstance();
         }

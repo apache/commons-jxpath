@@ -24,7 +24,7 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.QName;
 
 /**
- * Represents  an element of the parse tree representing an extension function
+ * Represents an element of the parse tree representing an extension function
  * call.
  *
  * @author Dmitri Plotnikov
@@ -92,9 +92,6 @@ public class ExtensionFunction extends Operation {
     }
     
     private Object convert(Object object) {
-        if (object instanceof EvalContext) {
-            return ((EvalContext) object).getValue();
-        }
-        return object;
+        return object instanceof EvalContext ? ((EvalContext) object).getValue() : object;
     }  
 }

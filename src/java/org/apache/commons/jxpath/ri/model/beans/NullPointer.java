@@ -76,20 +76,16 @@ public class NullPointer extends PropertyOwnerPointer {
         if (parent != null) {
             return parent.createPath(context, value).getValuePointer();
         }
-        else {
-            throw new UnsupportedOperationException(
-                "Cannot create the root object: " + asPath());
-        }
+        throw new UnsupportedOperationException(
+            "Cannot create the root object: " + asPath());
     }
 
     public NodePointer createPath(JXPathContext context) {
         if (parent != null) {
             return parent.createPath(context).getValuePointer();
         }
-        else {
-            throw new UnsupportedOperationException(
-                "Cannot create the root object: " + asPath());
-        }
+        throw new UnsupportedOperationException(
+            "Cannot create the root object: " + asPath());
     }
 
     public NodePointer createChild(
@@ -123,19 +119,14 @@ public class NullPointer extends PropertyOwnerPointer {
         }
 
         NullPointer other = (NullPointer) object;
-        return (name == null && other.name == null)
-            || (name != null && name.equals(other.name));
+        return name == other.name || name != null && name.equals(other.name);
     }
 
     public String asPath() {
         if (id != null) {
             return "id(" + id + ")";
         }
-
-        if (parent != null) {
-            return super.asPath();
-        }
-        return "null()";
+        return parent == null ? "null()" : super.asPath();
     }
 
     public int getLength() {

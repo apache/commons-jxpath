@@ -48,12 +48,7 @@ public class BeanAttributeIterator extends PropertyIterator {
     }
 
     public NodePointer getNodePointer() {
-        if (includeXmlLang && position == 1) {
-            return new LangAttributePointer(parent);
-        }
-        else {
-            return super.getNodePointer();
-        }
+        return includeXmlLang && position == 1 ? new LangAttributePointer(parent) : super.getNodePointer();
     }
 
     public int getPosition() {
@@ -63,16 +58,8 @@ public class BeanAttributeIterator extends PropertyIterator {
     public boolean setPosition(int position) {
         this.position = position;
         if (includeXmlLang) {
-            if (position == 1) {
-                return true;
-            }
-            else {
-                return super.setPosition(position - 1);
-            }
+            return position == 1 || super.setPosition(position - 1);
         }
-        else {
-            this.position = position;
-            return super.setPosition(position);
-        }
+        return super.setPosition(position);
     }
 }

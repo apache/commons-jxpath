@@ -237,10 +237,7 @@ public abstract class NodePointer implements Pointer {
      */
     public NodePointer getValuePointer() {
         NodePointer ivp = getImmediateValuePointer();
-        if (ivp != this) {
-            return ivp.getValuePointer();
-        }
-        return this;
+        return ivp == this ? this : ivp.getValuePointer();
     }
 
     /**
@@ -267,12 +264,7 @@ public abstract class NodePointer implements Pointer {
      * a Pointer for this path cannot be obtained at all - actual or otherwise.
      */
     public boolean isActual() {
-        if (index == WHOLE_COLLECTION) {
-            return true;
-        }
-        else {
-            return index >= 0 && index < getLength();
-        }
+        return index == WHOLE_COLLECTION || index >= 0 && index < getLength();
     }
 
     /**
@@ -308,12 +300,7 @@ public abstract class NodePointer implements Pointer {
     
     public Object getRootNode() {
         if (rootNode == null) {
-            if (parent != null) {
-                rootNode = parent.getRootNode();
-            }
-            else {
-                rootNode = getImmediateNode();
-            }
+            rootNode = parent == null ? getImmediateNode() : parent.getRootNode();
         }
         return rootNode;
     }
@@ -344,7 +331,7 @@ public abstract class NodePointer implements Pointer {
         if (test == null) {
             return true;
         }
-        else if (test instanceof NodeNameTest) {
+        if (test instanceof NodeNameTest) {
             if (isContainer()) {
                 return false;
             }
@@ -369,23 +356,12 @@ public abstract class NodePointer implements Pointer {
             }
             return testName.getName().equals(nodeName.getName());
         }
-        else if (test instanceof NodeTypeTest) {
-            if (((NodeTypeTest) test).getNodeType()
-                == Compiler.NODE_TYPE_NODE) {
-                return isNode();
-            }
-        }
-        return false;
+        return test instanceof NodeTypeTest
+                && ((NodeTypeTest) test).getNodeType() == Compiler.NODE_TYPE_NODE && isNode();
     }
 
     private static boolean equalStrings(String s1, String s2) {
-        if (s1 == null && s2 != null) {
-            return false;
-        }
-        if (s1 != null && !s1.equals(s2)) {
-            return false;
-        }
-        return true;
+        return s1 == s2 || s1 != null && s1.equals(s2);
     }
 
     /**
@@ -509,10 +485,8 @@ public abstract class NodePointer implements Pointer {
         NodePointer startWith) 
     {
         NodePointer valuePointer = getValuePointer();
-        if (valuePointer != null && valuePointer != this) {
-            return valuePointer.childIterator(test, reverse, startWith);
-        }
-        return null;
+        return valuePointer == null || valuePointer == this ? null
+                : valuePointer.childIterator(test, reverse, startWith);
     }
 
     /**
@@ -522,10 +496,8 @@ public abstract class NodePointer implements Pointer {
      */
     public NodeIterator attributeIterator(QName qname) {
         NodePointer valuePointer = getValuePointer();
-        if (valuePointer != null && valuePointer != this) {
-            return valuePointer.attributeIterator(qname);
-        }
-        return null;
+        return valuePointer == null || valuePointer == this ? null
+                : valuePointer.attributeIterator(qname);
     }
 
     /**
@@ -570,11 +542,7 @@ public abstract class NodePointer implements Pointer {
         }
 
         String namespace = getNamespaceURI(prefix);
-        if (namespace == null) {
-            return false; // undefined namespace
-        }
-
-        return namespace.equals(getDefaultNamespaceURI());
+        return namespace != null && namespace.equals(getDefaultNamespaceURI());
     }
 
     protected String getDefaultNamespaceURI() {
@@ -652,10 +620,7 @@ public abstract class NodePointer implements Pointer {
         // Let it throw a ClassCastException
         NodePointer pointer = (NodePointer) object;
         if (parent == pointer.parent) {
-            if (parent == null) {
-                return 0;
-            }
-            return parent.compareChildNodePointers(this, pointer);
+            return parent == null ? 0 : parent.compareChildNodePointers(this, pointer);
         }
 
         // Task 1: find the common parent
@@ -682,17 +647,11 @@ public abstract class NodePointer implements Pointer {
     {
         if (depth1 < depth2) {
             int r = compareNodePointers(p1, depth1, p2.parent, depth2 - 1);
-            if (r != 0) {
-                return r;
-            }
-            return -1;
+            return r == 0 ? -1 : r;
         }
-        else if (depth1 > depth2) {
+        if (depth1 > depth2) {
             int r = compareNodePointers(p1.parent, depth1 - 1, p2, depth2);
-            if (r != 0) {
-                return r;
-            }
-            return 1;
+            return r == 0 ? 1 : r;
         }
         if (p1 == null && p2 == null) {
             return 0;
@@ -707,8 +666,7 @@ public abstract class NodePointer implements Pointer {
                     "Cannot compare pointers that do not belong to the same tree: '"
                             + p1 + "' and '" + p2 + "'");
         }
-        int r =
-            compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);
+        int r = compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);
         if (r != 0) {
             return r;
         }

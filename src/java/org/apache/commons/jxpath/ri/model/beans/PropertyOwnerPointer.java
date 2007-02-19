@@ -45,28 +45,17 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         if (test == null) {
             return createNodeIterator(null, reverse, startWith);
         }
-        else if (test instanceof NodeNameTest) {
+        if (test instanceof NodeNameTest) {
             NodeNameTest nodeNameTest = (NodeNameTest) test;
             QName testName = nodeNameTest.getNodeName();
-            String property;
             if (!isDefaultNamespace(testName.getPrefix())) {
                 return null;
             }
-            else if (nodeNameTest.isWildcard()) {
-                property = null;
-            }
-            else {
-                property = testName.getName();
-            }
+            String property = nodeNameTest.isWildcard() ? null : testName.getName();
             return createNodeIterator(property, reverse, startWith);
         }
-        else if (test instanceof NodeTypeTest) {
-            if (((NodeTypeTest) test).getNodeType()
-                == Compiler.NODE_TYPE_NODE) {
-                return createNodeIterator(null, reverse, startWith);
-            }
-        }
-        return null;
+        return test instanceof NodeTypeTest && ((NodeTypeTest) test).getNodeType() == Compiler.NODE_TYPE_NODE
+                ? createNodeIterator(null, reverse, startWith) : null;
     }
 
     public NodeIterator createNodeIterator(
@@ -101,12 +90,8 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     private Object value = UNINITIALIZED;
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
-            if (index == WHOLE_COLLECTION) {
-                value = ValueUtils.getValue(getBaseValue());
-            }
-            else {
-                value = ValueUtils.getValue(getBaseValue(), index);
-            }
+            value = index == WHOLE_COLLECTION ? ValueUtils.getValue(getBaseValue())
+                    : ValueUtils.getValue(getBaseValue(), index);
         }
         return value;
     }
@@ -128,10 +113,8 @@ public abstract class PropertyOwnerPointer extends NodePointer {
                     "Cannot setValue of an object that is not "
                         + "some other object's property");
             }
-            else {
-                throw new JXPathInvalidAccessException(
-                    "The specified collection element does not exist: " + this);
-            }
+            throw new JXPathInvalidAccessException(
+                "The specified collection element does not exist: " + this);
         }
         else {
             throw new UnsupportedOperationException(
@@ -170,12 +153,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         NodePointer pointer1,
         NodePointer pointer2) 
     {
-        int r =
-            pointer1.getName().toString().compareTo(
-                pointer2.getName().toString());
-        if (r != 0) {
-            return r;
-        }
-        return pointer1.getIndex() - pointer2.getIndex();
+        int r = pointer1.getName().toString().compareTo(pointer2.getName().toString());
+        return r == 0 ? pointer1.getIndex() - pointer2.getIndex() : r;
     }
 }

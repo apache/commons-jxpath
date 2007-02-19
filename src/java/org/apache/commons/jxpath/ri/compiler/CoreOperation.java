@@ -57,46 +57,31 @@ public abstract class CoreOperation extends Operation {
         if (args.length == 1) {
             return getSymbol() + parenthesize(args[0], false);
         }
-        else {
-            StringBuffer buffer = new StringBuffer();
-            for (int i = 0; i < args.length; i++) {
-                if (i > 0) {
-                    buffer.append(' ');
-                    buffer.append(getSymbol());
-                    buffer.append(' ');
-                }
-                buffer.append(parenthesize(args[i], i == 0));
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < args.length; i++) {
+            if (i > 0) {
+                buffer.append(' ');
+                buffer.append(getSymbol());
+                buffer.append(' ');
             }
-            return buffer.toString();
+            buffer.append(parenthesize(args[i], i == 0));
         }
+        return buffer.toString();
     }
     
     private String parenthesize(Expression expression, boolean left) {
+        String s = expression.toString();
         if (!(expression instanceof CoreOperation)) {
-            return expression.toString();
+            return s;
         }
-        CoreOperation op = (CoreOperation) expression;
-        int myPrecedence = getPrecedence();
-        int thePrecedence = op.getPrecedence();
+        int compared = getPrecedence() - ((CoreOperation) expression).getPrecedence();
 
-        boolean needParens = true;
-        if (myPrecedence < thePrecedence) {
-            needParens = false;
+        if (compared < 0) {
+            return s;
         }
-        else if (myPrecedence == thePrecedence) {
-            if (isSymmetric()) {
-                needParens = false;
-            }
-            else {
-                needParens = !left;
-            }
+        if (compared == 0 && (isSymmetric() || left)) {
+            return s;
         }
-
-        if (needParens) {
-            return "(" + expression.toString() + ")";
-        }
-        else {
-            return expression.toString();
-        }
+        return '(' + s + ')';
     }    
 }

@@ -86,27 +86,16 @@ public class JXPathException extends RuntimeException {
      */
     public String getMessage() {
         String message = super.getMessage();
-
-        if (exception != null) {
-            if (message == null) {
-                if (exception.getMessage() != null) {
-                    return exception.getMessage();
-                }
-                else {
-                    return exception.getClass().getName();
-                }
-            }
-            else {
-                if (exception.getMessage() != null) {
-                    return message + "; " + exception.getMessage();
-                }
-                else {
-                    return message + "; " + exception.getClass().getName();
-                }
-            }
+        if (exception == null) {
+            return message;
         }
-
-        return message;
+        StringBuffer buf = new StringBuffer();
+        if (message == null) {
+            buf.append(message).append("; ");
+        }
+        String eMsg = exception.getMessage();
+        buf.append(eMsg == null ? exception.getClass().getName() : eMsg);
+        return buf.toString();
     }
 
     /**

@@ -68,9 +68,7 @@ public class InitialContext extends EvalContext {
             }
             return false;
         }
-        else {
-            return position == 1;
-        }
+        return position == 1;
     }
 
     public boolean nextSet() {

@@ -123,12 +123,7 @@ public class PropertyIterator implements NodeIterator {
     }
 
     public boolean setPosition(int position) {
-        if (name != null) {
-            return setPositionIndividualProperty(position);
-        }
-        else {
-            return setPositionAllProperties(position);
-        }
+        return name == null ? setPositionAllProperties(position) : setPositionIndividualProperty(position);
     }
 
     private boolean setPositionIndividualProperty(int position) {

@@ -37,11 +37,7 @@ public class LocationPath extends Path {
     }
 
     public boolean computeContextDependent() {
-        if (!absolute) {
-            return true;
-        }
-
-        return super.computeContextDependent();
+        return !absolute || super.computeContextDependent();
     }
 
     public String toString() {

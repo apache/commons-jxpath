@@ -530,7 +530,7 @@ public abstract class JXPathContext {
      * affected by the locale.  By default, JXPath uses
      * <code>Locale.getDefault()</code>
      */
-    public void setLocale(Locale locale) {
+    public synchronized void setLocale(Locale locale) {
         this.locale = locale;
     }
 
@@ -539,14 +539,12 @@ public abstract class JXPathContext {
      * the context has a parent, returns the parent's locale.
      * Otherwise, returns Locale.getDefault().
      */
-    public Locale getLocale() {
+    public synchronized Locale getLocale() {
         if (locale == null) {
             if (parentContext != null) {
                 return parentContext.getLocale();
             }
-            else {
-                locale = Locale.getDefault();
-            }
+            locale = Locale.getDefault();
         }
         return locale;
     }
@@ -559,7 +557,7 @@ public abstract class JXPathContext {
      * 
      * @param name the format name or null for default format.
      */
-    public void setDecimalFormatSymbols(
+    public synchronized void setDecimalFormatSymbols(
         String name,
         DecimalFormatSymbols symbols) 
     {
@@ -572,12 +570,9 @@ public abstract class JXPathContext {
     /**
      * @see #setDecimalFormatSymbols(String, DecimalFormatSymbols)
      */
-    public DecimalFormatSymbols getDecimalFormatSymbols(String name) {
+    public synchronized DecimalFormatSymbols getDecimalFormatSymbols(String name) {
         if (decimalFormats == null) {
-            if (parentContext != null) {
-                return parentContext.getDecimalFormatSymbols(name);
-            }
-            return null;
+            return parentContext == null ? null : parentContext.getDecimalFormatSymbols(name);
         }
         return (DecimalFormatSymbols) decimalFormats.get(name);
     }
@@ -591,7 +586,7 @@ public abstract class JXPathContext {
      * <p>
      * By default, lenient = false
      */
-    public void setLenient(boolean lenient) {
+    public synchronized void setLenient(boolean lenient) {
         this.lenient = lenient;
         lenientSet = true;
     }
@@ -599,7 +594,7 @@ public abstract class JXPathContext {
     /**
      * @see #setLenient(boolean)
      */
-    public boolean isLenient() {
+    public synchronized boolean isLenient() {
         if (!lenientSet && parentContext != null) {
             return parentContext.isLenient();
         }
@@ -638,10 +633,7 @@ public abstract class JXPathContext {
 	 */
     public Object selectSingleNode(String xpath) {
     	Pointer pointer = getPointer(xpath);
-    	if (pointer == null) {
-    		return null;
-    	}
-		return pointer.getNode();
+        return pointer == null ? null : pointer.getNode();
     }
     
     /**
@@ -769,11 +761,9 @@ public abstract class JXPathContext {
         if (manager != null) {
             return manager.getPointerByID(this, id);
         }
-        else {
-            throw new JXPathException(
-                "Cannot find an element by ID - "
-                    + "no IdentityManager has been specified");
-        }
+        throw new JXPathException(
+            "Cannot find an element by ID - "
+                + "no IdentityManager has been specified");
     }
 
     /**
@@ -803,11 +793,9 @@ public abstract class JXPathContext {
         if (manager != null) {
             return manager.getPointerByKey(this, key, value);
         }
-        else {
-            throw new JXPathException(
-                "Cannot find an element by key - "
-                    + "no KeyManager has been specified");
-        }
+        throw new JXPathException(
+            "Cannot find an element by key - "
+                + "no KeyManager has been specified");
     }
 
     /**

@@ -70,8 +70,7 @@ public class VariablePointer extends NodePointer {
     
     public boolean isLeaf() {
         Object value = getNode();
-        return value == null
-            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
+        return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
     
     public boolean isCollection() {
@@ -81,12 +80,8 @@ public class VariablePointer extends NodePointer {
 
     public Object getImmediateNode() {
         Object value = getBaseValue();
-        if (index != WHOLE_COLLECTION) {
-            return ValueUtils.getValue(value, index);
-        }
-        else {
-            return ValueUtils.getValue(value);
-        }
+        return index == WHOLE_COLLECTION ? ValueUtils.getValue(value)
+                : ValueUtils.getValue(value, index);
     }
 
     public void setValue(Object value) {
@@ -135,10 +130,7 @@ public class VariablePointer extends NodePointer {
     public int getLength() {
         if (actual) {
             Object value = getBaseValue();
-            if (value == null) {
-                return 1;
-            }
-            return ValueUtils.getLength(value);
+            return value == null ? 1 : ValueUtils.getLength(value);
         }
         return 0;
     }

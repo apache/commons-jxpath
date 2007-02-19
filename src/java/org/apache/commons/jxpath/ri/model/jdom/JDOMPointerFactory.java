@@ -44,7 +44,7 @@ public class JDOMPointerFactory implements NodePointerFactory {
         if (bean instanceof Document) {
             return new JDOMNodePointer(bean, locale);
         }
-        else if (bean instanceof Element) {
+        if (bean instanceof Element) {
             return new JDOMNodePointer(bean, locale);
         }
         return null;
@@ -56,7 +56,7 @@ public class JDOMPointerFactory implements NodePointerFactory {
         if (bean instanceof Document) {
             return new JDOMNodePointer(parent, bean);
         }
-        else if (bean instanceof Element) {
+        if (bean instanceof Element) {
             return new JDOMNodePointer(parent, bean);
         }
         return null;

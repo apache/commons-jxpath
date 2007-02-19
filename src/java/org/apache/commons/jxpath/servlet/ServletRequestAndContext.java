@@ -39,14 +39,11 @@ public class ServletRequestAndContext extends
         this.request = request;
     }
 
-    
     public HttpSession getSession() {
-        if (request instanceof HttpServletRequest) {
-            return ((HttpServletRequest)request).getSession(false);
-        }
-        return null;
+        return request instanceof HttpServletRequest
+                ? ((HttpServletRequest) request).getSession(false) : null;
     }
-    
+
     public ServletRequest getServletRequest() {
         return request;
     }

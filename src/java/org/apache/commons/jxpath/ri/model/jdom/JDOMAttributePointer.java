@@ -109,16 +109,8 @@ public class JDOMAttributePointer extends NodePointer {
     }
 
     public boolean equals(Object object) {
-        if (object == this) {
-            return true;
-        }
-
-        if (!(object instanceof JDOMAttributePointer)) {
-            return false;
-        }
-
-        JDOMAttributePointer other = (JDOMAttributePointer) object;
-        return attr == other.attr;
+        return object == this || object instanceof JDOMAttributePointer
+                && ((JDOMAttributePointer) object).attr == attr;
     }
 
     public int compareChildNodePointers(

@@ -54,10 +54,7 @@ public class DOMNodeIterator implements NodeIterator {
         if (position == 0) {
             setPosition(1);
         }
-        if (child == null) {
-            return null;
-        }
-        return new DOMNodePointer(parent, child);
+        return child == null ? null : new DOMNodePointer(parent, child);
     }
 
     public int getPosition() {

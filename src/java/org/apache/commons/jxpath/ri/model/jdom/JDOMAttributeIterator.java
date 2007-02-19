@@ -35,13 +35,11 @@ import org.jdom.Namespace;
  */
 public class JDOMAttributeIterator implements NodeIterator {
     private NodePointer parent;
-//    private QName name;
     private List attributes;
     private int position = 0;
 
     public JDOMAttributeIterator(NodePointer parent, QName name) {
         this.parent = parent;
-//        this.name = name;
         if (parent.getNode() instanceof Element) {
             Element element = (Element) parent.getNode();
             String prefix = name.getPrefix();
@@ -86,80 +84,6 @@ public class JDOMAttributeIterator implements NodeIterator {
         }
     }
 
-    /*
-    private boolean testAttr(Attr attr, QName testName) {
-        String nodePrefix = DOMNodePointer.getPrefix(attr);
-        String nodeLocalName = DOMNodePointer.getLocalName(attr);
-
-        if (nodePrefix != null && nodePrefix.equals("xmlns")) {
-            return false;
-        }
-
-        if (nodePrefix == null && nodeLocalName.equals("xmlns")) {
-            return false;
-        }
-
-        String testLocalName = name.getName();
-        if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)) {
-            String testPrefix = testName.getPrefix();
-
-            if (equalStrings(testPrefix, nodePrefix)) {
-                return true;
-            }
-
-            String testNS = null;
-            if (testPrefix != null) {
-                testNS = parent.getNamespaceURI(testPrefix);
-            }
-
-            String nodeNS = null;
-            if (nodePrefix != null) {
-                nodeNS = parent.getNamespaceURI(nodePrefix);
-            }
-            return equalStrings(testNS, nodeNS);
-        }
-        return false;
-    }
-
-    private static boolean equalStrings(String s1, String s2) {
-        if (s1 == null && s2 != null) {
-            return false;
-        }
-        if (s1 != null && !s1.equals(s2)) {
-            return false;
-        }
-        return true;
-    }
-
-    private Attr getAttribute(Element element, QName name) {
-        String testPrefix = name.getPrefix();
-        String testNS = null;
-
-        if (testPrefix != null) {
-            testNS = parent.getNamespaceURI(testPrefix);
-        }
-
-        if (testNS != null) {
-            Attr attr = element.getAttributeNodeNS(testNS, name.getName());
-            if (attr == null) {
-                // This may mean that the parser does not support NS for
-                // attributes, example - the version of Crimson bundled
-                // with JDK 1.4.0
-                NamedNodeMap nnm = element.getAttributes();
-                for (int i = 0; i < nnm.getLength(); i++) {
-                    attr = (Attr)nnm.item(i);
-                    if (testAttr(attr, name)) {
-                        return attr;
-                    }
-                }
-            }
-            return attr;
-        }
-        else {
-            return element.getAttributeNode(name.getName());
-        }
-    }
-*/
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {

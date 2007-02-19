@@ -84,7 +84,7 @@ public class NullPropertyPointer extends PropertyPointer {
                     + asPath()
                     + ", the target object is null");
         }
-        else if (parent instanceof PropertyOwnerPointer &&
+        if (parent instanceof PropertyOwnerPointer &&
                 ((PropertyOwnerPointer) parent).
                     isDynamicPropertyDeclarationSupported()){
             // If the parent property owner can create
@@ -107,29 +107,27 @@ public class NullPropertyPointer extends PropertyPointer {
         if (isAttribute()) {
             return newParent.createAttribute(context, getName());
         }
-        else {
-            if (parent instanceof NullPointer && parent.equals(newParent)) {
-                throw createBadFactoryException(context.getFactory());
-            }
-            // Consider these two use cases:
-            // 1. The parent pointer of NullPropertyPointer is 
-            //    a PropertyOwnerPointer other than NullPointer. When we call 
-            //    createPath on it, it most likely returns itself. We then
-            //    take a PropertyPointer from it and get the PropertyPointer
-            //    to expand the collection for the corresponding property.
-            //
-            // 2. The parent pointer of NullPropertyPointer is a NullPointer.
-            //    When we call createPath, it may return a PropertyOwnerPointer
-            //    or it may return anything else, like a DOMNodePointer.
-            //    In the former case we need to do exactly what we did in use 
-            //    case 1.  In the latter case, we simply request that the 
-            //    non-property pointer expand the collection by itself.
-            if (newParent instanceof PropertyOwnerPointer) {
-                PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
-                newParent = pop.getPropertyPointer();
-            }
-            return newParent.createChild(context, getName(), getIndex());
+        if (parent instanceof NullPointer && parent.equals(newParent)) {
+            throw createBadFactoryException(context.getFactory());
         }
+        // Consider these two use cases:
+        // 1. The parent pointer of NullPropertyPointer is 
+        //    a PropertyOwnerPointer other than NullPointer. When we call 
+        //    createPath on it, it most likely returns itself. We then
+        //    take a PropertyPointer from it and get the PropertyPointer
+        //    to expand the collection for the corresponding property.
+        //
+        // 2. The parent pointer of NullPropertyPointer is a NullPointer.
+        //    When we call createPath, it may return a PropertyOwnerPointer
+        //    or it may return anything else, like a DOMNodePointer.
+        //    In the former case we need to do exactly what we did in use 
+        //    case 1.  In the latter case, we simply request that the 
+        //    non-property pointer expand the collection by itself.
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), getIndex());
     }
 
     public NodePointer createPath(JXPathContext context, Object value) {
@@ -139,16 +137,14 @@ public class NullPropertyPointer extends PropertyPointer {
             pointer.setValue(value);
             return pointer;
         }
-        else {
-            if (parent instanceof NullPointer && parent.equals(newParent)) {
-                throw createBadFactoryException(context.getFactory());
-            }
-            if (newParent instanceof PropertyOwnerPointer) {
-                PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
-                newParent = pop.getPropertyPointer();
-            }
-            return newParent.createChild(context, getName(), index, value);
+        if (parent instanceof NullPointer && parent.equals(newParent)) {
+            throw createBadFactoryException(context.getFactory());
         }
+        if (newParent instanceof PropertyOwnerPointer) {
+            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            newParent = pop.getPropertyPointer();
+        }
+        return newParent.createChild(context, getName(), index, value);
     }
     
     public NodePointer createChild(
@@ -197,17 +193,15 @@ public class NullPropertyPointer extends PropertyPointer {
         if (!byNameAttribute) {
             return super.asPath();
         }
-        else {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(getImmediateParentPointer().asPath());
-            buffer.append("[@name='");
-            buffer.append(escape(getPropertyName()));
-            buffer.append("']");
-            if (index != WHOLE_COLLECTION) {
-                buffer.append('[').append(index + 1).append(']');
-            }
-            return buffer.toString();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(getImmediateParentPointer().asPath());
+        buffer.append("[@name='");
+        buffer.append(escape(getPropertyName()));
+        buffer.append("']");
+        if (index != WHOLE_COLLECTION) {
+            buffer.append('[').append(index + 1).append(']');
         }
+        return buffer.toString();
     }
 
     private String escape(String string) {

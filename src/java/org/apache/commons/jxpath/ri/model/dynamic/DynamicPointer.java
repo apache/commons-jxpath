@@ -89,8 +89,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
     
     public boolean isLeaf() {
         Object value = getNode();
-        return value == null
-            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
+        return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }    
     
     public boolean isCollection() {
@@ -105,10 +104,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
     }
 
     public String asPath() {
-        if (parent != null) {
-            return super.asPath();
-        }
-        return "/";
+        return parent == null ? "/" : super.asPath();
     }
 
     public int hashCode() {

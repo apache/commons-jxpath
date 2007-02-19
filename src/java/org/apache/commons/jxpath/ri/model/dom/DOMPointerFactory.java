@@ -42,10 +42,7 @@ public class DOMPointerFactory implements NodePointerFactory {
         Object bean,
         Locale locale) 
     {
-        if (bean instanceof Node) {
-            return new DOMNodePointer((Node) bean, locale);
-        }
-        return null;
+        return bean instanceof Node ? new DOMNodePointer((Node) bean, locale) : null;
     }
 
     public NodePointer createNodePointer(
@@ -53,9 +50,6 @@ public class DOMPointerFactory implements NodePointerFactory {
         QName name,
         Object bean) 
     {
-        if (bean instanceof Node) {
-            return new DOMNodePointer(parent, (Node) bean);
-        }
-        return null;
+        return bean instanceof Node ? new DOMNodePointer(parent, (Node) bean) : null;
     }
 }

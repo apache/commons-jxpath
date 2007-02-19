@@ -100,13 +100,7 @@ public class DOMAttributeIterator implements NodeIterator {
     }
 
     private static boolean equalStrings(String s1, String s2) {
-        if (s1 == null && s2 != null) {
-            return false;
-        }
-        if (s1 != null && !s1.equals(s2)) {
-            return false;
-        }
-        return true;
+        return s1 == s2 || s1 != null && s1.equals(s2);
     }
 
     private Attr getAttribute(Element element, QName name) {
@@ -135,9 +129,7 @@ public class DOMAttributeIterator implements NodeIterator {
             }
             return null;
         }
-        else {
-            return element.getAttributeNode(name.getName());
-        }
+        return element.getAttributeNode(name.getName());
     }
 
     public NodePointer getNodePointer() {

@@ -40,10 +40,7 @@ public class KeywordVariables implements Variables {
     }
 
     public Object getVariable(String variable) {
-        if (variable.equals(keyword)) {
-            return object;
-        }
-        return null;
+        return isDeclaredVariable(variable) ? object : null;
     }
 
     public void declareVariable(String variable, Object value) {

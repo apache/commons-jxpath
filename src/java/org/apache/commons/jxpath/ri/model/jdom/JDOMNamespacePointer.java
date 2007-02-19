@@ -101,16 +101,7 @@ public class JDOMNamespacePointer extends NodePointer {
     }
 
     public boolean equals(Object object) {
-        if (object == this) {
-            return true;
-        }
-
-        if (!(object instanceof JDOMNamespacePointer)) {
-            return false;
-        }
-
-        JDOMNamespacePointer other = (JDOMNamespacePointer) object;
-        return prefix.equals(other.prefix);
+        return object == this || object instanceof JDOMNamespacePointer && prefix.equals(((JDOMNamespacePointer) object).prefix);
     }
 
     public int compareChildNodePointers(

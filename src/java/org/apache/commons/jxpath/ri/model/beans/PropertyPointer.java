@@ -91,12 +91,8 @@ public abstract class PropertyPointer extends NodePointer {
     private Object value = UNINITIALIZED;
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
-            if (index == WHOLE_COLLECTION) {
-                value = ValueUtils.getValue(getBaseValue());
-            }
-            else {
-                value = ValueUtils.getValue(getBaseValue(), index);
-            }
+            value = index == WHOLE_COLLECTION ? ValueUtils.getValue(getBaseValue())
+                    : ValueUtils.getValue(getBaseValue(), index);
         }
         return value;
     }
@@ -108,9 +104,8 @@ public abstract class PropertyPointer extends NodePointer {
     
     public boolean isLeaf() {
         Object value = getNode();
-        return value == null
-            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
-    }    
+        return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
+    }
 
     /**
      * If the property contains a collection, then the length of that
@@ -201,10 +196,8 @@ public abstract class PropertyPointer extends NodePointer {
         }
 
         PropertyPointer other = (PropertyPointer) object;
-        if (parent != other.parent) {
-            if (parent == null || !parent.equals(other.parent)) {
-                return false;
-            }
+        if (parent != other.parent && (parent == null || !parent.equals(other.parent))) {
+            return false;
         }
 
         if (getPropertyIndex() != other.getPropertyIndex()

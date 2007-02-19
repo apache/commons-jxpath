@@ -88,7 +88,7 @@ public class DOMNodePointer extends NodePointer {
         if (test == null) {
             return true;
         }
-        else if (test instanceof NodeNameTest) {
+        if (test instanceof NodeNameTest) {
             if (node.getNodeType() != Node.ELEMENT_NODE) {
                 return false;
             }
@@ -108,8 +108,9 @@ public class DOMNodePointer extends NodePointer {
                 String nodeNS = DOMNodePointer.getNamespaceURI(node);
                 return equalStrings(namespaceURI, nodeNS);
             }
+            return false;
         }
-        else if (test instanceof NodeTypeTest) {
+        if (test instanceof NodeTypeTest) {
             int nodeType = node.getNodeType();
             switch (((NodeTypeTest) test).getNodeType()) {
                 case Compiler.NODE_TYPE_NODE :
@@ -125,7 +126,7 @@ public class DOMNodePointer extends NodePointer {
             }
             return false;
         }
-        else if (test instanceof ProcessingInstructionTest) {
+        if (test instanceof ProcessingInstructionTest) {
             if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
                 String testPI = ((ProcessingInstructionTest) test).getTarget();
                 String nodePI = ((ProcessingInstruction) node).getTarget();
@@ -136,19 +137,12 @@ public class DOMNodePointer extends NodePointer {
     }
 
     private static boolean equalStrings(String s1, String s2) {
-        if (s1 == null) {
-            return s2 == null || s2.trim().length() == 0;
+        if (s1 == s2) {
+            return true;
         }
-        
-        if (s2 == null) {
-            return s1 == null || s1.trim().length() == 0;
-        }
-
-        if (s1 != null && !s1.trim().equals(s2.trim())) {
-            return false;
-        }
-
-        return true;
+        s1 = s1 == null ? "" : s1.trim();
+        s2 = s2 == null ? "" : s2.trim();
+        return s1.equals(s2);
     }
 
     public QName getName() {
@@ -295,10 +289,8 @@ public class DOMNodePointer extends NodePointer {
      */
     public boolean isLanguage(String lang) {
         String current = getLanguage();
-        if (current == null) {
-            return super.isLanguage(lang);
-        }
-        return current.toUpperCase().startsWith(lang.toUpperCase());
+        return current == null ? super.isLanguage(lang)
+                : current.toUpperCase().startsWith(lang.toUpperCase());
     }
 
     protected String getLanguage() {
@@ -582,16 +574,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     public boolean equals(Object object) {
-        if (object == this) {
-            return true;
-        }
-
-        if (!(object instanceof DOMNodePointer)) {
-            return false;
-        }
-
-        DOMNodePointer other = (DOMNodePointer) object;
-        return node == other.node;
+        return object == this || object instanceof DOMNodePointer && node == ((DOMNodePointer) object).node;
     }
 
     public static String getPrefix(Node node) {
@@ -602,11 +585,7 @@ public class DOMNodePointer extends NodePointer {
 
         String name = node.getNodeName();
         int index = name.lastIndexOf(':');
-        if (index == -1) {
-            return null;
-        }
-
-        return name.substring(0, index);
+        return index < 0 ? null : name.substring(0, index);
     }
 
     public static String getLocalName(Node node) {
@@ -617,11 +596,7 @@ public class DOMNodePointer extends NodePointer {
 
         String name = node.getNodeName();
         int index = name.lastIndexOf(':');
-        if (index == -1) {
-            return name;
-        }
-
-        return name.substring(index + 1);
+        return index < 0 ? name : name.substring(index + 1);
     }
     
     public static String getNamespaceURI(Node node) {
@@ -636,14 +611,8 @@ public class DOMNodePointer extends NodePointer {
             return uri;
         }
 
-        String qname;
         String prefix = getPrefix(node);
-        if (prefix == null) {
-            qname = "xmlns";
-        }
-        else {
-            qname = "xmlns:" + prefix;
-        }
+        String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
 
         Node aNode = node;
         while (aNode != null) {
@@ -668,50 +637,39 @@ public class DOMNodePointer extends NodePointer {
             String text = ((Comment) node).getData();
             return text == null ? "" : text.trim();
         }
-        else if (
+        if (
             nodeType == Node.TEXT_NODE
                 || nodeType == Node.CDATA_SECTION_NODE) {
             String text = node.getNodeValue();
             return text == null ? "" : text.trim();
         }
-        else if (nodeType == Node.PROCESSING_INSTRUCTION_NODE) {
+        if (nodeType == Node.PROCESSING_INSTRUCTION_NODE) {
             String text = ((ProcessingInstruction) node).getData();
             return text == null ? "" : text.trim();
         }
-        else {
-            NodeList list = node.getChildNodes();
-            StringBuffer buf = new StringBuffer(16);
-            for (int i = 0; i < list.getLength(); i++) {
-                Node child = list.item(i);
-                if (child.getNodeType() == Node.TEXT_NODE) {
-                    buf.append(child.getNodeValue());
-                }
-                else {
-                    buf.append(stringValue(child));
-                }
+        NodeList list = node.getChildNodes();
+        StringBuffer buf = new StringBuffer(16);
+        for (int i = 0; i < list.getLength(); i++) {
+            Node child = list.item(i);
+            if (child.getNodeType() == Node.TEXT_NODE) {
+                buf.append(child.getNodeValue());
             }
-            return buf.toString().trim();
+            else {
+                buf.append(stringValue(child));
+            }
         }
+        return buf.toString().trim();
     }
 
     /**
      * Locates a node by ID.
      */
     public Pointer getPointerByID(JXPathContext context, String id) {
-        Document document;
-        if (node.getNodeType() == Node.DOCUMENT_NODE) {
-            document = (Document) node;
-        }
-        else {
-            document = node.getOwnerDocument();
-        }
+        Document document = node.getNodeType() == Node.DOCUMENT_NODE ? (Document) node
+                : node.getOwnerDocument();
         Element element = document.getElementById(id);
-        if (element != null) {
-            return new DOMNodePointer(element, getLocale(), id);
-        }
-        else {
-            return new NullPointer(getLocale(), id);
-        }
+        return element == null ? new NullPointer(getLocale(), id)
+                : new DOMNodePointer(element, getLocale(), id);
     }
 
     private AbstractFactory getAbstractFactory(JXPathContext context) {
@@ -739,10 +697,10 @@ public class DOMNodePointer extends NodePointer {
         if (t1 == Node.ATTRIBUTE_NODE && t2 != Node.ATTRIBUTE_NODE) {
             return -1;
         }
-        else if (t1 != Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        if (t1 != Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
             return 1;
         }
-        else if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
+        if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
             NamedNodeMap map = ((Node) getNode()).getAttributes();
             int length = map.getLength();
             for (int i = 0; i < length; i++) {
@@ -750,7 +708,7 @@ public class DOMNodePointer extends NodePointer {
                 if (n == node1) {
                     return -1;
                 }
-                else if (n == node2) {
+                if (n == node2) {
                     return 1;
                 }
             }
@@ -762,12 +720,11 @@ public class DOMNodePointer extends NodePointer {
             if (current == node1) {
                 return -1;
             }
-            else if (current == node2) {
+            if (current == node2) {
                 return 1;
             }
             current = current.getNextSibling();
         }
-
         return 0;
     }
 }

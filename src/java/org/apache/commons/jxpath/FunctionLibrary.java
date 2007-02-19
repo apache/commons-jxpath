@@ -81,7 +81,7 @@ public class FunctionLibrary implements Functions {
                 name,
                 parameters);
         }
-        else if (candidates instanceof List) {
+        if (candidates instanceof List) {
             List list = (List) candidates;
             int count = list.size();
             for (int i = 0; i < count; i++) {

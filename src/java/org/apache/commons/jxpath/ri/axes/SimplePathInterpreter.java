@@ -146,30 +146,24 @@ public class SimplePathInterpreter {
                     steps,
                     currentStep);
             }
-            else {
-                return doStepPredicatesPropertyOwner(
-                    context,
-                    (PropertyOwnerPointer) parent,
-                    steps,
-                    currentStep);
-            }
+            return doStepPredicatesPropertyOwner(
+                context,
+                (PropertyOwnerPointer) parent,
+                steps,
+                currentStep);
         }
-        else {
-            if (predicates == null || predicates.length == 0) {
-                return doStepNoPredicatesStandard(
-                    context,
-                    parent,
-                    steps,
-                    currentStep);
-            }
-            else {
-                return doStepPredicatesStandard(
-                    context,
-                    parent,
-                    steps,
-                    currentStep);
-            }
+        if (predicates == null || predicates.length == 0) {
+            return doStepNoPredicatesStandard(
+                context,
+                parent,
+                steps,
+                currentStep);
         }
+        return doStepPredicatesStandard(
+            context,
+            parent,
+            steps,
+            currentStep);
     }
 
     /**
@@ -197,11 +191,11 @@ public class SimplePathInterpreter {
                 steps,
                 currentStep);
         }
-        else if (currentStep == steps.length - 1) {
+        if (currentStep == steps.length - 1) {
             // If this is the last step - we are done, we found it
             return childPointer;
         }
-        else if (childPointer.isCollection()) {
+        if (childPointer.isCollection()) {
             // Iterate over all values and
             // execute remaining steps for each node,
             // looking for the best quality match
@@ -228,10 +222,8 @@ public class SimplePathInterpreter {
             // This step did not find anything - return a null pointer
             return createNullPointer(context, childPointer, steps, currentStep);
         }
-        else {
-            // Evaluate subsequent steps
-            return doStep(context, childPointer, steps, currentStep + 1);
-        }
+        // Evaluate subsequent steps
+        return doStep(context, childPointer, steps, currentStep + 1);
     }
 
     /**
@@ -268,19 +260,14 @@ public class SimplePathInterpreter {
                 if (quality == PERFECT_MATCH) {
                     return pointer;
                 }
-                else if (quality > bestQuality) {
+                if (quality > bestQuality) {
                     bestQuality = quality;
                     bestMatch = (NodePointer) pointer.clone();
                 }
             }
         }
-
-        if (bestMatch != null) {
-            return bestMatch;
-        }
-
-        return createNullPointer(
-                context, parentPointer, steps, currentStep);
+        return bestMatch != null ? bestMatch
+                : createNullPointer(context, parentPointer, steps, currentStep);
     }
 
     /**
@@ -334,9 +321,7 @@ public class SimplePathInterpreter {
             }
             return childPointer;
         }
-        else {
-            return parentPointer;
-        }
+        return parentPointer;
     }
 
     /**
@@ -440,15 +425,14 @@ public class SimplePathInterpreter {
                 predicates,
                 currentPredicate);
         }
-        else { // [index]
-            return doPredicateIndex(
-                context,
-                parent,
-                steps,
-                currentStep,
-                predicates,
-                currentPredicate);
-        }
+        // else [index]
+        return doPredicateIndex(
+            context,
+            parent,
+            steps,
+            currentStep,
+            predicates,
+            currentPredicate);
     }
 
     private static NodePointer doPredicateName(
@@ -668,11 +652,7 @@ public class SimplePathInterpreter {
         if (value instanceof Number) {
             return (int) (InfoSetUtil.doubleValue(value) + 0.5) - 1;
         }
-        else if (InfoSetUtil.booleanValue(value)) {
-            return 0;
-        }
-
-        return -1;
+        return InfoSetUtil.booleanValue(value) ? 0 : -1;
     }
 
     /**
@@ -824,15 +804,14 @@ public class SimplePathInterpreter {
             }
             return pointer.childIterator(nodeTest, false, null);
         }
-        else { // Compiler.AXIS_ATTRIBUTE
-            if (!(step.getNodeTest() instanceof NodeNameTest)) {
-                throw new UnsupportedOperationException(
-                    "Not supported node test for attributes: "
-                        + step.getNodeTest());
-            }
-            return pointer.attributeIterator(
-                ((NodeNameTest) step.getNodeTest()).getNodeName());
+        // else Compiler.AXIS_ATTRIBUTE
+        if (!(step.getNodeTest() instanceof NodeNameTest)) {
+            throw new UnsupportedOperationException(
+                "Not supported node test for attributes: "
+                    + step.getNodeTest());
         }
+        return pointer.attributeIterator(
+            ((NodeNameTest) step.getNodeTest()).getNodeName());
     }
 
     private static boolean isLangAttribute(QName name) {

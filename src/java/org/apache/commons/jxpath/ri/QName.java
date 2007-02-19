@@ -27,22 +27,19 @@ package org.apache.commons.jxpath.ri;
 public class QName {
     private String prefix;
     private String name;
+    private String qualifiedName;
 
     public QName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
         int index = qualifiedName.indexOf(':');
-        if (index == -1) {
-            prefix = null;
-            name = qualifiedName;
-        }
-        else {
-            prefix = qualifiedName.substring(0, index);
-            name = qualifiedName.substring(index + 1);
-        }
+        prefix = index < 0 ? null : qualifiedName.substring(0, index);
+        name = index < 0 ? qualifiedName : qualifiedName.substring(index + 1);
     }
 
     public QName(String prefix, String localName) {
         this.prefix = prefix;
         this.name = localName;
+        this.qualifiedName = prefix == null ? localName : prefix + ':' + localName;
     }
 
     public String getPrefix() {
@@ -54,10 +51,7 @@ public class QName {
     }
 
     public String toString() {
-        if (prefix != null) {
-            return prefix + ':' + name;
-        }
-        return name;
+        return qualifiedName;
     }
 
     public int hashCode() {
@@ -65,22 +59,12 @@ public class QName {
     }
 
     public boolean equals(Object object) {
-        if (!(object instanceof QName)) {
-            return false;
-        }
         if (this == object) {
             return true;
         }
-        QName that = (QName) object;
-        if (!this.name.equals(that.name)) {
+        if (!(object instanceof QName)) {
             return false;
         }
-
-        if ((this.prefix == null && that.prefix != null)
-            || (this.prefix != null && !this.prefix.equals(that.prefix))) {
-            return false;
-        }
-
-        return true;
+        return qualifiedName.equals(((QName) object).qualifiedName);
     }
 }

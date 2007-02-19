@@ -148,20 +148,20 @@ public class BeanPointer extends PropertyOwnerPointer {
         if (parent != null) {
             return super.asPath();
         }
-        else if (bean == null) {
+        if (bean == null) {
             return "null()";
         }
-        else if (bean instanceof Number) {
+        if (bean instanceof Number) {
             String string = bean.toString();
             if (string.endsWith(".0")) {
                 string = string.substring(0, string.length() - 2);
             }
             return string;
         }
-        else if (bean instanceof Boolean) {
+        if (bean instanceof Boolean) {
             return ((Boolean) bean).booleanValue() ? "true()" : "false()";
         }
-        else if (bean instanceof String) {
+        if (bean instanceof String) {
             return "'" + bean + "'";
         }
         return "/";

@@ -31,7 +31,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class UnionContext extends NodeSetContext {
     private EvalContext contexts[];
-    private boolean prepared = false;
+    private boolean prepared;
 
     public UnionContext(EvalContext parentContext, EvalContext contexts[]) {
         super(parentContext, new BasicNodeSet());
@@ -39,10 +39,7 @@ public class UnionContext extends NodeSetContext {
     }
 
     public int getDocumentOrder() {
-        if (contexts.length > 1) {
-            return 1;
-        }
-        return super.getDocumentOrder();
+        return contexts.length > 1 ? 1 : super.getDocumentOrder();
     }
 
     public boolean setPosition(int position) {

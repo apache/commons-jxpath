@@ -74,13 +74,11 @@ public class Parser {
         if (position <= 0) {
             return "at the beginning of the expression";
         }
-        else if (position >= expression.length()) {
+        if (position >= expression.length()) {
             return "- expression incomplete";
         }
-        else {
-            return "after: '"
-                + addEscapes(expression.substring(0, position)) + "'";
-        }
+        return "after: '"
+            + addEscapes(expression.substring(0, position)) + "'";
     }
 
     private static String addEscapes(String string) {
