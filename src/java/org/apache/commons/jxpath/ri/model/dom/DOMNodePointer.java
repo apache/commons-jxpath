@@ -668,7 +668,7 @@ public class DOMNodePointer extends NodePointer {
         Document document = node.getNodeType() == Node.DOCUMENT_NODE ? (Document) node
                 : node.getOwnerDocument();
         Element element = document.getElementById(id);
-        return element == null ? new NullPointer(getLocale(), id)
+        return element == null ? (Pointer) new NullPointer(getLocale(), id)
                 : new DOMNodePointer(element, getLocale(), id);
     }
 

@@ -180,6 +180,7 @@ public class ExpressionPath extends Path {
                 context = new PredicateContext(context, predicates[j]);
             }
         }
-        return firstMatch ? getSingleNodePointerForSteps(context) : evalSteps(context);
+        return firstMatch ? (Object) getSingleNodePointerForSteps(context)
+                : evalSteps(context);
     }
 }
