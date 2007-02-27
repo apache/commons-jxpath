@@ -21,7 +21,7 @@ package org.apache.commons.jxpath.ri;
  * produced and consumed by the APIs.  Arguments and return values are
  * declared as java.lang.Object.
  * <p>
- * Since  objects returned by Compiler methods are passed as arguments to other
+ * Since objects returned by Compiler methods are passed as arguments to other
  * Compiler methods, the descriptions of these methods use virtual types.  There
  * are four virtual object types: EXPRESSION, QNAME, STEP and NODE_TEST.
  * <p>
