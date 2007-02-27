@@ -42,12 +42,12 @@ public abstract class AbstractFactory {
      * @param context can be used to evaluate other XPaths, get to variables
      * etc.
      * @param pointer describes the location of the node to be created
-     * @param parent is the object that will server as a parent of the new
+     * @param parent is the object that will serve as a parent of the new
      * object
      * @param name is the name of the child of the parent that needs to be
      * created. In the case of DOM may be qualified.
      * @param index is used if the pointer represents a collection element. You
-     * may need to expand or even create the collection to accomodate the new
+     * may need to expand or even create the collection to accommodate the new
      * element.
      * 
      * @return true if the object was successfully created
