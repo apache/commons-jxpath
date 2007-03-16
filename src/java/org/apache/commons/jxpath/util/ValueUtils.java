@@ -411,12 +411,10 @@ public class ValueUtils {
                 }
             }            
             catch (InvocationTargetException ex) {
-                Throwable t =
-                    ((InvocationTargetException) ex).getTargetException();
+                Throwable t = ex.getTargetException();
                 if (t instanceof IndexOutOfBoundsException) {
                     return null;
                 }
-                
                 throw new JXPathException(
                     "Cannot access property: " + propertyDescriptor.getName(),
                     t);
