@@ -39,7 +39,7 @@ Address address = (Address)JXPathContext.newContext(vendor).
          getValue("locations[address/zipCode='90210']/address");
 </pre></blockquote>
           <p>
-            This XPath expression is equvalent to the following Java code:
+            This XPath expression is equivalent to the following Java code:
           </p>
 <blockquote><pre>
 Address address = null;
