@@ -30,6 +30,7 @@ import org.apache.commons.jxpath.ri.compiler.CoreOperationTest;
 import org.apache.commons.jxpath.ri.compiler.ExtensionFunctionTest;
 import org.apache.commons.jxpath.ri.compiler.VariableTest;
 import org.apache.commons.jxpath.ri.model.MixedModelTest;
+import org.apache.commons.jxpath.ri.model.XMLSpaceTest;
 import org.apache.commons.jxpath.ri.model.beans.BeanModelTest;
 import org.apache.commons.jxpath.ri.model.container.ContainerModelTest;
 import org.apache.commons.jxpath.ri.model.dom.DOMModelTest;
@@ -89,6 +90,7 @@ public class JXPathTestSuite extends TestCase {
         suite.addTestSuite(MixedModelTest.class);
         suite.addTestSuite(BasicTypeConverterTest.class);
         suite.addTestSuite(RecursiveAxesTest.class);
+        suite.addTestSuite(XMLSpaceTest.class);
         return suite;
     }
 }

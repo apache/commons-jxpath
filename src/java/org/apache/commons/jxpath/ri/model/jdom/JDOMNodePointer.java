@@ -49,7 +49,7 @@ import org.jdom.Text;
  */
 public class JDOMNodePointer extends NodePointer {
     private static final long serialVersionUID = -6346532297491082651L;
-    
+
     private Object node;
     private String id;
 
@@ -237,7 +237,14 @@ public class JDOMNodePointer extends NodePointer {
 
     public Object getValue() {
         if (node instanceof Element) {
-            return ((Element) node).getTextTrim();
+            StringBuffer buf = new StringBuffer();
+            for (NodeIterator children = childIterator(null, false, null); children.setPosition(children.getPosition() + 1);) {
+                NodePointer ptr = children.getNodePointer();
+                if (ptr.getImmediateNode() instanceof Element || ptr.getImmediateNode() instanceof Text) {
+                    buf.append(ptr.getValue());
+                }
+            }
+            return buf.toString();
         }
         if (node instanceof Comment) {
             String text = ((Comment) node).getText();
@@ -246,20 +253,15 @@ public class JDOMNodePointer extends NodePointer {
             }
             return text;
         }
+        String result = null;
         if (node instanceof Text) {
-            return ((Text) node).getTextTrim();
-        }
-        if (node instanceof CDATA) {
-            return ((CDATA) node).getTextTrim();
+            result = ((Text) node).getText();
         }
         if (node instanceof ProcessingInstruction) {
-            String text = ((ProcessingInstruction) node).getData();
-            if (text != null) {
-                text = text.trim();
-            }
-            return text;
+            result = ((ProcessingInstruction) node).getData();
         }
-        return null;
+        boolean trim = !"preserve".equals(findEnclosingAttribute(node, "space", Namespace.XML_NAMESPACE));
+        return result != null && trim ? result.trim() : result;
     }
 
     public void setValue(Object value) {
@@ -433,12 +435,14 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     protected String getLanguage() {
-        Object n = node;
+        return findEnclosingAttribute(node, "lang", Namespace.XML_NAMESPACE);
+    }
+
+    protected static String findEnclosingAttribute(Object n, String attrName, Namespace ns) {
         while (n != null) {
             if (n instanceof Element) {
                 Element e = (Element) n;
-                String attr =
-                    e.getAttributeValue("lang", Namespace.XML_NAMESPACE);
+                String attr = e.getAttributeValue(attrName, ns);
                 if (attr != null && !attr.equals("")) {
                     return attr;
                 }
@@ -447,8 +451,8 @@ public class JDOMNodePointer extends NodePointer {
         }
         return null;
     }
-    
-    private Element nodeParent(Object node) {
+
+    private static Element nodeParent(Object node) {
         if (node instanceof Element) {
             Object parent = ((Element) node).getParent();
             return parent instanceof Element ? (Element) parent : null;
@@ -742,6 +746,7 @@ public class JDOMNodePointer extends NodePointer {
         JDOMNodePointer other = (JDOMNodePointer) object;
         return node == other.node;
     }
+
     private AbstractFactory getAbstractFactory(JXPathContext context) {
         AbstractFactory factory = context.getFactory();
         if (factory == null) {
@@ -751,4 +756,5 @@ public class JDOMNodePointer extends NodePointer {
         }
         return factory;
     }
+
 }
