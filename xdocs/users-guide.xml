@@ -701,7 +701,7 @@ String fName = (String)context.getValue("firstName");
           the same as the "child::" axis.
         </p>
         <p>
-          The only two distinctions are the "xml:lang" and "name".
+          The only distinctions are "xml:lang", "xml:space", and "name".
         </p>
         <p>
           Attribute <code>xml:lang</code> refers to the name of the locale
@@ -709,6 +709,18 @@ String fName = (String)context.getValue("firstName");
           can be specifed for an element explicitly. In non-XML models,
           the locale is associated with the whole JXPathContext.  Unless
           explicitly set it is the application's default locale.
+        </p>
+        <p>
+          Since version 1.3, the <code>xml:space</code> attribute can be used
+          in an XML model to direct JXPath's interpretation of embedded
+          whitespace among XML content and nested text. In previous versions
+          this data was trimmed, and this has been preserved as the default
+          behavior for reasons of backward compatibility. Specifying
+          <code>xml:space="preserve"</code> will cause JXPath to preserve
+          whitespace. Keep in mind that it is possible to specify default
+          attribute values using DTD or XML schema, so that there exists a
+          straightforward and standards-based way to enable whitespace
+          preservation by default at the document or element level.
         </p>
         <p>
           The <code>name</code> attribute is primarily used when
@@ -1189,7 +1201,7 @@ Iterator homeAddresses = context.iteratePointers("//employee/address[@name='home
           Collections of custom extension functions can be
           implemented as
           <a href="apidocs/org/apache/commons/jxpath/Functions.html"><code>Functions</code></a>
-          objects or as Java classes, whose methods become extenstion
+          objects or as Java classes, whose methods become extension
           functions.
         </p>
         <p>
@@ -1254,7 +1266,7 @@ Iterator homeAddresses = context.iteratePointers("//employee/address[@name='home
 <!--============================ + SOURCE + ============================-->
 <source>
                                                                        <b/>
-public class MyExtenstionFunctions {
+public class MyExtensionFunctions {
    public static boolean isDate(ExpressionContext context){
       Pointer pointer = context.getContextNodePointer();
       if (pointer == null){
@@ -1295,13 +1307,13 @@ public class MyExtenstionFunctions {
          NodeSet, in addition to providing access to the values, also provides access
          to pointers.
          Note that a collection is often passed to an extension function by value and
-         cannot be modified. 
+         cannot be modified.
         </p>
 
 <!--============================ + SOURCE + ============================-->
 <source>
                                                                        <b/>
-public class MyExtenstionFunctions {
+public class MyExtensionFunctions {
    ...
    public static boolean contains(NodeSet nodeSet, Object value){
       Iterator iter = nodeSet.getPointers().iterator();
@@ -1341,6 +1353,21 @@ public class MyExtenstionFunctions {
 </source>
 <!--============================ - SOURCE - ============================-->
 
+        <p>
+         In JXPath version 1.1, a function argument declared as Object would be
+         passed as a NodeSet. In version 1.2, this behavior was changed such
+         that a declared argument type of Object triggers the conversion of
+         the NodeSet to its list of values. The simplest way to avoid this
+         conversion, thereby receiving the untouched NodeSet as the function
+         argument, is to declare the argument as a NodeSet. For such times as
+         this may prove impractical, however, a version 1.1-compatible
+         TypeConverter implementation,
+         (org.apache.commons.jxpath.util.JXPath11CompatibleTypeConverter),
+         has been provided in version 1.3. To enable this:
+        </p>
+<source>
+TypeUtils.setTypeConverter(new JXPath11CompatibleTypeConverter());
+</source>
       </subsection>
       <subsection name="Collection as the Return Value">
         <p>
