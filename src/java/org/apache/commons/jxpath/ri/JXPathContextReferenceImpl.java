@@ -114,7 +114,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     private Pointer contextPointer;
     
     protected NamespaceResolver namespaceResolver;
-    private String defaultNamespaceURI;
 
     // The frequency of the cache cleanup
     private static final int CLEANUP_THRESHOLD = 500;
@@ -686,24 +685,9 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     public NamespaceResolver getNamespaceResolver() {
         namespaceResolver.seal();
-        namespaceResolver.registerDefaultNamespaceURI(getDefaultNamespaceURI());
         return namespaceResolver;
     }
     
-    public String getDefaultNamespaceURI() {
-        if (defaultNamespaceURI != null) {
-            return defaultNamespaceURI;
-        }
-        if (parentContext != null) {
-            return parentContext.getDefaultNamespaceURI();
-        }
-        return null;
-    }
-
-    public void registerDefaultNamespace(String uri) {
-        defaultNamespaceURI = uri;
-    }
-
     /**
      * Checks if existenceCheckClass exists on the class path. If so, allocates
      * an instance of the specified class, otherwise returns null.

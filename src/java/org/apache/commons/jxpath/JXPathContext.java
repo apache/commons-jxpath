@@ -850,30 +850,4 @@ public abstract class JXPathContext {
                 "Namespace registration is not implemented by " + getClass());
     }
 
-    /**
-     * Binds a namespace URI for XPath QNames that are missing the prefix.
-     * If you have this XML: 
-     * <pre>
-     *   &lt;a xmlns="myns"&gt; 
-     *     &lt;b&gt;109&lt;/b&gt;
-     *   &lt;/a&gt; 
-     * </pre>
-     * and
-     * <pre>
-     *   context.setDefaultNamespaceURI("myns");
-     * </pre>
-     * you can use the path "/a/b" instead of "/foo:a/foo:b" (the assumption
-     * here is that the prefix "foo" is bound to "myns" by calling 
-     * registerNamespace).
-      */
-    public void registerDefaultNamespace(String uri) {
-        throw new UnsupportedOperationException(
-                "Namespace registration is not implemented by " + getClass());        
-    }
-
-    /**
-    */
-    public String getDefaultNamespaceURI() {
-        return null;        
-    }    
 }

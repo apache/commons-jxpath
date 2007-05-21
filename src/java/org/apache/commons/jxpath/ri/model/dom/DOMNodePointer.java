@@ -379,9 +379,8 @@ public class DOMNodePointer extends NodePointer {
         if (success) {
             NodeTest nodeTest;
             String prefix = name.getPrefix();
-            String namespaceURI = prefix != null 
-                ? context.getNamespaceURI(prefix) 
-                : context.getDefaultNamespaceURI();
+            String namespaceURI = prefix == null ? null : 
+                context.getNamespaceURI(prefix);
             nodeTest = new NodeNameTest(name, namespaceURI);
 
             NodeIterator it = childIterator(nodeTest, false, null);
@@ -455,8 +454,7 @@ public class DOMNodePointer extends NodePointer {
                     }
                     String ln = DOMNodePointer.getLocalName(node);
                     String nsURI = getNamespaceURI();
-                    if (equalStrings(nsURI, 
-                            getNamespaceResolver().getDefaultNamespaceURI())) {
+                    if (nsURI == null) {
                         buffer.append(ln);
                         buffer.append('[');
                         buffer.append(getRelativePositionByName()).append(']');

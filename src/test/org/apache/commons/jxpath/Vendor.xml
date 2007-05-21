@@ -69,10 +69,4 @@
     </register>
   </pos>
 
-  <pos xmlns="temp">
-    <register>
-       <number>110</number>
-    </register>
-  </pos>
-  
 </vendor>

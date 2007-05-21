@@ -258,14 +258,13 @@ public abstract class Path extends Expression {
         if (nodeTest instanceof NodeNameTest) {
             QName qname = ((NodeNameTest) nodeTest).getNodeName();
             String prefix = qname.getPrefix();
-            String namespaceURI = prefix != null 
-                ? context.getJXPathContext().getNamespaceURI(prefix) 
-                : context.getJXPathContext().getDefaultNamespaceURI();
-            if (namespaceURI != null) {
+            if (prefix != null) {
+                String namespaceURI = context.getJXPathContext()
+                        .getNamespaceURI(prefix); 
                 nodeTest = new NodeNameTest(qname, namespaceURI);
             }
         }
-        
+
         switch (axis) {
         case Compiler.AXIS_ANCESTOR :
             return new AncestorContext(context, false, nodeTest);

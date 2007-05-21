@@ -490,9 +490,8 @@ public class JDOMNodePointer extends NodePointer {
         if (success) {
             NodeTest nodeTest;
             String prefix = name.getPrefix();
-            String namespaceURI = prefix != null 
-                ? context.getNamespaceURI(prefix) 
-                : context.getDefaultNamespaceURI();
+            String namespaceURI = prefix == null ? null : context
+                    .getNamespaceURI(prefix);
             nodeTest = new NodeNameTest(name, namespaceURI);
 
             NodeIterator it =
@@ -572,8 +571,7 @@ public class JDOMNodePointer extends NodePointer {
                 String nsURI = getNamespaceURI();
                 String ln = JDOMNodePointer.getLocalName(node);
                 
-                if (equalStrings(nsURI, 
-                        getNamespaceResolver().getDefaultNamespaceURI())) {
+                if (nsURI == null) {
                     buffer.append(ln);
                     buffer.append('[');
                     buffer.append(getRelativePositionByName()).append(']');

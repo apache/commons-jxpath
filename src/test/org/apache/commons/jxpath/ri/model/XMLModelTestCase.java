@@ -381,13 +381,6 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         context.registerNamespace("x", "temp");
         assertXPathValue(context, "vendor/x:pos//number", "109");
     }
-    
-    public void testDefaultNamespaceIgnored() {
-        context.registerDefaultNamespace("temp");
-        assertXPathValueAndPointer(context, "//pos//number", "110",
-                "/node()[1]/pos[2]/register[1]/number[1]");
-        context.registerDefaultNamespace(null);
-    }
 
     public void testAxisChildIndexPredicate() {
         assertXPathValue(
