@@ -37,7 +37,7 @@ public class AttributeContext extends EvalContext {
 
     /**
      * @param parentContext represents the previous step on the path
-     * @param nameTest is the name of the attribute we are looking for
+     * @param nodeTest is the name of the attribute we are looking for
      */
     public AttributeContext(EvalContext parentContext, NodeTest nodeTest) {
         super(parentContext);

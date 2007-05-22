@@ -64,7 +64,7 @@ public class ClassFunctions implements Functions {
     /**
      * Returns a set of one namespace - the one specified in the constructor.
      *
-     * @returns a singleton
+     * @return a singleton
      */
     public Set getUsedNamespaces() {
         return Collections.singleton(namespace);

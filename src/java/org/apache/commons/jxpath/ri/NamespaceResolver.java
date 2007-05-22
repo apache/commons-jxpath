@@ -72,7 +72,7 @@ public class NamespaceResolver implements Cloneable {
      * prefix was not defined explicitly using the registerNamespace method,
      * JXPathContext will then check the context node to see if the prefix is
      * defined there. See
-     * {@link #setNamespaceContextPointer(Pointer) setNamespaceContextPointer}.
+     * {@link #setNamespaceContextPointer(NodePointer) setNamespaceContextPointer}.
      * 
      * @param prefix The namespace prefix to look up
      * @return namespace URI or null if the prefix is undefined.

@@ -220,7 +220,7 @@ public interface Compiler {
      *
      * @param qname is a QNAME object
      */
-    Object variableReference(Object qName);
+    Object variableReference(Object qname);
 
     /**
      * Produces an EXPRESSION object representing the computation of
@@ -273,7 +273,7 @@ public interface Compiler {
     /**
      * Produces a NODE_TEST object that represents a node type test.
      *
-     * @param qname is a QNAME object
+     * @param nodeType is a NODE_TEST object
      */
     Object nodeTypeTest(int nodeType);
 
@@ -281,7 +281,7 @@ public interface Compiler {
      * Produces  a NODE_TEST object that represents a processing instruction
      * test.
      *
-     * @param qname is a QNAME object
+     * @param instruction is a NODE_TEST object
      */
     Object processingInstructionTest(String instruction);
 

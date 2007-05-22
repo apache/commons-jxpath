@@ -49,7 +49,7 @@ public class XMLDocumentContainer implements Container {
     private Source source;
 
     /**
-     * @param  URL is a URL for an XML file. Use getClass().getResource
+     * @param xmlURL is a URL for an XML file. Use getClass().getResource
      * (resourceName) to load XML from a resource file.
      */
     public XMLDocumentContainer(URL xmlURL) {

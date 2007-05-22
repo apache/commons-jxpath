@@ -830,7 +830,7 @@ public abstract class JXPathContext {
      * NamespaceContextPointer is the same as the Context Pointer, see
      * {@link #getContextPointer() getContextPointer()}
      * 
-     * @param contextPointer The pointer to the context where prefixes used in
+     * @param namespaceContextPointer The pointer to the context where prefixes used in
      *        XPath expressions should be resolved.
      */
     public void setNamespaceContextPointer(Pointer namespaceContextPointer) {

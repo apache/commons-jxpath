@@ -36,7 +36,7 @@ public class AncestorContext extends EvalContext {
      * @param parentContext represents the previous step on the path
      * @param  includeSelf differentiates between "ancestor::" and "ancestor-
      * or-self::" axes
-     * @param nameTest is the name of the element(s) we are looking for
+     * @param nodeTest is the name of the element(s) we are looking for
      */
     public AncestorContext(
         EvalContext parentContext,

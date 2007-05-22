@@ -74,7 +74,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
     /**
      * Use this constructor if the desired model is DOM.
      *
-     * @param URL is a URL for an XML file.
+     * @param xmlURL is a URL for an XML file.
      * Use getClass().getResource(resourceName) to load XML from a
      * resource file.
      */
@@ -83,7 +83,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
     }
 
     /**
-     * @param  URL is a URL for an XML file. Use getClass().getResource
+     * @param xmlURL is a URL for an XML file. Use getClass().getResource
      * (resourceName) to load XML from a resource file.
      *
      * @param model is one of the MODEL_* constants defined in this class. It
