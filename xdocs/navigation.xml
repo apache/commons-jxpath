@@ -33,6 +33,8 @@
       <item name="User's Guide" href="/users-guide.html"/>
       <item name="JavaDoc"         href="/apidocs/index.html"/>
       <item name="Release Notes"   href="/release-notes-1.2.html"/>
+      <item name="Dependencies"    href="/dependencies.html"/>
+      <item name="License"         href="/license.html"/>
       <item name="Wiki"            href="http://wiki.apache.org/jakarta-commons/JXPath"/>
     </menu>
 
