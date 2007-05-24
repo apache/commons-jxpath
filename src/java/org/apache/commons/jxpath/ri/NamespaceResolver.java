@@ -16,7 +16,6 @@
  */
 package org.apache.commons.jxpath.ri;
 
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -26,7 +25,7 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * The reference implementation of JXPathContext.
+ * Namespace resolver for JXPathContextReferenceImpl.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -37,7 +36,18 @@ public class NamespaceResolver implements Cloneable {
     protected HashMap reverseMap;
     protected NodePointer pointer;
     private boolean sealed;
-        
+
+    /**
+     * Create a new NamespaceResolver.
+     */
+    public NamespaceResolver() {
+        this(null);
+    }
+
+    /**
+     * Create a new NamespaceResolver.
+     * @param parent
+     */
     public NamespaceResolver(NamespaceResolver parent) {
         this.parent = parent;
     }
@@ -55,11 +65,16 @@ public class NamespaceResolver implements Cloneable {
     
     /**
      * Register a namespace for the expression context.
+     * @param pointer the Pointer to set.
      */
     public void setNamespaceContextPointer(NodePointer pointer) {
         this.pointer = pointer;
     }
-    
+
+    /**
+     * Get the namespace context pointer.
+     * @return Pointer
+     */
     public Pointer getNamespaceContextPointer() {
         if (pointer == null && parent != null) {
             return parent.getNamespaceContextPointer();
@@ -87,7 +102,12 @@ public class NamespaceResolver implements Cloneable {
         }
         return uri;
     }
-    
+
+    /**
+     * Get the prefix associated with the specifed namespace URI.
+     * @param namespaceURI the ns URI to check.
+     * @return String prefix
+     */
     public String getPrefix(String namespaceURI) {
         if (reverseMap == null) {
             reverseMap = new HashMap();
@@ -114,18 +134,29 @@ public class NamespaceResolver implements Cloneable {
         }
         return prefix;
     }
-        
+
+    /**
+     * Learn whether this NamespaceResolver has been sealed.
+     * @return
+     */
     public boolean isSealed() {
         return sealed;
     }
-    
+
+    /**
+     * Seal this {@link NamespaceResolver}.
+     */
     public void seal() {
         sealed = true;
         if (parent != null) {
             parent.seal();
         }
     }
-    
+
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
         try {
             return super.clone();
