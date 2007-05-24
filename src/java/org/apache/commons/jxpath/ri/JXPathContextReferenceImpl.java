@@ -154,7 +154,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         
         NamespaceResolver parentNR = null;
         if (parentContext instanceof JXPathContextReferenceImpl) {
-            parentNR = ((JXPathContextReferenceImpl)parentContext).getNamespaceResolver();
+            parentNR = ((JXPathContextReferenceImpl) parentContext).getNamespaceResolver();
         }
         namespaceResolver = new NamespaceResolver(parentNR);
         namespaceResolver
