@@ -53,6 +53,7 @@ public class XMLDocumentContainer implements Container {
      * (resourceName) to load XML from a resource file.
      */
     public XMLDocumentContainer(URL xmlURL) {
+        this.xmlURL = xmlURL;
         delegate = new DocumentContainer(xmlURL);
     }
 
