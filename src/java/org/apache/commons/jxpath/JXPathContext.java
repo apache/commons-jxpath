@@ -622,15 +622,15 @@ public abstract class JXPathContext {
     protected abstract CompiledExpression compilePath(String xpath);
 
     /**
-	 * Finds the first object that matches the specified XPath. It is equivalent
-	 * to <code>getPointer(xpath).getNode()</code>. Note, that this method
-	 * produces the same result as <code>getValue()</code> on object models
-	 * like JavaBeans, but a different result for DOM/JDOM etc., because it
-	 * returns the Node itself, rather than its textual contents.
-	 * 
-	 * @param xpath the xpath to be evaluated
-	 * @return the found object
-	 */
+     * Finds the first object that matches the specified XPath. It is equivalent
+     * to <code>getPointer(xpath).getNode()</code>. Note that this method
+     * produces the same result as <code>getValue()</code> on object models
+     * like JavaBeans, but a different result for DOM/JDOM etc., because it
+     * returns the Node itself, rather than its textual contents.
+     * 
+     * @param xpath the xpath to be evaluated
+     * @return the found object
+     */
     public Object selectSingleNode(String xpath) {
     	Pointer pointer = getPointer(xpath);
         return pointer == null ? null : pointer.getNode();
