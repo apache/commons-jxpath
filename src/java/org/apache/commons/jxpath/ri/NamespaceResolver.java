@@ -51,14 +51,17 @@ public class NamespaceResolver implements Cloneable {
     public NamespaceResolver(NamespaceResolver parent) {
         this.parent = parent;
     }
-    
+
     /**
      * Registers a namespace prefix.
      * 
      * @param prefix A namespace prefix
      * @param namespaceURI A URI for that prefix
      */
-    public void registerNamespace(String prefix, String namespaceURI) {
+    public synchronized void registerNamespace(String prefix, String namespaceURI) {
+        if (isSealed()) {
+            throw new IllegalStateException("Cannot register namespaces on a sealed NamespaceResolver");
+        }
         namespaceMap.put(prefix, namespaceURI);
         reverseMap = null;
     }
@@ -92,7 +95,7 @@ public class NamespaceResolver implements Cloneable {
      * @param prefix The namespace prefix to look up
      * @return namespace URI or null if the prefix is undefined.
      */
-    public String getNamespaceURI(String prefix) {
+    public synchronized String getNamespaceURI(String prefix) {
         String uri = (String) namespaceMap.get(prefix);
         if (uri == null && pointer != null) {
             uri = pointer.getNamespaceURI(prefix);
@@ -108,7 +111,7 @@ public class NamespaceResolver implements Cloneable {
      * @param namespaceURI the ns URI to check.
      * @return String prefix
      */
-    public String getPrefix(String namespaceURI) {
+    public synchronized String getPrefix(String namespaceURI) {
         if (reverseMap == null) {
             reverseMap = new HashMap();
             NodeIterator ni = pointer.namespaceIterator();
@@ -159,7 +162,9 @@ public class NamespaceResolver implements Cloneable {
      */
     public Object clone() {
         try {
-            return super.clone();
+            NamespaceResolver result = (NamespaceResolver) super.clone();
+            result.sealed = false;
+            return result;
         }
         catch (CloneNotSupportedException e) {
             // Of course, it's supported.
