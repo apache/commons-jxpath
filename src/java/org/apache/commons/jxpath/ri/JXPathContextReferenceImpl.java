@@ -671,7 +671,15 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     public String getNamespaceURI(String prefix) {
         return namespaceResolver.getNamespaceURI(prefix);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     * @see org.apache.commons.jxpath.JXPathContext#getPrefix(java.lang.String)
+     */
+    public String getPrefix(String namespaceURI) {
+        return namespaceResolver.getPrefix(namespaceURI);
+    }
+
     public void setNamespaceContextPointer(Pointer pointer) {
         if (namespaceResolver.isSealed()) {
             namespaceResolver = (NamespaceResolver) namespaceResolver.clone();

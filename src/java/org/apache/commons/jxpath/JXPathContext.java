@@ -825,6 +825,17 @@ public abstract class JXPathContext {
     }
     
     /**
+     * Get the prefix associated with the specifed namespace URI.
+     * @param namespaceURI the ns URI to check.
+     * @return String prefix
+     * @since JXPath 1.3
+     */
+    public String getPrefix(String namespaceURI) {
+        throw new UnsupportedOperationException(
+                "Namespace registration is not implemented by " + getClass());
+    }
+
+    /**
      * Namespace prefixes can be defined implicitly by specifying a pointer to a
      * context where the namespaces are defined. By default,
      * NamespaceContextPointer is the same as the Context Pointer, see
