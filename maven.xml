@@ -90,13 +90,13 @@
                    file="${maven.dist.dir}/${maven.final.name}.jar.md5" />
 
          <!-- create checksum for sources jar -->
-         <ant:checksum file="${maven.dist.dir}/${maven.final.name}-sources.jar" property="jar.md5"/>
-         <ant:echo message="${jar.md5} *${maven.final.name}-sources.jar" 
+         <ant:checksum file="${maven.dist.dir}/${maven.final.name}-sources.jar" property="sources.jar.md5"/>
+         <ant:echo message="${sources.jar.md5} *${maven.final.name}-sources.jar" 
                    file="${maven.dist.dir}/${maven.final.name}-sources.jar.md5" />
 
          <!-- create checksum for javadoc jar -->
-         <ant:checksum file="${maven.dist.dir}/${maven.final.name}-javadoc.jar" property="jar.md5"/>
-         <ant:echo message="${jar.md5} *${maven.final.name}-javadoc.jar" 
+         <ant:checksum file="${maven.dist.dir}/${maven.final.name}-javadoc.jar" property="javadoc.jar.md5"/>
+         <ant:echo message="${javadoc.jar.md5} *${maven.final.name}-javadoc.jar" 
                    file="${maven.dist.dir}/${maven.final.name}-javadoc.jar.md5" />
 
          <!-- create checksum for binary zip -->
