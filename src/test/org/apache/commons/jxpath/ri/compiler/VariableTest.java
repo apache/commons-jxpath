@@ -16,9 +16,16 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import java.io.StringReader;
+import java.util.Iterator;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.Variables;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 /**
  * Test basic functionality of JXPath - infoset types,
@@ -84,7 +91,7 @@ public class VariableTest extends JXPathTestCase {
         assertTrue(
             "Evaluating '$none', expected exception - did not get it",
             exception);
-
+        
         exception = false;
         try {
             context.setValue("$none", new Integer(1));
@@ -265,5 +272,20 @@ public class VariableTest extends JXPathTestCase {
             "Remove collection element",
             "temp2",
             context.getValue("$temp[1]"));
+    }
+    
+    public void testUnionOfVariableAndNode() throws Exception {
+        Document doc = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder().parse(
+                        new InputSource(new StringReader(
+                                "<MAIN><A/><A/></MAIN>")));
+
+        JXPathContext context = JXPathContext.newContext(doc);
+        context.getVariables().declareVariable("var", "varValue");
+        int sz = 0;
+        for (Iterator ptrs = context.iteratePointers("$var | /MAIN/A"); ptrs.hasNext(); sz++) {
+            ptrs.next();
+        }
+        assertEquals(3, sz);
     }
 }

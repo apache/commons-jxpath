@@ -662,9 +662,7 @@ public abstract class NodePointer implements Pointer {
         }
 
         if (depth1 == 1) {
-            throw new JXPathException(
-                    "Cannot compare pointers that do not belong to the same tree: '"
-                            + p1 + "' and '" + p2 + "'");
+            return 0;
         }
         int r = compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);
         if (r != 0) {
