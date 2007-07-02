@@ -653,23 +653,12 @@ public abstract class NodePointer implements Pointer {
             int r = compareNodePointers(p1.parent, depth1 - 1, p2, depth2);
             return r == 0 ? 1 : r;
         }
-        if (p1 == null && p2 == null) {
-            return 0;
-        }
-
-        if (p1 != null && p1.equals(p2)) {
-            return 0;
-        }
-
-        if (depth1 == 1) {
+        //henceforth depth1 == depth2:
+        if (depth1 == 1 || p1 == p2 || p1 != null && p1.equals(p2)) {
             return 0;
         }
         int r = compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);
-        if (r != 0) {
-            return r;
-        }
-
-        return p1.parent.compareChildNodePointers(p1, p2);
+        return r == 0 ? p1.parent.compareChildNodePointers(p1, p2) : r;
     }
 
     /**
