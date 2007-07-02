@@ -16,16 +16,10 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import java.io.StringReader;
-import java.util.Iterator;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.TestMixedModelBean;
 import org.apache.commons.jxpath.Variables;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 /**
  * Test basic functionality of JXPath - infoset types,
@@ -49,7 +43,7 @@ public class VariableTest extends JXPathTestCase {
 
     public void setUp() {
         if (context == null) {
-            context = JXPathContext.newContext(null);
+            context = JXPathContext.newContext(new TestMixedModelBean());
             context.setFactory(new VariableFactory());
 
             Variables vars = context.getVariables();
@@ -275,17 +269,7 @@ public class VariableTest extends JXPathTestCase {
     }
     
     public void testUnionOfVariableAndNode() throws Exception {
-        Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().parse(
-                        new InputSource(new StringReader(
-                                "<MAIN><A/><A/></MAIN>")));
-
-        JXPathContext context = JXPathContext.newContext(doc);
-        context.getVariables().declareVariable("var", "varValue");
-        int sz = 0;
-        for (Iterator ptrs = context.iteratePointers("$var | /MAIN/A"); ptrs.hasNext(); sz++) {
-            ptrs.next();
-        }
-        assertEquals(3, sz);
+        assertXPathValue(context, "count($a | /document/vendor/location)", new Double(3));
+        assertXPathValue(context, "count($a | /list)", new Double(7)); //$o + list which contains six discrete values (one is duped, wrapped in a Container)
     }
 }
