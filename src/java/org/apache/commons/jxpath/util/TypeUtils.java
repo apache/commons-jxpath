@@ -16,6 +16,8 @@
  */
 package org.apache.commons.jxpath.util;
 
+import java.util.HashMap;
+
 /**
  * Global type conversion utilities.
  *
@@ -24,6 +26,18 @@ package org.apache.commons.jxpath.util;
  */
 public class TypeUtils {
     private static TypeConverter typeConverter = new BasicTypeConverter();
+    private static final HashMap PRIMITIVE_TYPE_MAP = new HashMap() {
+        {
+            put(int.class, Integer.class);
+            put(byte.class, Byte.class);
+            put(short.class, Short.class);
+            put(char.class, Character.class);
+            put(long.class, Long.class);
+            put(float.class, Float.class);
+            put(double.class, Double.class);
+            put(boolean.class, Boolean.class);
+        }
+    };
 
     /**
      * Install an alternative type converter.
@@ -53,5 +67,15 @@ public class TypeUtils {
      */
     public static Object convert(Object object, Class toType) {
         return typeConverter.convert(object, toType);
+    }
+
+    /**
+     * Return the appropriate wrapper type for the specified class.
+     * @param p Class for which to retrieve a wrapper class.
+     * @return the wrapper if <code>p</code> is primitive, else <code>p</code>.
+     * @since JXPath 1.3
+     */
+    public static Class wrapPrimitive(Class p) {
+        return p.isPrimitive() ? (Class) PRIMITIVE_TYPE_MAP.get(p) : p;
     }
 }

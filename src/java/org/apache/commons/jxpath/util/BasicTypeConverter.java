@@ -18,6 +18,8 @@ package org.apache.commons.jxpath.util;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,64 +48,49 @@ public class BasicTypeConverter implements TypeConverter {
      * Returns true if it can convert the supplied
      * object to the specified class.
      */
-    public boolean canConvert(Object object, Class toType) {
+    public boolean canConvert(Object object, final Class toType) {
         if (object == null) {
             return true;
         }
-
-        if (toType == Object.class) {
-            return true;
-        }
-
+        final Class useType = TypeUtils.wrapPrimitive(toType);
         Class fromType = object.getClass();
-        if (fromType.equals(toType)) {
+
+        if (useType.isAssignableFrom(fromType)) {
             return true;
         }
 
-        if (toType.isAssignableFrom(fromType)) {
-            return true;
-        }
-
-        if (toType == String.class) {
+        if (useType == String.class) {
             return true;
         }
 
         if (object instanceof Boolean) {
-            if (toType == boolean.class
-                || Number.class.isAssignableFrom(toType)) {
+            if (Number.class.isAssignableFrom(useType)
+                    || "java.util.concurrent.atomic.AtomicBoolean"
+                            .equals(useType.getName())) {
                 return true;
             }
         }
         if (object instanceof Number) {
-            if (toType.isPrimitive()
-                || Number.class.isAssignableFrom(toType)) {
-                return true;
-            }
-        }
-        if (object instanceof Character) {
-            if (toType == char.class) {
+            if (Number.class.isAssignableFrom(useType) || useType == Boolean.class) {
                 return true;
             }
         }
         if (object instanceof String) {
-            if (toType.isPrimitive()) {
-                return true;
-            }
-            if (toType == Boolean.class
-                || toType == Character.class
-                || toType == Byte.class
-                || toType == Short.class
-                || toType == Integer.class
-                || toType == Long.class
-                || toType == Float.class
-                || toType == Double.class) {
+            if (useType == Boolean.class
+                || useType == Character.class
+                || useType == Byte.class
+                || useType == Short.class
+                || useType == Integer.class
+                || useType == Long.class
+                || useType == Float.class
+                || useType == Double.class) {
                 return true;
             }
         }
         if (fromType.isArray()) {
             // Collection -> array
-            if (toType.isArray()) {
-                Class cType = toType.getComponentType();
+            if (useType.isArray()) {
+                Class cType = useType.getComponentType();
                 int length = Array.getLength(object);
                 for (int i = 0; i < length; i++) {
                     Object value = Array.get(object, i);
@@ -113,19 +100,19 @@ public class BasicTypeConverter implements TypeConverter {
                 }
                 return true;
             }
-            if (Collection.class.isAssignableFrom(toType)) {
-                return canCreateCollection(toType);
+            if (Collection.class.isAssignableFrom(useType)) {
+                return canCreateCollection(useType);
             }
             if (Array.getLength(object) > 0) {
                 Object value = Array.get(object, 0);
-                return canConvert(value, toType);
+                return canConvert(value, useType);
             }
-            return canConvert("", toType);
+            return canConvert("", useType);
         }
         if (object instanceof Collection) {
             // Collection -> array
-            if (toType.isArray()) {
-                Class cType = toType.getComponentType();
+            if (useType.isArray()) {
+                Class cType = useType.getComponentType();
                 Iterator it = ((Collection) object).iterator();
                 while (it.hasNext()) {
                     Object value = it.next();
@@ -135,8 +122,8 @@ public class BasicTypeConverter implements TypeConverter {
                 }
                 return true;
             }
-            if (Collection.class.isAssignableFrom(toType)) {
-                return canCreateCollection(toType);
+            if (Collection.class.isAssignableFrom(useType)) {
+                return canCreateCollection(useType);
             }
             if (((Collection) object).size() > 0) {
                 Object value;
@@ -147,17 +134,17 @@ public class BasicTypeConverter implements TypeConverter {
                     Iterator it = ((Collection) object).iterator();
                     value = it.next();
                 }
-                return canConvert(value, toType);
+                return canConvert(value, useType);
             }
-            return canConvert("", toType);
+            return canConvert("", useType);
         }
         if (object instanceof NodeSet) {
-            return canConvert(((NodeSet) object).getValues(), toType);
+            return canConvert(((NodeSet) object).getValues(), useType);
         }
         if (object instanceof Pointer) {
-            return canConvert(((Pointer) object).getValue(), toType);
+            return canConvert(((Pointer) object).getValue(), useType);
         }
-        return ConvertUtils.lookup(toType) != null;
+        return ConvertUtils.lookup(useType) != null;
     }
 
     /**
@@ -165,7 +152,7 @@ public class BasicTypeConverter implements TypeConverter {
      * type. Throws a runtime exception if the conversion is
      * not possible.
      */
-    public Object convert(Object object, Class toType) {
+    public Object convert(Object object, final Class toType) {
         if (object == null) {
             return toType.isPrimitive() ? convertNullToPrimitive(toType) : null;
         }
@@ -179,16 +166,17 @@ public class BasicTypeConverter implements TypeConverter {
             }
             return object;
         }
-
+        final Class useType = TypeUtils.wrapPrimitive(toType);
         Class fromType = object.getClass();
-        if (fromType.equals(toType) || toType.isAssignableFrom(fromType)) {
+
+        if (useType.isAssignableFrom(fromType)) {
             return object;
         }
 
         if (fromType.isArray()) {
             int length = Array.getLength(object);
-            if (toType.isArray()) {
-                Class cType = toType.getComponentType();
+            if (useType.isArray()) {
+                Class cType = useType.getComponentType();
 
                 Object array = Array.newInstance(cType, length);
                 for (int i = 0; i < length; i++) {
@@ -197,8 +185,8 @@ public class BasicTypeConverter implements TypeConverter {
                 }
                 return array;
             }
-            if (Collection.class.isAssignableFrom(toType)) {
-                Collection collection = allocateCollection(toType);
+            if (Collection.class.isAssignableFrom(useType)) {
+                Collection collection = allocateCollection(useType);
                 for (int i = 0; i < length; i++) {
                     collection.add(Array.get(object, i));
                 }
@@ -206,14 +194,14 @@ public class BasicTypeConverter implements TypeConverter {
             }
             if (length > 0) { 
                 Object value = Array.get(object, 0);
-                return convert(value, toType);
+                return convert(value, useType);
             }
-            return convert("", toType);
+            return convert("", useType);
         }
         if (object instanceof Collection) {
             int length = ((Collection) object).size();
-            if (toType.isArray()) {
-                Class cType = toType.getComponentType();
+            if (useType.isArray()) {
+                Class cType = useType.getComponentType();
                 Object array = Array.newInstance(cType, length);
                 Iterator it = ((Collection) object).iterator();
                 for (int i = 0; i < length; i++) {
@@ -222,8 +210,8 @@ public class BasicTypeConverter implements TypeConverter {
                 }
                 return array;
             }
-            if (Collection.class.isAssignableFrom(toType)) {
-                Collection collection = allocateCollection(toType);
+            if (Collection.class.isAssignableFrom(useType)) {
+                Collection collection = allocateCollection(useType);
                 collection.addAll((Collection) object);
                 return unmodifiableCollection(collection);
             }
@@ -236,56 +224,55 @@ public class BasicTypeConverter implements TypeConverter {
                     Iterator it = ((Collection) object).iterator();
                     value = it.next();
                 }
-                return convert(value, toType);
+                return convert(value, useType);
             }
-            return convert("", toType);
+            return convert("", useType);
         }
         if (object instanceof NodeSet) {
-            return convert(((NodeSet) object).getValues(), toType);
+            return convert(((NodeSet) object).getValues(), useType);
         }
         if (object instanceof Pointer) {
-            return convert(((Pointer) object).getValue(), toType);
+            return convert(((Pointer) object).getValue(), useType);
         }
-        if (toType == String.class) {
+        if (useType == String.class) {
             return object.toString();
         }
         if (object instanceof Boolean) {
-            if (toType == boolean.class) {
-                return object;
+            if (Number.class.isAssignableFrom(useType)) {
+                return allocateNumber(useType, ((Boolean) object).booleanValue() ? 1 : 0);
             }
-            if (toType.isPrimitive() || Number.class.isAssignableFrom(toType)) {
-                boolean value = ((Boolean) object).booleanValue();
-                return allocateNumber(toType, value ? 1 : 0);
+            if ("java.util.concurrent.atomic.AtomicBoolean".equals(useType.getName())) {
+                try {
+                    return useType.getConstructor(new Class[] { boolean.class })
+                            .newInstance(new Object[] { object });
+                } catch (Exception e) {
+                    throw new JXPathTypeConversionException(useType.getName(), e);
+                }
             }
         }
         if (object instanceof Number) {
             double value = ((Number) object).doubleValue();
-            if (toType == boolean.class || toType == Boolean.class) {
+            if (useType == Boolean.class) {
                 return value == 0.0 ? Boolean.FALSE : Boolean.TRUE;
             }
-            if (toType.isPrimitive() || Number.class.isAssignableFrom(toType)) {
-                return allocateNumber(toType, value);
-            }
-        }
-        if (object instanceof Character) {
-            if (toType == char.class) {
-                return object;
+            if (Number.class.isAssignableFrom(useType)) {
+                return allocateNumber(useType, value);
             }
         }
         if (object instanceof String) {
-            Object value = convertStringToPrimitive(object, toType);
+            Object value = convertStringToPrimitive(object, useType);
             if (value != null) {
                 return value;
             }
         }
 
-        Converter converter = ConvertUtils.lookup(toType);
+        Converter converter = ConvertUtils.lookup(useType);
         if (converter != null) {
-            return converter.convert(toType, object);
+            return converter.convert(useType, object);
         }
 
         throw new JXPathTypeConversionException("Cannot convert "
-                + object.getClass() + " to " + toType);
+                + object.getClass() + " to " + useType);
     }
 
     protected Object convertNullToPrimitive(Class toType) {
@@ -317,69 +304,93 @@ public class BasicTypeConverter implements TypeConverter {
     }
 
     protected Object convertStringToPrimitive(Object object, Class toType) {
-        if (toType == boolean.class || toType == Boolean.class) {
+        toType = TypeUtils.wrapPrimitive(toType);
+        if (toType == Boolean.class) {
             return Boolean.valueOf((String) object);
         }
-        if (toType == char.class || toType == Character.class) {
+        if (toType == Character.class) {
             return new Character(((String) object).charAt(0));
         }
-        if (toType == byte.class || toType == Byte.class) {
+        if (toType == Byte.class) {
             return new Byte((String) object);
         }
-        if (toType == short.class || toType == Short.class) {
+        if (toType == Short.class) {
             return new Short((String) object);
         }
-        if (toType == int.class || toType == Integer.class) {
+        if (toType == Integer.class) {
             return new Integer((String) object);
         }
-        if (toType == long.class || toType == Long.class) {
+        if (toType == Long.class) {
             return new Long((String) object);
         }
-        if (toType == float.class || toType == Float.class) {
+        if (toType == Float.class) {
             return new Float((String) object);
         }
-        if (toType == double.class || toType == Double.class) {
+        if (toType == Double.class) {
             return new Double((String) object);
         }
         return null;
     }
     
     protected Number allocateNumber(Class type, double value) {
-        if (type == Byte.class || type == byte.class) {
+        type = TypeUtils.wrapPrimitive(type);
+        if (type == Byte.class) {
             return new Byte((byte) value);
         }
-        if (type == Short.class || type == short.class) {
+        if (type == Short.class) {
             return new Short((short) value);
         }
-        if (type == Integer.class || type == int.class) {
+        if (type == Integer.class) {
             return new Integer((int) value);
         }
-        if (type == Long.class || type == long.class) {
+        if (type == Long.class) {
             return new Long((long) value);
         }
-        if (type == Float.class || type == float.class) {
+        if (type == Float.class) {
             return new Float((float) value);
         }
-        if (type == Double.class || type == double.class) {
+        if (type == Double.class) {
             return new Double(value);
+        }
+        if (type == BigInteger.class) {
+            return BigInteger.valueOf((long) value);
+        }
+        if (type == BigDecimal.class) {
+            return new BigDecimal(value);
+        }
+        String classname = type.getName();
+        Class initialValueType = null;
+        if ("java.util.concurrent.atomic.AtomicInteger".equals(classname)) {
+            initialValueType = int.class;
+        }
+        if ("java.util.concurrent.atomic.AtomicLong".equals(classname)) {
+            initialValueType = long.class;
+        }
+        if (initialValueType != null) {
+            try {
+                return (Number) type.getConstructor(
+                        new Class[] { initialValueType })
+                        .newInstance(
+                                new Object[] { allocateNumber(initialValueType,
+                                        value) });
+            } catch (Exception e) {
+                throw new JXPathTypeConversionException(classname, e);
+            }
         }
         return null;
     }
 
     protected boolean canCreateCollection(Class type) {
         if (!type.isInterface()
-            && ((type.getModifiers() & Modifier.ABSTRACT) == 0)) {
-            return true;
+                && ((type.getModifiers() & Modifier.ABSTRACT) == 0)) {
+            try {
+                type.getConstructor(new Class[0]);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         }
-
-        if (type == List.class) {
-            return true;
-        }
-
-        if (type == Set.class) {
-            return true;
-        }
-        return false;
+        return type == List.class || type == Collection.class || type == Set.class;
     }
 
     protected Collection allocateCollection(Class type) {
