@@ -83,7 +83,7 @@ public abstract class NodePointer implements Pointer {
     public static NodePointer newChildNodePointer(
         NodePointer parent,
         QName name,
-        Object bean) 
+        Object bean)
     {
         NodePointerFactory[] factories =
             JXPathContextReferenceImpl.getNodePointerFactories();
