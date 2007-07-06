@@ -16,10 +16,12 @@
  */
 package org.apache.commons.jxpath.ri.model;
 
+import java.util.HashSet;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
@@ -568,6 +570,17 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
+     * Find a NodeSet by key/value.
+     * @param context
+     * @param key
+     * @param value
+     * @return NodeSet
+     */
+    public NodeSet getNodeSetByKey(JXPathContext context, String key, Object value) {
+        return context.getNodeSetByKey(key, value);
+    }
+
+    /**
      * Returns an XPath that maps to this Pointer.
      */
     public String asPath() {
@@ -617,6 +630,9 @@ public abstract class NodePointer implements Pointer {
     }
 
     public int compareTo(Object object) {
+        if (object == this) {
+            return 0;
+        }
         // Let it throw a ClassCastException
         NodePointer pointer = (NodePointer) object;
         if (parent == pointer.parent) {
@@ -626,17 +642,26 @@ public abstract class NodePointer implements Pointer {
         // Task 1: find the common parent
         int depth1 = 0;
         NodePointer p1 = this;
+        HashSet parents1 = new HashSet();
         while (p1 != null) {
             depth1++;
             p1 = p1.parent;
+            if (p1 != null) {
+                parents1.add(p1);
+            }
         }
+        boolean commonParentFound = false;
         int depth2 = 0;
         NodePointer p2 = pointer;
         while (p2 != null) {
             depth2++;
             p2 = p2.parent;
+            if (parents1.contains(p2)) {
+                commonParentFound = true;
+            }
         }
-        return compareNodePointers(this, depth1, pointer, depth2);
+        //nodes from different graphs are equal, else continue comparison:
+        return commonParentFound ? compareNodePointers(this, depth1, pointer, depth2) : 0;
     }
 
     private int compareNodePointers(
@@ -654,8 +679,13 @@ public abstract class NodePointer implements Pointer {
             return r == 0 ? 1 : r;
         }
         //henceforth depth1 == depth2:
-        if (depth1 == 1 || p1 == p2 || p1 != null && p1.equals(p2)) {
+        if (p1 == p2 || p1 != null && p1.equals(p2)) {
             return 0;
+        }
+        if (depth1 == 1) {
+            throw new JXPathException(
+                    "Cannot compare pointers that do not belong to the same tree: '"
+                    + p1 + "' and '" + p2 + "'");
         }
         int r = compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);
         return r == 0 ? p1.parent.compareChildNodePointers(p1, p2) : r;

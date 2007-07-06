@@ -22,12 +22,15 @@ import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Locale;
 
+import org.apache.commons.jxpath.BasicNodeSet;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
+import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.InfoSetUtil;
+import org.apache.commons.jxpath.ri.axes.NodeSetContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
@@ -184,7 +187,7 @@ public class CoreFunction extends Operation {
 
         return false;
     }
-    
+
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(getFunctionName());
@@ -344,12 +347,40 @@ public class CoreFunction extends Operation {
     }
 
     protected Object functionKey(EvalContext context) {
-        assertArgCount(2);
+        assertArgRange(2, 3);
         String key = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        String value = InfoSetUtil.stringValue(getArg2().computeValue(context));
+        Object value = getArg2().compute(context);
+        EvalContext ec = null;
+        if (value instanceof EvalContext) {
+            ec = (EvalContext) value;
+            if (ec.hasNext()) {
+                value = ((NodePointer) ec.next()).getValue();
+            } else { // empty context -> empty results
+                return new BasicNodeSet();
+            }
+        }
         JXPathContext jxpathContext = context.getJXPathContext();
-        NodePointer pointer = (NodePointer) jxpathContext.getContextPointer();
-        return pointer.getPointerByKey(jxpathContext, key, value);
+        if (getArgumentCount() == 3) {
+            Object arg3 = getArg3().computeValue(context);
+            if (arg3 instanceof EvalContext) {
+                arg3 = ((EvalContext) arg3).getCurrentNodePointer();
+            }
+            if (!(arg3 instanceof NodePointer)) {
+                throw new JXPathException("invalid third key() argument: " + arg3);
+            }
+            jxpathContext = jxpathContext.getRelativeContext((NodePointer) arg3);
+        }
+        NodeSet nodeSet = jxpathContext.getNodeSetByKey(key, value);
+        if (ec != null && ec.hasNext()) {
+            BasicNodeSet accum = new BasicNodeSet();
+            accum.add(nodeSet);
+            while (ec.hasNext()) {
+                value = ((NodePointer) ec.next()).getValue();
+                accum.add(jxpathContext.getNodeSetByKey(key, value));
+            }
+            nodeSet = accum;
+        }
+        return new NodeSetContext(context, nodeSet);
     }
 
     protected Object functionNamespaceURI(EvalContext context) {
@@ -684,9 +715,14 @@ public class CoreFunction extends Operation {
     }
 
     private void assertArgCount(int count) {
-        if (getArgumentCount() != count) {
+        assertArgRange(count, count);
+    }
+
+    private void assertArgRange(int min, int max) {
+        int ct = getArgumentCount();
+        if (ct < min || ct > max) {
             throw new JXPathInvalidSyntaxException(
-                    "Incorrect number of argument: " + this);
+                    "Incorrect number of arguments: " + this);
         }
     }
 }

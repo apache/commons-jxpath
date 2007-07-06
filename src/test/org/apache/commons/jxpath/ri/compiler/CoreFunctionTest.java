@@ -17,11 +17,15 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
+import java.util.List;
 
+import org.apache.commons.jxpath.ExtendedKeyManager;
 import org.apache.commons.jxpath.IdentityManager;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.KeyManager;
+import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.TestMixedModelBean;
 import org.apache.commons.jxpath.Variables;
@@ -144,9 +148,50 @@ public class CoreFunctionTest extends JXPathTestCase {
             }
         });
 
-        assertEquals("Test key", "42", context.getValue("key('a', 'b')"));
+        assertXPathValue(context, "key('a', 'b')", "42");
     }
-    
+
+    public void testExtendedKeyFunction() {
+        context.setKeyManager(new ExtendedKeyManager() {
+            public Pointer getPointerByKey(JXPathContext context, String key,
+                    String value) {
+                return NodePointer.newNodePointer(null, "incorrect", null);
+            }
+
+            public NodeSet getNodeSetByKey(JXPathContext context,
+                    String keyName, Object keyValue) {
+                return new NodeSet() {
+
+                    public List getNodes() {
+                        return Arrays.asList(new Object[] { "53", "64" });
+                    }
+
+                    public List getPointers() {
+                        return Arrays.asList(new NodePointer[] {
+                                NodePointer.newNodePointer(null, "53", null),
+                                NodePointer.newNodePointer(null, "64", null) });
+                    }
+
+                    public List getValues() {
+                        return Arrays.asList(new Object[] { "53", "64" });
+                    }
+
+                };
+            }
+        });
+        assertXPathValue(context, "key('a', 'b')", "53");
+        assertXPathValue(context, "key('a', 'b')[1]", "53");
+        assertXPathValue(context, "key('a', 'b')[2]", "64");
+        assertXPathValueIterator(context, "key('a', 'b')", list("53", "64"));
+        assertXPathValueIterator(context, "'x' | 'y'", list("x", "y"));
+        assertXPathValueIterator(context, "key('a', 'x' | 'y')", list("53", "64", "53", "64"));
+        assertXPathValueIterator(context, "key('a', /list[position() < 4])", list("53", "64", "53", "64", "53", "64"));
+        context.getVariables().declareVariable("ints", new int[] { 0, 0 });
+        assertXPathValueIterator(context, "key('a', $ints)", list("53", "64", "53", "64"));
+        assertXPathValueIterator(context, "key('a', 'b', /list)", list("53", "64"));
+        assertXPathValueIterator(context, "key('a', $ints, /list)", list("53", "64", "53", "64"));
+    }
+
     public void testFormatNumberFunction() {
         
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();

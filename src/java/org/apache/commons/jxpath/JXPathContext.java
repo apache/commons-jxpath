@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.jxpath.util.KeyManagerUtils;
+
 /**
  * JXPathContext  provides APIs for the traversal of graphs of JavaBeans using
  * the XPath syntax. Using JXPathContext, you can read and write properties of
@@ -795,6 +797,21 @@ public abstract class JXPathContext {
         }
         throw new JXPathException(
             "Cannot find an element by key - "
+                + "no KeyManager has been specified");
+    }
+
+    /**
+     * Locates a NodeSet by key/value.
+     * @param key
+     * @param value
+     */
+    public NodeSet getNodeSetByKey(String key, Object value) {
+        KeyManager manager = getKeyManager();
+        if (manager != null) {
+            return KeyManagerUtils.getExtendedKeyManager(manager)
+                    .getNodeSetByKey(this, key, value);
+        }
+        throw new JXPathException("Cannot find an element by key - "
                 + "no KeyManager has been specified");
     }
 
