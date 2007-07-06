@@ -35,7 +35,12 @@ public class BasicNodeSet implements NodeSet {
         pointers.add(pointer);
         readOnlyPointers = null;
     }
-    
+
+    public void add(NodeSet nodeSet) {
+        pointers.addAll(nodeSet.getPointers());
+        readOnlyPointers = null;
+    }
+
     public void remove(Pointer pointer) {
         pointers.remove(pointer);
         readOnlyPointers = null;
