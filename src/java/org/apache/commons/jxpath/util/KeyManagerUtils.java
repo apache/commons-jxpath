@@ -27,7 +27,8 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 /**
  * Utility class.
  * @author Matt Benson
- * @version $Revision:$ $Date:$
+ * @since JXPath 1.3
+ * @version $Revision$ $Date$
  */
 public class KeyManagerUtils {
     private static class SingleNodeExtendedKeyManager implements
