@@ -165,7 +165,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         if (nodeFactoryArray == null) {
             nodeFactoryArray =
                 (NodePointerFactory[]) nodeFactories.
-                    toArray(new NodePointerFactory[0]);
+                    toArray(new NodePointerFactory[nodeFactories.size()]);
             Arrays.sort(nodeFactoryArray, new Comparator() {
                 public int compare(Object a, Object b) {
                     int orderA = ((NodePointerFactory) a).getOrder();
@@ -175,7 +175,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             });
         }
     }
-    
+
     /**
      * Call this with a custom NodePointerFactory to add support for
      * additional types of objects.  Make sure the factory returns
