@@ -26,7 +26,7 @@ package org.apache.commons.jxpath;
 public interface KeyManager {
 
     /**
-     * Finds a node by a key value.
+     * Find a node by key/value.
      */
     Pointer getPointerByKey(
         JXPathContext context,
