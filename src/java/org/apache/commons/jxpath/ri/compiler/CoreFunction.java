@@ -347,7 +347,7 @@ public class CoreFunction extends Operation {
     }
 
     protected Object functionKey(EvalContext context) {
-        assertArgRange(2, 3);
+        assertArgCount(2);
         String key = InfoSetUtil.stringValue(getArg1().computeValue(context));
         Object value = getArg2().compute(context);
         EvalContext ec = null;
@@ -360,16 +360,6 @@ public class CoreFunction extends Operation {
             }
         }
         JXPathContext jxpathContext = context.getJXPathContext();
-        if (getArgumentCount() == 3) {
-            Object arg3 = getArg3().computeValue(context);
-            if (arg3 instanceof EvalContext) {
-                arg3 = ((EvalContext) arg3).getCurrentNodePointer();
-            }
-            if (!(arg3 instanceof NodePointer)) {
-                throw new JXPathException("invalid third key() argument: " + arg3);
-            }
-            jxpathContext = jxpathContext.getRelativeContext((NodePointer) arg3);
-        }
         NodeSet nodeSet = jxpathContext.getNodeSetByKey(key, value);
         if (ec != null && ec.hasNext()) {
             BasicNodeSet accum = new BasicNodeSet();

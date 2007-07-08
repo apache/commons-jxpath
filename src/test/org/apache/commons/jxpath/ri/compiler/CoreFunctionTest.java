@@ -188,8 +188,6 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValueIterator(context, "key('a', /list[position() < 4])", list("53", "64", "53", "64", "53", "64"));
         context.getVariables().declareVariable("ints", new int[] { 0, 0 });
         assertXPathValueIterator(context, "key('a', $ints)", list("53", "64", "53", "64"));
-        assertXPathValueIterator(context, "key('a', 'b', /list)", list("53", "64"));
-        assertXPathValueIterator(context, "key('a', $ints, /list)", list("53", "64", "53", "64"));
     }
 
     public void testFormatNumberFunction() {
