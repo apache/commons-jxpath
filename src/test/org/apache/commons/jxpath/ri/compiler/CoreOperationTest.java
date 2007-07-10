@@ -45,6 +45,7 @@ public class CoreOperationTest extends JXPathTestCase {
             context = JXPathContext.newContext(null);
             Variables vars = context.getVariables();
             vars.declareVariable("integer", new Integer(1));
+            vars.declareVariable("array", new double[] { 0.25, 0.5, 0.75 });
         }
     }
 
@@ -93,5 +94,20 @@ public class CoreOperationTest extends JXPathTestCase {
         assertXPathValue(context, "2 + 3", Boolean.TRUE, boolean.class);
 
         assertXPathValue(context, "'true'", Boolean.TRUE, Boolean.class);
+    }
+
+    public void testNodeSetOperations() {
+        assertXPathValue(context, "$array > 0", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$array >= 0", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$array = 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$array = 0.25", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$array = 0.5", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$array = 0.50000", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$array = 0.75", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$array < 1", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$array <= 1", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$array = 1", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$array > 1", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$array < 0", Boolean.FALSE, Boolean.class);
     }
 }

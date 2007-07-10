@@ -16,35 +16,23 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import org.apache.commons.jxpath.ri.EvalContext;
-import org.apache.commons.jxpath.ri.InfoSetUtil;
-
 /**
  * Implementation of Expression for the operation "&lt;=".
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-public class CoreOperationLessThanOrEqual extends CoreOperation {
+public class CoreOperationLessThanOrEqual extends
+        CoreOperationRelationalExpression {
 
     public CoreOperationLessThanOrEqual(Expression arg1, Expression arg2) {
         super(new Expression[] { arg1, arg2 });
     }
 
-    public Object computeValue(EvalContext context) {
-        double l = InfoSetUtil.doubleValue(args[0].computeValue(context));
-        double r = InfoSetUtil.doubleValue(args[1].computeValue(context));
-        return l <= r ? Boolean.TRUE : Boolean.FALSE;
-    }
-    
-    protected int getPrecedence() {
-        return 3;
+    protected boolean evaluateCompare(int compare) {
+        return compare <= 0;
     }
 
-    protected boolean isSymmetric() {
-        return false;
-    }
-    
     public String getSymbol() {
         return "<=";
     }
