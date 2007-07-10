@@ -50,10 +50,6 @@ public abstract class CoreOperationCompare extends CoreOperation {
         Object l = left.compute(context);
         Object r = right.compute(context);
 
-//        System.err.println("COMPARING: " +
-//            (l == null ? "null" : l.getClass().getName()) + " " +
-//            (r == null ? "null" : r.getClass().getName()));
-
         if (l instanceof InitialContext) {
             ((EvalContext) l).reset();
         }
@@ -78,14 +74,14 @@ public abstract class CoreOperationCompare extends CoreOperation {
             r = ((Collection) r).iterator();
         }
 
-        if ((l instanceof Iterator) && !(r instanceof Iterator)) {
-            return contains((Iterator) l, r);
-        }
-        if (!(l instanceof Iterator) && (r instanceof Iterator)) {
-            return contains((Iterator) r, l);
-        }
         if (l instanceof Iterator && r instanceof Iterator) {
             return findMatch((Iterator) l, (Iterator) r);
+        }
+        if (l instanceof Iterator) {
+            return contains((Iterator) l, r);
+        }
+        if (r instanceof Iterator) {
+            return contains((Iterator) r, l);
         }
         return equal(l, r);
     }
@@ -132,7 +128,6 @@ public abstract class CoreOperationCompare extends CoreOperation {
             return true;
         }
 
-//        System.err.println("COMPARING VALUES: " + l + " " + r);
         if (l instanceof Boolean || r instanceof Boolean) {
             return (InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r));
         }
