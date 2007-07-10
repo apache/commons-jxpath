@@ -653,6 +653,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
 
     public void testNodeTypeText() {
         // text()
+        //Note that this is questionable as the XPath spec tells us "." is short for self::node() and text() is by definition _not_ a node:
         assertXPathValue(
             context,
             "//product/text()[. != '']",
