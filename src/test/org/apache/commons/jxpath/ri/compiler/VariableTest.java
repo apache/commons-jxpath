@@ -272,4 +272,10 @@ public class VariableTest extends JXPathTestCase {
         assertXPathValue(context, "count($a | /document/vendor/location)", new Double(3));
         assertXPathValue(context, "count($a | /list)", new Double(7)); //$o + list which contains six discrete values (one is duped, wrapped in a Container)
     }
+
+    public void testIterateVariable() throws Exception {
+        assertXPathValueIterator(context, "$d", list("a", "b"));
+        assertXPathValue(context, "$d = 'a'", Boolean.TRUE);
+        assertXPathValue(context, "$d = 'b'", Boolean.TRUE);
+    }
 }

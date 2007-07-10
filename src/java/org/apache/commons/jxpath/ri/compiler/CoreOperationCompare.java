@@ -54,11 +54,19 @@ public abstract class CoreOperationCompare extends CoreOperation {
 //            (l == null ? "null" : l.getClass().getName()) + " " +
 //            (r == null ? "null" : r.getClass().getName()));
 
-        if (l instanceof InitialContext || l instanceof SelfContext) {
+        if (l instanceof InitialContext) {
+            ((EvalContext) l).reset();
+        }
+
+        if (l instanceof SelfContext) {
             l = ((EvalContext) l).getSingleNodePointer();
         }
 
-        if (r instanceof InitialContext || r instanceof SelfContext) {
+        if (r instanceof InitialContext) {
+            ((EvalContext) r).reset();
+        }
+
+        if (r instanceof SelfContext) {
             r = ((EvalContext) r).getSingleNodePointer();
         }
 
