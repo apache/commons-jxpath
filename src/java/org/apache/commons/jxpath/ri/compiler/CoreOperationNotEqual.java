@@ -16,8 +16,6 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import org.apache.commons.jxpath.ri.EvalContext;
-
 /**
  * Implementation of Expression for the operation "!=".
  *
@@ -27,21 +25,9 @@ import org.apache.commons.jxpath.ri.EvalContext;
 public class CoreOperationNotEqual extends CoreOperationCompare {
 
     public CoreOperationNotEqual(Expression arg1, Expression arg2) {
-        super(arg1, arg2);
+        super(arg1, arg2, true);
     }
 
-    public Object computeValue(EvalContext context) {
-        return equal(context, args[0], args[1]) ? Boolean.FALSE : Boolean.TRUE;
-    }
-    
-    protected int getPrecedence() {
-        return 2;
-    }
-
-    protected boolean isSymmetric() {
-        return true;
-    }
-    
     public String getSymbol() {
         return "!=";
     }

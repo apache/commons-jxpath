@@ -34,9 +34,27 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
  * @version $Revision$ $Date$
  */
 public abstract class CoreOperationCompare extends CoreOperation {
+    private boolean invert;
 
     public CoreOperationCompare(Expression arg1, Expression arg2) {
+        this(arg1, arg2, false);
+    }
+
+    protected CoreOperationCompare(Expression arg1, Expression arg2, boolean invert) {
         super(new Expression[] { arg1, arg2 });
+        this.invert = invert;
+    }
+
+    public Object computeValue(EvalContext context) {
+        return equal(context, args[0], args[1]) ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    protected int getPrecedence() {
+        return 2;
+    }
+
+    protected boolean isSymmetric() {
+        return true;
     }
 
     /**
@@ -110,12 +128,6 @@ public abstract class CoreOperationCompare extends CoreOperation {
     }
 
     protected boolean equal(Object l, Object r) {
-        if (l instanceof Pointer && r instanceof Pointer) {
-            if (l.equals(r)) {
-                return true;
-            }
-        }
-
         if (l instanceof Pointer) {
             l = ((Pointer) l).getValue();
         }
@@ -124,21 +136,28 @@ public abstract class CoreOperationCompare extends CoreOperation {
             r = ((Pointer) r).getValue();
         }
 
-        if (l == r) {
-            return true;
-        }
-
+        boolean result;
         if (l instanceof Boolean || r instanceof Boolean) {
-            return (InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r));
+            result = l == r || InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r);
+        } else if (l instanceof Number || r instanceof Number) {
+            //if either side is NaN, no comparison returns true:
+            double ld = InfoSetUtil.doubleValue(l);
+            if (Double.isNaN(ld)) {
+                return false;
+            }
+            double rd = InfoSetUtil.doubleValue(r);
+            if (Double.isNaN(rd)) {
+                return false;
+            }
+            result = ld == rd;
+        } else {
+            if (l instanceof String || r instanceof String) {
+                l = InfoSetUtil.stringValue(l);
+                r = InfoSetUtil.stringValue(r);
+            }
+            result = l == r || l != null && l.equals(r);
         }
-        if (l instanceof Number || r instanceof Number) {
-            return (InfoSetUtil.doubleValue(l) == InfoSetUtil.doubleValue(r));
-        }
-        if (l instanceof String || r instanceof String) {
-            return (
-                InfoSetUtil.stringValue(l).equals(InfoSetUtil.stringValue(r)));
-        }
-        return l != null && l.equals(r);
+        return result ^ invert;
     }
 
 }

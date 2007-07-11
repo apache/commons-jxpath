@@ -16,8 +16,6 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import org.apache.commons.jxpath.ri.EvalContext;
-
 /**
  * Implementation of Expression for the operation "=".
  *
@@ -30,18 +28,6 @@ public class CoreOperationEqual extends CoreOperationCompare {
         super(arg1, arg2);
     }
 
-    public Object computeValue(EvalContext context) {
-        return equal(context, args[0], args[1]) ? Boolean.TRUE : Boolean.FALSE;
-    }
-    
-    protected int getPrecedence() {
-        return 2;
-    }
-
-    protected boolean isSymmetric() {
-        return true;
-    }
-    
     public String getSymbol() {
         return "=";
     }

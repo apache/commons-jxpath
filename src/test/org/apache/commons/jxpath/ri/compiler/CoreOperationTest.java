@@ -117,9 +117,8 @@ public class CoreOperationTest extends JXPathTestCase {
         assertXPathValue(context, "$nan < $nan", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan >= $nan", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan <= $nan", Boolean.FALSE, Boolean.class);
-        //note that "<= and >=" implies a test of numerical, rather than object, equality. ;)
         assertXPathValue(context, "$nan >= $nan and $nan <= $nan", Boolean.FALSE, Boolean.class);
-        assertXPathValue(context, "$nan = $nan", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$nan = $nan", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan != $nan", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan > 0", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan < 0", Boolean.FALSE, Boolean.class);
@@ -127,13 +126,13 @@ public class CoreOperationTest extends JXPathTestCase {
         assertXPathValue(context, "$nan <= 0", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan >= 0 and $nan <= 0", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan = 0", Boolean.FALSE, Boolean.class);
-        assertXPathValue(context, "$nan != 0", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$nan != 0", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan > 1", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan < 1", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan >= 1", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan <= 1", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan >= 1 and $nan <= 1", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan = 1", Boolean.FALSE, Boolean.class);
-        assertXPathValue(context, "$nan != 1", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$nan != 1", Boolean.FALSE, Boolean.class);
     }
 }
