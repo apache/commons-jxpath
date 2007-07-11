@@ -46,6 +46,7 @@ public class CoreOperationTest extends JXPathTestCase {
             Variables vars = context.getVariables();
             vars.declareVariable("integer", new Integer(1));
             vars.declareVariable("array", new double[] { 0.25, 0.5, 0.75 });
+            vars.declareVariable("nan", new Double(Double.NaN));
         }
     }
 
@@ -109,5 +110,17 @@ public class CoreOperationTest extends JXPathTestCase {
         assertXPathValue(context, "$array = 1", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$array > 1", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$array < 0", Boolean.FALSE, Boolean.class);
+    }
+
+    public void testNan() {
+        assertXPathValue(context, "$nan > $nan", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$nan < $nan", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$nan = $nan", Boolean.TRUE, Boolean.class);
+        assertXPathValue(context, "$nan > 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$nan < 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$nan = 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$nan > 1", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$nan < 1", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$nan = 1", Boolean.FALSE, Boolean.class);
     }
 }

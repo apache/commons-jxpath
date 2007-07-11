@@ -72,7 +72,15 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
         if (right instanceof Iterator) {
             return containsMatch((Iterator) right, left);
         }
-        return evaluateCompare(compare(left, right));
+        double ld = InfoSetUtil.doubleValue(left);
+        if (Double.isNaN(ld)) {
+            return false;
+        }
+        double rd = InfoSetUtil.doubleValue(right);
+        if (Double.isNaN(rd)) {
+            return false;
+        }
+        return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
     }
 
     private Object reduce(Object o) {
@@ -88,7 +96,7 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
     private boolean containsMatch(Iterator it, Object value) {
         while (it.hasNext()) {
             Object element = it.next();
-            if (evaluateCompare(compare(element, value))) {
+            if (compute(element, value)) {
                 return true;
             }
         }
@@ -106,12 +114,6 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
             }
         }
         return false;
-    }
-
-    private int compare(Object l, Object r) {
-        double ld = InfoSetUtil.doubleValue(l);
-        double rd = InfoSetUtil.doubleValue(r);
-        return ld == rd ? 0 : ld < rd ? -1 : 1;
     }
 
 }
