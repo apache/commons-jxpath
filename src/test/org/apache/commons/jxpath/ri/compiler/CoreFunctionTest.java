@@ -99,6 +99,8 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValue(context, "boolean(0)", Boolean.FALSE);
         assertXPathValue(context, "boolean('x')", Boolean.TRUE);
         assertXPathValue(context, "boolean('')", Boolean.FALSE);
+        assertXPathValue(context, "boolean(/list)", Boolean.TRUE);
+        assertXPathValue(context, "boolean(/list[position() < 1])", Boolean.FALSE);
 
         assertXPathValue(context, "true()", Boolean.TRUE);
         assertXPathValue(context, "false()", Boolean.FALSE);
