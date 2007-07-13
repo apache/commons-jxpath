@@ -112,6 +112,21 @@ public class CoreOperationTest extends JXPathTestCase {
         assertXPathValue(context, "$array < 0", Boolean.FALSE, Boolean.class);
     }
 
+    public void testEmptyNodeSetOperations() {
+        assertXPathValue(context, "/idonotexist = 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "/idonotexist != 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "/idonotexist < 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "/idonotexist > 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "/idonotexist >= 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "/idonotexist <= 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$array[position() < 1] = 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$array[position() < 1] != 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$array[position() < 1] < 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$array[position() < 1] > 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$array[position() < 1] >= 0", Boolean.FALSE, Boolean.class);
+        assertXPathValue(context, "$array[position() < 1] <= 0", Boolean.FALSE, Boolean.class);
+    }
+
     public void testNan() {
         assertXPathValue(context, "$nan > $nan", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan < $nan", Boolean.FALSE, Boolean.class);
