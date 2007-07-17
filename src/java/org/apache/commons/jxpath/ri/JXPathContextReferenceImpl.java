@@ -16,7 +16,6 @@
  */
 package org.apache.commons.jxpath.ri;
 
-
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,17 +61,17 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * @version $Revision$ $Date$
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
-    
+
     /**
-     * Change this to <code>false</code> to disable soft caching of 
-     * CompiledExpressions. 
+     * Change this to <code>false</code> to disable soft caching of
+     * CompiledExpressions.
      */
     public static final boolean USE_SOFT_CACHE = true;
-    
+
     private static final Compiler COMPILER = new TreeCompiler();
     private static Map compiled = new HashMap();
     private static int cleanupCount = 0;
-    
+
     private static Vector nodeFactories = new Vector();
     private static NodePointerFactory nodeFactoryArray[] = null;
     static {
@@ -112,14 +111,14 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     private Pointer rootPointer;
     private Pointer contextPointer;
-    
+
     protected NamespaceResolver namespaceResolver;
 
     // The frequency of the cache cleanup
     private static final int CLEANUP_THRESHOLD = 500;
 
     protected JXPathContextReferenceImpl(JXPathContext parentContext,
-                                         Object contextBean) 
+                                         Object contextBean)
     {
         this(parentContext, contextBean, null);
     }
@@ -127,14 +126,14 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     public JXPathContextReferenceImpl(
         JXPathContext parentContext,
         Object contextBean,
-        Pointer contextPointer) 
+        Pointer contextPointer)
     {
         super(parentContext, contextBean);
 
         synchronized (nodeFactories) {
             createNodeFactoryArray();
         }
-                
+
         if (contextPointer != null) {
             this.contextPointer = contextPointer;
             this.rootPointer =
@@ -151,7 +150,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                     getLocale());
             this.rootPointer = this.contextPointer;
         }
-        
+
         NamespaceResolver parentNR = null;
         if (parentContext instanceof JXPathContextReferenceImpl) {
             parentNR = ((JXPathContextReferenceImpl) parentContext).getNamespaceResolver();
@@ -194,13 +193,13 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Returns a static instance of TreeCompiler.
-     * 
+     *
      * Override this to return an aternate compiler.
      */
     protected Compiler getCompiler() {
         return COMPILER;
     }
-    
+
     protected CompiledExpression compilePath(String xpath) {
         return new JXPathCompiledExpression(xpath, compileExpression(xpath));
     }
@@ -286,7 +285,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 //            }
 //            return
 //        }
-        
+
         return getValue(xpath, expression);
     }
 
@@ -295,12 +294,12 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 //        if (node == null) {
 //            return null;
 //        }
-//        
+//
 //        List vars = expression.getUsedVariables();
 //        if (vars != null) {
 //            return null;
 //        }
-//        
+//
 //        return node;
 //    }
 
@@ -309,14 +308,14 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 //            return bean;
 //        }
 //        if (bean instanceof Node) {
-//            return (Node)bean;            
+//            return (Node)bean;
 //        }
-//        
+//
 //        if (bean instanceof Container) {
 //            bean = ((Container)bean).getValue();
 //            return getNativeContextNode(bean);
 //        }
-//        
+//
 //        return null;
 //    }
 
@@ -348,7 +347,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 // is going to have isActual == false, but its parent,
                 // which is a non-node pointer identifying the bean property,
                 // will return isActual() == true.
-                NodePointer parent = 
+                NodePointer parent =
                     ((NodePointer) result).getImmediateParentPointer();
                 if (parent == null
                     || !parent.isContainer()
@@ -471,7 +470,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     public Pointer createPathAndSetValue(
         String xpath,
         Expression expr,
-        Object value) 
+        Object value)
     {
         try {
             return setValue(xpath, expr, value, true);
@@ -487,7 +486,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         String xpath,
         Expression expr,
         Object value,
-        boolean create) 
+        boolean create)
     {
         Object result = expr.computeValue(getEvalContext());
         Pointer pointer = null;
@@ -503,7 +502,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             if (create) {
                 checkSimplePath(expr);
             }
-            
+
             // This should never happen
             throw new JXPathException("Cannot set value for xpath: " + xpath);
         }
@@ -599,7 +598,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
         return new JXPathContextReferenceImpl(this, contextBean, pointer);
     }
-    
+
     public Pointer getContextPointer() {
         return contextPointer;
     }
@@ -660,14 +659,14 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         throw new JXPathFunctionNotFoundException(
             "Undefined function: " + functionName.toString());
     }
-    
+
     public void registerNamespace(String prefix, String namespaceURI) {
-        if (namespaceResolver.isSealed()) {            
+        if (namespaceResolver.isSealed()) {
             namespaceResolver = (NamespaceResolver) namespaceResolver.clone();
         }
         namespaceResolver.registerNamespace(prefix, namespaceURI);
     }
-    
+
     public String getNamespaceURI(String prefix) {
         return namespaceResolver.getNamespaceURI(prefix);
     }
@@ -686,7 +685,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
         namespaceResolver.setNamespaceContextPointer((NodePointer) pointer);
     }
-    
+
     public Pointer getNamespaceContextPointer() {
         return namespaceResolver.getNamespaceContextPointer();
     }
@@ -695,14 +694,14 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         namespaceResolver.seal();
         return namespaceResolver;
     }
-    
+
     /**
      * Checks if existenceCheckClass exists on the class path. If so, allocates
      * an instance of the specified class, otherwise returns null.
      */
     public static Object allocateConditionally(
             String className,
-            String existenceCheckClassName) 
+            String existenceCheckClassName)
     {
         try {
             try {
