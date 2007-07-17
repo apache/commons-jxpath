@@ -50,7 +50,7 @@ public class BeanPointerFactory implements NodePointerFactory {
     public NodePointer createNodePointer(
         NodePointer parent,
         QName name,
-        Object bean) 
+        Object bean)
     {
         if (bean == null) {
             return new NullPointer(parent, name);
