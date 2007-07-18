@@ -37,7 +37,6 @@ import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.JXPathTypeConversionException;
 import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.axes.InitialContext;
 import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.compiler.Expression;
@@ -46,7 +45,7 @@ import org.apache.commons.jxpath.ri.compiler.Path;
 import org.apache.commons.jxpath.ri.compiler.TreeCompiler;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
-import org.apache.commons.jxpath.ri.model.VariablePointer;
+import org.apache.commons.jxpath.ri.model.VariablePointerFactory;
 import org.apache.commons.jxpath.ri.model.beans.BeanPointerFactory;
 import org.apache.commons.jxpath.ri.model.beans.CollectionPointerFactory;
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
@@ -72,12 +71,13 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     private static Map compiled = new HashMap();
     private static int cleanupCount = 0;
 
-    private static Vector nodeFactories = new Vector();
+    private static final Vector nodeFactories = new Vector();
     private static NodePointerFactory nodeFactoryArray[] = null;
     static {
         nodeFactories.add(new CollectionPointerFactory());
         nodeFactories.add(new BeanPointerFactory());
         nodeFactories.add(new DynamicPointerFactory());
+        nodeFactories.add(new VariablePointerFactory());
 
         // DOM  factory is only registered if DOM support is on the classpath
         Object domFactory = allocateConditionally(
@@ -618,26 +618,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     public NodePointer getVariablePointer(QName name) {
-        String varName = name.toString();
-        JXPathContext varCtx = this;
-        Variables vars = null;
-        while (varCtx != null) {
-            vars = varCtx.getVariables();
-            if (vars.isDeclaredVariable(varName)) {
-                break;
-            }
-            varCtx = varCtx.getParentContext();
-            vars = null;
-        }
-        if (vars != null) {
-            return new VariablePointer(vars, name);
-        }
-        else {
-            // The variable is not declared, but we will create
-            // a pointer anyway in case the user want to set, rather
-            // than get, the value of the variable.
-            return new VariablePointer(name);
-        }
+        return NodePointer.newNodePointer(name, VariablePointerFactory
+                .contextWrapper(this), getLocale());
     }
 
     public Function getFunction(QName functionName, Object[] parameters) {
