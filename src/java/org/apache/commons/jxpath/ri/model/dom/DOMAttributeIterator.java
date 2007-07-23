@@ -19,6 +19,7 @@ package org.apache.commons.jxpath.ri.model.dom;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.jxpath.ri.NamespaceResolver;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
@@ -108,7 +109,9 @@ public class DOMAttributeIterator implements NodeIterator {
         String testNS = null;
 
         if (testPrefix != null) {
-            testNS = parent.getNamespaceURI(testPrefix);
+            NamespaceResolver nsr = parent.getNamespaceResolver();
+            testNS = nsr == null ? null : nsr.getNamespaceURI(testPrefix);
+            testNS = testNS == null ? parent.getNamespaceURI(testPrefix) : testNS;
         }
 
         if (testNS != null) {

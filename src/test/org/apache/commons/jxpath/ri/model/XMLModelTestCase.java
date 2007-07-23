@@ -797,6 +797,15 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
                 "count(vendor/product/rate:*)", 
                 new Double(2));
 
+        assertXPathValue(context,
+                "vendor[1]/product[1]/rate:amount[1]/@rate:discount", "10%");
+        assertXPathValue(context,
+                "vendor[1]/product[1]/rate:amount[1]/@price:discount", "10%");
+        assertXPathValue(context,
+                "vendor[1]/product[1]/price:amount[1]/@rate:discount", "10%");
+        assertXPathValue(context,
+                "vendor[1]/product[1]/price:amount[1]/@price:discount", "10%");
+
         // Preference for externally registered namespace prefix
         assertXPathValueAndPointer(context,
                 "//product:name",
