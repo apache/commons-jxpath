@@ -363,12 +363,12 @@ public class JDOMNodePointer extends NodePointer {
             if (wildcard && testPrefix == null) {
                 return true;
             }
-
             if (wildcard
                 || testName.getName()
                         .equals(JDOMNodePointer.getLocalName(node))) {
                 String nodeNS = JDOMNodePointer.getNamespaceURI(node);
-                return equalStrings(namespaceURI, nodeNS);
+                return equalStrings(namespaceURI, nodeNS) || nodeNS == null
+                        && equalStrings(testPrefix, getPrefix(node));
             }
             return false;
         }

@@ -29,7 +29,9 @@ import org.apache.commons.jxpath.ri.compiler.CoreFunctionTest;
 import org.apache.commons.jxpath.ri.compiler.CoreOperationTest;
 import org.apache.commons.jxpath.ri.compiler.ExtensionFunctionTest;
 import org.apache.commons.jxpath.ri.compiler.VariableTest;
+import org.apache.commons.jxpath.ri.model.ExternalXMLNamespaceTest;
 import org.apache.commons.jxpath.ri.model.MixedModelTest;
+import org.apache.commons.jxpath.ri.model.XMLPreserveSpaceTest;
 import org.apache.commons.jxpath.ri.model.XMLSpaceTest;
 import org.apache.commons.jxpath.ri.model.beans.BeanModelTest;
 import org.apache.commons.jxpath.ri.model.container.ContainerModelTest;
@@ -91,6 +93,8 @@ public class JXPathTestSuite extends TestCase {
         suite.addTestSuite(BasicTypeConverterTest.class);
         suite.addTestSuite(RecursiveAxesTest.class);
         suite.addTestSuite(XMLSpaceTest.class);
+        suite.addTestSuite(XMLPreserveSpaceTest.class);
+        suite.addTestSuite(ExternalXMLNamespaceTest.class);
         return suite;
     }
 }
