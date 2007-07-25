@@ -24,6 +24,7 @@ import org.apache.commons.jxpath.JXPathAbstractFactoryException;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.ri.Compiler;
+import org.apache.commons.jxpath.ri.NamespaceResolver;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
@@ -52,6 +53,7 @@ public class JDOMNodePointer extends NodePointer {
 
     private Object node;
     private String id;
+    private NamespaceResolver localNamespaceResolver;
 
     public static final String XML_NAMESPACE_URI =
             "http://www.w3.org/XML/1998/namespace";
@@ -110,22 +112,33 @@ public class JDOMNodePointer extends NodePointer {
         return null;
     }
 
-    public String getNamespaceURI(String prefix) {
-        if (node instanceof Document) {
-            Element element = ((Document)node).getRootElement(); 
-            Namespace ns = element.getNamespace(prefix);
-            if (ns != null) {
-                return ns.getURI();
-            }
-        }        
-        else if (node instanceof Element) {
-            Element element = (Element) node;
-            Namespace ns = element.getNamespace(prefix);
-            if (ns != null) {
-                return ns.getURI();
-            }
+    /* (non-Javadoc)
+     * @see org.apache.commons.jxpath.ri.model.NodePointer#getNamespaceResolver()
+     */
+    public synchronized NamespaceResolver getNamespaceResolver() {
+        if (localNamespaceResolver == null) {
+            localNamespaceResolver = new NamespaceResolver(super.getNamespaceResolver());
+            localNamespaceResolver.setNamespaceContextPointer(this);
         }
-        return null;
+        return localNamespaceResolver;
+    }
+
+    public String getNamespaceURI(String prefix) {
+        if (prefix.equals("xml")) {
+            return Namespace.XML_NAMESPACE.getURI();
+        }
+        Element element = null;
+        if (node instanceof Document) {
+            element = ((Document) node).getRootElement(); 
+        }
+        if (node instanceof Element) {
+            element = (Element) node;
+        }
+        if (element == null) {
+            return null;
+        }
+        Namespace ns = element.getNamespace(prefix);
+        return ns == null ? null : ns.getURI();
     }
 
     public int compareChildNodePointers(
@@ -521,11 +534,12 @@ public class JDOMNodePointer extends NodePointer {
         Element element = (Element) node;
         String prefix = name.getPrefix();
         if (prefix != null) {
-            Namespace ns = element.getNamespace(prefix);
-            if (ns == null) {
+            String namespaceUri = getNamespaceResolver().getNamespaceURI(prefix);
+            if (namespaceUri == null) {
                 throw new JXPathException(
                     "Unknown namespace prefix: " + prefix);
             }
+            Namespace ns = Namespace.getNamespace(prefix, namespaceUri);
             Attribute attr = element.getAttribute(name.getName(), ns);
             if (attr == null) {
                 element.setAttribute(name.getName(), "", ns);

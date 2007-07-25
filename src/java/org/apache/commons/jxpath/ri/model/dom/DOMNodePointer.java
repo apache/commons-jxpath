@@ -26,6 +26,7 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
+import org.apache.commons.jxpath.ri.NamespaceResolver;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
@@ -58,6 +59,7 @@ public class DOMNodePointer extends NodePointer {
     private Map namespaces;
     private String defaultNamespace;
     private String id;
+    private NamespaceResolver localNamespaceResolver;
 
     public static final String XML_NAMESPACE_URI = 
             "http://www.w3.org/XML/1998/namespace";
@@ -181,6 +183,17 @@ public class DOMNodePointer extends NodePointer {
 
     public NodeIterator namespaceIterator() {
         return new DOMNamespaceIterator(this);
+    }
+
+    /* (non-Javadoc)
+     * @see org.apache.commons.jxpath.ri.model.NodePointer#getNamespaceResolver()
+     */
+    public synchronized NamespaceResolver getNamespaceResolver() {
+        if (localNamespaceResolver == null) {
+            localNamespaceResolver = new NamespaceResolver(super.getNamespaceResolver());
+            localNamespaceResolver.setNamespaceContextPointer(this);
+        }
+        return localNamespaceResolver;
     }
 
     public String getNamespaceURI(String prefix) {
@@ -408,7 +421,11 @@ public class DOMNodePointer extends NodePointer {
         Element element = (Element) node;
         String prefix = name.getPrefix();
         if (prefix != null) {
-            String ns = getNamespaceURI(prefix);
+            String ns = null;
+            NamespaceResolver nsr = getNamespaceResolver();
+            if (nsr != null) {
+                ns = nsr.getNamespaceURI(prefix);
+            }
             if (ns == null) {
                 throw new JXPathException(
                     "Unknown namespace prefix: " + prefix);

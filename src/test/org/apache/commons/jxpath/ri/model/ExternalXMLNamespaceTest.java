@@ -41,17 +41,21 @@ public class ExternalXMLNamespaceTest extends JXPathTestCase {
     protected DocumentContainer createDocumentContainer(String model) {
         DocumentContainer result = new DocumentContainer(JXPathTestCase.class
                 .getResource("ExternalNS.xml"), model);
-        //this setting only works for DOM, so no JDOM tests :|
+        // this setting only works for DOM, so no JDOM tests :|
         result.setNamespaceAware(false);
         return result;
     }
 
-    protected void doTest(String xpath, String model, String expected) {
+    protected JXPathContext createContext(String model) {
         JXPathContext context = JXPathContext
                 .newContext(createDocumentContainer(model));
         context.registerNamespace("A", "foo");
         context.registerNamespace("B", "bar");
-        assertXPathValue(context, xpath, expected);
+        return context;
+    }
+
+    protected void doTest(String xpath, String model, String expected) {
+        assertXPathValue(createContext(model), xpath, expected);
     }
 
     protected void doTestAttribute(String model) {
@@ -59,7 +63,12 @@ public class ExternalXMLNamespaceTest extends JXPathTestCase {
     }
 
     protected void doTestElement(String model) {
-         doTest("/ElementA/B:ElementB", model, "MY VALUE");
+        doTest("/ElementA/B:ElementB", model, "MY VALUE");
+    }
+
+    protected void doTestCreateAndSetAttribute(String model) {
+        assertXPathCreatePathAndSetValue(createContext(model),
+                "/ElementA/@A:newAttr", "newValue", "/ElementA[1]/@A:newAttr");
     }
 
     public void testAttributeDOM() {
@@ -68,6 +77,10 @@ public class ExternalXMLNamespaceTest extends JXPathTestCase {
 
     public void testElementDOM() {
         doTestElement(DocumentContainer.MODEL_DOM);
+    }
+
+    public void testCreateAndSetAttributeDOM() {
+        doTestCreateAndSetAttribute(DocumentContainer.MODEL_DOM);
     }
 
 }
