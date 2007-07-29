@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <rdf:RDF xmlns="http://usefulinc.com/ns/doap#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:asfext="http://projects.apache.org/ns/asfext#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:doap="http://usefulinc.com/ns/doap#" xml:lang="en">
-  <Project rdf:about="http://jakarta.apache.org/commons/jxpath/">
-    <name>Apache Jakarta Commons JXPath</name>
-    <homepage rdf:resource="http://jakarta.apache.org/commons/jxpath/"/>
+  <Project rdf:about="http://commons.apache.org/jxpath/">
+    <name>Apache Apache Commons JXPath</name>
+    <homepage rdf:resource="http://commons.apache.org/jxpath/"/>
     <programming-language>Java</programming-language>
     <category rdf:resource="http://projects.apache.org/category/library"/>
     <license rdf:resource="http://usefulinc.com/doap/licenses/asl20"/>
     <bug-database rdf:resource="http://issues.apache.org/jira/browse/JXPATH"/>
     <download-page rdf:resource="http://jakarta.apache.org/site/downloads/downloads_commons-jxpath.cgi"/>
-    <asfext:pmc rdf:resource="http://jakarta.apache.org/"/>
+    <asfext:pmc rdf:resource="http://commons.apache.org/"/>
     <shortdesc xml:lang="en">XPath for Java Objects</shortdesc>
     <description xml:lang="en">A package of Java utility methods for accessing and modifying object properties</description>
     <repository>
@@ -24,6 +24,6 @@
         <version>1.2</version>
       </revision>
     </release>
-    <mailing-list rdf:resource="http://jakarta.apache.org/site/mail2.html#Commons"/>
+    <mailing-list rdf:resource="http://commons.apache.org/mail-lists.html"/>
   </Project>
 </rdf:RDF>
