@@ -24,7 +24,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * Test for text trimming from JXPATH-83.
  *
  * @author Matt Benson
- * @version $Revision:$ $Date:$
+ * @version $Revision$ $Date$
  */
 public class XMLPreserveSpaceTest extends JXPathTestCase {
     protected JXPathContext context;
