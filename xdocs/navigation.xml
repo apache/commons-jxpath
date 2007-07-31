@@ -18,18 +18,17 @@
 <!DOCTYPE org.apache.commons.menus SYSTEM 'http://commons.apache.org/build/maven-build.dtd'>
 <project name="JXPath">
   <title>JXPath</title>
-  <organizationLogo href="/images/temp.gif">Jakarta</organizationLogo>
+  <organizationLogo href="http://commons.apache.org/images/logo.png">Commons</organizationLogo>
   <body>
 
     <links>
       <item name="Apache"  href="http://www.apache.org"/>
-      <item name="Jakarta" href="http://jakarta.apache.org"/>
       <item name="Commons" href="http://commons.apache.org/"/>
     </links>
 
     <menu name="JXPath">
       <item name="Overview" href="/index.html"/>
-      <item name="Download"        href="http://jakarta.apache.org/site/downloads/downloads_commons-jxpath.cgi"/>
+      <item name="Download"        href="http://commons.apache.org/downloads/download_jxpath.cgi"/>
       <item name="User's Guide" href="/users-guide.html"/>
       <item name="JavaDoc"         href="/apidocs/index.html"/>
       <item name="Release Notes"   href="/release-notes-1.2.html"/>

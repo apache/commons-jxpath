@@ -87,7 +87,7 @@ while (it.hasNext()){
       </section>
 
       <section name="Releases">
-        <p>See the <a href="http://jakarta.apache.org/site/downloads/downloads_commons-jxpath.cgi">JXPath Downloads</a>
+        <p>See the <a href="http://commons.apache.org/downloads/download_jxpath.cgi">JXPath Downloads</a>
            page for current/previous releases.
         </p>
       </section>
