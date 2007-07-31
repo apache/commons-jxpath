@@ -13,8 +13,8 @@
     <description xml:lang="en">A package of Java utility methods for accessing and modifying object properties</description>
     <repository>
       <SVNRepository>
-        <browse rdf:resource="http://svn.apache.org/repos/asf/jakarta/commons/proper/jxpath/trunk"/>
-        <location rdf:resource="http://svn.apache.org/repos/asf/jakarta/commons/proper/jxpath"/>
+        <browse rdf:resource="http://svn.apache.org/repos/asf/commons/proper/jxpath/trunk"/>
+        <location rdf:resource="http://svn.apache.org/repos/asf/commons/proper/jxpath"/>
       </SVNRepository>
     </repository>
     <release>
