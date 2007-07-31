@@ -25,8 +25,8 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
 
 /**
  * Implements NodePointerFactory for DynaBeans.
- * See <a href="http://jakarta.apache.org/commons/beanutils.html">
- * Jakarta Commons BeanUtils
+ * See <a href="http://commons.apache.org/beanutils.html">
+ * Apache Commons BeanUtils
  * </a>
  *
  * @author Dmitri Plotnikov

@@ -409,7 +409,7 @@ String fName = (String)context.getValue("firstName");
 
       <subsection name="DynaBean Access">
         <p>
-          JXPath supports <a href="http://jakarta.apache.org/commons/beanutils/api/org/apache/commons/beanutils/DynaBean.html">DynaBeans</a> 
+          JXPath supports <a href="http://commons.apache.org/beanutils/api/org/apache/commons/beanutils/DynaBean.html">DynaBeans</a> 
           as well. DynaBeans are treated exactly the same way as JavaBeans.
         </p>
       </subsection>

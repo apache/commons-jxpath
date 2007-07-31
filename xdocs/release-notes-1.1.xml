@@ -49,7 +49,7 @@
         </li>
         <li>
           Support for DynaBeans
-          (see <a href="http://jakarta.apache.org/commons/beanutils">Jakarta
+          (see <a href="http://commons.apache.org/beanutils">Jakarta
           Commons BeanUtils</a>).
           <br/>
         </li>
