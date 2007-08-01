@@ -23,9 +23,9 @@
   <currentVersion>1.3-SNAPSHOT</currentVersion>
   <inceptionYear>2001</inceptionYear>
   <shortDescription>XPath for Java Objects</shortDescription>
-  <description>A package of Java utility methods for accessing and modifying object properties</description>
+  <description>A Java-based implementation of XPath 1.0 that, in addition to XML processing, can inspect/modify Java object graphs (the library's explicit purpose) and even mixed Java/XML structures.</description>
   <logo>/images/logo-wbg.jpg</logo> 
-  
+
   <url>http://commons.apache.org/${pom.artifactId.substring(8)}/</url>
   <package>org.apache.commons.${pom.artifactId.substring(8)}</package>
 
@@ -48,12 +48,12 @@
   <siteAddress>people.apache.org</siteAddress>
   <siteDirectory>/www/commons.apache.org/${pom.artifactId.substring(8)}/</siteDirectory>
   <distributionDirectory>/www/people.apache.org/builds/commons/${pom.artifactId.substring(8)}/</distributionDirectory>
-  
+
   <repository>
     <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/${pom.artifactId.substring(8)}/trunk</connection>
     <url>http://svn.apache.org/repos/asf/commons/proper/${pom.artifactId.substring(8)}/trunk</url>
   </repository>
-  
+
   <mailingLists>
     <mailingList>
       <name>Commons Dev List</name>
@@ -68,7 +68,7 @@
       <archive>http://mail-archives.apache.org/mod_mbox/commons-user/</archive>
     </mailingList>
   </mailingLists>
-    
+
   <versions>
     <version>
       <id>1.2</id>
@@ -96,59 +96,98 @@
       <email>mbenson@apache.org</email>
     </developer>
   </developers>
-  
+
   <dependencies>
+    <dependency> 
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1</version>
+      <url>http://commons.apache.org/logging/</url>
+      <properties>
+        <comment>Required</comment>
+      </properties>
+    </dependency>
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xerces</artifactId>
       <version>2.4.0</version>
+      <properties>
+        <optional>true</optional>
+        <comment>needed for XML support</comment>
+      </properties>
     </dependency>
     <dependency>
       <groupId>servletapi</groupId>
       <artifactId>servletapi</artifactId>
-      <version>2.2</version>
+      <version>2.4</version>
+      <properties>
+        <optional>true</optional>
+        <scope>provided</scope>
+        <comment>needed for JSP support</comment>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>jspapi</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.0</version>
+      <url>http://java.sun.com/products/servlet/2.3/javadoc/index.html</url>
+      <properties>
+        <optional>true</optional>
+        <scope>provided</scope>
+        <comment>needed for JSP support</comment>
+      </properties>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <!-- type>required</type-->
-      <version>3.8</version>
+      <type>jar</type>
+      <version>3.8.2</version>
       <url>http://www.junit.org/</url>
-    </dependency>
-    <dependency>
-      <groupId>ant</groupId>
-      <artifactId>ant-optional</artifactId>
-      <version>1.5.1</version>
+      <properties>
+        <scope>test</scope>
+        <comment>testing only</comment>
+      </properties>
     </dependency>
     <dependency>
       <groupId>xml-apis</groupId>
       <artifactId>xml-apis</artifactId>
       <version>2.0.2</version>
       <url>http://xml.apache.org/commons/</url>
+      <properties>
+        <scope>provided</scope>
+        <optional>true</optional>
+        <comment>needed for XML support; provided starting with Java 1.4</comment>
+      </properties>
     </dependency>
     <dependency>
       <groupId>jdom</groupId>
       <artifactId>jdom</artifactId>
       <version>1.0</version>
       <url>http://www.jdom.org</url> 
+      <properties>
+        <optional>true</optional>
+        <comment>needed for XML support</comment>
+      </properties>
     </dependency>
     <dependency> 
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <version>1.4</version>
+      <version>1.7.0</version>
       <url>http://commons.apache.org/beanutils/</url>
-    </dependency>
-    <dependency> 
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
-      <url>http://commons.apache.org/logging/</url>
+      <properties>
+        <optional>true</optional>
+        <comment>needed for dynabean support</comment>
+      </properties>
     </dependency>
     <dependency> 
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
-      <version>2.0</version> 
+      <version>3.2</version> 
       <url>http://commons.apache.org/collections/</url>
+      <properties>
+        <scope>runtime</scope>
+        <comment>dependency of beanutils</comment>
+      </properties>
     </dependency> 
     <dependency>
       <groupId>maven</groupId>
@@ -157,15 +196,16 @@
       <url>http://maven.apache.org/reference/plugins/xdoc/</url>
       <type>plugin</type>
       <properties>
-          <comment>
-              &lt;strong&gt;Site Only&lt;/strong&gt; - v1.9.2 (minimum)
-              required for building the Site documentation.
-          </comment>
+        <optional>true</optional>
+        <comment>
+          &lt;strong&gt;Site Only&lt;/strong&gt; - v1.9.2 (minimum)
+          required for building the Site documentation.
+        </comment>
       </properties>
     </dependency>
 
   </dependencies>
-  
+
   <build>
     <nagEmailAddress>dev@commons.apache.org</nagEmailAddress>
     <sourceDirectory>src/java</sourceDirectory>
@@ -196,7 +236,7 @@
 
   <reports>
     <report>maven-junit-report-plugin</report>
-    
+
     <report>maven-jdepend-plugin</report>
     <!--report>maven-checkstyle-plugin</report-->
     <report>maven-changelog-plugin</report>
@@ -210,6 +250,5 @@
     <!--report>maven-clover-plugin</report-->
     <report>maven-junit-report-plugin</report> 
 
-    
   </reports>
 </project>
