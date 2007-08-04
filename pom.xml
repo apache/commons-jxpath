@@ -76,7 +76,7 @@ under the License.
     <testSourceDirectory>src/test</testSourceDirectory>
     <testResources>
       <testResource>
-        <directory>${project.build.testSourceDirectory}</directory>
+        <directory>src/test</directory>
         <includes>
           <include>**/*.xml</include>
         </includes>
