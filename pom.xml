@@ -76,7 +76,7 @@ under the License.
     <testSourceDirectory>src/test</testSourceDirectory>
     <testResources>
       <testResource>
-        <directory>${pom.build.testSourceDirectory}</directory>
+        <directory>${project.build.testSourceDirectory}</directory>
         <includes>
           <include>**/*.xml</include>
         </includes>
