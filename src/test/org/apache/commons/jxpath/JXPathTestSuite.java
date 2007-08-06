@@ -29,6 +29,7 @@ import org.apache.commons.jxpath.ri.compiler.CoreFunctionTest;
 import org.apache.commons.jxpath.ri.compiler.CoreOperationTest;
 import org.apache.commons.jxpath.ri.compiler.ExtensionFunctionTest;
 import org.apache.commons.jxpath.ri.compiler.VariableTest;
+import org.apache.commons.jxpath.ri.model.EmptyCollectionTest;
 import org.apache.commons.jxpath.ri.model.ExternalXMLNamespaceTest;
 import org.apache.commons.jxpath.ri.model.MixedModelTest;
 import org.apache.commons.jxpath.ri.model.XMLPreserveSpaceTest;
@@ -85,6 +86,7 @@ public class JXPathTestSuite extends TestCase {
         suite.addTestSuite(VariableTest.class);
         suite.addTestSuite(ContainerModelTest.class);
         suite.addTestSuite(BeanModelTest.class);
+        suite.addTestSuite(EmptyCollectionTest.class);
         suite.addTestSuite(DynamicPropertiesModelTest.class);
         suite.addTestSuite(DOMModelTest.class);
         suite.addTestSuite(DynaBeanModelTest.class);
