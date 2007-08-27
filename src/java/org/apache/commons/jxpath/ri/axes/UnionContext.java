@@ -16,9 +16,11 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.commons.jxpath.BasicNodeSet;
+import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
@@ -46,18 +48,22 @@ public class UnionContext extends NodeSetContext {
         if (!prepared) {
             prepared = true;
             BasicNodeSet nodeSet = (BasicNodeSet) getNodeSet();
-            HashSet set = new HashSet();
+            ArrayList pointers = new ArrayList();
             for (int i = 0; i < contexts.length; i++) {
                 EvalContext ctx = (EvalContext) contexts[i];
                 while (ctx.nextSet()) {
                     while (ctx.nextNode()) {
                         NodePointer ptr = ctx.getCurrentNodePointer();
-                        if (!set.contains(ptr)) {
-                            nodeSet.add(ptr);
-                            set.add(ptr);
+                        if (!pointers.contains(ptr)) {
+                            pointers.add(ptr);
                         }
                     }
                 }
+            }
+            sortPointers(pointers);
+
+            for (Iterator it = pointers.iterator(); it.hasNext();) {
+                nodeSet.add((Pointer) it.next());
             }
         }
         return super.setPosition(position);

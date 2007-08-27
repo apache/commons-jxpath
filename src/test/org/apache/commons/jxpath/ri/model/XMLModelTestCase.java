@@ -828,4 +828,9 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
                 "Box of oranges",
                 "/vendor[1]/product[1]/goods:name[1]");
     }
+
+    public void testUnion() {
+        assertXPathValue(context, "/vendor[1]/contact[1] | /vendor[1]/contact[4]", "John");
+        assertXPathValue(context, "/vendor[1]/contact[4] | /vendor[1]/contact[1]", "John");
+    }
 }
