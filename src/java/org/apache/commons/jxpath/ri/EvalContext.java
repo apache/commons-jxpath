@@ -172,14 +172,25 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             return false;
         }
 
-        if (getDocumentOrder() == 1) {
-            Collections.sort(list);
-        }
-        else {
-            Collections.sort(list, ReverseComparator.INSTANCE);
-        }
+        sortPointers(list);
+
         pointerIterator = list.iterator();
         return true;
+    }
+
+    /**
+     * Sort a list of pointers based on document order.
+     * @param l the list to sort.
+     */
+    protected void sortPointers(List l) {
+        switch (getDocumentOrder()) {
+        case 1:
+            Collections.sort(l);
+            break;
+        case -1:
+            Collections.sort(l, ReverseComparator.INSTANCE);
+            break;
+        }
     }
 
     /**
