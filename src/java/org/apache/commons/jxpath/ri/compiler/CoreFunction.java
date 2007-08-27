@@ -654,7 +654,7 @@ public class CoreFunction extends Operation {
         assertArgCount(1);
         double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
         if (Double.isNaN(v) || Double.isInfinite(v)) {
-        	return new Double(v);
+            return new Double(v);
         }
         return new Double(Math.floor(v));
     }
@@ -663,7 +663,7 @@ public class CoreFunction extends Operation {
         assertArgCount(1);
         double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
         if (Double.isNaN(v) || Double.isInfinite(v)) {
-        	return new Double(v);
+            return new Double(v);
         }
         return new Double(Math.ceil(v));
     }
@@ -672,7 +672,7 @@ public class CoreFunction extends Operation {
         assertArgCount(1);
         double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
         if (Double.isNaN(v) || Double.isInfinite(v)) {
-        	return new Double(v);
+            return new Double(v);
         }
         return new Double(Math.round(v));
     }
