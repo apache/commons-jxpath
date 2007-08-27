@@ -35,10 +35,19 @@ public class VariablePointerFactory implements NodePointerFactory {
      * Node value wrapper to trigger a VariablePointerFactory.
      */
     public static class VariableContextWrapper {
-        final JXPathContext context;
+        private final JXPathContext context;
 
         private VariableContextWrapper(JXPathContext context) {
             this.context = context;
+        }
+
+        /**
+         * Get the original (unwrapped) context.
+         * 
+         * @return JXPathContext.
+         */
+        public JXPathContext getContext() {
+            return context;
         }
     }
 
@@ -60,7 +69,7 @@ public class VariablePointerFactory implements NodePointerFactory {
     public NodePointer createNodePointer(QName name, Object object,
             Locale locale) {
         if (object instanceof VariableContextWrapper) {
-            JXPathContext varCtx = ((VariableContextWrapper) object).context;
+            JXPathContext varCtx = ((VariableContextWrapper) object).getContext();
             while (varCtx != null) {
                 Variables vars = varCtx.getVariables();
                 if (vars.isDeclaredVariable(name.toString())) {
