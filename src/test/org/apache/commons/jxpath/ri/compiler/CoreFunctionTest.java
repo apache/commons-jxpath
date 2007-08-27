@@ -106,6 +106,7 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValue(context, "false()", Boolean.FALSE);
         assertXPathValue(context, "not(false())", Boolean.TRUE);
         assertXPathValue(context, "not(true())", Boolean.FALSE);
+        assertXPathValue(context, "null()", null);        
         assertXPathValue(context, "number('1')", new Double(1));
         assertXPathValue(context, "number($bool_true)", new Double(1));
         assertXPathValue(context, "number($bool_false)", new Double(0));
@@ -115,7 +116,6 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValue(context, "ceiling(-1.5)", new Double(-1));
         assertXPathValue(context, "round(1.5)", new Double(2));
         assertXPathValue(context, "round(-1.5)", new Double(-1));
-        assertXPathValue(context, "null()", null);        
     }
 
     public void testIDFunction() {
