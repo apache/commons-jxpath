@@ -30,6 +30,11 @@ import org.jdom.Attribute;
 public class JDOMAttributePointer extends NodePointer {
     private Attribute attr;
 
+    /**
+     * Create a JDOMAttributePointer.
+     * @param parent NodePointer parent
+     * @param attr JDOM Attribute
+     */
     public JDOMAttributePointer(NodePointer parent, Attribute attr) {
         super(parent);
         this.attr = attr;
@@ -51,19 +56,19 @@ public class JDOMAttributePointer extends NodePointer {
 
     public Object getValue() {
         return attr.getValue();
-    }    
-    
+    }
+
     public Object getBaseValue() {
         return attr;
     }
-    
+
     public boolean isCollection() {
         return false;
     }
 
     public int getLength() {
         return 1;
-    }    
+    }
 
     public Object getImmediateNode() {
         return attr;
@@ -115,8 +120,7 @@ public class JDOMAttributePointer extends NodePointer {
 
     public int compareChildNodePointers(
             NodePointer pointer1,
-            NodePointer pointer2) 
-    {
+            NodePointer pointer2) {
         // Won't happen - attributes don't have children
         return 0;
     }

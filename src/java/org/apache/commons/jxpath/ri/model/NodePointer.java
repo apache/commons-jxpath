@@ -43,9 +43,14 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  */
 public abstract class NodePointer implements Pointer {
 
+    /** Whole collection index. */
     public static final int WHOLE_COLLECTION = Integer.MIN_VALUE;
-    protected int index = WHOLE_COLLECTION;
+
+    /** Constant to indicate unknown namespace */
     public static final String UNKNOWN_NAMESPACE = "<<unknown namespace>>";
+
+    /** Index for this NodePointer */
+    protected int index = WHOLE_COLLECTION;
     private boolean attribute = false;
     private transient Object rootNode;
     private NamespaceResolver namespaceResolver;
@@ -271,6 +276,7 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * Returns the name of this node. Can be null.
+     * @return QName
      */
     public abstract QName getName();
 
@@ -278,13 +284,14 @@ public abstract class NodePointer implements Pointer {
      * Returns the value represented by the pointer before indexing.
      * So, if the node represents an element of a collection, this
      * method returns the collection itself.
+     * @return Object value
      */
     public abstract Object getBaseValue();
 
     /**
      * Returns the object the pointer points to; does not convert it
      * to a "canonical" type.
-     *
+     * @return Object node value
      * @deprecated 1.1 Please use getNode()
      */
     public Object getNodeValue() {
@@ -295,11 +302,16 @@ public abstract class NodePointer implements Pointer {
      * Returns the object the pointer points to; does not convert it
      * to a "canonical" type. Opens containers, properties etc and returns
      * the ultimate contents.
+     * @return Object node
      */
     public Object getNode() {
         return getValuePointer().getImmediateNode();
     }
-    
+
+    /**
+     * Get the root node.
+     * @return Object value of this pointer's root (top parent).
+     */
     public Object getRootNode() {
         if (rootNode == null) {
             rootNode = parent == null ? getImmediateNode() : parent.getRootNode();
@@ -310,24 +322,31 @@ public abstract class NodePointer implements Pointer {
     /**
      * Returns the object the pointer points to; does not convert it
      * to a "canonical" type.
+     * @return Object node
      */
     public abstract Object getImmediateNode();
 
     /**
      * Converts the value to the required type and changes the corresponding
      * object to that value.
+     * @param value the value to set
      */
     public abstract void setValue(Object value);
 
     /**
      * Compares two child NodePointers and returns a positive number,
      * zero or a positive number according to the order of the pointers.
+     * @param pointer1 first pointer to be compared
+     * @param pointer2 second pointer to be compared
+     * @return int per Java comparison conventions
      */
     public abstract int compareChildNodePointers(
             NodePointer pointer1, NodePointer pointer2);
 
     /**
      * Checks if this Pointer matches the supplied NodeTest.
+     * @param test the NodeTest to execute
+     * @return true if a match
      */
     public boolean testNode(NodeTest test) {
         if (test == null) {
@@ -362,6 +381,12 @@ public abstract class NodePointer implements Pointer {
                 && ((NodeTypeTest) test).getNodeType() == Compiler.NODE_TYPE_NODE && isNode();
     }
 
+    /**
+     * Compare two strings, either of which may be null, for equality.
+     * @param s1 the first String to compare
+     * @param s2 the second String to compare
+     * @return true if both Strings are null, same or equal
+     */
     private static boolean equalStrings(String s1, String s2) {
         return s1 == s2 || s1 != null && s1.equals(s2);
     }
@@ -369,6 +394,9 @@ public abstract class NodePointer implements Pointer {
     /**
      *  Called directly by JXPathContext. Must create path and
      *  set value.
+     *  @param context the owning JXPathContext
+     *  @param value the new value to set
+     *  @return created NodePointer 
      */
     public NodePointer createPath(JXPathContext context, Object value) {
         setValue(value);
@@ -389,6 +417,8 @@ public abstract class NodePointer implements Pointer {
      * Called by a child pointer when it needs to create a parent object.
      * Must create an object described by this pointer and return
      * a new pointer that properly describes the new object.
+     * @param context the owning JXPathContext
+     * @return created NodePointer
      */
     public NodePointer createPath(JXPathContext context) {
         return this;
@@ -399,6 +429,11 @@ public abstract class NodePointer implements Pointer {
      * supplied in the createPath(context, value) call to a non-existent
      * node. This method may have to expand the collection in order to assign
      * the element.
+     * @param context the owning JXPathCOntext
+     * @param name the QName at which a child should be created
+     * @param index child index.
+     * @param value node value to set
+     * @return created NodePointer
      */
     public NodePointer createChild(
         JXPathContext context,
@@ -416,6 +451,10 @@ public abstract class NodePointer implements Pointer {
      * non-existent collection element. It may have to expand the collection,
      * then create an element object and return a new pointer describing the
      * newly created element.
+     * @param context the owning JXPathCOntext
+     * @param name the QName at which a child should be created
+     * @param index child index.
+     * @return created NodePointer
      */
     public NodePointer createChild(JXPathContext context, QName name, int index)
     {
@@ -426,6 +465,9 @@ public abstract class NodePointer implements Pointer {
     
     /**
      * Called to create a non-existing attribute
+     * @param context the owning JXPathCOntext
+     * @param name the QName at which an attribute should be created
+     * @return created NodePointer
      */
     public NodePointer createAttribute(JXPathContext context, QName name) {
         throw new JXPathException("Cannot create an attribute for path "
@@ -436,6 +478,7 @@ public abstract class NodePointer implements Pointer {
     /**
      * If the Pointer has a parent, returns the parent's locale; otherwise
      * returns the locale specified when this Pointer was created.
+     * @return Locale for this NodePointer
      */
     public Locale getLocale() {
         if (locale == null) {
@@ -447,7 +490,9 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Returns true if the selected locale name starts
+     * Check whether our locale matches the specified language.
+     * @param lang String language to check
+     * @return true if the selected locale name starts
      * with the specified prefix <i>lang</i>, case-insensitive.
      */
     public boolean isLanguage(String lang) {
@@ -480,6 +525,10 @@ public abstract class NodePointer implements Pointer {
     /**
      * Returns a NodeIterator that iterates over all children or all children
      * that match the given NodeTest, starting with the specified one.
+     * @param test NodeTest to filter children
+     * @param reverse specified iteration direction
+     * @param startWith the NodePointer to start with
+     * @return NodeIterator
      */
     public NodeIterator childIterator(
         NodeTest test,
@@ -495,6 +544,8 @@ public abstract class NodePointer implements Pointer {
      * Returns a NodeIterator that iterates over all attributes of the current
      * node matching the supplied node name (could have a wildcard).
      * May return null if the object does not support the attributes.
+     * @param qname the attribute name to test
+     * @return NodeIterator
      */
     public NodeIterator attributeIterator(QName qname) {
         NodePointer valuePointer = getValuePointer();
@@ -506,6 +557,7 @@ public abstract class NodePointer implements Pointer {
      * Returns a NodeIterator that iterates over all namespaces of the value
      * currently pointed at.
      * May return null if the object does not support the namespaces.
+     * @return NodeIterator
      */
     public NodeIterator namespaceIterator() {
         return null;
@@ -515,6 +567,8 @@ public abstract class NodePointer implements Pointer {
      * Returns a NodePointer for the specified namespace. Will return null
      * if namespaces are not supported.
      * Will return UNKNOWN_NAMESPACE if there is no such namespace.
+     * @param namespace incoming namespace
+     * @return NodePointer for <code>namespace</code>
      */
     public NodePointer namespacePointer(String namespace) {
         return null;
@@ -522,6 +576,8 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * Decodes a namespace prefix to the corresponding URI.
+     * @param prefix prefix to decode
+     * @return String uri
      */
     public String getNamespaceURI(String prefix) {
         return null;
@@ -529,6 +585,7 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * Returns the namespace URI associated with this Pointer.
+     * @return String uri
      */
     public String getNamespaceURI() {
         return null;
@@ -537,6 +594,8 @@ public abstract class NodePointer implements Pointer {
     /**
      * Returns true if the supplied prefix represents the
      * default namespace in the context of the current node.
+     * @param prefix the prefix to check
+     * @return <code>true</code> if prefix is default
      */
     protected boolean isDefaultNamespace(String prefix) {
         if (prefix == null) {
@@ -547,12 +606,19 @@ public abstract class NodePointer implements Pointer {
         return namespace != null && namespace.equals(getDefaultNamespaceURI());
     }
 
+    /**
+     * Get the default ns uri
+     * @return String uri
+     */
     protected String getDefaultNamespaceURI() {
         return null;
     }
 
     /**
      * Locates a node by ID.
+     * @param context JXPathContext owning context
+     * @param id String id
+     * @return Pointer found
      */
     public Pointer getPointerByID(JXPathContext context, String id) {
         return context.getPointerByID(id);
@@ -560,6 +626,10 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * Locates a node by key and value.
+     * @param context owning JXPathContext
+     * @param key key to search for
+     * @param value value to match
+     * @return Pointer found
      */
     public Pointer getPointerByKey(
         JXPathContext context,
@@ -571,10 +641,10 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * Find a NodeSet by key/value.
-     * @param context
-     * @param key
-     * @param value
-     * @return NodeSet
+     * @param context owning JXPathContext
+     * @param key key to search for
+     * @param value value to match
+     * @return NodeSet found
      */
     public NodeSet getNodeSetByKey(JXPathContext context, String key, Object value) {
         return context.getNodeSetByKey(key, value);
@@ -582,6 +652,7 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * Returns an XPath that maps to this Pointer.
+     * @return String xpath expression
      */
     public String asPath() {
         // If the parent of this node is a container, it is responsible
@@ -610,6 +681,10 @@ public abstract class NodePointer implements Pointer {
         return buffer.toString();
     }
 
+    /**
+     * Clone this NodePointer.
+     * @return cloned NodePointer
+     */
     public Object clone() {
         try {
             NodePointer ptr = (NodePointer) super.clone();
@@ -625,10 +700,14 @@ public abstract class NodePointer implements Pointer {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         return asPath();
     }
 
+    
     public int compareTo(Object object) {
         if (object == this) {
             return 0;

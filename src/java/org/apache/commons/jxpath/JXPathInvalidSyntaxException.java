@@ -26,6 +26,10 @@ package org.apache.commons.jxpath;
 public class JXPathInvalidSyntaxException extends JXPathException {
     private static final long serialVersionUID = 504555366032561816L;
 
+    /**
+     * Create a new JXPathInvalidSyntaxException.
+     * @param message relevant message
+     */
     public JXPathInvalidSyntaxException(String message) {
         super(message);
     }

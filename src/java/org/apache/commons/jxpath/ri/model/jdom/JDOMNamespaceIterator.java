@@ -39,11 +39,15 @@ public class JDOMNamespaceIterator implements NodeIterator {
     private Set prefixes;
     private int position = 0;
 
+    /**
+     * Create a new JDOMNamespaceIterator.
+     * @param parent the parent NodePointer.
+     */
     public JDOMNamespaceIterator(NodePointer parent) {
         this.parent = parent;
         Object node = parent.getNode();
         if (node instanceof Document) {
-            node = ((Document)node).getRootElement();
+            node = ((Document) node).getRootElement();
         }
         if (node instanceof Element) {
             namespaces = new ArrayList();
@@ -52,6 +56,10 @@ public class JDOMNamespaceIterator implements NodeIterator {
         }
     }
 
+    /**
+     * Collect the namespaces from a JDOM Element.
+     * @param element the source Element
+     */
     private void collectNamespaces(Element element) {
         Namespace ns = element.getNamespace();
         if (ns != null && !prefixes.contains(ns.getPrefix())) {
@@ -66,12 +74,15 @@ public class JDOMNamespaceIterator implements NodeIterator {
                 prefixes.add(ns.getPrefix());
             }
         }
-        Object parent = element.getParent();
-        if (parent instanceof Element) {
-            collectNamespaces((Element)parent);
+        Object elementParent = element.getParent();
+        if (elementParent instanceof Element) {
+            collectNamespaces((Element) elementParent);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -87,10 +98,16 @@ public class JDOMNamespaceIterator implements NodeIterator {
         return new JDOMNamespacePointer(parent, ns.getPrefix(), ns.getURI());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         if (namespaces == null) {
             return false;

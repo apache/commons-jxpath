@@ -45,6 +45,7 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
      * For example, in the case of an XML element, getValue() will
      * return the text contained by the element rather than 
      * the element itself.
+     * @return Object value
      */
     Object getValue();
 
@@ -55,17 +56,20 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
      * 
      * For example, for an XML element, getNode() will
      * return the element itself rather than the text it contains.
+     * @return Object node
      */
     Object getNode();
 
     /**
      * Modifies the value of the object, property or collection element
      * this pointer represents.
+     * @param value value to set
      */
     void setValue(Object value);
 
     /**
-     * Returns the node this pointer is based on. 
+     * Returns the node this pointer is based on.
+     * @return  
      */
     Object getRootNode();
     
