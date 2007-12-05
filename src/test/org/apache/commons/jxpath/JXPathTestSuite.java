@@ -30,6 +30,7 @@ import org.apache.commons.jxpath.ri.compiler.CoreFunctionTest;
 import org.apache.commons.jxpath.ri.compiler.CoreOperationTest;
 import org.apache.commons.jxpath.ri.compiler.ExtensionFunctionTest;
 import org.apache.commons.jxpath.ri.compiler.VariableTest;
+import org.apache.commons.jxpath.ri.model.EmbeddedColonMapKeysTest;
 import org.apache.commons.jxpath.ri.model.EmptyCollectionTest;
 import org.apache.commons.jxpath.ri.model.ExternalXMLNamespaceTest;
 import org.apache.commons.jxpath.ri.model.MixedModelTest;
@@ -101,6 +102,7 @@ public class JXPathTestSuite extends TestCase {
         suite.addTestSuite(XMLPreserveSpaceTest.class);
         suite.addTestSuite(ExternalXMLNamespaceTest.class);
         suite.addTestSuite(BadlyImplementedFactoryTest.class);
+        suite.addTestSuite(EmbeddedColonMapKeysTest.class);
         return suite;
     }
 }
