@@ -23,6 +23,7 @@ import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
+ * Pointer whose value is <code>null</code>.
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
