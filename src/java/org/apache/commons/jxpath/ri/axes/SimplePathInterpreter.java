@@ -183,6 +183,9 @@ public class SimplePathInterpreter {
         NodePointer childPointer =
             createChildPointerForStep(parentPointer, step);
 
+        if (childPointer == null) {
+            return null;
+        }
         if (!childPointer.isActual()) {
             // The property does not exist - create a null pointer.
             return createNullPointer(
@@ -308,18 +311,19 @@ public class SimplePathInterpreter {
     {
         int axis = step.getAxis();
         if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE) {
-            NodePointer childPointer;
             QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
             if (axis == Compiler.AXIS_ATTRIBUTE && isLangAttribute(name)) {
-                childPointer = new LangAttributePointer(parentPointer);
+                return new LangAttributePointer(parentPointer);
             }
-            else {
-                childPointer = parentPointer.getPropertyPointer();
+            if (parentPointer.isValidProperty(name)) {
+                NodePointer childPointer = parentPointer.getPropertyPointer();
                 ((PropertyPointer) childPointer).setPropertyName(
-                    name.toString());
+                        name.toString());
                 childPointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
+                return childPointer;
             }
-            return childPointer;
+            //invalid property gets nothing, not even a NullPointer
+            return null;
         }
         return parentPointer;
     }
