@@ -22,6 +22,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.apache.commons.jxpath.ri.JXPathCompiledExpressionTest;
+import org.apache.commons.jxpath.ri.StressTest;
 import org.apache.commons.jxpath.ri.axes.RecursiveAxesTest;
 import org.apache.commons.jxpath.ri.axes.SimplePathInterpreterTest;
 import org.apache.commons.jxpath.ri.compiler.ContextDependencyTest;
@@ -34,6 +35,7 @@ import org.apache.commons.jxpath.ri.model.ExternalXMLNamespaceTest;
 import org.apache.commons.jxpath.ri.model.MixedModelTest;
 import org.apache.commons.jxpath.ri.model.XMLPreserveSpaceTest;
 import org.apache.commons.jxpath.ri.model.XMLSpaceTest;
+import org.apache.commons.jxpath.ri.model.beans.BadlyImplementedFactoryTest;
 import org.apache.commons.jxpath.ri.model.beans.BeanModelTest;
 import org.apache.commons.jxpath.ri.model.container.ContainerModelTest;
 import org.apache.commons.jxpath.ri.model.dom.DOMModelTest;
@@ -78,6 +80,7 @@ public class JXPathTestSuite extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(JXPathCompiledExpressionTest.class);
+        suite.addTestSuite(StressTest.class);
         suite.addTestSuite(SimplePathInterpreterTest.class);
         suite.addTestSuite(ContextDependencyTest.class);
         suite.addTestSuite(CoreFunctionTest.class);
@@ -97,6 +100,7 @@ public class JXPathTestSuite extends TestCase {
         suite.addTestSuite(XMLSpaceTest.class);
         suite.addTestSuite(XMLPreserveSpaceTest.class);
         suite.addTestSuite(ExternalXMLNamespaceTest.class);
+        suite.addTestSuite(BadlyImplementedFactoryTest.class);
         return suite;
     }
 }
