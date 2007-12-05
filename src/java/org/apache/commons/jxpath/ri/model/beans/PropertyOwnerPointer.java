@@ -48,11 +48,11 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         if (test instanceof NodeNameTest) {
             NodeNameTest nodeNameTest = (NodeNameTest) test;
             QName testName = nodeNameTest.getNodeName();
-            if (!isDefaultNamespace(testName.getPrefix())) {
-                return null;
+            if (isValidProperty(testName)) {
+                return createNodeIterator(nodeNameTest.isWildcard() ? null
+                        : testName.toString(), reverse, startWith);
             }
-            String property = nodeNameTest.isWildcard() ? null : testName.getName();
-            return createNodeIterator(property, reverse, startWith);
+            return null;
         }
         return test instanceof NodeTypeTest && ((NodeTypeTest) test).getNodeType() == Compiler.NODE_TYPE_NODE
                 ? createNodeIterator(null, reverse, startWith) : null;
@@ -97,6 +97,16 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     public abstract QName getName();
+
+    /**
+     * Learn whether <code>name</code> is a valid child name for this PropertyOwnerPointer.
+     * @param name the QName to test
+     * @return <code>true</code> if <code>QName</code> is a valid property name.
+     * @since JXPath 1.3
+     */
+    public boolean isValidProperty(QName name) {
+        return isDefaultNamespace(name.getPrefix());
+    }
 
     /**
      * Throws an exception if you try to change the root element, otherwise
