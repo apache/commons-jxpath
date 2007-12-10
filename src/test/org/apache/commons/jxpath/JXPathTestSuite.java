@@ -103,6 +103,7 @@ public class JXPathTestSuite extends TestCase {
         suite.addTestSuite(ExternalXMLNamespaceTest.class);
         suite.addTestSuite(BadlyImplementedFactoryTest.class);
         suite.addTestSuite(EmbeddedColonMapKeysTest.class);
+        suite.addTestSuite(BasicNodeSetTest.class);
         return suite;
     }
 }
