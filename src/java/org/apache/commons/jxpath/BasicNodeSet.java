@@ -33,27 +33,27 @@ public class BasicNodeSet implements NodeSet {
 
     public void add(Pointer pointer) {
         pointers.add(pointer);
-        readOnlyPointers = null;
+        clearCacheLists();
     }
 
     public void add(NodeSet nodeSet) {
         pointers.addAll(nodeSet.getPointers());
-        readOnlyPointers = null;
+        clearCacheLists();
     }
 
     public void remove(Pointer pointer) {
         pointers.remove(pointer);
-        readOnlyPointers = null;
+        clearCacheLists();
     }
     
-    public List getPointers() {
+    public synchronized List getPointers() {
         if (readOnlyPointers == null) {
             readOnlyPointers = Collections.unmodifiableList(pointers);
         }
         return readOnlyPointers;
     }
 
-    public List getNodes() {
+    public synchronized List getNodes() {
         if (nodes == null) {
             nodes = new ArrayList();
             for (int i = 0; i < pointers.size(); i++) {
@@ -65,7 +65,7 @@ public class BasicNodeSet implements NodeSet {
         return nodes;
     }
 
-    public List getValues() {
+    public synchronized List getValues() {
         if (values == null) {
             values = new ArrayList();
             for (int i = 0; i < pointers.size(); i++) {
@@ -79,5 +79,14 @@ public class BasicNodeSet implements NodeSet {
     
     public String toString() {
         return pointers.toString();
+    }
+
+    /**
+     * Clear cache list members.
+     */
+    private synchronized void clearCacheLists() {
+        readOnlyPointers = null;
+        nodes = null;
+        values = null;
     }
 }
