@@ -89,6 +89,8 @@ public class BasicNodeSetTest extends JXPathTestCase {
         addPointers("/integers");
         assertEquals(nodeSet.getPointers().toString(), list("/integers[1]",
                 "/integers[2]", "/integers[3]", "/integers[4]").toString());
+        assertEquals(list(new Integer(1), new Integer(2), new Integer(3), new Integer(4)),
+                nodeSet.getValues());
     }
 
     /**
