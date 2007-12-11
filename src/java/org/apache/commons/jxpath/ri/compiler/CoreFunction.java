@@ -319,6 +319,9 @@ public class CoreFunction extends Operation {
         else if (value instanceof Collection) {
             count = ((Collection) value).size();
         }
+        else if (value instanceof NodeSet) {
+            count = ((NodeSet) value).getPointers().size();
+        }
         else if (value == null) {
             count = 0;
         }

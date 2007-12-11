@@ -372,6 +372,8 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             "test:nodeSet()/@name",
             "Name 1",
             "/beans[1]/@name");
+
+        assertEquals(2, ((Number) context.getValue("count(test:nodeSet())")).intValue());
     }
 
     public void testEstablishNodeSetBaseline() {
