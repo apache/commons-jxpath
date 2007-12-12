@@ -61,7 +61,7 @@ public class BasicNodeSet implements NodeSet {
             nodes = new ArrayList();
             for (int i = 0; i < pointers.size(); i++) {
                 Pointer pointer = (Pointer) pointers.get(i);
-                nodes.add(pointer.getValue());
+                nodes.add(pointer.getNode());
             }
             nodes = Collections.unmodifiableList(nodes);
         }
