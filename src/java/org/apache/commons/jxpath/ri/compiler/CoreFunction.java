@@ -309,6 +309,9 @@ public class CoreFunction extends Operation {
         if (value instanceof NodePointer) {
             value = ((NodePointer) value).getValue();
         }
+        if (value instanceof NodeSet) {
+            value = ((NodeSet) value).getPointers();
+        }
         if (value instanceof EvalContext) {
             EvalContext ctx = (EvalContext) value;
             while (ctx.hasNext()) {
@@ -318,9 +321,6 @@ public class CoreFunction extends Operation {
         }
         else if (value instanceof Collection) {
             count = ((Collection) value).size();
-        }
-        else if (value instanceof NodeSet) {
-            count = ((NodeSet) value).getPointers().size();
         }
         else if (value == null) {
             count = 0;
