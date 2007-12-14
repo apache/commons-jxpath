@@ -29,14 +29,10 @@ under the License.
       <item name="Download"        href="http://commons.apache.org/downloads/download_jxpath.cgi"/>
       <item name="User's Guide"    href="/users-guide.html"/>
       <item name="JavaDoc"         href="/apidocs/index.html"/>
-      <item name="Release Notes"   href="/release-notes-1.3.html"/>
+      <item name="Release Notes"   href="/release-notes-1.2.html"/>
       <item name="Dependencies"    href="/dependencies.html"/>
       <item name="License"         href="/license.html"/>
       <item name="Wiki"            href="http://wiki.apache.org/commons/JXPath"/>
-    </menu>
-    <!--menu name="JXPath 1.3">
-      <item name="JavaDoc"         href="/apidocs/index.html"/>
-      <item name="Release Notes"   href="/release-notes-1.3.html"/>
     </menu>
     <menu name="JXPath 1.2">
       <item name="Javadoc"         href="http://commons.apache.org/jxpath/api-1.2/"/>
@@ -45,7 +41,7 @@ under the License.
     <menu name="JXPath 1.1">
       <item name="Javadoc"         href="http://commons.apache.org/jxpath/api-1.1/"/>
       <item name="Release Notes"   href="http://commons.apache.org/jxpath/release-notes-1.1.html"/>
-    </menu-->
+    </menu>
     <menu name="Development">
       <item name="Mailing Lists"     href="/mail-lists.html"/>
       <item name="Issue Tracking"    href="/issue-tracking.html"/>
