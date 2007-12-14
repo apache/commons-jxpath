@@ -309,9 +309,6 @@ public class CoreFunction extends Operation {
         if (value instanceof NodePointer) {
             value = ((NodePointer) value).getValue();
         }
-        if (value instanceof NodeSet) {
-            value = ((NodeSet) value).getPointers();
-        }
         if (value instanceof EvalContext) {
             EvalContext ctx = (EvalContext) value;
             while (ctx.hasNext()) {
