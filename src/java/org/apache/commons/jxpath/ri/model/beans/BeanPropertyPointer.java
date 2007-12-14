@@ -34,14 +34,18 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
     private JXPathBeanInfo beanInfo;
-    private PropertyDescriptor propertyDescriptors[];
+    private PropertyDescriptor[] propertyDescriptors;
     private PropertyDescriptor propertyDescriptor;
     private String[] names;
     private static final Object UNINITIALIZED = new Object();
     private Object baseValue = UNINITIALIZED;
     private Object value = UNINITIALIZED;
-    
 
+    /**
+     * Create a new BeanPropertyPointer.
+     * @param parent parent pointer
+     * @param beanInfo describes the target property/ies.
+     */
     public BeanPropertyPointer(NodePointer parent, JXPathBeanInfo beanInfo) {
         super(parent);
         this.beanInfo = beanInfo;
@@ -49,13 +53,14 @@ public class BeanPropertyPointer extends PropertyPointer {
 
     /**
      * This type of node is auxiliary.
+     * @return true
      */
     public boolean isContainer() {
         return true;
     }
 
     /**
-     * Number of the bean's properties.
+     * {@inheritDoc}
      */
     public int getPropertyCount() {
         if (beanInfo.isAtomic()) {
@@ -65,7 +70,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Names of all properties, sorted alphabetically
+     * Get the names of all properties, sorted alphabetically
+     * @return String[]
      */
     public String[] getPropertyNames() {
         if (names == null) {
@@ -79,7 +85,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Select a property by name
+     * Select a property by name.
+     * @param propertyName String name
      */
     public void setPropertyName(String propertyName) {
         setPropertyIndex(UNSPECIFIED_PROPERTY);
@@ -88,6 +95,7 @@ public class BeanPropertyPointer extends PropertyPointer {
 
     /**
      * Selects a property by its offset in the alphabetically sorted list.
+     * @param index property index
      */
     public void setPropertyIndex(int index) {
         if (propertyIndex != index) {
@@ -100,7 +108,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * The value of the currently selected property.
+     * Get the value of the currently selected property.
+     * @return Object value
      */
     public Object getBaseValue() {
         if (baseValue == UNINITIALIZED) {
@@ -113,6 +122,9 @@ public class BeanPropertyPointer extends PropertyPointer {
         return baseValue;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setIndex(int index) {
         if (this.index != index) {
             // When dealing with a scalar, index == 0 is equivalent to
@@ -131,6 +143,7 @@ public class BeanPropertyPointer extends PropertyPointer {
      * the value of the index'th element of the collection represented by the
      * property. If the property is not a collection, index should be zero
      * and the value will be the property itself.
+     * @return Object
      */
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
@@ -150,10 +163,16 @@ public class BeanPropertyPointer extends PropertyPointer {
         return value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isActualProperty() {
         return getPropertyDescriptor() != null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null) {
@@ -179,6 +198,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     /**
      * If the property contains a collection, then the length of that
      * collection, otherwise - 1.
+     * @return int length
      */
     public int getLength() {
         PropertyDescriptor pd = getPropertyDescriptor();
@@ -203,6 +223,7 @@ public class BeanPropertyPointer extends PropertyPointer {
      * If index == WHOLE_COLLECTION, change the value of the property, otherwise
      * change the value of the index'th element of the collection
      * represented by the property.
+     * @param value value to set
      */
     public void setValue(Object value) {
         PropertyDescriptor pd = getPropertyDescriptor();
@@ -221,7 +242,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * @see PropertyPointer#createPath(JXPathContext)
+     * {@inheritDoc}
      */
     public NodePointer createPath(JXPathContext context) {
         if (getImmediateNode() == null) {
@@ -232,6 +253,9 @@ public class BeanPropertyPointer extends PropertyPointer {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void remove() {
         if (index == WHOLE_COLLECTION) {
             setValue(null);
@@ -250,7 +274,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Name of the currently selected property.
+     * Get the name of the currently selected property.
+     * @return String property name
      */
     public String getPropertyName() {
         if (propertyName == null) {
@@ -265,6 +290,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     /**
      * Finds the property descriptor corresponding to the current property
      * index.
+     * @return PropertyDescriptor
      */
     private PropertyDescriptor getPropertyDescriptor() {
         if (propertyDescriptor == null) {
@@ -274,7 +300,7 @@ public class BeanPropertyPointer extends PropertyPointer {
                     beanInfo.getPropertyDescriptor(propertyName);
             }
             else {
-                PropertyDescriptor propertyDescriptors[] =
+                PropertyDescriptor[] propertyDescriptors =
                     getPropertyDescriptors();
                 if (inx >= 0 && inx < propertyDescriptors.length) {
                     propertyDescriptor = propertyDescriptors[inx];
@@ -287,7 +313,11 @@ public class BeanPropertyPointer extends PropertyPointer {
         return propertyDescriptor;
     }
 
-    protected PropertyDescriptor[] getPropertyDescriptors() {
+    /**
+     * Get all PropertyDescriptors.
+     * @return PropertyDescriptor[]
+     */
+    protected synchronized PropertyDescriptor[] getPropertyDescriptors() {
         if (propertyDescriptors == null) {
             propertyDescriptors = beanInfo.getPropertyDescriptors();
         }

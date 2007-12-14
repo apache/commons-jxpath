@@ -35,17 +35,25 @@ import org.apache.commons.jxpath.util.ValueUtils;
  */
 public class DynamicPointerFactory implements NodePointerFactory {
 
+    /**
+     * Factory order constant.
+     */
     public static final int DYNAMIC_POINTER_FACTORY_ORDER = 800;
 
+    /**
+     * {@inheritDoc}
+     */
     public int getOrder() {
         return DYNAMIC_POINTER_FACTORY_ORDER;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createNodePointer(
         QName name,
         Object bean,
-        Locale locale) 
-    {
+        Locale locale) {
         JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         if (bi.isDynamic()) {
             DynamicPropertyHandler handler =
@@ -56,11 +64,13 @@ public class DynamicPointerFactory implements NodePointerFactory {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createNodePointer(
         NodePointer parent,
         QName name,
-        Object bean) 
-    {
+        Object bean) {
         if (bean == null) {
             return new NullPointer(parent, name);
         }

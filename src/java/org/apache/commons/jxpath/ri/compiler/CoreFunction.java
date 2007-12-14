@@ -45,15 +45,28 @@ public class CoreFunction extends Operation {
     private static final Double ZERO = new Double(0);
     private int functionCode;
 
+    /**
+     * Create a new CoreFunction.
+     * @param functionCode int function code
+     * @param args argument Expressions
+     */
     public CoreFunction(int functionCode, Expression args[]) {
         super(args);
         this.functionCode = functionCode;
     }
 
+    /**
+     * Get the function code.
+     * @return int function code
+     */
     public int getFunctionCode() {
         return functionCode;
     }
-    
+
+    /**
+     * Get the name of this function.
+     * @return String function name
+     */
     protected String getFunctionName() {
         switch (functionCode) {
             case Compiler.FUNCTION_LAST :
@@ -118,18 +131,34 @@ public class CoreFunction extends Operation {
         return "unknownFunction" + functionCode + "()";
     }
 
+    /**
+     * Convenience method to return the first argument.
+     * @return Expression
+     */
     public Expression getArg1() {
         return args[0];
     }
 
+    /**
+     * Convenience method to return the second argument.
+     * @return Expression
+     */
     public Expression getArg2() {
         return args[1];
     }
 
+    /**
+     * Convenience method to return the third argument.
+     * @return Expression
+     */
     public Expression getArg3() {
         return args[2];
     }
 
+    /**
+     * Return the number of argument Expressions.
+     * @return int count
+     */
     public int getArgumentCount() {
         if (args == null) {
             return 0;
@@ -188,6 +217,9 @@ public class CoreFunction extends Operation {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(getFunctionName());
@@ -205,12 +237,15 @@ public class CoreFunction extends Operation {
         return buffer.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object compute(EvalContext context) {
         return computeValue(context);
     }
 
     /**
-     * Computes a built-in function
+     * {@inheritDoc}
      */
     public Object computeValue(EvalContext context) {
         switch (functionCode) {
@@ -278,6 +313,11 @@ public class CoreFunction extends Operation {
         return null;
     }
 
+    /**
+     * last() implementation.
+     * @param context evaluation context
+     * @return Number
+     */
     protected Object functionLast(EvalContext context) {
         assertArgCount(0);
         // Move the position to the beginning and iterate through
@@ -296,11 +336,21 @@ public class CoreFunction extends Operation {
         return new Double(count);
     }
 
+    /**
+     * position() implementation.
+     * @param context evaluation context
+     * @return Number
+     */
     protected Object functionPosition(EvalContext context) {
         assertArgCount(0);
         return new Integer(context.getCurrentPosition());
     }
 
+    /**
+     * count() implementation.
+     * @param context evaluation context
+     * @return Number
+     */
     protected Object functionCount(EvalContext context) {
         assertArgCount(1);
         Expression arg1 = getArg1();
@@ -328,6 +378,11 @@ public class CoreFunction extends Operation {
         return new Double(count);
     }
 
+    /**
+     * lang() implementation.
+     * @param context evaluation context
+     * @return Boolean
+     */
     protected Object functionLang(EvalContext context) {
         assertArgCount(1);
         String lang = InfoSetUtil.stringValue(getArg1().computeValue(context));
@@ -338,6 +393,11 @@ public class CoreFunction extends Operation {
         return pointer.isLanguage(lang) ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    /**
+     * id() implementation.
+     * @param context evaluation context
+     * @return Pointer
+     */
     protected Object functionID(EvalContext context) {
         assertArgCount(1);
         String id = InfoSetUtil.stringValue(getArg1().computeValue(context));
@@ -346,6 +406,11 @@ public class CoreFunction extends Operation {
         return pointer.getPointerByID(jxpathContext, id);
     }
 
+    /**
+     * key() implementation.
+     * @param context evaluation context
+     * @return various Object
+     */
     protected Object functionKey(EvalContext context) {
         assertArgCount(2);
         String key = InfoSetUtil.stringValue(getArg1().computeValue(context));
@@ -373,6 +438,11 @@ public class CoreFunction extends Operation {
         return new NodeSetContext(context, nodeSet);
     }
 
+    /**
+     * namespace-uri() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     protected Object functionNamespaceURI(EvalContext context) {
         if (getArgumentCount() == 0) {
             NodePointer ptr = context.getCurrentNodePointer();
@@ -392,6 +462,11 @@ public class CoreFunction extends Operation {
         return "";
     }
 
+    /**
+     * local-name() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     protected Object functionLocalName(EvalContext context) {
         if (getArgumentCount() == 0) {
             NodePointer ptr = context.getCurrentNodePointer();
@@ -409,6 +484,11 @@ public class CoreFunction extends Operation {
         return "";
     }
 
+    /**
+     * name() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     protected Object functionName(EvalContext context) {
         if (getArgumentCount() == 0) {
             NodePointer ptr = context.getCurrentNodePointer();
@@ -426,6 +506,11 @@ public class CoreFunction extends Operation {
         return "";
     }
 
+    /**
+     * string() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     protected Object functionString(EvalContext context) {
         if (getArgumentCount() == 0) {
             return InfoSetUtil.stringValue(context.getCurrentNodePointer());
@@ -434,6 +519,11 @@ public class CoreFunction extends Operation {
         return InfoSetUtil.stringValue(getArg1().computeValue(context));
     }
 
+    /**
+     * concat() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     protected Object functionConcat(EvalContext context) {
         if (getArgumentCount() < 2) {
             assertArgCount(2);
@@ -446,6 +536,11 @@ public class CoreFunction extends Operation {
         return buffer.toString();
     }
 
+    /**
+     * starts-with() implementation.
+     * @param context evaluation context
+     * @return Boolean
+     */
     protected Object functionStartsWith(EvalContext context) {
         assertArgCount(2);
         String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
@@ -453,6 +548,11 @@ public class CoreFunction extends Operation {
         return s1.startsWith(s2) ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    /**
+     * contains() implementation.
+     * @param context evaluation context
+     * @return Boolean
+     */
     protected Object functionContains(EvalContext context) {
         assertArgCount(2);
         String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
@@ -460,6 +560,11 @@ public class CoreFunction extends Operation {
         return s1.indexOf(s2) != -1 ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    /**
+     * substring-before() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     protected Object functionSubstringBefore(EvalContext context) {
         assertArgCount(2);
         String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
@@ -471,6 +576,11 @@ public class CoreFunction extends Operation {
         return s1.substring(0, index);
     }
 
+    /**
+     * substring-after() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     protected Object functionSubstringAfter(EvalContext context) {
         assertArgCount(2);
         String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
@@ -482,6 +592,11 @@ public class CoreFunction extends Operation {
         return s1.substring(index + s2.length());
     }
 
+    /**
+     * substring() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     protected Object functionSubstring(EvalContext context) {
         int ac = getArgumentCount();
         if (ac != 2 && ac != 3) {
@@ -529,6 +644,11 @@ public class CoreFunction extends Operation {
         return s1.substring((int) from - 1, (int) (to - 1));
     }
 
+    /**
+     * string-length() implementation.
+     * @param context evaluation context
+     * @return Number
+     */
     protected Object functionStringLength(EvalContext context) {
         String s;
         if (getArgumentCount() == 0) {
@@ -541,6 +661,11 @@ public class CoreFunction extends Operation {
         return new Double(s.length());
     }
 
+    /**
+     * normalize-space() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     protected Object functionNormalizeSpace(EvalContext context) {
         assertArgCount(1);
         String s = InfoSetUtil.stringValue(getArg1().computeValue(context));
@@ -572,6 +697,11 @@ public class CoreFunction extends Operation {
         return new String(chars, 0, out);
     }
 
+    /**
+     * translate() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     protected Object functionTranslate(EvalContext context) {
         assertArgCount(3);
         String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
@@ -594,6 +724,11 @@ public class CoreFunction extends Operation {
         return new String(chars, 0, out);
     }
 
+    /**
+     * boolean() implementation.
+     * @param context evaluation context
+     * @return Boolean
+     */
     protected Object functionBoolean(EvalContext context) {
         assertArgCount(1);
         return InfoSetUtil.booleanValue(getArg1().computeValue(context))
@@ -601,6 +736,11 @@ public class CoreFunction extends Operation {
             : Boolean.FALSE;
     }
 
+    /**
+     * not() implementation.
+     * @param context evaluation context
+     * @return Boolean
+     */
     protected Object functionNot(EvalContext context) {
         assertArgCount(1);
         return InfoSetUtil.booleanValue(getArg1().computeValue(context))
@@ -608,21 +748,41 @@ public class CoreFunction extends Operation {
             : Boolean.TRUE;
     }
 
+    /**
+     * true() implementation.
+     * @param context evaluation context
+     * @return Boolean.TRUE
+     */
     protected Object functionTrue(EvalContext context) {
         assertArgCount(0);
         return Boolean.TRUE;
     }
 
+    /**
+     * false() implementation.
+     * @param context evaluation context
+     * @return Boolean.FALSE
+     */
     protected Object functionFalse(EvalContext context) {
         assertArgCount(0);
         return Boolean.FALSE;
     }
 
+    /**
+     * null() implementation.
+     * @param context evaluation context
+     * @return null
+     */
     protected Object functionNull(EvalContext context) {
         assertArgCount(0);
         return null;
     }
 
+    /**
+     * number() implementation.
+     * @param context evaluation context
+     * @return Number
+     */
     protected Object functionNumber(EvalContext context) {
         if (getArgumentCount() == 0) {
             return InfoSetUtil.number(context.getCurrentNodePointer());
@@ -631,6 +791,11 @@ public class CoreFunction extends Operation {
         return InfoSetUtil.number(getArg1().computeValue(context));
     }
 
+    /**
+     * sum() implementation.
+     * @param context evaluation context
+     * @return Number
+     */
     protected Object functionSum(EvalContext context) {
         assertArgCount(1);
         Object v = getArg1().compute(context);
@@ -650,6 +815,11 @@ public class CoreFunction extends Operation {
             "Invalid argument type for 'sum': " + v.getClass().getName());
     }
 
+    /**
+     * floor() implementation.
+     * @param context evaluation context
+     * @return Number
+     */
     protected Object functionFloor(EvalContext context) {
         assertArgCount(1);
         double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
@@ -659,6 +829,11 @@ public class CoreFunction extends Operation {
         return new Double(Math.floor(v));
     }
 
+    /**
+     * ceiling() implementation.
+     * @param context evaluation context
+     * @return Number
+     */
     protected Object functionCeiling(EvalContext context) {
         assertArgCount(1);
         double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
@@ -668,6 +843,11 @@ public class CoreFunction extends Operation {
         return new Double(Math.ceil(v));
     }
 
+    /**
+     * round() implementation.
+     * @param context evaluation context
+     * @return Number
+     */
     protected Object functionRound(EvalContext context) {
         assertArgCount(1);
         double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
@@ -677,6 +857,11 @@ public class CoreFunction extends Operation {
         return new Double(Math.round(v));
     }
 
+    /**
+     * format-number() implementation.
+     * @param context evaluation context
+     * @return String
+     */
     private Object functionFormatNumber(EvalContext context) {
         int ac = getArgumentCount();
         if (ac != 2 && ac != 3) {
@@ -713,10 +898,19 @@ public class CoreFunction extends Operation {
         return format.format(number);
     }
 
+    /**
+     * Assert <code>count</code> args.
+     * @param count int
+     */
     private void assertArgCount(int count) {
         assertArgRange(count, count);
     }
 
+    /**
+     * Assert at least <code>min</code>/at most <code>max</code> args.
+     * @param min int
+     * @param max int
+     */
     private void assertArgRange(int min, int max) {
         int ct = getArgumentCount();
         if (ct < min || ct > max) {

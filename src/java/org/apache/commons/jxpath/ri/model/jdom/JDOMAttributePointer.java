@@ -40,12 +40,18 @@ public class JDOMAttributePointer extends NodePointer {
         this.attr = attr;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         return new QName(
             JDOMNodePointer.getPrefix(attr),
             JDOMNodePointer.getLocalName(attr));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getNamespaceURI() {
         String uri = attr.getNamespaceURI();
         if (uri != null && uri.equals("")) {
@@ -54,46 +60,71 @@ public class JDOMAttributePointer extends NodePointer {
         return uri;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getValue() {
         return attr.getValue();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getBaseValue() {
         return attr;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getLength() {
         return 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getImmediateNode() {
         return attr;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isActual() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         return true;
     }
 
     /**
-     * Sets the value of this attribute.
+     * {@inheritDoc}
      */
     public void setValue(Object value) {
         attr.setValue((String) TypeUtils.convert(value, String.class));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void remove() {
         attr.getParent().removeAttribute(attr);
     }
 
     /**
+     * {@inheritDoc}
      */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
@@ -109,15 +140,24 @@ public class JDOMAttributePointer extends NodePointer {
         return buffer.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return System.identityHashCode(attr);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         return object == this || object instanceof JDOMAttributePointer
                 && ((JDOMAttributePointer) object).attr == attr;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int compareChildNodePointers(
             NodePointer pointer1,
             NodePointer pointer2) {

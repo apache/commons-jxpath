@@ -32,6 +32,7 @@ public interface NodePointerFactory {
 
     /**
      * The factory order number determines its position between other factories.
+     * @return int order
      */
     int getOrder();
 
@@ -39,6 +40,9 @@ public interface NodePointerFactory {
      * Create a NodePointer for the supplied object.  The node will represent
      * the "root" object for a path.
      *
+     * @param name String node name
+     * @param object child object
+     * @param locale Locale
      * @return  null if this factory does not recognize objects of the supplied
      * type.
      */
@@ -47,6 +51,9 @@ public interface NodePointerFactory {
     /**
      * Create a NodePointer for the supplied child object.
      * <p>
+     * @param parent parent node
+     * @param name String node name
+     * @param object child object
      * @return null if this factory does not recognize objects of the supplied
      * type.
      */

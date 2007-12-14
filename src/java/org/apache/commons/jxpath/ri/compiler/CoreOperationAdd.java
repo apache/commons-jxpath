@@ -27,10 +27,17 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  */
 public class CoreOperationAdd extends CoreOperation {
 
+    /**
+     * Create a new CoreOperationAdd.
+     * @param args Expression arguments to add together.
+     */
     public CoreOperationAdd(Expression[] args) {
         super(args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
         double s = 0.0;
         for (int i = 0; i < args.length; i++) {
@@ -38,15 +45,24 @@ public class CoreOperationAdd extends CoreOperation {
         }
         return new Double(s);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     protected int getPrecedence() {
         return 4;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isSymmetric() {
         return true;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return "+";
     }

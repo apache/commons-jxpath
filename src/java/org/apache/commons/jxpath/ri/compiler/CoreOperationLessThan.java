@@ -24,14 +24,25 @@ package org.apache.commons.jxpath.ri.compiler;
  */
 public class CoreOperationLessThan extends CoreOperationRelationalExpression {
 
+    /**
+     * Create a new CoreOperationLessThan.
+     * @param arg1 left Expression
+     * @param arg2 right Expression
+     */
     public CoreOperationLessThan(Expression arg1, Expression arg2) {
         super(new Expression[] { arg1, arg2 });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean evaluateCompare(int compare) {
         return compare < 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return "<";
     }

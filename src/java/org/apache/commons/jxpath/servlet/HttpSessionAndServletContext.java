@@ -30,16 +30,29 @@ public class HttpSessionAndServletContext {
     private HttpSession session;
     private ServletContext context;
 
+    /**
+     * Create a new HttpSessionAndServletContext.
+     * @param session HttpSession
+     * @param context ServletContext
+     */
     public HttpSessionAndServletContext(HttpSession session,
             ServletContext context) {
         this.session = session;
         this.context = context;
     }
-    
+
+    /**
+     * Get the session.
+     * @return HttpSession
+     */
     public HttpSession getSession() {
         return session;
     }
-    
+
+    /**
+     * Get the ServletContext.
+     * @return ServletContext
+     */
     public ServletContext getServletContext() {
         return context;
     }

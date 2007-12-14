@@ -22,11 +22,14 @@ package org.apache.commons.jxpath;
  * @author Dmitri Plotnikov
  * @version $Revision: 155422 $ $Date: 2005-02-26 08:07:46 -0500 (Sat, 26 Feb 2005) $
  */
-
 public class JXPathNotFoundException extends JXPathException {
 
     private static final long serialVersionUID = -8875537628056117241L;
 
+    /**
+     * Create a new JXPathNotFoundException.
+     * @param message exception detail
+     */
     public JXPathNotFoundException(String message) {
         super(message);
     }
