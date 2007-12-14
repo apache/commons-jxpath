@@ -1382,7 +1382,7 @@ TypeUtils.setTypeConverter(new JXPath11CompatibleTypeConverter());
 
     <section name="Type Conversions">
       <p>
-        JXPath automatically performs the following type convertions:
+        JXPath automatically performs the following type conversions:
       </p>
       <table>
         <tr>

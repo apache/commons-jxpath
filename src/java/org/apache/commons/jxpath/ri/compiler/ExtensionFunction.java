@@ -20,8 +20,10 @@ import java.util.Arrays;
 
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.JXPathFunctionNotFoundException;
+import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.QName;
+import org.apache.commons.jxpath.ri.axes.NodeSetContext;
 
 /**
  * Represents an element of the parse tree representing an extension function
@@ -87,8 +89,9 @@ public class ExtensionFunction extends Operation {
             throw new JXPathFunctionNotFoundException("No such function: "
                     + functionName + Arrays.asList(parameters));
         }
-
-        return function.invoke(context, parameters);
+        Object result = function.invoke(context, parameters);
+        return result instanceof NodeSet ? new NodeSetContext(context,
+                (NodeSet) result) : result;
     }
     
     private Object convert(Object object) {
