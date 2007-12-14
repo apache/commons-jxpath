@@ -421,7 +421,7 @@ public class CoreFunction extends Operation {
             if (ec.hasNext()) {
                 value = ((NodePointer) ec.next()).getValue();
             } else { // empty context -> empty results
-                return new BasicNodeSet();
+                return new NodeSetContext(context, new BasicNodeSet());
             }
         }
         JXPathContext jxpathContext = context.getJXPathContext();
