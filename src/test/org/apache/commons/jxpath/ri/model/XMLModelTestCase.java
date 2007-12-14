@@ -833,4 +833,9 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         assertXPathValue(context, "/vendor[1]/contact[1] | /vendor[1]/contact[4]", "John");
         assertXPathValue(context, "/vendor[1]/contact[4] | /vendor[1]/contact[1]", "John");
     }
+
+    public void testNodes() {
+        Pointer pointer = context.getPointer("/vendor[1]/contact[1]");
+        assertFalse(pointer.getNode().equals(pointer.getValue()));
+    }
 }
