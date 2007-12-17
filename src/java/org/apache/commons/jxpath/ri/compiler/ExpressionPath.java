@@ -43,7 +43,7 @@ public class ExpressionPath extends Path {
     public ExpressionPath(
         Expression expression,
         Expression[] predicates,
-        Step[] steps) 
+        Step[] steps)
     {
         super(steps);
         this.expression = expression;
@@ -135,12 +135,12 @@ public class ExpressionPath extends Path {
      */
     protected Object expressionPath(
         EvalContext evalContext,
-        boolean firstMatch) 
+        boolean firstMatch)
     {
         Object value = expression.compute(evalContext);
         EvalContext context;
         if (value instanceof InitialContext) {
-            // This is an optimization. We can avoid iterating through a 
+            // This is an optimization. We can avoid iterating through a
             // collection if the context bean is in fact one.
             context = (InitialContext) value;
         }

@@ -50,7 +50,7 @@ public class CoreFunction extends Operation {
      * @param functionCode int function code
      * @param args argument Expressions
      */
-    public CoreFunction(int functionCode, Expression args[]) {
+    public CoreFunction(int functionCode, Expression[] args) {
         super(args);
         this.functionCode = functionCode;
     }
@@ -127,8 +127,9 @@ public class CoreFunction extends Operation {
                 return "key";
             case Compiler.FUNCTION_FORMAT_NUMBER:
                 return "format-number";
+            default:
+                return "unknownFunction" + functionCode + "()";
         }
-        return "unknownFunction" + functionCode + "()";
     }
 
     /**
@@ -170,6 +171,7 @@ public class CoreFunction extends Operation {
      * Returns true if any argument is context dependent or if
      * the function is last(), position(), boolean(), local-name(),
      * name(), string(), lang(), number().
+     * @return boolean
      */
     public boolean computeContextDependent() {
         if (super.computeContextDependent()) {
@@ -209,12 +211,12 @@ public class CoreFunction extends Operation {
             case Compiler.FUNCTION_CEILING:
             case Compiler.FUNCTION_ROUND:
                 return false;
-                
-            case Compiler.FUNCTION_FORMAT_NUMBER:
-                return args != null && args.length == 2;                             
-        }
 
-        return false;
+            case Compiler.FUNCTION_FORMAT_NUMBER:
+                return args != null && args.length == 2;
+            default:
+                return false;
+        }
     }
 
     /**
@@ -224,7 +226,7 @@ public class CoreFunction extends Operation {
         StringBuffer buffer = new StringBuffer();
         buffer.append(getFunctionName());
         buffer.append('(');
-        Expression args[] = getArguments();
+        Expression[] args = getArguments();
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
                 if (i > 0) {
@@ -309,8 +311,9 @@ public class CoreFunction extends Operation {
                 return functionKey(context);
             case Compiler.FUNCTION_FORMAT_NUMBER :
                 return functionFormatNumber(context);
+            default:
+                return null;
         }
-        return null;
     }
 
     /**
@@ -420,7 +423,8 @@ public class CoreFunction extends Operation {
             ec = (EvalContext) value;
             if (ec.hasNext()) {
                 value = ((NodePointer) ec.next()).getValue();
-            } else { // empty context -> empty results
+            }
+            else { // empty context -> empty results
                 return new NodeSetContext(context, new BasicNodeSet());
             }
         }
@@ -529,7 +533,7 @@ public class CoreFunction extends Operation {
             assertArgCount(2);
         }
         StringBuffer buffer = new StringBuffer();
-        Expression args[] = getArguments();
+        Expression[] args = getArguments();
         for (int i = 0; i < args.length; i++) {
             buffer.append(InfoSetUtil.stringValue(args[i].compute(context)));
         }
@@ -669,19 +673,16 @@ public class CoreFunction extends Operation {
     protected Object functionNormalizeSpace(EvalContext context) {
         assertArgCount(1);
         String s = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        char chars[] = s.toCharArray();
+        char[] chars = s.toCharArray();
         int out = 0;
         int phase = 0;
         for (int in = 0; in < chars.length; in++) {
-            switch(chars[in]) {
-                case 0x20:
-                case 0x9:
-                case 0xD:
-                case 0xA:
-                    if (phase == 0) {      // beginning
-                        ;
-                    }
-                    else if (phase == 1) { // non-space
+            switch (chars[in]) {
+                case ' ':
+                case '\t':
+                case '\r':
+                case '\n':
+                    if (phase == 1) { // non-space
                         phase = 2;
                         chars[out++] = ' ';
                     }
@@ -707,7 +708,7 @@ public class CoreFunction extends Operation {
         String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
         String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
         String s3 = InfoSetUtil.stringValue(getArg3().computeValue(context));
-        char chars[] = s1.toCharArray();
+        char[] chars = s1.toCharArray();
         int out = 0;
         for (int in = 0; in < chars.length; in++) {
             char c = chars[in];
@@ -891,7 +892,7 @@ public class CoreFunction extends Operation {
             }
             symbols = new DecimalFormatSymbols(locale);
         }
-        
+
         DecimalFormat format = (DecimalFormat) NumberFormat.getInstance();
         format.setDecimalFormatSymbols(symbols);
         format.applyLocalizedPattern(pattern);

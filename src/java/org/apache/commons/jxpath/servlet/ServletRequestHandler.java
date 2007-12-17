@@ -29,10 +29,10 @@ import javax.servlet.ServletRequest;
  * @version $Revision$ $Date$
  */
 public class ServletRequestHandler extends HttpSessionHandler {
-    
+
     protected void collectPropertyNames(HashSet set, Object bean) {
         super.collectPropertyNames(set, bean);
-        ServletRequestAndContext handle = (ServletRequestAndContext) bean; 
+        ServletRequestAndContext handle = (ServletRequestAndContext) bean;
         ServletRequest servletRequest = handle.getServletRequest();
         Enumeration e = servletRequest.getAttributeNames();
         while (e.hasMoreElements()) {
@@ -43,9 +43,9 @@ public class ServletRequestHandler extends HttpSessionHandler {
             set.add(e.nextElement());
         }
     }
-    
-    public Object getProperty(Object bean, String property) { 
-        ServletRequestAndContext handle = (ServletRequestAndContext) bean; 
+
+    public Object getProperty(Object bean, String property) {
+        ServletRequestAndContext handle = (ServletRequestAndContext) bean;
         ServletRequest servletRequest = handle.getServletRequest();
         String[] strings = servletRequest.getParameterValues(property);
         if (strings != null) {
@@ -57,12 +57,12 @@ public class ServletRequestHandler extends HttpSessionHandler {
             }
             return strings;
         }
-        
+
         Object object = servletRequest.getAttribute(property);
         if (object != null) {
             return object;
         }
-        
+
         return super.getProperty(bean, property);
     }
 

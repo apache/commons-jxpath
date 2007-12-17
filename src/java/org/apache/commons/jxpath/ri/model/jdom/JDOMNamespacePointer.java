@@ -29,41 +29,69 @@ public class JDOMNamespacePointer extends NodePointer {
     private String prefix;
     private String namespaceURI;
 
+    /**
+     * Create a new JDOMNamespacePointer.
+     * @param parent parent pointer
+     * @param prefix ns prefix
+     */
     public JDOMNamespacePointer(NodePointer parent, String prefix) {
         super(parent);
         this.prefix = prefix;
     }
 
+    /**
+     * Create a new JDOMNamespacePointer.
+     * @param parent parent pointer
+     * @param prefix ns prefix
+     * @param namespaceURI ns URI
+     */
     public JDOMNamespacePointer(
             NodePointer parent,
             String prefix,
-            String namespaceURI) 
-    {
+            String namespaceURI) {
         super(parent);
         this.prefix = prefix;
         this.namespaceURI = namespaceURI;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         return new QName(prefix);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getBaseValue() {
         return null;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         return false;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public int getLength() {
         return 1;
-    }    
+    }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getImmediateNode() {
         return getNamespaceURI();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getNamespaceURI() {
         if (namespaceURI == null) {
             namespaceURI = parent.getNamespaceURI(prefix);
@@ -71,17 +99,24 @@ public class JDOMNamespacePointer extends NodePointer {
         return namespaceURI;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         return true;
     }
 
     /**
      * Throws UnsupportedOperationException.
+     * @param value Object value to set
      */
     public void setValue(Object value) {
         throw new UnsupportedOperationException("Cannot modify a namespace");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         if (parent != null) {
@@ -96,18 +131,26 @@ public class JDOMNamespacePointer extends NodePointer {
         return buffer.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return prefix.hashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         return object == this || object instanceof JDOMNamespacePointer && prefix.equals(((JDOMNamespacePointer) object).prefix);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int compareChildNodePointers(
         NodePointer pointer1,
-        NodePointer pointer2) 
-    {
+        NodePointer pointer2) {
         // Won't happen - namespaces don't have children
         return 0;
     }

@@ -128,7 +128,7 @@ public class TreeCompiler implements Compiler {
     public Object expressionPath(
         Object expression,
         Object[] predicates,
-        Object[] steps) 
+        Object[] steps)
     {
         return new ExpressionPath(
             (Expression) expression,

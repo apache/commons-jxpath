@@ -69,7 +69,7 @@ public class FunctionLibrary implements Functions {
     public Function getFunction(
         String namespace,
         String name,
-        Object[] parameters) 
+        Object[] parameters)
     {
         if (byNamespace == null) {
             prepareCache();

@@ -80,7 +80,7 @@ public class NamespaceResolver implements Cloneable {
 
     /**
      * Registers a namespace prefix.
-     * 
+     *
      * @param prefix A namespace prefix
      * @param namespaceURI A URI for that prefix
      */
@@ -92,7 +92,7 @@ public class NamespaceResolver implements Cloneable {
         namespaceMap.put(prefix, namespaceURI);
         reverseMap = null;
     }
-    
+
     /**
      * Register a namespace for the expression context.
      * @param pointer the Pointer to set.
@@ -111,14 +111,14 @@ public class NamespaceResolver implements Cloneable {
         }
         return pointer;
     }
-    
+
     /**
      * Given a prefix, returns a registered namespace URI. If the requested
      * prefix was not defined explicitly using the registerNamespace method,
      * JXPathContext will then check the context node to see if the prefix is
      * defined there. See
      * {@link #setNamespaceContextPointer(NodePointer) setNamespaceContextPointer}.
-     * 
+     *
      * @param prefix The namespace prefix to look up
      * @return namespace URI or null if the prefix is undefined.
      */
@@ -130,7 +130,7 @@ public class NamespaceResolver implements Cloneable {
 
     /**
      * Given a prefix, returns an externally registered namespace URI.
-     * 
+     *
      * @param prefix The namespace prefix to look up
      * @return namespace URI or null if the prefix is undefined.
      * @since JXPath 1.3
@@ -154,7 +154,7 @@ public class NamespaceResolver implements Cloneable {
     }
 
     /**
-     * Get the nearest prefix found that matches an externally-registered namespace. 
+     * Get the nearest prefix found that matches an externally-registered namespace.
      * @param namespaceURI
      * @return String prefix if found.
      * @since JXPath 1.3

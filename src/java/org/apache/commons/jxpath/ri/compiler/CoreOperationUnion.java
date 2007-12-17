@@ -44,7 +44,7 @@ public class CoreOperationUnion extends CoreOperation {
         }
         return new UnionContext(context.getRootContext(), argCtxs);
     }
-    
+
     protected int getPrecedence() {
         return 7;
     }
@@ -52,7 +52,7 @@ public class CoreOperationUnion extends CoreOperation {
     protected boolean isSymmetric() {
         return true;
     }
-    
+
     public String getSymbol() {
         return "|";
     }

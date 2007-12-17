@@ -40,77 +40,120 @@ public class DynamicPointer extends PropertyOwnerPointer {
     private Object bean;
     private DynamicPropertyHandler handler;
 
+    /**
+     * Create a new DynamicPointer.
+     * @param name property name
+     * @param bean owning bean
+     * @param handler DynamicPropertyHandler
+     * @param locale Locale
+     */
     public DynamicPointer(QName name, Object bean,
-            DynamicPropertyHandler handler, Locale locale)
-    {
+            DynamicPropertyHandler handler, Locale locale) {
         super(null, locale);
         this.name = name;
         this.bean = bean;
         this.handler = handler;
     }
 
+    /**
+     * Create a new DynamicPointer.
+     * @param parent parent pointer
+     * @param name property name
+     * @param bean owning bean
+     * @param handler DynamicPropertyHandler
+     */
     public DynamicPointer(NodePointer parent, QName name,
-            Object bean, DynamicPropertyHandler handler)
-    {
+            Object bean, DynamicPropertyHandler handler) {
         super(parent);
         this.name = name;
         this.bean = bean;
         this.handler = handler;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public PropertyPointer getPropertyPointer() {
         return new DynamicPropertyPointer(this, handler);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator createNodeIterator(
-                String property, boolean reverse, NodePointer startWith)
-    {
+                String property, boolean reverse, NodePointer startWith) {
         return new PropertyIterator(this, property, reverse, startWith);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator attributeIterator(QName name) {
         return new DynamicAttributeIterator(this, name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         return name;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isDynamicPropertyDeclarationSupported() {
         return true;
     }
-    
+
     /**
      * Returns the DP object iself.
+     * @return Object
      */
     public Object getBaseValue() {
         return bean;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         Object value = getNode();
         return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
-    }    
-    
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         return false;
     }
 
     /**
      * Returns 1.
+     * @return int
      */
     public int getLength() {
         return 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String asPath() {
         return parent == null ? "/" : super.asPath();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return System.identityHashCode(bean) + name.hashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;

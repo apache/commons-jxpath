@@ -148,7 +148,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * elements:
  *
  * <pre><blockquote>
- * String homeZipCode = 
+ * String homeZipCode =
  *     (String) context.getValue("addresses[@name='home']/zipCode");
  * </blockquote></pre>
  *
@@ -215,7 +215,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * <pre><blockquote>
  * public class AddressFactory extends AbstractFactory {
- *    public boolean createObject(JXPathContext context, 
+ *    public boolean createObject(JXPathContext context,
  *               Pointer pointer, Object parent, String name, int index){
  *     if ((parent instanceof Employee) &amp;&amp; name.equals("address"){
  *       ((Employee)parent).setAddress(new Address());
@@ -303,15 +303,15 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * <p>
  * Here's how you can create new objects:
  * <pre><blockquote>
- * Book book = 
+ * Book book =
  *    (Book) context.getValue(
  *         "org.apache.commons.jxpath.example.Book.new ('John Updike')");
  * </blockquote></pre>
  *
  * Here's how you can call static methods:
  * <pre><blockquote>
- *   Book book = 
- *    (Book) context.getValue( 
+ *   Book book =
+ *    (Book) context.getValue(
  *       "org. apache.commons.jxpath.example.Book.getBestBook('John Updike')");
  * </blockquote></pre>
  *
@@ -369,8 +369,8 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * See  <a href="http://www.w3schools.com/xpath">XPath Tutorial by
  * W3Schools</a><br>. Also see <a href="http://www.w3.org/TR/xpath">XML Path
- * Language (XPath) Version 1.0</a><br><br> 
- * 
+ * Language (XPath) Version 1.0</a><br><br>
+ *
  * You will also find more information and examples in
  * <a href="http://commons.apache.org/jxpath/users-guide.html">
  * JXPath User's Guide</a>
@@ -394,7 +394,7 @@ public abstract class JXPathContext {
 
     private static JXPathContextFactory contextFactory;
     private static JXPathContext compilationContext;
-    
+
     private static final PackageFunctions GENERIC_FUNCTIONS =
         new PackageFunctions("", null);
 
@@ -412,21 +412,21 @@ public abstract class JXPathContext {
      */
     public static JXPathContext newContext(
         JXPathContext parentContext,
-        Object contextBean) 
+        Object contextBean)
     {
         return getContextFactory().newContext(parentContext, contextBean);
     }
 
     /**
-     * Acquires a context factory and caches it. 
+     * Acquires a context factory and caches it.
      */
     private static JXPathContextFactory getContextFactory () {
         if (contextFactory == null) {
-            contextFactory = JXPathContextFactory.newInstance();            
+            contextFactory = JXPathContextFactory.newInstance();
         }
         return contextFactory;
     }
-    
+
     /**
      * This  constructor should remain protected - it is to be overridden by
      * subclasses, but never explicitly invoked by clients.
@@ -449,7 +449,7 @@ public abstract class JXPathContext {
     public Object getContextBean() {
         return contextBean;
     }
-    
+
     /**
      * Returns a Pointer for the context bean.
      */
@@ -550,18 +550,18 @@ public abstract class JXPathContext {
         }
         return locale;
     }
-    
+
     /**
      * Sets DecimalFormatSymbols for a given name. The DecimalFormatSymbols can
      * be referenced as the third, optional argument in the invocation of
      * <code>format-number (number,format,decimal-format-name)</code> function.
      * By default, JXPath uses the symbols for the current locale.
-     * 
+     *
      * @param name the format name or null for default format.
      */
     public synchronized void setDecimalFormatSymbols(
         String name,
-        DecimalFormatSymbols symbols) 
+        DecimalFormatSymbols symbols)
     {
         if (decimalFormats == null) {
             decimalFormats = new HashMap();
@@ -578,7 +578,7 @@ public abstract class JXPathContext {
         }
         return (DecimalFormatSymbols) decimalFormats.get(name);
     }
-    
+
     /**
      * If the context is in the lenient mode, then getValue() returns null
      * for inexistent paths.  Otherwise, a path that does not map to
@@ -629,7 +629,7 @@ public abstract class JXPathContext {
      * produces the same result as <code>getValue()</code> on object models
      * like JavaBeans, but a different result for DOM/JDOM etc., because it
      * returns the Node itself, rather than its textual contents.
-     * 
+     *
      * @param xpath the xpath to be evaluated
      * @return the found object
      */
@@ -637,10 +637,10 @@ public abstract class JXPathContext {
     	Pointer pointer = getPointer(xpath);
         return pointer == null ? null : pointer.getNode();
     }
-    
+
     /**
-     * Finds all nodes that match the specified XPath. 
-     *   
+     * Finds all nodes that match the specified XPath.
+     *
      * @param xpath the xpath to be evaluated
      * @return a list of found objects
      */
@@ -653,7 +653,7 @@ public abstract class JXPathContext {
 		}
 		return list;
     }
-    
+
     /**
      * Evaluates the xpath and returns the resulting object. Primitive
      * types are wrapped into objects.
@@ -817,7 +817,7 @@ public abstract class JXPathContext {
 
     /**
      * Registers a namespace prefix.
-     * 
+     *
      * @param prefix A namespace prefix
      * @param namespaceURI A URI for that prefix
      */
@@ -825,14 +825,14 @@ public abstract class JXPathContext {
         throw new UnsupportedOperationException(
                 "Namespace registration is not implemented by " + getClass());
     }
-    
+
     /**
      * Given a prefix, returns a registered namespace URI. If the requested
      * prefix was not defined explicitly using the registerNamespace method,
      * JXPathContext will then check the context node to see if the prefix is
      * defined there. See
      * {@link #setNamespaceContextPointer(Pointer) setNamespaceContextPointer}.
-     * 
+     *
      * @param prefix The namespace prefix to look up
      * @return namespace URI or null if the prefix is undefined.
      */
@@ -840,7 +840,7 @@ public abstract class JXPathContext {
         throw new UnsupportedOperationException(
                 "Namespace registration is not implemented by " + getClass());
     }
-    
+
     /**
      * Get the prefix associated with the specifed namespace URI.
      * @param namespaceURI the ns URI to check.
@@ -857,7 +857,7 @@ public abstract class JXPathContext {
      * context where the namespaces are defined. By default,
      * NamespaceContextPointer is the same as the Context Pointer, see
      * {@link #getContextPointer() getContextPointer()}
-     * 
+     *
      * @param namespaceContextPointer The pointer to the context where prefixes used in
      *        XPath expressions should be resolved.
      */
@@ -865,12 +865,12 @@ public abstract class JXPathContext {
         throw new UnsupportedOperationException(
                 "Namespace registration is not implemented by " + getClass());
     }
-    
+
     /**
      * Returns the namespace context pointer set with
      * {@link #setNamespaceContextPointer(Pointer) setNamespaceContextPointer()}
      * or, if none has been specified, the context pointer otherwise.
-     * 
+     *
      * @return The namespace context pointer.
      */
     public Pointer getNamespaceContextPointer() {

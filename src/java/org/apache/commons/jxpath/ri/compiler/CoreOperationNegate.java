@@ -27,23 +27,39 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  */
 public class CoreOperationNegate extends CoreOperation {
 
+    /**
+     * Create a new CoreOperationNegate.
+     * @param arg the Expression to negate
+     */
     public CoreOperationNegate(Expression arg) {
         super(new Expression[] { arg });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
         double a = InfoSetUtil.doubleValue(args[0].computeValue(context));
         return new Double(-a);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     protected int getPrecedence() {
         return 6;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isSymmetric() {
         return false;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return "-";
     }

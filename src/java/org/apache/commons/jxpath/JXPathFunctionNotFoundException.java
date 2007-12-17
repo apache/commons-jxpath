@@ -26,7 +26,7 @@ package org.apache.commons.jxpath;
 public class JXPathFunctionNotFoundException extends JXPathException {
 
     private static final long serialVersionUID = -8875537628056117241L;
-    
+
     public JXPathFunctionNotFoundException(String message) {
         super(message);
     }

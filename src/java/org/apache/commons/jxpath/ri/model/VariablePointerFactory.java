@@ -43,7 +43,7 @@ public class VariablePointerFactory implements NodePointerFactory {
 
         /**
          * Get the original (unwrapped) context.
-         * 
+         *
          * @return JXPathContext.
          */
         public JXPathContext getContext() {
@@ -62,7 +62,7 @@ public class VariablePointerFactory implements NodePointerFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.apache.commons.jxpath.ri.model.NodePointerFactory#createNodePointer(org.apache.commons.jxpath.ri.QName,
      *      java.lang.Object, java.util.Locale)
      */
@@ -87,7 +87,7 @@ public class VariablePointerFactory implements NodePointerFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.apache.commons.jxpath.ri.model.NodePointerFactory#createNodePointer(org.apache.commons.jxpath.ri.model.NodePointer,
      *      org.apache.commons.jxpath.ri.QName, java.lang.Object)
      */
@@ -98,7 +98,7 @@ public class VariablePointerFactory implements NodePointerFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.apache.commons.jxpath.ri.model.NodePointerFactory#getOrder()
      */
     public int getOrder() {

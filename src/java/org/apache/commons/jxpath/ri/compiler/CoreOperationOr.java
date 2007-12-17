@@ -27,10 +27,17 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  */
 public class CoreOperationOr extends CoreOperation {
 
+    /**
+     * Create a new CoreOperationOr.
+     * @param args or'd Expression components
+     */
     public CoreOperationOr(Expression[] args) {
         super(args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
         for (int i = 0; i < args.length; i++) {
             if (InfoSetUtil.booleanValue(args[i].computeValue(context))) {
@@ -39,15 +46,24 @@ public class CoreOperationOr extends CoreOperation {
         }
         return Boolean.FALSE;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     protected int getPrecedence() {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isSymmetric() {
         return true;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return "or";
     }

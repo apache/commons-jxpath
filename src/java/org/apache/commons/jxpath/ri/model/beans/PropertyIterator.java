@@ -39,12 +39,18 @@ public class PropertyIterator implements NodeIterator {
 
     private boolean includeStart = false;
 
+    /**
+     * Create a new PropertyIterator.
+     * @param pointer owning pointer
+     * @param name property name
+     * @param reverse iteration order
+     * @param startWith beginning pointer
+     */
     public PropertyIterator(
         PropertyOwnerPointer pointer,
         String name,
         boolean reverse,
-        NodePointer startWith) 
-    {
+        NodePointer startWith) {
         propertyNodePointer =
             (PropertyPointer) pointer.getPropertyPointer().clone();
         this.name = name;
@@ -55,7 +61,7 @@ public class PropertyIterator implements NodeIterator {
             this.startIndex = -1;
         }
         if (startWith != null) {
-            while (startWith != null 
+            while (startWith != null
                     && startWith.getImmediateParentPointer() != pointer) {
                 startWith = startWith.getImmediateParentPointer();
             }
@@ -77,15 +83,25 @@ public class PropertyIterator implements NodeIterator {
         }
     }
 
+    /**
+     * Get the property pointer.
+     * @return NodePointer
+     */
     protected NodePointer getPropertyPointer() {
         return propertyNodePointer;
     }
 
+    /**
+     * Reset property iteration.
+     */
     public void reset() {
         position = 0;
         targetReady = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (name != null) {
@@ -118,14 +134,25 @@ public class PropertyIterator implements NodeIterator {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         return name == null ? setPositionAllProperties(position) : setPositionIndividualProperty(position);
     }
 
+    /**
+     * Set position for an individual property.
+     * @param position int position
+     * @return whether this was a valid position
+     */
     private boolean setPositionIndividualProperty(int position) {
         this.position = position;
         if (position < 1) {
@@ -168,6 +195,11 @@ public class PropertyIterator implements NodeIterator {
         return true;
     }
 
+    /**
+     * Set position for all properties
+     * @param position int position
+     * @return whether this was a valid position
+     */
     private boolean setPositionAllProperties(int position) {
         this.position = position;
         if (position < 1) {
@@ -236,11 +268,15 @@ public class PropertyIterator implements NodeIterator {
         return false;
     }
 
+    /**
+     * Prepare for an individual property.
+     * @param name property name
+     */
     protected void prepareForIndividualProperty(String name) {
         targetReady = true;
         empty = true;
 
-        String names[] = propertyNodePointer.getPropertyNames();
+        String[] names = propertyNodePointer.getPropertyNames();
         if (!reverse) {
             if (startPropertyIndex == PropertyPointer.UNSPECIFIED_PROPERTY) {
                 startPropertyIndex = 0;
@@ -282,7 +318,8 @@ public class PropertyIterator implements NodeIterator {
     }
 
     /**
-     * Computes length for the current pointer - ignores any exceptions
+     * Computes length for the current pointer - ignores any exceptions.
+     * @return length
      */
     private int getLength() {
         int length;

@@ -28,19 +28,26 @@ import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * An XPath extension function implemented as an individual Java method.
- * 
+ *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
 public class MethodFunction implements Function {
 
     private Method method;
-    private static final Object EMPTY_ARRAY[] = new Object[0];
+    private static final Object[] EMPTY_ARRAY = new Object[0];
 
+    /**
+     * Create a new MethodFunction.
+     * @param method implementing Method
+     */
     public MethodFunction(Method method) {
         this.method = ValueUtils.getAccessibleMethod(method);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object invoke(ExpressionContext context, Object[] parameters) {
         try {
             Object target;
@@ -51,7 +58,7 @@ public class MethodFunction implements Function {
                     parameters = EMPTY_ARRAY;
                 }
                 int pi = 0;
-                Class types[] = method.getParameterTypes();
+                Class[] types = method.getParameterTypes();
                 if (types.length >= 1
                     && ExpressionContext.class.isAssignableFrom(types[0])) {
                     pi = 1;
@@ -67,7 +74,7 @@ public class MethodFunction implements Function {
             }
             else {
                 int pi = 0;
-                Class types[] = method.getParameterTypes();
+                Class[] types = method.getParameterTypes();
                 if (types.length >= 1
                     && ExpressionContext.class.isAssignableFrom(types[0])) {
                     pi = 1;
@@ -96,7 +103,10 @@ public class MethodFunction implements Function {
                     ex);
         }
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         return method.toString();
     }

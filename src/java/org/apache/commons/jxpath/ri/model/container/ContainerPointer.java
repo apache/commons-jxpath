@@ -37,11 +37,21 @@ public class ContainerPointer extends NodePointer {
     private Container container;
     private NodePointer valuePointer;
 
+    /**
+     * Create a new ContainerPointer.
+     * @param container Container object
+     * @param locale Locale
+     */
     public ContainerPointer(Container container, Locale locale) {
         super(null, locale);
         this.container = container;
     }
 
+    /**
+     * Create a new ContainerPointer.
+     * @param parent parent pointer
+     * @param container Container object
+     */
     public ContainerPointer(NodePointer parent, Container container) {
         super(parent);
         this.container = container;
@@ -49,33 +59,52 @@ public class ContainerPointer extends NodePointer {
 
     /**
      * This type of node is auxiliary.
+     * @return <code>true</code>.
      */
     public boolean isContainer() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getBaseValue() {
         return container;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         Object value = getBaseValue();
         return value != null && ValueUtils.isCollection(value);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public int getLength() {
         Object value = getBaseValue();
         return value == null ? 1 : ValueUtils.getLength(value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         return getValuePointer().isLeaf();
-    }    
+    }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getImmediateNode() {
         Object value = getBaseValue();
         if (index != WHOLE_COLLECTION) {
@@ -84,11 +113,17 @@ public class ContainerPointer extends NodePointer {
         return ValueUtils.getValue(value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setValue(Object value) {
         // TODO: what if this is a collection?
         container.setValue(value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getImmediateValuePointer() {
         if (valuePointer == null) {
             Object value = getImmediateNode();
@@ -97,10 +132,16 @@ public class ContainerPointer extends NodePointer {
         return valuePointer;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return System.identityHashCode(container) + index;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -114,41 +155,63 @@ public class ContainerPointer extends NodePointer {
         return container == other.container && index == other.index;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator childIterator(
         NodeTest test,
         boolean reverse,
-        NodePointer startWith) 
-    {
+        NodePointer startWith) {
         return getValuePointer().childIterator(test, reverse, startWith);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator attributeIterator(QName name) {
         return getValuePointer().attributeIterator(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator namespaceIterator() {
         return getValuePointer().namespaceIterator();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer namespacePointer(String namespace) {
         return getValuePointer().namespacePointer(namespace);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean testNode(NodeTest nodeTest) {
         return getValuePointer().testNode(nodeTest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int compareChildNodePointers(
         NodePointer pointer1,
-        NodePointer pointer2) 
-    {
+        NodePointer pointer2) {
         return pointer1.getIndex() - pointer2.getIndex();
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public String getNamespaceURI(String prefix) {
         return getValuePointer().getNamespaceURI(prefix);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public String asPath() {
         return parent == null ? "/" : parent.asPath();
     }

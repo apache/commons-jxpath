@@ -44,26 +44,45 @@ import org.apache.commons.jxpath.util.ReverseComparator;
  * @version $Revision$ $Date$
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
+    /** parent context */
     protected EvalContext parentContext;
+
+    /** root context */
     protected RootContext rootContext;
+
+    /** position */
     protected int position = 0;
+
     private boolean startedSetIteration = false;
     private boolean done = false;
     private boolean hasPerformedIteratorStep = false;
     private Iterator pointerIterator;
 
+    /**
+     * Create a new EvalContext.
+     * @param parentContext parent context
+     */
     public EvalContext(EvalContext parentContext) {
         this.parentContext = parentContext;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Pointer getContextNodePointer() {
         return getCurrentNodePointer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public JXPathContext getJXPathContext() {
         return getRootContext().getJXPathContext();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
@@ -77,11 +96,12 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     public int getDocumentOrder() {
         return parentContext != null && parentContext.isChildOrderingRequired() ? 1 : 0;
     }
-    
+
     /**
      * Even if this context has the natural ordering and therefore does
      * not require collecting and sorting all nodes prior to returning them,
      * such operation may be required for any child context.
+     * @return boolean
      */
     public boolean isChildOrderingRequired() {
         // Default behavior: if this context needs to be ordered,
@@ -91,6 +111,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Returns true if there are mode nodes matching the context's constraints.
+     * @return boolean
      */
     public boolean hasNext() {
         if (pointerIterator != null) {
@@ -107,6 +128,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Returns the next node pointer in the context
+     * @return Object
      */
     public Object next() {
         if (pointerIterator != null) {
@@ -150,12 +172,17 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Operation is not supported
+     * @throws UnsupportedOperationException
      */
     public void remove() {
         throw new UnsupportedOperationException(
             "JXPath iterators cannot remove nodes");
     }
 
+    /**
+     * Construct an iterator.
+     * @return whether the Iterator was constructed
+     */
     private boolean constructIterator() {
         HashSet set = new HashSet();
         ArrayList list = new ArrayList();
@@ -190,12 +217,14 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         case -1:
             Collections.sort(l, ReverseComparator.INSTANCE);
             break;
+        default:
         }
     }
 
     /**
      * Returns the list of all Pointers in this context for the current
      * position of the parent context.
+     * @return List
      */
     public List getContextNodeList() {
         int pos = position;
@@ -219,6 +248,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * Returns the list of all Pointers in this context for all positions
      * of the parent contexts.  If there was an ongoing iteration over
      * this context, the method should not be called.
+     * @return NodeSet
      */
     public NodeSet getNodeSet() {
         if (position != 0) {
@@ -230,22 +260,26 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         BasicNodeSet set = new BasicNodeSet();
         while (nextSet()) {
             while (nextNode()) {
-                set.add((Pointer)getCurrentNodePointer().clone());
+                set.add((Pointer) getCurrentNodePointer().clone());
             }
         }
 
         return set;
     }
-    
+
     /**
-     * Typically returns the NodeSet by calling getNodeSet(), 
+     * Typically returns the NodeSet by calling getNodeSet(),
      * but will be overridden for contexts that more naturally produce
      * individual values, e.g. VariableContext
+     * @return Object
      */
     public Object getValue() {
         return getNodeSet();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         Pointer ptr = getContextNodePointer();
         return ptr == null ? "Empty expression context" : "Expression context [" + getPosition()
@@ -255,6 +289,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Returns the root context of the path, which provides easy
      * access to variables and functions.
+     * @return RootContext
      */
     public RootContext getRootContext() {
         if (rootContext == null) {
@@ -270,6 +305,10 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         position = 0;
     }
 
+    /**
+     * Get the current position.
+     * @return int position.
+     */
     public int getCurrentPosition() {
         return position;
     }
@@ -277,6 +316,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Returns the first encountered Pointer that matches the current
      * context's criteria.
+     * @return Pointer
      */
     public Pointer getSingleNodePointer() {
         reset();
@@ -291,12 +331,14 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Returns the current context node. Undefined before the beginning
      * of the iteration.
+     * @return NodePoiner
      */
     public abstract NodePointer getCurrentNodePointer();
 
     /**
      * Returns true if there is another sets of objects to interate over.
      * Resets the current position and node.
+     * @return boolean
      */
     public boolean nextSet() {
         reset(); // Restart iteration within the set
@@ -333,6 +375,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Returns true if there is another object in the current set.
      * Switches the current position and node to the next object.
+     * @return boolean
      */
     public abstract boolean nextNode();
 
@@ -341,6 +384,8 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * predicates to quickly get to the n'th element of the node set.
      * Returns false if the position is out of the node set range.
      * You can call it with 0 as the position argument to restart the iteration.
+     * @param position to set
+     * @return boolean
      */
     public boolean setPosition(int position) {
         this.position = position;

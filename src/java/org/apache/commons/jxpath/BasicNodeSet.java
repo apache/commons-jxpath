@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A simple implementation of NodeSet that behaves as a collection of pointers. 
+ * A simple implementation of NodeSet that behaves as a collection of pointers.
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */

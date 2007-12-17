@@ -40,7 +40,7 @@ public class ContainerPointerFactory implements NodePointerFactory {
     public NodePointer createNodePointer(
         QName name,
         Object bean,
-        Locale locale) 
+        Locale locale)
     {
         return bean instanceof Container ? new ContainerPointer((Container) bean, locale) : null;
     }
@@ -48,7 +48,7 @@ public class ContainerPointerFactory implements NodePointerFactory {
     public NodePointer createNodePointer(
         NodePointer parent,
         QName name,
-        Object bean) 
+        Object bean)
     {
         return bean instanceof Container ? new ContainerPointer(parent, (Container) bean) : null;
     }

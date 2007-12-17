@@ -28,13 +28,13 @@ import org.jdom.input.SAXBuilder;
  * @version $Revision$ $Date$
  */
 public class JDOMParser extends XMLParser2 {
-    
+
     public Object parseXML(InputStream stream) {
         if (!isNamespaceAware()) {
             throw new JXPathException("JDOM parser configuration error. JDOM "
                     + "does not support the namespaceAware=false setting.");
         }
-        
+
         try {
             SAXBuilder builder = new SAXBuilder();
             builder.setExpandEntities(isExpandEntityReferences());

@@ -31,7 +31,7 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * @version $Revision$ $Date$
  */
 public class ServletContextHandler implements DynamicPropertyHandler {
-    
+
     private static final String[] STRING_ARRAY = new String[0];
 
     public String[] getPropertyNames(Object context) {
@@ -39,7 +39,7 @@ public class ServletContextHandler implements DynamicPropertyHandler {
         collectPropertyNames(list, context);
         return (String[]) list.toArray(STRING_ARRAY);
     }
-    
+
     protected void collectPropertyNames(HashSet set, Object bean) {
         Enumeration e = ((ServletContext) bean).getAttributeNames();
         while (e.hasMoreElements()) {

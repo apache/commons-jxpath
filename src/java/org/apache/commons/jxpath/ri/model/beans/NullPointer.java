@@ -31,48 +31,81 @@ public class NullPointer extends PropertyOwnerPointer {
     private QName name;
     private String id;
 
+    /**
+     * Create a new NullPointer.
+     * @param name node name
+     * @param locale Locale
+     */
     public NullPointer(QName name, Locale locale) {
         super(null, locale);
         this.name = name;
     }
 
     /**
-     * Used for the root node
+     * Used for the root node.
+     * @param parent parent pointer
+     * @param name node name
      */
     public NullPointer(NodePointer parent, QName name) {
         super(parent);
         this.name = name;
     }
 
+    /**
+     * Create a new NullPointer.
+     * @param locale Locale
+     * @param id String
+     */
     public NullPointer(Locale locale, String id) {
         super(null, locale);
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         return name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getBaseValue() {
         return null;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         return true;
-    }        
+    }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isActual() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public PropertyPointer getPropertyPointer() {
         return new NullPropertyPointer(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createPath(JXPathContext context, Object value) {
         if (parent != null) {
             return parent.createPath(context, value).getValuePointer();
@@ -81,6 +114,9 @@ public class NullPointer extends PropertyOwnerPointer {
             "Cannot create the root object: " + asPath());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createPath(JXPathContext context) {
         if (parent != null) {
             return parent.createPath(context).getValuePointer();
@@ -89,27 +125,37 @@ public class NullPointer extends PropertyOwnerPointer {
             "Cannot create the root object: " + asPath());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createChild(
         JXPathContext context,
         QName name,
-        int index) 
-    {
+        int index) {
         return createPath(context).createChild(context, name, index);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createChild(
         JXPathContext context,
-        QName name, 
+        QName name,
         int index,
-        Object value) 
-    {
+        Object value) {
         return createPath(context).createChild(context, name, index, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return name == null ? 0 : name.hashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -123,6 +169,9 @@ public class NullPointer extends PropertyOwnerPointer {
         return name == other.name || name != null && name.equals(other.name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String asPath() {
         if (id != null) {
             return "id(" + id + ")";
@@ -130,6 +179,9 @@ public class NullPointer extends PropertyOwnerPointer {
         return parent == null ? "null()" : super.asPath();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getLength() {
         return 0;
     }

@@ -19,13 +19,13 @@ package org.apache.commons.jxpath;
 /**
  * Extension function interface. Extension functions are grouped into
  * {@link Functions Functions} objects, which are installed on
- * JXPathContexts using the 
+ * JXPathContexts using the
  * {@link JXPathContext#setFunctions JXPathContext.setFunctions()}
  * call.
  * <p>
  * The Function interface can be implemented directly. However,
  * most of the time JXPath's built-in implementations should suffice.
- * See {@link ClassFunctions ClassFunctions} and 
+ * See {@link ClassFunctions ClassFunctions} and
  * {@link PackageFunctions PackageFunctions}.
  *
  * @author Dmitri Plotnikov

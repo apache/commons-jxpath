@@ -23,7 +23,7 @@ import java.util.List;
  * function.  Alternatively, the function can declare the argument as
  * a Collection (or List or Set), in which case it will be given a collection
  * of <i>values</i> matching the path.
- * 
+ *
  * @author <a href="mailto:dmitri@apache.org">Dmitri Plotnikov</a>
  * @version $Id$
  */
@@ -33,15 +33,15 @@ public interface NodeSet {
      * Returns a list of nodes.
      */
     List getNodes();
-    
+
     /**
      * Returns a list of pointers for all nodes in the set.
      */
     List getPointers();
-    
+
     /**
      * Returns a list of values of all contained pointers.
      */
     List getValues();
-    
+
 }

@@ -40,6 +40,11 @@ public class VariablePointer extends NodePointer {
     private NodePointer valuePointer;
     private boolean actual;
 
+    /**
+     * Create a new VariablePointer.
+     * @param variables Variables instance
+     * @param name variable name
+     */
     public VariablePointer(Variables variables, QName name) {
         super(null);
         this.variables = variables;
@@ -47,43 +52,68 @@ public class VariablePointer extends NodePointer {
         actual = true;
     }
 
+    /**
+     * Create a new (non-actual) VariablePointer.
+     * @param name variable name
+     */
     public VariablePointer(QName name) {
         super(null);
         this.name = name;
         actual = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isContainer() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         return name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getBaseValue() {
         if (!actual) {
             throw new JXPathException("Undefined variable: " + name);
         }
         return variables.getVariable(name.toString());
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         Object value = getNode();
         return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         Object value = getBaseValue();
         return value != null && ValueUtils.isCollection(value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getImmediateNode() {
         Object value = getBaseValue();
         return index == WHOLE_COLLECTION ? ValueUtils.getValue(value)
                 : ValueUtils.getValue(value, index);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setValue(Object value) {
         if (!actual) {
             throw new JXPathException("Cannot set undefined variable: " + name);
@@ -98,15 +128,24 @@ public class VariablePointer extends NodePointer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isActual() {
         return actual;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public void setIndex(int index) {
         super.setIndex(index);
         valuePointer = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getImmediateValuePointer() {
         if (valuePointer == null) {
             Object value = null;
@@ -126,7 +165,10 @@ public class VariablePointer extends NodePointer {
         }
         return valuePointer;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public int getLength() {
         if (actual) {
             Object value = getBaseValue();
@@ -135,6 +177,9 @@ public class VariablePointer extends NodePointer {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createPath(JXPathContext context, Object value) {
         if (actual) {
             setValue(value);
@@ -145,6 +190,9 @@ public class VariablePointer extends NodePointer {
         return ptr;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createPath(JXPathContext context) {
         if (!actual) {
             AbstractFactory factory = getAbstractFactory(context);
@@ -159,11 +207,13 @@ public class VariablePointer extends NodePointer {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createChild(
         JXPathContext context,
         QName name,
-        int index) 
-    {
+        int index) {
         Object collection = createCollection(context, index);
         if (!isActual() || (index != 0 && index != WHOLE_COLLECTION)) {
             AbstractFactory factory = getAbstractFactory(context);
@@ -185,12 +235,14 @@ public class VariablePointer extends NodePointer {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createChild(
             JXPathContext context,
-            QName name, 
+            QName name,
             int index,
-            Object value) 
-    {
+            Object value) {
         Object collection = createCollection(context, index);
         ValueUtils.setValue(collection, index, value);
         NodePointer cl = (NodePointer) clone();
@@ -198,6 +250,12 @@ public class VariablePointer extends NodePointer {
         return cl;
     }
 
+    /**
+     * Create a collection.
+     * @param context JXPathContext
+     * @param index collection index
+     * @return Object
+     */
     private Object createCollection(JXPathContext context, int index) {
         createPath(context);
 
@@ -226,6 +284,9 @@ public class VariablePointer extends NodePointer {
         return collection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void remove() {
         if (actual) {
             if (index == WHOLE_COLLECTION) {
@@ -246,6 +307,10 @@ public class VariablePointer extends NodePointer {
         }
     }
 
+    /**
+     * Assimilate the Variables instance associated with the specified context.
+     * @param context JXPathContext to search
+     */
     protected void findVariables(JXPathContext context) {
         valuePointer = null;
         JXPathContext varCtx = context;
@@ -260,12 +325,18 @@ public class VariablePointer extends NodePointer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return (actual ? System.identityHashCode(variables) : 0)
             + name.hashCode()
             + index;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -281,6 +352,9 @@ public class VariablePointer extends NodePointer {
             && index == other.index;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         buffer.append('$');
@@ -298,30 +372,49 @@ public class VariablePointer extends NodePointer {
         return buffer.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator childIterator(
         NodeTest test,
         boolean reverse,
-        NodePointer startWith) 
-    {
+        NodePointer startWith) {
         return getValuePointer().childIterator(test, reverse, startWith);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator attributeIterator(QName name) {
         return getValuePointer().attributeIterator(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator namespaceIterator() {
         return getValuePointer().namespaceIterator();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer namespacePointer(String name) {
         return getValuePointer().namespacePointer(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean testNode(NodeTest nodeTest) {
         return getValuePointer().testNode(nodeTest);
     }
 
+    /**
+     * Find the AbstractFactory, if any, associated with the specified context.
+     * @param context JXPathContext to search
+     * @return AbstractFactory
+     */
     private AbstractFactory getAbstractFactory(JXPathContext context) {
         AbstractFactory factory = context.getFactory();
         if (factory == null) {
@@ -332,10 +425,12 @@ public class VariablePointer extends NodePointer {
         return factory;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int compareChildNodePointers(
         NodePointer pointer1,
-        NodePointer pointer2) 
-    {
+        NodePointer pointer2) {
         return pointer1.getIndex() - pointer2.getIndex();
     }
 }

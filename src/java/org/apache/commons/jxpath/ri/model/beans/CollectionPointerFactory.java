@@ -40,7 +40,7 @@ public class CollectionPointerFactory implements NodePointerFactory {
     public NodePointer createNodePointer(
         QName name,
         Object bean,
-        Locale locale) 
+        Locale locale)
     {
         return ValueUtils.isCollection(bean) ? new CollectionPointer(bean, locale) : null;
     }
@@ -48,7 +48,7 @@ public class CollectionPointerFactory implements NodePointerFactory {
     public NodePointer createNodePointer(
         NodePointer parent,
         QName name,
-        Object bean) 
+        Object bean)
     {
         return ValueUtils.isCollection(bean) ? new CollectionPointer(parent, bean) : null;
     }

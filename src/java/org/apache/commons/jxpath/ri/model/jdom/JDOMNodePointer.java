@@ -79,7 +79,7 @@ public class JDOMNodePointer extends NodePointer {
     public NodeIterator childIterator(
         NodeTest test,
         boolean reverse,
-        NodePointer startWith) 
+        NodePointer startWith)
     {
         return new JDOMNodeIterator(this, test, reverse, startWith);
     }
@@ -99,7 +99,7 @@ public class JDOMNodePointer extends NodePointer {
     public String getNamespaceURI() {
         return getNamespaceURI(node);
     }
-    
+
     private static String getNamespaceURI(Object node) {
         if (node instanceof Element) {
             Element element = (Element) node;
@@ -129,7 +129,7 @@ public class JDOMNodePointer extends NodePointer {
         }
         Element element = null;
         if (node instanceof Document) {
-            element = ((Document) node).getRootElement(); 
+            element = ((Document) node).getRootElement();
         }
         if (node instanceof Element) {
             element = (Element) node;
@@ -143,7 +143,7 @@ public class JDOMNodePointer extends NodePointer {
 
     public int compareChildNodePointers(
         NodePointer pointer1,
-        NodePointer pointer2) 
+        NodePointer pointer2)
     {
         Object node1 = pointer1.getBaseValue();
         Object node2 = pointer2.getBaseValue();
@@ -207,10 +207,10 @@ public class JDOMNodePointer extends NodePointer {
     public boolean isCollection() {
         return false;
     }
-    
+
     public int getLength() {
         return 1;
-    }    
+    }
 
     public boolean isLeaf() {
         if (node instanceof Element) {
@@ -320,8 +320,8 @@ public class JDOMNodePointer extends NodePointer {
                 }
             }
         }
-    } 
-      
+    }
+
     private void addContent(List content) {
         Element element = (Element) node;
         int count = content.size();
@@ -350,15 +350,15 @@ public class JDOMNodePointer extends NodePointer {
             }
         }
     }
-    
+
     public boolean testNode(NodeTest test) {
         return testNode(this, node, test);
     }
-    
+
     public static boolean testNode(
         NodePointer pointer,
         Object node,
-        NodeTest test) 
+        NodeTest test)
     {
         if (test == null) {
             return true;
@@ -426,7 +426,7 @@ public class JDOMNodePointer extends NodePointer {
         }
         return null;
     }
-    
+
     public static String getLocalName(Object node) {
         if (node instanceof Element) {
             return ((Element) node).getName();
@@ -488,7 +488,7 @@ public class JDOMNodePointer extends NodePointer {
     public NodePointer createChild(
         JXPathContext context,
         QName name,
-        int index) 
+        int index)
     {
         if (index == WHOLE_COLLECTION) {
             index = 0;
@@ -584,7 +584,7 @@ public class JDOMNodePointer extends NodePointer {
                 }
                 String nsURI = getNamespaceURI();
                 String ln = JDOMNodePointer.getLocalName(node);
-                
+
                 if (nsURI == null) {
                     buffer.append(ln);
                     buffer.append('[');
@@ -651,7 +651,7 @@ public class JDOMNodePointer extends NodePointer {
             if (!(parent instanceof Element)) {
                 return 1;
             }
-            
+
             List children = ((Element)parent).getContent();
             int count = 0;
             String name = ((Element) node).getQualifiedName();
@@ -669,7 +669,7 @@ public class JDOMNodePointer extends NodePointer {
         }
         return 1;
     }
-    
+
     private int getRelativePositionOfElement() {
         Object parent = ((Element) node).getParent();
         if (parent == null) {

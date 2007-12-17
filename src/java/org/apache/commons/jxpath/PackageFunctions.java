@@ -63,7 +63,6 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * <code>"java.util.Date.new()"</code> and <code>"length('foo')"</code>
  * without the explicit registration of any extension functions.
  * </p>
-
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -73,6 +72,11 @@ public class PackageFunctions implements Functions {
     private String namespace;
     private static final Object[] EMPTY_ARRAY = new Object[0];
 
+    /**
+     * Create a new PackageFunctions.
+     * @param classPrefix class prefix
+     * @param namespace namespace String
+     */
     public PackageFunctions(String classPrefix, String namespace) {
         this.classPrefix = classPrefix;
         this.namespace = namespace;
@@ -80,13 +84,14 @@ public class PackageFunctions implements Functions {
 
     /**
      * Returns the namespace specified in the constructor
+     * @return (singleton) namespace Set
      */
     public Set getUsedNamespaces() {
         return Collections.singleton(namespace);
     }
 
     /**
-     * Returns a Function, if any, for the specified namespace,
+     * Returns a Function, if found, for the specified namespace,
      * name and parameter types.
      * <p>
      * @param  namespace - if it is not the same as specified in the
@@ -102,15 +107,14 @@ public class PackageFunctions implements Functions {
      * <li><b>subpackage.subpackage.Classname.methodname</b>, if looking for a
      * static method of a class in a subpackage</li>
      * </ul>
-     *
-     * @return  a MethodFunction, a ConstructorFunction or null if no function
+     * @param parameters Object[] of parameters
+     * @return a MethodFunction, a ConstructorFunction or null if no function
      * is found
      */
     public Function getFunction(
         String namespace,
         String name,
-        Object[] parameters) 
-    {
+        Object[] parameters) {
         if ((namespace == null && this.namespace != null)
             || (namespace != null && !namespace.equals(this.namespace))) {
             return null;
@@ -131,11 +135,11 @@ public class PackageFunctions implements Functions {
                 if (method != null) {
                     return new MethodFunction(method);
                 }
-                    
+
                 if (target instanceof NodeSet) {
                     target = ((NodeSet) target).getPointers();
                 }
-                
+
                 method =
                     MethodLookupUtils.lookupMethod(
                         target.getClass(),
@@ -144,7 +148,7 @@ public class PackageFunctions implements Functions {
                 if (method != null) {
                     return new MethodFunction(method);
                 }
-                
+
                 if (target instanceof Collection) {
                     Iterator iter = ((Collection) target).iterator();
                     if (iter.hasNext()) {

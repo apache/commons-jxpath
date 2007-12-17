@@ -50,7 +50,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     public String toString() {
         return xpath;
     }
-    
+
     /**
      * @see CompiledExpression#getValue(JXPathContext)
      */

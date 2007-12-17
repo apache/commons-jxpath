@@ -81,7 +81,7 @@ public class BasicVariables implements Variables {
     public void undeclareVariable(String varName) {
         vars.remove(varName);
     }
-    
+
     public String toString() {
         return vars.toString();
     }

@@ -33,7 +33,7 @@ import org.apache.commons.jxpath.JXPathException;
 public class HttpSessionHandler extends ServletContextHandler {
 
     protected void collectPropertyNames(HashSet set, Object bean) {
-        HttpSessionAndServletContext handle = 
+        HttpSessionAndServletContext handle =
             (HttpSessionAndServletContext) bean;
         super.collectPropertyNames(set, handle.getServletContext());
         HttpSession session = handle.getSession();
@@ -44,9 +44,9 @@ public class HttpSessionHandler extends ServletContextHandler {
             }
         }
     }
-    
+
     public Object getProperty(Object bean, String property) {
-        HttpSessionAndServletContext handle = 
+        HttpSessionAndServletContext handle =
             (HttpSessionAndServletContext) bean;
         HttpSession session = handle.getSession();
         if (session != null) {
@@ -59,7 +59,7 @@ public class HttpSessionHandler extends ServletContextHandler {
     }
 
     public void setProperty(Object bean, String property, Object value) {
-        HttpSessionAndServletContext handle = 
+        HttpSessionAndServletContext handle =
             (HttpSessionAndServletContext) bean;
         HttpSession session = handle.getSession();
         if (session != null) {

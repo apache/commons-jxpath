@@ -39,7 +39,7 @@ public class ChildContext extends EvalContext {
         EvalContext parentContext,
         NodeTest nodeTest,
         boolean startFromParentLocation,
-        boolean reverse) 
+        boolean reverse)
     {
         super(parentContext);
         this.nodeTest = nodeTest;

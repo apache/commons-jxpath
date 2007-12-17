@@ -32,18 +32,29 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * @version $Revision$ $Date$
  */
 public class UnionContext extends NodeSetContext {
-    private EvalContext contexts[];
+    private EvalContext[] contexts;
     private boolean prepared;
 
-    public UnionContext(EvalContext parentContext, EvalContext contexts[]) {
+    /**
+     * Create a new UnionContext.
+     * @param parentContext parent context
+     * @param contexts child contexts
+     */
+    public UnionContext(EvalContext parentContext, EvalContext[] contexts) {
         super(parentContext, new BasicNodeSet());
         this.contexts = contexts;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getDocumentOrder() {
         return contexts.length > 1 ? 1 : super.getDocumentOrder();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         if (!prepared) {
             prepared = true;

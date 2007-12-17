@@ -40,7 +40,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     public NodeIterator childIterator(
         NodeTest test,
         boolean reverse,
-        NodePointer startWith) 
+        NodePointer startWith)
     {
         if (test == null) {
             return createNodeIterator(null, reverse, startWith);
@@ -61,7 +61,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     public NodeIterator createNodeIterator(
                 String property,
                 boolean reverse,
-                NodePointer startWith) 
+                NodePointer startWith)
     {
         return new PropertyIterator(this, property, reverse, startWith);
     }
@@ -155,7 +155,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      * @return PropertyPointer
      */
     public abstract PropertyPointer getPropertyPointer();
-    
+
     /**
      * @return true if the property owner can set a property "does not exist".
      *         A good example is a Map. You can always assign a value to any
@@ -167,7 +167,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     public int compareChildNodePointers(
         NodePointer pointer1,
-        NodePointer pointer2) 
+        NodePointer pointer2)
     {
         int r = pointer1.getName().toString().compareTo(pointer2.getName().toString());
         return r == 0 ? pointer1.getIndex() - pointer2.getIndex() : r;

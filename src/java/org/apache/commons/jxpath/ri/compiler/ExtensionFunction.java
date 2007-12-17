@@ -36,11 +36,20 @@ public class ExtensionFunction extends Operation {
 
     private QName functionName;
 
-    public ExtensionFunction(QName functionName, Expression args[]) {
+    /**
+     * Create a new ExtensionFunction.
+     * @param functionName name of the function
+     * @param args Expression[] of function args
+     */
+    public ExtensionFunction(QName functionName, Expression[] args) {
         super(args);
         this.functionName = functionName;
     }
 
+    /**
+     * Get the function name
+     * @return QName
+     */
     public QName getFunctionName() {
         return functionName;
     }
@@ -48,16 +57,20 @@ public class ExtensionFunction extends Operation {
     /**
      * An extension function gets the current context, therefore it MAY be
      * context dependent.
+     * @return true
      */
     public boolean computeContextDependent() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(functionName);
         buffer.append('(');
-        Expression args[] = getArguments();
+        Expression[] args = getArguments();
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
                 if (i > 0) {
@@ -69,11 +82,17 @@ public class ExtensionFunction extends Operation {
         buffer.append(')');
         return buffer.toString();
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public Object compute(EvalContext context) {
         return computeValue(context);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
         Object[] parameters = null;
         if (args != null) {
@@ -93,8 +112,13 @@ public class ExtensionFunction extends Operation {
         return result instanceof NodeSet ? new NodeSetContext(context,
                 (NodeSet) result) : result;
     }
-    
+
+    /**
+     * Convert any incoming context to a value.
+     * @param object Object to convert
+     * @return context value or <code>object</code> unscathed.
+     */
     private Object convert(Object object) {
         return object instanceof EvalContext ? ((EvalContext) object).getValue() : object;
-    }  
+    }
 }

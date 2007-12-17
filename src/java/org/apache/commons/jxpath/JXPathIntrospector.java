@@ -73,7 +73,7 @@ public class JXPathIntrospector {
      */
     public static void registerDynamicClass(
         Class beanClass,
-        Class dynamicPropertyHandlerClass) 
+        Class dynamicPropertyHandlerClass)
     {
         JXPathBasicBeanInfo bi =
             new JXPathBasicBeanInfo(beanClass, dynamicPropertyHandlerClass);
@@ -142,7 +142,7 @@ public class JXPathIntrospector {
             if (beanInfo != null && beanInfo.isDynamic()) {
                 return beanInfo;
             }
-            return findDynamicBeanInfo(sup);                
+            return findDynamicBeanInfo(sup);
         }
         return null;
     }
@@ -175,7 +175,7 @@ public class JXPathIntrospector {
      * classloader.
      */
     private static Object instantiate(Class sibling, String className)
-        throws Exception 
+        throws Exception
     {
 
         // First check with sibling's classloader (if any).

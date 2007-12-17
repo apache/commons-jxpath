@@ -31,14 +31,21 @@ public class CollectionAttributeNodeIterator extends CollectionNodeIterator {
 
     private QName name;
 
+    /**
+     * Create a new CollectionAttributeNodeIterator.
+     * @param pointer collection pointer
+     * @param name attribute name
+     */
     public CollectionAttributeNodeIterator(
         CollectionPointer pointer,
-        QName name) 
-    {
+        QName name) {
         super(pointer, false, null);
         this.name = name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected NodeIterator getElementNodeIterator(NodePointer elementPointer) {
         return elementPointer.attributeIterator(name);
     }

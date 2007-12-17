@@ -115,7 +115,7 @@ public final class JXPathServletContexts {
      */
     public static JXPathContext getRequestContext(
         ServletRequest request,
-        ServletContext servletContext) 
+        ServletContext servletContext)
     {
         JXPathContext context =
             (JXPathContext) request.getAttribute(Constants.JXPATH_CONTEXT);
@@ -123,13 +123,13 @@ public final class JXPathServletContexts {
         // will represent the included URL, but the JXPathContext we have
         // just acquired will represent the outer request.
         if (context != null) {
-            ServletRequestAndContext handle = 
+            ServletRequestAndContext handle =
                 (ServletRequestAndContext) context.getContextBean();
             if (handle.getServletRequest() == request) {
                 return context;
             }
         }
-        
+
         JXPathContext parentContext = null;
         if (request instanceof HttpServletRequest) {
             HttpSession session =
@@ -141,7 +141,7 @@ public final class JXPathServletContexts {
                 parentContext = getApplicationContext(servletContext);
             }
         }
-        ServletRequestAndContext handle = 
+        ServletRequestAndContext handle =
             new ServletRequestAndContext(request, servletContext);
         context = factory.newContext(parentContext, handle);
         context.setVariables(
@@ -156,13 +156,13 @@ public final class JXPathServletContexts {
      */
     public static JXPathContext getSessionContext(
         HttpSession session,
-        ServletContext servletContext) 
+        ServletContext servletContext)
     {
         JXPathContext context =
             (JXPathContext) session.getAttribute(Constants.JXPATH_CONTEXT);
         if (context == null) {
             JXPathContext parentContext = getApplicationContext(servletContext);
-            HttpSessionAndServletContext handle = 
+            HttpSessionAndServletContext handle =
                 new HttpSessionAndServletContext(session, servletContext);
             context = factory.newContext(parentContext, handle);
             context.setVariables(
@@ -177,7 +177,7 @@ public final class JXPathServletContexts {
      * context within the servlet context itself.
      */
     public static JXPathContext getApplicationContext(
-            ServletContext servletContext) 
+            ServletContext servletContext)
     {
         JXPathContext context =
             (JXPathContext) servletContext.getAttribute(

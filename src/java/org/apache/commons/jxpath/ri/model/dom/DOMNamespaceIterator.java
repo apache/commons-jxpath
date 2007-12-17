@@ -37,12 +37,21 @@ public class DOMNamespaceIterator implements NodeIterator {
     private List attributes;
     private int position = 0;
 
+    /**
+     * Create a new DOMNamespaceIterator.
+     * @param parent parent pointer
+     */
     public DOMNamespaceIterator(NodePointer parent) {
         this.parent = parent;
         attributes = new ArrayList();
         collectNamespaces(attributes, (Node) parent.getNode());
     }
 
+    /**
+     * Collect namespaces from attribute nodes.
+     * @param attributes attribute list
+     * @param node target node
+     */
     private void collectNamespaces(List attributes, Node node) {
         Node parent = node.getParentNode();
         if (parent != null) {
@@ -66,6 +75,9 @@ public class DOMNamespaceIterator implements NodeIterator {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -86,10 +98,16 @@ public class DOMNamespaceIterator implements NodeIterator {
         return new NamespacePointer(parent, prefix, attr.getValue());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         this.position = position;
         return position >= 1 && position <= attributes.size();

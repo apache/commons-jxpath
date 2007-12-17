@@ -56,7 +56,7 @@ public class PredicateContext extends EvalContext {
                 Object pred = nameTestExpression.computeValue(parentContext);
                 String propertyName = InfoSetUtil.stringValue(pred);
 
-                // At this point it would be nice to say: 
+                // At this point it would be nice to say:
                 // dynamicPropertyPointer.setPropertyName(propertyName)
                 // and then: dynamicPropertyPointer.isActual().
                 // However some PropertyPointers, e.g. DynamicPropertyPointer

@@ -50,11 +50,11 @@ public class InitialContext extends EvalContext {
     public NodePointer getCurrentNodePointer() {
         return nodePointer;
     }
-    
+
     public Object getValue() {
         return nodePointer.getValue();
     }
-    
+
     public boolean nextNode() {
         return setPosition(position + 1);
     }

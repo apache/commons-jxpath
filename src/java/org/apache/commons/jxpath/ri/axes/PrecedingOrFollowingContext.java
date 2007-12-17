@@ -41,7 +41,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
     public PrecedingOrFollowingContext(
         EvalContext parentContext,
         NodeTest nodeTest,
-        boolean reverse) 
+        boolean reverse)
     {
         super(parentContext);
         this.nodeTest = nodeTest;
@@ -124,7 +124,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
                         }
                     }
                     else {
-                        // We get here only if the name test failed 
+                        // We get here only if the name test failed
                         // and the iterator ended
                         stack.pop();
                     }

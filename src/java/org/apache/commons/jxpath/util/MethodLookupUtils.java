@@ -37,13 +37,18 @@ public class MethodLookupUtils {
     private static final int APPROXIMATE_MATCH = 1;
     private static final int EXACT_MATCH = 2;
 
+    /**
+     * Look up a constructor.
+     * @param targetClass the class constructed
+     * @param parameters arguments
+     * @return Constructor found if any.
+     */
     public static Constructor lookupConstructor(
         Class targetClass,
-        Object[] parameters)  
-    {
+        Object[] parameters) {
         boolean tryExact = true;
         int count = parameters == null ? 0 : parameters.length;
-        Class types[] = new Class[count];
+        Class[] types = new Class[count];
         for (int i = 0; i < count; i++) {
             Object param = parameters[i];
             if (param != null) {
@@ -98,14 +103,20 @@ public class MethodLookupUtils {
         return constructor;
     }
 
+    /**
+     * Look up a static method.
+     * @param targetClass the owning class
+     * @param name method name
+     * @param parameters method parameters
+     * @return Method found if any
+     */
     public static Method lookupStaticMethod(
         Class targetClass,
         String name,
-        Object[] parameters) 
-    {
+        Object[] parameters) {
         boolean tryExact = true;
         int count = parameters == null ? 0 : parameters.length;
-        Class types[] = new Class[count];
+        Class[] types = new Class[count];
         for (int i = 0; i < count; i++) {
             Object param = parameters[i];
             if (param != null) {
@@ -163,11 +174,17 @@ public class MethodLookupUtils {
         return method;
     }
 
+    /**
+     * Look up a method.
+     * @param targetClass owning class
+     * @param name method name
+     * @param parameters method parameters
+     * @return Method found if any
+     */
     public static Method lookupMethod(
         Class targetClass,
         String name,
-        Object[] parameters) 
-    {
+        Object[] parameters) {
         if (parameters == null
             || parameters.length < 1
             || parameters[0] == null) {
@@ -182,8 +199,8 @@ public class MethodLookupUtils {
 
         boolean tryExact = true;
         int count = parameters.length - 1;
-        Class types[] = new Class[count];
-        Object arguments[] = new Object[count];
+        Class[] types = new Class[count];
+        Object[] arguments = new Object[count];
         for (int i = 0; i < count; i++) {
             Object param = parameters[i + 1];
             arguments[i] = param;
@@ -242,10 +259,15 @@ public class MethodLookupUtils {
         return method;
     }
 
+    /**
+     * Return a match code of objects to types.
+     * @param types Class[] of expected types
+     * @param parameters Object[] to attempt to match
+     * @return int code
+     */
     private static int matchParameterTypes(
-        Class types[],
-        Object parameters[]) 
-    {
+        Class[] types,
+        Object[] parameters) {
         int pi = 0;
         if (types.length >= 1
             && ExpressionContext.class.isAssignableFrom(types[0])) {
@@ -268,6 +290,12 @@ public class MethodLookupUtils {
         return totalMatch;
     }
 
+    /**
+     * Return a match code between an object and type.
+     * @param expected class to test
+     * @param object object to test
+     * @return int code
+     */
     private static int matchType(Class expected, Object object) {
         if (object == null) {
             return APPROXIMATE_MATCH;

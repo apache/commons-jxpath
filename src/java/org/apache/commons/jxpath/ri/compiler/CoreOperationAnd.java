@@ -39,7 +39,7 @@ public class CoreOperationAnd extends CoreOperation {
         }
         return Boolean.TRUE;
     }
-    
+
     protected int getPrecedence() {
         return 1;
     }
@@ -47,7 +47,7 @@ public class CoreOperationAnd extends CoreOperation {
     protected boolean isSymmetric() {
         return true;
     }
-    
+
     public String getSymbol() {
         return "and";
     }

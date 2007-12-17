@@ -36,7 +36,7 @@ public class CoreOperationMultiply extends CoreOperation {
         double r = InfoSetUtil.doubleValue(args[1].computeValue(context));
         return new Double(l * r);
     }
-    
+
     protected int getPrecedence() {
         return 5;
     }
@@ -44,7 +44,7 @@ public class CoreOperationMultiply extends CoreOperation {
     protected boolean isSymmetric() {
         return true;
     }
-    
+
     public String getSymbol() {
         return "*";
     }

@@ -33,35 +33,48 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public abstract class CollectionNodeIterator implements NodeIterator {
     private CollectionPointer pointer;
     private boolean reverse;
-    private NodePointer startWith; 
+    private NodePointer startWith;
     private int position;
     private List collection;
 
+    /**
+     * Create a new CollectionNodeIterator.
+     * @param pointer collection pointer
+     * @param reverse iteration order
+     * @param startWith starting pointer
+     */
     protected CollectionNodeIterator(
         CollectionPointer pointer,
         boolean reverse,
-        NodePointer startWith) 
-    {
+        NodePointer startWith) {
         this.pointer = pointer;
         this.reverse = reverse;
         this.startWith = startWith;
     }
-    
+
     /**
-     * Implemened by subclasses to produce child/attribute node iterators.
+     * Implemented by subclasses to produce child/attribute node iterators.
+     * @param elementPointer owning pointer
+     * @return NodeIterator
      */
-    protected abstract NodeIterator 
+    protected abstract NodeIterator
             getElementNodeIterator(NodePointer elementPointer);
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         if (collection == null) {
             prepare();
         }
-        
+
         if (position < 1 || position > collection.size()) {
             return false;
         }
@@ -69,13 +82,19 @@ public abstract class CollectionNodeIterator implements NodeIterator {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             return null;
         }
         return (NodePointer) collection.get(position - 1);
     }
-    
+
+    /**
+     * Prepare...
+     */
     private void prepare() {
         collection = new ArrayList();
         NodePointer ptr = (NodePointer) pointer.clone();

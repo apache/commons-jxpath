@@ -27,24 +27,46 @@ public class Step {
     private NodeTest nodeTest;
     private Expression[] predicates;
 
+    /**
+     * Create a new Step.
+     * @param axis axis code
+     * @param nodeTest step test
+     * @param predicates predicate expressions
+     */
     protected Step(int axis, NodeTest nodeTest, Expression[] predicates) {
         this.axis = axis;
         this.nodeTest = nodeTest;
         this.predicates = predicates;
     }
 
+    /**
+     * Get the axis code.
+     * @return int
+     */
     public int getAxis() {
         return axis;
     }
 
+    /**
+     * Get the step test.
+     * @return NodeTest
+     */
     public NodeTest getNodeTest() {
         return nodeTest;
     }
 
+    /**
+     * Get the predicates.
+     * @return Expression[]
+     */
     public Expression[] getPredicates() {
         return predicates;
     }
 
+    /**
+     * Learn whether this step contains any predicate that is context dependent.
+     * @return boolean
+     */
     public boolean isContextDependent() {
         if (predicates != null) {
             for (int i = 0; i < predicates.length; i++) {
@@ -56,6 +78,9 @@ public class Step {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         int axis = getAxis();
@@ -81,7 +106,7 @@ public class Step {
         else if (axis == Compiler.AXIS_DESCENDANT_OR_SELF
                 && nodeTest instanceof NodeTypeTest
                 && ((NodeTypeTest) nodeTest).getNodeType()
-                    == Compiler.NODE_TYPE_NODE 
+                    == Compiler.NODE_TYPE_NODE
                 && (predicates == null || predicates.length == 0)) {
             buffer.append("");
         }
@@ -101,6 +126,13 @@ public class Step {
         return buffer.toString();
     }
 
+    /**
+     * Decode an axis code to its name.
+     * @param axis int code
+     * @return String name.
+     * @see Compiler
+     * @see http://www.w3.org/TR/xpath#axes
+     */
     public static String axisToString(int axis) {
         switch (axis) {
             case Compiler.AXIS_SELF :
@@ -129,7 +161,8 @@ public class Step {
                 return "preceding-sibling";
             case Compiler.AXIS_DESCENDANT_OR_SELF :
                 return "descendant-or-self";
+            default:
+                return "UNKNOWN";
         }
-        return "UNKNOWN";
     }
 }

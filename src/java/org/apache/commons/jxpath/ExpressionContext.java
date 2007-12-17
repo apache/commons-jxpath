@@ -43,7 +43,7 @@ import java.util.List;
  * This expression will find all nodes of the graph that are dates.
  */
 public interface ExpressionContext {
-    
+
     /**
      * Get the JXPathContext in which this function is being evaluated.
      *

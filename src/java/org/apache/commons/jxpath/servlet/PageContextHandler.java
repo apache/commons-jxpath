@@ -71,7 +71,7 @@ public class PageContextHandler implements DynamicPropertyHandler {
     public void setProperty(
         Object pageContext,
         String property,
-        Object value) 
+        Object value)
     {
         ((PageContext) pageContext).setAttribute(
             property,

@@ -18,7 +18,6 @@ package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathContextFactory;
-import org.apache.commons.jxpath.JXPathContextFactoryConfigurationError;
 
 /**
  * Default implementation of JXPathContextFactory.
@@ -28,14 +27,18 @@ import org.apache.commons.jxpath.JXPathContextFactoryConfigurationError;
  */
 public class JXPathContextFactoryReferenceImpl extends JXPathContextFactory {
 
+    /**
+     * Create a new JXPathContextFactoryReferenceImpl.
+     */
     public JXPathContextFactoryReferenceImpl() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public JXPathContext newContext(
         JXPathContext parentContext,
-        Object contextBean)
-        throws JXPathContextFactoryConfigurationError 
-    {
+        Object contextBean) {
         return new JXPathContextReferenceImpl(parentContext, contextBean);
     }
 }

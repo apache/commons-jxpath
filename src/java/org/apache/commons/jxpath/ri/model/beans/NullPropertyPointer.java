@@ -59,7 +59,7 @@ public class NullPropertyPointer extends PropertyPointer {
 
     public boolean isLeaf() {
         return true;
-    }    
+    }
 
     public NodePointer getValuePointer() {
         return new NullPointer(this,  new QName(getPropertyName()));
@@ -111,8 +111,8 @@ public class NullPropertyPointer extends PropertyPointer {
             throw createBadFactoryException(context.getFactory());
         }
         // Consider these two use cases:
-        // 1. The parent pointer of NullPropertyPointer is 
-        //    a PropertyOwnerPointer other than NullPointer. When we call 
+        // 1. The parent pointer of NullPropertyPointer is
+        //    a PropertyOwnerPointer other than NullPointer. When we call
         //    createPath on it, it most likely returns itself. We then
         //    take a PropertyPointer from it and get the PropertyPointer
         //    to expand the collection for the corresponding property.
@@ -120,8 +120,8 @@ public class NullPropertyPointer extends PropertyPointer {
         // 2. The parent pointer of NullPropertyPointer is a NullPointer.
         //    When we call createPath, it may return a PropertyOwnerPointer
         //    or it may return anything else, like a DOMNodePointer.
-        //    In the former case we need to do exactly what we did in use 
-        //    case 1.  In the latter case, we simply request that the 
+        //    In the former case we need to do exactly what we did in use
+        //    case 1.  In the latter case, we simply request that the
         //    non-property pointer expand the collection by itself.
         if (newParent instanceof PropertyOwnerPointer) {
             PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
@@ -146,20 +146,20 @@ public class NullPropertyPointer extends PropertyPointer {
         }
         return newParent.createChild(context, getName(), index, value);
     }
-    
+
     public NodePointer createChild(
             JXPathContext context,
-            QName name, 
+            QName name,
             int index)
     {
         return createPath(context).createChild(context, name, index);
     }
-        
+
     public NodePointer createChild(
             JXPathContext context,
-            QName name, 
+            QName name,
             int index,
-            Object value) 
+            Object value)
     {
         return createPath(context).createChild(context, name, index, value);
     }

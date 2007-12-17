@@ -40,7 +40,7 @@ public class RootContext extends EvalContext {
 
     public RootContext(
         JXPathContextReferenceImpl jxpathContext,
-        NodePointer pointer) 
+        NodePointer pointer)
     {
         super(null);
         this.jxpathContext = jxpathContext;
@@ -57,7 +57,7 @@ public class RootContext extends EvalContext {
     public RootContext getRootContext() {
         return this;
     }
-    
+
     public EvalContext getAbsoluteRootContext() {
         return jxpathContext.getAbsoluteRootContext();
     }
@@ -65,11 +65,11 @@ public class RootContext extends EvalContext {
     public NodePointer getCurrentNodePointer() {
         return pointer;
     }
-    
+
     public Object getValue() {
         return pointer;
     }
-    
+
     public int getCurrentPosition() {
         throw new UnsupportedOperationException();
     }
@@ -92,7 +92,7 @@ public class RootContext extends EvalContext {
                 new RootContext(jxpathContext, null),
                 (NodeSet) constant);
         }
-                
+
         NodePointer pointer;
         if (constant instanceof NodePointer) {
             pointer = (NodePointer) constant;

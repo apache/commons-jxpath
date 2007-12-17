@@ -31,6 +31,9 @@ public interface TypeConverter {
     /**
      * Returns true if it can convert the supplied
      * object to the specified class.
+     * @param object object to test
+     * @param toType target class
+     * @return boolean
      */
     boolean canConvert(Object object, Class toType);
 
@@ -38,6 +41,9 @@ public interface TypeConverter {
      * Converts the supplied object to the specified
      * type. Throws a runtime exception if the conversion is
      * not possible.
+     * @param object object to convert
+     * @param toType target class
+     * @return resulting Object
      */
     Object convert(Object object, Class toType);
 }

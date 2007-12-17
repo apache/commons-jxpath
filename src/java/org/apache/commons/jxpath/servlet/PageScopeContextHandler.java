@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * @version $Revision$ $Date$
  */
 public class PageScopeContextHandler implements DynamicPropertyHandler {
-    
+
     private static final String[] STRING_ARRAY = new String[0];
 
     public String[] getPropertyNames(Object pageScope) {

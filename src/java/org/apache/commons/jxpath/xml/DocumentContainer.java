@@ -38,7 +38,10 @@ import org.apache.commons.jxpath.JXPathException;
  */
 public class DocumentContainer extends XMLParser2 implements Container {
 
+    /** DOM constant */
     public static final String MODEL_DOM = "DOM";
+
+    /** JDOM constant */
     public static final String MODEL_JDOM = "JDOM";
 
     private Object document;
@@ -58,15 +61,19 @@ public class DocumentContainer extends XMLParser2 implements Container {
     /**
      * Add an XML parser.  Parsers for the models "DOM" and "JDOM" are
      * pre-registered.
+     * @param model model name
+     * @param parser parser
      */
     public static void registerXMLParser(String model, XMLParser parser) {
         parsers.put(model, parser);
     }
 
     /**
-     * Add a class of a custom XML parser. 
+     * Add a class of a custom XML parser.
      * Parsers for the models "DOM" and "JDOM" are pre-registered.
-     */    
+     * @param model model name
+     * @param parserClassName parser classname
+     */
     public static void registerXMLParser(String model, String parserClassName) {
         parserClasses.put(model, parserClassName);
     }
@@ -83,11 +90,12 @@ public class DocumentContainer extends XMLParser2 implements Container {
     }
 
     /**
+     * Construct a new DocumentContainer.
      * @param xmlURL is a URL for an XML file. Use getClass().getResource
-     * (resourceName) to load XML from a resource file.
+     *               (resourceName) to load XML from a resource file.
      *
      * @param model is one of the MODEL_* constants defined in this class. It
-     *   determines which parser should be used to load the XML.
+     *              determines which parser should be used to load the XML.
      */
     public DocumentContainer(URL xmlURL, String model) {
         this.xmlURL = xmlURL;
@@ -99,6 +107,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Reads XML, caches it internally and returns the Document.
+     * @return Object
      */
     public Object getValue() {
         if (document == null) {
@@ -127,6 +136,8 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Parses XML using the parser for the specified model.
+     * @param stream InputStream
+     * @return Object
      */
     public Object parseXML(InputStream stream) {
         XMLParser parser = getParser(model);
@@ -144,7 +155,8 @@ public class DocumentContainer extends XMLParser2 implements Container {
     }
 
     /**
-     * Throws an UnsupportedOperationException
+     * Throws an UnsupportedOperationException.
+     * @param value value (not) to set
      */
     public void setValue(Object value) {
         throw new UnsupportedOperationException();
@@ -152,8 +164,10 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Maps a model type to a parser.
+     * @param model input model type
+     * @return XMLParser
      */
-    private static final XMLParser getParser(String model) {
+    private static XMLParser getParser(String model) {
         XMLParser parser = (XMLParser) parsers.get(model);
         if (parser == null) {
             String className = (String) parserClasses.get(model);
@@ -162,7 +176,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
             }
             try {
                 Class clazz = Class.forName(className);
-                parser = (XMLParser) clazz.newInstance();                
+                parser = (XMLParser) clazz.newInstance();
             }
             catch (Exception ex) {
                 throw new JXPathException(

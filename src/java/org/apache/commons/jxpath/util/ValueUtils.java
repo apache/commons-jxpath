@@ -60,9 +60,9 @@ public class ValueUtils {
         }
         return false;
     }
-    
+
     /**
-     * Returns 1 if the type is a collection, 
+     * Returns 1 if the type is a collection,
      * -1 if it is definitely not
      * and 0 if it may be a collection in some cases.
      */
@@ -70,42 +70,42 @@ public class ValueUtils {
         if (clazz.isArray()) {
             return 1;
         }
-        
+
         if (Collection.class.isAssignableFrom(clazz)) {
             return 1;
         }
-        
+
         if (clazz.isPrimitive()) {
             return -1;
         }
-        
+
         if (clazz.isInterface()) {
             return 0;
         }
-        
+
         if (Modifier.isFinal(clazz.getModifiers())) {
             return -1;
         }
-                
+
         return 0;
     }
-    
+
     /**
      * If there is a regular non-indexed read method for this property,
      * uses this method to obtain the collection and then returns its
      * length.
      * Otherwise, attempts to guess the length of the collection by
      * calling the indexed get method repeatedly.  The method is supposed
-     * to throw an exception if the index is out of bounds. 
+     * to throw an exception if the index is out of bounds.
      */
     public static int getIndexedPropertyLength(
         Object object,
-        IndexedPropertyDescriptor pd) 
+        IndexedPropertyDescriptor pd)
     {
         if (pd.getReadMethod() != null) {
             return getLength(getValue(object, pd));
         }
-        
+
         Method readMethod = pd.getIndexedReadMethod();
         if (readMethod == null) {
             throw new JXPathException(
@@ -120,7 +120,7 @@ public class ValueUtils {
                 return i;
             }
         }
-        
+
         throw new JXPathException(
             "Cannot determine the length of the indexed property "
                 + pd.getName());
@@ -326,7 +326,7 @@ public class ValueUtils {
      */
     public static Object getValue(
         Object bean,
-        PropertyDescriptor propertyDescriptor) 
+        PropertyDescriptor propertyDescriptor)
     {
         Object value;
         try {
@@ -355,7 +355,7 @@ public class ValueUtils {
     public static void setValue(
         Object bean,
         PropertyDescriptor propertyDescriptor,
-        Object value) 
+        Object value)
     {
         try {
             Method method =
@@ -397,7 +397,7 @@ public class ValueUtils {
     public static Object getValue(
         Object bean,
         PropertyDescriptor propertyDescriptor,
-        int index) 
+        int index)
     {
         if (propertyDescriptor instanceof IndexedPropertyDescriptor) {
             try {
@@ -409,7 +409,7 @@ public class ValueUtils {
                         bean,
                         new Object[] { new Integer(index)});
                 }
-            }            
+            }
             catch (InvocationTargetException ex) {
                 Throwable t = ex.getTargetException();
                 if (t instanceof IndexOutOfBoundsException) {
@@ -440,7 +440,7 @@ public class ValueUtils {
         Object bean,
         PropertyDescriptor propertyDescriptor,
         int index,
-        Object value) 
+        Object value)
     {
         if (propertyDescriptor instanceof IndexedPropertyDescriptor) {
             try {
@@ -488,12 +488,12 @@ public class ValueUtils {
         }
         return object;
     }
-    
+
     /**
      * Returns a shared instance of the dynamic property handler class
      * returned by <code>getDynamicPropertyHandlerClass()</code>.
      */
-    public static DynamicPropertyHandler getDynamicPropertyHandler(Class clazz) 
+    public static DynamicPropertyHandler getDynamicPropertyHandler(Class clazz)
     {
         DynamicPropertyHandler handler =
             (DynamicPropertyHandler) dynamicPropertyHandlerMap.get(clazz);
@@ -548,17 +548,17 @@ public class ValueUtils {
         Class[] parameterTypes = method.getParameterTypes();
         while (clazz != null) {
             // Check the implemented interfaces and subinterfaces
-            Method aMethod = getAccessibleMethodFromInterfaceNest(clazz, 
+            Method aMethod = getAccessibleMethodFromInterfaceNest(clazz,
                     name, parameterTypes);
             if (aMethod != null) {
                 return aMethod;
             }
-            
+
             clazz = clazz.getSuperclass();
             if (clazz != null && Modifier.isPublic(clazz.getModifiers())) {
                 try {
                     return clazz.getDeclaredMethod(name, parameterTypes);
-                } 
+                }
                 catch (NoSuchMethodException e) {
                     ;
                 }
@@ -581,7 +581,7 @@ public class ValueUtils {
     private static Method getAccessibleMethodFromInterfaceNest(
         Class clazz,
         String methodName,
-        Class parameterTypes[]) 
+        Class parameterTypes[])
     {
 
         Method method = null;
@@ -606,7 +606,7 @@ public class ValueUtils {
             if (method != null) {
                 break;
             }
-            
+
             // Recursively check our parent interfaces
             method =
                 getAccessibleMethodFromInterfaceNest(

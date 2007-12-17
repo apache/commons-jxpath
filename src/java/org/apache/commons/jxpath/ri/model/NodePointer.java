@@ -34,7 +34,7 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 
 /**
  * Common superclass for Pointers of all kinds.  A NodePointer maps to
- * a deterministic XPath that represents the location of a node in an 
+ * a deterministic XPath that represents the location of a node in an
  * object graph. This XPath uses only simple axes: child, namespace and
  * attribute and only simple, context-independent predicates.
  *
@@ -54,7 +54,7 @@ public abstract class NodePointer implements Pointer {
     private boolean attribute = false;
     private transient Object rootNode;
     private NamespaceResolver namespaceResolver;
-    
+
     /**
      * Allocates an entirely new NodePointer by iterating through all installed
      * NodePointerFactories until it finds one that can create a pointer.
@@ -62,14 +62,14 @@ public abstract class NodePointer implements Pointer {
     public static NodePointer newNodePointer(
         QName name,
         Object bean,
-        Locale locale) 
+        Locale locale)
     {
         NodePointer pointer = null;
         if (bean == null) {
             pointer = new NullPointer(name, locale);
             return pointer;
         }
-        
+
         NodePointerFactory[] factories =
             JXPathContextReferenceImpl.getNodePointerFactories();
         for (int i = 0; i < factories.length; i++) {
@@ -125,11 +125,11 @@ public abstract class NodePointer implements Pointer {
         }
         return namespaceResolver;
     }
-    
+
     public void setNamespaceResolver(NamespaceResolver namespaceResolver) {
         this.namespaceResolver = namespaceResolver;
     }
-    
+
     public NodePointer getParent() {
         NodePointer pointer = parent;
         while (pointer != null && pointer.isContainer()) {
@@ -137,7 +137,7 @@ public abstract class NodePointer implements Pointer {
         }
         return pointer;
     }
-    
+
     public NodePointer getImmediateParentPointer() {
         return parent;
     }
@@ -174,7 +174,7 @@ public abstract class NodePointer implements Pointer {
     public boolean isNode() {
         return !isContainer();
     }
-     
+
     /**
      * If true, this node is axiliary and can only be used as an intermediate in
      * the chain of pointers.
@@ -221,7 +221,7 @@ public abstract class NodePointer implements Pointer {
         if (valuePointer != this) {
             return valuePointer.getValue();
         }
-        // Default behavior is to return the same as getNode() 
+        // Default behavior is to return the same as getNode()
         return getNode();
     }
 
@@ -230,7 +230,7 @@ public abstract class NodePointer implements Pointer {
      * this method returns the pointer to the contents.
      * Only an auxiliary (non-node) pointer can (and should) return a
      * value pointer other than itself.
-     * Note that you probably don't want to override 
+     * Note that you probably don't want to override
      * <code>getValuePointer()</code> directly.  Override the
      * <code>getImmediateValuePointer()</code> method instead.  The
      * <code>getValuePointer()</code> method is calls
@@ -249,14 +249,14 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * @see #getValuePointer()
-     * 
+     *
      * @return NodePointer is either <code>this</code> or a pointer
      *   for the immediately contained value.
      */
     public NodePointer getImmediateValuePointer() {
         return this;
     }
-    
+
     /**
      * An actual pointer points to an existing part of an object graph, even
      * if it is null. A non-actual pointer represents a part that does not exist
@@ -318,7 +318,7 @@ public abstract class NodePointer implements Pointer {
         }
         return rootNode;
     }
-    
+
     /**
      * Returns the object the pointer points to; does not convert it
      * to a "canonical" type.
@@ -362,7 +362,7 @@ public abstract class NodePointer implements Pointer {
             if (nodeName == null) {
                 return false;
             }
-            
+
             String testPrefix = testName.getPrefix();
             String nodePrefix = nodeName.getPrefix();
             if (!equalStrings(testPrefix, nodePrefix)) {
@@ -396,7 +396,7 @@ public abstract class NodePointer implements Pointer {
      *  set value.
      *  @param context the owning JXPathContext
      *  @param value the new value to set
-     *  @return created NodePointer 
+     *  @return created NodePointer
      */
     public NodePointer createPath(JXPathContext context, Object value) {
         setValue(value);
@@ -439,7 +439,7 @@ public abstract class NodePointer implements Pointer {
         JXPathContext context,
         QName name,
         int index,
-        Object value) 
+        Object value)
     {
         throw new JXPathException("Cannot create an object for path "
                 + asPath() + "/" + name + "[" + (index + 1) + "]"
@@ -462,7 +462,7 @@ public abstract class NodePointer implements Pointer {
                 + asPath() + "/" + name + "[" + (index + 1) + "]"
                 + ", operation is not allowed for this type of node");
     }
-    
+
     /**
      * Called to create a non-existing attribute
      * @param context the owning JXPathCOntext
@@ -505,23 +505,23 @@ public abstract class NodePointer implements Pointer {
 //     * Installs the supplied manager as the namespace manager for this node
 //     * pointer. The {@link #getNamespaceURI(String) getNamespaceURI(prefix)}
 //     * uses this manager to resolve namespace prefixes.
-//     * 
+//     *
 //     * @param namespaceManager
 //     */
 //    public void setNamespaceManager(NamespaceManager namespaceManager) {
 //        this.namespaceManager = namespaceManager;
 //    }
-//    
+//
 //    public NamespaceManager getNamespaceManager() {
 //        if (namespaceManager != null) {
 //            return namespaceManager;
 //        }
 //        if (parent != null) {
 //            return parent.getNamespaceManager();
-//        }        
+//        }
 //        return null;
 //    }
-//    
+//
     /**
      * Returns a NodeIterator that iterates over all children or all children
      * that match the given NodeTest, starting with the specified one.
@@ -533,7 +533,7 @@ public abstract class NodePointer implements Pointer {
     public NodeIterator childIterator(
         NodeTest test,
         boolean reverse,
-        NodePointer startWith) 
+        NodePointer startWith)
     {
         NodePointer valuePointer = getValuePointer();
         return valuePointer == null || valuePointer == this ? null
@@ -634,7 +634,7 @@ public abstract class NodePointer implements Pointer {
     public Pointer getPointerByKey(
         JXPathContext context,
         String key,
-        String value) 
+        String value)
     {
         return context.getPointerByKey(key, value);
     }
@@ -707,7 +707,7 @@ public abstract class NodePointer implements Pointer {
         return asPath();
     }
 
-    
+
     public int compareTo(Object object) {
         if (object == this) {
             return 0;
@@ -747,7 +747,7 @@ public abstract class NodePointer implements Pointer {
         NodePointer p1,
         int depth1,
         NodePointer p2,
-        int depth2) 
+        int depth2)
     {
         if (depth1 < depth2) {
             int r = compareNodePointers(p1, depth1, p2.parent, depth2 - 1);

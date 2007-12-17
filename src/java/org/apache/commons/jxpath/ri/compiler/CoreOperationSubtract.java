@@ -36,7 +36,7 @@ public class CoreOperationSubtract extends CoreOperation {
         double r = InfoSetUtil.doubleValue(args[1].computeValue(context));
         return new Double(l - r);
     }
-    
+
     protected int getPrecedence() {
         return 4;
     }
@@ -44,7 +44,7 @@ public class CoreOperationSubtract extends CoreOperation {
     protected boolean isSymmetric() {
         return false;
     }
-    
+
     public String getSymbol() {
         return "-";
     }

@@ -54,7 +54,10 @@ public abstract class JXPathContextFactory {
         finding the default impl )
     */
     private static String factoryImplName = null;
-    
+
+    /**
+     * Create a new JXPathContextFactory.
+     */
     protected JXPathContextFactory () {
 
     }
@@ -91,8 +94,9 @@ public abstract class JXPathContextFactory {
      * <code>JXPathContextFactory</code> it can use the factory to
      * obtain JXPathContext instances.
      *
-     * @exception JXPathFactoryConfigurationError if the implementation is not
-     * available or cannot be instantiated.
+     * @return JXPathContextFactory
+     * @exception JXPathContextFactoryConfigurationError if the implementation
+     *            is not available or cannot be instantiated.
      */
     public static JXPathContextFactory newInstance() {
         if (factoryImplName == null) {
@@ -120,15 +124,16 @@ public abstract class JXPathContextFactory {
     /**
      * Creates a new instance of a JXPathContext using the
      * currently configured parameters.
-     *
+     * @param parentContext parent context
+     * @param contextBean Object bean
+     * @return JXPathContext
      * @exception JXPathContextFactoryConfigurationError if a JXPathContext
-     * cannot be created which satisfies the configuration requested
+     *            cannot be created which satisfies the configuration requested
      */
 
     public abstract JXPathContext newContext(
         JXPathContext parentContext,
-        Object contextBean)
-        throws JXPathContextFactoryConfigurationError;
+        Object contextBean);
 
     // -------------------- private methods --------------------
     // This code is duplicated in all factories.
@@ -147,13 +152,14 @@ public abstract class JXPathContextFactory {
         }
     }
 
-    /** Private implementation method - will find the implementation
-        class in the specified order.
-        @param property    Property name
-        @param defaultFactory Default implementation, if nothing else is found
-        
-        @return class name of the JXPathContextFactory
-    */
+    /**
+     * Private implementation method - will find the implementation
+     * class in the specified order.
+     * @param property    Property name
+     * @param defaultFactory Default implementation, if nothing else is found
+     *
+     * @return class name of the JXPathContextFactory
+     */
     private static String findFactory(String property, String defaultFactory) {
         // Use the factory ID system property first
         try {

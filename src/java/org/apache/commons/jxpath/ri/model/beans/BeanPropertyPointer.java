@@ -75,7 +75,7 @@ public class BeanPropertyPointer extends PropertyPointer {
      */
     public String[] getPropertyNames() {
         if (names == null) {
-            PropertyDescriptor pds[] = getPropertyDescriptors();
+            PropertyDescriptor[] pds = getPropertyDescriptors();
             names = new String[pds.length];
             for (int i = 0; i < names.length; i++) {
                 names[i] = pds[i].getName();
@@ -178,11 +178,11 @@ public class BeanPropertyPointer extends PropertyPointer {
         if (pd == null) {
             return false;
         }
-        
+
         if (pd instanceof IndexedPropertyDescriptor) {
             return true;
         }
-        
+
         int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
         if (hint == -1) {
             return false;
@@ -190,11 +190,11 @@ public class BeanPropertyPointer extends PropertyPointer {
         if (hint == 1) {
             return true;
         }
-        
+
         Object value = getBaseValue();
         return value != null && ValueUtils.isCollection(value);
     }
-    
+
     /**
      * If the property contains a collection, then the length of that
      * collection, otherwise - 1.
@@ -205,20 +205,20 @@ public class BeanPropertyPointer extends PropertyPointer {
         if (pd == null) {
             return 1;
         }
-        
+
         if (pd instanceof IndexedPropertyDescriptor) {
             return ValueUtils.getIndexedPropertyLength(
                 getBean(),
                 (IndexedPropertyDescriptor) pd);
         }
-        
+
         int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
         if (hint == -1) {
             return 1;
         }
         return ValueUtils.getLength(getBaseValue());
     }
-    
+
     /**
      * If index == WHOLE_COLLECTION, change the value of the property, otherwise
      * change the value of the index'th element of the collection

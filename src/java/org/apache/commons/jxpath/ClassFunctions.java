@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
 /**
  * Extension functions provided by a Java class.
  *
- * Let's say, we declared a ClassFunction like this:
+ * Let's say we declared a ClassFunction like this:
  * <blockquote><pre>
  *     new ClassFunctions(Integer.class, "int")
  * </pre></blockquote>
@@ -52,10 +52,16 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * @version $Revision$ $Date$
  */
 public class ClassFunctions implements Functions {
-    private Class functionClass;
-    private String namespace;
     private static final Object[] EMPTY_ARRAY = new Object[0];
 
+    private Class functionClass;
+    private String namespace;
+
+    /**
+     * Create a new ClassFunctions.
+     * @param functionClass Class providing the functions
+     * @param namespace assigned ns
+     */
     public ClassFunctions(Class functionClass, String namespace) {
         this.functionClass = functionClass;
         this.namespace = namespace;
@@ -77,6 +83,7 @@ public class ClassFunctions implements Functions {
      * @param namespace if it is not the namespace specified in the constructor,
      *     the method returns null
      * @param name is a function name or "new" for a constructor.
+     * @param parameters Object[] of parameters
      *
      * @return a MethodFunction, a ConstructorFunction or null if there is no
      *      such function.
@@ -84,13 +91,13 @@ public class ClassFunctions implements Functions {
     public Function getFunction(
         String namespace,
         String name,
-        Object[] parameters) 
-    {
+        Object[] parameters) {
         if (namespace == null) {
             if (this.namespace != null) {
                 return null;
             }
-        } else if (!namespace.equals(this.namespace)) {
+        }
+        else if (!namespace.equals(this.namespace)) {
             return null;
         }
 

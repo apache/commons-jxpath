@@ -26,11 +26,11 @@ package org.apache.commons.jxpath;
 public class JXPathInvalidAccessException extends JXPathException {
 
     private static final long serialVersionUID = -8875537628056117241L;
-    
+
     public JXPathInvalidAccessException(String message) {
         super(message);
     }
-    
+
     public JXPathInvalidAccessException(String message, Throwable ex) {
         super(message, ex);
     }

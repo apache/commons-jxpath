@@ -39,7 +39,7 @@ public class DOMNodeIterator implements NodeIterator {
         NodePointer parent,
         NodeTest nodeTest,
         boolean reverse,
-        NodePointer startWith) 
+        NodePointer startWith)
     {
         this.parent = parent;
         this.node = (Node) parent.getNode();

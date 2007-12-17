@@ -41,11 +41,11 @@ public class DescendantContext extends EvalContext {
     private boolean includeSelf;
     private static final NodeTest ELEMENT_NODE_TEST =
             new NodeTypeTest(Compiler.NODE_TYPE_NODE);
-                        
+
     public DescendantContext(
             EvalContext parentContext,
             boolean includeSelf,
-            NodeTest nodeTest) 
+            NodeTest nodeTest)
     {
         super(parentContext);
         this.includeSelf = includeSelf;
@@ -124,7 +124,7 @@ public class DescendantContext extends EvalContext {
                 }
             }
             else {
-                // We get here only if the name test failed 
+                // We get here only if the name test failed
                 // and the iterator ended
                 stack.pop();
             }

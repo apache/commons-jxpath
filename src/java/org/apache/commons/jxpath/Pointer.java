@@ -39,11 +39,11 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
 
     /**
      * Returns the value of the object, property or collection element
-     * this pointer represents. May convert the value to one of the 
+     * this pointer represents. May convert the value to one of the
      * canonical InfoSet types: String, Number, Boolean, Set.
-     * 
+     *
      * For example, in the case of an XML element, getValue() will
-     * return the text contained by the element rather than 
+     * return the text contained by the element rather than
      * the element itself.
      * @return Object value
      */
@@ -52,8 +52,8 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
     /**
      * Returns the raw value of the object, property or collection element
      * this pointer represents.  Never converts the object to a
-     * canonical type: returns it as is. 
-     * 
+     * canonical type: returns it as is.
+     *
      * For example, for an XML element, getNode() will
      * return the element itself rather than the text it contains.
      * @return Object node
@@ -69,10 +69,10 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
 
     /**
      * Returns the node this pointer is based on.
-     * @return  
+     * @return
      */
     Object getRootNode();
-    
+
     /**
      * Returns a string that is a proper "canonical" XPath that corresponds to
      * this pointer.  Consider this example:
@@ -86,7 +86,7 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
      * /departments[@name = 'HR']/employees[3]"</code>.
      */
     String asPath();
-    
+
     /**
      * Pointers are cloneable
      */

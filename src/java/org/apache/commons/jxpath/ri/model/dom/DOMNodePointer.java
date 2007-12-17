@@ -54,16 +54,16 @@ import org.w3c.dom.ProcessingInstruction;
 public class DOMNodePointer extends NodePointer {
 
     private static final long serialVersionUID = -8751046933894857319L;
-    
+
     private Node node;
     private Map namespaces;
     private String defaultNamespace;
     private String id;
     private NamespaceResolver localNamespaceResolver;
 
-    public static final String XML_NAMESPACE_URI = 
+    public static final String XML_NAMESPACE_URI =
             "http://www.w3.org/XML/1998/namespace";
-    public static final String XMLNS_NAMESPACE_URI = 
+    public static final String XMLNS_NAMESPACE_URI =
             "http://www.w3.org/2000/xmlns/";
 
     public DOMNodePointer(Node node, Locale locale) {
@@ -81,7 +81,7 @@ public class DOMNodePointer extends NodePointer {
         super(parent);
         this.node = node;
     }
-    
+
     public boolean testNode(NodeTest test) {
         return testNode(node, test);
     }
@@ -168,7 +168,7 @@ public class DOMNodePointer extends NodePointer {
     public NodeIterator childIterator(
         NodeTest test,
         boolean reverse,
-        NodePointer startWith) 
+        NodePointer startWith)
     {
         return new DOMNodeIterator(this, test, reverse, startWith);
     }
@@ -242,7 +242,7 @@ public class DOMNodePointer extends NodePointer {
         if (namespace == UNKNOWN_NAMESPACE) {
             return null;
         }
-        
+
         // TBD: We are supposed to resolve relative URIs to absolute ones.
         return namespace;
     }
@@ -373,11 +373,11 @@ public class DOMNodePointer extends NodePointer {
             }
         }
     }
-    
+
     public NodePointer createChild(
         JXPathContext context,
         QName name,
-        int index) 
+        int index)
     {
         if (index == WHOLE_COLLECTION) {
             index = 0;
@@ -392,7 +392,7 @@ public class DOMNodePointer extends NodePointer {
         if (success) {
             NodeTest nodeTest;
             String prefix = name.getPrefix();
-            String namespaceURI = prefix == null ? null : 
+            String namespaceURI = prefix == null ? null :
                 context.getNamespaceURI(prefix);
             nodeTest = new NodeNameTest(name, namespaceURI);
 
@@ -406,7 +406,7 @@ public class DOMNodePointer extends NodePointer {
                         + "/" + name + "[" + (index + 1) + "]");
     }
 
-    public NodePointer createChild(JXPathContext context, 
+    public NodePointer createChild(JXPathContext context,
                 QName name, int index, Object value)
     {
         NodePointer ptr = createChild(context, name, index);
@@ -548,7 +548,7 @@ public class DOMNodePointer extends NodePointer {
         }
         return count;
     }
-    
+
     private int getRelativePositionOfElement() {
         int count = 1;
         Node n = node.getPreviousSibling();
@@ -616,7 +616,7 @@ public class DOMNodePointer extends NodePointer {
         int index = name.lastIndexOf(':');
         return index < 0 ? name : name.substring(index + 1);
     }
-    
+
     public static String getNamespaceURI(Node node) {
         if (node instanceof Document) {
             node = ((Document) node).getDocumentElement();

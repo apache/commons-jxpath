@@ -38,7 +38,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public class DynamicPropertyPointer extends PropertyPointer {
 
     private static final long serialVersionUID = -5720585681149150822L;
-    
+
     private DynamicPropertyHandler handler;
     private String name;
     private String[] names;
@@ -46,7 +46,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
 
     public DynamicPropertyPointer(
             NodePointer parent,
-            DynamicPropertyHandler handler) 
+            DynamicPropertyHandler handler)
     {
         super(parent);
         this.handler = handler;
@@ -230,10 +230,10 @@ public class DynamicPropertyPointer extends PropertyPointer {
                 handler.setProperty(getBean(), getPropertyName(), collection);
             }
         }
-        
+
         return this;
     }
-    
+
     public NodePointer createPath(JXPathContext context, Object value) {
         if (index == WHOLE_COLLECTION) {
             handler.setProperty(getBean(), getPropertyName(), value);
@@ -267,7 +267,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
             handler.setProperty(bean, getPropertyName(), null);
         }
     }
-    
+
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(getImmediateParentPointer().asPath());

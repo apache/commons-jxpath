@@ -31,6 +31,11 @@ public class BeanAttributeIterator extends PropertyIterator {
     private int position = 0;
     private boolean includeXmlLang;
 
+    /**
+     * Create a new BeanAttributeIterator.
+     * @param parent parent pointer
+     * @param name name of this bean
+     */
     public BeanAttributeIterator(PropertyOwnerPointer parent, QName name) {
         super(
             parent,
@@ -43,18 +48,27 @@ public class BeanAttributeIterator extends PropertyIterator {
         this.parent = parent;
         includeXmlLang =
             (name.getPrefix() != null && name.getPrefix().equals("xml"))
-                && (name.getName().equals("lang") 
+                && (name.getName().equals("lang")
                 || name.getName().equals("*"));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getNodePointer() {
         return includeXmlLang && position == 1 ? new LangAttributePointer(parent) : super.getNodePointer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         this.position = position;
         if (includeXmlLang) {

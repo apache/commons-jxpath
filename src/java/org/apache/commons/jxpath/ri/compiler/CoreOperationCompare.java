@@ -63,7 +63,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
     protected boolean equal(
         EvalContext context,
         Expression left,
-        Expression right) 
+        Expression right)
     {
         Object l = left.compute(context);
         Object r = right.compute(context);

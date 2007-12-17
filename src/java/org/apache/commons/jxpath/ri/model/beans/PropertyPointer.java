@@ -289,7 +289,7 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     /**
-     * Get the required AbstractFactory configured on the specified JXPathContext. 
+     * Get the required AbstractFactory configured on the specified JXPathContext.
      * @param context JXPathContext
      * @return AbstractFactory
      * @throws JXPathException if no factory configured.

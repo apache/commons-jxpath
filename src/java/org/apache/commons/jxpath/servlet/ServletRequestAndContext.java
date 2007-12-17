@@ -27,23 +27,32 @@ import javax.servlet.http.HttpSession;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-public class ServletRequestAndContext extends
-        HttpSessionAndServletContext
-{
+public class ServletRequestAndContext extends HttpSessionAndServletContext {
     private ServletRequest request;
 
+    /**
+     * Create a new ServletRequestAndContext.
+     * @param request ServletRequest
+     * @param context ServletContext
+     */
     public ServletRequestAndContext(ServletRequest request,
-            ServletContext context) 
-    {
+            ServletContext context) {
         super(null, context);
         this.request = request;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public HttpSession getSession() {
         return request instanceof HttpServletRequest
                 ? ((HttpServletRequest) request).getSession(false) : null;
     }
 
+    /**
+     * Get the request.
+     * @return ServletRequest
+     */
     public ServletRequest getServletRequest() {
         return request;
     }

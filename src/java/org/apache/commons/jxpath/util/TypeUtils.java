@@ -41,6 +41,7 @@ public class TypeUtils {
 
     /**
      * Install an alternative type converter.
+     * @param converter new TypeConverter
      */
     public static synchronized void setTypeConverter(TypeConverter converter) {
         typeConverter = converter;
@@ -48,6 +49,7 @@ public class TypeUtils {
 
     /**
      * Returns the current type converter.
+     * @return TypeConverter
      */
     public static TypeConverter getTypeConverter() {
         return typeConverter;
@@ -56,6 +58,9 @@ public class TypeUtils {
     /**
      * Returns true if the global converter can convert the supplied
      * object to the specified type.
+     * @param object object to test
+     * @param toType target class
+     * @return boolean
      */
     public static boolean canConvert(Object object, Class toType) {
         return typeConverter.canConvert(object, toType);
@@ -64,6 +69,9 @@ public class TypeUtils {
     /**
      * Converts the supplied object to the specified type. May
      * throw a RuntimeException.
+     * @param object object to convert
+     * @param toType target class
+     * @return resulting Object
      */
     public static Object convert(Object object, Class toType) {
         return typeConverter.convert(object, toType);

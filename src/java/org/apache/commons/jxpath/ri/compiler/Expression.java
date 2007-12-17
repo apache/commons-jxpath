@@ -39,8 +39,13 @@ import java.util.Locale;
  */
 public abstract class Expression {
 
+    /** zero */
     protected static final Double ZERO = new Double(0);
+
+    /** one */
     protected static final Double ONE = new Double(1);
+
+    /** NaN */
     protected static final Double NOT_A_NUMBER = new Double(Double.NaN);
 
     private boolean contextDependencyKnown = false;
@@ -49,8 +54,9 @@ public abstract class Expression {
     /**
      * Returns true if this expression should be re-evaluated
      * each time the current position in the context changes.
+     * @return boolean
      */
-    public boolean isContextDependent() {
+    public synchronized boolean isContextDependent() {
         if (!contextDependencyKnown) {
             contextDependent = computeContextDependent();
             contextDependencyKnown = true;
@@ -60,16 +66,31 @@ public abstract class Expression {
 
     /**
      * Implemented by subclasses and result is cached by isContextDependent()
+     * @return calculated context-dependentness as boolean
      */
     public abstract boolean computeContextDependent();
 
     /**
      * Evaluates the expression. If the result is a node set, returns
      * the first element of the node set.
+     * @param context evaluation context
+     * @return Object
      */
     public abstract Object computeValue(EvalContext context);
+
+    /**
+     * Evaluates the expression. If the result is a node set, returns
+     * the first element of the node set.
+     * @param context evaluation context
+     * @return Object
+     */
     public abstract Object compute(EvalContext context);
 
+    /**
+     * Iterate over the values from the specified context.
+     * @param context evaluation context
+     * @return value Iterator
+     */
     public Iterator iterate(EvalContext context) {
         Object result = compute(context);
         if (result instanceof EvalContext) {
@@ -81,6 +102,11 @@ public abstract class Expression {
         return ValueUtils.iterate(result);
     }
 
+    /**
+     * Iterate over the pointers from the specified context.
+     * @param context evaluation context
+     * @return pointer Iterator
+     */
     public Iterator iteratePointers(EvalContext context) {
         Object result = compute(context);
         if (result == null) {
@@ -99,6 +125,9 @@ public abstract class Expression {
                 context.getRootContext().getCurrentNodePointer().getLocale());
     }
 
+    /**
+     * Pointer iterator
+     */
     public static class PointerIterator implements Iterator {
         private Iterator iterator;
         private QName qname;
@@ -106,6 +135,10 @@ public abstract class Expression {
 
         //to what method does the following comment refer?
         /**
+         * Create a new PointerIterator
+         * @param it underlying Iterator
+         * @param qname name
+         * @param locale Locale
          * @deprecated Use the method that takes a NamespaceManager
          */
         public PointerIterator(Iterator it, QName qname, Locale locale) {
@@ -114,36 +147,61 @@ public abstract class Expression {
             this.locale = locale;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public boolean hasNext() {
             return iterator.hasNext();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public Object next() {
             Object o = iterator.next();
             return o instanceof Pointer ? o : NodePointer.newNodePointer(qname, o, locale);
         }
 
+        /**
+         * Unsupported.
+         */
         public void remove() {
             throw new UnsupportedOperationException();
         }
     }
 
+    /**
+     * Value Iterator
+     */
     public static class ValueIterator implements Iterator {
         private Iterator iterator;
 
+        /**
+         * Create a new ValueIterator.
+         * @param it underlying Iterator, may contain pointers
+         */
         public ValueIterator(Iterator it) {
             this.iterator = it;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public boolean hasNext() {
             return iterator.hasNext();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public Object next() {
             Object o = iterator.next();
             return o instanceof Pointer ? ((Pointer) o).getValue() : o;
         }
 
+        /**
+         * Unsupported.
+         */
         public void remove() {
             throw new UnsupportedOperationException();
         }

@@ -41,7 +41,7 @@ public class BeanPointer extends PropertyOwnerPointer {
             QName name,
             Object bean,
             JXPathBeanInfo beanInfo,
-            Locale locale) 
+            Locale locale)
     {
         super(null, locale);
         this.name = name;
@@ -56,7 +56,7 @@ public class BeanPointer extends PropertyOwnerPointer {
             NodePointer parent,
             QName name,
             Object bean,
-            JXPathBeanInfo beanInfo) 
+            JXPathBeanInfo beanInfo)
     {
         super(parent);
         this.name = name;

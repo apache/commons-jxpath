@@ -27,24 +27,41 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  */
 public class CoreOperationMod extends CoreOperation {
 
+    /**
+     * Create a new CoreOperationMod.
+     * @param arg1 dividend
+     * @param arg2 divisor
+     */
     public CoreOperationMod(Expression arg1, Expression arg2) {
         super(new Expression[] { arg1, arg2 });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
         long l = (long) InfoSetUtil.doubleValue(args[0].computeValue(context));
         long r = (long) InfoSetUtil.doubleValue(args[1].computeValue(context));
         return new Double(l % r);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     protected int getPrecedence() {
         return 5;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isSymmetric() {
         return false;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return "mod";
     }

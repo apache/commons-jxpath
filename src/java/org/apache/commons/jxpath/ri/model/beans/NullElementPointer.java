@@ -49,11 +49,11 @@ public class NullElementPointer extends CollectionPointer {
     public Object getImmediateNode() {
         return null;
     }
-    
+
     public boolean isLeaf() {
         return true;
-    }    
-    
+    }
+
     public boolean isCollection() {
         return false;
     }
@@ -82,7 +82,7 @@ public class NullElementPointer extends CollectionPointer {
     public NodePointer createPath(JXPathContext context) {
         return parent.createChild(context, null, index);
     }
-    
+
     public NodePointer createPath(JXPathContext context, Object value) {
         return parent.createChild(context, null, index, value);
     }
@@ -101,14 +101,14 @@ public class NullElementPointer extends CollectionPointer {
         }
 
         NullElementPointer other = (NullElementPointer) object;
-        return getImmediateParentPointer() == other.getImmediateParentPointer() 
+        return getImmediateParentPointer() == other.getImmediateParentPointer()
             && index == other.index;
     }
 
     public int getLength() {
         return 0;
     }
-    
+
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         NodePointer parent = getImmediateParentPointer();
@@ -122,8 +122,8 @@ public class NullElementPointer extends CollectionPointer {
             }
             else if (parent != null
                     && parent.getImmediateParentPointer() != null
-                    && parent.getImmediateParentPointer().getIndex() != 
-                            WHOLE_COLLECTION) 
+                    && parent.getImmediateParentPointer().getIndex() !=
+                            WHOLE_COLLECTION)
             {
                 buffer.append("/.");
             }
@@ -131,5 +131,5 @@ public class NullElementPointer extends CollectionPointer {
         }
 
         return buffer.toString();
-    }    
+    }
 }

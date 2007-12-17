@@ -192,7 +192,7 @@ public class BasicTypeConverter implements TypeConverter {
                 }
                 return unmodifiableCollection(collection);
             }
-            if (length > 0) { 
+            if (length > 0) {
                 Object value = Array.get(object, 0);
                 return convert(value, useType);
             }
@@ -331,7 +331,7 @@ public class BasicTypeConverter implements TypeConverter {
         }
         return null;
     }
-    
+
     protected Number allocateNumber(Class type, double value) {
         type = TypeUtils.wrapPrimitive(type);
         if (type == Byte.class) {
@@ -435,15 +435,15 @@ public class BasicTypeConverter implements TypeConverter {
         public ValueNodeSet(List values) {
            this.values = values;
         }
-        
+
         public List getValues() {
             return Collections.unmodifiableList(values);
         }
-        
+
         public List getNodes() {
             return Collections.unmodifiableList(values);
         }
-        
+
         public List getPointers() {
             if (pointers == null) {
                 pointers = new ArrayList();
@@ -455,38 +455,38 @@ public class BasicTypeConverter implements TypeConverter {
             return pointers;
         }
     }
-    
+
     static final class ValuePointer implements Pointer {
         private Object bean;
 
         public ValuePointer(Object object) {
             this.bean = object;
         }
-        
+
         public Object getValue() {
             return bean;
         }
-        
+
         public Object getNode() {
             return bean;
         }
-        
+
         public Object getRootNode() {
             return bean;
-        }        
-        
+        }
+
         public void setValue(Object value) {
             throw new UnsupportedOperationException();
         }
-        
+
         public Object clone() {
             return this;
         }
-        
+
         public int compareTo(Object object) {
             return 0;
         }
-        
+
         public String asPath() {
             if (bean == null) {
                 return "null()";
