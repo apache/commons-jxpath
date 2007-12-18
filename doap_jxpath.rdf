@@ -11,7 +11,6 @@
     <asfext:pmc rdf:resource="http://commons.apache.org/"/>
     <shortdesc xml:lang="en">XPath for Java Objects</shortdesc>
     <description xml:lang="en">A Java-based implementation of XPath 1.0 that, in addition to XML processing, can inspect/modify Java object graphs (the library's explicit purpose) and even mixed Java/XML structures.</description>
-      </revision>
     <repository>
       <SVNRepository>
         <browse rdf:resource="http://svn.apache.org/repos/asf/commons/proper/jxpath/trunk"/>
