@@ -22,7 +22,6 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.apache.commons.jxpath.ri.model.beans.PropertyIterator;
 
 /**
  * EvalContext that walks the "preceding::" and "following::" axes.
@@ -148,7 +147,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
                     else {
                         stack.pop();
                         if (!stack.isEmpty()) {
-                            it = (PropertyIterator) stack.peek();
+                            it = (NodeIterator) stack.peek();
                             currentNodePointer = it.getNodePointer();
                             if (currentNodePointer.testNode(nodeTest)) {
                                 super.setPosition(getCurrentPosition() + 1);

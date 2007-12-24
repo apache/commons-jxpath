@@ -464,6 +464,15 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             "/vendor[1]/location[1]/address[1]/street[1]");
     }
 
+    public void testAxisPreceding() {
+        // preceding::
+        assertXPathPointer(
+                context,
+                "//location[2]/preceding-sibling::location//street",
+        "/vendor[1]/location[1]/address[1]/street[1]");
+        assertXPathPointer(context, "//location[2]/preceding::node()[1]", "/vendor[1]/location[1]/employeeCount[1]");
+    }
+
     public void testAxisAttribute() {
         // attribute::
         assertXPathValue(context, "vendor/location/@id", "100");
@@ -630,6 +639,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             context,
             "//location/following::price:sale/saleEnds",
             "never");
+        assertXPathPointer(context, "//location[2]/following::node()[1]", "/vendor[1]/product[1]");
     }
 
     public void testAxisSelf() {
