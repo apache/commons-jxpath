@@ -35,6 +35,13 @@ public class ChildContext extends EvalContext {
     private boolean reverse;
     private NodeIterator iterator;
 
+    /**
+     * Create a new ChildContext.
+     * @param parentContext parent EvalContext
+     * @param nodeTest NodeTest
+     * @param startFromParentLocation whether to start from parent location
+     * @param reverse whether to iterate in reverse
+     */
     public ChildContext(
         EvalContext parentContext,
         NodeTest nodeTest,
@@ -47,6 +54,9 @@ public class ChildContext extends EvalContext {
         this.reverse = reverse;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getCurrentNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -62,6 +72,7 @@ public class ChildContext extends EvalContext {
      * even if it is a collection. It will not extract the first element
      * of the collection.  For example, "books" will return the collection
      * of books rather than the first book from that collection.
+     * @return Pointer
      */
     public Pointer getSingleNodePointer() {
         if (position == 0) {
@@ -81,15 +92,24 @@ public class ChildContext extends EvalContext {
         return getCurrentNodePointer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean nextNode() {
         return setPosition(getCurrentPosition() + 1);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void reset() {
         super.reset();
         iterator = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         int oldPosition = getCurrentPosition();
         super.setPosition(position);
