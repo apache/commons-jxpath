@@ -41,15 +41,30 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private Class dynamicPropertyHandlerClass;
     private HashMap propertyDescriptorMap;
 
+    /**
+     * Create a new JXPathBasicBeanInfo.
+     * @param clazz bean class
+     */
     public JXPathBasicBeanInfo(Class clazz) {
         this.clazz = clazz;
     }
 
+    /**
+     * Create a new JXPathBasicBeanInfo.
+     * @param clazz bean class
+     * @param atomic whether objects of this class are treated as atomic
+     *               objects which have no properties of their own.
+     */
     public JXPathBasicBeanInfo(Class clazz, boolean atomic) {
         this.clazz = clazz;
         this.atomic = atomic;
     }
 
+    /**
+     * Create a new JXPathBasicBeanInfo.
+     * @param clazz bean class
+     * @param dynamicPropertyHandlerClass dynamic property handler class
+     */
     public JXPathBasicBeanInfo(Class clazz, Class dynamicPropertyHandlerClass) {
         this.clazz = clazz;
         this.atomic = false;
@@ -59,6 +74,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     /**
      * Returns true if objects of this class are treated as atomic
      * objects which have no properties of their own.
+     * @return boolean
      */
     public boolean isAtomic() {
         return atomic;
@@ -66,11 +82,15 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     /**
      * Return true if the corresponding objects have dynamic properties.
+     * @return boolean
      */
     public boolean isDynamic() {
         return dynamicPropertyHandlerClass != null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public synchronized PropertyDescriptor[] getPropertyDescriptors() {
         if (propertyDescriptors == null) {
             if (clazz == Object.class) {
@@ -104,6 +124,9 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
         return propertyDescriptors;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public synchronized PropertyDescriptor getPropertyDescriptor(String propertyName) {
         if (propertyDescriptorMap == null) {
             propertyDescriptorMap = new HashMap();
@@ -123,6 +146,9 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
         return dynamicPropertyHandlerClass;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("BeanInfo [class = ");
