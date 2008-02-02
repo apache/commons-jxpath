@@ -725,7 +725,7 @@ public class DOMNodePointer extends NodePointer {
      * {@inheritDoc}
      */
     public int hashCode() {
-        return System.identityHashCode(node);
+        return node.hashCode();
     }
 
     /**
