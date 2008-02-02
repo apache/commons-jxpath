@@ -624,23 +624,32 @@ public class DOMNodePointer extends NodePointer {
      * @return string with any necessary changes made.
      */
     private String escape(String string) {
-        int index = string.indexOf('\'');
-        while (index != -1) {
-            string =
-                string.substring(0, index)
-                    + "&apos;"
-                    + string.substring(index + 1);
-            index = string.indexOf('\'');
+        final char[] c = new char[] { '\'', '"' };
+        final String[] esc = new String[] { "&apos;", "&quot;" };
+        StringBuffer sb = null;
+        for (int i = 0; sb == null && i < c.length; i++) {
+            if (string.indexOf(c[i]) >= 0) {
+                sb = new StringBuffer(string);
+            }
         }
-        index = string.indexOf('\"');
-        while (index != -1) {
-            string =
-                string.substring(0, index)
-                    + "&quot;"
-                    + string.substring(index + 1);
-            index = string.indexOf('\"');
+        if (sb == null) {
+            return string;
         }
-        return string;
+        for (int i = 0; i < c.length; i++) {
+            if (string.indexOf(c[i]) < 0) {
+                continue;
+            }
+            int pos = 0;
+            while (pos < sb.length()) {
+                if (sb.charAt(pos) == c[i]) {
+                    sb.replace(pos, pos + 1, esc[i]);
+                    pos += esc[i].length();
+                } else {
+                    pos++;
+                }
+            }
+        }
+        return sb.toString();
     }
 
     /**
