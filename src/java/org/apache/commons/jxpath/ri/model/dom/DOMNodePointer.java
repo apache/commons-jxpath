@@ -61,31 +61,59 @@ public class DOMNodePointer extends NodePointer {
     private String id;
     private NamespaceResolver localNamespaceResolver;
 
+    /** XML namespace URI */
     public static final String XML_NAMESPACE_URI =
             "http://www.w3.org/XML/1998/namespace";
+
+    /** XMLNS namespace URI */
     public static final String XMLNS_NAMESPACE_URI =
             "http://www.w3.org/2000/xmlns/";
 
+    /**
+     * Create a new DOMNodePointer.
+     * @param node pointed at
+     * @param locale Locale
+     */
     public DOMNodePointer(Node node, Locale locale) {
         super(null, locale);
         this.node = node;
     }
 
+    /**
+     * Create a new DOMNodePointer.
+     * @param node pointed at
+     * @param locale Locale
+     * @param id string id
+     */
     public DOMNodePointer(Node node, Locale locale, String id) {
         super(null, locale);
         this.node = node;
         this.id = id;
     }
 
+    /**
+     * Create a new DOMNodePointer.
+     * @param parent pointer
+     * @param node pointed
+     */
     public DOMNodePointer(NodePointer parent, Node node) {
         super(parent);
         this.node = node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean testNode(NodeTest test) {
         return testNode(node, test);
     }
 
+    /**
+     * Test a Node.
+     * @param node to test
+     * @param test to execute
+     * @return true if node passes test
+     */
     public static boolean testNode(Node node, NodeTest test) {
         if (test == null) {
             return true;
@@ -138,6 +166,12 @@ public class DOMNodePointer extends NodePointer {
         return false;
     }
 
+    /**
+     * Test string equality.
+     * @param s1 String 1
+     * @param s2 String 2
+     * @return true if == or .equals()
+     */
     private static boolean equalStrings(String s1, String s2) {
         if (s1 == s2) {
             return true;
@@ -147,6 +181,9 @@ public class DOMNodePointer extends NodePointer {
         return s1.equals(s2);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         String ln = null;
         String ns = null;
@@ -161,10 +198,16 @@ public class DOMNodePointer extends NodePointer {
         return new QName(ns, ln);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getNamespaceURI() {
         return getNamespaceURI(node);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator childIterator(
         NodeTest test,
         boolean reverse,
@@ -173,20 +216,29 @@ public class DOMNodePointer extends NodePointer {
         return new DOMNodeIterator(this, test, reverse, startWith);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator attributeIterator(QName name) {
         return new DOMAttributeIterator(this, name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer namespacePointer(String prefix) {
         return new NamespacePointer(this, prefix);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator namespaceIterator() {
         return new DOMNamespaceIterator(this);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.commons.jxpath.ri.model.NodePointer#getNamespaceResolver()
+    /**
+     * {@inheritDoc}
      */
     public synchronized NamespaceResolver getNamespaceResolver() {
         if (localNamespaceResolver == null) {
@@ -196,6 +248,9 @@ public class DOMNodePointer extends NodePointer {
         return localNamespaceResolver;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getNamespaceURI(String prefix) {
         if (prefix == null || prefix.equals("")) {
             return getDefaultNamespaceURI();
@@ -247,6 +302,9 @@ public class DOMNodePointer extends NodePointer {
         return namespace;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getDefaultNamespaceURI() {
         if (defaultNamespace == null) {
             Node aNode = node;
@@ -271,26 +329,44 @@ public class DOMNodePointer extends NodePointer {
         return defaultNamespace.equals("") ? null : defaultNamespace;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getBaseValue() {
         return node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getImmediateNode() {
         return node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isActual() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getLength() {
         return 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         return !node.hasChildNodes();
     }
@@ -299,6 +375,8 @@ public class DOMNodePointer extends NodePointer {
      * Returns true if the xml:lang attribute for the current node
      * or its parent has the specified prefix <i>lang</i>.
      * If no node has this prefix, calls <code>super.isLanguage(lang)</code>.
+     * @param lang ns to test
+     * @return boolean
      */
     public boolean isLanguage(String lang) {
         String current = getLanguage();
@@ -306,6 +384,13 @@ public class DOMNodePointer extends NodePointer {
                 : current.toUpperCase().startsWith(lang.toUpperCase());
     }
 
+    /**
+     * Find the nearest occurrence of the specified attribute
+     * on the specified and enclosing elements.
+     * @param n current node
+     * @param attrName attribute name
+     * @return attribute value
+     */
     protected static String findEnclosingAttribute(Node n, String attrName) {
         while (n != null) {
             if (n.getNodeType() == Node.ELEMENT_NODE) {
@@ -320,6 +405,10 @@ public class DOMNodePointer extends NodePointer {
         return null;
     }
 
+    /**
+     * Get the language attribute for this node. 
+     * @return String language name
+     */
     protected String getLanguage() {
         return findEnclosingAttribute(node, "xml:lang");
     }
@@ -329,6 +418,7 @@ public class DOMNodePointer extends NodePointer {
      * a String, the contents of the node are replaced with this text.
      * If the value is an Element or Document, the children of the
      * node are replaced with the children of the passed node.
+     * @param value to set
      */
     public void setValue(Object value) {
         if (node.getNodeType() == Node.TEXT_NODE
@@ -374,6 +464,9 @@ public class DOMNodePointer extends NodePointer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createChild(
         JXPathContext context,
         QName name,
@@ -406,6 +499,9 @@ public class DOMNodePointer extends NodePointer {
                         + "/" + name + "[" + (index + 1) + "]");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createChild(JXPathContext context,
                 QName name, int index, Object value)
     {
@@ -414,6 +510,9 @@ public class DOMNodePointer extends NodePointer {
         return ptr;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createAttribute(JXPathContext context, QName name) {
         if (!(node instanceof Element)) {
             return super.createAttribute(context, name);
@@ -442,6 +541,9 @@ public class DOMNodePointer extends NodePointer {
         return it.getNodePointer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void remove() {
         Node parent = node.getParentNode();
         if (parent == null) {
@@ -450,6 +552,9 @@ public class DOMNodePointer extends NodePointer {
         parent.removeChild(node);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String asPath() {
         if (id != null) {
             return "id('" + escape(id) + "')";
@@ -502,11 +607,10 @@ public class DOMNodePointer extends NodePointer {
                 buffer.append(getRelativePositionOfTextNode()).append(']');
                 break;
             case Node.PROCESSING_INSTRUCTION_NODE :
-                String target = ((ProcessingInstruction) node).getTarget();
                 buffer.append("/processing-instruction(\'");
-                buffer.append(target).append("')");
+                buffer.append(((ProcessingInstruction) node).getTarget()).append("')");
                 buffer.append('[');
-                buffer.append(getRelativePositionOfPI(target)).append(']');
+                buffer.append(getRelativePositionOfPI()).append(']');
                 break;
             case Node.DOCUMENT_NODE :
                 // That'll be empty
@@ -514,6 +618,11 @@ public class DOMNodePointer extends NodePointer {
         return buffer.toString();
     }
 
+    /**
+     * Return a string escaping single and double quotes.
+     * @param string string to treat
+     * @return string with any necessary changes made.
+     */
     private String escape(String string) {
         int index = string.indexOf('\'');
         while (index != -1) {
@@ -534,6 +643,10 @@ public class DOMNodePointer extends NodePointer {
         return string;
     }
 
+    /**
+     * Get relative position of this among like-named siblings.
+     * @return 1..n
+     */
     private int getRelativePositionByName() {
         int count = 1;
         Node n = node.getPreviousSibling();
@@ -549,6 +662,10 @@ public class DOMNodePointer extends NodePointer {
         return count;
     }
 
+    /**
+     * Get relative position of this among all siblings.
+     * @return 1..n
+     */
     private int getRelativePositionOfElement() {
         int count = 1;
         Node n = node.getPreviousSibling();
@@ -561,6 +678,10 @@ public class DOMNodePointer extends NodePointer {
         return count;
     }
 
+    /**
+     * Get the relative position of this among sibling text nodes.
+     * @return 1..n
+     */
     private int getRelativePositionOfTextNode() {
         int count = 1;
         Node n = node.getPreviousSibling();
@@ -574,8 +695,13 @@ public class DOMNodePointer extends NodePointer {
         return count;
     }
 
-    private int getRelativePositionOfPI(String target) {
+    /**
+     * Get the relative position of this among same-target processing instruction siblings.
+     * @return 1..n
+     */
+    private int getRelativePositionOfPI() {
         int count = 1;
+        String target = ((ProcessingInstruction) node).getTarget();
         Node n = node.getPreviousSibling();
         while (n != null) {
             if (n.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE
@@ -587,14 +713,25 @@ public class DOMNodePointer extends NodePointer {
         return count;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return System.identityHashCode(node);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         return object == this || object instanceof DOMNodePointer && node == ((DOMNodePointer) object).node;
     }
 
+    /**
+     * Get any prefix from the specified node.
+     * @param node the node to check
+     * @return String xml prefix
+     */
     public static String getPrefix(Node node) {
         String prefix = node.getPrefix();
         if (prefix != null) {
@@ -606,6 +743,11 @@ public class DOMNodePointer extends NodePointer {
         return index < 0 ? null : name.substring(0, index);
     }
 
+    /**
+     * Get the local name of the specified node.
+     * @param node node to check
+     * @return String local name
+     */
     public static String getLocalName(Node node) {
         String localName = node.getLocalName();
         if (localName != null) {
@@ -617,6 +759,11 @@ public class DOMNodePointer extends NodePointer {
         return index < 0 ? name : name.substring(index + 1);
     }
 
+    /**
+     * Get the ns uri of the specified node.
+     * @param node Node to check
+     * @return String ns uri
+     */
     public static String getNamespaceURI(Node node) {
         if (node instanceof Document) {
             node = ((Document) node).getDocumentElement();
@@ -645,6 +792,9 @@ public class DOMNodePointer extends NodePointer {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getValue() {
         if (node.getNodeType() == Node.COMMENT_NODE) {
             String text = ((Comment) node).getData();
@@ -653,6 +803,11 @@ public class DOMNodePointer extends NodePointer {
         return stringValue(node);
     }
 
+    /**
+     * Get the string value of the specified node.
+     * @param node Node to check
+     * @return String
+     */
     private String stringValue(Node node) {
         int nodeType = node.getNodeType();
         if (nodeType == Node.COMMENT_NODE) {
@@ -678,6 +833,9 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Locates a node by ID.
+     * @param context starting context
+     * @param id to find
+     * @return Pointer
      */
     public Pointer getPointerByID(JXPathContext context, String id) {
         Document document = node.getNodeType() == Node.DOCUMENT_NODE ? (Document) node
@@ -687,6 +845,11 @@ public class DOMNodePointer extends NodePointer {
                 : new DOMNodePointer(element, getLocale(), id);
     }
 
+    /**
+     * Get the AbstractFactory associated with the specified JXPathContext.
+     * @param context JXPathContext
+     * @return AbstractFactory
+     */
     private AbstractFactory getAbstractFactory(JXPathContext context) {
         AbstractFactory factory = context.getFactory();
         if (factory == null) {
@@ -698,6 +861,9 @@ public class DOMNodePointer extends NodePointer {
         return factory;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int compareChildNodePointers(
             NodePointer pointer1, NodePointer pointer2)
     {
