@@ -73,27 +73,32 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     public synchronized PropertyDescriptor[] getPropertyDescriptors() {
         if (propertyDescriptors == null) {
-            try {
-                BeanInfo bi = null;
-                if (clazz.isInterface()) {
-                    bi = Introspector.getBeanInfo(clazz);
-                }
-                else {
-                    bi = Introspector.getBeanInfo(clazz, Object.class);
-                }
-                PropertyDescriptor[] pds = bi.getPropertyDescriptors();
-                PropertyDescriptor[] descriptors = new PropertyDescriptor[pds.length];
-                System.arraycopy(pds, 0, descriptors, 0, pds.length);
-                Arrays.sort(descriptors, new Comparator() {
-                    public int compare(Object left, Object right) {
-                        return ((PropertyDescriptor) left).getName().compareTo(
-                            ((PropertyDescriptor) right).getName());
-                    }
-                });
-                propertyDescriptors = descriptors;
+            if (clazz == Object.class) {
+                propertyDescriptors = new PropertyDescriptor[0];
             }
-            catch (IntrospectionException ex) {
-                ex.printStackTrace();
+            else {
+                try {
+                    BeanInfo bi = null;
+                    if (clazz.isInterface()) {
+                        bi = Introspector.getBeanInfo(clazz);
+                    }
+                    else {
+                        bi = Introspector.getBeanInfo(clazz, Object.class);
+                    }
+                    PropertyDescriptor[] pds = bi.getPropertyDescriptors();
+                    PropertyDescriptor[] descriptors = new PropertyDescriptor[pds.length];
+                    System.arraycopy(pds, 0, descriptors, 0, pds.length);
+                    Arrays.sort(descriptors, new Comparator() {
+                        public int compare(Object left, Object right) {
+                            return ((PropertyDescriptor) left).getName().compareTo(
+                                ((PropertyDescriptor) right).getName());
+                        }
+                    });
+                    propertyDescriptors = descriptors;
+                }
+                catch (IntrospectionException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
         return propertyDescriptors;
