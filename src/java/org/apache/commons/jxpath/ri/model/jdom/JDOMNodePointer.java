@@ -55,27 +55,49 @@ public class JDOMNodePointer extends NodePointer {
     private String id;
     private NamespaceResolver localNamespaceResolver;
 
+    /** XML ns uri */
     public static final String XML_NAMESPACE_URI =
             "http://www.w3.org/XML/1998/namespace";
+
+    /** XMLNS ns uri */
     public static final String XMLNS_NAMESPACE_URI =
             "http://www.w3.org/2000/xmlns/";
 
+    /**
+     * Create a new JDOMNodePointer.
+     * @param node pointed
+     * @param locale Locale
+     */
     public JDOMNodePointer(Object node, Locale locale) {
         super(null, locale);
         this.node = node;
     }
 
+    /**
+     * Create a new JDOMNodePointer.
+     * @param node pointed
+     * @param locale Locale
+     * @param id String id
+     */
     public JDOMNodePointer(Object node, Locale locale, String id) {
         super(null, locale);
         this.node = node;
         this.id = id;
     }
 
+    /**
+     * Create a new JDOMNodePointer.
+     * @param parent NodePointer
+     * @param node pointed
+     */
     public JDOMNodePointer(NodePointer parent, Object node) {
         super(parent);
         this.node = node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator childIterator(
         NodeTest test,
         boolean reverse,
@@ -84,22 +106,39 @@ public class JDOMNodePointer extends NodePointer {
         return new JDOMNodeIterator(this, test, reverse, startWith);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator attributeIterator(QName name) {
         return new JDOMAttributeIterator(this, name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator namespaceIterator() {
         return new JDOMNamespaceIterator(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer namespacePointer(String prefix) {
         return new JDOMNamespacePointer(this, prefix);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getNamespaceURI() {
         return getNamespaceURI(node);
     }
 
+    /**
+     * Get the ns uri of the specified node.
+     * @param node Node to check
+     * @return String
+     */
     private static String getNamespaceURI(Object node) {
         if (node instanceof Element) {
             Element element = (Element) node;
@@ -112,8 +151,8 @@ public class JDOMNodePointer extends NodePointer {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.commons.jxpath.ri.model.NodePointer#getNamespaceResolver()
+    /**
+     * {@inheritDoc}
      */
     public synchronized NamespaceResolver getNamespaceResolver() {
         if (localNamespaceResolver == null) {
@@ -123,6 +162,9 @@ public class JDOMNodePointer extends NodePointer {
         return localNamespaceResolver;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getNamespaceURI(String prefix) {
         if (prefix.equals("xml")) {
             return Namespace.XML_NAMESPACE.getURI();
@@ -141,6 +183,9 @@ public class JDOMNodePointer extends NodePointer {
         return ns == null ? null : ns.getURI();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int compareChildNodePointers(
         NodePointer pointer1,
         NodePointer pointer2)
@@ -196,22 +241,30 @@ public class JDOMNodePointer extends NodePointer {
         return 0;
     }
 
-
     /**
-     * @see org.apache.commons.jxpath.ri.model.NodePointer#getBaseValue()
+     * {@inheritDoc}
      */
     public Object getBaseValue() {
         return node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getLength() {
         return 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         if (node instanceof Element) {
             return ((Element) node).getContent().size() == 0;
@@ -223,7 +276,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * @see org.apache.commons.jxpath.ri.model.NodePointer#getName()
+     * {@inheritDoc}
      */
     public QName getName() {
         String ns = null;
@@ -242,12 +295,15 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * @see org.apache.commons.jxpath.ri.model.NodePointer#getNode()
+     * {@inheritDoc}
      */
     public Object getImmediateNode() {
         return node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getValue() {
         if (node instanceof Element) {
             StringBuffer buf = new StringBuffer();
@@ -277,6 +333,9 @@ public class JDOMNodePointer extends NodePointer {
         return result != null && trim ? result.trim() : result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setValue(Object value) {
         if (node instanceof Text) {
             String string = (String) TypeUtils.convert(value, String.class);
@@ -322,6 +381,10 @@ public class JDOMNodePointer extends NodePointer {
         }
     }
 
+    /**
+     * Add the specified content to this element.
+     * @param content List
+     */
     private void addContent(List content) {
         Element element = (Element) node;
         int count = content.size();
@@ -351,10 +414,20 @@ public class JDOMNodePointer extends NodePointer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean testNode(NodeTest test) {
         return testNode(this, node, test);
     }
 
+    /**
+     * Execute test against node on behalf of pointer. 
+     * @param pointer Pointer
+     * @param node to test
+     * @param test to execute
+     * @return true if node passes test
+     */
     public static boolean testNode(
         NodePointer pointer,
         Object node,
@@ -406,6 +479,12 @@ public class JDOMNodePointer extends NodePointer {
         return false;
     }
 
+    /**
+     * Learn whether two strings are == or .equals()
+     * @param s1 string 1
+     * @param s2 string 2
+     * @return true if equal
+     */
     private static boolean equalStrings(String s1, String s2) {
         if (s1 == s2) {
             return true;
@@ -415,6 +494,11 @@ public class JDOMNodePointer extends NodePointer {
         return s1.equals(s2);
     }
 
+    /**
+     * Get the prefix from a given node.
+     * @param node to check
+     * @return String
+     */
     public static String getPrefix(Object node) {
         if (node instanceof Element) {
             String prefix = ((Element) node).getNamespacePrefix();
@@ -427,6 +511,11 @@ public class JDOMNodePointer extends NodePointer {
         return null;
     }
 
+    /**
+     * Get the local name of the specified node.
+     * @param node to check
+     * @return String local name
+     */
     public static String getLocalName(Object node) {
         if (node instanceof Element) {
             return ((Element) node).getName();
@@ -441,16 +530,30 @@ public class JDOMNodePointer extends NodePointer {
      * Returns true if the xml:lang attribute for the current node
      * or its parent has the specified prefix <i>lang</i>.
      * If no node has this prefix, calls <code>super.isLanguage(lang)</code>.
+     * @param lang to compare
+     * @return true if this element uses the specified language.
      */
     public boolean isLanguage(String lang) {
         String current = getLanguage();
         return current == null ? super.isLanguage(lang) : current.toUpperCase().startsWith(lang.toUpperCase());
     }
 
+    /**
+     * Get the language of this element.
+     * @return String language
+     */
     protected String getLanguage() {
         return findEnclosingAttribute(node, "lang", Namespace.XML_NAMESPACE);
     }
 
+    /**
+     * Find the nearest occurrence of the specified attribute
+     * on the specified and enclosing elements.
+     * @param n current node
+     * @param attrName attribute name
+     * @param ns Namespace
+     * @return attribute value
+     */
     protected static String findEnclosingAttribute(Object n, String attrName, Namespace ns) {
         while (n != null) {
             if (n instanceof Element) {
@@ -465,6 +568,11 @@ public class JDOMNodePointer extends NodePointer {
         return null;
     }
 
+    /**
+     * Get the parent of the specified node.
+     * @param node to check
+     * @return parent Element
+     */
     private static Element nodeParent(Object node) {
         if (node instanceof Element) {
             Object parent = ((Element) node).getParent();
@@ -485,6 +593,9 @@ public class JDOMNodePointer extends NodePointer {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createChild(
         JXPathContext context,
         QName name,
@@ -518,6 +629,9 @@ public class JDOMNodePointer extends NodePointer {
                 + (index + 1) + "]");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createChild(
             JXPathContext context, QName name, int index, Object value)
     {
@@ -526,6 +640,9 @@ public class JDOMNodePointer extends NodePointer {
         return ptr;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createAttribute(JXPathContext context, QName name) {
         if (!(node instanceof Element)) {
             return super.createAttribute(context, name);
@@ -556,6 +673,9 @@ public class JDOMNodePointer extends NodePointer {
         return it.getNodePointer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void remove() {
         Element parent = nodeParent(node);
         if (parent == null) {
@@ -564,6 +684,9 @@ public class JDOMNodePointer extends NodePointer {
         parent.getContent().remove(node);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String asPath() {
         if (id != null) {
             return "id('" + escape(id) + "')";
@@ -616,35 +739,52 @@ public class JDOMNodePointer extends NodePointer {
                 ']');
         }
         else if (node instanceof ProcessingInstruction) {
-            String target = ((ProcessingInstruction) node).getTarget();
-            buffer.append("/processing-instruction(\'").append(target).append(
+            buffer.append("/processing-instruction(\'").append(((ProcessingInstruction) node).getTarget()).append(
                 "')");
-            buffer.append('[').append(getRelativePositionOfPI(target)).append(
+            buffer.append('[').append(getRelativePositionOfPI()).append(
                 ']');
         }
         return buffer.toString();
     }
 
+    /**
+     * Return a string escaping single and double quotes.
+     * @param string string to treat
+     * @return string with any necessary changes made.
+     */
     private String escape(String string) {
-        int index = string.indexOf('\'');
-        while (index != -1) {
-            string =
-                string.substring(0, index)
-                    + "&apos;"
-                    + string.substring(index + 1);
-            index = string.indexOf('\'');
+        final char[] c = new char[] { '\'', '"' };
+        final String[] esc = new String[] { "&apos;", "&quot;" };
+        StringBuffer sb = null;
+        for (int i = 0; sb == null && i < c.length; i++) {
+            if (string.indexOf(c[i]) >= 0) {
+                sb = new StringBuffer(string);
+            }
         }
-        index = string.indexOf('\"');
-        while (index != -1) {
-            string =
-                string.substring(0, index)
-                    + "&quot;"
-                    + string.substring(index + 1);
-            index = string.indexOf('\"');
+        if (sb == null) {
+            return string;
         }
-        return string;
+        for (int i = 0; i < c.length; i++) {
+            if (string.indexOf(c[i]) < 0) {
+                continue;
+            }
+            int pos = 0;
+            while (pos < sb.length()) {
+                if (sb.charAt(pos) == c[i]) {
+                    sb.replace(pos, pos + 1, esc[i]);
+                    pos += esc[i].length();
+                } else {
+                    pos++;
+                }
+            }
+        }
+        return sb.toString();
     }
 
+    /**
+     * Get relative position of this among like-named siblings.
+     * @return 1..n
+     */
     private int getRelativePositionByName() {
         if (node instanceof Element) {
             Object parent = ((Element) node).getParent();
@@ -670,6 +810,10 @@ public class JDOMNodePointer extends NodePointer {
         return 1;
     }
 
+    /**
+     * Get relative position of this among all siblings.
+     * @return 1..n
+     */
     private int getRelativePositionOfElement() {
         Object parent = ((Element) node).getParent();
         if (parent == null) {
@@ -695,6 +839,10 @@ public class JDOMNodePointer extends NodePointer {
         return count;
     }
 
+    /**
+     * Get the relative position of this among sibling text nodes.
+     * @return 1..n
+     */
     private int getRelativePositionOfTextNode() {
         Element parent;
         if (node instanceof Text) {
@@ -720,7 +868,12 @@ public class JDOMNodePointer extends NodePointer {
         return count;
     }
 
-    private int getRelativePositionOfPI(String target) {
+    /**
+     * Get the relative position of this among same-target processing instruction siblings.
+     * @return 1..n
+     */
+    private int getRelativePositionOfPI() {
+        String target = ((ProcessingInstruction) node).getTarget();
         Element parent = (Element) ((ProcessingInstruction) node).getParent();
         if (parent == null) {
             return 1;
@@ -742,10 +895,16 @@ public class JDOMNodePointer extends NodePointer {
         return count;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
-        return System.identityHashCode(node);
+        return node.hashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -759,6 +918,11 @@ public class JDOMNodePointer extends NodePointer {
         return node == other.node;
     }
 
+    /**
+     * Get the AbstractFactory associated with the specified JXPathContext.
+     * @param context JXPathContext
+     * @return AbstractFactory
+     */
     private AbstractFactory getAbstractFactory(JXPathContext context) {
         AbstractFactory factory = context.getFactory();
         if (factory == null) {
