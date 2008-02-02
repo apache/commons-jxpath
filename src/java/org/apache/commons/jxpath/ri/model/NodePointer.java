@@ -493,7 +493,7 @@ public abstract class NodePointer implements Pointer {
      * Check whether our locale matches the specified language.
      * @param lang String language to check
      * @return true if the selected locale name starts
-     * with the specified prefix <i>lang</i>, case-insensitive.
+     *              with the specified prefix <i>lang</i>, case-insensitive.
      */
     public boolean isLanguage(String lang) {
         Locale loc = getLocale();
@@ -501,27 +501,6 @@ public abstract class NodePointer implements Pointer {
         return name.toUpperCase().startsWith(lang.toUpperCase());
     }
 
-//    /**
-//     * Installs the supplied manager as the namespace manager for this node
-//     * pointer. The {@link #getNamespaceURI(String) getNamespaceURI(prefix)}
-//     * uses this manager to resolve namespace prefixes.
-//     *
-//     * @param namespaceManager
-//     */
-//    public void setNamespaceManager(NamespaceManager namespaceManager) {
-//        this.namespaceManager = namespaceManager;
-//    }
-//
-//    public NamespaceManager getNamespaceManager() {
-//        if (namespaceManager != null) {
-//            return namespaceManager;
-//        }
-//        if (parent != null) {
-//            return parent.getNamespaceManager();
-//        }
-//        return null;
-//    }
-//
     /**
      * Returns a NodeIterator that iterates over all children or all children
      * that match the given NodeTest, starting with the specified one.
@@ -707,7 +686,9 @@ public abstract class NodePointer implements Pointer {
         return asPath();
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public int compareTo(Object object) {
         if (object == this) {
             return 0;
@@ -743,6 +724,14 @@ public abstract class NodePointer implements Pointer {
         return commonParentFound ? compareNodePointers(this, depth1, pointer, depth2) : 0;
     }
 
+    /**
+     * Compare node pointers.
+     * @param p1 pointer 1
+     * @param depth1 depth 1
+     * @param p2 pointer 2
+     * @param depth2 depth 2
+     * @return comparison result: (< 0) -> (p1 lt p2); (0) -> (p1 eq p2); (> 0) -> (p1 gt p2)
+     */
     private int compareNodePointers(
         NodePointer p1,
         int depth1,
@@ -777,6 +766,11 @@ public abstract class NodePointer implements Pointer {
         printDeep(this, "");
     }
 
+    /**
+     * Print deep
+     * @param pointer to print
+     * @param indent indentation level
+     */
     private static void printDeep(NodePointer pointer, String indent) {
         if (indent.length() == 0) {
             System.err.println(
