@@ -144,8 +144,7 @@ public class DOMNodePointer extends NodePointer {
             int nodeType = node.getNodeType();
             switch (((NodeTypeTest) test).getNodeType()) {
                 case Compiler.NODE_TYPE_NODE :
-                    return nodeType == Node.ELEMENT_NODE
-                            || nodeType == Node.DOCUMENT_NODE;
+                    return true;
                 case Compiler.NODE_TYPE_TEXT :
                     return nodeType == Node.CDATA_SECTION_NODE
                         || nodeType == Node.TEXT_NODE;

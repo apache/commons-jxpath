@@ -388,7 +388,7 @@ public class JDOMNodePointer extends NodePointer {
         if (test instanceof NodeTypeTest) {
             switch (((NodeTypeTest) test).getNodeType()) {
                 case Compiler.NODE_TYPE_NODE :
-                    return (node instanceof Element) || (node instanceof Document);
+                    return true;
                 case Compiler.NODE_TYPE_TEXT :
                     return (node instanceof Text) || (node instanceof CDATA);
                 case Compiler.NODE_TYPE_COMMENT :
