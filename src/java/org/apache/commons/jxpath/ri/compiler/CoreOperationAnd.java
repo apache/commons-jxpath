@@ -41,7 +41,7 @@ public class CoreOperationAnd extends CoreOperation {
     }
 
     protected int getPrecedence() {
-        return 1;
+        return AND_PRECEDENCE;
     }
 
     protected boolean isSymmetric() {

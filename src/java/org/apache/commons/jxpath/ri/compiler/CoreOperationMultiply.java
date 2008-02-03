@@ -49,7 +49,7 @@ public class CoreOperationMultiply extends CoreOperation {
      * {@inheritDoc}
      */
     protected int getPrecedence() {
-        return 5;
+        return MULTIPLY_PRECEDENCE;
     }
 
     /**

@@ -38,7 +38,7 @@ public class CoreOperationSubtract extends CoreOperation {
     }
 
     protected int getPrecedence() {
-        return 4;
+        return ADD_PRECEDENCE;
     }
 
     protected boolean isSymmetric() {

@@ -27,6 +27,23 @@ import org.apache.commons.jxpath.ri.EvalContext;
  */
 public abstract class CoreOperation extends Operation {
 
+    /** or precedence */
+    protected static final int OR_PRECEDENCE = 0;
+    /** and precedence */
+    protected static final int AND_PRECEDENCE = 1;
+    /** compare precedence */
+    protected static final int COMPARE_PRECEDENCE = 2;
+    /** relational expression precedence */
+    protected static final int RELATIONAL_EXPR_PRECEDENCE = 3;
+    /** add/subtract precedence */
+    protected static final int ADD_PRECEDENCE = 4;
+    /** multiply/divide/mod precedence */
+    protected static final int MULTIPLY_PRECEDENCE = 5;
+    /** negate precedence */
+    protected static final int NEGATE_PRECEDENCE = 6;
+    /** union precedence */
+    protected static final int UNION_PRECEDENCE = 7;
+
     /**
      * Create a new CoreOperation.
      * @param args Expression[]

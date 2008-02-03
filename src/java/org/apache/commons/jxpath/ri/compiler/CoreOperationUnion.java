@@ -56,7 +56,7 @@ public class CoreOperationUnion extends CoreOperation {
      * {@inheritDoc}
      */
     protected int getPrecedence() {
-        return 7;
+        return UNION_PRECEDENCE;
     }
 
     /**

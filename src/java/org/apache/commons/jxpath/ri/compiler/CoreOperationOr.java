@@ -51,7 +51,7 @@ public class CoreOperationOr extends CoreOperation {
      * {@inheritDoc}
      */
     protected int getPrecedence() {
-        return 0;
+        return OR_PRECEDENCE;
     }
 
     /**

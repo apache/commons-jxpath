@@ -44,7 +44,7 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
     }
 
     protected final int getPrecedence() {
-        return 3;
+        return RELATIONAL_EXPR_PRECEDENCE;
     }
 
     protected final boolean isSymmetric() {

@@ -50,7 +50,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
     }
 
     protected int getPrecedence() {
-        return 2;
+        return COMPARE_PRECEDENCE;
     }
 
     protected boolean isSymmetric() {

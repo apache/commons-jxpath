@@ -50,7 +50,7 @@ public class CoreOperationAdd extends CoreOperation {
      * {@inheritDoc}
      */
     protected int getPrecedence() {
-        return 4;
+        return ADD_PRECEDENCE;
     }
 
     /**

@@ -47,7 +47,7 @@ public class CoreOperationNegate extends CoreOperation {
      * {@inheritDoc}
      */
     protected int getPrecedence() {
-        return 6;
+        return NEGATE_PRECEDENCE;
     }
 
     /**
