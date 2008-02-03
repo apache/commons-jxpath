@@ -250,6 +250,13 @@ public abstract class JXPathTestCase extends TestCase {
         return list;
     }
 
+    protected static Set set(Object o1, Object o2) {
+        Set list = new HashSet();
+        list.add(o1);
+        list.add(o2);
+        return list;
+    }
+
     protected static Set set(Object o1, Object o2, Object o3) {
         Set list = new HashSet();
         list.add(o1);

@@ -553,8 +553,15 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
 
         // attribute:: with default namespace and wildcard
         assertXPathValueIterator(
+                context,
+                "vendor/product/price:amount/@*",
+                //use a set because DOM returns attrs sorted by name, JDOM by occurrence order:
+                set("10%", "20%"));
+
+        // attribute:: select non-ns'd attributes only
+        assertXPathValueIterator(
             context,
-            "vendor/product/price:amount/@*",
+            "vendor/product/price:amount/@*[namespace-uri() = '']",
             list("20%"));
 
         // Empty attribute

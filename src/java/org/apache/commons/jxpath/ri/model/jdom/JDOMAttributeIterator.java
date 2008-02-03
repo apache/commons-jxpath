@@ -67,11 +67,9 @@ public class JDOMAttributeIterator implements NodeIterator {
             String lname = name.getName();
             if (!lname.equals("*")) {
                 attributes = new ArrayList();
-                if (ns != null) {
-                    Attribute attr = element.getAttribute(lname, ns);
-                    if (attr != null) {
-                        attributes.add(attr);
-                    }
+                Attribute attr = element.getAttribute(lname, ns);
+                if (attr != null) {
+                    attributes.add(attr);
                 }
             }
             else {
@@ -79,7 +77,8 @@ public class JDOMAttributeIterator implements NodeIterator {
                 List allAttributes = element.getAttributes();
                 for (int i = 0; i < allAttributes.size(); i++) {
                     Attribute attr = (Attribute) allAttributes.get(i);
-                    if (attr.getNamespace().equals(ns)) {
+                    if (ns == Namespace.NO_NAMESPACE
+                            || attr.getNamespace().equals(ns)) {
                         attributes.add(attr);
                     }
                 }

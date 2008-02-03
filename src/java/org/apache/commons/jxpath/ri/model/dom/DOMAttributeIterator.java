@@ -57,7 +57,7 @@ public class DOMAttributeIterator implements NodeIterator {
                 int count = map.getLength();
                 for (int i = 0; i < count; i++) {
                     Attr attr = (Attr) map.item(i);
-                    if (testAttr(attr, name)) {
+                    if (testAttr(attr)) {
                         attributes.add(attr);
                     }
                 }
@@ -65,7 +65,7 @@ public class DOMAttributeIterator implements NodeIterator {
         }
     }
 
-    private boolean testAttr(Attr attr, QName testName) {
+    private boolean testAttr(Attr attr) {
         String nodePrefix = DOMNodePointer.getPrefix(attr);
         String nodeLocalName = DOMNodePointer.getLocalName(attr);
 
@@ -79,22 +79,16 @@ public class DOMAttributeIterator implements NodeIterator {
 
         String testLocalName = name.getName();
         if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)) {
-            String testPrefix = testName.getPrefix();
+            String testPrefix = name.getPrefix();
 
-            if (equalStrings(testPrefix, nodePrefix)) {
+            if (testPrefix == null || equalStrings(testPrefix, nodePrefix)) {
                 return true;
             }
-
-            String testNS = null;
-            if (testPrefix != null) {
-                testNS = parent.getNamespaceURI(testPrefix);
+            if (nodePrefix == null) {
+                return false;
             }
-
-            String nodeNS = null;
-            if (nodePrefix != null) {
-                nodeNS = parent.getNamespaceURI(nodePrefix);
-            }
-            return equalStrings(testNS, nodeNS);
+            return equalStrings(parent.getNamespaceURI(testPrefix), parent
+                    .getNamespaceURI(nodePrefix));
         }
         return false;
     }
@@ -123,7 +117,7 @@ public class DOMAttributeIterator implements NodeIterator {
             NamedNodeMap nnm = element.getAttributes();
             for (int i = 0; i < nnm.getLength(); i++) {
                 attr = (Attr) nnm.item(i);
-                if (testAttr(attr, name)) {
+                if (testAttr(attr)) {
                     return attr;
                 }
             }
