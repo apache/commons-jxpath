@@ -16,10 +16,12 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
+import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
+import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
@@ -30,6 +32,8 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * @version $Revision$ $Date$
  */
 public class AttributeContext extends EvalContext {
+    private static final NodeNameTest WILDCARD_TEST = new NodeNameTest(new QName(null, "*"));
+
     private NodeTest nodeTest;
     private boolean setStarted = false;
     private NodeIterator iterator;
@@ -71,14 +75,21 @@ public class AttributeContext extends EvalContext {
         super.setPosition(getCurrentPosition() + 1);
         if (!setStarted) {
             setStarted = true;
-            if (!(nodeTest instanceof NodeNameTest)) {
+            NodeNameTest nodeNameTest = null;
+            if (nodeTest instanceof NodeTypeTest) {
+                if (((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE) {
+                    nodeNameTest = WILDCARD_TEST;
+                }
+            }
+            else if (nodeTest instanceof NodeNameTest) {
+                nodeNameTest = (NodeNameTest) nodeTest;
+            }
+            if (nodeNameTest == null) {
                 return false;
             }
-            QName name = ((NodeNameTest) nodeTest).getNodeName();
-            iterator =
-                parentContext.getCurrentNodePointer().attributeIterator(name);
+            iterator = parentContext.getCurrentNodePointer().attributeIterator(
+                    nodeNameTest.getNodeName());
         }
-
         if (iterator == null) {
             return false;
         }

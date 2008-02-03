@@ -558,6 +558,13 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
                 //use a set because DOM returns attrs sorted by name, JDOM by occurrence order:
                 set("10%", "20%"));
 
+        // attribute::node()
+        assertXPathValueIterator(
+                context,
+                "vendor/product/price:amount/attribute::node()",
+                //use a set because DOM returns attrs sorted by name, JDOM by occurrence order:
+                set("10%", "20%"));
+        
         // attribute:: select non-ns'd attributes only
         assertXPathValueIterator(
             context,
