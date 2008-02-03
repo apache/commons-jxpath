@@ -33,50 +33,85 @@ public class NullPropertyPointer extends PropertyPointer {
     private boolean byNameAttribute = false;
 
     /**
+     * Create a new NullPropertyPointer.
+     * @param parent pointer
      */
     public NullPropertyPointer(NodePointer parent) {
         super(parent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         return new QName(propertyName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setPropertyIndex(int index) {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getLength() {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getBaseValue() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getImmediateNode() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getValuePointer() {
         return new NullPointer(this,  new QName(getPropertyName()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isActualProperty() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isActual() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isContainer() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setValue(Object value) {
         if (parent == null || parent.isContainer()) {
             throw new JXPathInvalidAccessException(
@@ -84,9 +119,9 @@ public class NullPropertyPointer extends PropertyPointer {
                     + asPath()
                     + ", the target object is null");
         }
-        if (parent instanceof PropertyOwnerPointer &&
-                ((PropertyOwnerPointer) parent).
-                    isDynamicPropertyDeclarationSupported()){
+        if (parent instanceof PropertyOwnerPointer
+                && ((PropertyOwnerPointer) parent)
+                        .isDynamicPropertyDeclarationSupported()) {
             // If the parent property owner can create
             // a property automatically - let it do so
             PropertyPointer propertyPointer =
@@ -102,6 +137,9 @@ public class NullPropertyPointer extends PropertyPointer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createPath(JXPathContext context) {
         NodePointer newParent = parent.createPath(context);
         if (isAttribute()) {
@@ -130,6 +168,9 @@ public class NullPropertyPointer extends PropertyPointer {
         return newParent.createChild(context, getName(), getIndex());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createPath(JXPathContext context, Object value) {
         NodePointer newParent = parent.createPath(context);
         if (isAttribute()) {
@@ -147,48 +188,68 @@ public class NullPropertyPointer extends PropertyPointer {
         return newParent.createChild(context, getName(), index, value);
     }
 
-    public NodePointer createChild(
-            JXPathContext context,
-            QName name,
-            int index)
-    {
+    /**
+     * {@inheritDoc}
+     */
+    public NodePointer createChild(JXPathContext context, QName name, int index) {
         return createPath(context).createChild(context, name, index);
     }
 
-    public NodePointer createChild(
-            JXPathContext context,
-            QName name,
-            int index,
-            Object value)
-    {
+    /**
+     * {@inheritDoc}
+     */
+    public NodePointer createChild(JXPathContext context, QName name,
+            int index, Object value) {
         return createPath(context).createChild(context, name, index, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getPropertyName() {
         return propertyName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
 
+    /**
+     * Set the name attribute.
+     * @param attributeValue value to set
+     */
     public void setNameAttributeValue(String attributeValue) {
         this.propertyName = attributeValue;
         byNameAttribute = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         return getIndex() != WHOLE_COLLECTION;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPropertyCount() {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String[] getPropertyNames() {
         return new String[0];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String asPath() {
         if (!byNameAttribute) {
             return super.asPath();
@@ -204,26 +265,46 @@ public class NullPropertyPointer extends PropertyPointer {
         return buffer.toString();
     }
 
+    /**
+     * Return a string escaping single and double quotes.
+     * @param string string to treat
+     * @return string with any necessary changes made.
+     */
     private String escape(String string) {
-        int index = string.indexOf('\'');
-        while (index != -1) {
-            string =
-                string.substring(0, index)
-                    + "&apos;"
-                    + string.substring(index + 1);
-            index = string.indexOf('\'');
+        final char[] c = new char[] { '\'', '"' };
+        final String[] esc = new String[] { "&apos;", "&quot;" };
+        StringBuffer sb = null;
+        for (int i = 0; sb == null && i < c.length; i++) {
+            if (string.indexOf(c[i]) >= 0) {
+                sb = new StringBuffer(string);
+            }
         }
-        index = string.indexOf('\"');
-        while (index != -1) {
-            string =
-                string.substring(0, index)
-                    + "&quot;"
-                    + string.substring(index + 1);
-            index = string.indexOf('\"');
+        if (sb == null) {
+            return string;
         }
-        return string;
+        for (int i = 0; i < c.length; i++) {
+            if (string.indexOf(c[i]) < 0) {
+                continue;
+            }
+            int pos = 0;
+            while (pos < sb.length()) {
+                if (sb.charAt(pos) == c[i]) {
+                    sb.replace(pos, pos + 1, esc[i]);
+                    pos += esc[i].length();
+                }
+                else {
+                    pos++;
+                }
+            }
+        }
+        return sb.toString();
     }
 
+    /**
+     * Create a "bad factory" JXPathAbstractFactoryException for the specified AbstractFactory.
+     * @param factory AbstractFactory
+     * @return JXPathAbstractFactoryException
+     */
     private JXPathAbstractFactoryException createBadFactoryException(AbstractFactory factory) {
         return new JXPathAbstractFactoryException("Factory " + factory
                 + " reported success creating object for path: " + asPath()

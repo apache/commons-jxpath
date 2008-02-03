@@ -24,12 +24,15 @@ import java.util.Comparator;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-public class ReverseComparator implements Comparator {
+public final class ReverseComparator implements Comparator {
     /**
      * Singleton reverse comparator instance.
      */
     public static final Comparator INSTANCE = new ReverseComparator();
 
+    /**
+     * Create a new ReverseComparator.
+     */
     private ReverseComparator() {
     }
 

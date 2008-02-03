@@ -165,7 +165,7 @@ public class RootContext extends EvalContext {
     }
 
     /**
-     * Get a registered value. 
+     * Get a registered value.
      * @param id int
      * @return Object
      */

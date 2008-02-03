@@ -34,25 +34,49 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
  */
 public abstract class CoreOperationRelationalExpression extends CoreOperation {
 
+    /**
+     * Create a new CoreOperationRelationalExpression.
+     * @param args arguments
+     */
     protected CoreOperationRelationalExpression(Expression[] args) {
         super(args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public final Object computeValue(EvalContext context) {
         return compute(args[0].compute(context), args[1].compute(context))
                 ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected final int getPrecedence() {
         return RELATIONAL_EXPR_PRECEDENCE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected final boolean isSymmetric() {
         return false;
     }
 
+    /**
+     * Template method for subclasses to evaluate the result of a comparison.
+     * @param compare result of comparison to evaluate 
+     * @return ultimate operation success/failure
+     */
     protected abstract boolean evaluateCompare(int compare);
 
+    /**
+     * Compare left to right.
+     * @param left left operand
+     * @param right right operand
+     * @return operation success/failure
+     */
     private boolean compute(Object left, Object right) {
         left = reduce(left);
         right = reduce(right);
@@ -83,6 +107,11 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
         return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
     }
 
+    /**
+     * Reduce an operand for comparison.
+     * @param o Object to reduce
+     * @return reduced operand
+     */
     private Object reduce(Object o) {
         if (o instanceof SelfContext) {
             o = ((EvalContext) o).getSingleNodePointer();
@@ -93,6 +122,12 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
         return o;
     }
 
+    /**
+     * Learn whether any element returned from an Iterator matches a given value.
+     * @param it Iterator
+     * @param value to look for
+     * @return whether a match was found
+     */
     private boolean containsMatch(Iterator it, Object value) {
         while (it.hasNext()) {
             Object element = it.next();
@@ -103,6 +138,12 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
         return false;
     }
 
+    /**
+     * Learn whether there is an intersection between two Iterators.
+     * @param lit left Iterator
+     * @param rit right Iterator
+     * @return whether a match was found
+     */
     private boolean findMatch(Iterator lit, Iterator rit) {
         HashSet left = new HashSet();
         while (lit.hasNext()) {

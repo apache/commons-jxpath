@@ -24,10 +24,18 @@ package org.apache.commons.jxpath.ri.compiler;
  */
 public class CoreOperationNotEqual extends CoreOperationCompare {
 
+    /**
+     * Create a new CoreOperationNotEqual.
+     * @param arg1 left operand
+     * @param arg2 right operand
+     */
     public CoreOperationNotEqual(Expression arg1, Expression arg2) {
         super(arg1, arg2, true);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return "!=";
     }

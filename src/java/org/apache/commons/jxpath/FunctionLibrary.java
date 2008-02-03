@@ -37,6 +37,7 @@ public class FunctionLibrary implements Functions {
 
     /**
      * Add functions to the library
+     * @param functions to add
      */
     public void addFunctions(Functions functions) {
         allFunctions.add(functions);
@@ -45,6 +46,7 @@ public class FunctionLibrary implements Functions {
 
     /**
      * Remove functions from the library.
+     * @param functions to remove
      */
     public void removeFunctions(Functions functions) {
         allFunctions.remove(functions);
@@ -54,6 +56,7 @@ public class FunctionLibrary implements Functions {
     /**
      * Returns a set containing all namespaces used by the aggregated
      * Functions.
+     * @return Set<String>
      */
     public Set getUsedNamespaces() {
         if (byNamespace == null) {
@@ -65,12 +68,13 @@ public class FunctionLibrary implements Functions {
     /**
      * Returns a Function, if any, for the specified namespace,
      * name and parameter types.
+     * @param namespace function namespace
+     * @param name function name
+     * @param parameters parameters
+     * @return Function found
      */
-    public Function getFunction(
-        String namespace,
-        String name,
-        Object[] parameters)
-    {
+    public Function getFunction(String namespace, String name,
+            Object[] parameters) {
         if (byNamespace == null) {
             prepareCache();
         }
@@ -98,6 +102,9 @@ public class FunctionLibrary implements Functions {
         return null;
     }
 
+    /**
+     * Prepare the cache.
+     */
     private void prepareCache() {
         byNamespace = new HashMap();
         int count = allFunctions.size();

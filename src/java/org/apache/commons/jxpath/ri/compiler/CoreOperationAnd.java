@@ -27,10 +27,17 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  */
 public class CoreOperationAnd extends CoreOperation {
 
+    /**
+     * Create a new CoreOperationAnd.
+     * @param args to combine
+     */
     public CoreOperationAnd(Expression[] args) {
         super(args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
         for (int i = 0; i < args.length; i++) {
             if (!InfoSetUtil.booleanValue(args[i].computeValue(context))) {
@@ -40,14 +47,23 @@ public class CoreOperationAnd extends CoreOperation {
         return Boolean.TRUE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected int getPrecedence() {
         return AND_PRECEDENCE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isSymmetric() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return "and";
     }

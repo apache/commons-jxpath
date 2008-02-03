@@ -42,20 +42,29 @@ public class DescendantContext extends EvalContext {
     private static final NodeTest ELEMENT_NODE_TEST =
             new NodeTypeTest(Compiler.NODE_TYPE_NODE);
 
-    public DescendantContext(
-            EvalContext parentContext,
-            boolean includeSelf,
-            NodeTest nodeTest)
-    {
+    /**
+     * Create a new DescendantContext.
+     * @param parentContext parent context
+     * @param includeSelf whether to include this node
+     * @param nodeTest test
+     */
+    public DescendantContext(EvalContext parentContext, boolean includeSelf,
+            NodeTest nodeTest) {
         super(parentContext);
         this.includeSelf = includeSelf;
         this.nodeTest = nodeTest;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isChildOrderingRequired() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getCurrentNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -65,11 +74,17 @@ public class DescendantContext extends EvalContext {
         return currentNodePointer;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void reset() {
         super.reset();
         setStarted = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         if (position < this.position) {
             reset();
@@ -83,6 +98,9 @@ public class DescendantContext extends EvalContext {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;
@@ -135,6 +153,7 @@ public class DescendantContext extends EvalContext {
     /**
      * Checks if we are reentering a bean we have already seen and if so
      * returns true to prevent infinite recursion.
+     * @return boolean
      */
     private boolean isRecursive() {
         Object node = currentNodePointer.getNode();

@@ -25,18 +25,34 @@ import org.apache.commons.jxpath.ri.Compiler;
 public class NodeTypeTest extends NodeTest {
     private int nodeType;
 
+    /**
+     * Create a new NodeTypeTest.
+     * @param nodeType to match
+     */
     public NodeTypeTest(int nodeType) {
         this.nodeType = nodeType;
     }
 
+    /**
+     * Get the nodeType.
+     * @return int
+     */
     public int getNodeType() {
         return nodeType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         return nodeTypeToString(nodeType) + "()";
     }
 
+    /**
+     * Render the given node type as a String.
+     * @param code int
+     * @return String
+     */
     public static String nodeTypeToString(int code) {
         switch (code) {
             case Compiler.NODE_TYPE_NODE :

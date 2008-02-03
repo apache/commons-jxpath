@@ -25,14 +25,25 @@ package org.apache.commons.jxpath.ri.compiler;
 public class CoreOperationGreaterThanOrEqual extends
         CoreOperationRelationalExpression {
 
+    /**
+     * Create a new CoreOperationGreaterThanOrEqual.
+     * @param arg1 operand 1
+     * @param arg2 operand 2
+     */
     public CoreOperationGreaterThanOrEqual(Expression arg1, Expression arg2) {
         super(new Expression[] { arg1, arg2 });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean evaluateCompare(int compare) {
         return compare >= 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return ">=";
     }

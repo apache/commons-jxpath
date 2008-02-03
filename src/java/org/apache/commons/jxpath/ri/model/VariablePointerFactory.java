@@ -29,14 +29,19 @@ import org.apache.commons.jxpath.ri.QName;
  * @version $Revision$ $Date$
  */
 public class VariablePointerFactory implements NodePointerFactory {
+    /** factory order constant */
     public static final int VARIABLE_POINTER_FACTORY_ORDER = 890;
 
     /**
      * Node value wrapper to trigger a VariablePointerFactory.
      */
-    public static class VariableContextWrapper {
+    public static final class VariableContextWrapper {
         private final JXPathContext context;
 
+        /**
+         * Create a new VariableContextWrapper.
+         * @param context to wrap
+         */
         private VariableContextWrapper(JXPathContext context) {
             this.context = context;
         }
@@ -60,11 +65,8 @@ public class VariablePointerFactory implements NodePointerFactory {
         return new VariableContextWrapper(context);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.commons.jxpath.ri.model.NodePointerFactory#createNodePointer(org.apache.commons.jxpath.ri.QName,
-     *      java.lang.Object, java.util.Locale)
+    /**
+     * {@inheritDoc}
      */
     public NodePointer createNodePointer(QName name, Object object,
             Locale locale) {
@@ -85,21 +87,16 @@ public class VariablePointerFactory implements NodePointerFactory {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.commons.jxpath.ri.model.NodePointerFactory#createNodePointer(org.apache.commons.jxpath.ri.model.NodePointer,
-     *      org.apache.commons.jxpath.ri.QName, java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     public NodePointer createNodePointer(NodePointer parent, QName name,
             Object object) {
         return createNodePointer(name, object, null);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.commons.jxpath.ri.model.NodePointerFactory#getOrder()
+    /**
+     * {@inheritDoc}
      */
     public int getOrder() {
         return VARIABLE_POINTER_FACTORY_ORDER;

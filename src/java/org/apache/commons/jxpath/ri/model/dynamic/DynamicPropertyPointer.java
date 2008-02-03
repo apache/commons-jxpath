@@ -44,15 +44,20 @@ public class DynamicPropertyPointer extends PropertyPointer {
     private String[] names;
     private String requiredPropertyName;
 
-    public DynamicPropertyPointer(
-            NodePointer parent,
-            DynamicPropertyHandler handler)
-    {
+    /**
+     * Create a new DynamicPropertyPointer.
+     * @param parent pointer
+     * @param handler DynamicPropertyHandler
+     */
+    public DynamicPropertyPointer(NodePointer parent,
+            DynamicPropertyHandler handler) {
         super(parent);
         this.handler = handler;
     }
+
     /**
      * This type of node is auxiliary.
+     * @return true
      */
     public boolean isContainer() {
         return true;
@@ -60,17 +65,19 @@ public class DynamicPropertyPointer extends PropertyPointer {
 
     /**
      * Number of the DP object's properties.
+     * @return int
      */
     public int getPropertyCount() {
         return getPropertyNames().length;
     }
 
     /**
-     * Names of all properties, sorted alphabetically
+     * Names of all properties, sorted alphabetically.
+     * @return String[]
      */
     public String[] getPropertyNames() {
         if (names == null) {
-            String allNames[] = handler.getPropertyNames(getBean());
+            String[] allNames = handler.getPropertyNames(getBean());
             names = new String[allNames.length];
             for (int i = 0; i < names.length; i++) {
                 names[i] = allNames[i];
@@ -93,10 +100,11 @@ public class DynamicPropertyPointer extends PropertyPointer {
     /**
      * Returns the name of the currently selected property or "*"
      * if none has been selected.
+     * @return String
      */
     public String getPropertyName() {
         if (name == null) {
-            String names[] = getPropertyNames();
+            String[] names = getPropertyNames();
             name = propertyIndex >= 0 && propertyIndex < names.length ? names[propertyIndex] : "*";
         }
         return name;
@@ -108,6 +116,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * adds this name to the object's property name list. It does not
      * set the property value though. In order to set the property
      * value, call setValue().
+     * @param propertyName to set
      */
     public void setPropertyName(String propertyName) {
         setPropertyIndex(UNSPECIFIED_PROPERTY);
@@ -121,10 +130,11 @@ public class DynamicPropertyPointer extends PropertyPointer {
     /**
      * Index of the currently selected property in the list of all
      * properties sorted alphabetically.
+     * @return int
      */
     public int getPropertyIndex() {
         if (propertyIndex == UNSPECIFIED_PROPERTY) {
-            String names[] = getPropertyNames();
+            String[] names = getPropertyNames();
             for (int i = 0; i < names.length; i++) {
                 if (names[i].equals(name)) {
                     setPropertyIndex(i);
@@ -138,6 +148,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     /**
      * Index a property by its index in the list of all
      * properties sorted alphabetically.
+     * @param index to set
      */
     public void setPropertyIndex(int index) {
         if (propertyIndex != index) {
@@ -149,6 +160,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     /**
      * Returns the value of the property, not an element of the collection
      * represented by the property, if any.
+     * @return Object
      */
     public Object getBaseValue() {
         return handler.getProperty(getBean(), getPropertyName());
@@ -159,6 +171,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * the value of the index'th element of the collection represented by the
      * property. If the property is not a collection, index should be zero
      * and the value will be the property itself.
+     * @return Object
      */
     public Object getImmediateNode() {
         Object value;
@@ -178,6 +191,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     /**
      * A dynamic property is always considered actual - all keys are apparently
      * existing with possibly the value of null.
+     * @return boolean
      */
     protected boolean isActualProperty() {
         return true;
@@ -187,6 +201,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
      * If index == WHOLE_COLLECTION, change the value of the property, otherwise
      * change the value of the index'th element of the collection
      * represented by the property.
+     * @param value to set
      */
     public void setValue(Object value) {
         if (index == WHOLE_COLLECTION) {
@@ -200,6 +215,9 @@ public class DynamicPropertyPointer extends PropertyPointer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createPath(JXPathContext context) {
         // Ignore the name passed to us, use our own data
         Object collection = getBaseValue();
@@ -234,6 +252,9 @@ public class DynamicPropertyPointer extends PropertyPointer {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createPath(JXPathContext context, Object value) {
         if (index == WHOLE_COLLECTION) {
             handler.setProperty(getBean(), getPropertyName(), value);
@@ -245,6 +266,9 @@ public class DynamicPropertyPointer extends PropertyPointer {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void remove() {
         if (index == WHOLE_COLLECTION) {
             removeKey();
@@ -258,6 +282,9 @@ public class DynamicPropertyPointer extends PropertyPointer {
         }
     }
 
+    /**
+     * Remove the current property.
+     */
     private void removeKey() {
         Object bean = getBean();
         if (bean instanceof Map) {
@@ -268,6 +295,9 @@ public class DynamicPropertyPointer extends PropertyPointer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(getImmediateParentPointer().asPath());
@@ -286,6 +316,11 @@ public class DynamicPropertyPointer extends PropertyPointer {
         return buffer.toString();
     }
 
+    /**
+     * Escape string.
+     * @param string s
+     * @return String
+     */
     private String escape(String string) {
         int index = string.indexOf('\'');
         while (index != -1) {
@@ -306,6 +341,11 @@ public class DynamicPropertyPointer extends PropertyPointer {
         return string;
     }
 
+    /**
+     * Get abstractFactory from context.
+     * @param context to search
+     * @return AbstractFactory
+     */
     private AbstractFactory getAbstractFactory(JXPathContext context) {
         AbstractFactory factory = context.getFactory();
         if (factory == null) {

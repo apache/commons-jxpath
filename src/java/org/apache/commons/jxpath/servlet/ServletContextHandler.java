@@ -32,14 +32,22 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  */
 public class ServletContextHandler implements DynamicPropertyHandler {
 
-    private static final String[] STRING_ARRAY = new String[0];
+    private static final int DEFAULT_PROPERTY_COUNT = 16;
 
+    /**
+     * {@inheritDoc}
+     */
     public String[] getPropertyNames(Object context) {
-        HashSet list = new HashSet(16);
+        HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
         collectPropertyNames(list, context);
-        return (String[]) list.toArray(STRING_ARRAY);
+        return (String[]) list.toArray(new String[list.size()]);
     }
 
+    /**
+     * Collect the property names from bean, storing in set.
+     * @param set destination
+     * @param bean to read
+     */
     protected void collectPropertyNames(HashSet set, Object bean) {
         Enumeration e = ((ServletContext) bean).getAttributeNames();
         while (e.hasMoreElements()) {
@@ -47,10 +55,16 @@ public class ServletContextHandler implements DynamicPropertyHandler {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getProperty(Object context, String property) {
         return ((ServletContext) context).getAttribute(property);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setProperty(Object context, String property, Object value) {
         ((ServletContext) context).setAttribute(property, value);
     }

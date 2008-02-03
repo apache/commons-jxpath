@@ -36,35 +36,56 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
 public abstract class CoreOperationCompare extends CoreOperation {
     private boolean invert;
 
+    /**
+     * Create a new CoreOperationCompare.
+     * @param arg1 left operand
+     * @param arg2 right operand
+     */
     public CoreOperationCompare(Expression arg1, Expression arg2) {
         this(arg1, arg2, false);
     }
 
+    /**
+     * Create a new CoreOperationCompare.
+     * @param arg1 left operand
+     * @param arg2 right operand
+     * @param invert whether to invert (not) the comparison
+     */
     protected CoreOperationCompare(Expression arg1, Expression arg2, boolean invert) {
         super(new Expression[] { arg1, arg2 });
         this.invert = invert;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
         return equal(context, args[0], args[1]) ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected int getPrecedence() {
         return COMPARE_PRECEDENCE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isSymmetric() {
         return true;
     }
 
     /**
-     * Compares two values
+     * Compares two values.
+     * @param context evaluation context
+     * @param left operand
+     * @param right operand
+     * @return whether left = right in XPath terms
      */
-    protected boolean equal(
-        EvalContext context,
-        Expression left,
-        Expression right)
-    {
+    protected boolean equal(EvalContext context, Expression left,
+            Expression right) {
         Object l = left.compute(context);
         Object r = right.compute(context);
 
@@ -104,6 +125,12 @@ public abstract class CoreOperationCompare extends CoreOperation {
         return equal(l, r);
     }
 
+    /**
+     * Learn whether it contains value.
+     * @param it Iterator to check
+     * @param value for which to look
+     * @return whether value was found
+     */
     protected boolean contains(Iterator it, Object value) {
         while (it.hasNext()) {
             Object element = it.next();
@@ -114,6 +141,12 @@ public abstract class CoreOperationCompare extends CoreOperation {
         return false;
     }
 
+    /**
+     * Learn whether lit intersects rit.
+     * @param lit left Iterator
+     * @param rit right Iterator
+     * @return boolean
+     */
     protected boolean findMatch(Iterator lit, Iterator rit) {
         HashSet left = new HashSet();
         while (lit.hasNext()) {
@@ -127,6 +160,12 @@ public abstract class CoreOperationCompare extends CoreOperation {
         return false;
     }
 
+    /**
+     * Learn whether l equals r in XPath terms.
+     * @param l left operand
+     * @param r right operand
+     * @return whether l = r
+     */
     protected boolean equal(Object l, Object r) {
         if (l instanceof Pointer) {
             l = ((Pointer) l).getValue();
@@ -139,7 +178,8 @@ public abstract class CoreOperationCompare extends CoreOperation {
         boolean result;
         if (l instanceof Boolean || r instanceof Boolean) {
             result = l == r || InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r);
-        } else if (l instanceof Number || r instanceof Number) {
+        }
+        else if (l instanceof Number || r instanceof Number) {
             //if either side is NaN, no comparison returns true:
             double ld = InfoSetUtil.doubleValue(l);
             if (Double.isNaN(ld)) {
@@ -150,7 +190,8 @@ public abstract class CoreOperationCompare extends CoreOperation {
                 return false;
             }
             result = ld == rd;
-        } else {
+        }
+        else {
             if (l instanceof String || r instanceof String) {
                 l = InfoSetUtil.stringValue(l);
                 r = InfoSetUtil.stringValue(r);

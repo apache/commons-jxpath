@@ -30,11 +30,19 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
  */
 public class DynamicAttributeIterator extends BeanAttributeIterator {
 
+    /**
+     * Create a new DynamicAttributeIterator.
+     * @param parent pointer
+     * @param name to match properties
+     */
     public DynamicAttributeIterator(PropertyOwnerPointer parent, QName name) {
         super(parent, name);
     }
 
-     protected void prepareForIndividualProperty(String name) {
+    /**
+     * {@inheritDoc}
+     */
+    protected void prepareForIndividualProperty(String name) {
          ((DynamicPropertyPointer) getPropertyPointer()).setPropertyName(name);
          super.prepareForIndividualProperty(name);
     }

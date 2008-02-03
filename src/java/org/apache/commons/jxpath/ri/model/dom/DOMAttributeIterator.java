@@ -39,6 +39,11 @@ public class DOMAttributeIterator implements NodeIterator {
     private List attributes;
     private int position = 0;
 
+    /**
+     * Create a new DOMAttributeIterator.
+     * @param parent pointer
+     * @param name to test
+     */
     public DOMAttributeIterator(NodePointer parent, QName name) {
         this.parent = parent;
         this.name = name;
@@ -65,6 +70,11 @@ public class DOMAttributeIterator implements NodeIterator {
         }
     }
 
+    /**
+     * Test an attribute.
+     * @param attr to test
+     * @return whether test succeeded
+     */
     private boolean testAttr(Attr attr) {
         String nodePrefix = DOMNodePointer.getPrefix(attr);
         String nodeLocalName = DOMNodePointer.getLocalName(attr);
@@ -93,10 +103,22 @@ public class DOMAttributeIterator implements NodeIterator {
         return false;
     }
 
+    /**
+     * Test whether two strings are == or .equals()
+     * @param s1 first string
+     * @param s2 second string
+     * @return boolean
+     */
     private static boolean equalStrings(String s1, String s2) {
         return s1 == s2 || s1 != null && s1.equals(s2);
     }
 
+    /**
+     * Get the named attribute.
+     * @param element to search
+     * @param name to match
+     * @return Attr found
+     */
     private Attr getAttribute(Element element, QName name) {
         String testPrefix = name.getPrefix();
         String testNS = null;
@@ -126,6 +148,9 @@ public class DOMAttributeIterator implements NodeIterator {
         return element.getAttributeNode(name.getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -140,10 +165,16 @@ public class DOMAttributeIterator implements NodeIterator {
         return new DOMAttributePointer(parent, (Attr) attributes.get(index));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         this.position = position;
         return position >= 1 && position <= attributes.size();
