@@ -411,21 +411,6 @@ public class VariablePointer extends NodePointer {
     }
 
     /**
-     * Find the AbstractFactory, if any, associated with the specified context.
-     * @param context JXPathContext to search
-     * @return AbstractFactory
-     */
-    private AbstractFactory getAbstractFactory(JXPathContext context) {
-        AbstractFactory factory = context.getFactory();
-        if (factory == null) {
-            throw new JXPathException(
-              "Factory is not set on the JXPathContext - cannot create path: "
-              + asPath());
-        }
-        return factory;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public int compareChildNodePointers(

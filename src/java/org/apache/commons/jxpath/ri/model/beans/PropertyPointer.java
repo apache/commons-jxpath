@@ -288,20 +288,4 @@ public abstract class PropertyPointer extends NodePointer {
         return getValuePointer().compareChildNodePointers(pointer1, pointer2);
     }
 
-    /**
-     * Get the required AbstractFactory configured on the specified JXPathContext.
-     * @param context JXPathContext
-     * @return AbstractFactory
-     * @throws JXPathException if no factory configured.
-     */
-    private AbstractFactory getAbstractFactory(JXPathContext context) {
-        AbstractFactory factory = context.getFactory();
-        if (factory == null) {
-            throw new JXPathException(
-                "Factory is not set on the "
-                    + "JXPathContext - cannot create path: "
-                    + asPath());
-        }
-        return factory;
-    }
 }

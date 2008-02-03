@@ -618,40 +618,6 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Return a string escaping single and double quotes.
-     * @param string string to treat
-     * @return string with any necessary changes made.
-     */
-    private String escape(String string) {
-        final char[] c = new char[] { '\'', '"' };
-        final String[] esc = new String[] { "&apos;", "&quot;" };
-        StringBuffer sb = null;
-        for (int i = 0; sb == null && i < c.length; i++) {
-            if (string.indexOf(c[i]) >= 0) {
-                sb = new StringBuffer(string);
-            }
-        }
-        if (sb == null) {
-            return string;
-        }
-        for (int i = 0; i < c.length; i++) {
-            if (string.indexOf(c[i]) < 0) {
-                continue;
-            }
-            int pos = 0;
-            while (pos < sb.length()) {
-                if (sb.charAt(pos) == c[i]) {
-                    sb.replace(pos, pos + 1, esc[i]);
-                    pos += esc[i].length();
-                } else {
-                    pos++;
-                }
-            }
-        }
-        return sb.toString();
-    }
-
-    /**
      * Get relative position of this among like-named siblings.
      * @return 1..n
      */
@@ -851,22 +817,6 @@ public class DOMNodePointer extends NodePointer {
         Element element = document.getElementById(id);
         return element == null ? (Pointer) new NullPointer(getLocale(), id)
                 : new DOMNodePointer(element, getLocale(), id);
-    }
-
-    /**
-     * Get the AbstractFactory associated with the specified JXPathContext.
-     * @param context JXPathContext
-     * @return AbstractFactory
-     */
-    private AbstractFactory getAbstractFactory(JXPathContext context) {
-        AbstractFactory factory = context.getFactory();
-        if (factory == null) {
-            throw new JXPathException(
-                "Factory is not set on the JXPathContext - "
-                    + "cannot create path: "
-                    + asPath());
-        }
-        return factory;
     }
 
     /**
