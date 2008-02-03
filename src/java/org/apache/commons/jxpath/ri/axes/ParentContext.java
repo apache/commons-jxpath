@@ -31,33 +31,56 @@ public class ParentContext extends EvalContext {
     private boolean setStarted = false;
     private NodePointer currentNodePointer;
 
+    /**
+     * Create a new ParentContext.
+     * @param parentContext parent context
+     * @param nodeTest test
+     */
     public ParentContext(EvalContext parentContext, NodeTest nodeTest) {
         super(parentContext);
         this.nodeTest = nodeTest;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getCurrentPosition() {
         return 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getDocumentOrder() {
         return -1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void reset() {
         super.reset();
         setStarted = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         super.setPosition(position);
         return position == 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean nextNode() {
         // Each set contains exactly one node: the parent
         if (setStarted) {

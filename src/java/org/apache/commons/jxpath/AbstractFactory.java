@@ -53,8 +53,7 @@ public abstract class AbstractFactory {
      * @return true if the object was successfully created
      */
     public boolean createObject(JXPathContext context, Pointer pointer,
-                                Object parent, String name, int index)
-    {
+                                Object parent, String name, int index) {
         return false;
     }
 

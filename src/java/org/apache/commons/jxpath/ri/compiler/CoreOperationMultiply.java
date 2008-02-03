@@ -27,24 +27,41 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  */
 public class CoreOperationMultiply extends CoreOperation {
 
+    /**
+     * Create a new CoreOperationMultiply.
+     * @param arg1 factor 1
+     * @param arg2 factor 2
+     */
     public CoreOperationMultiply(Expression arg1, Expression arg2) {
         super(new Expression[] { arg1, arg2 });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
         double l = InfoSetUtil.doubleValue(args[0].computeValue(context));
         double r = InfoSetUtil.doubleValue(args[1].computeValue(context));
         return new Double(l * r);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected int getPrecedence() {
         return 5;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isSymmetric() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return "*";
     }

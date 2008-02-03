@@ -41,10 +41,16 @@ public class JDOMNodeIterator implements NodeIterator {
     private List children;
     private Object child;
 
+    /**
+     * Create a new JDOMNodeIterator.
+     * @param parent pointer
+     * @param nodeTest test
+     * @param reverse whether to iterate in reverse
+     * @param startWith starting pointer
+     */
     public JDOMNodeIterator(
             NodePointer parent, NodeTest nodeTest,
-            boolean reverse, NodePointer startWith)
-    {
+            boolean reverse, NodePointer startWith) {
         this.parent = parent;
         if (startWith != null) {
             this.child = startWith.getNode();
@@ -64,6 +70,9 @@ public class JDOMNodeIterator implements NodeIterator {
         this.reverse = reverse;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getNodePointer() {
         if (child == null) {
             if (!setPosition(1)) {
@@ -75,10 +84,16 @@ public class JDOMNodeIterator implements NodeIterator {
         return new JDOMNodePointer(parent, child);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         while (this.position < position) {
             if (!next()) {
@@ -98,6 +113,7 @@ public class JDOMNodeIterator implements NodeIterator {
      * of xpaths - an iterator is always going forward, never backwards.
      * So, this is implemented only for completeness and perhaps for
      * those who use these iterators outside of XPath evaluation.
+     * @return boolean
      */
     private boolean previous() {
         position--;
@@ -120,6 +136,10 @@ public class JDOMNodeIterator implements NodeIterator {
         return false;
     }
 
+    /**
+     * Iterate to next pointer.
+     * @return whether valid
+     */
     private boolean next() {
         position++;
         if (!reverse) {
@@ -160,6 +180,10 @@ public class JDOMNodeIterator implements NodeIterator {
         }
     }
 
+    /**
+     * Test a child node.
+     * @return whether test passes.
+     */
     private boolean testChild() {
         return JDOMNodePointer.testNode(parent, child, nodeTest);
     }

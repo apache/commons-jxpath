@@ -33,64 +33,112 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class NullElementPointer extends CollectionPointer {
 
+    /**
+     * Create a new NullElementPointer.
+     * @param parent parent pointer
+     * @param index int
+     */
     public NullElementPointer(NodePointer parent, int index) {
         super(parent, (Object) null);
         this.index = index;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getBaseValue() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getImmediateNode() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         return false;
     }
 
+    /**
+     * Get the property pointer for this.
+     * @return PropertyPointer
+     */
     public PropertyPointer getPropertyPointer() {
         return new NullPropertyPointer(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getValuePointer() {
         return new NullPointer(this, getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setValue(Object value) {
         throw new UnsupportedOperationException(
             "Collection element does not exist: " + this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isActual() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isContainer() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createPath(JXPathContext context) {
         return parent.createChild(context, null, index);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createPath(JXPathContext context, Object value) {
         return parent.createChild(context, null, index, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return getImmediateParentPointer().hashCode() + index;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -102,13 +150,19 @@ public class NullElementPointer extends CollectionPointer {
 
         NullElementPointer other = (NullElementPointer) object;
         return getImmediateParentPointer() == other.getImmediateParentPointer()
-            && index == other.index;
+                && index == other.index;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getLength() {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         NodePointer parent = getImmediateParentPointer();
@@ -122,9 +176,7 @@ public class NullElementPointer extends CollectionPointer {
             }
             else if (parent != null
                     && parent.getImmediateParentPointer() != null
-                    && parent.getImmediateParentPointer().getIndex() !=
-                            WHOLE_COLLECTION)
-            {
+                    && parent.getImmediateParentPointer().getIndex() != WHOLE_COLLECTION) {
                 buffer.append("/.");
             }
             buffer.append("[").append(index + 1).append(']');

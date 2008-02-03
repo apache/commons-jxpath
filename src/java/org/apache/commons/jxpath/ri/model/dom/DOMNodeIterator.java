@@ -35,12 +35,18 @@ public class DOMNodeIterator implements NodeIterator {
     private boolean reverse;
     private int position = 0;
 
+    /**
+     * Create a new DOMNodeIterator.
+     * @param parent parent pointer
+     * @param nodeTest test
+     * @param reverse whether to iterate in reverse
+     * @param startWith starting pointer
+     */
     public DOMNodeIterator(
         NodePointer parent,
         NodeTest nodeTest,
         boolean reverse,
-        NodePointer startWith)
-    {
+        NodePointer startWith) {
         this.parent = parent;
         this.node = (Node) parent.getNode();
         if (startWith != null) {
@@ -50,6 +56,9 @@ public class DOMNodeIterator implements NodeIterator {
         this.reverse = reverse;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             setPosition(1);
@@ -57,10 +66,16 @@ public class DOMNodeIterator implements NodeIterator {
         return child == null ? null : new DOMNodePointer(parent, child);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         while (this.position < position) {
             if (!next()) {
@@ -75,6 +90,10 @@ public class DOMNodeIterator implements NodeIterator {
         return true;
     }
 
+    /**
+     * Set the previous position.
+     * @return whether valid
+     */
     private boolean previous() {
         position--;
         if (!reverse) {
@@ -100,6 +119,10 @@ public class DOMNodeIterator implements NodeIterator {
         return child != null;
     }
 
+    /**
+     * Set the next position.
+     * @return whether valid
+     */
     private boolean next() {
         position++;
         if (!reverse) {
@@ -137,6 +160,10 @@ public class DOMNodeIterator implements NodeIterator {
         return child != null;
     }
 
+    /**
+     * Test child.
+     * @return result of the test
+     */
     private boolean testChild() {
         return DOMNodePointer.testNode(child, nodeTest);
     }

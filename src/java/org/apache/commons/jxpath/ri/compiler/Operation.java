@@ -22,16 +22,28 @@ package org.apache.commons.jxpath.ri.compiler;
  */
 public abstract class Operation extends Expression {
 
-    protected Expression args[];
+    /** Expression[] of arguments */
+    protected Expression[] args;
 
-    public Operation(Expression args[]) {
+    /**
+     * Create a new Operation.
+     * @param args Expression[]
+     */
+    public Operation(Expression[] args) {
         this.args = args;
     }
 
+    /**
+     * Get the arguments.
+     * @return Expression[]
+     */
     public Expression[] getArguments() {
         return args;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean computeContextDependent() {
         if (args != null) {
             for (int i = 0; i < args.length; i++) {

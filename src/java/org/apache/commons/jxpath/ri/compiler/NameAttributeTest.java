@@ -27,16 +27,25 @@ package org.apache.commons.jxpath.ri.compiler;
  */
 public class NameAttributeTest extends CoreOperationEqual {
 
+    /**
+     * Create a new NameAttributeTest.
+     * @param namePath Expression
+     * @param nameValue Expression
+     */
     public NameAttributeTest(Expression namePath, Expression nameValue) {
         super(namePath, nameValue);
     }
 
+    /**
+     * Get the name test expression.
+     * @return Expression
+     */
     public Expression getNameTestExpression() {
         return args[1];
     }
 
     /**
-     * @see Expression#computeContextDependent()
+     * {@inheritDoc}
      */
     public boolean computeContextDependent() {
         return true;

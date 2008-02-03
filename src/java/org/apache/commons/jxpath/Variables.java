@@ -29,12 +29,16 @@ public interface Variables {
 
     /**
      * Returns true if the specified variable is declared.
+     * @param varName variable name
+     * @return boolean
      */
     boolean isDeclaredVariable(String varName);
 
     /**
      * Returns the value of the specified variable.
-     * Throws IllegalArgumentException if there is no such variable.
+     * @param varName variable name
+     * @return Object value
+     * @throws IllegalArgumentException if there is no such variable.
      */
     Object getVariable(String varName);
 
@@ -42,6 +46,8 @@ public interface Variables {
      * Defines a new variable with the specified value or modifies
      * the value of an existing variable.
      * May throw UnsupportedOperationException.
+     * @param varName variable name
+     * @param value to declare
      */
     void declareVariable(String varName, Object value);
 

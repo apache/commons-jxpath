@@ -101,8 +101,7 @@ public class JDOMNodePointer extends NodePointer {
     public NodeIterator childIterator(
         NodeTest test,
         boolean reverse,
-        NodePointer startWith)
-    {
+        NodePointer startWith) {
         return new JDOMNodeIterator(this, test, reverse, startWith);
     }
 
@@ -188,8 +187,7 @@ public class JDOMNodePointer extends NodePointer {
      */
     public int compareChildNodePointers(
         NodePointer pointer1,
-        NodePointer pointer2)
-    {
+        NodePointer pointer2) {
         Object node1 = pointer1.getBaseValue();
         Object node2 = pointer2.getBaseValue();
         if (node1 == node2) {
@@ -431,8 +429,7 @@ public class JDOMNodePointer extends NodePointer {
     public static boolean testNode(
         NodePointer pointer,
         Object node,
-        NodeTest test)
-    {
+        NodeTest test) {
         if (test == null) {
             return true;
         }
@@ -599,8 +596,7 @@ public class JDOMNodePointer extends NodePointer {
     public NodePointer createChild(
         JXPathContext context,
         QName name,
-        int index)
-    {
+        int index) {
         if (index == WHOLE_COLLECTION) {
             index = 0;
         }
@@ -633,8 +629,7 @@ public class JDOMNodePointer extends NodePointer {
      * {@inheritDoc}
      */
     public NodePointer createChild(
-            JXPathContext context, QName name, int index, Object value)
-    {
+            JXPathContext context, QName name, int index, Object value) {
         NodePointer ptr = createChild(context, name, index);
         ptr.setValue(value);
         return ptr;

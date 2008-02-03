@@ -33,15 +33,18 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class RootContext extends EvalContext {
     private JXPathContextReferenceImpl jxpathContext;
     private NodePointer pointer;
-    private Object registers[];
+    private Object[] registers;
     private int availableRegister = 0;
     public static final Object UNKNOWN_VALUE = new Object();
     private static final int MAX_REGISTER = 4;
 
-    public RootContext(
-        JXPathContextReferenceImpl jxpathContext,
-        NodePointer pointer)
-    {
+    /**
+     * Create a new RootContext.
+     * @param jxpathContext context
+     * @param pointer pointer
+     */
+    public RootContext(JXPathContextReferenceImpl jxpathContext,
+            NodePointer pointer) {
         super(null);
         this.jxpathContext = jxpathContext;
         this.pointer = pointer;
@@ -50,42 +53,75 @@ public class RootContext extends EvalContext {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public JXPathContext getJXPathContext() {
         return jxpathContext;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public RootContext getRootContext() {
         return this;
     }
 
+    /**
+     * Get absolute root context
+     * @return EvalContext
+     */
     public EvalContext getAbsoluteRootContext() {
         return jxpathContext.getAbsoluteRootContext();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getCurrentNodePointer() {
         return pointer;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getValue() {
         return pointer;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getCurrentPosition() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean nextNode() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean nextSet() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Get a context that points to the specified object.
+     * @param constant object
+     * @return EvalContext
+     */
     public EvalContext getConstantContext(Object constant) {
         if (constant instanceof NodeSet) {
             return new NodeSetContext(
@@ -106,6 +142,11 @@ public class RootContext extends EvalContext {
         return new InitialContext(new RootContext(jxpathContext, pointer));
     }
 
+    /**
+     * Get variable context.
+     * @param variableName variable name
+     * @return EvalContext
+     */
     public EvalContext getVariableContext(QName variableName) {
         return new InitialContext(
             new RootContext(
@@ -113,10 +154,21 @@ public class RootContext extends EvalContext {
                 jxpathContext.getVariablePointer(variableName)));
     }
 
+    /**
+     * Get the specified function from the context.
+     * @param functionName QName
+     * @param parameters Object[]
+     * @return Function
+     */
     public Function getFunction(QName functionName, Object[] parameters) {
         return jxpathContext.getFunction(functionName, parameters);
     }
 
+    /**
+     * Get a registered value. 
+     * @param id int
+     * @return Object
+     */
     public Object getRegisteredValue(int id) {
         if (registers == null || id >= MAX_REGISTER || id == -1) {
             return UNKNOWN_VALUE;
@@ -124,6 +176,11 @@ public class RootContext extends EvalContext {
         return registers[id];
     }
 
+    /**
+     * Set the next registered value.
+     * @param value Object
+     * @return the id that can reclaim value.
+     */
     public int setRegisteredValue(Object value) {
         if (registers == null) {
             registers = new Object[MAX_REGISTER];
@@ -139,6 +196,9 @@ public class RootContext extends EvalContext {
         return availableRegister - 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         return super.toString() + ":" + pointer.asPath();
     }

@@ -27,12 +27,19 @@ import org.apache.commons.jxpath.ri.axes.UnionContext;
  */
 public class CoreOperationUnion extends CoreOperation {
 
-    public CoreOperationUnion(Expression args[]) {
+    /**
+     * Create a new CoreOperationUnion.
+     * @param args Expression[]
+     */
+    public CoreOperationUnion(Expression[] args) {
         super(args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
-        EvalContext argCtxs[] = new EvalContext[args.length];
+        EvalContext[] argCtxs = new EvalContext[args.length];
         for (int i = 0; i < args.length; i++) {
             Object value = args[i].compute(context);
             if (value instanceof EvalContext) {
@@ -45,14 +52,23 @@ public class CoreOperationUnion extends CoreOperation {
         return new UnionContext(context.getRootContext(), argCtxs);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected int getPrecedence() {
         return 7;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isSymmetric() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return "|";
     }

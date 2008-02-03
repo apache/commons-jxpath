@@ -32,15 +32,21 @@ import org.jdom.Element;
  */
 public class JDOMPointerFactory implements NodePointerFactory {
 
+    /** factory order constant */
     public static final int JDOM_POINTER_FACTORY_ORDER = 110;
 
+    /**
+     * {@inheritDoc}
+     */
     public int getOrder() {
         return JDOM_POINTER_FACTORY_ORDER;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createNodePointer(
-            QName name, Object bean, Locale locale)
-    {
+            QName name, Object bean, Locale locale) {
         if (bean instanceof Document) {
             return new JDOMNodePointer(bean, locale);
         }
@@ -50,9 +56,11 @@ public class JDOMPointerFactory implements NodePointerFactory {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createNodePointer(
-            NodePointer parent, QName name, Object bean)
-    {
+            NodePointer parent, QName name, Object bean) {
         if (bean instanceof Document) {
             return new JDOMNodePointer(parent, bean);
         }

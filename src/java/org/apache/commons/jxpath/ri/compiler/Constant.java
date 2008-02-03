@@ -29,20 +29,31 @@ public class Constant extends Expression {
 
     private Object value;
 
+    /**
+     * Create a new Constant.
+     * @param number constant
+     */
     public Constant(Number number) {
         this.value = number;
     }
 
+    /**
+     * Create a new Constant.
+     * @param string constant
+     */
     public Constant(String string) {
         this.value = string;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object compute(EvalContext context) {
         return value;
     }
 
     /**
-     * Returns the value of the constant.
+     * {@inheritDoc}
      */
     public Object computeValue(EvalContext context) {
         return value;
@@ -50,6 +61,7 @@ public class Constant extends Expression {
 
     /**
      * Returns false
+     * @return false
      */
     public boolean isContextDependent() {
         return false;
@@ -57,11 +69,15 @@ public class Constant extends Expression {
 
     /**
      * Returns false
+     * @return false
      */
     public boolean computeContextDependent() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         if (value instanceof Number) {
             return InfoSetUtil.stringValue(value);

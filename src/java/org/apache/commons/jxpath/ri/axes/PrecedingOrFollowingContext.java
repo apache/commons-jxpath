@@ -37,30 +37,47 @@ public class PrecedingOrFollowingContext extends EvalContext {
     private NodePointer currentRootLocation;
     private boolean reverse;
 
+    /**
+     * Create a new PrecedingOrFollowingContext.
+     * @param parentContext parent context
+     * @param nodeTest test
+     * @param reverse whether to iterate in reverse order
+     */
     public PrecedingOrFollowingContext(
         EvalContext parentContext,
         NodeTest nodeTest,
-        boolean reverse)
-    {
+        boolean reverse) {
         super(parentContext);
         this.nodeTest = nodeTest;
         this.reverse = reverse;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getDocumentOrder() {
         return reverse ? -1 : 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void reset() {
         super.reset();
         stack = new Stack();
         setStarted = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         if (position < this.position) {
             reset();
@@ -74,6 +91,9 @@ public class PrecedingOrFollowingContext extends EvalContext {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;

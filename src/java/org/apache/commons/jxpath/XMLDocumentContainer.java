@@ -49,14 +49,19 @@ public class XMLDocumentContainer implements Container {
     private Source source;
 
     /**
-     * @param xmlURL is a URL for an XML file. Use getClass().getResource
-     * (resourceName) to load XML from a resource file.
+     * Create a new XMLDocumentContainer.
+     * @param xmlURL a URL for an XML file. Use getClass().getResource(resourceName)
+     *               to load XML from a resource file.
      */
     public XMLDocumentContainer(URL xmlURL) {
         this.xmlURL = xmlURL;
         delegate = new DocumentContainer(xmlURL);
     }
 
+    /**
+     * Create a new XMLDocumentContainer.
+     * @param source XML source
+     */
     public XMLDocumentContainer(Source source) {
         this.source = source;
         if (source == null) {
@@ -66,6 +71,7 @@ public class XMLDocumentContainer implements Container {
 
     /**
      * Reads XML, caches it internally and returns the Document.
+     * @return Object value
      */
     public Object getValue() {
         if (document == null) {
@@ -97,6 +103,7 @@ public class XMLDocumentContainer implements Container {
 
     /**
      * Throws an UnsupportedOperationException
+     * @param value to set
      */
     public void setValue(Object value) {
         throw new UnsupportedOperationException();

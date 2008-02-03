@@ -99,16 +99,23 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object that represents a numeric constant.
+     * @param value numeric String
+     * @return Object
      */
     Object number(String value);
 
     /**
      * Produces an EXPRESSION object that represents a string constant.
+     * @param value String literal
+     * @return Object
      */
     Object literal(String value);
 
     /**
      * Produces an QNAME that represents a name with an optional prefix.
+     * @param prefix String prefix
+     * @param name String name
+     * @return Object
      */
     Object qname(String prefix, String name);
 
@@ -116,6 +123,7 @@ public interface Compiler {
      * Produces an EXPRESSION object representing the sum of all argumens
      *
      * @param arguments are EXPRESSION objects
+     * @return Object
      */
     Object sum(Object[] arguments);
 
@@ -124,6 +132,7 @@ public interface Compiler {
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
+     * @return Object
      */
     Object minus(Object left, Object right);
 
@@ -133,6 +142,7 @@ public interface Compiler {
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
+     * @return Object
      */
     Object multiply(Object left, Object right);
 
@@ -142,6 +152,7 @@ public interface Compiler {
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
+     * @return Object
      */
     Object divide(Object left, Object right);
 
@@ -151,6 +162,7 @@ public interface Compiler {
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
+     * @return Object
      */
     Object mod(Object left, Object right);
 
@@ -160,6 +172,7 @@ public interface Compiler {
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
+     * @return Object
      */
     Object lessThan(Object left, Object right);
 
@@ -169,6 +182,7 @@ public interface Compiler {
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
+     * @return Object
      */
     Object lessThanOrEqual(Object left, Object right);
 
@@ -178,6 +192,7 @@ public interface Compiler {
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
+     * @return Object
      */
     Object greaterThan(Object left, Object right);
 
@@ -187,6 +202,7 @@ public interface Compiler {
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
+     * @return Object
      */
     Object greaterThanOrEqual(Object left, Object right);
 
@@ -196,6 +212,7 @@ public interface Compiler {
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
+     * @return Object
      */
     Object equal(Object left, Object right);
 
@@ -205,6 +222,7 @@ public interface Compiler {
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
+     * @return Object
      */
     Object notEqual(Object left, Object right);
 
@@ -212,6 +230,7 @@ public interface Compiler {
      * Produces an EXPRESSION object representing unary negation of the argument
      *
      * @param argument is an EXPRESSION object
+     * @return Object
      */
     Object minus(Object argument);
 
@@ -219,6 +238,7 @@ public interface Compiler {
      * Produces an EXPRESSION object representing variable reference
      *
      * @param qname is a QNAME object
+     * @return Object
      */
     Object variableReference(Object qname);
 
@@ -228,6 +248,7 @@ public interface Compiler {
      *
      * @param code is one of FUNCTION_... constants
      * @param args are EXPRESSION objects
+     * @return Object
      */
     Object function(int code, Object[] args);
 
@@ -237,6 +258,7 @@ public interface Compiler {
      *
      * @param name is a QNAME object (function name)
      * @param args are EXPRESSION objects
+     * @return Object
      */
     Object function(Object name, Object[] args);
 
@@ -245,21 +267,24 @@ public interface Compiler {
      * all arguments
      *
      * @param arguments are EXPRESSION objects
+     * @return Object
      */
-    Object and(Object arguments[]);
+    Object and(Object[] arguments);
 
     /**
      * Produces an EXPRESSION object representing logical disjunction of
      * all arguments
      *
      * @param arguments are EXPRESSION objects
+     * @return Object
      */
-    Object or(Object arguments[]);
+    Object or(Object[] arguments);
 
     /**
      * Produces an EXPRESSION object representing union of all node sets
      *
      * @param arguments are EXPRESSION objects
+     * @return Object
      */
     Object union(Object[] arguments);
 
@@ -267,6 +292,7 @@ public interface Compiler {
      * Produces a NODE_TEST object that represents a node name test.
      *
      * @param qname is a QNAME object
+     * @return Object
      */
     Object nodeNameTest(Object qname);
 
@@ -274,6 +300,7 @@ public interface Compiler {
      * Produces a NODE_TEST object that represents a node type test.
      *
      * @param nodeType is a NODE_TEST object
+     * @return Object
      */
     Object nodeTypeTest(int nodeType);
 
@@ -282,6 +309,7 @@ public interface Compiler {
      * test.
      *
      * @param instruction is a NODE_TEST object
+     * @return Object
      */
     Object processingInstructionTest(String instruction);
 
@@ -291,6 +319,7 @@ public interface Compiler {
      * @param axis is one of the AXIS_... constants
      * @param nodeTest is a NODE_TEST object
      * @param predicates are EXPRESSION objects
+     * @return Object
      */
     Object step(int axis, Object nodeTest, Object[] predicates);
 
@@ -299,6 +328,7 @@ public interface Compiler {
      *
      * @param absolute indicates whether the path is absolute
      * @param steps are STEP objects
+     * @return Object
      */
     Object locationPath(boolean absolute, Object[] steps);
 
@@ -308,6 +338,7 @@ public interface Compiler {
      * @param expression is an EXPRESSION object
      * @param predicates are EXPRESSION objects
      * @param steps are STEP objects
+     * @return Object
      */
     Object expressionPath(
         Object expression,

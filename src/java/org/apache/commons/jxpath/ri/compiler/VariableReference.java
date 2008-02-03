@@ -29,32 +29,54 @@ public class VariableReference extends Expression {
 
     private QName varName;
 
+    /**
+     * Create a new VariableReference.
+     * @param varName variable name
+     */
     public VariableReference(QName varName) {
         this.varName = varName;
     }
 
+    /**
+     * Get the variable name.
+     * @return QName
+     */
     public QName getVariableName() {
         return varName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         return "$" + varName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isContextDependent() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean computeContextDependent() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object compute(EvalContext context) {
         return computeValue(context);
     }
 
     /**
      * Returns the value of the variable.
+     * @param context EvalContext against which to compute the variable's value.
+     * @return Object
      */
     public Object computeValue(EvalContext context) {
         return context.getRootContext().getVariableContext(varName);

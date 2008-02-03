@@ -40,6 +40,7 @@ public class AttributeContext extends EvalContext {
     private NodePointer currentNodePointer;
 
     /**
+     * Create a new AttributeContext.
      * @param parentContext represents the previous step on the path
      * @param nodeTest is the name of the attribute we are looking for
      */
@@ -48,16 +49,25 @@ public class AttributeContext extends EvalContext {
         this.nodeTest = nodeTest;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void reset() {
         setStarted = false;
         iterator = null;
         super.reset();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         if (position < getCurrentPosition()) {
             reset();
@@ -71,6 +81,9 @@ public class AttributeContext extends EvalContext {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean nextNode() {
         super.setPosition(getCurrentPosition() + 1);
         if (!setStarted) {

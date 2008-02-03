@@ -27,32 +27,48 @@ import org.apache.commons.jxpath.ri.EvalContext;
  */
 public abstract class CoreOperation extends Operation {
 
-    public CoreOperation(Expression args[]) {
+    /**
+     * Create a new CoreOperation.
+     * @param args Expression[]
+     */
+    public CoreOperation(Expression[] args) {
         super(args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object compute(EvalContext context) {
         return computeValue(context);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public abstract Object computeValue(EvalContext context);
 
     /**
      * Returns the XPath symbol for this operation, e.g. "+", "div", etc.
+     * @return String symbol
      */
     public abstract String getSymbol();
 
     /**
      * Returns true if the operation is not sensitive to the order of arguments,
      * e.g. "=", "and" etc, and false if it is, e.g. "&lt;=", "div".
+     * @return boolean
      */
     protected abstract boolean isSymmetric();
 
     /**
      * Computes the precedence of the operation.
+     * @return int precedence
      */
     protected abstract int getPrecedence();
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         if (args.length == 1) {
             return getSymbol() + parenthesize(args[0], false);
@@ -69,6 +85,12 @@ public abstract class CoreOperation extends Operation {
         return buffer.toString();
     }
 
+    /**
+     * Wrap an expression in parens if necessary.
+     * @param expression other Expression
+     * @param left whether <code>expression</code> is left of this one.
+     * @return String
+     */
     private String parenthesize(Expression expression, boolean left) {
         String s = expression.toString();
         if (!(expression instanceof CoreOperation)) {

@@ -31,16 +31,20 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * @version $Revision$ $Date$
  */
 public class NamespaceResolver implements Cloneable {
-    final protected NamespaceResolver parent;
+    /** Parent NamespaceResolver */
+    protected final NamespaceResolver parent;
+    /** namespace map */
     protected HashMap namespaceMap = new HashMap();
+    /** reverse lookup map */
     protected HashMap reverseMap;
+    /** pointer */
     protected NodePointer pointer;
     private boolean sealed;
 
     /**
      * Find the namespace prefix for the specified namespace URI and NodePointer.
-     * @param pointer
-     * @param namespaceURI
+     * @param pointer location
+     * @param namespaceURI to check
      * @return prefix if found
      * @since JXPath 1.3
      */
@@ -72,7 +76,7 @@ public class NamespaceResolver implements Cloneable {
 
     /**
      * Create a new NamespaceResolver.
-     * @param parent
+     * @param parent NamespaceResolver
      */
     public NamespaceResolver(NamespaceResolver parent) {
         this.parent = parent;
@@ -155,7 +159,7 @@ public class NamespaceResolver implements Cloneable {
 
     /**
      * Get the nearest prefix found that matches an externally-registered namespace.
-     * @param namespaceURI
+     * @param namespaceURI the ns URI to check.
      * @return String prefix if found.
      * @since JXPath 1.3
      */
@@ -175,7 +179,7 @@ public class NamespaceResolver implements Cloneable {
 
     /**
      * Learn whether this NamespaceResolver has been sealed.
-     * @return
+     * @return boolean
      */
     public boolean isSealed() {
         return sealed;

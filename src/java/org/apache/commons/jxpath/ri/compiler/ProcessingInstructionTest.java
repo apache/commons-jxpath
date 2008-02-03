@@ -23,14 +23,25 @@ package org.apache.commons.jxpath.ri.compiler;
 public class ProcessingInstructionTest extends NodeTest {
     private String target;
 
+    /**
+     * Create a new ProcessingInstructionTest.
+     * @param target string
+     */
     public ProcessingInstructionTest(String target) {
         this.target = target;
     }
 
+    /**
+     * Get the target.
+     * @return String
+     */
     public String getTarget() {
         return target;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         return "processing-instruction('" + target + "')";
     }

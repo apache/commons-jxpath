@@ -30,26 +30,30 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * @version $Revision$ $Date$
  */
 public class ContainerPointerFactory implements NodePointerFactory {
-
+    /** factory order for this factory */
     public static final int CONTAINER_POINTER_FACTORY_ORDER = 200;
 
+    /**
+     * {@inheritDoc}
+     */
     public int getOrder() {
         return CONTAINER_POINTER_FACTORY_ORDER;
     }
 
-    public NodePointer createNodePointer(
-        QName name,
-        Object bean,
-        Locale locale)
-    {
-        return bean instanceof Container ? new ContainerPointer((Container) bean, locale) : null;
+    /**
+     * {@inheritDoc}
+     */
+    public NodePointer createNodePointer(QName name, Object bean, Locale locale) {
+        return bean instanceof Container ? new ContainerPointer(
+                (Container) bean, locale) : null;
     }
 
-    public NodePointer createNodePointer(
-        NodePointer parent,
-        QName name,
-        Object bean)
-    {
-        return bean instanceof Container ? new ContainerPointer(parent, (Container) bean) : null;
+    /**
+     * {@inheritDoc}
+     */
+    public NodePointer createNodePointer(NodePointer parent, QName name,
+            Object bean) {
+        return bean instanceof Container ? new ContainerPointer(parent,
+                (Container) bean) : null;
     }
 }
