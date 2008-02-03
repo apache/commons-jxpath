@@ -32,7 +32,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * @version $Revision$ $Date$
  */
 public class AttributeContext extends EvalContext {
-    private static final NodeNameTest WILDCARD_TEST = new NodeNameTest(new QName(null, "*"));
+    private static final QName WILDCARD = new QName(null, "*");
 
     private NodeTest nodeTest;
     private boolean setStarted = false;
@@ -75,20 +75,22 @@ public class AttributeContext extends EvalContext {
         super.setPosition(getCurrentPosition() + 1);
         if (!setStarted) {
             setStarted = true;
-            NodeNameTest nodeNameTest = null;
-            if (nodeTest instanceof NodeTypeTest) {
-                if (((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE) {
-                    nodeNameTest = WILDCARD_TEST;
+            QName name;
+            if (nodeTest instanceof NodeNameTest) {
+                name = ((NodeNameTest) nodeTest).getNodeName();
+            }
+            else {
+                if (nodeTest instanceof NodeTypeTest
+                        && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE) {
+                    name = WILDCARD;
+                }
+                else {
+                    iterator = null;
+                    return false;
                 }
             }
-            else if (nodeTest instanceof NodeNameTest) {
-                nodeNameTest = (NodeNameTest) nodeTest;
-            }
-            if (nodeNameTest == null) {
-                return false;
-            }
             iterator = parentContext.getCurrentNodePointer().attributeIterator(
-                    nodeNameTest.getNodeName());
+                    name);
         }
         if (iterator == null) {
             return false;
