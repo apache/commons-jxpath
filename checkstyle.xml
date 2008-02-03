@@ -105,7 +105,10 @@
           <!-- Checks for whitespace                               -->
           <!-- See http://checkstyle.sf.net/config_whitespace.html -->
           <module name="EmptyForIteratorPad"/>
-          <module name="NoWhitespaceAfter"/>
+          <module name="NoWhitespaceAfter">
+            <!-- not ARRAY_INIT -->
+            <property name="tokens" value="BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS" />
+          </module>
           <module name="NoWhitespaceBefore"/>
           <module name="OperatorWrap"/>
           <module name="TabCharacter"/>
@@ -116,8 +119,9 @@
           <!-- Modifier Checks                                    -->
           <!-- See http://checkstyle.sf.net/config_modifiers.html -->
           <module name="ModifierOrder"/>
-          <module name="RedundantModifier"/>
-  
+          <module name="RedundantModifier">
+            <property name="tokens" value="METHOD_DEF" />
+          </module>
   
           <!-- Checks for blocks. You know, those {}'s         -->
           <!-- See http://checkstyle.sf.net/config_blocks.html -->
@@ -148,7 +152,6 @@
           <!-- Checks for class design                         -->
           <!-- See http://checkstyle.sf.net/config_design.html -->
           <module name="FinalClass"/>
-          <module name="HideUtilityClassConstructor"/>
           <module name="InterfaceIsType"/>
           <module name="VisibilityModifier"/>
   
