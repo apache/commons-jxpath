@@ -23,7 +23,6 @@ import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.apache.commons.jxpath.JXPathAbstractFactoryException;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
@@ -316,43 +315,4 @@ public class DynamicPropertyPointer extends PropertyPointer {
         return buffer.toString();
     }
 
-    /**
-     * Escape string.
-     * @param string s
-     * @return String
-     */
-    private String escape(String string) {
-        int index = string.indexOf('\'');
-        while (index != -1) {
-            string =
-                string.substring(0, index)
-                    + "&apos;"
-                    + string.substring(index + 1);
-            index = string.indexOf('\'');
-        }
-        index = string.indexOf('\"');
-        while (index != -1) {
-            string =
-                string.substring(0, index)
-                    + "&quot;"
-                    + string.substring(index + 1);
-            index = string.indexOf('\"');
-        }
-        return string;
-    }
-
-    /**
-     * Get abstractFactory from context.
-     * @param context to search
-     * @return AbstractFactory
-     */
-    private AbstractFactory getAbstractFactory(JXPathContext context) {
-        AbstractFactory factory = context.getFactory();
-        if (factory == null) {
-            throw new JXPathException(
-                "Factory is not set on the JXPathContext - cannot create path: "
-                    + asPath());
-        }
-        return factory;
-    }
 }

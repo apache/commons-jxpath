@@ -266,41 +266,6 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Return a string escaping single and double quotes.
-     * @param string string to treat
-     * @return string with any necessary changes made.
-     */
-    private String escape(String string) {
-        final char[] c = new char[] { '\'', '"' };
-        final String[] esc = new String[] { "&apos;", "&quot;" };
-        StringBuffer sb = null;
-        for (int i = 0; sb == null && i < c.length; i++) {
-            if (string.indexOf(c[i]) >= 0) {
-                sb = new StringBuffer(string);
-            }
-        }
-        if (sb == null) {
-            return string;
-        }
-        for (int i = 0; i < c.length; i++) {
-            if (string.indexOf(c[i]) < 0) {
-                continue;
-            }
-            int pos = 0;
-            while (pos < sb.length()) {
-                if (sb.charAt(pos) == c[i]) {
-                    sb.replace(pos, pos + 1, esc[i]);
-                    pos += esc[i].length();
-                }
-                else {
-                    pos++;
-                }
-            }
-        }
-        return sb.toString();
-    }
-
-    /**
      * Create a "bad factory" JXPathAbstractFactoryException for the specified AbstractFactory.
      * @param factory AbstractFactory
      * @return JXPathAbstractFactoryException
