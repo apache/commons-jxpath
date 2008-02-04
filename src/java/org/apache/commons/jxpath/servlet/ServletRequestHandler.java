@@ -30,6 +30,9 @@ import javax.servlet.ServletRequest;
  */
 public class ServletRequestHandler extends HttpSessionHandler {
 
+    /**
+     * {@inheritDoc}
+     */
     protected void collectPropertyNames(HashSet set, Object bean) {
         super.collectPropertyNames(set, bean);
         ServletRequestAndContext handle = (ServletRequestAndContext) bean;
@@ -44,6 +47,9 @@ public class ServletRequestHandler extends HttpSessionHandler {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getProperty(Object bean, String property) {
         ServletRequestAndContext handle = (ServletRequestAndContext) bean;
         ServletRequest servletRequest = handle.getServletRequest();
@@ -66,6 +72,9 @@ public class ServletRequestHandler extends HttpSessionHandler {
         return super.getProperty(bean, property);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setProperty(Object request, String property, Object value) {
         ((ServletRequest) request).setAttribute(property, value);
     }

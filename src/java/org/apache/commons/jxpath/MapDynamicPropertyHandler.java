@@ -29,12 +29,12 @@ import java.util.Set;
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
     /**
-     * Returns string representations of all keys in the map.
+     * {@inheritDoc}
      */
     public String[] getPropertyNames(Object object) {
         Map map = (Map) object;
         Set set = map.keySet();
-        String names[] = new String[set.size()];
+        String[] names = new String[set.size()];
         Iterator it = set.iterator();
         for (int i = 0; i < names.length; i++) {
             names[i] = String.valueOf(it.next());
@@ -43,14 +43,14 @@ public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
     }
 
     /**
-     * Returns the value for the specified key.
+     * {@inheritDoc}
      */
     public Object getProperty(Object object, String propertyName) {
         return ((Map) object).get(propertyName);
     }
 
     /**
-     * Sets the specified key value.
+     * {@inheritDoc}
      */
     public void setProperty(Object object, String propertyName, Object value) {
         ((Map) object).put(propertyName, value);

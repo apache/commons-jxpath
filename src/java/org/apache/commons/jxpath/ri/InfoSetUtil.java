@@ -32,9 +32,10 @@ public class InfoSetUtil {
     private static final Double ONE = new Double(1);
     private static final Double NOT_A_NUMBER = new Double(Double.NaN);
 
-
     /**
-     * Converts the supplied object to String
+     * Converts the supplied object to String.
+     * @param object to convert
+     * @return String value
      */
     public static String stringValue(Object object) {
         if (object instanceof String) {
@@ -63,7 +64,9 @@ public class InfoSetUtil {
     }
 
     /**
-     * Converts the supplied object to Number
+     * Converts the supplied object to Number.
+     * @param object to convert
+     * @return Number result
      */
     public static Number number(Object object) {
         if (object instanceof Number) {
@@ -92,7 +95,9 @@ public class InfoSetUtil {
     }
 
     /**
-     * Converts the supplied object to double
+     * Converts the supplied object to double.
+     * @param object to convert
+     * @return double
      */
     public static double doubleValue(Object object) {
         if (object instanceof Number) {
@@ -124,12 +129,15 @@ public class InfoSetUtil {
     }
 
     /**
-     * Converts the supplied object to boolean
+     * Converts the supplied object to boolean.
+     * @param object to convert
+     * @return boolean
      */
     public static boolean booleanValue(Object object) {
         if (object instanceof Number) {
             double value = ((Number) object).doubleValue();
-            return value != 0 && value != -0 && !Double.isNaN(value);
+            final int negZero = -0;
+            return value != 0 && value != negZero && !Double.isNaN(value);
         }
         if (object instanceof Boolean) {
             return ((Boolean) object).booleanValue();

@@ -27,22 +27,37 @@ public class LocationPath extends Path {
 
     private boolean absolute;
 
+    /**
+     * Create a new LocationPath.
+     * @param absolute whether this is an absolute path
+     * @param steps to evaluate
+     */
     public LocationPath(boolean absolute, Step[] steps) {
         super(steps);
         this.absolute = absolute;
     }
 
+    /**
+     * Learn whether this LocationPath is absolute.
+     * @return boolean
+     */
     public boolean isAbsolute() {
         return absolute;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean computeContextDependent() {
         return !absolute || super.computeContextDependent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        Step steps[] = getSteps();
+        Step[] steps = getSteps();
         if (steps != null) {
             for (int i = 0; i < steps.length; i++) {
                 if (i > 0 || absolute) {
@@ -54,6 +69,9 @@ public class LocationPath extends Path {
         return buffer.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object compute(EvalContext context) {
         // Create a chain of contexts
         EvalContext rootContext;
@@ -66,7 +84,9 @@ public class LocationPath extends Path {
         return evalSteps(rootContext);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
         // Create a chain of contexts
         EvalContext rootContext;

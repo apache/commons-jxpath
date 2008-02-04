@@ -38,6 +38,11 @@ public class JDOMAttributeIterator implements NodeIterator {
     private List attributes;
     private int position = 0;
 
+    /**
+     * Create a new JDOMAttributeIterator.
+     * @param parent pointer
+     * @param name test
+     */
     public JDOMAttributeIterator(NodePointer parent, QName name) {
         this.parent = parent;
         if (parent.getNode() instanceof Element) {
@@ -86,6 +91,9 @@ public class JDOMAttributeIterator implements NodeIterator {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -102,10 +110,16 @@ public class JDOMAttributeIterator implements NodeIterator {
             (Attribute) attributes.get(index));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         if (attributes == null) {
             return false;

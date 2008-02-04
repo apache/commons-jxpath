@@ -40,12 +40,17 @@ public interface CompiledExpression {
     /**
      * Evaluates the xpath and returns the resulting object. Primitive
      * types are wrapped into objects.
+     * @param context to evaluate
+     * @return Object
      */
     Object getValue(JXPathContext context);
 
     /**
      * Evaluates the xpath, converts the result to the specified class and
      * returns the resulting object.
+     * @param context to evaluate
+     * @param requiredType return type
+     * @return Object
      */
     Object getValue(JXPathContext context, Class requiredType);
 
@@ -56,6 +61,8 @@ public interface CompiledExpression {
      * <li>The xpath does not in fact describe an existing property
      * <li>The property is not writable (no public, non-static set method)
      * </ul>
+     * @param context base
+     * @param value to set
      */
     void setValue(JXPathContext context, Object value);
 
@@ -63,6 +70,8 @@ public interface CompiledExpression {
      * Creates intermediate elements of
      * the path by invoking an AbstractFactory, which should first be
      * installed on the context by calling "setFactory".
+     * @param context base
+     * @return Pointer created
      */
     Pointer createPath(JXPathContext context);
 
@@ -79,6 +88,9 @@ public interface CompiledExpression {
      * element.
      * <li>The property is not writable (no public, non-static set method)
      * </ul>
+     * @param context base
+     * @param value to set
+     * @return Pointer created
      */
     Pointer createPathAndSetValue(JXPathContext context, Object value);
 
@@ -86,6 +98,8 @@ public interface CompiledExpression {
      * Traverses the xpath and returns a Iterator of all results found
      * for the path. If the xpath matches no properties
      * in the graph, the Iterator will not be null.
+     * @param context base
+     * @return Iterator
      */
     Iterator iterate(JXPathContext context);
 
@@ -94,6 +108,9 @@ public interface CompiledExpression {
      * A Pointer provides easy access to a property.
      * If the xpath matches no properties
      * in the graph, the pointer will be null.
+     * @param context base
+     * @param xpath string
+     * @return Pointer found
      */
     Pointer getPointer(JXPathContext context, String xpath);
 
@@ -102,16 +119,20 @@ public interface CompiledExpression {
      * A Pointer provides easy access to a property.
      * If the xpath matches no properties
      * in the graph, the Iterator be empty, but not null.
+     * @param context to iterate
+     * @return Iterator<Pointer>
      */
     Iterator iteratePointers(JXPathContext context);
 
     /**
-     * Remove the graph element described by this expression
+     * Remove the graph element described by this expression.
+     * @param context base
      */
     void removePath(JXPathContext context);
 
     /**
-     * Remove all graph elements described by this expression
+     * Remove all graph elements described by this expression.
+     * @param context base
      */
     void removeAll(JXPathContext context);
 }

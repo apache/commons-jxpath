@@ -839,7 +839,8 @@ public abstract class NodePointer implements Pointer {
                 if (sb.charAt(pos) == c[i]) {
                     sb.replace(pos, pos + 1, esc[i]);
                     pos += esc[i].length();
-                } else {
+                }
+                else {
                     pos++;
                 }
             }

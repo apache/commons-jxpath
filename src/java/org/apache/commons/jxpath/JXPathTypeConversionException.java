@@ -27,10 +27,19 @@ public class JXPathTypeConversionException extends JXPathException {
 
     private static final long serialVersionUID = -4403564377958943239L;
 
+    /**
+     * Create a new JXPathTypeConversionException.
+     * @param message exception text
+     */
     public JXPathTypeConversionException(String message) {
         super(message);
     }
 
+    /**
+     * Create a new JXPathTypeConversionException.
+     * @param message exception text
+     * @param ex underlying cause
+     */
     public JXPathTypeConversionException(String message, Exception ex) {
         super(message, ex);
     }

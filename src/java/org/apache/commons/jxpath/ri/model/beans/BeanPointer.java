@@ -37,12 +37,15 @@ public class BeanPointer extends PropertyOwnerPointer {
     private Object bean;
     private JXPathBeanInfo beanInfo;
 
-    public BeanPointer(
-            QName name,
-            Object bean,
-            JXPathBeanInfo beanInfo,
-            Locale locale)
-    {
+    /**
+     * Create a new BeanPointer.
+     * @param name is the name given to the first node
+     * @param bean pointed
+     * @param beanInfo JXPathBeanInfo
+     * @param locale Locale
+     */
+    public BeanPointer(QName name, Object bean, JXPathBeanInfo beanInfo,
+            Locale locale) {
         super(null, locale);
         this.name = name;
         this.bean = bean;
@@ -50,59 +53,76 @@ public class BeanPointer extends PropertyOwnerPointer {
     }
 
     /**
+     * Create a new BeanPointer.
+     * @param parent pointer
      * @param name is the name given to the first node
+     * @param bean pointed
+     * @param beanInfo JXPathBeanInfo
      */
-    public BeanPointer(
-            NodePointer parent,
-            QName name,
-            Object bean,
-            JXPathBeanInfo beanInfo)
-    {
+    public BeanPointer(NodePointer parent, QName name, Object bean,
+            JXPathBeanInfo beanInfo) {
         super(parent);
         this.name = name;
         this.bean = bean;
         this.beanInfo = beanInfo;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public PropertyPointer getPropertyPointer() {
         return new BeanPropertyPointer(this, beanInfo);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         return name;
     }
 
     /**
-     * Returns the bean itself
+     * {@inheritDoc}
      */
     public Object getBaseValue() {
         return bean;
     }
 
     /**
-     * Returns false
+     * {@inheritDoc}
+     * @return false
      */
     public boolean isCollection() {
         return false;
     }
 
     /**
-     * Returns 1.
+     * {@inheritDoc}
+     * @return 1
      */
     public int getLength() {
         return 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         Object value = getNode();
         return value == null
             || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return name == null ? 0 : name.hashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -139,6 +159,7 @@ public class BeanPointer extends PropertyOwnerPointer {
     }
 
     /**
+     * {@inheritDoc}
      * If the pointer has a parent, then parent's path.
      * If the bean is null, "null()".
      * If the bean is a primitive value, the value itself.

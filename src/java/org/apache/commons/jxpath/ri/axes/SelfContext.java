@@ -22,7 +22,7 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * EvalContext  that returns the current node from the parent context if the
+ * EvalContext that returns the current node from the parent context if the
  * test succeeds.
  *
  * @author Dmitri Plotnikov
@@ -33,15 +33,26 @@ public class SelfContext extends EvalContext {
     private boolean startedSet = false;
     private NodePointer nodePointer;
 
+    /**
+     * Create a new SelfContext.
+     * @param parentContext EvalContext
+     * @param nodeTest guard
+     */
     public SelfContext(EvalContext parentContext, NodeTest nodeTest) {
         super(parentContext);
         this.nodeTest = nodeTest;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Pointer getSingleNodePointer() {
         return parentContext.getSingleNodePointer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getCurrentNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -51,15 +62,24 @@ public class SelfContext extends EvalContext {
         return nodePointer;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean nextNode() {
         return setPosition(getCurrentPosition() + 1);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void reset() {
         super.reset();
         startedSet = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         if (position != 1) {
             return false;

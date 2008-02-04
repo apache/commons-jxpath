@@ -24,14 +24,25 @@ package org.apache.commons.jxpath.ri.compiler;
  */
 public class CoreOperationGreaterThan extends CoreOperationRelationalExpression {
 
+    /**
+     * Create a new CoreOperationGreaterThan.
+     * @param arg1 left operand
+     * @param arg2 right operand
+     */
     public CoreOperationGreaterThan(Expression arg1, Expression arg2) {
         super(new Expression[] { arg1, arg2 });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected boolean evaluateCompare(int compare) {
         return compare > 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getSymbol() {
         return ">";
     }

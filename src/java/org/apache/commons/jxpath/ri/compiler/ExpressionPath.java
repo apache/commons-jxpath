@@ -35,21 +35,28 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class ExpressionPath extends Path {
 
     private Expression expression;
-    private Expression predicates[];
+    private Expression[] predicates;
 
     private boolean basicKnown = false;
     private boolean basic;
 
-    public ExpressionPath(
-        Expression expression,
-        Expression[] predicates,
-        Step[] steps)
-    {
+    /**
+     * Create a new ExpressionPath.
+     * @param expression Expression
+     * @param predicates to execute
+     * @param steps navigation
+     */
+    public ExpressionPath(Expression expression, Expression[] predicates,
+            Step[] steps) {
         super(steps);
         this.expression = expression;
         this.predicates = predicates;
     }
 
+    /**
+     * Get the expression.
+     * @return Expression
+     */
     public Expression getExpression() {
         return expression;
     }
@@ -57,6 +64,7 @@ public class ExpressionPath extends Path {
     /**
      * Predicates are the expressions in brackets that may follow
      * the root expression of the path.
+     * @return Expression[]
      */
     public Expression[] getPredicates() {
         return predicates;
@@ -65,6 +73,7 @@ public class ExpressionPath extends Path {
     /**
      * Returns true if the root expression or any of the
      * predicates or the path steps are context dependent.
+     * @return boolean
      */
     public boolean computeContextDependent() {
         if (expression.isContextDependent()) {
@@ -83,6 +92,7 @@ public class ExpressionPath extends Path {
     /**
      * Recognized paths formatted as <code>$x[3]/foo[2]</code>.  The
      * evaluation of such "simple" paths is optimized and streamlined.
+     * @return boolean
      */
     public synchronized boolean isSimpleExpressionPath() {
         if (!basicKnown) {
@@ -92,6 +102,9 @@ public class ExpressionPath extends Path {
         return basic;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         if (expression instanceof CoreOperation
@@ -112,7 +125,7 @@ public class ExpressionPath extends Path {
             }
         }
 
-        Step steps[] = getSteps();
+        Step[] steps = getSteps();
         if (steps != null) {
             for (int i = 0; i < steps.length; i++) {
                 buffer.append("/");
@@ -122,21 +135,27 @@ public class ExpressionPath extends Path {
         return buffer.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object compute(EvalContext context) {
         return expressionPath(context, false);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object computeValue(EvalContext context) {
         return expressionPath(context, true);
     }
 
     /**
      * Walks an expression path (a path that starts with an expression)
+     * @param evalContext base context
+     * @param firstMatch whether to return the first match found
+     * @return Object found
      */
-    protected Object expressionPath(
-        EvalContext evalContext,
-        boolean firstMatch)
-    {
+    protected Object expressionPath(EvalContext evalContext, boolean firstMatch) {
         Object value = expression.compute(evalContext);
         EvalContext context;
         if (value instanceof InitialContext) {

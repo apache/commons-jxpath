@@ -29,6 +29,10 @@ public class QName {
     private String name;
     private String qualifiedName;
 
+    /**
+     * Create a new QName.
+     * @param qualifiedName value
+     */
     public QName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
         int index = qualifiedName.indexOf(':');
@@ -36,28 +40,50 @@ public class QName {
         name = index < 0 ? qualifiedName : qualifiedName.substring(index + 1);
     }
 
+    /**
+     * Create a new QName.
+     * @param prefix ns
+     * @param localName String
+     */
     public QName(String prefix, String localName) {
         this.prefix = prefix;
         this.name = localName;
         this.qualifiedName = prefix == null ? localName : prefix + ':' + localName;
     }
 
+    /**
+     * Get the prefix of this QName.
+     * @return String
+     */
     public String getPrefix() {
         return prefix;
     }
 
+    /**
+     * Get the local name.
+     * @return String
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         return qualifiedName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return name.hashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         if (this == object) {
             return true;

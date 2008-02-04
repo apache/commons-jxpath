@@ -40,6 +40,8 @@ public interface Function {
      *
      * @param context can be used to acquire the context in which the
      *    function is being evaluted.
+     * @param parameters function arguments
+     * @return Object result
      */
     Object invoke(ExpressionContext context, Object[] parameters);
 }

@@ -600,6 +600,7 @@ public class ValueUtils {
                     return clazz.getDeclaredMethod(name, parameterTypes);
                 }
                 catch (NoSuchMethodException e) {
+                    //ignore
                 }
             }
         }
@@ -637,6 +638,7 @@ public class ValueUtils {
                     interfaces[i].getDeclaredMethod(methodName, parameterTypes);
             }
             catch (NoSuchMethodException e) {
+                //ignore
             }
             if (method != null) {
                 break;

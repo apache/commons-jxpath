@@ -47,6 +47,9 @@ public class BasicTypeConverter implements TypeConverter {
     /**
      * Returns true if it can convert the supplied
      * object to the specified class.
+     * @param object to check
+     * @param toType prospective destination class
+     * @return boolean
      */
     public boolean canConvert(Object object, final Class toType) {
         if (object == null) {
@@ -151,6 +154,9 @@ public class BasicTypeConverter implements TypeConverter {
      * Converts the supplied object to the specified
      * type. Throws a runtime exception if the conversion is
      * not possible.
+     * @param object to convert
+     * @param toType destination class
+     * @return converted object
      */
     public Object convert(Object object, final Class toType) {
         if (object == null) {
@@ -245,7 +251,8 @@ public class BasicTypeConverter implements TypeConverter {
                 try {
                     return useType.getConstructor(new Class[] { boolean.class })
                             .newInstance(new Object[] { object });
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     throw new JXPathTypeConversionException(useType.getName(), e);
                 }
             }
@@ -275,6 +282,11 @@ public class BasicTypeConverter implements TypeConverter {
                 + object.getClass() + " to " + useType);
     }
 
+    /**
+     * Convert null to a primitive type.
+     * @param toType destination class
+     * @return a wrapper
+     */
     protected Object convertNullToPrimitive(Class toType) {
         if (toType == boolean.class) {
             return Boolean.FALSE;
@@ -303,6 +315,12 @@ public class BasicTypeConverter implements TypeConverter {
         return null;
     }
 
+    /**
+     * Convert a string to a primitive type.
+     * @param object String
+     * @param toType destination class
+     * @return wrapper
+     */
     protected Object convertStringToPrimitive(Object object, Class toType) {
         toType = TypeUtils.wrapPrimitive(toType);
         if (toType == Boolean.class) {
@@ -332,6 +350,12 @@ public class BasicTypeConverter implements TypeConverter {
         return null;
     }
 
+    /**
+     * Allocate a number of a given type and value.
+     * @param type destination class
+     * @param value double
+     * @return Number
+     */
     protected Number allocateNumber(Class type, double value) {
         type = TypeUtils.wrapPrimitive(type);
         if (type == Byte.class) {
@@ -373,29 +397,41 @@ public class BasicTypeConverter implements TypeConverter {
                         .newInstance(
                                 new Object[] { allocateNumber(initialValueType,
                                         value) });
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 throw new JXPathTypeConversionException(classname, e);
             }
         }
         return null;
     }
 
+    /**
+     * Learn whether this BasicTypeConverter can create a collection of the specified type.
+     * @param type prospective destination class
+     * @return boolean
+     */
     protected boolean canCreateCollection(Class type) {
         if (!type.isInterface()
                 && ((type.getModifiers() & Modifier.ABSTRACT) == 0)) {
             try {
                 type.getConstructor(new Class[0]);
                 return true;
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 return false;
             }
         }
         return type == List.class || type == Collection.class || type == Set.class;
     }
 
+    /**
+     * Create a collection of a given type.
+     * @param type destination class
+     * @return Collection
+     */
     protected Collection allocateCollection(Class type) {
         if (!type.isInterface()
-            && ((type.getModifiers() & Modifier.ABSTRACT) == 0)) {
+                && ((type.getModifiers() & Modifier.ABSTRACT) == 0)) {
             try {
                 return (Collection) type.newInstance();
             }
@@ -415,6 +451,11 @@ public class BasicTypeConverter implements TypeConverter {
                 "Cannot create collection of type: " + type);
     }
 
+    /**
+     * Get an unmodifiable version of a collection.
+     * @param collection to wrap
+     * @return Collection
+     */
     protected Collection unmodifiableCollection(Collection collection) {
         if (collection instanceof List) {
             return Collections.unmodifiableList((List) collection);
@@ -428,22 +469,38 @@ public class BasicTypeConverter implements TypeConverter {
         return Collections.unmodifiableCollection(collection);
     }
 
+    /**
+     * NodeSet implementation
+     */
     static final class ValueNodeSet implements NodeSet {
         private List values;
         private List pointers;
 
+        /**
+         * Create a new ValueNodeSet.
+         * @param values to return
+         */
         public ValueNodeSet(List values) {
            this.values = values;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public List getValues() {
             return Collections.unmodifiableList(values);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public List getNodes() {
             return Collections.unmodifiableList(values);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public List getPointers() {
             if (pointers == null) {
                 pointers = new ArrayList();
@@ -456,37 +513,65 @@ public class BasicTypeConverter implements TypeConverter {
         }
     }
 
+    /**
+     * Value pointer
+     */
     static final class ValuePointer implements Pointer {
         private Object bean;
 
+        /**
+         * Create a new ValuePointer.
+         * @param object value
+         */
         public ValuePointer(Object object) {
             this.bean = object;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public Object getValue() {
             return bean;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public Object getNode() {
             return bean;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public Object getRootNode() {
             return bean;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public void setValue(Object value) {
             throw new UnsupportedOperationException();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public Object clone() {
             return this;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public int compareTo(Object object) {
             return 0;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public String asPath() {
             if (bean == null) {
                 return "null()";

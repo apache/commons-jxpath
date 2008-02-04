@@ -31,16 +31,23 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * @version $Revision$ $Date$
  */
 public class ConstructorFunction implements Function {
+    private static final Object[] EMPTY_ARRAY = new Object[0];
 
     private Constructor constructor;
-    private static final Object EMPTY_ARRAY[] = new Object[0];
 
+    /**
+     * Create a new ConstructorFunction.
+     * @param constructor the constructor to call.
+     */
     public ConstructorFunction(Constructor constructor) {
         this.constructor = constructor;
     }
 
     /**
      * Converts parameters to suitable types and invokes the constructor.
+     * @param context evaluation context
+     * @param parameters constructor args
+     * @return new instance
      */
     public Object invoke(ExpressionContext context, Object[] parameters) {
         try {
@@ -49,7 +56,7 @@ public class ConstructorFunction implements Function {
                 parameters = EMPTY_ARRAY;
             }
             int pi = 0;
-            Class types[] = constructor.getParameterTypes();
+            Class[] types = constructor.getParameterTypes();
             if (types.length > 0
                 && ExpressionContext.class.isAssignableFrom(types[0])) {
                 pi = 1;

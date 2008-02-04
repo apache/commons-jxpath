@@ -24,7 +24,7 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 
 /**
- *
+ * RI of CompiledExpression.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -34,25 +34,41 @@ public class JXPathCompiledExpression implements CompiledExpression {
     private String xpath;
     private Expression expression;
 
+    /**
+     * Create a new JXPathCompiledExpression.
+     * @param xpath source
+     * @param expression compiled
+     */
     public JXPathCompiledExpression(String xpath, Expression expression) {
         this.xpath = xpath;
         this.expression = expression;
     }
 
+    /**
+     * Get the source expression.
+     * @return String
+     */
     protected String getXPath() {
         return xpath;
     }
 
+    /**
+     * Get the compiled expression.
+     * @return Expression
+     */
     protected Expression getExpression() {
         return expression;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         return xpath;
     }
 
     /**
-     * @see CompiledExpression#getValue(JXPathContext)
+     * {@inheritDoc}
      */
     public Object getValue(JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
@@ -60,7 +76,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * @see CompiledExpression#getValue(JXPathContext, Class)
+     * {@inheritDoc}
      */
     public Object getValue(JXPathContext context, Class requiredType) {
         return ((JXPathContextReferenceImpl) context).
@@ -68,7 +84,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * @see CompiledExpression#setValue(JXPathContext, Object)
+     * {@inheritDoc}
      */
     public void setValue(JXPathContext context, Object value) {
         ((JXPathContextReferenceImpl) context).
@@ -76,7 +92,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * @see CompiledExpression#createPath(JXPathContext)
+     * {@inheritDoc}
      */
     public Pointer createPath(JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
@@ -84,7 +100,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * @see CompiledExpression#createPathAndSetValue(JXPathContext, Object)
+     * {@inheritDoc}
      */
     public Pointer createPathAndSetValue(JXPathContext context, Object value) {
         return ((JXPathContextReferenceImpl) context).
@@ -92,7 +108,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * @see CompiledExpression#iterate(JXPathContext)
+     * {@inheritDoc}
      */
     public Iterator iterate(JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
@@ -100,7 +116,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * @see CompiledExpression#getPointer(JXPathContext, String)
+     * {@inheritDoc}
      */
     public Pointer getPointer(JXPathContext context, String xpath) {
         return ((JXPathContextReferenceImpl) context).
@@ -108,7 +124,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * @see CompiledExpression#iteratePointers(JXPathContext)
+     * {@inheritDoc}
      */
     public Iterator iteratePointers(JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
@@ -116,14 +132,14 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * @see CompiledExpression#removePath(JXPathContext)
+     * {@inheritDoc}
      */
     public void removePath(JXPathContext context) {
         ((JXPathContextReferenceImpl) context).removePath(xpath, expression);
     }
 
     /**
-     * @see CompiledExpression#removeAll(JXPathContext)
+     * {@inheritDoc}
      */
     public void removeAll(JXPathContext context) {
         ((JXPathContextReferenceImpl) context).removeAll(xpath, expression);

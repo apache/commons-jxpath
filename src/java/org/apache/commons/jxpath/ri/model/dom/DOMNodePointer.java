@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathAbstractFactoryException;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
@@ -152,8 +151,9 @@ public class DOMNodePointer extends NodePointer {
                     return nodeType == Node.COMMENT_NODE;
                 case Compiler.NODE_TYPE_PI :
                     return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+                default:
+                    return false;
             }
-            return false;
         }
         if (test instanceof ProcessingInstructionTest) {
             if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
@@ -207,11 +207,8 @@ public class DOMNodePointer extends NodePointer {
     /**
      * {@inheritDoc}
      */
-    public NodeIterator childIterator(
-        NodeTest test,
-        boolean reverse,
-        NodePointer startWith)
-    {
+    public NodeIterator childIterator(NodeTest test, boolean reverse,
+            NodePointer startWith) {
         return new DOMNodeIterator(this, test, reverse, startWith);
     }
 
@@ -275,7 +272,7 @@ public class DOMNodePointer extends NodePointer {
             String qname = "xmlns:" + prefix;
             Node aNode = node;
             if (aNode instanceof Document) {
-                aNode = ((Document)aNode).getDocumentElement();
+                aNode = ((Document) aNode).getDocumentElement();
             }
             while (aNode != null) {
                 if (aNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -405,7 +402,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the language attribute for this node. 
+     * Get the language attribute for this node.
      * @return String language name
      */
     protected String getLanguage() {
@@ -466,11 +463,7 @@ public class DOMNodePointer extends NodePointer {
     /**
      * {@inheritDoc}
      */
-    public NodePointer createChild(
-        JXPathContext context,
-        QName name,
-        int index)
-    {
+    public NodePointer createChild(JXPathContext context, QName name, int index) {
         if (index == WHOLE_COLLECTION) {
             index = 0;
         }
@@ -484,8 +477,8 @@ public class DOMNodePointer extends NodePointer {
         if (success) {
             NodeTest nodeTest;
             String prefix = name.getPrefix();
-            String namespaceURI = prefix == null ? null :
-                context.getNamespaceURI(prefix);
+            String namespaceURI = prefix == null ? null : context
+                    .getNamespaceURI(prefix);
             nodeTest = new NodeNameTest(name, namespaceURI);
 
             NodeIterator it = childIterator(nodeTest, false, null);
@@ -501,9 +494,8 @@ public class DOMNodePointer extends NodePointer {
     /**
      * {@inheritDoc}
      */
-    public NodePointer createChild(JXPathContext context,
-                QName name, int index, Object value)
-    {
+    public NodePointer createChild(JXPathContext context, QName name,
+            int index, Object value) {
         NodePointer ptr = createChild(context, name, index);
         ptr.setValue(value);
         return ptr;
@@ -613,6 +605,9 @@ public class DOMNodePointer extends NodePointer {
                 break;
             case Node.DOCUMENT_NODE :
                 // That'll be empty
+                break;
+            default:
+                break;
         }
         return buffer.toString();
     }
@@ -797,7 +792,7 @@ public class DOMNodePointer extends NodePointer {
             return text == null ? "" : trim ? text.trim() : text;
         }
         NodeList list = node.getChildNodes();
-        StringBuffer buf = new StringBuffer(16);
+        StringBuffer buf = new StringBuffer();
         for (int i = 0; i < list.getLength(); i++) {
             Node child = list.item(i);
             buf.append(stringValue(child));
@@ -822,9 +817,8 @@ public class DOMNodePointer extends NodePointer {
     /**
      * {@inheritDoc}
      */
-    public int compareChildNodePointers(
-            NodePointer pointer1, NodePointer pointer2)
-    {
+    public int compareChildNodePointers(NodePointer pointer1,
+            NodePointer pointer2) {
         Node node1 = (Node) pointer1.getBaseValue();
         Node node2 = (Node) pointer2.getBaseValue();
         if (node1 == node2) {

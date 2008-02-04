@@ -28,6 +28,10 @@ public class JXPathAbstractFactoryException extends JXPathException {
 
     private static final long serialVersionUID = -4403564377958943239L;
 
+    /**
+     * Create a new JXPathAbstractFactoryException.
+     * @param message exception message
+     */
     public JXPathAbstractFactoryException(String message) {
         super(message);
     }

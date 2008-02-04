@@ -419,7 +419,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Execute test against node on behalf of pointer. 
+     * Execute test against node on behalf of pointer.
      * @param pointer Pointer
      * @param node to test
      * @param test to execute
@@ -464,8 +464,9 @@ public class JDOMNodePointer extends NodePointer {
                     return node instanceof Comment;
                 case Compiler.NODE_TYPE_PI :
                     return node instanceof ProcessingInstruction;
+                default:
+                    return false;
             }
-            return false;
         }
         if (test instanceof ProcessingInstructionTest && node instanceof ProcessingInstruction) {
             String testPI = ((ProcessingInstructionTest) test).getTarget();
@@ -752,7 +753,7 @@ public class JDOMNodePointer extends NodePointer {
                 return 1;
             }
 
-            List children = ((Element)parent).getContent();
+            List children = ((Element) parent).getContent();
             int count = 0;
             String name = ((Element) node).getQualifiedName();
             for (int i = 0; i < children.size(); i++) {

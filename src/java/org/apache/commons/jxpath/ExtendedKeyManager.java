@@ -30,9 +30,10 @@ public interface ExtendedKeyManager extends KeyManager {
 
     /**
      * Find a NodeSet by key/value.
-     * @param context
-     * @param key
-     * @param value
+     * @param context base
+     * @param key String
+     * @param value Object
+     * @return NodeSet found
      */
     NodeSet getNodeSetByKey(JXPathContext context, String key, Object value);
 

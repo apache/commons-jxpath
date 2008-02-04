@@ -82,6 +82,9 @@ public class BasicVariables implements Variables {
         vars.remove(varName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         return vars.toString();
     }

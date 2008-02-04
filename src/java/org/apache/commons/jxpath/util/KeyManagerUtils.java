@@ -31,14 +31,24 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  * @version $Revision$ $Date$
  */
 public class KeyManagerUtils {
+    /**
+     * Adapt KeyManager to implement ExtendedKeyManager.
+     */
     private static class SingleNodeExtendedKeyManager implements
             ExtendedKeyManager {
         private KeyManager delegate;
 
+        /**
+         * Create a new SingleNodeExtendedKeyManager.
+         * @param delegate KeyManager to wrap
+         */
         public SingleNodeExtendedKeyManager(KeyManager delegate) {
             this.delegate = delegate;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public NodeSet getNodeSetByKey(JXPathContext context, String key,
                 Object value) {
             Pointer pointer = delegate.getPointerByKey(context, key, InfoSetUtil.stringValue(value));
@@ -47,6 +57,9 @@ public class KeyManagerUtils {
             return result;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public Pointer getPointerByKey(JXPathContext context, String keyName,
                 String keyValue) {
             return delegate.getPointerByKey(context, keyName, keyValue);
@@ -55,7 +68,7 @@ public class KeyManagerUtils {
 
     /**
      * Get an ExtendedKeyManager from the specified KeyManager.
-     * @param keyManager
+     * @param keyManager to adapt, if necessary
      * @return <code>keyManager</code> if it implements ExtendedKeyManager
      *         or a basic single-result ExtendedKeyManager that delegates to
      *         <code>keyManager</code>.

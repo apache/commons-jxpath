@@ -42,12 +42,8 @@ public class ChildContext extends EvalContext {
      * @param startFromParentLocation whether to start from parent location
      * @param reverse whether to iterate in reverse
      */
-    public ChildContext(
-        EvalContext parentContext,
-        NodeTest nodeTest,
-        boolean startFromParentLocation,
-        boolean reverse)
-    {
+    public ChildContext(EvalContext parentContext, NodeTest nodeTest,
+            boolean startFromParentLocation, boolean reverse) {
         super(parentContext);
         this.nodeTest = nodeTest;
         this.startFromParentLocation = startFromParentLocation;

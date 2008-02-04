@@ -37,7 +37,7 @@ import java.util.HashMap;
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private boolean atomic = false;
     private Class clazz;
-    private PropertyDescriptor propertyDescriptors[];
+    private PropertyDescriptor[] propertyDescriptors;
     private Class dynamicPropertyHandlerClass;
     private HashMap propertyDescriptorMap;
 

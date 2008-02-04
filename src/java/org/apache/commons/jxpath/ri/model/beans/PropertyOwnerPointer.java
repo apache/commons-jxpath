@@ -36,12 +36,15 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * @version $Revision$ $Date$
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
+    private static final Object UNINITIALIZED = new Object();
 
-    public NodeIterator childIterator(
-        NodeTest test,
-        boolean reverse,
-        NodePointer startWith)
-    {
+    private Object value = UNINITIALIZED;
+
+    /**
+     * {@inheritDoc}
+     */
+    public NodeIterator childIterator(NodeTest test, boolean reverse,
+            NodePointer startWith) {
         if (test == null) {
             return createNodeIterator(null, reverse, startWith);
         }
@@ -58,26 +61,45 @@ public abstract class PropertyOwnerPointer extends NodePointer {
                 ? createNodeIterator(null, reverse, startWith) : null;
     }
 
-    public NodeIterator createNodeIterator(
-                String property,
-                boolean reverse,
-                NodePointer startWith)
-    {
+    /**
+     * Create a NodeIterator.
+     * @param property property name
+     * @param reverse whether to iterate in reverse
+     * @param startWith first pointer to return
+     * @return NodeIterator
+     */
+    public NodeIterator createNodeIterator(String property, boolean reverse,
+            NodePointer startWith) {
         return new PropertyIterator(this, property, reverse, startWith);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodeIterator attributeIterator(QName name) {
         return new BeanAttributeIterator(this, name);
     }
 
+    /**
+     * Create a new PropertyOwnerPointer.
+     * @param parent parent pointer
+     * @param locale Locale
+     */
     protected PropertyOwnerPointer(NodePointer parent, Locale locale) {
         super(parent, locale);
     }
 
+    /**
+     * Create a new PropertyOwnerPointer.
+     * @param parent pointer
+     */
     protected PropertyOwnerPointer(NodePointer parent) {
         super(parent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setIndex(int index) {
         if (this.index != index) {
             super.setIndex(index);
@@ -85,9 +107,9 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         }
     }
 
-    private static final Object UNINITIALIZED = new Object();
-
-    private Object value = UNINITIALIZED;
+    /**
+     * {@inheritDoc}
+     */
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
             value = index == WHOLE_COLLECTION ? ValueUtils.getValue(getBaseValue())
@@ -96,6 +118,9 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         return value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public abstract QName getName();
 
     /**
@@ -111,6 +136,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     /**
      * Throws an exception if you try to change the root element, otherwise
      * forwards the call to the parent pointer.
+     * @param value to set
      */
     public void setValue(Object value) {
         this.value = value;
@@ -157,6 +183,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     public abstract PropertyPointer getPropertyPointer();
 
     /**
+     * Learn whether dynamic property declaration is supported.
      * @return true if the property owner can set a property "does not exist".
      *         A good example is a Map. You can always assign a value to any
      *         key even if it has never been "declared".
@@ -165,10 +192,11 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         return false;
     }
 
-    public int compareChildNodePointers(
-        NodePointer pointer1,
-        NodePointer pointer2)
-    {
+    /**
+     * {@inheritDoc}
+     */
+    public int compareChildNodePointers(NodePointer pointer1,
+            NodePointer pointer2) {
         int r = pointer1.getName().toString().compareTo(pointer2.getName().toString());
         return r == 0 ? pointer1.getIndex() - pointer2.getIndex() : r;
     }

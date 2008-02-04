@@ -38,6 +38,11 @@ public class PredicateContext extends EvalContext {
     private Expression nameTestExpression;
     private PropertyPointer dynamicPropertyPointer;
 
+    /**
+     * Create a new PredicateContext.
+     * @param parentContext parent context
+     * @param expression compiled Expression
+     */
     public PredicateContext(EvalContext parentContext, Expression expression) {
         super(parentContext);
         this.expression = expression;
@@ -47,6 +52,9 @@ public class PredicateContext extends EvalContext {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean nextNode() {
         if (done) {
             return false;
@@ -65,7 +73,7 @@ public class PredicateContext extends EvalContext {
                 // if the property is currently declared. Thus,
                 // we'll need to perform a search.
                 boolean ok = false;
-                String names[] = dynamicPropertyPointer.getPropertyNames();
+                String[] names = dynamicPropertyPointer.getPropertyNames();
                 for (int i = 0; i < names.length; i++) {
                     if (names[i].equals(propertyName)) {
                         ok = true;
@@ -109,6 +117,7 @@ public class PredicateContext extends EvalContext {
     /**
      * Used for an optimized access to dynamic properties using the
      * "map[@name = 'name']" syntax
+     * @return whether valid
      */
     private boolean setupDynamicPropertyPointer() {
         if (nameTestExpression == null) {
@@ -130,6 +139,9 @@ public class PredicateContext extends EvalContext {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setPosition(int position) {
         if (nameTestExpression == null) {
             return setPositionStandard(position);
@@ -149,6 +161,9 @@ public class PredicateContext extends EvalContext {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer getCurrentNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -161,17 +176,28 @@ public class PredicateContext extends EvalContext {
         return parentContext.getCurrentNodePointer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void reset() {
         super.reset();
         parentContext.reset();
         done = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean nextSet() {
         reset();
         return parentContext.nextSet();
     }
 
+    /**
+     * Basic setPosition
+     * @param position to set
+     * @return whether valid
+     */
     private boolean setPositionStandard(int position) {
         if (this.position > position) {
             reset();

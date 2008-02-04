@@ -67,9 +67,8 @@ public class JXPathException extends RuntimeException {
      * Create a new <code>JXPathException</code> with the
      * given <code>Exception</code> base cause and detail message.
      *
-     * @param e The exception to be encapsulated in a
-     * JXPathException
      * @param msg The detail message.
+     * @param e The exception to be encapsulated in a JXPathException
      */
     public JXPathException(String msg, Throwable e) {
         super(msg);
@@ -110,6 +109,7 @@ public class JXPathException extends RuntimeException {
 
     /**
      * Same as {@link #getException() getException()}
+     * @return The encapsulated exception, or null if there is none.
      */
     public Throwable getCause() {
         return exception;

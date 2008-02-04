@@ -35,6 +35,12 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
     private QName name;
     private DynaBean dynaBean;
 
+    /**
+     * Create a new DynaBeanPointer.
+     * @param name is the name given to the first node
+     * @param dynaBean pointed
+     * @param locale Locale
+     */
     public DynaBeanPointer(QName name, DynaBean dynaBean, Locale locale) {
         super(null, locale);
         this.name = name;
@@ -42,7 +48,10 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
     }
 
     /**
+     * Create a new DynaBeanPointer.
+     * @param parent pointer
      * @param name is the name given to the first node
+     * @param dynaBean pointed
      */
     public DynaBeanPointer(NodePointer parent, QName name, DynaBean dynaBean) {
         super(parent);
@@ -50,44 +59,65 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
         this.dynaBean = dynaBean;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public PropertyPointer getPropertyPointer() {
         return new DynaBeanPropertyPointer(this, dynaBean);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getName() {
         return name;
     }
 
     /**
-     * Returns the bean itself
+     * {@inheritDoc}
      */
     public Object getBaseValue() {
         return dynaBean;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getImmediateNode() {
         return dynaBean;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCollection() {
         return false;
     }
 
     /**
-     * Returns 1.
+     * {@inheritDoc}
      */
     public int getLength() {
         return 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLeaf() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
         return name == null ? 0 : name.hashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -108,12 +138,18 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
     }
 
     /**
-     * If there's a parent - parent's path, otherwise "/".
+     * {@inheritDoc}
      */
     public String asPath() {
         return parent == null ? "/" : super.asPath();
     }
 
+    /**
+     * Learn whether two objects are == || .equals().
+     * @param o1 first object
+     * @param o2 second object
+     * @return boolean
+     */
     private static boolean equalObjects(Object o1, Object o2) {
         return o1 == o2 || o1 != null && o1.equals(o2);
     }

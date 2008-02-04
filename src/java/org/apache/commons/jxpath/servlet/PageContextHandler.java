@@ -32,6 +32,9 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  */
 public class PageContextHandler implements DynamicPropertyHandler {
 
+    /**
+     * {@inheritDoc}
+     */
     public String[] getPropertyNames(Object pageContext) {
         HashSet list = new HashSet();
         Enumeration e =
@@ -63,16 +66,18 @@ public class PageContextHandler implements DynamicPropertyHandler {
 
     /**
      * Returns <code>pageContext.findAttribute(property)</code>.
+     * @param pageContext to search
+     * @param property name
+     * @return Object value
      */
     public Object getProperty(Object pageContext, String property) {
         return ((PageContext) pageContext).findAttribute(property);
     }
 
-    public void setProperty(
-        Object pageContext,
-        String property,
-        Object value)
-    {
+    /**
+     * {@inheritDoc}
+     */
+    public void setProperty(Object pageContext, String property, Object value) {
         ((PageContext) pageContext).setAttribute(
             property,
             value,

@@ -63,7 +63,8 @@ public class NodeTypeTest extends NodeTest {
                 return "comment";
             case Compiler.NODE_TYPE_PI :
                 return "processing-instruction";
+            default:
+                return "UNKNOWN";
         }
-        return "UNKNOWN";
     }
 }

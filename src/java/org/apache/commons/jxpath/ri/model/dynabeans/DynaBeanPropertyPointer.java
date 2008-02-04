@@ -38,38 +38,46 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     private String name;
     private String[] names;
 
+    /**
+     * Create a new DynaBeanPropertyPointer.
+     * @param parent pointer
+     * @param dynaBean pointed
+     */
     public DynaBeanPropertyPointer(NodePointer parent, DynaBean dynaBean) {
         super(parent);
         this.dynaBean = dynaBean;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getBaseValue() {
         return dynaBean.get(getPropertyName());
     }
 
     /**
      * This type of node is auxiliary.
+     * @return true
      */
     public boolean isContainer() {
         return true;
     }
 
     /**
-     * Number of the DP object's properties.
+     * {@inheritDoc}
      */
     public int getPropertyCount() {
         return getPropertyNames().length;
     }
 
     /**
-     * Names of all properties, sorted alphabetically
-     *
-     * @todo do something about the sorting
+     * {@inheritDoc}
      */
     public String[] getPropertyNames() {
+        /* @todo do something about the sorting - LIKE WHAT? - MJB */
         if (names == null) {
             DynaClass dynaClass = dynaBean.getDynaClass();
-            DynaProperty properties[] = dynaClass.getDynaProperties();
+            DynaProperty[] properties = dynaClass.getDynaProperties();
             int count = properties.length;
             boolean hasClass = dynaClass.getDynaProperty("class") != null;
             if (hasClass) {
@@ -90,10 +98,11 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     /**
      * Returns the name of the currently selected property or "*"
      * if none has been selected.
+     * @return String
      */
     public String getPropertyName() {
         if (name == null) {
-            String names[] = getPropertyNames();
+            String[] names = getPropertyNames();
             name = propertyIndex >= 0 && propertyIndex < names.length ? names[propertyIndex] : "*";
         }
         return name;
@@ -101,6 +110,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     /**
      * Select a property by name.
+     * @param propertyName to select
      */
     public void setPropertyName(String propertyName) {
         setPropertyIndex(UNSPECIFIED_PROPERTY);
@@ -110,10 +120,11 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     /**
      * Index of the currently selected property in the list of all
      * properties sorted alphabetically.
+     * @return int
      */
     public int getPropertyIndex() {
         if (propertyIndex == UNSPECIFIED_PROPERTY) {
-            String names[] = getPropertyNames();
+            String[] names = getPropertyNames();
             for (int i = 0; i < names.length; i++) {
                 if (names[i].equals(name)) {
                     propertyIndex = i;
@@ -128,6 +139,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     /**
      * Index a property by its index in the list of all
      * properties sorted alphabetically.
+     * @param index to set
      */
     public void setPropertyIndex(int index) {
         if (propertyIndex != index) {
@@ -141,6 +153,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
      * the value of the index'th element of the collection represented by the
      * property. If the property is not a collection, index should be zero
      * and the value will be the property itself.
+     * @return Object
      */
     public Object getImmediateNode() {
         String name = getPropertyName();
@@ -181,13 +194,18 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Returns true if the bean has the currently selected property
+     * Returns true if the bean has the currently selected property.
+     * @return boolean
      */
     protected boolean isActualProperty() {
         DynaClass dynaClass = dynaBean.getDynaClass();
         return dynaClass.getDynaProperty(getPropertyName()) != null;
     }
 
+    /**
+     * Learn whether the property referenced is an indexed property.
+     * @return boolean
+     */
     protected boolean isIndexedProperty() {
         DynaClass dynaClass = dynaBean.getDynaClass();
         DynaProperty property = dynaClass.getDynaProperty(name);
@@ -198,11 +216,15 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
      * If index == WHOLE_COLLECTION, change the value of the property, otherwise
      * change the value of the index'th element of the collection
      * represented by the property.
+     * @param value to set
      */
     public void setValue(Object value) {
         setValue(index, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void remove() {
         if (index == WHOLE_COLLECTION) {
             dynaBean.set(getPropertyName(), null);
@@ -219,6 +241,11 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
         }
     }
 
+    /**
+     * Set an indexed value.
+     * @param index to change
+     * @param value to set
+     */
     private void setValue(int index, Object value) {
         if (index == WHOLE_COLLECTION) {
             dynaBean.set(getPropertyName(), convert(value, false));
@@ -230,9 +257,15 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
             Object baseValue = dynaBean.get(getPropertyName());
             ValueUtils.setValue(baseValue, index, value);
         }
-   }
+    }
 
 
+    /**
+     * Convert a value to the appropriate property type.
+     * @param value to convert
+     * @param element whether this should be a collection element.
+     * @return conversion result
+     */
     private Object convert(Object value, boolean element) {
         DynaClass dynaClass = (DynaClass) dynaBean.getDynaClass();
         DynaProperty property = dynaClass.getDynaProperty(getPropertyName());

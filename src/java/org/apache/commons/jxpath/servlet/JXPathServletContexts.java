@@ -90,6 +90,8 @@ public final class JXPathServletContexts {
     /**
      * Returns a JXPathContext bound to the "page" scope. Caches that context
      * within the PageContext itself.
+     * @param pageContext as described
+     * @return JXPathContext
      */
     public static JXPathContext getPageContext(PageContext pageContext) {
         JXPathContext context =
@@ -112,11 +114,12 @@ public final class JXPathServletContexts {
     /**
      * Returns a JXPathContext bound to the "request" scope. Caches that context
      * within the request itself.
+     * @param request as described
+     * @param servletContext operative
+     * @return JXPathContext
      */
-    public static JXPathContext getRequestContext(
-        ServletRequest request,
-        ServletContext servletContext)
-    {
+    public static JXPathContext getRequestContext(ServletRequest request,
+            ServletContext servletContext) {
         JXPathContext context =
             (JXPathContext) request.getAttribute(Constants.JXPATH_CONTEXT);
         // If we are in an included JSP or Servlet, the request parameter
@@ -153,11 +156,12 @@ public final class JXPathServletContexts {
     /**
      * Returns a JXPathContext bound to the "session" scope. Caches that context
      * within the session itself.
+     * @param session as described
+     * @param servletContext operative
+     * @return JXPathContext
      */
-    public static JXPathContext getSessionContext(
-        HttpSession session,
-        ServletContext servletContext)
-    {
+    public static JXPathContext getSessionContext(HttpSession session,
+            ServletContext servletContext) {
         JXPathContext context =
             (JXPathContext) session.getAttribute(Constants.JXPATH_CONTEXT);
         if (context == null) {
@@ -175,10 +179,11 @@ public final class JXPathServletContexts {
     /**
      * Returns  a JXPathContext bound to the "application" scope. Caches that
      * context within the servlet context itself.
+     * @param servletContext operative
+     * @return JXPathContext
      */
     public static JXPathContext getApplicationContext(
-            ServletContext servletContext)
-    {
+            ServletContext servletContext) {
         JXPathContext context =
             (JXPathContext) servletContext.getAttribute(
                 Constants.JXPATH_CONTEXT);

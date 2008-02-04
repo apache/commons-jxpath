@@ -69,7 +69,7 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
 
     /**
      * Returns the node this pointer is based on.
-     * @return
+     * @return Object
      */
     Object getRootNode();
 
@@ -84,11 +84,13 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
      * If an object in the pointer's path is a Dynamic Property object (like a
      * Map), the asPath method generates an XPath that looks like this: <code>"
      * /departments[@name = 'HR']/employees[3]"</code>.
+     * @return String path
      */
     String asPath();
 
     /**
-     * Pointers are cloneable
+     * Pointers are cloneable.
+     * @return cloned Object
      */
     Object clone();
 }

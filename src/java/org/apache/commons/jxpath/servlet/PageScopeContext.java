@@ -32,21 +32,36 @@ import javax.servlet.jsp.PageContext;
 public class PageScopeContext {
     private PageContext pageContext;
 
+    /**
+     * Create a new PageScopeContext.
+     * @param pageContext base
+     */
     public PageScopeContext(PageContext pageContext) {
         this.pageContext = pageContext;
     }
 
     /**
      * Returns attributes of the pageContext declared in the "page" scope.
+     * @return Enumeration of attribute names
      */
     public Enumeration getAttributeNames() {
         return pageContext.getAttributeNamesInScope(PageContext.PAGE_SCOPE);
     }
 
+    /**
+     * Get the value of the specified attribute.
+     * @param attribute name
+     * @return Object
+     */
     public Object getAttribute(String attribute) {
         return pageContext.getAttribute(attribute, PageContext.PAGE_SCOPE);
     }
 
+    /**
+     * Set the specified attribute.
+     * @param attribute to set
+     * @param value to set
+     */
     public void setAttribute(String attribute, Object value) {
         pageContext.setAttribute(attribute, value, PageContext.PAGE_SCOPE);
     }

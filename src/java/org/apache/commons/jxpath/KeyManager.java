@@ -27,6 +27,10 @@ public interface KeyManager {
 
     /**
      * Find a node by key/value.
+     * @param context to search
+     * @param keyName String
+     * @param keyValue String
+     * @return Pointer
      */
     Pointer getPointerByKey(
         JXPathContext context,

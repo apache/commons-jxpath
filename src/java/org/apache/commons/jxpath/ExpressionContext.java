@@ -68,6 +68,7 @@ public interface ExpressionContext {
 
     /**
      * Returns the current context position.
+     * @return int
      */
     int getPosition();
 }

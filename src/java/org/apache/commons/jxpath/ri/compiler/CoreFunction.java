@@ -602,10 +602,10 @@ public class CoreFunction extends Operation {
      * @return String
      */
     protected Object functionSubstring(EvalContext context) {
+        final int minArgs = 2;
+        final int maxArgs = 3;
+        assertArgRange(minArgs, maxArgs);
         int ac = getArgumentCount();
-        if (ac != 2 && ac != 3) {
-            assertArgCount(2);
-        }
 
         String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
         double from = InfoSetUtil.doubleValue(getArg2().computeValue(context));
@@ -704,7 +704,8 @@ public class CoreFunction extends Operation {
      * @return String
      */
     protected Object functionTranslate(EvalContext context) {
-        assertArgCount(3);
+        final int argCount = 3;
+        assertArgCount(argCount);
         String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
         String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
         String s3 = InfoSetUtil.stringValue(getArg3().computeValue(context));
@@ -864,10 +865,9 @@ public class CoreFunction extends Operation {
      * @return String
      */
     private Object functionFormatNumber(EvalContext context) {
-        int ac = getArgumentCount();
-        if (ac != 2 && ac != 3) {
-            assertArgCount(2);
-        }
+        final int minArgs = 2;
+        final int maxArgs = 3;
+        assertArgRange(minArgs, maxArgs);
 
         double number =
             InfoSetUtil.doubleValue(getArg1().computeValue(context));
@@ -875,7 +875,7 @@ public class CoreFunction extends Operation {
             InfoSetUtil.stringValue(getArg2().computeValue(context));
 
         DecimalFormatSymbols symbols = null;
-        if (ac == 3) {
+        if (getArgumentCount() == maxArgs) {
             String symbolsName =
                 InfoSetUtil.stringValue(getArg3().computeValue(context));
             symbols =

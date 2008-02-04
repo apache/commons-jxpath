@@ -30,21 +30,30 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  */
 public class PageScopeContextHandler implements DynamicPropertyHandler {
 
-    private static final String[] STRING_ARRAY = new String[0];
+    private static final int DEFAULT_LIST_SIZE = 16;
 
+    /**
+     * {@inheritDoc}
+     */
     public String[] getPropertyNames(Object pageScope) {
         Enumeration e = ((PageScopeContext) pageScope).getAttributeNames();
-        ArrayList list = new ArrayList(16);
+        ArrayList list = new ArrayList(DEFAULT_LIST_SIZE);
         while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        return (String[]) list.toArray(STRING_ARRAY);
+        return (String[]) list.toArray(new String[list.size()]);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getProperty(Object pageScope, String property) {
         return ((PageScopeContext) pageScope).getAttribute(property);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setProperty(Object pageScope, String property, Object value) {
         ((PageScopeContext) pageScope).setAttribute(property, value);
     }

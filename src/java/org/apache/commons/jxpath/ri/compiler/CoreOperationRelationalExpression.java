@@ -66,7 +66,7 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
 
     /**
      * Template method for subclasses to evaluate the result of a comparison.
-     * @param compare result of comparison to evaluate 
+     * @param compare result of comparison to evaluate
      * @return ultimate operation success/failure
      */
     protected abstract boolean evaluateCompare(int compare);

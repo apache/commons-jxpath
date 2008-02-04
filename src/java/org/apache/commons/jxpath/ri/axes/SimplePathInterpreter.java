@@ -715,7 +715,8 @@ public class SimplePathInterpreter {
         }
 
         if (value instanceof Number) {
-            return (int) (InfoSetUtil.doubleValue(value) + 0.5) - 1;
+            final double round = 0.5;
+            return (int) (InfoSetUtil.doubleValue(value) + round) - 1;
         }
         return InfoSetUtil.booleanValue(value) ? 0 : -1;
     }
