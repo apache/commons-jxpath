@@ -165,34 +165,9 @@ under the License.
   <reporting>
     <plugins>
       <plugin>
-        <artifactId>maven-changelog-plugin</artifactId>
-        <version>2.1</version>
-        <reportSets>
-          <reportSet>
-            <id>reports</id>
-            <configuration>
-              <type>range</type>
-              <range>120</range>
-            </configuration>
-            <reports>
-              <report>changelog</report>
-<!--
-              <report>dev-activity</report>
-              <report>file-activity</report>
--->
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
         <version>2.0</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <version>2.0-beta-2</version>
       </plugin>
       <plugin>
         <artifactId>maven-checkstyle-plugin</artifactId>
