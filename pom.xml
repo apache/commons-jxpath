@@ -55,22 +55,11 @@ under the License.
       <email>mbenson@apache.org</email>
     </developer>
   </developers>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>/LICENSE.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/jxpath/trunk</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/jxpath/trunk</developerConnection>
     <url>http://svn.apache.org/repos/asf/commons/proper/jxpath/trunk</url>
   </scm>
-  <organization>
-    <name>The Apache Software Foundation</name>
-    <url>http://commons.apache.org/</url>
-  </organization>
 
   <properties>
     <commons.componentid>jxpath</commons.componentid>
