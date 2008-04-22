@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <!--
- Licensed to the Apache Software Foundation (ASF) under one or more
- contributor license agreements.  See the NOTICE file distributed with
- this work for additional information regarding copyright ownership.
- The ASF licenses this file to You under the Apache License, Version 2.0
- (the "License"); you may not use this file except in compliance with
- the License.  You may obtain a copy of the License at
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+     http://www.apache.org/licenses/LICENSE-2.0
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 -->
 <document>
  <properties>
@@ -24,50 +24,57 @@
 <!-- ================================================== -->
 <section name="Overview">
 <p>
-  Commons JXPath uses <a href="http://maven.apache.org">Maven</a> or
+  Commons JXPath uses <a href="http://maven.apache.org/maven-1.x/">Maven 1</a>,
+  <a href="http://maven.apache.org">Maven 2</a> (preferred), or
   <a href="http://ant.apache.org">Ant</a> as a build system.
 </p>
 </section>
+<section name="Maven 2 Goals">
+  <p>
+    The following <strong><i>Maven 2</i></strong> commands can be used to build io:
+  </p>
+  <ul>
+    <li><code>mvn clean</code> - clean up</li>
+    <li><code>mvn test</code> - compile and run the unit tests</li>
+    <li><code>mvn site</code> - create io documentation</li>
+    <li><code>mvn package</code> - build the jar</li>
+    <li><code>mvn install</code> - build the jar and install in local maven repository</li>
+    <li><code>mvn site assembly:assembly</code> - Create the source and binary distributions</li>
+  </ul>
+</section>
 <!-- ================================================== -->
-<section name="Maven Goals">
+<section name="Maven 1 Goals">
   <p>
-    To build a jar file, change into JXPath's root directory and run 
-    <strong><code>maven jar</code></strong>.
-    The result will be in the "target" subdirectory.
+    The following <strong><i>Maven 1</i></strong> commands can be used to build io:
   </p>
-  <p>
-    To build the Javadocs, run <strong><code>maven javadoc</code></strong>.
-    The result will be in "target/docs/apidocs".
-  </p>
-  <p>
-    To build the full website, run <strong><code>maven site</code></strong>.
-
-    The result will be in "target/docs".
-  </p>
-  <p>
-	Further details can be found in the
-	<a href="http://commons.apache.org/building.html">commons build instructions</a>.
-  </p>
+  <ul>
+    <li><code>maven clean</code> - clean up</li>
+    <li><code>maven test</code> - compile and run the unit tests</li>
+    <li><code>maven site</code> - create io documentation</li>
+    <li><code>maven jar</code> - build the jar</li>
+    <li><code>maven dist</code> - Create the source and binary distributions</li>
+  </ul>
 </section>
 <!-- ================================================== -->
 <section name="Ant Goals">
   <p>
-    To build a jar file and the javadocs, change into JXPath's root directory
-    and run <strong><code>ant dist</code></strong>.
-    The result will be in the "dist" subdirectory.
+    <strong>Note:</strong>
+    <ul>
+        <li>Dependencies are automatically downloaded if not specified explicitly in
+            a <code>build.properties</code> file.</li>
+    </ul>
   </p>
-</section>
-
-<!-- ================================================== -->
-<section name="Nightly Builds">
   <p>
-      <a href="http://people.apache.org/builds/commons/nightly/commons-jxpath/">Nightly Builds</a>
-      are built once a day from the current SVN HEAD. These are provided purely for test purposes and are <b>NOT
-      official releases</b> of the Apache Software Foundation - Released versions of Commons JXPath are
-      available <a href="http://commons.apache.org/downloads/download_jxpath.cgi">here</a>.
+    The following <strong><i>Ant</i></strong> commands can be used to build io:
   </p>
+  <ul>
+    <li><code>ant clean</code> - clean up</li>
+    <li><code>ant test</code> - compile and run the unit tests</li>
+    <li><code>ant javadoc</code> - create javadocs</li>
+    <li><code>ant jar</code> - build the jar</li>
+    <li><code>ant dist</code> - Create the source and binary distributions</li>
+  </ul>
 </section>
-
 <!-- ================================================== -->
 </body>
 </document>
