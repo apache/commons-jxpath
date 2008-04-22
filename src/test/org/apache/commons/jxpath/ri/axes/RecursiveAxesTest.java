@@ -36,9 +36,6 @@ public class RecursiveAxesTest extends JXPathTestCase {
         junit.textui.TestRunner.run(RecursiveAxesTest.class);
     }
 
-    /**
-     * @see TestCase#setUp()
-     */
     protected void setUp() throws Exception {
         bean = new RecursiveBean("zero");
         RecursiveBean bean1 = new RecursiveBean("one");

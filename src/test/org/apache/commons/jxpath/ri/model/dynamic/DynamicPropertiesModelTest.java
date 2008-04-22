@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.TestBean;
 
 /**
- * @todo more iterator testing with maps
+ * TODO more iterator testing with maps
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
