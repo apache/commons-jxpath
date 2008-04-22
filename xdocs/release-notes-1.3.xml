@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<document>
+  <properties>
+    <title>
+       Release Notes - Commons JXPath - Version 1.3
+    </title>
+    <author email="mbenson@apache.org">
+       Matt Benson
+    </author>
+  </properties>
+
+  <body>
+
+  <section name="Release Notes - Commons JXPath - Version 1.3">
+    <p id="jira-release-notes">
+       
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-2'>JXPATH-2</a>] -         Using JXPath in multiple threads
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-5'>JXPATH-5</a>] -         asPath() returns a path to the last sibling
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-10'>JXPATH-10</a>] -         JXPath 1.1 code using custom functions failing when run in 1.2 onwards
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-12'>JXPATH-12</a>] -         Descendant or self axis does not work correctly at root node
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-17'>JXPATH-17</a>] -         JXPathContext.iteratePointers(&quot;//*&quot;) results are incorrect
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-30'>JXPATH-30</a>] -         Source instructions on web site are wrong
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-37'>JXPATH-37</a>] -         JXPathException cause
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-38'>JXPATH-38</a>] -         ClassFunctions throws NPE searching for a function in null ns
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-40'>JXPATH-40</a>] -         Problem in namespace handling
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-46'>JXPATH-46</a>] -         NullPointerException
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-50'>JXPATH-50</a>] -         does not properly handle NodeSet returned by extension function
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-68'>JXPATH-68</a>] -         StackOverflow error on a call to 'JXPathContext.createPath()'
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-70'>JXPATH-70</a>] -         Javadoc missing from distribution
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-73'>JXPATH-73</a>] -         ValueUtils should catch IndexOutOfBoundsException instead of ArrayIndexOutOfBoundsException (for XmlBeans support)
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-76'>JXPATH-76</a>] -         CompiledExpression not completely thread-safe
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-79'>JXPATH-79</a>] -         Error when accessing JXPathContext methods in Concurrent Scenario
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-83'>JXPATH-83</a>] -         JXpath automatically trims string values
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-84'>JXPATH-84</a>] -         reserved word enum is used
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-85'>JXPATH-85</a>] -         Restore binary compatibility with JXPath 1.2
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-87'>JXPATH-87</a>] -         xmlURL field not set in XMLDocumentContainer
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-89'>JXPATH-89</a>] -         Cannot compare pointers that do not belong to the same tree
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-90'>JXPATH-90</a>] -         Upper boundary check is missing from substring(&lt;string&gt;, &lt;number&gt;)
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-93'>JXPATH-93</a>] -         Binary operators behaviour involving node-sets is incorrect
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-94'>JXPATH-94</a>] -         equality test for multi-valued variables does not conform to spec
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-95'>JXPATH-95</a>] -         Comparing with NaN is incorrect
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-97'>JXPATH-97</a>] -         Incomplete handling of undefined namespaces
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-98'>JXPATH-98</a>] -         termination problem with empty list
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-100'>JXPATH-100</a>] -         Core union operation does not sort result nodes according to document order
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-101'>JXPATH-101</a>] -         Original context from VariableContextWrapper is not visible
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-102'>JXPATH-102</a>] -         Core rounding functions don't handle NaN or infinite values correctly
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-104'>JXPATH-104</a>] -         selectSingleNode() from a map should not select map values keyed by strings with embedded colons using namespaced element syntax
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-105'>JXPATH-105</a>] -         BasicNodeSet.getNodes() returns values instead of nodes ?
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-106'>JXPATH-106</a>] -         Typo in JXPathException.getMessage()
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-107'>JXPATH-107</a>] -         RCN: Nullcheck of NodePointer.parent of value previously dereferenced in PropertyOwnerPointer.setValue(Object)
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-109'>JXPATH-109</a>] -         Namespaced attribute not selected with wildcard
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-111'>JXPATH-111</a>] -         ClassCastException in PrecedingOrFollowingContext
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-113'>JXPATH-113</a>] -         NullPointerException in ChildContext
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-114'>JXPATH-114</a>] -         node() implementation in DOM and JDOM model
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-115'>JXPATH-115</a>] -         Issue with attribute::
+</li>
+</ul>
+    
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-75'>JXPATH-75</a>] -         The dependency for xerces in commons-jxpath-1.2.pom is too old
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-88'>JXPATH-88</a>] -         Add getPrefix(String namespaceURI) to JXPathContext
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-91'>JXPATH-91</a>] -         KeyManager should support nodeset selection
+</li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-108'>JXPATH-108</a>] -         problems with NodeSet returned from custom function.
+</li>
+</ul>
+    
+<h2>        New Feature
+</h2>
+<ul>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-96'>JXPATH-96</a>] -         Extract VariablePointerFactory interface
+</li>
+</ul>
+     </p>
+
+    </section>
+
+    <section name="Acknowledgements">
+      <p>
+        Thanks to everybody who reported problems, helped to trace them,
+        suggested changes or simply provided encouragement. Special thanks to
+        <ul>
+          <li>Dmitri Plotnikov (foundation)</li>
+          <li>Niall Pemberton (release guidance)</li>
+          <li>Dennis Lundberg (M2 assistance)</li>
+          <li>Sergey Vladimirov (numerous bug reports)</li>
+          <li>Michele Vivoda (numerous bug reports)</li>
+          <li>Henri Yandell (proposing a new committer)</li>
+          <li>Elliotte Rusty Harold (XPath feature sanity check)</li>
+        </ul>
+      </p>
+
+    </section>
+  </body>
+</document>
