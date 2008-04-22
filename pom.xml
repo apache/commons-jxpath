@@ -33,7 +33,7 @@ under the License.
   <url>http://commons.apache.org/jxpath/</url>
   <issueManagement>
     <system>jira</system>
-    <url>http://issues.apache.org/jira/JXPATH</url>
+    <url>http://issues.apache.org/jira/browse/JXPATH</url>
   </issueManagement>
   <inceptionYear>2001</inceptionYear>
   <developers>
@@ -117,6 +117,8 @@ under the License.
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.1</version>
+      <optional>true</optional>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>xerces</groupId>
@@ -167,6 +169,7 @@ under the License.
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.2</version>
+      <optional>true</optional>
       <scope>runtime</scope>
     </dependency>
   </dependencies>
@@ -198,11 +201,9 @@ under the License.
         <version>2.0</version>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
         <version>2.0-beta-2</version>
-        <configuration>
-          <xmlPath>${basedir}/xdocs/changes.xml</xmlPath>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-checkstyle-plugin</artifactId>
