@@ -20,7 +20,7 @@
   <name>JXPath</name>
   <groupId>commons-jxpath</groupId>
   <artifactId>commons-jxpath</artifactId>
-  <currentVersion>1.3-SNAPSHOT</currentVersion>
+  <currentVersion>1.3</currentVersion>
   <inceptionYear>2001</inceptionYear>
   <shortDescription>XPath for Java Objects</shortDescription>
   <description>A Java-based implementation of XPath 1.0 that, in addition to XML processing, can inspect/modify Java object graphs (the library's explicit purpose) and even mixed Java/XML structures.</description>
