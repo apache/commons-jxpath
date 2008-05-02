@@ -16,7 +16,6 @@
  */
 package org.apache.commons.jxpath.servlet;
 
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import javax.servlet.ServletRequest;
@@ -69,6 +68,6 @@ public class ServletRequestHandler extends HttpSessionHandler {
     }
 
     public void setProperty(Object request, String property, Object value) {
-        ((ServletRequest) request).setAttribute(property, value);
+        ((ServletRequestAndContext) request).getServletRequest().setAttribute(property, value);
     }
 }

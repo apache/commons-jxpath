@@ -161,6 +161,22 @@ under the License.
       <optional>true</optional>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>com.mockrunner</groupId>
+      <artifactId>mockrunner-jdk1.3-j2ee1.3</artifactId>
+      <version>0.4</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>cglib-nodep</groupId>
+          <artifactId>cglib-nodep</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>jboss</groupId>
+          <artifactId>jboss-jee</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <reporting>
     <plugins>
