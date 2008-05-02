@@ -17,9 +17,9 @@
 package org.apache.commons.jxpath.util;
 
 /**
- * A type converter can be installed on TypeUtils to introduce
+ * A type converter can be installed on {@link TypeUtils} to introduce
  * additional type conversions for JXPath. Most of
- * the time BasicTypeConverter should be used as the superclass.
+ * the time {@link BasicTypeConverter} should be used as the superclass.
  *
  * @see TypeUtils#setTypeConverter
  *

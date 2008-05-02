@@ -45,9 +45,6 @@ public class MethodFunction implements Function {
         this.method = ValueUtils.getAccessibleMethod(method);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object invoke(ExpressionContext context, Object[] parameters) {
         try {
             Object target;
@@ -104,9 +101,6 @@ public class MethodFunction implements Function {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return method.toString();
     }

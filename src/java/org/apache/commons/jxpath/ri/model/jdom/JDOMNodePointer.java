@@ -94,9 +94,6 @@ public class JDOMNodePointer extends NodePointer {
         this.node = node;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeIterator childIterator(
         NodeTest test,
         boolean reverse,
@@ -104,30 +101,18 @@ public class JDOMNodePointer extends NodePointer {
         return new JDOMNodeIterator(this, test, reverse, startWith);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeIterator attributeIterator(QName name) {
         return new JDOMAttributeIterator(this, name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeIterator namespaceIterator() {
         return new JDOMNamespaceIterator(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer namespacePointer(String prefix) {
         return new JDOMNamespacePointer(this, prefix);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getNamespaceURI() {
         return getNamespaceURI(node);
     }
@@ -149,9 +134,6 @@ public class JDOMNodePointer extends NodePointer {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public synchronized NamespaceResolver getNamespaceResolver() {
         if (localNamespaceResolver == null) {
             localNamespaceResolver = new NamespaceResolver(super.getNamespaceResolver());
@@ -160,9 +142,6 @@ public class JDOMNodePointer extends NodePointer {
         return localNamespaceResolver;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getNamespaceURI(String prefix) {
         if (prefix.equals("xml")) {
             return Namespace.XML_NAMESPACE.getURI();
@@ -181,9 +160,6 @@ public class JDOMNodePointer extends NodePointer {
         return ns == null ? null : ns.getURI();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int compareChildNodePointers(
         NodePointer pointer1,
         NodePointer pointer2) {
@@ -238,30 +214,18 @@ public class JDOMNodePointer extends NodePointer {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getBaseValue() {
         return node;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isCollection() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getLength() {
         return 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isLeaf() {
         if (node instanceof Element) {
             return ((Element) node).getContent().size() == 0;
@@ -272,9 +236,6 @@ public class JDOMNodePointer extends NodePointer {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public QName getName() {
         String ns = null;
         String ln = null;
@@ -291,16 +252,10 @@ public class JDOMNodePointer extends NodePointer {
         return new QName(ns, ln);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getImmediateNode() {
         return node;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getValue() {
         if (node instanceof Element) {
             StringBuffer buf = new StringBuffer();
@@ -330,9 +285,6 @@ public class JDOMNodePointer extends NodePointer {
         return result != null && trim ? result.trim() : result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setValue(Object value) {
         if (node instanceof Text) {
             String string = (String) TypeUtils.convert(value, String.class);
@@ -411,9 +363,6 @@ public class JDOMNodePointer extends NodePointer {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean testNode(NodeTest test) {
         return testNode(this, node, test);
     }
@@ -590,9 +539,6 @@ public class JDOMNodePointer extends NodePointer {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createChild(
         JXPathContext context,
         QName name,
@@ -625,9 +571,6 @@ public class JDOMNodePointer extends NodePointer {
                 + (index + 1) + "]");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createChild(
             JXPathContext context, QName name, int index, Object value) {
         NodePointer ptr = createChild(context, name, index);
@@ -635,9 +578,6 @@ public class JDOMNodePointer extends NodePointer {
         return ptr;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createAttribute(JXPathContext context, QName name) {
         if (!(node instanceof Element)) {
             return super.createAttribute(context, name);
@@ -668,9 +608,6 @@ public class JDOMNodePointer extends NodePointer {
         return it.getNodePointer();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void remove() {
         Element parent = nodeParent(node);
         if (parent == null) {
@@ -679,9 +616,6 @@ public class JDOMNodePointer extends NodePointer {
         parent.getContent().remove(node);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String asPath() {
         if (id != null) {
             return "id('" + escape(id) + "')";
@@ -856,16 +790,10 @@ public class JDOMNodePointer extends NodePointer {
         return count;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return node.hashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;

@@ -21,16 +21,13 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Implements the DynamicPropertyHandler interface for java.util.Map.
+ * Implements the DynamicPropertyHandler interface for {@link java.util.Map}.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
-    /**
-     * {@inheritDoc}
-     */
     public String[] getPropertyNames(Object object) {
         Map map = (Map) object;
         Set set = map.keySet();
@@ -42,16 +39,10 @@ public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
         return names;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getProperty(Object object, String propertyName) {
         return ((Map) object).get(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setProperty(Object object, String propertyName, Object value) {
         ((Map) object).put(propertyName, value);
     }

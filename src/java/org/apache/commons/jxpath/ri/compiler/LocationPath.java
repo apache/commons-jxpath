@@ -45,16 +45,10 @@ public class LocationPath extends Path {
         return absolute;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean computeContextDependent() {
         return !absolute || super.computeContextDependent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         Step[] steps = getSteps();
@@ -69,9 +63,6 @@ public class LocationPath extends Path {
         return buffer.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object compute(EvalContext context) {
         // Create a chain of contexts
         EvalContext rootContext;
@@ -84,9 +75,6 @@ public class LocationPath extends Path {
         return evalSteps(rootContext);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         // Create a chain of contexts
         EvalContext rootContext;

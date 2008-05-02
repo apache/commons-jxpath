@@ -26,10 +26,11 @@ import org.apache.commons.jxpath.JXPathContextFactory;
 import org.apache.commons.jxpath.JXPathIntrospector;
 
 /**
- * Static methods that allocate and cache JXPathContexts bound to PageContext,
- * ServletRequest, HttpSession and ServletContext.
+ * Static methods that allocate and cache JXPathContexts bound to
+ * {@link PageContext}, {@link ServletRequest}, {@link HttpSession}
+ * and {@link ServletContext}.
  * <p>
- * The JXPathContext returned by {@link #getPageContext getPageContext()}
+ * The {@link JXPathContext} returned by {@link #getPageContext getPageContext()}
  * provides access to all scopes via the PageContext.findAttribute()
  * method.  Thus, an expression like "foo" will first look for the attribute
  * named "foo" in the "page" context, then the "request" context, then

@@ -69,8 +69,10 @@ public class JXPathIntrospector {
     }
 
     /**
-     * Automatically creates and registers a JXPathBeanInfo object
-     * for the specified class. That object returns true to isDynamic().
+     * Automatically creates and registers a {@link JXPathBeanInfo} object
+     * for the specified class. That object returns true to
+     * {@link JXPathBeanInfo#isDynamic()}.
+     *
      * @param beanClass to register
      * @param dynamicPropertyHandlerClass to handle beanClass
      */

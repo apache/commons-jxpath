@@ -44,25 +44,16 @@ public class NamespaceContext extends EvalContext {
         this.nodeTest = nodeTest;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset() {
         setStarted = false;
         iterator = null;
         super.reset();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         if (position < getCurrentPosition()) {
             reset();
@@ -76,9 +67,6 @@ public class NamespaceContext extends EvalContext {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextNode() {
         super.setPosition(getCurrentPosition() + 1);
         if (!setStarted) {

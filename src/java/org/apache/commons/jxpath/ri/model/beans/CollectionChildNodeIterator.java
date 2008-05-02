@@ -47,9 +47,6 @@ public class CollectionChildNodeIterator extends CollectionNodeIterator {
         this.test = test;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected NodeIterator getElementNodeIterator(NodePointer elementPointer) {
         return elementPointer.childIterator(test, false, null);
     }

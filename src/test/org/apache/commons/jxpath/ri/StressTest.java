@@ -26,7 +26,6 @@ import org.apache.commons.jxpath.JXPathContext;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public class StressTest extends TestCase {
     
     private static final int THREAD_COUNT = 50;
@@ -34,15 +33,6 @@ public class StressTest extends TestCase {
     private static JXPathContext context;
     private static int count;
     private static Throwable exception;
-        
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public StressTest(String name) {
-        super(name);
-    }
 
     public void testThreads() throws Throwable {
         context = JXPathContext.newContext(null, new Double(100));

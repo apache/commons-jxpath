@@ -60,16 +60,10 @@ public abstract class CollectionNodeIterator implements NodeIterator {
     protected abstract NodeIterator
             getElementNodeIterator(NodePointer elementPointer);
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPosition() {
         return position;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         if (collection == null) {
             prepare();
@@ -82,9 +76,6 @@ public abstract class CollectionNodeIterator implements NodeIterator {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             return null;

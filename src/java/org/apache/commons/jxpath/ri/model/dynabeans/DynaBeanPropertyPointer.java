@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
- * Pointer pointing to a property of a DynaBean.
+ * Pointer pointing to a property of a {@link DynaBean}.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -48,9 +48,6 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
         this.dynaBean = dynaBean;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getBaseValue() {
         return dynaBean.get(getPropertyName());
     }
@@ -63,16 +60,10 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPropertyCount() {
         return getPropertyNames().length;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String[] getPropertyNames() {
         /* @todo do something about the sorting - LIKE WHAT? - MJB */
         if (names == null) {
@@ -222,9 +213,6 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
         setValue(index, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void remove() {
         if (index == WHOLE_COLLECTION) {
             dynaBean.set(getPropertyName(), null);

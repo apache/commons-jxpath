@@ -29,15 +29,6 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 public class ExternalXMLNamespaceTest extends JXPathTestCase {
     protected JXPathContext context;
 
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public ExternalXMLNamespaceTest(String name) {
-        super(name);
-    }
-
     protected DocumentContainer createDocumentContainer(String model) {
         DocumentContainer result = new DocumentContainer(JXPathTestCase.class
                 .getResource("ExternalNS.xml"), model);

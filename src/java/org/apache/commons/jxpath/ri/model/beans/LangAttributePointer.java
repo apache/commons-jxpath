@@ -36,56 +36,37 @@ public class LangAttributePointer extends NodePointer {
         super(parent);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public QName getName() {
         return new QName("xml", "lang");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getNamespaceURI() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isCollection() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getLength() {
         return 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getBaseValue() {
         return parent.getLocale().toString().replace('_', '-');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getImmediateNode() {
         return getBaseValue();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isLeaf() {
         return true;
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Throws UnsupportedOperationException.
      * @param value Object
      */
@@ -94,9 +75,6 @@ public class LangAttributePointer extends NodePointer {
                 "Cannot change locale using the 'lang' attribute");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         if (parent != null) {
@@ -110,30 +88,18 @@ public class LangAttributePointer extends NodePointer {
         return buffer.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(Object object) {
         return object instanceof LangAttributePointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean testNode(NodeTest test) {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int compareChildNodePointers(
         NodePointer pointer1,
         NodePointer pointer2) {

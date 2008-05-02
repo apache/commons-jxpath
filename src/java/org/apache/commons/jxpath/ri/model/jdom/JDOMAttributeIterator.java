@@ -91,9 +91,6 @@ public class JDOMAttributeIterator implements NodeIterator {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -110,16 +107,10 @@ public class JDOMAttributeIterator implements NodeIterator {
             (Attribute) attributes.get(index));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPosition() {
         return position;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         if (attributes == null) {
             return false;

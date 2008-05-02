@@ -49,15 +49,6 @@ import org.apache.commons.jxpath.ri.compiler.VariableReference;
  */
 
 public class JXPathCompiledExpressionTest extends JXPathTestCase {
-    
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public JXPathCompiledExpressionTest(String name) {
-        super(name);
-    }
 
     public void testConstant() {
         assertXPathExpression("1", Constant.class);
@@ -102,179 +93,78 @@ public class JXPathCompiledExpressionTest extends JXPathTestCase {
     }
     
     public void testCoreOperationAnd() {
-        assertXPathExpression(
-            "2 and 4",
-            CoreOperationAnd.class);
-
-        assertXPathExpression(
-            "2 > 1 and 4 < 5",
-            CoreOperationAnd.class);            
+        assertXPathExpression("2 and 4", CoreOperationAnd.class);
+        assertXPathExpression("2 > 1 and 4 < 5", CoreOperationAnd.class);
     }
         
     public void testCoreOperationOr() {
-        assertXPathExpression(
-            "2 or 4",
-            CoreOperationOr.class);
-
-        assertXPathExpression(
-            "2 > 1 or 4 < 5",
-            CoreOperationOr.class);
-
-        assertXPathExpression(
-            "1 > 1 and 2 <= 2 or 3 = 4",
-            CoreOperationOr.class);
+        assertXPathExpression("2 or 4", CoreOperationOr.class);
+        assertXPathExpression("2 > 1 or 4 < 5", CoreOperationOr.class);
+        assertXPathExpression("1 > 1 and 2 <= 2 or 3 = 4", CoreOperationOr.class);
     }
 
     public void testCoreOperationEqual() {
-        assertXPathExpression(
-            "2 = 4",
-            CoreOperationEqual.class);
-
-        assertXPathExpression(
-            "2 + 1 = 3",
-            CoreOperationEqual.class);
+        assertXPathExpression("2 = 4", CoreOperationEqual.class);
+        assertXPathExpression("2 + 1 = 3", CoreOperationEqual.class);
     }
     
     public void testCoreOperationNameAttributeTest() {
-        assertXPathExpression(
-            "@name = 'bar'",
-            NameAttributeTest.class);
+        assertXPathExpression("@name = 'bar'", NameAttributeTest.class);
     }
 
     public void testCoreOperationNotEqual() {
-        assertXPathExpression(
-            "2 != 4",
-            CoreOperationNotEqual.class);
-
-        assertXPathExpression(
-            "2 + 1 != 3",
-            CoreOperationNotEqual.class);
+        assertXPathExpression("2 != 4", CoreOperationNotEqual.class);
+        assertXPathExpression("2 + 1 != 3", CoreOperationNotEqual.class);
     }
 
     public void testCoreOperationLessThan() {
-        assertXPathExpression(
-            "3<4",
-            CoreOperationLessThan.class,
-            "3 < 4");
-
-        assertXPathExpression(
-            "3<(2>=1)",
-            CoreOperationLessThan.class,
-            "3 < (2 >= 1)");
+        assertXPathExpression("3<4", CoreOperationLessThan.class, "3 < 4");
+        assertXPathExpression("3<(2>=1)", CoreOperationLessThan.class, "3 < (2 >= 1)");
     }
     
     public void testCoreOperationLessThanOrEqual() {
-        assertXPathExpression(
-            "3<=4",
-            CoreOperationLessThanOrEqual.class,
-            "3 <= 4");
-
-        assertXPathExpression(
-            "3<=(2>=1)",
-            CoreOperationLessThanOrEqual.class,
-            "3 <= (2 >= 1)");
+        assertXPathExpression("3<=4", CoreOperationLessThanOrEqual.class, "3 <= 4");
+        assertXPathExpression("3<=(2>=1)", CoreOperationLessThanOrEqual.class, "3 <= (2 >= 1)");
     }
 
     public void testCoreOperationGreaterThan() {
-        assertXPathExpression(
-            "3>4",
-            CoreOperationGreaterThan.class,
-            "3 > 4");
-
-        assertXPathExpression(
-            "3>(2>=1)",
-            CoreOperationGreaterThan.class,
-            "3 > (2 >= 1)");
-
-        assertXPathExpression(
-            "1 > (1 and 2 <= (2 or 3) = 4)",
-            CoreOperationGreaterThan.class);
+        assertXPathExpression("3>4", CoreOperationGreaterThan.class, "3 > 4");
+        assertXPathExpression("3>(2>=1)", CoreOperationGreaterThan.class, "3 > (2 >= 1)");
+        assertXPathExpression("1 > (1 and 2 <= (2 or 3) = 4)", CoreOperationGreaterThan.class);
     }
     
     public void testCoreOperationGreaterThanOrEqual() {
-        assertXPathExpression(
-            "3>=4",
-            CoreOperationGreaterThanOrEqual.class,
-            "3 >= 4");
-
-        assertXPathExpression(
-            "3>=(2>=1)",
-            CoreOperationGreaterThanOrEqual.class,
-            "3 >= (2 >= 1)");
+        assertXPathExpression("3>=4", CoreOperationGreaterThanOrEqual.class, "3 >= 4");
+        assertXPathExpression("3>=(2>=1)", CoreOperationGreaterThanOrEqual.class, "3 >= (2 >= 1)");
     }
 
     public void testCoreOperationDivide() {
-        assertXPathExpression(
-            "2 div 4",
-            CoreOperationDivide.class);
-
-        assertXPathExpression(
-            "2|3 div -3",
-            CoreOperationDivide.class,
-            "2 | 3 div -3");
+        assertXPathExpression("2 div 4", CoreOperationDivide.class);
+        assertXPathExpression("2|3 div -3", CoreOperationDivide.class, "2 | 3 div -3");
     }
 
     public void testCoreOperationMod() {
-        assertXPathExpression(
-            "2 mod 4",
-            CoreOperationMod.class);
-
-        assertXPathExpression(
-            "2|3 mod -3",
-            CoreOperationMod.class,
-            "2 | 3 mod -3");
+        assertXPathExpression("2 mod 4", CoreOperationMod.class);
+        assertXPathExpression("2|3 mod -3", CoreOperationMod.class, "2 | 3 mod -3");
     }
 
     public void testCoreOperationMultiply() {
-        assertXPathExpression(
-            "2*4",
-            CoreOperationMultiply.class,
-            "2 * 4");
-            
-        assertXPathExpression(
-            "2*(3 + 1)",
-            CoreOperationMultiply.class,
-            "2 * (3 + 1)");
+        assertXPathExpression("2*4", CoreOperationMultiply.class, "2 * 4");
+        assertXPathExpression("2*(3 + 1)", CoreOperationMultiply.class, "2 * (3 + 1)");
     }
     
     public void testCoreOperationMinus() {
-        assertXPathExpression(
-            "1 - 1",
-            CoreOperationSubtract.class);
-            
-        assertXPathExpression(
-            "1 - 1 - 2",
-            CoreOperationSubtract.class);
-            
-        assertXPathExpression(
-            "1 - (1 - 2)",
-            CoreOperationSubtract.class);
+        assertXPathExpression("1 - 1", CoreOperationSubtract.class);
+        assertXPathExpression("1 - 1 - 2", CoreOperationSubtract.class);
+        assertXPathExpression("1 - (1 - 2)", CoreOperationSubtract.class);
     }
     
     public void testCoreOperationSum() {
-        assertXPathExpression(
-            "3 + 1 + 4", 
-            CoreOperationAdd.class);
-            
-        assertXPathExpression(
-            "(3 + 1) + 4",
-            CoreOperationAdd.class,
-            "3 + 1 + 4");
-            
-        assertXPathExpression(
-            "3 + (1 + 4)",
-            CoreOperationAdd.class,
-            "3 + 1 + 4");
-            
-        assertXPathExpression(
-            "3 + -1", 
-            CoreOperationAdd.class, 
-            "3 + -1");
-            
-        assertXPathExpression(
-            "2*-3 + -1",
-            CoreOperationAdd.class,
-            "2 * -3 + -1");
+        assertXPathExpression("3 + 1 + 4", CoreOperationAdd.class);
+        assertXPathExpression("(3 + 1) + 4", CoreOperationAdd.class, "3 + 1 + 4");
+        assertXPathExpression("3 + (1 + 4)", CoreOperationAdd.class, "3 + 1 + 4");
+        assertXPathExpression("3 + -1", CoreOperationAdd.class, "3 + -1");
+        assertXPathExpression("2*-3 + -1", CoreOperationAdd.class, "2 * -3 + -1");
     }
     
     public void testCoreOperationUnaryMinus() {
@@ -283,180 +173,77 @@ public class JXPathCompiledExpressionTest extends JXPathTestCase {
     }
 
     public void testCoreOperationUnion() {
-        assertXPathExpression(
-            "3 | 1 | 4",
-            CoreOperationUnion.class);
+        assertXPathExpression("3 | 1 | 4", CoreOperationUnion.class);
     }
     
     public void testExpressionPath() {
-        assertXPathExpression(
-            "$x/foo/bar",
-            ExpressionPath.class);        
-        assertXPathExpression(
-            "(2 + 2)/foo/bar",
-            ExpressionPath.class);        
-        assertXPathExpression(
-            "$x[3][2 + 2]/foo/bar",
-            ExpressionPath.class);        
+        assertXPathExpression("$x/foo/bar", ExpressionPath.class);
+        assertXPathExpression("(2 + 2)/foo/bar", ExpressionPath.class);
+        assertXPathExpression("$x[3][2 + 2]/foo/bar", ExpressionPath.class);
     }
     
     public void testExtensionFunction() {
-        assertXPathExpression(
-            "my:function(3, other.function())",
-            ExtensionFunction.class);        
+        assertXPathExpression("my:function(3, other.function())", ExtensionFunction.class);
     }
  
     public void testLocationPathAxisSelf() {
-        assertXPathExpression(
-            "self::foo:bar",
-            LocationPath.class);
-                 
-        assertXPathExpression(
-            ".",
-            LocationPath.class);     
+        assertXPathExpression("self::foo:bar", LocationPath.class);
+        assertXPathExpression(".", LocationPath.class);
     }
     
     public void testLocationPathAxisChild() {
-        assertXPathExpression(
-            "child::foo:bar",
-            LocationPath.class,
-            "foo:bar");
-                 
-        assertXPathExpression(
-            "foo:bar",
-            LocationPath.class);
-                 
-        assertXPathExpression(
-            "/foo:bar",
-            LocationPath.class);
-                 
-        assertXPathExpression(
-            "/foo/bar",
-            LocationPath.class);     
-
-        assertXPathExpression(
-            "*",
-            LocationPath.class);
-                 
-        assertXPathExpression(
-            "foo:*",
-            LocationPath.class);
-                 
+        assertXPathExpression("child::foo:bar", LocationPath.class, "foo:bar");
+        assertXPathExpression("foo:bar", LocationPath.class);
+        assertXPathExpression("/foo:bar", LocationPath.class);
+        assertXPathExpression("/foo/bar", LocationPath.class);
+        assertXPathExpression("*", LocationPath.class);
+        assertXPathExpression("foo:*", LocationPath.class);
     }
     
     public void testLocationPathAxisParent() {
-        assertXPathExpression(
-            "parent::foo:bar",
-            LocationPath.class);
-                 
-        assertXPathExpression(
-            "..",
-            LocationPath.class);     
+        assertXPathExpression("parent::foo:bar", LocationPath.class);
+        assertXPathExpression("..", LocationPath.class);
     }
     
     public void testLocationPathAxisAttribute() {
-        assertXPathExpression(
-            "attribute::foo:bar",
-            LocationPath.class,
-            "@foo:bar");
-
-        assertXPathExpression(
-            "@foo:bar",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "../@foo:bar",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "@*",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "@*[last()]",
-            LocationPath.class);
+        assertXPathExpression("attribute::foo:bar", LocationPath.class, "@foo:bar");
+        assertXPathExpression("@foo:bar", LocationPath.class);
+        assertXPathExpression("../@foo:bar", LocationPath.class);
+        assertXPathExpression("@*", LocationPath.class);
+        assertXPathExpression("@*[last()]", LocationPath.class);
     }
     
     public void testLocationPathAxisDescendant() {
-        assertXPathExpression(
-            "descendant::foo:bar",
-            LocationPath.class);
+        assertXPathExpression("descendant::foo:bar", LocationPath.class);
     }
     
     public void testLocationPathAxisDescendantOrSelf() {
-        assertXPathExpression(
-            "descendant-or-self::foo:bar",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "//foo", 
-            LocationPath.class);
-
-        assertXPathExpression(
-            "foo//bar", 
-            LocationPath.class);
+        assertXPathExpression("descendant-or-self::foo:bar", LocationPath.class);
+        assertXPathExpression("//foo", LocationPath.class);
+        assertXPathExpression("foo//bar", LocationPath.class);
     }
     
     public void testLocationPathAxisOther() {
-        assertXPathExpression(
-            "ancestor::foo:bar",
-            LocationPath.class);
-            
-        assertXPathExpression(
-            "ancestor-or-self::foo:bar",
-            LocationPath.class);
-            
-        assertXPathExpression(
-            "namespace::foo:bar",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "preceding::foo:bar",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "preceding-sibling::foo:bar",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "following::foo:bar",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "following-sibling::foo:bar",
-            LocationPath.class);
+        assertXPathExpression("ancestor::foo:bar", LocationPath.class);
+        assertXPathExpression("ancestor-or-self::foo:bar", LocationPath.class);
+        assertXPathExpression("namespace::foo:bar", LocationPath.class);
+        assertXPathExpression("preceding::foo:bar", LocationPath.class);
+        assertXPathExpression("preceding-sibling::foo:bar", LocationPath.class);
+        assertXPathExpression("following::foo:bar", LocationPath.class);
+        assertXPathExpression("following-sibling::foo:bar", LocationPath.class);
     }
     
     public void testLocationPathNodeTest() {
-        assertXPathExpression(
-            "node()",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "text()",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "comment()",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "processing-instruction()",
-            LocationPath.class);
-
-        assertXPathExpression(
-            "processing-instruction('test')",
-            LocationPath.class);
+        assertXPathExpression("node()", LocationPath.class);
+        assertXPathExpression("text()", LocationPath.class);
+        assertXPathExpression("comment()", LocationPath.class);
+        assertXPathExpression("processing-instruction()", LocationPath.class);
+        assertXPathExpression("processing-instruction('test')", LocationPath.class);
     }
     
     public void testVariableReference() {
-        assertXPathExpression(
-            "$x",
-            VariableReference.class);                
-
-        assertXPathExpression(
-            "$x:y",
-            VariableReference.class);
+        assertXPathExpression("$x", VariableReference.class);
+        assertXPathExpression("$x:y", VariableReference.class);
     }
     
     /**
@@ -464,29 +251,14 @@ public class JXPathCompiledExpressionTest extends JXPathTestCase {
      * class, converts the expression to string and checks that the string
      * matches the expected one.
      */
-    private void assertXPathExpression(
-        String xpath,
-        Class expectedClass,
-        String expected) 
-    {
-        JXPathCompiledExpression expression =
-            (JXPathCompiledExpression) JXPathContext.compile(xpath);
+    private void assertXPathExpression(String xpath, Class expectedClass, String expected) {
+        JXPathCompiledExpression expression = (JXPathCompiledExpression) JXPathContext.compile(xpath);
         
-        assertEquals(
-            "Expression class for " + xpath,
-            expectedClass,
-            expression.getExpression().getClass());
-            
-        assertEquals(
-            "Expression toString() for " + xpath,
-            expected,
-            expression.getExpression().toString());
+        assertEquals("Expression class for " + xpath, expectedClass, expression.getExpression().getClass());
+        assertEquals("Expression toString() for " + xpath, expected, expression.getExpression().toString());
     }
     
-    private void assertXPathExpression(
-        String xpath,
-        Class expectedClass) 
-    {
+    private void assertXPathExpression(String xpath, Class expectedClass) {
         assertXPathExpression(xpath, expectedClass, xpath);
     }
     

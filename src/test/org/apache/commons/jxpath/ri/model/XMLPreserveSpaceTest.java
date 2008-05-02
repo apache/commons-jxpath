@@ -29,15 +29,6 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 public class XMLPreserveSpaceTest extends JXPathTestCase {
     protected JXPathContext context;
 
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public XMLPreserveSpaceTest(String name) {
-        super(name);
-    }
-
     protected DocumentContainer createDocumentContainer(String model) {
         return new DocumentContainer(JXPathTestCase.class
                 .getResource("XmlPreserveSpace.xml"), model);

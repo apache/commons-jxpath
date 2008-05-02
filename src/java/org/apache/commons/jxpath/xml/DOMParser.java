@@ -30,9 +30,6 @@ import org.apache.commons.jxpath.JXPathException;
  */
 public class DOMParser extends XMLParser2 {
 
-    /**
-     * {@inheritDoc}
-     */
     public Object parseXML(InputStream stream) {
         try {
             DocumentBuilderFactory factory =

@@ -59,9 +59,6 @@ public class BeanPropertyPointer extends PropertyPointer {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPropertyCount() {
         if (beanInfo.isAtomic()) {
             return 0;
@@ -122,9 +119,6 @@ public class BeanPropertyPointer extends PropertyPointer {
         return baseValue;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setIndex(int index) {
         if (this.index != index) {
             // When dealing with a scalar, index == 0 is equivalent to
@@ -163,16 +157,10 @@ public class BeanPropertyPointer extends PropertyPointer {
         return value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected boolean isActualProperty() {
         return getPropertyDescriptor() != null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isCollection() {
         PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null) {
@@ -241,9 +229,6 @@ public class BeanPropertyPointer extends PropertyPointer {
         this.value = value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createPath(JXPathContext context) {
         if (getImmediateNode() == null) {
             super.createPath(context);
@@ -253,9 +238,6 @@ public class BeanPropertyPointer extends PropertyPointer {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void remove() {
         if (index == WHOLE_COLLECTION) {
             setValue(null);

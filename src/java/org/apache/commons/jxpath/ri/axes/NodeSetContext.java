@@ -21,7 +21,7 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * A simple context that is based on a NodeSet.
+ * A simple context that is based on a {@link NodeSet}.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -40,36 +40,22 @@ public class NodeSetContext extends EvalContext {
         this.nodeSet = nodeSet;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeSet getNodeSet() {
         return nodeSet;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getCurrentNodePointer() {
-        if (position == 0) {
-            if (!setPosition(1)) {
-                return null;
-            }
+        if (position == 0 && !setPosition(1)) {
+            return null;
         }
         return (NodePointer) nodeSet.getPointers().get(position - 1);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         super.setPosition(position);
         return position >= 1 && position <= nodeSet.getPointers().size();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextSet() {
         if (startedSet) {
             return false;
@@ -78,9 +64,6 @@ public class NodeSetContext extends EvalContext {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextNode() {
         return setPosition(position + 1);
     }

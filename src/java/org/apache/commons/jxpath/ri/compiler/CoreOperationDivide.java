@@ -20,7 +20,7 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
- * Implementation of Expression for the operation "div".
+ * Implementation of {@link Expression} for the operation "div".
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -36,32 +36,20 @@ public class CoreOperationDivide extends CoreOperation {
         super(new Expression[] { arg1, arg2 });
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         double l = InfoSetUtil.doubleValue(args[0].computeValue(context));
         double r = InfoSetUtil.doubleValue(args[1].computeValue(context));
         return new Double(l / r);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected int getPrecedence() {
         return MULTIPLY_PRECEDENCE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected boolean isSymmetric() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getSymbol() {
         return "div";
     }

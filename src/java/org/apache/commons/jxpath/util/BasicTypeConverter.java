@@ -484,23 +484,14 @@ public class BasicTypeConverter implements TypeConverter {
            this.values = values;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public List getValues() {
             return Collections.unmodifiableList(values);
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public List getNodes() {
             return Collections.unmodifiableList(values);
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public List getPointers() {
             if (pointers == null) {
                 pointers = new ArrayList();
@@ -527,51 +518,30 @@ public class BasicTypeConverter implements TypeConverter {
             this.bean = object;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public Object getValue() {
             return bean;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public Object getNode() {
             return bean;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public Object getRootNode() {
             return bean;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public void setValue(Object value) {
             throw new UnsupportedOperationException();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public Object clone() {
             return this;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public int compareTo(Object object) {
             return 0;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public String asPath() {
             if (bean == null) {
                 return "null()";

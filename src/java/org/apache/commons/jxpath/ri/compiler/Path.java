@@ -60,9 +60,6 @@ public abstract class Path extends Expression {
         return steps;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean computeContextDependent() {
         if (steps != null) {
             for (int i = 0; i < steps.length; i++) {

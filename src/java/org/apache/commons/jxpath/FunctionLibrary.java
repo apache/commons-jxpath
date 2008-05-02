@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * An object that aggregates Functions objects into a group Functions object.
- * Since JXPathContext can only register a single Functions object,
- * FunctionLibrary should always be used to group all Functions objects
+ * An object that aggregates {@link Functions} objects into a group Functions
+ * object. Since {@link JXPathContext} can only register a single Functions
+ * object, FunctionLibrary should always be used to group all Functions objects
  * that need to be registered.
  *
  * @author Dmitri Plotnikov

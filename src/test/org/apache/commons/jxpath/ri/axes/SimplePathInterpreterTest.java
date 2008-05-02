@@ -42,20 +42,6 @@ public class SimplePathInterpreterTest extends TestCase {
     private TestBeanWithNode bean;
     private JXPathContext context;
 
-    /**
-     * Constructor for SimplePathInterpreterTest.
-     */
-    public SimplePathInterpreterTest(String name) {
-        super(name);
-    }
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(SimplePathInterpreterTest.class);
-    }
-
-    /**
-     * @see TestCase#setUp()
-     */
     protected void setUp() throws Exception {
         bean = TestBeanWithNode.createTestBeanWithDOM();
         HashMap submap = new HashMap();

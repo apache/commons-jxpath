@@ -21,7 +21,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A simple implementation of NodeSet that behaves as a collection of pointers.
+ * A simple implementation of {@link NodeSet} that behaves as a collection
+ * of pointers.
+ *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
@@ -61,9 +63,6 @@ public class BasicNodeSet implements NodeSet {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public synchronized List getPointers() {
         if (readOnlyPointers == null) {
             readOnlyPointers = Collections.unmodifiableList(pointers);
@@ -71,9 +70,6 @@ public class BasicNodeSet implements NodeSet {
         return readOnlyPointers;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public synchronized List getNodes() {
         if (nodes == null) {
             nodes = new ArrayList();
@@ -86,9 +82,6 @@ public class BasicNodeSet implements NodeSet {
         return nodes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public synchronized List getValues() {
         if (values == null) {
             values = new ArrayList();
@@ -101,9 +94,6 @@ public class BasicNodeSet implements NodeSet {
         return values;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return pointers.toString();
     }

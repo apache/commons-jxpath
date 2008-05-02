@@ -43,37 +43,22 @@ public class NullElementPointer extends CollectionPointer {
         this.index = index;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public QName getName() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getBaseValue() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getImmediateNode() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isLeaf() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isCollection() {
         return false;
     }
@@ -86,59 +71,35 @@ public class NullElementPointer extends CollectionPointer {
         return new NullPropertyPointer(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getValuePointer() {
         return new NullPointer(this, getName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setValue(Object value) {
         throw new UnsupportedOperationException(
             "Collection element does not exist: " + this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isActual() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isContainer() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createPath(JXPathContext context) {
         return parent.createChild(context, null, index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createPath(JXPathContext context, Object value) {
         return parent.createChild(context, null, index, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return getImmediateParentPointer().hashCode() + index;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -153,16 +114,10 @@ public class NullElementPointer extends CollectionPointer {
                 && index == other.index;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getLength() {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         NodePointer parent = getImmediateParentPointer();

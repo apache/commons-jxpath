@@ -25,10 +25,10 @@ import java.util.Properties;
 
 /**
  * Defines a factory API that enables applications to obtain a
- * JXPathContext instance.  To acquire a JXPathContext, first call the
- * static <code>newInstance()</code> method of JXPathContextFactory.
+ * {@link JXPathContext} instance.  To acquire a JXPathContext, first call the
+ * static {@link #newInstance} method of JXPathContextFactory.
  * This method returns a concrete JXPathContextFactory.
- * Then call <code>newContext()</code> on that instance.  You will rarely
+ * Then call {@link #newContext} on that instance.  You will rarely
  * need to perform these steps explicitly: usually you can call one of the
  * <code>JXPathContex.newContext</code> methods, which will perform these steps
  * for you.

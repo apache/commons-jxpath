@@ -30,24 +30,12 @@ import org.apache.commons.jxpath.JXPathTestCase;
 public class EmbeddedColonMapKeysTest extends JXPathTestCase {
     private JXPathContext context;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
     protected void setUp() throws Exception {
         super.setUp();
         HashMap m = new HashMap();
         m.put("foo:key", "value");
         context = JXPathContext.newContext(m);
         context.setLenient(true);
-    }
-
-    /**
-     * Create a new EmbeddedColonMapKeysTest.
-     */
-    public EmbeddedColonMapKeysTest(String name) {
-        super(name);
     }
 
     public void testSelectNodes() throws Exception {

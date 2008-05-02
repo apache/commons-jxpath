@@ -50,7 +50,7 @@ public interface NodePointerFactory {
 
     /**
      * Create a NodePointer for the supplied child object.
-     * <p>
+     *
      * @param parent parent node
      * @param name String node name
      * @param object child object

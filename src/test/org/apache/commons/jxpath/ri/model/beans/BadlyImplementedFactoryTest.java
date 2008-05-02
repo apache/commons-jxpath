@@ -37,15 +37,6 @@ public class BadlyImplementedFactoryTest extends TestCase {
 
     private JXPathContext context;
 
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public BadlyImplementedFactoryTest(String name) {
-        super(name);
-    }
-
     public void setUp() {
         context = JXPathContext.newContext(new HashMap());
         context.setFactory(new AbstractFactory() {

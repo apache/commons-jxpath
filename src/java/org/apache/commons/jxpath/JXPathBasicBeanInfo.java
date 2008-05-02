@@ -29,7 +29,8 @@ import java.util.HashMap;
  * advertised by JXPathBasicBeanInfo are the same as those advertised by
  * BeanInfo for the corresponding class.
  *
- * See java.beans.BeanInfo, java.beans.Introspector
+ * @see java.beans.BeanInfo
+ * @see java.beans.Introspector
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -88,9 +89,6 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
         return dynamicPropertyHandlerClass != null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public synchronized PropertyDescriptor[] getPropertyDescriptors() {
         if (propertyDescriptors == null) {
             if (clazz == Object.class) {
@@ -124,9 +122,6 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
         return propertyDescriptors;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public synchronized PropertyDescriptor getPropertyDescriptor(String propertyName) {
         if (propertyDescriptorMap == null) {
             propertyDescriptorMap = new HashMap();
@@ -147,9 +142,6 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
         return dynamicPropertyHandlerClass;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("BeanInfo [class = ");

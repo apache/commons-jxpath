@@ -24,17 +24,14 @@ import javax.servlet.jsp.PageContext;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
- * Implementation of the DynamicPropertyHandler interface that provides
- * access to attributes of a PageContext in all scopes.
+ * Implementation of the {@link DynamicPropertyHandler} interface that provides
+ * access to attributes of a {@link PageContext} in all scopes.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
 public class PageContextHandler implements DynamicPropertyHandler {
 
-    /**
-     * {@inheritDoc}
-     */
     public String[] getPropertyNames(Object pageContext) {
         HashSet list = new HashSet();
         Enumeration e =
@@ -74,9 +71,6 @@ public class PageContextHandler implements DynamicPropertyHandler {
         return ((PageContext) pageContext).findAttribute(property);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setProperty(Object pageContext, String property, Object value) {
         ((PageContext) pageContext).setAttribute(
             property,

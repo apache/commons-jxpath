@@ -37,23 +37,14 @@ public class DynaBeanPointerFactory implements NodePointerFactory {
     /** factory order constant */
     public static final int DYNA_BEAN_POINTER_FACTORY_ORDER = 700;
 
-    /**
-     * {@inheritDoc}
-     */
     public int getOrder() {
         return DYNA_BEAN_POINTER_FACTORY_ORDER;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(QName name, Object bean, Locale locale) {
         return bean instanceof DynaBean ? new DynaBeanPointer(name, (DynaBean) bean, locale) : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(NodePointer parent, QName name,
             Object bean) {
         return bean instanceof DynaBean ? new DynaBeanPointer(parent, name, (DynaBean) bean) : null;

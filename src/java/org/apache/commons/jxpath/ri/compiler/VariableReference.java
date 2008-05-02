@@ -45,30 +45,18 @@ public class VariableReference extends Expression {
         return varName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return "$" + varName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isContextDependent() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean computeContextDependent() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object compute(EvalContext context) {
         return computeValue(context);
     }

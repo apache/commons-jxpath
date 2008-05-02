@@ -42,24 +42,15 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
         super(args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public final Object computeValue(EvalContext context) {
         return compute(args[0].compute(context), args[1].compute(context))
                 ? Boolean.TRUE : Boolean.FALSE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected final int getPrecedence() {
         return RELATIONAL_EXPR_PRECEDENCE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected final boolean isSymmetric() {
         return false;
     }

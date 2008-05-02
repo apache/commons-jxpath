@@ -36,9 +36,6 @@ public final class ReverseComparator implements Comparator {
     private ReverseComparator() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int compare(Object o1, Object o2) {
         return ((Comparable) o2).compareTo(o1);
     }

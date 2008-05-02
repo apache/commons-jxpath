@@ -148,9 +148,6 @@ public class DOMAttributeIterator implements NodeIterator {
         return element.getAttributeNode(name.getName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -165,16 +162,10 @@ public class DOMAttributeIterator implements NodeIterator {
         return new DOMAttributePointer(parent, (Attr) attributes.get(index));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPosition() {
         return position;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         this.position = position;
         return position >= 1 && position <= attributes.size();

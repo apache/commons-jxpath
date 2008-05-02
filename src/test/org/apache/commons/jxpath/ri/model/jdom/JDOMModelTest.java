@@ -18,12 +18,10 @@ package org.apache.commons.jxpath.ri.model.jdom;
 
 import java.util.List;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+
 import org.jdom.Attribute;
 import org.jdom.CDATA;
 import org.jdom.Document;
@@ -36,23 +34,7 @@ import org.jdom.Text;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public class JDOMModelTest extends XMLModelTestCase {
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public JDOMModelTest(String name) {
-        super(name);
-    }
-
-    /**
-     * Return the tests included in this test suite.
-     */
-    public static Test suite() {
-        return (new TestSuite(JDOMModelTest.class));
-    }
 
     protected String getModel() {
         return DocumentContainer.MODEL_JDOM;

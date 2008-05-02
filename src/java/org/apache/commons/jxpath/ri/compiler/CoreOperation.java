@@ -52,16 +52,10 @@ public abstract class CoreOperation extends Operation {
         super(args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object compute(EvalContext context) {
         return computeValue(context);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public abstract Object computeValue(EvalContext context);
 
     /**
@@ -83,9 +77,6 @@ public abstract class CoreOperation extends Operation {
      */
     protected abstract int getPrecedence();
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         if (args.length == 1) {
             return getSymbol() + parenthesize(args[0], false);

@@ -25,7 +25,7 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * Namespace resolver for JXPathContextReferenceImpl.
+ * Namespace resolver for {@link JXPathContextReferenceImpl}.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -195,10 +195,6 @@ public class NamespaceResolver implements Cloneable {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see java.lang.Object#clone()
-     */
     public Object clone() {
         try {
             NamespaceResolver result = (NamespaceResolver) super.clone();
@@ -211,5 +207,4 @@ public class NamespaceResolver implements Cloneable {
             return null;
         }
     }
-
 }

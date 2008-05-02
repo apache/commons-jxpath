@@ -34,23 +34,14 @@ public class CollectionPointerFactory implements NodePointerFactory {
     /** factory order constant */
     public static final int COLLECTION_POINTER_FACTORY_ORDER = 10;
 
-    /**
-     * {@inheritDoc}
-     */
     public int getOrder() {
         return COLLECTION_POINTER_FACTORY_ORDER;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(QName name, Object bean, Locale locale) {
         return ValueUtils.isCollection(bean) ? new CollectionPointer(bean, locale) : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(NodePointer parent, QName name,
             Object bean) {
         return ValueUtils.isCollection(bean) ? new CollectionPointer(parent, bean) : null;

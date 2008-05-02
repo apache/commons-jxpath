@@ -37,15 +37,6 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 public abstract class XMLModelTestCase extends JXPathTestCase {
     protected JXPathContext context;
 
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public XMLModelTestCase(String name) {
-        super(name);
-    }
-
     public void setUp() {
         if (context == null) {
             DocumentContainer docCtr = createDocumentContainer();
@@ -53,9 +44,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             Variables vars = context.getVariables();
             vars.declareVariable("document", docCtr.getValue());
             vars.declareVariable("container", docCtr);
-            vars.declareVariable(
-                "element",
-                context.getPointer("vendor/location/address/street").getNode());
+            vars.declareVariable("element", context.getPointer("vendor/location/address/street").getNode());
         }
     }
 

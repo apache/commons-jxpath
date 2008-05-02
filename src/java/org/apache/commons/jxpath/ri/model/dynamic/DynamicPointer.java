@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 /**
  * A Pointer that points to an object with Dynamic Properties. It is used for
  * the first element of a path; following elements will by of type
- * PropertyPointer.
+ * {@link PropertyPointer}.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -70,38 +70,23 @@ public class DynamicPointer extends PropertyOwnerPointer {
         this.handler = handler;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public PropertyPointer getPropertyPointer() {
         return new DynamicPropertyPointer(this, handler);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeIterator createNodeIterator(
                 String property, boolean reverse, NodePointer startWith) {
         return new PropertyIterator(this, property, reverse, startWith);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeIterator attributeIterator(QName name) {
         return new DynamicAttributeIterator(this, name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public QName getName() {
         return name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isDynamicPropertyDeclarationSupported() {
         return true;
     }
@@ -114,17 +99,11 @@ public class DynamicPointer extends PropertyOwnerPointer {
         return bean;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isLeaf() {
         Object value = getNode();
         return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isCollection() {
         return false;
     }
@@ -137,23 +116,14 @@ public class DynamicPointer extends PropertyOwnerPointer {
         return 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String asPath() {
         return parent == null ? "/" : super.asPath();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return System.identityHashCode(bean) + name.hashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;

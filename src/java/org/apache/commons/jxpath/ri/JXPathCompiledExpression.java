@@ -60,87 +60,54 @@ public class JXPathCompiledExpression implements CompiledExpression {
         return expression;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return xpath;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getValue(JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
                     getValue(xpath, expression);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getValue(JXPathContext context, Class requiredType) {
         return ((JXPathContextReferenceImpl) context).
                     getValue(xpath, expression, requiredType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setValue(JXPathContext context, Object value) {
         ((JXPathContextReferenceImpl) context).
                     setValue(xpath, expression, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer createPath(JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
                     createPath(xpath, expression);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer createPathAndSetValue(JXPathContext context, Object value) {
         return ((JXPathContextReferenceImpl) context).
                     createPathAndSetValue(xpath, expression, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Iterator iterate(JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
                     iterate(xpath, expression);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer getPointer(JXPathContext context, String xpath) {
         return ((JXPathContextReferenceImpl) context).
                     getPointer(xpath, expression);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Iterator iteratePointers(JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
                     iteratePointers(xpath, expression);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void removePath(JXPathContext context) {
         ((JXPathContextReferenceImpl) context).removePath(xpath, expression);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void removeAll(JXPathContext context) {
         ((JXPathContextReferenceImpl) context).removeAll(xpath, expression);
     }

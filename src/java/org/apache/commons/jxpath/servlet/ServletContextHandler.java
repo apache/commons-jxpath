@@ -24,8 +24,8 @@ import javax.servlet.ServletContext;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
- * Implementation of the DynamicPropertyHandler interface that provides
- * access to attributes of a ServletContext.
+ * Implementation of the {@link DynamicPropertyHandler} interface that provides
+ * access to attributes of a {@link ServletContext}.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -34,9 +34,6 @@ public class ServletContextHandler implements DynamicPropertyHandler {
 
     private static final int DEFAULT_PROPERTY_COUNT = 16;
 
-    /**
-     * {@inheritDoc}
-     */
     public String[] getPropertyNames(Object context) {
         HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
         collectPropertyNames(list, context);
@@ -55,16 +52,10 @@ public class ServletContextHandler implements DynamicPropertyHandler {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getProperty(Object context, String property) {
         return ((ServletContext) context).getAttribute(property);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setProperty(Object context, String property, Object value) {
         ((ServletContext) context).setAttribute(property, value);
     }

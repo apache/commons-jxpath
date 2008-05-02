@@ -20,7 +20,7 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
- * Implementation of Expression for the operation unary "-".
+ * Implementation of {@link Expression} for the operation unary "-".
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -35,31 +35,19 @@ public class CoreOperationNegate extends CoreOperation {
         super(new Expression[] { arg });
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         double a = InfoSetUtil.doubleValue(args[0].computeValue(context));
         return new Double(-a);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected int getPrecedence() {
         return NEGATE_PRECEDENCE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected boolean isSymmetric() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getSymbol() {
         return "-";
     }

@@ -41,18 +41,8 @@ import org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanModelTest;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public abstract class BeanModelTestCase extends JXPathTestCase {
     private JXPathContext context;
-
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public BeanModelTestCase(String name) {
-        super(name);
-    }
 
     public void setUp() {
 //        if (context == null) {

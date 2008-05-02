@@ -66,23 +66,14 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         this.parentContext = parentContext;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer getContextNodePointer() {
         return getCurrentNodePointer();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public JXPathContext getJXPathContext() {
         return getRootContext().getJXPathContext();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPosition() {
         return position;
     }
@@ -277,9 +268,6 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         return getNodeSet();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         Pointer ptr = getContextNodePointer();
         return ptr == null ? "Empty expression context" : "Expression context [" + getPosition()

@@ -34,8 +34,8 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * JXPathContext  allows alternative implementations. This is why instead of
  * allocating JXPathContext directly, you should call a static
  * <code>newContext</code> method.  This method will utilize the
- * JXPathContextFactory API to locate a suitable implementation of JXPath.
- * Bundled with JXPath comes a default implementation called Reference
+ * {@link JXPathContextFactory} API to locate a suitable implementation of
+ * JXPath. Bundled with JXPath comes a default implementation called Reference
  * Implementation.
  * </p>
  *
@@ -494,7 +494,7 @@ public abstract class JXPathContext {
 
     /**
      * Returns the variable pool associated with the context. If no such
-     * pool was specified with the <code>setVariables()</code> method,
+     * pool was specified with the {@link #setVariables} method,
      * returns the default implementation of Variables,
      * {@link BasicVariables BasicVariables}.
      * @return Variables
@@ -580,8 +580,8 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Sets DecimalFormatSymbols for a given name. The DecimalFormatSymbols can
-     * be referenced as the third, optional argument in the invocation of
+     * Sets {@link DecimalFormatSymbols} for a given name. The DecimalFormatSymbols
+     * can be referenced as the third, optional argument in the invocation of
      * <code>format-number (number,format,decimal-format-name)</code> function.
      * By default, JXPath uses the symbols for the current locale.
      *
@@ -721,8 +721,8 @@ public abstract class JXPathContext {
     public abstract void setValue(String xpath, Object value);
 
     /**
-     * Creates missing elements of the path by invoking an AbstractFactory,
-     * which should first be installed on the context by calling "setFactory".
+     * Creates missing elements of the path by invoking an {@link AbstractFactory},
+     * which should first be installed on the context by calling {@link #setFactory}.
      * <p>
      * Will throw an exception if the AbstractFactory fails to create
      * an instance for a path element.
@@ -733,8 +733,8 @@ public abstract class JXPathContext {
 
     /**
      * The same as setValue, except it creates intermediate elements of
-     * the path by invoking an AbstractFactory, which should first be
-     * installed on the context by calling "setFactory".
+     * the path by invoking an {@link AbstractFactory}, which should first be
+     * installed on the context by calling {@link #setFactory}.
      * <p>
      * Will throw an exception if one of the following conditions occurs:
      * <ul>

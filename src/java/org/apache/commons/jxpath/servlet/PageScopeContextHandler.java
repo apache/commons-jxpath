@@ -22,8 +22,8 @@ import java.util.Enumeration;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
- * Implementation of the DynamicPropertyHandler interface that provides
- * access to attributes of a PageScopeContext.
+ * Implementation of the {@link DynamicPropertyHandler} interface that provides
+ * access to attributes of a {@link PageScopeContext}.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -32,9 +32,6 @@ public class PageScopeContextHandler implements DynamicPropertyHandler {
 
     private static final int DEFAULT_LIST_SIZE = 16;
 
-    /**
-     * {@inheritDoc}
-     */
     public String[] getPropertyNames(Object pageScope) {
         Enumeration e = ((PageScopeContext) pageScope).getAttributeNames();
         ArrayList list = new ArrayList(DEFAULT_LIST_SIZE);
@@ -44,16 +41,10 @@ public class PageScopeContextHandler implements DynamicPropertyHandler {
         return (String[]) list.toArray(new String[list.size()]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getProperty(Object pageScope, String property) {
         return ((PageScopeContext) pageScope).getAttribute(property);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setProperty(Object pageScope, String property, Object value) {
         ((PageScopeContext) pageScope).setAttribute(property, value);
     }

@@ -20,7 +20,7 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
- * Implementation of Expression for the operation "and".
+ * Implementation of {@link Expression} for the operation "and".
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -35,9 +35,6 @@ public class CoreOperationAnd extends CoreOperation {
         super(args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         for (int i = 0; i < args.length; i++) {
             if (!InfoSetUtil.booleanValue(args[i].computeValue(context))) {
@@ -47,23 +44,14 @@ public class CoreOperationAnd extends CoreOperation {
         return Boolean.TRUE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected int getPrecedence() {
         return AND_PRECEDENCE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected boolean isSymmetric() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getSymbol() {
         return "and";
     }

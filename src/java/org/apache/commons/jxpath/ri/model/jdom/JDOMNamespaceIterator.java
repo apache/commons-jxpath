@@ -80,9 +80,6 @@ public class JDOMNamespaceIterator implements NodeIterator {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -98,16 +95,10 @@ public class JDOMNamespaceIterator implements NodeIterator {
         return new JDOMNamespacePointer(parent, ns.getPrefix(), ns.getURI());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPosition() {
         return position;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         if (namespaces == null) {
             return false;

@@ -21,7 +21,7 @@ import java.util.Iterator;
 /**
  * Represents a compiled XPath. The interpretation of compiled XPaths
  * may be faster, because it bypasses the compilation step. The reference
- * implementation of JXPathContext also globally caches some of the
+ * implementation of {@link JXPathContext} also globally caches some of the
  * results of compilation, so the direct use of JXPathContext is not
  * always less efficient than the use of CompiledExpression.
  * <p>
@@ -29,7 +29,7 @@ import java.util.Iterator;
  * same expression multiple times and the CompiledExpression can be
  * conveniently cached.
  * <p>
- * To acqure a CompiledExpression, call {@link JXPathContext#compile
+ * To acquire a CompiledExpression, call {@link JXPathContext#compile
  * JXPathContext.compile}
  *
  * @author Dmitri Plotnikov
@@ -68,8 +68,8 @@ public interface CompiledExpression {
 
     /**
      * Creates intermediate elements of
-     * the path by invoking an AbstractFactory, which should first be
-     * installed on the context by calling "setFactory".
+     * the path by invoking an {@link AbstractFactory}, which should first be
+     * installed on the context by calling {@link JXPathContext#setFactory}.
      * @param context base
      * @return Pointer created
      */
@@ -77,8 +77,8 @@ public interface CompiledExpression {
 
     /**
      * The same as setValue, except it creates intermediate elements of
-     * the path by invoking an AbstractFactory, which should first be
-     * installed on the context by calling "setFactory".
+     * the path by invoking an {@link AbstractFactory}, which should first be
+     * installed on the context by calling {@link JXPathContext#setFactory}.
      * <p>
      * Will throw an exception if one of the following conditions occurs:
      * <ul>

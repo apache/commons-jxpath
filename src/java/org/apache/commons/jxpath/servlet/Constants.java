@@ -25,28 +25,28 @@ package org.apache.commons.jxpath.servlet;
 public final class Constants {
 
     /**
-     * Variable name for ServletContext.
+     * Variable name for {@link javax.servlet.ServletContext}.
      */
     public static final String APPLICATION_SCOPE = "application";
 
     /**
-     * Variable name for HttpSession.
+     * Variable name for {@link javax.servlet.http.HttpSession}.
      */
     public static final String SESSION_SCOPE = "session";
 
     /**
-     * Variable name for ServletRequest.
+     * Variable name for {@link javax.servlet.ServletRequest}.
      */
     public static final String REQUEST_SCOPE = "request";
 
     /**
-     * Variable name for PageContext.
+     * Variable name for {@link javax.servlet.jsp.PageContext}.
      */
     public static final String PAGE_SCOPE = "page";
 
     /**
      * Attribute  name used in page context, requst, session, and servlet
-     * context to store the corresponding JXPathContext.
+     * context to store the corresponding {@link org.apache.commons.jxpath.JXPathContext}.
      */
     public static final String JXPATH_CONTEXT =
         "org.apache.commons.jxpath.JXPATH_CONTEXT";

@@ -47,37 +47,22 @@ public class InitialContext extends EvalContext {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer getSingleNodePointer() {
         return nodePointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getCurrentNodePointer() {
         return nodePointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getValue() {
         return nodePointer.getValue();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextNode() {
         return setPosition(position + 1);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         this.position = position;
         if (collection) {
@@ -90,9 +75,6 @@ public class InitialContext extends EvalContext {
         return position == 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextSet() {
         if (started) {
             return false;

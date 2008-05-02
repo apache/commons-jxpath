@@ -56,9 +56,6 @@ public class DOMNodeIterator implements NodeIterator {
         this.reverse = reverse;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             setPosition(1);
@@ -66,16 +63,10 @@ public class DOMNodeIterator implements NodeIterator {
         return child == null ? null : new DOMNodePointer(parent, child);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPosition() {
         return position;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         while (this.position < position) {
             if (!next()) {

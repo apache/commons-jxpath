@@ -45,16 +45,10 @@ public class Constant extends Expression {
         this.value = string;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object compute(EvalContext context) {
         return value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         return value;
     }
@@ -75,9 +69,6 @@ public class Constant extends Expression {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         if (value instanceof Number) {
             return InfoSetUtil.stringValue(value);

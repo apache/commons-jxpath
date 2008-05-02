@@ -21,10 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
-
 import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
@@ -38,27 +34,6 @@ import org.apache.commons.jxpath.JXPathTestCase;
 
 public class ContainerModelTest extends JXPathTestCase {
 
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public ContainerModelTest(String name) {
-        super(name);
-    }
-
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    /**
-     * Return the tests included in this test suite.
-     */
-    public static Test suite() {
-        return (new TestSuite(ContainerModelTest.class));
-    }
-
-    
     private class ArrayContainer implements Container
     {
         private String[] array = new String[]{"foo", "bar"};

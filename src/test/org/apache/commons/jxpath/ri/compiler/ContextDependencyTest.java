@@ -25,11 +25,7 @@ import org.apache.commons.jxpath.ri.Parser;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public class ContextDependencyTest extends JXPathTestCase {
-    public ContextDependencyTest(String name) {
-        super(name);
-    }
 
     public void testContextDependency() {
         testContextDependency("1", false);
@@ -45,12 +41,8 @@ public class ContextDependencyTest extends JXPathTestCase {
     }
 
     public void testContextDependency(String xpath, boolean expected) {
-        Expression expr =
-            (Expression) Parser.parseExpression(xpath, new TreeCompiler());
+        Expression expr = (Expression) Parser.parseExpression(xpath, new TreeCompiler());
 
-        assertEquals(
-            "Context dependency <" + xpath + ">",
-            expected,
-            expr.isContextDependent());
+        assertEquals("Context dependency <" + xpath + ">", expected, expr.isContextDependent());
     }
 }

@@ -16,12 +16,10 @@
  */
 package org.apache.commons.jxpath.ri.model.dom;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,22 +34,6 @@ import org.w3c.dom.NodeList;
  */
 
 public class DOMModelTest extends XMLModelTestCase {
-    
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public DOMModelTest(String name) {
-        super(name);
-    }
-
-    /**
-     * Return the tests included in this test suite.
-     */
-    public static Test suite() {
-        return (new TestSuite(DOMModelTest.class));
-    }
 
     protected String getModel() {
         return DocumentContainer.MODEL_DOM;

@@ -52,23 +52,14 @@ public class BeanAttributeIterator extends PropertyIterator {
                 || name.getName().equals("*"));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getNodePointer() {
         return includeXmlLang && position == 1 ? new LangAttributePointer(parent) : super.getNodePointer();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPosition() {
         return position;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         this.position = position;
         if (includeXmlLang) {

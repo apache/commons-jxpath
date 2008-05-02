@@ -35,15 +35,6 @@ import org.apache.commons.jxpath.TestBean;
 public class DynamicPropertiesModelTest extends JXPathTestCase {
     private JXPathContext context;
 
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public DynamicPropertiesModelTest(String name) {
-        super(name);
-    }
-
     public void setUp() {
         if (context == null) {
             context = JXPathContext.newContext(new TestBean());

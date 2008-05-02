@@ -16,8 +16,6 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
-import junit.framework.TestSuite;
-
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.TestBean;
@@ -29,23 +27,7 @@ import org.apache.commons.jxpath.ri.model.BeanModelTestCase;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public class BeanModelTest extends BeanModelTestCase {
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public BeanModelTest(String name) {
-        super(name);
-    }
-
-    /**
-     * Return the tests included in this test suite.
-     */
-    public static TestSuite suite() {
-        return (new TestSuite(BeanModelTest.class));
-    }
 
     protected Object createContextBean() {
         return new TestBean();

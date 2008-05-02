@@ -67,23 +67,14 @@ public class QName {
         return name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return qualifiedName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return name.hashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(Object object) {
         if (this == object) {
             return true;

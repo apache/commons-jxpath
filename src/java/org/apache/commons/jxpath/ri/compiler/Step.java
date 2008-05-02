@@ -78,9 +78,6 @@ public class Step {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         int axis = getAxis();

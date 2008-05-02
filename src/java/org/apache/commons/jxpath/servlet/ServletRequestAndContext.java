@@ -22,7 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * Just a structure to hold a ServletRequest and ServletContext together.
+ * Just a structure to hold a {@link ServletRequest} and {@link ServletContext}
+ * together.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -32,6 +33,7 @@ public class ServletRequestAndContext extends HttpSessionAndServletContext {
 
     /**
      * Create a new ServletRequestAndContext.
+     *
      * @param request ServletRequest
      * @param context ServletContext
      */
@@ -41,9 +43,6 @@ public class ServletRequestAndContext extends HttpSessionAndServletContext {
         this.request = request;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public HttpSession getSession() {
         return request instanceof HttpServletRequest
                 ? ((HttpServletRequest) request).getSession(false) : null;
@@ -51,6 +50,7 @@ public class ServletRequestAndContext extends HttpSessionAndServletContext {
 
     /**
      * Get the request.
+     *
      * @return ServletRequest
      */
     public ServletRequest getServletRequest() {

@@ -56,23 +56,14 @@ public abstract class CoreOperationCompare extends CoreOperation {
         this.invert = invert;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         return equal(context, args[0], args[1]) ? Boolean.TRUE : Boolean.FALSE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected int getPrecedence() {
         return COMPARE_PRECEDENCE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected boolean isSymmetric() {
         return true;
     }

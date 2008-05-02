@@ -34,16 +34,10 @@ public class DOMPointerFactory implements NodePointerFactory {
     /** factory order */
     public static final int DOM_POINTER_FACTORY_ORDER = 100;
 
-    /**
-     * {@inheritDoc}
-     */
     public int getOrder() {
         return DOM_POINTER_FACTORY_ORDER;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(
         QName name,
         Object bean,
@@ -51,9 +45,6 @@ public class DOMPointerFactory implements NodePointerFactory {
         return bean instanceof Node ? new DOMNodePointer((Node) bean, locale) : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(
         NodePointer parent,
         QName name,

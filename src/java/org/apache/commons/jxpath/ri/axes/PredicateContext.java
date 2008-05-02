@@ -52,9 +52,6 @@ public class PredicateContext extends EvalContext {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextNode() {
         if (done) {
             return false;
@@ -139,18 +136,13 @@ public class PredicateContext extends EvalContext {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         if (nameTestExpression == null) {
             return setPositionStandard(position);
         }
         else {
-            if (dynamicPropertyPointer == null) {
-                if (!setupDynamicPropertyPointer()) {
-                    return setPositionStandard(position);
-                }
+            if (dynamicPropertyPointer == null && !setupDynamicPropertyPointer()) {
+                return setPositionStandard(position);
             }
             if (position < 1
                 || position > dynamicPropertyPointer.getLength()) {
@@ -161,14 +153,9 @@ public class PredicateContext extends EvalContext {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getCurrentNodePointer() {
-        if (position == 0) {
-            if (!setPosition(1)) {
-                return null;
-            }
+        if (position == 0 && !setPosition(1)) {
+            return null;
         }
         if (dynamicPropertyPointer != null) {
             return dynamicPropertyPointer.getValuePointer();
@@ -176,18 +163,12 @@ public class PredicateContext extends EvalContext {
         return parentContext.getCurrentNodePointer();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset() {
         super.reset();
         parentContext.reset();
         done = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextSet() {
         reset();
         return parentContext.nextSet();

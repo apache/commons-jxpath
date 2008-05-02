@@ -57,44 +57,26 @@ public class NamespacePointer extends NodePointer {
         this.namespaceURI = namespaceURI;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public QName getName() {
         return new QName(prefix);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getBaseValue() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isCollection() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getLength() {
         return 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getImmediateNode() {
         return getNamespaceURI();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getNamespaceURI() {
         if (namespaceURI == null) {
             namespaceURI = parent.getNamespaceURI(prefix);
@@ -102,9 +84,6 @@ public class NamespacePointer extends NodePointer {
         return namespaceURI;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isLeaf() {
         return true;
     }
@@ -117,9 +96,6 @@ public class NamespacePointer extends NodePointer {
         throw new UnsupportedOperationException("Cannot modify DOM trees");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean testNode(NodeTest nodeTest) {
         return nodeTest == null
             || ((nodeTest instanceof NodeTypeTest)
@@ -127,9 +103,6 @@ public class NamespacePointer extends NodePointer {
                     == Compiler.NODE_TYPE_NODE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         if (parent != null) {
@@ -144,16 +117,10 @@ public class NamespacePointer extends NodePointer {
         return buffer.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return prefix.hashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -167,13 +134,10 @@ public class NamespacePointer extends NodePointer {
         return prefix.equals(other.prefix);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int compareChildNodePointers(
         NodePointer pointer1,
         NodePointer pointer2) {
         // Won't happen - namespaces don't have children
         return 0;
     }
- }
+}

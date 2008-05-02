@@ -37,18 +37,8 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public class CoreFunctionTest extends JXPathTestCase {
     private JXPathContext context;
-
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public CoreFunctionTest(String name) {
-        super(name);
-    }
 
     public void setUp() {
         if (context == null) {

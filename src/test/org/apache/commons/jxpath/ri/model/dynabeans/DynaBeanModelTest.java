@@ -16,8 +16,6 @@
  */
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
-import junit.framework.TestSuite;
-
 import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.TestBean;
@@ -31,16 +29,6 @@ import org.apache.commons.jxpath.ri.model.BeanModelTestCase;
  */
 
 public class DynaBeanModelTest extends BeanModelTestCase {
-    public DynaBeanModelTest(String name) {
-        super(name);
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(DynaBeanModelTest.class);
-//        TestSuite s = new TestSuite();
-//        s.addTest(new DynaBeanModelTest("testAxisParent"));
-//        return s;
-    }
 
     protected Object createContextBean() {
         return new WrapDynaBean(new TestBean());

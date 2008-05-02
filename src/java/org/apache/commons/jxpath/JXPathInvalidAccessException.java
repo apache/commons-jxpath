@@ -17,8 +17,9 @@
 package org.apache.commons.jxpath;
 
 /**
- * Similary to InvocationTargetException in that it is thrown when
- * JXPath cannot access properties, collection etc on the target object model.
+ * Similary to {@link java.lang.reflect.InvocationTargetException} in that
+ * it is thrown when JXPath cannot access properties, collection etc on the
+ * target object model.
  *
  * @author Dmitri Plotnikov
  * @version $Revision: 155422 $ $Date: 2005-02-26 08:07:46 -0500 (Sat, 26 Feb 2005) $

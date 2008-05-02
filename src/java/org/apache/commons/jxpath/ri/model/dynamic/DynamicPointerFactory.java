@@ -40,16 +40,10 @@ public class DynamicPointerFactory implements NodePointerFactory {
      */
     public static final int DYNAMIC_POINTER_FACTORY_ORDER = 800;
 
-    /**
-     * {@inheritDoc}
-     */
     public int getOrder() {
         return DYNAMIC_POINTER_FACTORY_ORDER;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(
         QName name,
         Object bean,
@@ -64,9 +58,6 @@ public class DynamicPointerFactory implements NodePointerFactory {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(
         NodePointer parent,
         QName name,

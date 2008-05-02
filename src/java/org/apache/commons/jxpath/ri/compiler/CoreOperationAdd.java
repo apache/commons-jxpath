@@ -20,7 +20,7 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
- * Implementation of Expression for the operation "+".
+ * Implementation of {@link Expression} for the operation "+".
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -35,9 +35,6 @@ public class CoreOperationAdd extends CoreOperation {
         super(args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         double s = 0.0;
         for (int i = 0; i < args.length; i++) {
@@ -46,23 +43,14 @@ public class CoreOperationAdd extends CoreOperation {
         return new Double(s);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected int getPrecedence() {
         return ADD_PRECEDENCE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected boolean isSymmetric() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getSymbol() {
         return "+";
     }

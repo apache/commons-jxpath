@@ -43,31 +43,19 @@ public class KeywordVariables implements Variables {
         this.object = object;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isDeclaredVariable(String variable) {
         return variable.equals(keyword);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getVariable(String variable) {
         return isDeclaredVariable(variable) ? object : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void declareVariable(String variable, Object value) {
         throw new UnsupportedOperationException(
             "Cannot declare new keyword variables.");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void undeclareVariable(String variable) {
         throw new UnsupportedOperationException(
             "Cannot undeclare keyword variables.");

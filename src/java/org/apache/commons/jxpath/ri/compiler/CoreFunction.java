@@ -219,9 +219,6 @@ public class CoreFunction extends Operation {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(getFunctionName());
@@ -239,16 +236,10 @@ public class CoreFunction extends Operation {
         return buffer.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object compute(EvalContext context) {
         return computeValue(context);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         switch (functionCode) {
             case Compiler.FUNCTION_LAST :

@@ -36,18 +36,6 @@ public class BasicNodeSetTest extends JXPathTestCase {
     /** BasicNodeSet */
     protected BasicNodeSet nodeSet;
 
-    /**
-     * Create a new BasicNodeSetTest.
-     * 
-     * @param name testcase name
-     */
-    public BasicNodeSetTest(String name) {
-        super(name);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     protected void setUp() throws Exception {
         super.setUp();
         context = JXPathContext.newContext(new TestMixedModelBean());

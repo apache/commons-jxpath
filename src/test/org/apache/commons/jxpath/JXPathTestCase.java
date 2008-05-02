@@ -35,15 +35,12 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public abstract class JXPathTestCase extends TestCase {
+
     /**
      * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
      */
-    public JXPathTestCase(String name) {
-        super(name);
+    public JXPathTestCase() {
         Locale.setDefault(Locale.US);
     }
     

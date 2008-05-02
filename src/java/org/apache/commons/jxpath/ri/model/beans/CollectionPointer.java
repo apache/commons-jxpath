@@ -59,60 +59,36 @@ public class CollectionPointer extends NodePointer {
         this.collection = collection;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public QName getName() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getBaseValue() {
         return collection;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isCollection() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getLength() {
         return ValueUtils.getLength(getBaseValue());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isLeaf() {
         Object value = getNode();
         return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isContainer() {
         return index != WHOLE_COLLECTION;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getImmediateNode() {
         return index == WHOLE_COLLECTION ? ValueUtils.getValue(collection)
                 : ValueUtils.getValue(collection, index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setValue(Object value) {
         if (index == WHOLE_COLLECTION) {
             parent.setValue(value);
@@ -122,17 +98,11 @@ public class CollectionPointer extends NodePointer {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setIndex(int index) {
         super.setIndex(index);
         valuePointer = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getValuePointer() {
         if (valuePointer == null) {
             if (index == WHOLE_COLLECTION) {
@@ -147,9 +117,6 @@ public class CollectionPointer extends NodePointer {
         return valuePointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createPath(JXPathContext context) {
         Object collection = getBaseValue();
         if (ValueUtils.getLength(collection) <= index) {
@@ -158,18 +125,12 @@ public class CollectionPointer extends NodePointer {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createPath(JXPathContext context, Object value) {
         NodePointer ptr = createPath(context);
         ptr.setValue(value);
         return ptr;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createChild(
         JXPathContext context,
         QName name,
@@ -180,9 +141,6 @@ public class CollectionPointer extends NodePointer {
         return ptr.createPath(context, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createChild(
         JXPathContext context,
         QName name,
@@ -192,16 +150,10 @@ public class CollectionPointer extends NodePointer {
         return ptr.createPath(context);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return System.identityHashCode(collection) + index;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -215,9 +167,6 @@ public class CollectionPointer extends NodePointer {
         return collection == other.collection && index == other.index;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeIterator childIterator(NodeTest test,
                 boolean reverse, NodePointer startWith) {
         if (index == WHOLE_COLLECTION) {
@@ -230,31 +179,19 @@ public class CollectionPointer extends NodePointer {
         return getValuePointer().childIterator(test, reverse, startWith);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeIterator attributeIterator(QName name) {
         return index == WHOLE_COLLECTION ? new CollectionAttributeNodeIterator(this, name)
                 : getValuePointer().attributeIterator(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeIterator namespaceIterator() {
         return index == WHOLE_COLLECTION ? null : getValuePointer().namespaceIterator();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer namespacePointer(String namespace) {
         return index == WHOLE_COLLECTION ? null : getValuePointer().namespacePointer(namespace);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean testNode(NodeTest test) {
         if (index == WHOLE_COLLECTION) {
             if (test == null) {
@@ -268,17 +205,11 @@ public class CollectionPointer extends NodePointer {
         return getValuePointer().testNode(test);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int compareChildNodePointers(
                 NodePointer pointer1, NodePointer pointer2) {
         return pointer1.getIndex() - pointer2.getIndex();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         NodePointer parent = getImmediateParentPointer();

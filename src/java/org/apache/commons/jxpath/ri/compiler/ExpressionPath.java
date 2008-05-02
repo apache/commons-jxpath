@@ -102,9 +102,6 @@ public class ExpressionPath extends Path {
         return basic;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         if (expression instanceof CoreOperation
@@ -135,16 +132,10 @@ public class ExpressionPath extends Path {
         return buffer.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object compute(EvalContext context) {
         return expressionPath(context, false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         return expressionPath(context, true);
     }

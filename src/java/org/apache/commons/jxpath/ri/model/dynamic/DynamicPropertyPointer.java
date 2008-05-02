@@ -214,9 +214,6 @@ public class DynamicPropertyPointer extends PropertyPointer {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createPath(JXPathContext context) {
         // Ignore the name passed to us, use our own data
         Object collection = getBaseValue();
@@ -251,9 +248,6 @@ public class DynamicPropertyPointer extends PropertyPointer {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createPath(JXPathContext context, Object value) {
         if (index == WHOLE_COLLECTION) {
             handler.setProperty(getBean(), getPropertyName(), value);
@@ -265,9 +259,6 @@ public class DynamicPropertyPointer extends PropertyPointer {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void remove() {
         if (index == WHOLE_COLLECTION) {
             removeKey();
@@ -294,9 +285,6 @@ public class DynamicPropertyPointer extends PropertyPointer {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(getImmediateParentPointer().asPath());

@@ -28,14 +28,6 @@ public class RecursiveAxesTest extends JXPathTestCase {
     private RecursiveBean bean;
     private JXPathContext context;
 
-    public RecursiveAxesTest(String name) {
-        super(name);
-    }
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(RecursiveAxesTest.class);
-    }
-
     protected void setUp() throws Exception {
         bean = new RecursiveBean("zero");
         RecursiveBean bean1 = new RecursiveBean("one");
@@ -57,4 +49,3 @@ public class RecursiveAxesTest extends JXPathTestCase {
             "/first/first/second");
     }
 }
-

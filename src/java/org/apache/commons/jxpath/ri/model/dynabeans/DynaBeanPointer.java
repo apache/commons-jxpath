@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
 
 /**
- * A Pointer that points to a DynaBean.
+ * A Pointer that points to a {@link DynaBean}.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -59,65 +59,38 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
         this.dynaBean = dynaBean;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public PropertyPointer getPropertyPointer() {
         return new DynaBeanPropertyPointer(this, dynaBean);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public QName getName() {
         return name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getBaseValue() {
         return dynaBean;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getImmediateNode() {
         return dynaBean;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isCollection() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getLength() {
         return 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isLeaf() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return name == null ? 0 : name.hashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -137,9 +110,6 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
         return iThis == iOther && dynaBean == other.dynaBean;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String asPath() {
         return parent == null ? "/" : super.asPath();
     }

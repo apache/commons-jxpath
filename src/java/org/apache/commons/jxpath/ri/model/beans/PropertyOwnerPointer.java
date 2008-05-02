@@ -40,9 +40,6 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     private Object value = UNINITIALIZED;
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeIterator childIterator(NodeTest test, boolean reverse,
             NodePointer startWith) {
         if (test == null) {
@@ -73,9 +70,6 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         return new PropertyIterator(this, property, reverse, startWith);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodeIterator attributeIterator(QName name) {
         return new BeanAttributeIterator(this, name);
     }
@@ -97,9 +91,6 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         super(parent);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setIndex(int index) {
         if (this.index != index) {
             super.setIndex(index);
@@ -107,9 +98,6 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
             value = index == WHOLE_COLLECTION ? ValueUtils.getValue(getBaseValue())
@@ -118,9 +106,6 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         return value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public abstract QName getName();
 
     /**
@@ -192,9 +177,6 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int compareChildNodePointers(NodePointer pointer1,
             NodePointer pointer2) {
         int r = pointer1.getName().toString().compareTo(pointer2.getName().toString());

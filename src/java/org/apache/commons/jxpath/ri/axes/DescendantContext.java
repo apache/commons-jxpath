@@ -55,36 +55,22 @@ public class DescendantContext extends EvalContext {
         this.nodeTest = nodeTest;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isChildOrderingRequired() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getCurrentNodePointer() {
-        if (position == 0) {
-            if (!setPosition(1)) {
-                return null;
-            }
+        if (position == 0 && !setPosition(1)) {
+            return null;
         }
         return currentNodePointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset() {
         super.reset();
         setStarted = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         if (position < this.position) {
             reset();
@@ -98,9 +84,6 @@ public class DescendantContext extends EvalContext {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;
@@ -114,11 +97,9 @@ public class DescendantContext extends EvalContext {
                             false,
                             null));
                 }
-                if (includeSelf) {
-                    if (currentNodePointer.testNode(nodeTest)) {
-                        position++;
-                        return true;
-                    }
+                if (includeSelf && currentNodePointer.testNode(nodeTest)) {
+                    position++;
+                    return true;
                 }
             }
         }

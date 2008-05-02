@@ -21,7 +21,7 @@ import java.util.Enumeration;
 import javax.servlet.jsp.PageContext;
 
 /**
- * A lightweight wrapper for PageContext that restricts access
+ * A lightweight wrapper for {@link PageContext} that restricts access
  * to attributes of the "page" scope.  This object is needed so that
  * XPath "foo" would lookup the attribute "foo" in all scopes, while
  * "$page/foo" would only look in the "page" scope.

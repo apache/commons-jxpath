@@ -40,78 +40,45 @@ public class NullPropertyPointer extends PropertyPointer {
         super(parent);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public QName getName() {
         return new QName(propertyName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setPropertyIndex(int index) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getLength() {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getBaseValue() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getImmediateNode() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isLeaf() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getValuePointer() {
         return new NullPointer(this,  new QName(getPropertyName()));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected boolean isActualProperty() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isActual() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isContainer() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setValue(Object value) {
         if (parent == null || parent.isContainer()) {
             throw new JXPathInvalidAccessException(
@@ -137,9 +104,6 @@ public class NullPropertyPointer extends PropertyPointer {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createPath(JXPathContext context) {
         NodePointer newParent = parent.createPath(context);
         if (isAttribute()) {
@@ -168,9 +132,6 @@ public class NullPropertyPointer extends PropertyPointer {
         return newParent.createChild(context, getName(), getIndex());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createPath(JXPathContext context, Object value) {
         NodePointer newParent = parent.createPath(context);
         if (isAttribute()) {
@@ -188,31 +149,19 @@ public class NullPropertyPointer extends PropertyPointer {
         return newParent.createChild(context, getName(), index, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createChild(JXPathContext context, QName name, int index) {
         return createPath(context).createChild(context, name, index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createChild(JXPathContext context, QName name,
             int index, Object value) {
         return createPath(context).createChild(context, name, index, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getPropertyName() {
         return propertyName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
@@ -226,30 +175,18 @@ public class NullPropertyPointer extends PropertyPointer {
         byNameAttribute = true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isCollection() {
         return getIndex() != WHOLE_COLLECTION;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPropertyCount() {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String[] getPropertyNames() {
         return new String[0];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String asPath() {
         if (!byNameAttribute) {
             return super.asPath();

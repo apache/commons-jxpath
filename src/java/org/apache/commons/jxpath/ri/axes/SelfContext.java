@@ -43,16 +43,10 @@ public class SelfContext extends EvalContext {
         this.nodeTest = nodeTest;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer getSingleNodePointer() {
         return parentContext.getSingleNodePointer();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getCurrentNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -62,24 +56,15 @@ public class SelfContext extends EvalContext {
         return nodePointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextNode() {
         return setPosition(getCurrentPosition() + 1);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset() {
         super.reset();
         startedSet = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         if (position != 1) {
             return false;

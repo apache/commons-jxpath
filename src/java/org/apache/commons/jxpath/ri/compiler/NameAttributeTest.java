@@ -16,7 +16,6 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-
 /**
  * Captures the <code>foo[@name=<i>expr</i>]</code> expression. These
  * expressions are handled in a special way when applied to beans
@@ -44,9 +43,6 @@ public class NameAttributeTest extends CoreOperationEqual {
         return args[1];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean computeContextDependent() {
         return true;
     }

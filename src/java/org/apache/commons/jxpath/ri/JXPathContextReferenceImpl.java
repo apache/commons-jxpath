@@ -217,9 +217,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         return COMPILER;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected CompiledExpression compilePath(String xpath) {
         return new JXPathCompiledExpression(xpath, compileExpression(xpath));
     }
@@ -453,9 +450,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         return expr.iterate(getEvalContext());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer getPointer(String xpath) {
         return getPointer(xpath, compileExpression(xpath));
     }
@@ -481,9 +475,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         return NodePointer.newNodePointer(null, result, getLocale());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setValue(String xpath, Object value) {
         setValue(xpath, compileExpression(xpath), value);
     }
@@ -504,9 +495,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer createPath(String xpath) {
         return createPath(xpath, compileExpression(xpath));
     }
@@ -543,9 +531,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer createPathAndSetValue(String xpath, Object value) {
         return createPathAndSetValue(xpath, compileExpression(xpath), value);
     }
@@ -646,9 +631,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         return expr.iteratePointers(getEvalContext());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void removePath(String xpath) {
         removePath(xpath, compileExpression(xpath));
     }
@@ -672,9 +654,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void removeAll(String xpath) {
         removeAll(xpath, compileExpression(xpath));
     }
@@ -708,9 +687,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public JXPathContext getRelativeContext(Pointer pointer) {
         Object contextBean = pointer.getNode();
         if (contextBean == null) {
@@ -721,9 +697,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         return new JXPathContextReferenceImpl(this, contextBean, pointer);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer getContextPointer() {
         return contextPointer;
     }
@@ -790,9 +763,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             "Undefined function: " + functionName.toString());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void registerNamespace(String prefix, String namespaceURI) {
         if (namespaceResolver.isSealed()) {
             namespaceResolver = (NamespaceResolver) namespaceResolver.clone();
@@ -800,9 +770,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         namespaceResolver.registerNamespace(prefix, namespaceURI);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getNamespaceURI(String prefix) {
         return namespaceResolver.getNamespaceURI(prefix);
     }
@@ -815,9 +782,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         return namespaceResolver.getPrefix(namespaceURI);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setNamespaceContextPointer(Pointer pointer) {
         if (namespaceResolver.isSealed()) {
             namespaceResolver = (NamespaceResolver) namespaceResolver.clone();
@@ -825,9 +789,6 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         namespaceResolver.setNamespaceContextPointer((NodePointer) pointer);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Pointer getNamespaceContextPointer() {
         return namespaceResolver.getNamespaceContextPointer();
     }

@@ -36,7 +36,7 @@ import org.w3c.dom.Document;
  * read, parsed and traversed. If they are not - they won't be
  * read at all.
  *
- * @deprecated 1.1 Please use org.apache.commons.jxpath.xml.DocumentContainer
+ * @deprecated 1.1 Please use {@link DocumentContainer}
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$

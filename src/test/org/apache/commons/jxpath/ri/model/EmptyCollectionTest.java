@@ -42,13 +42,6 @@ public class EmptyCollectionTest extends JXPathTestCase {
         }
     }
 
-    /**
-     * Construct a new EmptyCollectionTest instance.
-     */
-    public EmptyCollectionTest(String s) {
-        super(s);
-    }
-
     public void testEmptyList() {
         assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_LIST), "/*",
                 Collections.EMPTY_LIST);

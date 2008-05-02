@@ -41,9 +41,6 @@ public abstract class Operation extends Expression {
         return args;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean computeContextDependent() {
         if (args != null) {
             for (int i = 0; i < args.length; i++) {

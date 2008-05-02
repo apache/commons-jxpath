@@ -531,10 +531,8 @@ public abstract class NodePointer implements Pointer {
      * @return Locale for this NodePointer
      */
     public Locale getLocale() {
-        if (locale == null) {
-            if (parent != null) {
-                locale = parent.getLocale();
-            }
+        if (locale == null && parent != null) {
+            locale = parent.getLocale();
         }
         return locale;
     }
@@ -727,16 +725,10 @@ public abstract class NodePointer implements Pointer {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return asPath();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int compareTo(Object object) {
         if (object == this) {
             return 0;

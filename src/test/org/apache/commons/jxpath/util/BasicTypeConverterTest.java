@@ -35,16 +35,7 @@ import org.apache.commons.jxpath.Pointer;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public class BasicTypeConverterTest extends TestCase {
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public BasicTypeConverterTest(String name) {
-        super(name);
-    }
 
     public void testPrimitiveToString() {
         assertConversion(new Integer(1), String.class, "1");

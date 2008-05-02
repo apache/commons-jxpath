@@ -35,24 +35,15 @@ public class BeanPointerFactory implements NodePointerFactory {
     /** factory order constant */
     public static final int BEAN_POINTER_FACTORY_ORDER = 900;
 
-    /**
-     * {@inheritDoc}
-     */
     public int getOrder() {
         return BEAN_POINTER_FACTORY_ORDER;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(QName name, Object bean, Locale locale) {
         JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         return new BeanPointer(name, bean, bi, locale);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(NodePointer parent, QName name,
             Object bean) {
         if (bean == null) {

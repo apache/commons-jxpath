@@ -147,16 +147,10 @@ public abstract class Expression {
             this.locale = locale;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public boolean hasNext() {
             return iterator.hasNext();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public Object next() {
             Object o = iterator.next();
             return o instanceof Pointer ? o : NodePointer.newNodePointer(qname, o, locale);
@@ -184,16 +178,10 @@ public abstract class Expression {
             this.iterator = it;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public boolean hasNext() {
             return iterator.hasNext();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public Object next() {
             Object o = iterator.next();
             return o instanceof Pointer ? ((Pointer) o).getValue() : o;

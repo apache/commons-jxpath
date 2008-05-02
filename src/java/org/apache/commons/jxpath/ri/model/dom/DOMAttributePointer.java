@@ -43,26 +43,17 @@ public class DOMAttributePointer extends NodePointer {
         this.attr = attr;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public QName getName() {
         return new QName(
             DOMNodePointer.getPrefix(attr),
             DOMNodePointer.getLocalName(attr));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getNamespaceURI() {
         String prefix = DOMNodePointer.getPrefix(attr);
         return prefix == null ? null : parent.getNamespaceURI(prefix);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getValue() {
         String value = attr.getValue();
         if (value == null || (value.equals("") && !attr.getSpecified())) {
@@ -71,51 +62,30 @@ public class DOMAttributePointer extends NodePointer {
         return value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getBaseValue() {
         return attr;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isCollection() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getLength() {
         return 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getImmediateNode() {
         return attr;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isActual() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isLeaf() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean testNode(NodeTest nodeTest) {
         return nodeTest == null
             || ((nodeTest instanceof NodeTypeTest)
@@ -130,16 +100,10 @@ public class DOMAttributePointer extends NodePointer {
         attr.setValue((String) TypeUtils.convert(value, String.class));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void remove() {
         attr.getOwnerElement().removeAttributeNode(attr);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String asPath() {
         StringBuffer buffer = new StringBuffer();
         if (parent != null) {
@@ -154,24 +118,15 @@ public class DOMAttributePointer extends NodePointer {
         return buffer.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return System.identityHashCode(attr);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(Object object) {
         return object == this || object instanceof DOMAttributePointer
                 && attr == ((DOMAttributePointer) object).attr;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int compareChildNodePointers(NodePointer pointer1,
             NodePointer pointer2) {
         // Won't happen - attributes don't have children

@@ -29,9 +29,6 @@ import org.jdom.input.SAXBuilder;
  */
 public class JDOMParser extends XMLParser2 {
 
-    /**
-     * {@inheritDoc}
-     */
     public Object parseXML(InputStream stream) {
         if (!isNamespaceAware()) {
             throw new JXPathException("JDOM parser configuration error. JDOM "

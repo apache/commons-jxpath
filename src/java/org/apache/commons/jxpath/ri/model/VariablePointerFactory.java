@@ -23,7 +23,7 @@ import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.QName;
 
 /**
- * NodePointerFactory to create VariablePointers.
+ * NodePointerFactory to create {@link VariablePointer VariablePointers}.
  * @author Matt Benson
  * @since JXPath 1.3
  * @version $Revision$ $Date$
@@ -65,9 +65,6 @@ public class VariablePointerFactory implements NodePointerFactory {
         return new VariableContextWrapper(context);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(QName name, Object object,
             Locale locale) {
         if (object instanceof VariableContextWrapper) {
@@ -87,17 +84,11 @@ public class VariablePointerFactory implements NodePointerFactory {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer createNodePointer(NodePointer parent, QName name,
             Object object) {
         return createNodePointer(name, object, null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getOrder() {
         return VARIABLE_POINTER_FACTORY_ORDER;
     }

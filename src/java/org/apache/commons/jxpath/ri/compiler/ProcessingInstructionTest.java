@@ -39,9 +39,6 @@ public class ProcessingInstructionTest extends NodeTest {
         return target;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return "processing-instruction('" + target + "')";
     }

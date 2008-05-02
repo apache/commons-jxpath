@@ -26,6 +26,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
  * Utility class.
+ *
  * @author Matt Benson
  * @since JXPath 1.3
  * @version $Revision$ $Date$
@@ -46,9 +47,6 @@ public class KeyManagerUtils {
             this.delegate = delegate;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public NodeSet getNodeSetByKey(JXPathContext context, String key,
                 Object value) {
             Pointer pointer = delegate.getPointerByKey(context, key, InfoSetUtil.stringValue(value));
@@ -57,9 +55,6 @@ public class KeyManagerUtils {
             return result;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public Pointer getPointerByKey(JXPathContext context, String keyName,
                 String keyValue) {
             return delegate.getPointerByKey(context, keyName, keyValue);

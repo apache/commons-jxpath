@@ -53,16 +53,10 @@ public class RootContext extends EvalContext {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public JXPathContext getJXPathContext() {
         return jxpathContext;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public RootContext getRootContext() {
         return this;
     }
@@ -75,44 +69,26 @@ public class RootContext extends EvalContext {
         return jxpathContext.getAbsoluteRootContext();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getCurrentNodePointer() {
         return pointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getValue() {
         return pointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getCurrentPosition() {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextNode() {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextSet() {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         throw new UnsupportedOperationException();
     }
@@ -196,9 +172,6 @@ public class RootContext extends EvalContext {
         return availableRegister - 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return super.toString() + ":" + pointer.asPath();
     }

@@ -20,7 +20,7 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.axes.UnionContext;
 
 /**
- * Implementation of Expression for the operation "|".
+ * Implementation of {@link Expression} for the operation "|".
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -35,9 +35,6 @@ public class CoreOperationUnion extends CoreOperation {
         super(args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         EvalContext[] argCtxs = new EvalContext[args.length];
         for (int i = 0; i < args.length; i++) {
@@ -52,23 +49,14 @@ public class CoreOperationUnion extends CoreOperation {
         return new UnionContext(context.getRootContext(), argCtxs);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected int getPrecedence() {
         return UNION_PRECEDENCE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected boolean isSymmetric() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getSymbol() {
         return "|";
     }

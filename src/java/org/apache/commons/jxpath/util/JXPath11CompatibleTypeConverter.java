@@ -19,23 +19,19 @@ package org.apache.commons.jxpath.util;
 import org.apache.commons.jxpath.NodeSet;
 
 /**
- * TypeConverter implementation to circumvent automagic NodeSet decoding. Suggested by JIRA issue JXPATH-10.
+ * TypeConverter implementation to circumvent automagic {@link NodeSet}
+ * decoding. Suggested by JIRA issue JXPATH-10.
  *
  * @since JXPath 1.3
  * @author Matt Benson
  * @version $Revision$ $Date$
  */
 public class JXPath11CompatibleTypeConverter extends BasicTypeConverter {
-    /**
-     * {@inheritDoc}
-     */
+
     public boolean canConvert(Object object, Class toType) {
         return object instanceof NodeSet ? toType.isInstance(object) : super.canConvert(object, toType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object convert(Object object, Class toType) {
         return object instanceof NodeSet && toType.isInstance(object) ? object : super.convert(object, toType);
     }

@@ -17,7 +17,7 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 /**
- * Implementation of Expression for the operation "=".
+ * Implementation of {@link Expression} for the operation "=".
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -33,9 +33,6 @@ public class CoreOperationEqual extends CoreOperationCompare {
         super(arg1, arg2);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getSymbol() {
         return "=";
     }

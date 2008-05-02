@@ -63,9 +63,6 @@ public class ExtensionFunction extends Operation {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(functionName);
@@ -83,16 +80,10 @@ public class ExtensionFunction extends Operation {
         return buffer.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object compute(EvalContext context) {
         return computeValue(context);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object computeValue(EvalContext context) {
         Object[] parameters = null;
         if (args != null) {

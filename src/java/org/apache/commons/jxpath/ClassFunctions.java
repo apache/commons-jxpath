@@ -44,7 +44,7 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * </dl>
  *
  * <p>
- * If the first argument of a method is ExpressionContext, the
+ * If the first argument of a method is {@link ExpressionContext}, the
  * expression context in which the function is evaluated is passed to
  * the method.
  *
@@ -77,7 +77,7 @@ public class ClassFunctions implements Functions {
     }
 
     /**
-     * Returns a Function, if any, for the specified namespace,
+     * Returns a {@link Function}, if any, for the specified namespace,
      * name and parameter types.
      *
      * @param namespace if it is not the namespace specified in the constructor,

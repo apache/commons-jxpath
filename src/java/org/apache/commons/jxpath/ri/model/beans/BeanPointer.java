@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * A Pointer that points to a JavaBean or a collection. It is either
  * the first element of a path or a pointer for a property value.
- * Typically there is a BeanPropertyPointer between two BeanPointers
+ * Typically there is a {@link BeanPropertyPointer} between two BeanPointers
  * in the chain.
  *
  * @author Dmitri Plotnikov
@@ -67,23 +67,14 @@ public class BeanPointer extends PropertyOwnerPointer {
         this.beanInfo = beanInfo;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public PropertyPointer getPropertyPointer() {
         return new BeanPropertyPointer(this, beanInfo);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public QName getName() {
         return name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getBaseValue() {
         return bean;
     }
@@ -104,25 +95,16 @@ public class BeanPointer extends PropertyOwnerPointer {
         return 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean isLeaf() {
         Object value = getNode();
         return value == null
             || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return name == null ? 0 : name.hashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;

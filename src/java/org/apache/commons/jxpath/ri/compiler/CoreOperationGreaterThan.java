@@ -17,7 +17,7 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 /**
- * Implementation of Expression for the operation "&gt;".
+ * Implementation of {@link Expression} for the operation "&gt;".
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -33,16 +33,10 @@ public class CoreOperationGreaterThan extends CoreOperationRelationalExpression 
         super(new Expression[] { arg1, arg2 });
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected boolean evaluateCompare(int compare) {
         return compare > 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getSymbol() {
         return ">";
     }

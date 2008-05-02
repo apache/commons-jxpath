@@ -17,7 +17,7 @@
 package org.apache.commons.jxpath;
 
 /**
- * A delegate of JXPathContext that implements the XPath <code>"id()"</code>
+ * A delegate of {@link JXPathContext} that implements the XPath <code>"id()"</code>
  * function. This delegate is only used when there is no default implementation
  * of the <code>id()</code> function. For example, it is <i>not</i> used
  * when the root of the context is a DOM Node.

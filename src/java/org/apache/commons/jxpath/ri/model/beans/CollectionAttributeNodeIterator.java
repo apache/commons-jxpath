@@ -43,9 +43,6 @@ public class CollectionAttributeNodeIterator extends CollectionNodeIterator {
         this.name = name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected NodeIterator getElementNodeIterator(NodePointer elementPointer) {
         return elementPointer.attributeIterator(name);
     }

@@ -52,8 +52,8 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * </dl>
  *
  * <p>
- * If the first argument of a method or constructor is ExpressionContext, the
- * expression context in which the function is evaluated is passed to
+ * If the first argument of a method or constructor is {@link ExpressionContext},
+ * the expression context in which the function is evaluated is passed to
  * the method.
  * </p>
  * <p>
@@ -91,7 +91,7 @@ public class PackageFunctions implements Functions {
     }
 
     /**
-     * Returns a Function, if found, for the specified namespace,
+     * Returns a {@link Function}, if found, for the specified namespace,
      * name and parameter types.
      * <p>
      * @param  namespace - if it is not the same as specified in the

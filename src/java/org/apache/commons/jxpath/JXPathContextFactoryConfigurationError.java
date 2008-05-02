@@ -17,7 +17,7 @@
 package org.apache.commons.jxpath;
 
 /**
- * Thrown when a problem with configuration with the JXPathContextFactories
+ * Thrown when a problem with configuration with the {@link JXPathContextFactory JXPathContextFactories}
  * exists. This error will typically be thrown when the class of a
  * factory specified in the system properties cannot be found
  * or instantiated.
@@ -25,7 +25,6 @@ package org.apache.commons.jxpath;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public class JXPathContextFactoryConfigurationError extends Error {
 
     /** @serial */
@@ -35,7 +34,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
      * Create a new <code>JXPathContextFactoryConfigurationError</code> with no
      * detail mesage.
      */
-
      public JXPathContextFactoryConfigurationError() {
          super();
          this.exception = null;
@@ -47,7 +45,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
      *
      * @param msg The error message for the exception.
      */
-
     public JXPathContextFactoryConfigurationError(String msg) {
         super(msg);
         this.exception = null;
@@ -61,7 +58,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
      * @param e The exception to be encapsulated in a
      * JXPathContextFactoryConfigurationError.
      */
-
     public JXPathContextFactoryConfigurationError(Exception e) {
         super(e.toString());
         this.exception = e;
@@ -75,7 +71,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
      * JXPathContextFactoryConfigurationError
      * @param msg The detail message.
      */
-
     public JXPathContextFactoryConfigurationError(Exception e, String msg) {
         super(msg);
         this.exception = e;
@@ -89,7 +84,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
      *
      * @return The error message.
      */
-
     public String getMessage () {
         String message = super.getMessage();
         if (message == null && exception != null) {
@@ -104,7 +98,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
      *
      * @return The encapsulated exception, or null if there is none.
      */
-
     public Exception getException () {
         return exception;
     }

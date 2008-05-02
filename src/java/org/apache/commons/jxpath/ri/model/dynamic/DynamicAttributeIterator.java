@@ -39,9 +39,6 @@ public class DynamicAttributeIterator extends BeanAttributeIterator {
         super(parent, name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected void prepareForIndividualProperty(String name) {
          ((DynamicPropertyPointer) getPropertyPointer()).setPropertyName(name);
          super.prepareForIndividualProperty(name);

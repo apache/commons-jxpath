@@ -25,10 +25,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
-
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.Pointer;
@@ -43,29 +39,8 @@ import org.apache.commons.jxpath.Variables;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public class MixedModelTest extends JXPathTestCase {
     private JXPathContext context;
-
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public MixedModelTest(String name) {
-        super(name);
-    }
-
-    public static void main(String[] args) {
-        TestRunner.run(new MixedModelTest("testContainerWithCollection"));
-    }
-    
-    /**
-     * Return the tests included in this test suite.
-     */
-    public static Test suite() {
-        return (new TestSuite(MixedModelTest.class));
-    }
 
     public void setUp() {
         TestMixedModelBean bean = new TestMixedModelBean();

@@ -45,16 +45,10 @@ public class UnionContext extends NodeSetContext {
         this.contexts = contexts;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getDocumentOrder() {
         return contexts.length > 1 ? 1 : super.getDocumentOrder();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         if (!prepared) {
             prepared = true;

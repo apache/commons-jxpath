@@ -41,9 +41,6 @@ public class NodeTypeTest extends NodeTest {
         return nodeType;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return nodeTypeToString(nodeType) + "()";
     }

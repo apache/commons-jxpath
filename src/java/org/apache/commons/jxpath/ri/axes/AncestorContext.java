@@ -48,31 +48,19 @@ public class AncestorContext extends EvalContext {
         this.nodeTest = nodeTest;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getDocumentOrder() {
         return -1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset() {
         super.reset();
         setStarted = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         if (position < getCurrentPosition()) {
             reset();
@@ -86,18 +74,13 @@ public class AncestorContext extends EvalContext {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;
             currentNodePointer = parentContext.getCurrentNodePointer();
-            if (includeSelf) {
-                if (currentNodePointer.testNode(nodeTest)) {
-                    position++;
-                    return true;
-                }
+            if (includeSelf && currentNodePointer.testNode(nodeTest)) {
+                position++;
+                return true;
             }
         }
 

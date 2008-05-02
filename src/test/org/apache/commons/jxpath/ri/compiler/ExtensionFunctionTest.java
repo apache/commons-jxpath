@@ -21,8 +21,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import junit.textui.TestRunner;
-
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
@@ -46,25 +44,11 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public class ExtensionFunctionTest extends JXPathTestCase {
     private Functions functions;
     private JXPathContext context;
     private TestBean testBean;
     private TypeConverter typeConverter;
-
-    public static void main(String[] args) {
-        TestRunner.run(ExtensionFunctionTest.class);
-    }
-    
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public ExtensionFunctionTest(String name) {
-        super(name);
-    }
 
     public void setUp() {
         if (context == null) {

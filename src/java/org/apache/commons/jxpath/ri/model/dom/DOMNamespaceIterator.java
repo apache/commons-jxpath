@@ -75,9 +75,6 @@ public class DOMNamespaceIterator implements NodeIterator {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -98,16 +95,10 @@ public class DOMNamespaceIterator implements NodeIterator {
         return new NamespacePointer(parent, prefix, attr.getValue());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getPosition() {
         return position;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         this.position = position;
         return position >= 1 && position <= attributes.size();

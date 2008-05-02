@@ -18,23 +18,19 @@ package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
 import java.util.HashSet;
-
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.jxpath.JXPathException;
 
 /**
- * Implementation of the DynamicPropertyHandler interface that provides
- * access to attributes of a HttpSession.
+ * Implementation of the {@link org.apache.commons.jxpath.DynamicPropertyHandler}
+ * interface that provides access to attributes of a @{link HttpSession}.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
 public class HttpSessionHandler extends ServletContextHandler {
 
-    /**
-     * {@inheritDoc}
-     */
     protected void collectPropertyNames(HashSet set, Object bean) {
         HttpSessionAndServletContext handle =
             (HttpSessionAndServletContext) bean;
@@ -48,9 +44,6 @@ public class HttpSessionHandler extends ServletContextHandler {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Object getProperty(Object bean, String property) {
         HttpSessionAndServletContext handle =
             (HttpSessionAndServletContext) bean;
@@ -64,9 +57,6 @@ public class HttpSessionHandler extends ServletContextHandler {
         return super.getProperty(handle.getServletContext(), property);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setProperty(Object bean, String property, Object value) {
         HttpSessionAndServletContext handle =
             (HttpSessionAndServletContext) bean;

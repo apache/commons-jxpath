@@ -52,32 +52,20 @@ public class PrecedingOrFollowingContext extends EvalContext {
         this.reverse = reverse;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getDocumentOrder() {
         return reverse ? -1 : 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset() {
         super.reset();
         stack = new Stack();
         setStarted = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         if (position < this.position) {
             reset();
@@ -91,9 +79,6 @@ public class PrecedingOrFollowingContext extends EvalContext {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;

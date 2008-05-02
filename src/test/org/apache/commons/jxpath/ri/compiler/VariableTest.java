@@ -28,18 +28,8 @@ import org.apache.commons.jxpath.Variables;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-
 public class VariableTest extends JXPathTestCase {
     private JXPathContext context;
-
-    /**
-     * Construct a new instance of this test case.
-     *
-     * @param name Name of the test case
-     */
-    public VariableTest(String name) {
-        super(name);
-    }
 
     public void setUp() {
         if (context == null) {

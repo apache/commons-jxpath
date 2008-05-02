@@ -68,9 +68,6 @@ public class NodeNameTest extends NodeTest {
         return qname.getName().equals("*");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String toString() {
         return qname.toString();
     }

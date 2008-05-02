@@ -50,14 +50,9 @@ public class ChildContext extends EvalContext {
         this.reverse = reverse;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public NodePointer getCurrentNodePointer() {
-        if (position == 0) {
-            if (!setPosition(1)) {
-                return null;
-            }
+        if (position == 0 && !setPosition(1)) {
+            return null;
         }
         return iterator == null ? null : iterator.getNodePointer();
     }
@@ -88,24 +83,15 @@ public class ChildContext extends EvalContext {
         return getCurrentNodePointer();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean nextNode() {
         return setPosition(getCurrentPosition() + 1);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset() {
         super.reset();
         iterator = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public boolean setPosition(int position) {
         int oldPosition = getCurrentPosition();
         super.setPosition(position);
