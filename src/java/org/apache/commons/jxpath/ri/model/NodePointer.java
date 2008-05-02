@@ -364,7 +364,7 @@ public abstract class NodePointer implements Pointer {
      * Get the root node.
      * @return Object value of this pointer's root (top parent).
      */
-    public Object getRootNode() {
+    public synchronized Object getRootNode() {
         if (rootNode == null) {
             rootNode = parent == null ? getImmediateNode() : parent.getRootNode();
         }
