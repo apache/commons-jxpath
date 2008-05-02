@@ -180,7 +180,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
             }
             catch (Exception ex) {
                 throw new JXPathException(
-                    "Cannot allocate XMLParser: " + className);
+                    "Cannot allocate XMLParser: " + className, ex);
             }
             parsers.put(model, parser);
         }
