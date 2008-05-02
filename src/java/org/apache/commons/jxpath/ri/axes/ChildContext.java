@@ -110,7 +110,7 @@ public class ChildContext extends EvalContext {
             return;
         }
         NodePointer useParent = startFromParentLocation ? parent.getParent() : parent;
-        iterator = parent == null ? null : useParent.childIterator(nodeTest,
-                reverse, startFromParentLocation ? parent : null);
+        iterator = useParent.childIterator(nodeTest, reverse,
+                startFromParentLocation ? parent : null);
     }
 }
