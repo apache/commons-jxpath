@@ -32,6 +32,8 @@ public class NullPropertyPointer extends PropertyPointer {
     private String propertyName = "*";
     private boolean byNameAttribute = false;
 
+    private static final long serialVersionUID = 5296593071854982754L;
+
     /**
      * Create a new NullPropertyPointer.
      * @param parent pointer

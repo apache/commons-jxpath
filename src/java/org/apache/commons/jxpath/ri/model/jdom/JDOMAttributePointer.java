@@ -30,6 +30,8 @@ import org.jdom.Attribute;
 public class JDOMAttributePointer extends NodePointer {
     private Attribute attr;
 
+    private static final long serialVersionUID = 8896050354479644028L;
+
     /**
      * Create a JDOMAttributePointer.
      * @param parent NodePointer parent

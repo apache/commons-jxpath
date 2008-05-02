@@ -37,6 +37,8 @@ public class ContainerPointer extends NodePointer {
     private Container container;
     private NodePointer valuePointer;
 
+    private static final long serialVersionUID = 6140752946621686118L;
+
     /**
      * Create a new ContainerPointer.
      * @param container Container object

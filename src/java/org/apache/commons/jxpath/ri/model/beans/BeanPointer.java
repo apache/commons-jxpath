@@ -37,6 +37,8 @@ public class BeanPointer extends PropertyOwnerPointer {
     private Object bean;
     private JXPathBeanInfo beanInfo;
 
+    private static final long serialVersionUID = -8227317938284982440L;
+
     /**
      * Create a new BeanPointer.
      * @param name is the name given to the first node

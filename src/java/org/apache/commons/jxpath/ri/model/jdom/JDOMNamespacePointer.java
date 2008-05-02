@@ -29,6 +29,8 @@ public class JDOMNamespacePointer extends NodePointer {
     private String prefix;
     private String namespaceURI;
 
+    private static final long serialVersionUID = 7935311686545862379L;
+
     /**
      * Create a new JDOMNamespacePointer.
      * @param parent parent pointer

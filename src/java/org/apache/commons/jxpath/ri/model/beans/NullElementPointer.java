@@ -33,6 +33,8 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class NullElementPointer extends CollectionPointer {
 
+    private static final long serialVersionUID = 8714236818791036721L;
+
     /**
      * Create a new NullElementPointer.
      * @param parent parent pointer

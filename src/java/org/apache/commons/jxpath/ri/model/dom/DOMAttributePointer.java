@@ -33,6 +33,8 @@ import org.w3c.dom.Attr;
 public class DOMAttributePointer extends NodePointer {
     private Attr attr;
 
+    private static final long serialVersionUID = 1115085175427555951L;
+
     /**
      * Create a new DOMAttributePointer.
      * @param parent pointer

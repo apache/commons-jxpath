@@ -510,6 +510,8 @@ public class BasicTypeConverter implements TypeConverter {
     static final class ValuePointer implements Pointer {
         private Object bean;
 
+        private static final long serialVersionUID = -4817239482392206188L;
+
         /**
          * Create a new ValuePointer.
          * @param object value

@@ -39,6 +39,8 @@ public class CollectionPointer extends NodePointer {
     private Object collection;
     private NodePointer valuePointer;
 
+    private static final long serialVersionUID = 8620254915563256588L;
+
     /**
      * Create a new CollectionPointer.
      * @param collection value

@@ -38,6 +38,8 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     private String name;
     private String[] names;
 
+    private static final long serialVersionUID = 2094421509141267239L;
+
     /**
      * Create a new DynaBeanPropertyPointer.
      * @param parent pointer

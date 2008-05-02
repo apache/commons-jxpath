@@ -40,6 +40,8 @@ public class DynamicPointer extends PropertyOwnerPointer {
     private Object bean;
     private DynamicPropertyHandler handler;
 
+    private static final long serialVersionUID = -1842347025295904256L;
+
     /**
      * Create a new DynamicPointer.
      * @param name property name

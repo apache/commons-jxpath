@@ -35,6 +35,8 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
     private QName name;
     private DynaBean dynaBean;
 
+    private static final long serialVersionUID = -9135052498044877965L;
+
     /**
      * Create a new DynaBeanPointer.
      * @param name is the name given to the first node

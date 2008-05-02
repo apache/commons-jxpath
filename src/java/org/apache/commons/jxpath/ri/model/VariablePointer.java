@@ -40,6 +40,8 @@ public class VariablePointer extends NodePointer {
     private NodePointer valuePointer;
     private boolean actual;
 
+    private static final long serialVersionUID = -454731297397189293L;
+
     /**
      * Create a new VariablePointer.
      * @param variables Variables instance

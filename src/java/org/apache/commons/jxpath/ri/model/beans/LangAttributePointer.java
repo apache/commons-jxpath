@@ -28,6 +28,9 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * @version $Revision$ $Date$
  */
 public class LangAttributePointer extends NodePointer {
+
+    private static final long serialVersionUID = -8665319197100034134L;
+
     /**
      * Create a new LangAttributePointer.
      * @param parent parent pointer.

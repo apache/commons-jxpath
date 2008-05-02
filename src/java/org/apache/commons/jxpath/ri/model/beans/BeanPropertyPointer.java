@@ -41,6 +41,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     private Object baseValue = UNINITIALIZED;
     private Object value = UNINITIALIZED;
 
+    private static final long serialVersionUID = -6008991447676468786L;
+
     /**
      * Create a new BeanPropertyPointer.
      * @param parent parent pointer

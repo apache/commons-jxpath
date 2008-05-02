@@ -30,6 +30,8 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class NullPointer extends PropertyOwnerPointer {
     private QName name;
     private String id;
+    
+    private static final long serialVersionUID = 2193425983220679887L;
 
     /**
      * Create a new NullPointer.

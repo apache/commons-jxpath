@@ -32,6 +32,8 @@ public class NamespacePointer extends NodePointer {
     private String prefix;
     private String namespaceURI;
 
+    private static final long serialVersionUID = -7622456151550131709L;
+
     /**
      * Create a new NamespacePointer.
      * @param parent parent pointer
