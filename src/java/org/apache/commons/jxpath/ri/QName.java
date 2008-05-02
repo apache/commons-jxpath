@@ -16,6 +16,8 @@
  */
 package org.apache.commons.jxpath.ri;
 
+import java.io.Serializable;
+
 
 /**
  * A qualified name: a combination of an optional namespace prefix
@@ -24,7 +26,9 @@ package org.apache.commons.jxpath.ri;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-public class QName {
+public class QName implements Serializable {
+    private static final long serialVersionUID = 7616199282015091496L;
+
     private String prefix;
     private String name;
     private String qualifiedName;

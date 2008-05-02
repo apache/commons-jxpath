@@ -16,6 +16,8 @@
  */
 package org.apache.commons.jxpath;
 
+import java.io.Serializable;
+
 /**
  * A Container is an object implementing an indirection
  * mechanism transparent to JXPath.  For example, if property
@@ -26,7 +28,7 @@ package org.apache.commons.jxpath;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-public interface Container {
+public interface Container extends Serializable {
 
     /**
      * Returns the contained value.

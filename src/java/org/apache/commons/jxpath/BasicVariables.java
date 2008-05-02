@@ -25,6 +25,7 @@ import java.util.HashMap;
  * @version $Revision$ $Date$
  */
 public class BasicVariables implements Variables {
+    private static final long serialVersionUID = 2708263960832062725L;
 
     /**
      * Contains the values of declared variables

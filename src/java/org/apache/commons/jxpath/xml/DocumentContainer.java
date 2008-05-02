@@ -44,9 +44,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
     /** JDOM constant */
     public static final String MODEL_JDOM = "JDOM";
 
-    private Object document;
-    private URL xmlURL;
-    private String model;
+    private static final long serialVersionUID = -8713290334113427066L;
 
     private static HashMap parserClasses = new HashMap();
     static {
@@ -57,6 +55,10 @@ public class DocumentContainer extends XMLParser2 implements Container {
     }
 
     private static HashMap parsers = new HashMap();
+
+    private Object document;
+    private URL xmlURL;
+    private String model;
 
     /**
      * Add an XML parser.  Parsers for the models "DOM" and "JDOM" are

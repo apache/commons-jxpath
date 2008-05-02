@@ -16,6 +16,8 @@
  */
 package org.apache.commons.jxpath;
 
+import java.io.Serializable;
+
 /**
  * Variables provide access to a global set of values accessible via XPath.
  * XPath can reference variables using the <code>"$varname"</code> syntax.
@@ -25,7 +27,7 @@ package org.apache.commons.jxpath;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-public interface Variables {
+public interface Variables extends Serializable {
 
     /**
      * Returns true if the specified variable is declared.
