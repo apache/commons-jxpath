@@ -141,7 +141,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <type>jar</type>
-      <version>3.8.2</version>
+      <version>3.8.1</version>
       <url>http://www.junit.org/</url>
       <properties>
         <scope>test</scope>
@@ -189,6 +189,15 @@
         <comment>dependency of beanutils</comment>
       </properties>
     </dependency> 
+    <dependency>
+      <groupId>com.mockrunner</groupId>
+      <artifactId>mockrunner-jdk1.3-j2ee1.3</artifactId>
+      <version>0.4</version>
+      <properties>
+        <scope>test</scope>
+        <comment>testing only</comment>
+      </properties>
+    </dependency>
     <dependency>
       <groupId>maven</groupId>
       <artifactId>maven-xdoc-plugin</artifactId>
