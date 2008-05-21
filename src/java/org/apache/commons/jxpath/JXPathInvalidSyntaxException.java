@@ -20,7 +20,7 @@ package org.apache.commons.jxpath;
  * Thrown when JXPath cannot parse a supplied XPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision: 155422 $ $Date: 2005-02-26 08:07:46 -0500 (Sat, 26 Feb 2005) $
+ * @version $Revision$ $Date$
  */
 
 public class JXPathInvalidSyntaxException extends JXPathException {
