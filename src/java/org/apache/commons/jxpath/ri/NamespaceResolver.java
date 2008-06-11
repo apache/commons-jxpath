@@ -17,8 +17,6 @@
 package org.apache.commons.jxpath.ri;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
@@ -36,7 +34,7 @@ public class NamespaceResolver implements Cloneable {
     /** namespace map */
     protected HashMap namespaceMap = new HashMap();
     /** reverse lookup map */
-    protected HashMap reverseMap;
+    protected HashMap reverseMap = new HashMap();
     /** pointer */
     protected NodePointer pointer;
     private boolean sealed;
@@ -94,7 +92,7 @@ public class NamespaceResolver implements Cloneable {
                     "Cannot register namespaces on a sealed NamespaceResolver");
         }
         namespaceMap.put(prefix, namespaceURI);
-        reverseMap = null;
+        reverseMap.put(namespaceURI, prefix);
     }
 
     /**
@@ -164,14 +162,6 @@ public class NamespaceResolver implements Cloneable {
      * @since JXPath 1.3
      */
     protected synchronized String getExternallyRegisteredPrefix(String namespaceURI) {
-        if (reverseMap == null) {
-            reverseMap = new HashMap();
-            Iterator it = namespaceMap.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry entry = (Map.Entry) it.next();
-                reverseMap.put(entry.getValue(), entry.getKey());
-            }
-        }
         String prefix = (String) reverseMap.get(namespaceURI);
         return prefix == null && parent != null ? parent
                 .getExternallyRegisteredPrefix(namespaceURI) : prefix;
