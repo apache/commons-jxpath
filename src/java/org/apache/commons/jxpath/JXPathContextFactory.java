@@ -19,6 +19,7 @@ package org.apache.commons.jxpath;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
@@ -189,7 +190,18 @@ public abstract class JXPathContextFactory {
             File f = new File(configFile);
             if (f.exists()) {
                 Properties props = new Properties();
-                props.load(new FileInputStream(f));
+                FileInputStream fis = new FileInputStream(f);
+                try {
+                    props.load(fis);
+                } finally {
+                    if (fis != null) {
+                        try {
+                            fis.close();
+                        } catch (IOException e) {
+                            //swallow
+                        }
+                    }
+                }
                 String factory = props.getProperty(property);
                 if (factory != null) {
                     if (debug) {
@@ -225,8 +237,16 @@ public abstract class JXPathContextFactory {
                 BufferedReader rd =
                     new BufferedReader(new InputStreamReader(is));
 
-                String factory = rd.readLine();
-                rd.close();
+                String factory = null;
+                try {
+                    factory = rd.readLine();
+                } finally {
+                    try {
+                        rd.close();
+                    } catch (IOException e) {
+                        //swallow
+                    }
+                }
 
                 if (factory != null && !"".equals(factory)) {
                     if (debug) {
@@ -242,7 +262,6 @@ public abstract class JXPathContextFactory {
                 ex.printStackTrace();
             }
         }
-
         return defaultFactory;
     }
 }
