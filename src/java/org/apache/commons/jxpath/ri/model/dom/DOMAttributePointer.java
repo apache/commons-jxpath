@@ -31,7 +31,7 @@ import org.w3c.dom.Attr;
  * @version $Revision$ $Date$
  */
 public class DOMAttributePointer extends NodePointer {
-    private Attr attr;
+    private Attr attr;//TODO determine proper serialization strategy
 
     private static final long serialVersionUID = 1115085175427555951L;
 

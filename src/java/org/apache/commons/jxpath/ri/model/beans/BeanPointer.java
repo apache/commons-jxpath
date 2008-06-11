@@ -35,7 +35,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;
     private Object bean;
-    private JXPathBeanInfo beanInfo;
+    private JXPathBeanInfo beanInfo;//TODO determine serialization strategy
 
     private static final long serialVersionUID = -8227317938284982440L;
 

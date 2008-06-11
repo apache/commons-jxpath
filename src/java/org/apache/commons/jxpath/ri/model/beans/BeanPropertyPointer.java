@@ -35,7 +35,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     private String propertyName;
     private JXPathBeanInfo beanInfo;
     private PropertyDescriptor[] propertyDescriptors;
-    private PropertyDescriptor propertyDescriptor;
+    private PropertyDescriptor propertyDescriptor;//TODO determine proper serialization strategy
     private String[] names;
     private static final Object UNINITIALIZED = new Object();
     private Object baseValue = UNINITIALIZED;
