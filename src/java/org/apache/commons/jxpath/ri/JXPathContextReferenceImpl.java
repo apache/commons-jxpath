@@ -115,7 +115,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     /**
      * Create the default node factory array.
      */
-    private static void createNodeFactoryArray() {
+    private static synchronized void createNodeFactoryArray() {
         if (nodeFactoryArray == null) {
             nodeFactoryArray =
                 (NodePointerFactory[]) nodeFactories.
