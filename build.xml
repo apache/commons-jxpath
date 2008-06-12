@@ -172,7 +172,9 @@
     </get>
     <get dest="${libdir}/commons-logging-1.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/commons-logging/jars/commons-logging-1.1.jar">
     </get>
-    <get dest="${libdir}/junit-3.8.2.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.8.2.jar">
+    <get dest="${libdir}/junit-3.8.1.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.8.1.jar">
+    </get>
+    <get dest="${libdir}/mockrunner-jdk1.3-j2ee1.3-0.4.jar" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven2/com/mockrunner/mockrunner-jdk1.3-j2ee1.3/0.4/mockrunner-jdk1.3-j2ee1.3-0.4.jar">
     </get>
   </target>
   <target name="install-maven">
