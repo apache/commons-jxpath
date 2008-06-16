@@ -54,8 +54,8 @@ public abstract class NodePointer implements Pointer {
     protected int index = WHOLE_COLLECTION;
 
     private boolean attribute = false;
-    private transient Object rootNode;
     private NamespaceResolver namespaceResolver;
+    private transient Object rootNode;
 
     /**
      * Allocates an entirely new NodePointer by iterating through all installed
@@ -546,7 +546,7 @@ public abstract class NodePointer implements Pointer {
     public boolean isLanguage(String lang) {
         Locale loc = getLocale();
         String name = loc.toString().replace('_', '-');
-        return name.toUpperCase().startsWith(lang.toUpperCase());
+        return name.toUpperCase(Locale.ENGLISH).startsWith(lang.toUpperCase(Locale.ENGLISH));
     }
 
     /**

@@ -212,7 +212,7 @@ public abstract class JXPathContextFactory {
                 }
             }
         }
-        catch (Exception ex) {
+        catch (IOException ex) {
             if (debug) {
                 ex.printStackTrace();
             }

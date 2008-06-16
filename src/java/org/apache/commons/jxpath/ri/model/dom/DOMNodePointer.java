@@ -45,7 +45,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 
 /**
- * A Pointer that points to a DOM node.
+ * A Pointer that points to a DOM node. Because a DOM Node is not guaranteed Serializable,
+ * a DOMNodePointer instance may likewise not be properly Serializable.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
@@ -328,7 +329,7 @@ public class DOMNodePointer extends NodePointer {
     public boolean isLanguage(String lang) {
         String current = getLanguage();
         return current == null ? super.isLanguage(lang)
-                : current.toUpperCase().startsWith(lang.toUpperCase());
+                : current.toUpperCase(Locale.ENGLISH).startsWith(lang.toUpperCase(Locale.ENGLISH));
     }
 
     /**

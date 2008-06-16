@@ -36,8 +36,8 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class DescendantContext extends EvalContext {
     private NodeTest nodeTest;
     private boolean setStarted = false;
-    private Stack stack;
-    private NodePointer currentNodePointer;
+    private Stack stack = null;
+    private NodePointer currentNodePointer = null;
     private boolean includeSelf;
     private static final NodeTest ELEMENT_NODE_TEST =
             new NodeTypeTest(Compiler.NODE_TYPE_NODE);
@@ -87,7 +87,11 @@ public class DescendantContext extends EvalContext {
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;
-            stack = new Stack();
+            if (stack == null) {
+                stack = new Stack();
+            } else {
+                stack.clear();
+            }
             currentNodePointer = parentContext.getCurrentNodePointer();
             if (currentNodePointer != null) {
                 if (!currentNodePointer.isLeaf()) {

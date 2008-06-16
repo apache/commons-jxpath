@@ -16,6 +16,7 @@
  */
 package org.apache.commons.jxpath.ri;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import org.apache.commons.jxpath.Pointer;
@@ -28,7 +29,9 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-public class NamespaceResolver implements Cloneable {
+public class NamespaceResolver implements Cloneable, Serializable {
+    private static final long serialVersionUID = 1085590057838651311L;
+
     /** Parent NamespaceResolver */
     protected final NamespaceResolver parent;
     /** namespace map */

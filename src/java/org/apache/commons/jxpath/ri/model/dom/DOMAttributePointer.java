@@ -25,15 +25,16 @@ import org.apache.commons.jxpath.util.TypeUtils;
 import org.w3c.dom.Attr;
 
 /**
- * A Pointer that points to a DOM node.
+ * A Pointer that points to a DOM node. Because the underlying DOM Attr is not Serializable,
+ * neither is this pointer class truly so.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
 public class DOMAttributePointer extends NodePointer {
-    private Attr attr;//TODO determine proper serialization strategy
-
     private static final long serialVersionUID = 1115085175427555951L;
+    
+    private Attr attr;
 
     /**
      * Create a new DOMAttributePointer.

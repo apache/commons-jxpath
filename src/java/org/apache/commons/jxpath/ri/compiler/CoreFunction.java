@@ -178,7 +178,7 @@ public class CoreFunction extends Operation {
             return true;
         }
 
-        switch(functionCode) {
+        switch (functionCode) {
             case Compiler.FUNCTION_LAST:
             case Compiler.FUNCTION_POSITION:
                 return true;
@@ -191,6 +191,9 @@ public class CoreFunction extends Operation {
             case Compiler.FUNCTION_LANG:
             case Compiler.FUNCTION_NUMBER:
                 return args == null || args.length == 0;
+
+            case Compiler.FUNCTION_FORMAT_NUMBER:
+                return args != null && args.length == 2;
 
             case Compiler.FUNCTION_COUNT:
             case Compiler.FUNCTION_ID:
@@ -210,10 +213,6 @@ public class CoreFunction extends Operation {
             case Compiler.FUNCTION_FLOOR:
             case Compiler.FUNCTION_CEILING:
             case Compiler.FUNCTION_ROUND:
-                return false;
-
-            case Compiler.FUNCTION_FORMAT_NUMBER:
-                return args != null && args.length == 2;
             default:
                 return false;
         }

@@ -36,11 +36,20 @@ import java.util.HashMap;
  * @version $Revision$ $Date$
  */
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
+    private static final long serialVersionUID = -3863803443111484155L;
+
+    private static final Comparator PROPERTY_DESCRIPTOR_COMPARATOR = new Comparator() {
+        public int compare(Object left, Object right) {
+            return ((PropertyDescriptor) left).getName().compareTo(
+                ((PropertyDescriptor) right).getName());
+        }
+    };
+
     private boolean atomic = false;
     private Class clazz;
-    private PropertyDescriptor[] propertyDescriptors;
     private Class dynamicPropertyHandlerClass;
-    private HashMap propertyDescriptorMap;
+    private transient PropertyDescriptor[] propertyDescriptors;
+    private transient HashMap propertyDescriptorMap;
 
     /**
      * Create a new JXPathBasicBeanInfo.
@@ -106,12 +115,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
                     PropertyDescriptor[] pds = bi.getPropertyDescriptors();
                     PropertyDescriptor[] descriptors = new PropertyDescriptor[pds.length];
                     System.arraycopy(pds, 0, descriptors, 0, pds.length);
-                    Arrays.sort(descriptors, new Comparator() {
-                        public int compare(Object left, Object right) {
-                            return ((PropertyDescriptor) left).getName().compareTo(
-                                ((PropertyDescriptor) right).getName());
-                        }
-                    });
+                    Arrays.sort(descriptors, PROPERTY_DESCRIPTOR_COMPARATOR);
                     propertyDescriptors = descriptors;
                 }
                 catch (IntrospectionException ex) {
@@ -119,7 +123,12 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
                 }
             }
         }
-        return propertyDescriptors;
+        if (propertyDescriptors.length == 0) {
+            return propertyDescriptors;
+        }
+        PropertyDescriptor[] result = new PropertyDescriptor[propertyDescriptors.length];
+        System.arraycopy(propertyDescriptors, 0, result, 0, propertyDescriptors.length);
+        return result;
     }
 
     public synchronized PropertyDescriptor getPropertyDescriptor(String propertyName) {

@@ -393,7 +393,7 @@ public class ValueUtils {
                 throw new JXPathException("No write method");
             }
             value = convert(value, propertyDescriptor.getPropertyType());
-            value = method.invoke(bean, new Object[] { value });
+            method.invoke(bean, new Object[] { value });
         }
         catch (Exception ex) {
             throw new JXPathException(

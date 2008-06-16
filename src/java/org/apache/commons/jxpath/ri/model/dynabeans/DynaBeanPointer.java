@@ -26,16 +26,17 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
 
 /**
- * A Pointer that points to a {@link DynaBean}.
+ * A Pointer that points to a {@link DynaBean}.  If the target DynaBean is Serializable,
+ * so should this instance be.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
 public class DynaBeanPointer extends PropertyOwnerPointer {
+    private static final long serialVersionUID = -9135052498044877965L;
+
     private QName name;
     private DynaBean dynaBean;
-
-    private static final long serialVersionUID = -9135052498044877965L;
 
     /**
      * Create a new DynaBeanPointer.

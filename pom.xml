@@ -228,7 +228,7 @@ under the License.
         <artifactId>findbugs-maven-plugin</artifactId>
         <version>1.2</version>
         <configuration>
-          <!--<excludeFilterFile>conf/findbugs-exclude-filter.xml</excludeFilterFile>-->
+          <excludeFilterFile>conf/findbugs-exclude-filter.xml</excludeFilterFile>
           <xmlOutput>true</xmlOutput>
         </configuration>
       </plugin>

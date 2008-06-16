@@ -17,6 +17,7 @@
 package org.apache.commons.jxpath;
 
 import java.beans.PropertyDescriptor;
+import java.io.Serializable;
 
 /**
  * JXPathBeanInfo  is similar to {@link java.beans.BeanInfo} in that it describes
@@ -33,7 +34,7 @@ import java.beans.PropertyDescriptor;
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$
  */
-public interface JXPathBeanInfo  {
+public interface JXPathBeanInfo extends Serializable {
 
     /**
      * Returns true if objects of this class are treated as atomic

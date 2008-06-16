@@ -32,7 +32,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class PrecedingOrFollowingContext extends EvalContext {
     private NodeTest nodeTest;
     private boolean setStarted = false;
-    private Stack stack;
+    private Stack stack = null;
     private NodePointer currentNodePointer;
     private NodePointer currentRootLocation;
     private boolean reverse;
@@ -62,7 +62,6 @@ public class PrecedingOrFollowingContext extends EvalContext {
 
     public void reset() {
         super.reset();
-        stack = new Stack();
         setStarted = false;
     }
 
@@ -82,6 +81,11 @@ public class PrecedingOrFollowingContext extends EvalContext {
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;
+            if (stack == null) {
+                stack = new Stack();
+            } else {
+                stack.clear();
+            }
             currentRootLocation = parentContext.getCurrentNodePointer();
             NodePointer parent = currentRootLocation.getParent();
             if (parent != null) {

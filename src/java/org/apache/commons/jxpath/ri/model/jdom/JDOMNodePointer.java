@@ -481,7 +481,8 @@ public class JDOMNodePointer extends NodePointer {
      */
     public boolean isLanguage(String lang) {
         String current = getLanguage();
-        return current == null ? super.isLanguage(lang) : current.toUpperCase().startsWith(lang.toUpperCase());
+        return current == null ? super.isLanguage(lang) : current.toUpperCase(
+                Locale.ENGLISH).startsWith(lang.toUpperCase(Locale.ENGLISH));
     }
 
     /**

@@ -120,8 +120,7 @@ public class CollectionPointer extends NodePointer {
     }
 
     public NodePointer createPath(JXPathContext context) {
-        Object collection = getBaseValue();
-        if (ValueUtils.getLength(collection) <= index) {
+        if (ValueUtils.getLength(getBaseValue()) <= index) {
             collection = ValueUtils.expandCollection(getNode(), index + 1);
         }
         return this;

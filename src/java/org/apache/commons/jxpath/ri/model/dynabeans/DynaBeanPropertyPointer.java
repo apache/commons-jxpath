@@ -28,7 +28,8 @@ import org.apache.commons.jxpath.util.TypeUtils;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
- * Pointer pointing to a property of a {@link DynaBean}.
+ * Pointer pointing to a property of a {@link DynaBean}. If the target DynaBean is
+ * Serializable, so should this instance be.
  *
  * @author Dmitri Plotnikov
  * @version $Revision$ $Date$

@@ -16,6 +16,7 @@
  */
 package org.apache.commons.jxpath.xml;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -127,7 +128,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
                     }
                 }
             }
-            catch (Exception ex) {
+            catch (IOException ex) {
                 throw new JXPathException(
                     "Cannot read XML from: " + xmlURL.toString(),
                     ex);

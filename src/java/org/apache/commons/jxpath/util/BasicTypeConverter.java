@@ -508,9 +508,9 @@ public class BasicTypeConverter implements TypeConverter {
      * Value pointer
      */
     static final class ValuePointer implements Pointer {
-        private Object bean;
-
         private static final long serialVersionUID = -4817239482392206188L;
+        
+        private Object bean;
 
         /**
          * Create a new ValuePointer.

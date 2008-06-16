@@ -58,7 +58,7 @@ public class PageContextHandler implements DynamicPropertyHandler {
         while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        return (String[]) list.toArray(new String[0]);
+        return (String[]) list.toArray(new String[list.size()]);
     }
 
     /**

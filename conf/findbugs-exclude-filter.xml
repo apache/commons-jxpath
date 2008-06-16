@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<FindBugsFilter>
+  <Match>
+    <!-- deprecated class: -->
+    <Class name="org.apache.commons.jxpath.XMLDocumentContainer" />
+  </Match>
+  <Match>
+    <Package name="org.apache.commons.jxpath.ri.parser" />
+  </Match>
+  <Match>
+    <Or>
+      <Package name="org.apache.commons.jxpath.ri" />
+      <Package name="~org\.apache\.commons\.jxpath\.ri\..*" />
+    </Or>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP" />
+      <Bug pattern="EI_EXPOSE_REP2" />
+      <Bug pattern="MS_EXPOSE_REP" />
+      <Bug pattern="BC_UNCONFIRMED_CAST" />
+    </Or>
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.JXPathContextFactory" />
+    <Method name="findFactory" />
+    <Bug pattern="REC_CATCH_EXCEPTION" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.JXPathIntrospector" />
+    <Or>
+      <Method name="findInformant" />
+      <Method name="instantiate" />
+    </Or>
+    <Bug pattern="REC_CATCH_EXCEPTION" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.util.BasicTypeConverter" />
+    <Or>
+      <Method name="allocateNumber" />
+      <Method name="canCreateCollection" />
+    </Or>
+    <Bug pattern="REC_CATCH_EXCEPTION" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.util.ValueUtils" />
+    <Or>
+      <Method name="getValue" />
+      <Method name="setValue" />
+    </Or>
+    <Bug pattern="REC_CATCH_EXCEPTION" />
+  </Match>
+  <Match>
+    <Or>
+      <Class name="org.apache.commons.jxpath.xml.DOMParser" />
+      <Class name="org.apache.commons.jxpath.xml.JDOMParser" />
+    </Or>
+    <Method name="parseXML" />
+    <Bug pattern="REC_CATCH_EXCEPTION" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.JXPathBasicBeanInfo" />
+    <Method name="getPropertyDescriptors" />
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP" />
+      <Bug pattern="NP_NULL_ON_SOME_PATH_EXCEPTION" />
+    </Or>
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.JXPathBasicBeanInfo" />
+    <Field name="propertyDescriptorMap" />
+    <Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.ri.model.beans.BeanPropertyPointer" />
+    <Field name="names" />
+    <Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.ri.compiler.CoreFunction" />
+    <Or>
+      <Local name="maxArgs" />
+      <Local name="minArgs" />
+      <Local name="argCount" />
+    </Or>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.ri.axes.SimplePathInterpreter" />
+    <Local name="round" />
+    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+  </Match>
+  <Match>
+    <Class name="~org\.apache\.commons\.jxpath\.ri\.model\.dyna.*\.Dyna.*Pointer" />
+    <Or>
+      <Field name="dynaBean" />
+      <Field name="handler" />
+    </Or>
+    <Bug pattern="SE_BAD_FIELD" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.ri.model.dom.DOMAttributePointer" />
+    <Field name="attr" />
+    <Bug pattern="SE_BAD_FIELD" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.ri.model.dom.DOMNodePointer" />
+    <Field name="node" />
+    <Bug pattern="SE_BAD_FIELD" />
+  </Match>
+  <!-- trust we're not dumb enough to do this by accident -->
+  <Match>
+    <Method name="equalStrings" />
+    <Bug pattern="ES_COMPARING_PARAMETER_STRING_WITH_EQ" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.ri.model.NodePointer" />
+    <Field name="rootNode" />
+    <Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.ri.model.NodePointer" />
+    <Bug pattern="EQ_COMPARETO_USE_OBJECT_EQUALS" />
+  </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.util.BasicTypeConverter$ValuePointer" />
+    <Bug pattern="EQ_COMPARETO_USE_OBJECT_EQUALS" />
+  </Match>
+  <!-- if/when we go to Java 1.4, use Double.compare(double, double) and remove this -->
+  <Bug pattern="FE_FLOATING_POINT_EQUALITY" />
+</FindBugsFilter>

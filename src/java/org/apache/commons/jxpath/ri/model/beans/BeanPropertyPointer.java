@@ -32,16 +32,17 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * @version $Revision$ $Date$
  */
 public class BeanPropertyPointer extends PropertyPointer {
+    private static final long serialVersionUID = -6008991447676468786L;
+
+    private static final Object UNINITIALIZED = new Object();
+
     private String propertyName;
     private JXPathBeanInfo beanInfo;
-    private PropertyDescriptor[] propertyDescriptors;
-    private PropertyDescriptor propertyDescriptor;//TODO determine proper serialization strategy
-    private String[] names;
-    private static final Object UNINITIALIZED = new Object();
     private Object baseValue = UNINITIALIZED;
     private Object value = UNINITIALIZED;
-
-    private static final long serialVersionUID = -6008991447676468786L;
+    private transient String[] names;
+    private transient PropertyDescriptor[] propertyDescriptors;
+    private transient PropertyDescriptor propertyDescriptor;
 
     /**
      * Create a new BeanPropertyPointer.
