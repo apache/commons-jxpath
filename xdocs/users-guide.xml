@@ -209,7 +209,7 @@ String fName = (String)context.getValue("firstName");
         </p>
         <p>
           Note that using the XPath <code>"@firstName"</code> instead of 
-          <code>"firstName"</code> whould produce the same result, because the 
+          <code>"firstName"</code> would produce the same result, because the 
           <code>"child::"</code> and <code>"attribute::"</code> axes are equivalent.
         </p>
       </subsection>
