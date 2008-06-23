@@ -48,10 +48,8 @@ public class SelfContext extends EvalContext {
     }
 
     public NodePointer getCurrentNodePointer() {
-        if (position == 0) {
-            if (!setPosition(1)) {
-                return null;
-            }
+        if (position == 0 && !setPosition(1)) {
+            return null;
         }
         return nodePointer;
     }

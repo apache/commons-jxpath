@@ -148,7 +148,7 @@ public abstract class JXPathContextFactory {
         try {
             debug = System.getProperty("jxpath.debug") != null;
         }
-        catch (SecurityException se) {
+        catch (SecurityException se) { //NOPMD
             // This is ok
         }
     }
@@ -174,7 +174,7 @@ public abstract class JXPathContextFactory {
             }
 
         }
-        catch (SecurityException se) {
+        catch (SecurityException se) { //NOPMD
             // Ignore
        }
 
@@ -193,11 +193,13 @@ public abstract class JXPathContextFactory {
                 FileInputStream fis = new FileInputStream(f);
                 try {
                     props.load(fis);
-                } finally {
+                }
+                finally {
                     if (fis != null) {
                         try {
                             fis.close();
-                        } catch (IOException e) {
+                        }
+                        catch (IOException e) { //NOPMD
                             //swallow
                         }
                     }
@@ -240,10 +242,12 @@ public abstract class JXPathContextFactory {
                 String factory = null;
                 try {
                     factory = rd.readLine();
-                } finally {
+                }
+                finally {
                     try {
                         rd.close();
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e) { //NOPMD
                         //swallow
                     }
                 }

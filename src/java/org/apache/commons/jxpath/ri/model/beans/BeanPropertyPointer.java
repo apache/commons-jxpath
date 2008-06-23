@@ -123,15 +123,16 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     public void setIndex(int index) {
-        if (this.index != index) {
-            // When dealing with a scalar, index == 0 is equivalent to
-            // WHOLE_COLLECTION, so do not change it.
-            if (this.index != WHOLE_COLLECTION
+        if (this.index == index) {
+            return;
+        }
+        // When dealing with a scalar, index == 0 is equivalent to
+        // WHOLE_COLLECTION, so do not change it.
+        if (this.index != WHOLE_COLLECTION
                 || index != 0
                 || isCollection()) {
-                super.setIndex(index);
-                value = UNINITIALIZED;
-            }
+            super.setIndex(index);
+            value = UNINITIALIZED;
         }
     }
 

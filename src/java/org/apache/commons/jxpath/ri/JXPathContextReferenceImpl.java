@@ -352,11 +352,9 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     public Object getValue(String xpath, Expression expr) {
         Object result = expr.computeValue(getEvalContext());
         if (result == null) {
-            if (expr instanceof Path) {
-                if (!isLenient()) {
-                    throw new JXPathNotFoundException("No value for xpath: "
-                            + xpath);
-                }
+            if (expr instanceof Path && !isLenient()) {
+                throw new JXPathNotFoundException("No value for xpath: "
+                        + xpath);
             }
             return null;
         }

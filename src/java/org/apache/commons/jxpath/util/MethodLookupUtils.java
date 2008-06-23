@@ -70,7 +70,7 @@ public class MethodLookupUtils {
                     return constructor;
                 }
             }
-            catch (NoSuchMethodException ex) {
+            catch (NoSuchMethodException ex) { //NOPMD
                 // Ignore
             }
         }
@@ -139,7 +139,7 @@ public class MethodLookupUtils {
                     return method;
                 }
             }
-            catch (NoSuchMethodException ex) {
+            catch (NoSuchMethodException ex) { //NOPMD
                 // Ignore
             }
         }
@@ -224,7 +224,7 @@ public class MethodLookupUtils {
                     return method;
                 }
             }
-            catch (NoSuchMethodException ex) {
+            catch (NoSuchMethodException ex) { //NOPMD
                 // Ignore
             }
         }

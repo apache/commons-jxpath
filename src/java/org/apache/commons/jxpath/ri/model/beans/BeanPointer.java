@@ -117,14 +117,12 @@ public class BeanPointer extends PropertyOwnerPointer {
         }
 
         BeanPointer other = (BeanPointer) object;
-        if (parent != other.parent) {
-            if (parent == null || !parent.equals(other.parent)) {
-                return false;
-            }
+        if (parent != other.parent && (parent == null || !parent.equals(other.parent))) {
+            return false;
         }
 
         if ((name == null && other.name != null)
-            || (name != null && !name.equals(other.name))) {
+                || (name != null && !name.equals(other.name))) {
             return false;
         }
 
@@ -135,8 +133,8 @@ public class BeanPointer extends PropertyOwnerPointer {
         }
 
         if (bean instanceof Number
-            || bean instanceof String
-            || bean instanceof Boolean) {
+                || bean instanceof String
+                || bean instanceof Boolean) {
             return bean.equals(other.bean);
         }
         return bean == other.bean;

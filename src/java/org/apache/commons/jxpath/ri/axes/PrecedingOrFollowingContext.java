@@ -83,7 +83,8 @@ public class PrecedingOrFollowingContext extends EvalContext {
             setStarted = true;
             if (stack == null) {
                 stack = new Stack();
-            } else {
+            }
+            else {
                 stack.clear();
             }
             currentRootLocation = parentContext.getCurrentNodePointer();

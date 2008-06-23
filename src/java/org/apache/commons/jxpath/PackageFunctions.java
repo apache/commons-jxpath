@@ -115,7 +115,7 @@ public class PackageFunctions implements Functions {
         String namespace,
         String name,
         Object[] parameters) {
-        if ((namespace == null && this.namespace != null)
+        if ((namespace == null && this.namespace != null) //NOPMD
             || (namespace != null && !namespace.equals(this.namespace))) {
             return null;
         }

@@ -89,7 +89,8 @@ public class DescendantContext extends EvalContext {
             setStarted = true;
             if (stack == null) {
                 stack = new Stack();
-            } else {
+            }
+            else {
                 stack.clear();
             }
             currentNodePointer = parentContext.getCurrentNodePointer();

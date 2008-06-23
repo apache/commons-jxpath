@@ -168,7 +168,7 @@ public class JXPathIntrospector {
         try {
             return (JXPathBeanInfo) instantiate(beanClass, name);
         }
-        catch (Exception ex) {
+        catch (Exception ex) { //NOPMD
             // Just drop through
         }
 
@@ -178,7 +178,7 @@ public class JXPathIntrospector {
                 return (JXPathBeanInfo) beanClass.newInstance();
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex) { //NOPMD
             // Just drop through
         }
 
@@ -204,7 +204,7 @@ public class JXPathIntrospector {
                 Class cls = cl.loadClass(className);
                 return cls.newInstance();
             }
-            catch (Exception ex) {
+            catch (Exception ex) { //NOPMD
                 // Just drop through and try the system classloader.
             }
         }

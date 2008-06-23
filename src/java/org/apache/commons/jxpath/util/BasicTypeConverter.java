@@ -66,29 +66,25 @@ public class BasicTypeConverter implements TypeConverter {
             return true;
         }
 
-        if (object instanceof Boolean) {
-            if (Number.class.isAssignableFrom(useType)
-                    || "java.util.concurrent.atomic.AtomicBoolean"
-                            .equals(useType.getName())) {
-                return true;
-            }
+        if (object instanceof Boolean && (Number.class.isAssignableFrom(useType)
+                || "java.util.concurrent.atomic.AtomicBoolean"
+                        .equals(useType.getName()))) {
+            return true;
         }
-        if (object instanceof Number) {
-            if (Number.class.isAssignableFrom(useType) || useType == Boolean.class) {
-                return true;
-            }
+        if (object instanceof Number
+                && (Number.class.isAssignableFrom(useType) || useType == Boolean.class)) {
+            return true;
         }
-        if (object instanceof String) {
-            if (useType == Boolean.class
-                || useType == Character.class
-                || useType == Byte.class
-                || useType == Short.class
-                || useType == Integer.class
-                || useType == Long.class
-                || useType == Float.class
-                || useType == Double.class) {
+        if (object instanceof String
+                && (useType == Boolean.class
+                        || useType == Character.class
+                        || useType == Byte.class
+                        || useType == Short.class
+                        || useType == Integer.class
+                        || useType == Long.class
+                        || useType == Float.class
+                        || useType == Double.class)) {
                 return true;
-            }
         }
         if (fromType.isArray()) {
             // Collection -> array
@@ -509,7 +505,7 @@ public class BasicTypeConverter implements TypeConverter {
      */
     static final class ValuePointer implements Pointer {
         private static final long serialVersionUID = -4817239482392206188L;
-        
+
         private Object bean;
 
         /**
