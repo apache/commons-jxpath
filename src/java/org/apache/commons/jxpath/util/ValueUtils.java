@@ -50,10 +50,10 @@ public class ValueUtils {
      * @return boolean
      */
     public static boolean isCollection(Object value) {
+        value = getValue(value);
         if (value == null) {
             return false;
         }
-        value = getValue(value);
         if (value.getClass().isArray()) {
             return true;
         }
