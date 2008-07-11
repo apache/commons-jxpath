@@ -58,108 +58,108 @@
         JXPathContext class.
       </p>
       <ul>
-        <li><a href="#Object Graph Traversal">Object Graph Traversal</a>
+        <li><a href="#Object_Graph_Traversal">Object Graph Traversal</a>
           <ul>
-            <li><a href="#JavaBean Property Access">JavaBean Property Access</a>
+            <li><a href="#JavaBean_Property_Access">JavaBean Property Access</a>
             </li>
-            <li><a href="#Lenient Mode">Lenient Mode</a>
+            <li><a href="#Lenient_Mode">Lenient Mode</a>
             </li>
-            <li><a href="#Nested Bean Property Access">Nested Bean Property Access</a>
+            <li><a href="#Nested_Bean_Property_Access">Nested Bean Property Access</a>
             </li>
-            <li><a href="#Collection Subscripts">Collection Subscripts</a>
+            <li><a href="#Collection_Subscripts">Collection Subscripts</a>
             </li>
-            <li><a href="#Retrieving Multiple Results">Retrieving Multiple Results</a>
+            <li><a href="#Retrieving_Multiple_Results">Retrieving Multiple Results</a>
             </li>
-            <li><a href="#Map Element Access">Map Element Access</a>
+            <li><a href="#Map_Element_Access">Map Element Access</a>
             </li>
-            <li><a href="#DOM/JDOM Document Access">DOM/JDOM Document Access</a>
+            <li><a href="#DOMJDOM_Document_Access">DOM/JDOM Document Access</a>
             </li>
-            <li><a href="#Registering Namespaces">Registering Namespaces</a>
+            <li><a href="#Registering_Namespaces">Registering Namespaces</a>
             </li>
             <li><a href="#Containers">Containers</a>
             </li>
-            <li><a href="#Functions id() and key()">Functions id() and key()</a>
+            <li><a href="#Functions_id_and_key">Functions id() and key()</a>
             </li>
           </ul>
         </li>
-        <li><a href="#XPath Axes And Object Graphs">XPath Axes And Object Graphs</a>
+        <li><a href="#XPath_Axes_And_Object_Graphs">XPath Axes And Object Graphs</a>
           <ul>
-            <li><a href="#Parent/child Relationship">Parent/child Relationship</a>
+            <li><a href="#Parentchild_Relationship">Parent/child Relationship</a>
             </li>
-            <li><a href="#Document Order">Document Order</a>
+            <li><a href="#Document_Order">Document Order</a>
             </li>
             <li><a href="#Attributes">Attributes</a>
             </li>
           </ul>
         </li>
-        <li><a href="#Exceptions During XPath Evaluation">Exceptions During XPath Evaluation</a>
+        <li><a href="#Exceptions_During_XPath_Evaluation">Exceptions During XPath Evaluation</a>
         </li>
-        <li><a href="#Modifying Object Graphs">Modifying Object Graphs</a>
+        <li><a href="#Modifying_Object_Graphs">Modifying Object Graphs</a>
           <ul>
-            <li><a href="#Setting Properties">Setting Properties</a>
+            <li><a href="#Setting_Properties">Setting Properties</a>
             </li>
-            <li><a href="#Creating Objects">Creating Objects</a>
+            <li><a href="#Creating_Objects">Creating Objects</a>
             </li>
           </ul>
         </li>
         <li><a href="#Variables">Variables</a>
           <ul>
-            <li><a href="#Custom Variable Pools">Custom Variable Pools</a>
+            <li><a href="#Custom_Variable_Pools">Custom Variable Pools</a>
             </li>
           </ul>
         </li>
-        <li><a href="#Servlet Contexts">Servlet Contexts</a>
+        <li><a href="#Servlet_Contexts">Servlet Contexts</a>
           <ul>
-            <li><a href="#JSP Page Context">JSP Page Context</a>
+            <li><a href="#JSP_Page_Context">JSP Page Context</a>
             </li>
-            <li><a href="#Servlet Request Context">Servlet Request Context</a>
+            <li><a href="#Servlet_Request_Context">Servlet Request Context</a>
             </li>
-            <li><a href="#HttpSession Context">HttpSession Context</a>
+            <li><a href="#HttpSession_Context">HttpSession Context</a>
             </li>
-            <li><a href="#ServletContext Context">ServletContext Context</a>
+            <li><a href="#ServletContext_Context">ServletContext Context</a>
             </li>
           </ul>
         </li>
         <li><a href="#Pointers">Pointers</a>
         </li>
-        <li><a href="#Relative Contexts">Relative Contexts</a>
+        <li><a href="#Relative_Contexts">Relative Contexts</a>
         </li>
-        <li><a href="#Extension Functions">Extension Functions</a>
+        <li><a href="#Extension_Functions">Extension Functions</a>
           <ul>
-            <li><a href="#Standard Extension Functions">Standard Extension Functions</a>
+            <li><a href="#Standard_Extension_Functions">Standard Extension Functions</a>
             </li>
-            <li><a href="#Custom Extension Functions">Custom Extension Functions</a>
+            <li><a href="#Custom_Extension_Functions">Custom Extension Functions</a>
             </li>
-            <li><a href="#Expression Context">Expression Context</a>
+            <li><a href="#Expression_Context">Expression Context</a>
             </li>
-            <li><a href="#Collections as Arguments">Collections as Arguments</a>
+            <li><a href="#Collections_as_Arguments">Collections as Arguments</a>
             </li>
-            <li><a href="#Collection as the Return Value">Collection as the Return Value</a>
+            <li><a href="#Collection_as_the_Return_Value">Collection as the Return Value</a>
             </li>
           </ul>
         </li>
-        <li><a href="#Type Conversions">Type Conversions</a>
+        <li><a href="#Type_Conversions">Type Conversions</a>
         </li>
         <li><a href="#Internationalization">Internationalization</a>
         </li>
-        <li><a href="#Nested Contexts">Nested Contexts</a>
+        <li><a href="#Nested_Contexts">Nested Contexts</a>
         </li>
-        <li><a href="#Compiled Expressions">Compiled Expressions</a>
+        <li><a href="#Compiled_Expressions">Compiled Expressions</a>
         </li>
-        <li><a href="#Customizing JXPath">Customizing JXPath</a>
+        <li><a href="#Customizing_JXPath">Customizing JXPath</a>
           <ul>
-            <li><a href="#Custom JXPathBeanInfo">Custom JXPathBeanInfo</a>
+            <li><a href="#Custom_JXPathBeanInfo">Custom JXPathBeanInfo</a>
             </li>
-            <li><a href="#Custom DynamicPropertyHandler">Custom DynamicPropertyHandler</a>
+            <li><a href="#Custom_DynamicPropertyHandler">Custom DynamicPropertyHandler</a>
             </li>
-            <li><a href="#Custom Pointers and Iterators">Custom Pointers and Iterators</a>
+            <li><a href="#Custom_Pointers_and_Iterators">Custom Pointers and Iterators</a>
             </li>
-            <li><a href="#Alternative JXPath Implementation">Alternative JXPath Implementation</a>
+            <li><a href="#Alternative_JXPath_Implementation">Alternative JXPath Implementation</a>
             </li>
           </ul>
         </li>
-        <li><a href="#Miscellaneous">Miscellaneous</a>
-        </li>
+        <!--li><a href="#Miscellaneous">Miscellaneous</a>
+        </li-->
       </ul>
     </section>
 
