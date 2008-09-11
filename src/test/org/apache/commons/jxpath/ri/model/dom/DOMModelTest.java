@@ -17,6 +17,7 @@
 package org.apache.commons.jxpath.ri.model.dom;
 
 import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 
@@ -49,7 +50,13 @@ public class DOMModelTest extends XMLModelTestCase {
         assertXPathNodeType(context, "//location/@name", Attr.class);
         assertXPathNodeType(context, "//vendor", Element.class);
     }
-    
+
+    public void testGetElementDescendantOrSelf() {
+        JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
+        assertTrue(childContext.getContextBean() instanceof Element);
+        assertXPathNodeType(childContext, "//vendor", Element.class);
+    }
+
     protected String getXMLSignature(
         Object node,
         boolean elements,
