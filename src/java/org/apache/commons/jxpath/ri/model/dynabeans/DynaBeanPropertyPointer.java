@@ -16,6 +16,7 @@
  */
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.beanutils.DynaBean;
@@ -35,6 +36,8 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * @version $Revision$ $Date$
  */
 public class DynaBeanPropertyPointer extends PropertyPointer {
+    private static final String CLASS = "class";
+
     private DynaBean dynaBean;
     private String name;
     private String[] names;
@@ -71,19 +74,15 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
         /* @todo do something about the sorting - LIKE WHAT? - MJB */
         if (names == null) {
             DynaClass dynaClass = dynaBean.getDynaClass();
-            DynaProperty[] properties = dynaClass.getDynaProperties();
-            int count = properties.length;
-            boolean hasClass = dynaClass.getDynaProperty("class") != null;
-            if (hasClass) {
-                count--;       // Exclude "class" from properties
-            }
-            names = new String[count];
-            for (int i = 0, j = 0; i < properties.length; i++) {
-                String name = properties[i].getName();
-                if (!hasClass || !name.equals("class")) {
-                    names[j++] = name;
+            DynaProperty[] dynaProperties = dynaClass.getDynaProperties();
+            ArrayList properties = new ArrayList(dynaProperties.length);
+            for (int i = 0; i < dynaProperties.length; i++) {
+                String name = dynaProperties[i].getName();
+                if (!CLASS.equals(name)) {
+                    properties.add(name);
                 }
             }
+            names = (String[]) properties.toArray(new String[properties.size()]);
             Arrays.sort(names);
         }
         return names;
