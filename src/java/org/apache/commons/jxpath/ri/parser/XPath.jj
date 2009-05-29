@@ -281,6 +281,7 @@ TOKEN:
 |   <FUNCTION_STRING: "string">
 |   <FUNCTION_CONCAT: "concat">
 |   <FUNCTION_STARTS_WITH: "starts-with">
+|   <FUNCTION_ENDS_WITH: "ends-with">
 |   <FUNCTION_CONTAINS: "contains">
 |   <FUNCTION_SUBSTRING_BEFORE: "substring-before">
 |   <FUNCTION_SUBSTRING_AFTER: "substring-after">
@@ -326,6 +327,7 @@ String NCName() :
     |   <FUNCTION_STRING>
     |   <FUNCTION_CONCAT>
     |   <FUNCTION_STARTS_WITH>
+    |   <FUNCTION_ENDS_WITH>
     |   <FUNCTION_CONTAINS>
     |   <FUNCTION_SUBSTRING_BEFORE>
     |   <FUNCTION_SUBSTRING_AFTER>
@@ -383,6 +385,7 @@ int CoreFunctionName() :
     |   <FUNCTION_STRING>           { code = Compiler.FUNCTION_STRING; }
     |   <FUNCTION_CONCAT>           { code = Compiler.FUNCTION_CONCAT; }
     |   <FUNCTION_STARTS_WITH>      { code = Compiler.FUNCTION_STARTS_WITH; }
+    |   <FUNCTION_ENDS_WITH>        { code = Compiler.FUNCTION_ENDS_WITH; }
     |   <FUNCTION_CONTAINS>         { code = Compiler.FUNCTION_CONTAINS; }
     |   <FUNCTION_SUBSTRING_BEFORE> { code = Compiler.FUNCTION_SUBSTRING_BEFORE; }
     |   <FUNCTION_SUBSTRING_AFTER>  { code = Compiler.FUNCTION_SUBSTRING_AFTER; }

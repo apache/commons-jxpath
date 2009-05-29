@@ -96,6 +96,8 @@ public interface Compiler {
     public static final int FUNCTION_NULL = 28;
     public static final int FUNCTION_KEY = 29;
     public static final int FUNCTION_FORMAT_NUMBER = 30;
+    
+    public static final int FUNCTION_ENDS_WITH = 31;
 
     /**
      * Produces an EXPRESSION object that represents a numeric constant.

@@ -89,6 +89,8 @@ public class CoreFunction extends Operation {
                 return "concat";
             case Compiler.FUNCTION_STARTS_WITH :
                 return "starts-with";
+            case Compiler.FUNCTION_ENDS_WITH :
+                return "ends-with";
             case Compiler.FUNCTION_CONTAINS :
                 return "contains";
             case Compiler.FUNCTION_SUBSTRING_BEFORE :
@@ -199,6 +201,7 @@ public class CoreFunction extends Operation {
             case Compiler.FUNCTION_ID:
             case Compiler.FUNCTION_CONCAT:
             case Compiler.FUNCTION_STARTS_WITH:
+            case Compiler.FUNCTION_ENDS_WITH:
             case Compiler.FUNCTION_CONTAINS:
             case Compiler.FUNCTION_SUBSTRING_BEFORE:
             case Compiler.FUNCTION_SUBSTRING_AFTER:
@@ -263,6 +266,8 @@ public class CoreFunction extends Operation {
                 return functionConcat(context);
             case Compiler.FUNCTION_STARTS_WITH :
                 return functionStartsWith(context);
+            case Compiler.FUNCTION_ENDS_WITH :
+                return functionEndsWith(context);
             case Compiler.FUNCTION_CONTAINS :
                 return functionContains(context);
             case Compiler.FUNCTION_SUBSTRING_BEFORE :
@@ -540,6 +545,19 @@ public class CoreFunction extends Operation {
         String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
         String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
         return s1.startsWith(s2) ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    /**
+     * ends-with() implementation.
+     * @param context evaluation context
+     * @return Boolean
+     * @since 1.4
+     */
+    protected Object functionEndsWith(EvalContext context) {
+        assertArgCount(2);
+        String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
+        return s1.endsWith(s2) ? Boolean.TRUE : Boolean.FALSE;
     }
 
     /**

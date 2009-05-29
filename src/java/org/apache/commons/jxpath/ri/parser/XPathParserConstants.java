@@ -57,26 +57,27 @@ public interface XPathParserConstants {
   int FUNCTION_STRING = 56;
   int FUNCTION_CONCAT = 57;
   int FUNCTION_STARTS_WITH = 58;
-  int FUNCTION_CONTAINS = 59;
-  int FUNCTION_SUBSTRING_BEFORE = 60;
-  int FUNCTION_SUBSTRING_AFTER = 61;
-  int FUNCTION_SUBSTRING = 62;
-  int FUNCTION_STRING_LENGTH = 63;
-  int FUNCTION_NORMALIZE_SPACE = 64;
-  int FUNCTION_TRANSLATE = 65;
-  int FUNCTION_BOOLEAN = 66;
-  int FUNCTION_NOT = 67;
-  int FUNCTION_TRUE = 68;
-  int FUNCTION_FALSE = 69;
-  int FUNCTION_NULL = 70;
-  int FUNCTION_LANG = 71;
-  int FUNCTION_NUMBER = 72;
-  int FUNCTION_SUM = 73;
-  int FUNCTION_FLOOR = 74;
-  int FUNCTION_CEILING = 75;
-  int FUNCTION_ROUND = 76;
-  int FUNCTION_FORMAT_NUMBER = 77;
-  int NCName = 78;
+  int FUNCTION_ENDS_WITH = 59;
+  int FUNCTION_CONTAINS = 60;
+  int FUNCTION_SUBSTRING_BEFORE = 61;
+  int FUNCTION_SUBSTRING_AFTER = 62;
+  int FUNCTION_SUBSTRING = 63;
+  int FUNCTION_STRING_LENGTH = 64;
+  int FUNCTION_NORMALIZE_SPACE = 65;
+  int FUNCTION_TRANSLATE = 66;
+  int FUNCTION_BOOLEAN = 67;
+  int FUNCTION_NOT = 68;
+  int FUNCTION_TRUE = 69;
+  int FUNCTION_FALSE = 70;
+  int FUNCTION_NULL = 71;
+  int FUNCTION_LANG = 72;
+  int FUNCTION_NUMBER = 73;
+  int FUNCTION_SUM = 74;
+  int FUNCTION_FLOOR = 75;
+  int FUNCTION_CEILING = 76;
+  int FUNCTION_ROUND = 77;
+  int FUNCTION_FORMAT_NUMBER = 78;
+  int NCName = 79;
 
   int DEFAULT = 0;
 
@@ -140,6 +141,7 @@ public interface XPathParserConstants {
     "\"string\"",
     "\"concat\"",
     "\"starts-with\"",
+    "\"ends-with\"",
     "\"contains\"",
     "\"substring-before\"",
     "\"substring-after\"",

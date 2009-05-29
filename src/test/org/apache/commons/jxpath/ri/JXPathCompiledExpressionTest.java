@@ -70,6 +70,7 @@ public class JXPathCompiledExpressionTest extends JXPathTestCase {
         assertXPathExpression("string(3)", CoreFunction.class);
         assertXPathExpression("concat('a', 'b')", CoreFunction.class);
         assertXPathExpression("starts-with('a', 'b')", CoreFunction.class);
+        assertXPathExpression("ends-with('a', 'b')", CoreFunction.class);
         assertXPathExpression("contains('a', 'b')", CoreFunction.class);
         assertXPathExpression("substring-before('a', 1)", CoreFunction.class);
         assertXPathExpression("substring-after('a', 2)", CoreFunction.class);

@@ -59,6 +59,8 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValue(context, "concat('a', 'b', 'c')", "abc");
         assertXPathValue(context, "starts-with('abc', 'ab')", Boolean.TRUE);
         assertXPathValue(context, "starts-with('xabc', 'ab')", Boolean.FALSE);
+        assertXPathValue(context, "ends-with('abc', 'bc')", Boolean.TRUE);
+        assertXPathValue(context, "ends-with('xabc', 'ab')", Boolean.FALSE);
         assertXPathValue(context, "contains('xabc', 'ab')", Boolean.TRUE);
         assertXPathValue(context, "contains('xabc', 'ba')", Boolean.FALSE);
         assertXPathValue(
