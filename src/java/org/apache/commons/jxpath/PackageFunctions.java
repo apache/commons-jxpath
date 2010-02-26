@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.apache.commons.jxpath.functions.ConstructorFunction;
 import org.apache.commons.jxpath.functions.MethodFunction;
+import org.apache.commons.jxpath.util.ClassLoaderUtil;
 import org.apache.commons.jxpath.util.MethodLookupUtils;
 import org.apache.commons.jxpath.util.TypeUtils;
 
@@ -185,7 +186,7 @@ public class PackageFunctions implements Functions {
 
         Class functionClass;
         try {
-            functionClass = Class.forName(className);
+            functionClass = ClassLoaderUtil.getClass(className, true);
         }
         catch (ClassNotFoundException ex) {
             throw new JXPathException(

@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.util.ClassLoaderUtil;
 
 /**
  * An XML document container reads and parses XML only when it is
@@ -178,7 +179,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
                 throw new JXPathException("Unsupported XML model: " + model);
             }
             try {
-                Class clazz = Class.forName(className);
+                Class clazz = ClassLoaderUtil.getClass(className, true);
                 parser = (XMLParser) clazz.newInstance();
             }
             catch (Exception ex) {

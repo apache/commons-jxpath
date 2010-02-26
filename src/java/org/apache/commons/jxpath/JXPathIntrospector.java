@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.apache.commons.jxpath.util.ClassLoaderUtil;
+
 /**
  * JXPathIntrospector  maintains a registry of {@link JXPathBeanInfo
  * JXPathBeanInfo} objects for Java classes.
@@ -205,12 +207,12 @@ public class JXPathIntrospector {
                 return cls.newInstance();
             }
             catch (Exception ex) { //NOPMD
-                // Just drop through and try the system classloader.
+                // Just drop through and use the ClassLoaderUtil.
             }
         }
 
-        // Now try the bootstrap classloader.
-        Class cls = Class.forName(className);
+        // Now try the ClassLoaderUtil.
+        Class cls = ClassLoaderUtil.getClass(className);
         return cls.newInstance();
     }
 }

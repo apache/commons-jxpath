@@ -51,6 +51,7 @@ import org.apache.commons.jxpath.ri.model.beans.CollectionPointerFactory;
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointerFactory;
 import org.apache.commons.jxpath.util.ReverseComparator;
+import org.apache.commons.jxpath.util.ClassLoaderUtil;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
@@ -811,12 +812,12 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             String existenceCheckClassName) {
         try {
             try {
-                Class.forName(existenceCheckClassName);
+                ClassLoaderUtil.getClass(existenceCheckClassName, true);
             }
             catch (ClassNotFoundException ex) {
                 return null;
             }
-            Class cls = Class.forName(className);
+            Class cls = ClassLoaderUtil.getClass(className, true);
             return cls.newInstance();
         }
         catch (Exception ex) {

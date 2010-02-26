@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+import org.apache.commons.jxpath.util.ClassLoaderUtil;
+
 /**
  * Defines a factory API that enables applications to obtain a
  * {@link JXPathContext} instance.  To acquire a JXPathContext, first call the
@@ -107,7 +109,7 @@ public abstract class JXPathContextFactory {
 
         JXPathContextFactory factoryImpl;
         try {
-            Class clazz = Class.forName(factoryImplName);
+            Class clazz = ClassLoaderUtil.getClass(factoryImplName, true);
             factoryImpl = (JXPathContextFactory) clazz.newInstance();
         }
         catch (ClassNotFoundException cnfe) {
