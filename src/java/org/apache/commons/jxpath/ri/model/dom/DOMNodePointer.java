@@ -507,7 +507,7 @@ public class DOMNodePointer extends NodePointer {
                     if (nsURI == null) {
                         buffer.append(ln);
                         buffer.append('[');
-                        buffer.append(getRelativePositionByName()).append(']');
+                        buffer.append(getRelativePositionByQName()).append(']');
                     }
                     else {
                         String prefix = getNamespaceResolver().getPrefix(nsURI);
@@ -516,7 +516,7 @@ public class DOMNodePointer extends NodePointer {
                             buffer.append(':');
                             buffer.append(ln);
                             buffer.append('[');
-                            buffer.append(getRelativePositionByName());
+                            buffer.append(getRelativePositionByQName());
                             buffer.append(']');
                         }
                         else {
@@ -553,19 +553,24 @@ public class DOMNodePointer extends NodePointer {
      * Get relative position of this among like-named siblings.
      * @return 1..n
      */
-    private int getRelativePositionByName() {
+    private int getRelativePositionByQName() {
         int count = 1;
         Node n = node.getPreviousSibling();
         while (n != null) {
-            if (n.getNodeType() == Node.ELEMENT_NODE) {
-                String nm = n.getNodeName();
-                if (nm.equals(node.getNodeName())) {
-                    count++;
-                }
+            if (n.getNodeType() == Node.ELEMENT_NODE && matchesQName(n)) {
+                count++;
             }
             n = n.getPreviousSibling();
         }
         return count;
+    }
+
+    private boolean matchesQName(Node n) {
+        if (getNamespaceURI() != null) {
+            return equalStrings(getNamespaceURI(n), getNamespaceURI())
+                    && equalStrings(node.getLocalName(), n.getLocalName());
+        }
+        return equalStrings(node.getNodeName(), n.getNodeName());
     }
 
     /**

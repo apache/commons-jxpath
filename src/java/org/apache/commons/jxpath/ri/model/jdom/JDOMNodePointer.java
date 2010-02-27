@@ -641,7 +641,7 @@ public class JDOMNodePointer extends NodePointer {
                 if (nsURI == null) {
                     buffer.append(ln);
                     buffer.append('[');
-                    buffer.append(getRelativePositionByName()).append(']');
+                    buffer.append(getRelativePositionByQName()).append(']');
                 }
                 else {
                     String prefix = getNamespaceResolver().getPrefix(nsURI);
@@ -650,7 +650,7 @@ public class JDOMNodePointer extends NodePointer {
                         buffer.append(':');
                         buffer.append(ln);
                         buffer.append('[');
-                        buffer.append(getRelativePositionByName());
+                        buffer.append(getRelativePositionByQName());
                         buffer.append(']');
                     }
                     else {
@@ -681,7 +681,7 @@ public class JDOMNodePointer extends NodePointer {
      * Get relative position of this among like-named siblings.
      * @return 1..n
      */
-    private int getRelativePositionByName() {
+    private int getRelativePositionByQName() {
         if (node instanceof Element) {
             Object parent = ((Element) node).getParent();
             if (!(parent instanceof Element)) {
@@ -693,8 +693,7 @@ public class JDOMNodePointer extends NodePointer {
             String name = ((Element) node).getQualifiedName();
             for (int i = 0; i < children.size(); i++) {
                 Object child = children.get(i);
-                if ((child instanceof Element)
-                    && ((Element) child).getQualifiedName().equals(name)) {
+                if (child instanceof Element && matchesQName(((Element) child))) {
                     count++;
                 }
                 if (child == node) {
@@ -704,6 +703,16 @@ public class JDOMNodePointer extends NodePointer {
             return count;
         }
         return 1;
+    }
+
+    private boolean matchesQName(Element element) {
+        if (getNamespaceURI() != null) {
+            String ns = getNamespaceURI(element);
+            if (ns == null || !ns.equals(getNamespaceURI())) {
+                return false;
+            }
+        }
+        return element.getName().equals(((Element) node).getName());
     }
 
     /**
