@@ -53,7 +53,7 @@ public class AliasedNamespaceIterationTest extends JXPathTestCase {
     public void testIterateDOM() {
         doTestIterate(DocumentContainer.MODEL_DOM);
     }
-    
+
     public void testIterateJDOM() {
         doTestIterate(DocumentContainer.MODEL_JDOM);
     }
