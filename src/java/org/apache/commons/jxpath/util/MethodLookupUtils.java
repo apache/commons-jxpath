@@ -98,7 +98,7 @@ public class MethodLookupUtils {
         }
         if (ambiguous) {
             throw new JXPathException(
-                "Ambigous constructor " + Arrays.asList(parameters));
+                "Ambiguous constructor " + Arrays.asList(parameters));
         }
         return constructor;
     }
@@ -169,7 +169,7 @@ public class MethodLookupUtils {
             }
         }
         if (ambiguous) {
-            throw new JXPathException("Ambigous method call: " + name);
+            throw new JXPathException("Ambiguous method call: " + name);
         }
         return method;
     }
@@ -254,7 +254,7 @@ public class MethodLookupUtils {
             }
         }
         if (ambiguous) {
-            throw new JXPathException("Ambigous method call: " + name);
+            throw new JXPathException("Ambiguous method call: " + name);
         }
         return method;
     }
