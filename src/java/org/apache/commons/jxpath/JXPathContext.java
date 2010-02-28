@@ -944,4 +944,13 @@ public abstract class JXPathContext {
                 "Namespace registration is not implemented by " + getClass());
     }
 
+    /**
+     * Set the ExceptionHandler used by this context, if any.
+     * @param exceptionHandler to set
+     * @since 1.4
+     */
+    public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+        throw new UnsupportedOperationException(
+                "ExceptionHandler registration is not implemented by " + getClass());
+    }
 }

@@ -28,6 +28,7 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import org.apache.commons.jxpath.CompiledExpression;
+import org.apache.commons.jxpath.ExceptionHandler;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.JXPathContext;
@@ -799,6 +800,15 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     public NamespaceResolver getNamespaceResolver() {
         namespaceResolver.seal();
         return namespaceResolver;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+        if (rootPointer instanceof NodePointer) {
+            ((NodePointer) rootPointer).setExceptionHandler(exceptionHandler);
+        }
     }
 
     /**

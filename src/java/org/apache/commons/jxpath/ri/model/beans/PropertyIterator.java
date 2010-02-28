@@ -120,8 +120,8 @@ public class PropertyIterator implements NodeIterator {
         try {
             return propertyNodePointer.getValuePointer();
         }
-        catch (Throwable ex) {
-            // @todo: should this exception be reported in any way?
+        catch (Throwable t) {
+            propertyNodePointer.handle(t);
             NullPropertyPointer npp =
                 new NullPropertyPointer(
                         propertyNodePointer.getImmediateParentPointer());
@@ -318,7 +318,7 @@ public class PropertyIterator implements NodeIterator {
             length = propertyNodePointer.getLength(); // TBD: cache length
         }
         catch (Throwable t) {
-            // @todo: should this exception be reported in any way?
+            propertyNodePointer.handle(t);
             length = 0;
         }
         return length;

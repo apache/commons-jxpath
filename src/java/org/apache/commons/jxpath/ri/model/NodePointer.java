@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.ExceptionHandler;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.NodeSet;
@@ -44,6 +45,9 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  */
 public abstract class NodePointer implements Pointer {
 
+    /** Serialization version */
+    private static final long serialVersionUID = 8117201322861007777L;
+
     /** Whole collection index. */
     public static final int WHOLE_COLLECTION = Integer.MIN_VALUE;
 
@@ -55,6 +59,7 @@ public abstract class NodePointer implements Pointer {
 
     private boolean attribute = false;
     private NamespaceResolver namespaceResolver;
+    private ExceptionHandler exceptionHandler;
     private transient Object rootNode;
 
     /**
@@ -803,6 +808,39 @@ public abstract class NodePointer implements Pointer {
      */
     public void printPointerChain() {
         printDeep(this, "");
+    }
+
+    /**
+     * Set the exceptionHandler of this NodePointer.
+     * @param exceptionHandler the ExceptionHandler to set
+     */
+    public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+        this.exceptionHandler = exceptionHandler;
+    }
+
+    /**
+     * Handle a Throwable using an installed ExceptionHandler, if available.
+     * Public to facilitate calling for RI support; not truly intended for public consumption.
+     * @param t to handle
+     * @param originator context
+     */
+    public void handle(Throwable t, NodePointer originator) {
+        if (exceptionHandler != null) {
+            exceptionHandler.handle(t, originator);
+            return;
+        }
+        if (parent != null) {
+            parent.handle(t, originator);
+        }
+    }
+
+    /**
+     * Handle a Throwable using an installed ExceptionHandler, if available.
+     * Public to facilitate calling for RI support; not truly intended for public consumption.
+     * @param t to handle
+     */
+    public void handle(Throwable t) {
+        handle(t, this);
     }
 
     /**
