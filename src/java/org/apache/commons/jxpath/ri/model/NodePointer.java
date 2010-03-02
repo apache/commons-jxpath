@@ -422,10 +422,10 @@ public abstract class NodePointer implements Pointer {
 
             String testPrefix = testName.getPrefix();
             String nodePrefix = nodeName.getPrefix();
-            if (!equalStrings(testPrefix, nodePrefix)) {
+            if (!safeEquals(testPrefix, nodePrefix)) {
                 String testNS = getNamespaceURI(testPrefix);
                 String nodeNS = getNamespaceURI(nodePrefix);
-                if (!equalStrings(testNS, nodeNS)) {
+                if (!safeEquals(testNS, nodeNS)) {
                     return false;
                 }
             }
@@ -436,16 +436,6 @@ public abstract class NodePointer implements Pointer {
         }
         return test instanceof NodeTypeTest
                 && ((NodeTypeTest) test).getNodeType() == Compiler.NODE_TYPE_NODE && isNode();
-    }
-
-    /**
-     * Compare two strings, either of which may be null, for equality.
-     * @param s1 the first String to compare
-     * @param s2 the second String to compare
-     * @return true if both Strings are null, same or equal
-     */
-    private static boolean equalStrings(String s1, String s2) {
-        return s1 == s2 || s1 != null && s1.equals(s2);
     }
 
     /**
@@ -740,7 +730,7 @@ public abstract class NodePointer implements Pointer {
         }
         // Let it throw a ClassCastException
         NodePointer pointer = (NodePointer) object;
-        if (parent == pointer.parent) {
+        if (safeEquals(parent, pointer.parent)) {
             return parent == null ? 0 : parent.compareChildNodePointers(this, pointer);
         }
 
@@ -791,7 +781,7 @@ public abstract class NodePointer implements Pointer {
             return r == 0 ? 1 : r;
         }
         //henceforth depth1 == depth2:
-        if (p1 == p2 || p1 != null && p1.equals(p2)) {
+        if (safeEquals(p1, p2)) {
             return 0;
         }
         if (depth1 == 1) {
@@ -919,5 +909,9 @@ public abstract class NodePointer implements Pointer {
         if (pointer.getImmediateParentPointer() != null) {
             printDeep(pointer.getImmediateParentPointer(), indent + "  ");
         }
+    }
+
+    private static boolean safeEquals(Object o1, Object o2) {
+        return o1 == o2 || o1 != null && o1.equals(o2);
     }
 }
