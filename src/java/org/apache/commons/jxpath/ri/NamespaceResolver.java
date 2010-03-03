@@ -49,7 +49,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
      * @return prefix if found
      * @since JXPath 1.3
      */
-    protected static String getPrefix(NodePointer pointer, String namespaceURI) {
+    protected static String getPrefix(final NodePointer pointer, String namespaceURI) {
         NodePointer currentPointer = pointer;
         while (currentPointer != null) {
             NodeIterator ni = currentPointer.namespaceIterator();
@@ -63,7 +63,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
                     }
                 }
             }
-            currentPointer = pointer.getParent();
+            currentPointer = currentPointer.getParent();
         }
         return null;
     }
