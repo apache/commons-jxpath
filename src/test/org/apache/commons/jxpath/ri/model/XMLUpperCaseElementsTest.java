@@ -21,7 +21,7 @@ import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 
 /**
- * Test for uppercase element matching, etc. from JXPATH-136.
+ * Test for uppercase element matching, etc. showing JXPATH-136 is not reproducible.
  * 
  * @author Matt Benson
  * @version $Revision$ $Date$
