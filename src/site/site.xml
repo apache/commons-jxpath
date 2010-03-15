@@ -26,7 +26,7 @@ under the License.
   <body>
     <menu name="JXPath">
       <item name="Overview"        href="/index.html"/>
-      <item name="Download"        href="http://commons.apache.org/downloads/download_jxpath.cgi"/>
+      <item name="Download"        href="http://commons.apache.org/jxpath/download_jxpath.cgi"/>
       <item name="User's Guide"    href="/users-guide.html"/>
       <item name="JavaDoc"         href="/apidocs/index.html"/>
       <item name="Release Notes"   href="/release-notes-1.3.html"/>
