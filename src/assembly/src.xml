@@ -42,9 +42,6 @@
             <directory>src</directory>
         </fileSet>
         <fileSet>
-            <directory>xdocs</directory>
-        </fileSet>
-        <fileSet>
             <directory>conf</directory>
         </fileSet>
     </fileSets>
