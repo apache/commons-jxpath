@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -32,8 +33,8 @@ import java.util.Set;
  * @version $Revision$ $Date$
  */
 public class FunctionLibrary implements Functions {
-    private List allFunctions = new ArrayList();
-    private HashMap byNamespace = null;
+    private final List allFunctions = new ArrayList();
+    private Map byNamespace;
 
     /**
      * Add functions to the library
@@ -59,10 +60,7 @@ public class FunctionLibrary implements Functions {
      * @return Set<String>
      */
     public Set getUsedNamespaces() {
-        if (byNamespace == null) {
-            prepareCache();
-        }
-        return byNamespace.keySet();
+        return functionCache().keySet();
     }
 
     /**
@@ -75,10 +73,7 @@ public class FunctionLibrary implements Functions {
      */
     public Function getFunction(String namespace, String name,
             Object[] parameters) {
-        if (byNamespace == null) {
-            prepareCache();
-        }
-        Object candidates = byNamespace.get(namespace);
+        Object candidates = functionCache().get(namespace);
         if (candidates instanceof Functions) {
             return ((Functions) candidates).getFunction(
                 namespace,
@@ -105,28 +100,34 @@ public class FunctionLibrary implements Functions {
     /**
      * Prepare the cache.
      */
-    private void prepareCache() {
-        byNamespace = new HashMap();
-        int count = allFunctions.size();
-        for (int i = 0; i < count; i++) {
-            Functions funcs = (Functions) allFunctions.get(i);
-            Set namespaces = funcs.getUsedNamespaces();
-            for (Iterator it = namespaces.iterator(); it.hasNext();) {
-                String ns = (String) it.next();
-                Object candidates = byNamespace.get(ns);
-                if (candidates == null) {
-                    byNamespace.put(ns, funcs);
-                }
-                else if (candidates instanceof Functions) {
-                    List lst = new ArrayList();
-                    lst.add(candidates);
-                    lst.add(funcs);
-                    byNamespace.put(ns, lst);
-                }
-                else {
-                    ((List) candidates).add(funcs);
+    private Map functionCache() {
+        if (byNamespace == null) {
+            synchronized (this) {
+                //read again
+                if (byNamespace == null) {
+                    byNamespace = new HashMap();
+                    int count = allFunctions.size();
+                    for (int i = 0; i < count; i++) {
+                        Functions funcs = (Functions) allFunctions.get(i);
+                        Set namespaces = funcs.getUsedNamespaces();
+                        for (Iterator it = namespaces.iterator(); it.hasNext();) {
+                            String ns = (String) it.next();
+                            Object candidates = byNamespace.get(ns);
+                            if (candidates == null) {
+                                byNamespace.put(ns, funcs);
+                            } else if (candidates instanceof Functions) {
+                                List lst = new ArrayList();
+                                lst.add(candidates);
+                                lst.add(funcs);
+                                byNamespace.put(ns, lst);
+                            } else {
+                                ((List) candidates).add(funcs);
+                            }
+                        }
+                    }
                 }
             }
         }
+        return byNamespace;
     }
 }
