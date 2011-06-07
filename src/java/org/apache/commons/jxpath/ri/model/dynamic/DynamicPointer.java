@@ -123,7 +123,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
     }
 
     public int hashCode() {
-        return System.identityHashCode(bean) + name.hashCode();
+        return System.identityHashCode(bean) + (name == null ? 0 : name.hashCode());
     }
 
     public boolean equals(Object object) {
@@ -136,6 +136,9 @@ public class DynamicPointer extends PropertyOwnerPointer {
         }
 
         DynamicPointer other = (DynamicPointer) object;
-        return bean == other.bean && name.equals(other.name);
+        if (bean != other.bean) {
+            return false;
+        }
+        return name == other.name || name != null && name.equals(other.name);
     }
 }
