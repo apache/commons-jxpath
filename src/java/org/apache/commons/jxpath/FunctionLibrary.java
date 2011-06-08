@@ -100,30 +100,25 @@ public class FunctionLibrary implements Functions {
     /**
      * Prepare the cache.
      */
-    private Map functionCache() {
+    private synchronized Map functionCache() {
         if (byNamespace == null) {
-            synchronized (this) {
-                //read again
-                if (byNamespace == null) {
-                    byNamespace = new HashMap();
-                    int count = allFunctions.size();
-                    for (int i = 0; i < count; i++) {
-                        Functions funcs = (Functions) allFunctions.get(i);
-                        Set namespaces = funcs.getUsedNamespaces();
-                        for (Iterator it = namespaces.iterator(); it.hasNext();) {
-                            String ns = (String) it.next();
-                            Object candidates = byNamespace.get(ns);
-                            if (candidates == null) {
-                                byNamespace.put(ns, funcs);
-                            } else if (candidates instanceof Functions) {
-                                List lst = new ArrayList();
-                                lst.add(candidates);
-                                lst.add(funcs);
-                                byNamespace.put(ns, lst);
-                            } else {
-                                ((List) candidates).add(funcs);
-                            }
-                        }
+            byNamespace = new HashMap();
+            int count = allFunctions.size();
+            for (int i = 0; i < count; i++) {
+                Functions funcs = (Functions) allFunctions.get(i);
+                Set namespaces = funcs.getUsedNamespaces();
+                for (Iterator it = namespaces.iterator(); it.hasNext();) {
+                    String ns = (String) it.next();
+                    Object candidates = byNamespace.get(ns);
+                    if (candidates == null) {
+                        byNamespace.put(ns, funcs);
+                    } else if (candidates instanceof Functions) {
+                        List lst = new ArrayList();
+                        lst.add(candidates);
+                        lst.add(funcs);
+                        byNamespace.put(ns, lst);
+                    } else {
+                        ((List) candidates).add(funcs);
                     }
                 }
             }
