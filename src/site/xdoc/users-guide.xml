@@ -1382,7 +1382,7 @@ TypeUtils.setTypeConverter(new JXPath11CompatibleTypeConverter());
 
     <section name="Type Conversions">
       <p>
-        JXPath automatically performs the following type convertions:
+        JXPath automatically performs the following type conversions:
       </p>
       <table>
         <tr>
@@ -1406,7 +1406,16 @@ TypeUtils.setTypeConverter(new JXPath11CompatibleTypeConverter());
           </td>
         </tr>
         <tr>
-          <td><i>any</i>
+          <td><i>null</i>
+          </td>
+          <td><i>string</i>
+          </td>
+          <td>
+            ""
+          </td>
+        </tr>
+        <tr>
+          <td><i>any non-null object</i>
           </td>
           <td>
             String
