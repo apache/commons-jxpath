@@ -85,7 +85,7 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
             return containsMatch((Iterator) left, right);
         }
         if (right instanceof Iterator) {
-            return containsMatch((Iterator) right, left);
+            return containsMatch(left, (Iterator) right);
         }
         double ld = InfoSetUtil.doubleValue(left);
         if (Double.isNaN(ld)) {
@@ -123,6 +123,22 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
         while (it.hasNext()) {
             Object element = it.next();
             if (compute(element, value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Learn whether any element returned from an Iterator matches a given value.
+     * @param it Iterator
+     * @param value to look for
+     * @return whether a match was found
+     */
+    private boolean containsMatch(Object value, Iterator it) {
+        while (it.hasNext()) {
+            Object element = it.next();
+            if (compute(value, element)) {
                 return true;
             }
         }
