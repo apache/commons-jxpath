@@ -315,7 +315,7 @@ public class MixedModelTest extends JXPathTestCase {
         assertXPathValueIterator(
             context,
             "$testnull/nothing[1]",
-            Collections.EMPTY_LIST);
+            list(null));
 
         JXPathContext ctx = JXPathContext.newContext(new TestNull());
         assertXPathValue(ctx, "nothing", null);

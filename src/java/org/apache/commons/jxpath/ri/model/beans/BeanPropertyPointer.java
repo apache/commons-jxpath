@@ -208,7 +208,7 @@ public class BeanPropertyPointer extends PropertyPointer {
         if (hint == -1) {
             return 1;
         }
-        return ValueUtils.getLength(getBaseValue());
+        return super.getLength();
     }
 
     /**
