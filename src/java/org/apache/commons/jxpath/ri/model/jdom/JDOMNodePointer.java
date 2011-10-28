@@ -690,7 +690,6 @@ public class JDOMNodePointer extends NodePointer {
 
             List children = ((Element) parent).getContent();
             int count = 0;
-            String name = ((Element) node).getQualifiedName();
             for (int i = 0; i < children.size(); i++) {
                 Object child = children.get(i);
                 if (child instanceof Element && matchesQName(((Element) child))) {
