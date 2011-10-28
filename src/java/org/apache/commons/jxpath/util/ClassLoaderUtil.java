@@ -40,11 +40,6 @@ public class ClassLoaderUtil {
    * Maps a primitive class name to its corresponding abbreviation used in array class names.
    */
   private static Map abbreviationMap = new HashMap();
-
-  /**
-   * Maps an abbreviation used in array class names to corresponding primitive class name.
-   */
-  private static Map reverseAbbreviationMap = new HashMap();
   
   /**
    * Add primitive type abbreviation to maps of abbreviations.
@@ -54,7 +49,6 @@ public class ClassLoaderUtil {
    */
   private static void addAbbreviation(String primitive, String abbreviation) {
       abbreviationMap.put(primitive, abbreviation);
-      reverseAbbreviationMap.put(abbreviation, primitive);
   }
   
   /**
