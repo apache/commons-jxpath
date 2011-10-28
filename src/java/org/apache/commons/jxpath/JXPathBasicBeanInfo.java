@@ -120,6 +120,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
                 }
                 catch (IntrospectionException ex) {
                     ex.printStackTrace();
+                    return new PropertyDescriptor[0];
                 }
             }
         }
