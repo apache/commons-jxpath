@@ -47,6 +47,9 @@ public class ServletContextHandler implements DynamicPropertyHandler {
      * @param bean to read
      */
     protected void collectPropertyNames(Set set, Object bean) {
+        if (bean instanceof HttpSessionAndServletContext) {
+            bean = ((HttpSessionAndServletContext) bean).getServletContext();
+        }
         Enumeration e = ((ServletContext) bean).getAttributeNames();
         while (e.hasMoreElements()) {
             set.add(e.nextElement());
