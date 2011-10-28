@@ -18,6 +18,7 @@ package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -35,7 +36,7 @@ public class ServletContextHandler implements DynamicPropertyHandler {
     private static final int DEFAULT_PROPERTY_COUNT = 16;
 
     public String[] getPropertyNames(Object context) {
-        HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
+        Set list = new HashSet(DEFAULT_PROPERTY_COUNT);
         collectPropertyNames(list, context);
         return (String[]) list.toArray(new String[list.size()]);
     }
@@ -45,7 +46,7 @@ public class ServletContextHandler implements DynamicPropertyHandler {
      * @param set destination
      * @param bean to read
      */
-    protected void collectPropertyNames(HashSet set, Object bean) {
+    protected void collectPropertyNames(Set set, Object bean) {
         Enumeration e = ((ServletContext) bean).getAttributeNames();
         while (e.hasMoreElements()) {
             set.add(e.nextElement());
