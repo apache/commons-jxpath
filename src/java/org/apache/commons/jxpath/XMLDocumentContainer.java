@@ -81,7 +81,7 @@ public class XMLDocumentContainer implements Container {
                     Transformer trans =
                         TransformerFactory.newInstance().newTransformer();
                     trans.transform(source, result);
-                    document = (Document) result.getNode();
+                    document = result.getNode();
                 }
                 else {
                     document = delegate.getValue();
