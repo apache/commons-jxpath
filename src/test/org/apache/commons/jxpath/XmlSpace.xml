@@ -19,7 +19,7 @@
 <!DOCTYPE test [
   <!ELEMENT test (text)>
   <!ELEMENT text ANY>
-  <!ATTLIST text xml:space (default|preserve) 'default'>
+  <!ATTLIST text xml:space (default|preserve) 'default' id>
 ]>
 
 <test>
