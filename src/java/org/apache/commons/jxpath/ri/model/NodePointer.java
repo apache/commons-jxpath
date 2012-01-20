@@ -23,6 +23,7 @@ import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.ExceptionHandler;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.Compiler;
@@ -913,5 +914,29 @@ public abstract class NodePointer implements Pointer {
 
     private static boolean safeEquals(Object o1, Object o2) {
         return o1 == o2 || o1 != null && o1.equals(o2);
+    }
+
+    /**
+     * Verify the structure of a given NodePointer.
+     * @param nodePointer
+     * @return nodePointer
+     * @throws JXPathNotFoundException
+     */
+    public static NodePointer verify(NodePointer nodePointer) {
+        if (!nodePointer.isActual()) {
+            // We need to differentiate between pointers representing
+            // a non-existing property and ones representing a property
+            // whose value is null.  In the latter case, the pointer
+            // is going to have isActual == false, but its parent,
+            // which is a non-node pointer identifying the bean property,
+            // will return isActual() == true.
+            NodePointer parent = nodePointer.getImmediateParentPointer();
+            if (parent == null
+                || !parent.isContainer()
+                || !parent.isActual()) {
+                throw new JXPathNotFoundException("No value for xpath: " + nodePointer);
+            }
+        }
+        return nodePointer;
     }
 }
