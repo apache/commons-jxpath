@@ -126,7 +126,7 @@ public class JDOMNodePointer extends NodePointer {
         if (node instanceof Element) {
             Element element = (Element) node;
             String ns = element.getNamespaceURI();
-            if (ns != null && ns.equals("")) {
+            if ("".equals(ns)) {
                 ns = null;
             }
             return ns;
