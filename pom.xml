@@ -56,6 +56,11 @@ under the License.
       <email>mbenson@apache.org</email>
     </developer>
   </developers>
+  <contributors>
+    <contributor>
+      <name>Michele Vivoda</name>
+    </contributor>
+  </contributors>
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/jxpath/trunk</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/jxpath/trunk</developerConnection>
