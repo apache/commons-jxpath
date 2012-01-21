@@ -21,7 +21,7 @@ under the License.
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>15</version>
+    <version>23</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-jxpath</groupId>
@@ -230,7 +230,7 @@ under the License.
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <version>1.2</version>
+        <version>2.4.0</version>
         <configuration>
           <excludeFilterFile>${basedir}/conf/findbugs-exclude-filter.xml</excludeFilterFile>
           <xmlOutput>true</xmlOutput>
@@ -239,7 +239,6 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.5</version>
         <configuration>
           <linksource>true</linksource>
           <links>
