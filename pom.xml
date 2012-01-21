@@ -73,6 +73,7 @@ under the License.
     <commons.release.version>1.4</commons.release.version>
     <commons.jira.id>JXPATH</commons.jira.id>
     <commons.jira.pid>12310480</commons.jira.pid>
+    <commons.osgi.import>*;resolution:=optional</commons.osgi.import>
   </properties> 
 
   <build>
