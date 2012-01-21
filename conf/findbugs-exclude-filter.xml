@@ -142,6 +142,19 @@ under the License.
     <Class name="org.apache.commons.jxpath.util.BasicTypeConverter$ValuePointer" />
     <Bug pattern="EQ_COMPARETO_USE_OBJECT_EQUALS" />
   </Match>
+  <Match>
+    <Class name="org.apache.commons.jxpath.ri.InfoSetUtil" />
+    <Bug pattern="RpC_REPEATED_CONDITIONAL_TEST" />
+  </Match>
+  <!-- suppress NullElementPointer/EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC because:
+       - none but the RI should create RI pointer instances
+       - .equal() CollectionPointers' collection members must be ==
+       - any CollectionPointer with a null collection is a NullElementPointer
+  -->
+  <Match>
+    <Class name="org.apache.commons.jxpath.ri.model.beans.NullElementPointer" />
+    <Bug pattern="EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC" />
+  </Match>
   <!-- if/when we go to Java 1.4, use Double.compare(double, double) and remove this -->
   <Bug pattern="FE_FLOATING_POINT_EQUALITY" />
 </FindBugsFilter>

@@ -918,7 +918,7 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * Verify the structure of a given NodePointer.
-     * @param nodePointer
+     * @param nodePointer to check
      * @return nodePointer
      * @throws JXPathNotFoundException
      */

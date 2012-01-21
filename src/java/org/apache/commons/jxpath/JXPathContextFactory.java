@@ -238,8 +238,7 @@ public abstract class JXPathContextFactory {
                 if (debug) {
                     System.err.println("JXPath: found  " + serviceId);
                 }
-                BufferedReader rd =
-                    new BufferedReader(new InputStreamReader(is));
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 
                 String factory = null;
                 try {

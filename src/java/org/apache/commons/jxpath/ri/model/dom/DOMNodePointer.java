@@ -680,7 +680,7 @@ public class DOMNodePointer extends NodePointer {
         if (uri == null) {
             String prefix = getPrefix(node);
             String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
-    
+
             Node aNode = node;
             while (aNode != null) {
                 if (aNode.getNodeType() == Node.ELEMENT_NODE) {

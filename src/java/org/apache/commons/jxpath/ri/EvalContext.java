@@ -209,6 +209,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             Collections.sort(l, ReverseComparator.INSTANCE);
             break;
         default:
+            break;
         }
     }
 

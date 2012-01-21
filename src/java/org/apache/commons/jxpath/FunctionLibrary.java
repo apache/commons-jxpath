@@ -42,7 +42,9 @@ public class FunctionLibrary implements Functions {
      */
     public void addFunctions(Functions functions) {
         allFunctions.add(functions);
-        byNamespace = null;
+        synchronized (this) {
+            byNamespace = null;
+        }
     }
 
     /**
@@ -51,7 +53,9 @@ public class FunctionLibrary implements Functions {
      */
     public void removeFunctions(Functions functions) {
         allFunctions.remove(functions);
-        byNamespace = null;
+        synchronized (this) {
+            byNamespace = null;
+        }
     }
 
     /**
@@ -99,6 +103,7 @@ public class FunctionLibrary implements Functions {
 
     /**
      * Prepare the cache.
+     * @return cache map keyed by namespace
      */
     private synchronized Map functionCache() {
         if (byNamespace == null) {
@@ -112,12 +117,14 @@ public class FunctionLibrary implements Functions {
                     Object candidates = byNamespace.get(ns);
                     if (candidates == null) {
                         byNamespace.put(ns, funcs);
-                    } else if (candidates instanceof Functions) {
+                    }
+                    else if (candidates instanceof Functions) {
                         List lst = new ArrayList();
                         lst.add(candidates);
                         lst.add(funcs);
                         byNamespace.put(ns, lst);
-                    } else {
+                    }
+                    else {
                         ((List) candidates).add(funcs);
                     }
                 }

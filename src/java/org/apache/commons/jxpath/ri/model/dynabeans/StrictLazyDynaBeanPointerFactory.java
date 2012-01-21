@@ -32,10 +32,13 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * <code>PropertyPointer</code>s returned by these will respect
  * {@link LazyDynaClass#isDynaProperty(String)} when determining
  * {@link PropertyPointer#isActual()}.
- * 
+ *
  * @version $Revision$ $Date$
  */
 public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
+    /**
+     * Pointer implementation.
+     */
     private static class StrictLazyDynaBeanPointer extends DynaBeanPointer {
         private static final long serialVersionUID = 1L;
 
@@ -43,10 +46,10 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
 
         /**
          * Create a new StrictLazyDynaBeanPointer instance.
-         * 
-         * @param parent
-         * @param name
-         * @param lazyDynaBean
+         *
+         * @param parent pointer
+         * @param name is the name given to the first node
+         * @param lazyDynaBean pointed
          */
         public StrictLazyDynaBeanPointer(NodePointer parent, QName name, LazyDynaBean lazyDynaBean) {
             super(parent, name, lazyDynaBean);
@@ -55,16 +58,19 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
 
         /**
          * Create a new StrictLazyDynaBeanPointer instance.
-         * 
-         * @param name
-         * @param lazyDynaBean
-         * @param locale
+         *
+         * @param name is the name given to the first node
+         * @param lazyDynaBean pointed
+         * @param locale Locale
          */
         public StrictLazyDynaBeanPointer(QName name, LazyDynaBean lazyDynaBean, Locale locale) {
             super(name, lazyDynaBean, locale);
             this.lazyDynaBean = lazyDynaBean;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public PropertyPointer getPropertyPointer() {
             return new DynaBeanPropertyPointer(this, lazyDynaBean) {
                 private static final long serialVersionUID = 1L;
@@ -77,15 +83,24 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getOrder() {
         return DynaBeanPointerFactory.DYNA_BEAN_POINTER_FACTORY_ORDER - 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createNodePointer(QName name, Object object, Locale locale) {
         return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(name,
                 (LazyDynaBean) object, locale) : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NodePointer createNodePointer(NodePointer parent, QName name, Object object) {
         return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(parent, name,
                 (LazyDynaBean) object) : null;

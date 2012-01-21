@@ -380,8 +380,8 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * @version $Revision$ $Date$
  */
 public abstract class JXPathContext {
-    private static JXPathContextFactory contextFactory;
-    private static JXPathContext compilationContext;
+    private static volatile JXPathContextFactory contextFactory;
+    private static volatile JXPathContext compilationContext;
 
     private static final PackageFunctions GENERIC_FUNCTIONS =
         new PackageFunctions("", null);

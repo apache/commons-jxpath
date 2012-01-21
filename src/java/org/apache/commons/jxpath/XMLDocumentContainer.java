@@ -24,7 +24,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 
 import org.apache.commons.jxpath.xml.DocumentContainer;
-import org.w3c.dom.Document;
 
 /**
  * An XML document container reads and parses XML only when it is

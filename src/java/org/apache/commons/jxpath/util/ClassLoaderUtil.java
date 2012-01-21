@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,14 +20,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Port of class loading methods from <code>org.apache.commons.lang.ClassUtils</code> from 
- * the Apache Commons Lang Component. Some adjustments made to remove dependency on 
+ * Port of class loading methods from <code>org.apache.commons.lang.ClassUtils</code> from
+ * the Apache Commons Lang Component. Some adjustments made to remove dependency on
  * <code>org.apache.commons.lang.StringUtils</code>. Also modified to fall back on the
  * current class loader when an attempt to load a class with the context class loader
- * results in a <code>java.lang.ClassNotFoundException</code>. 
- * 
+ * results in a <code>java.lang.ClassNotFoundException</code>.
+ *
  * @see org.apache.commons.lang.ClassUtils
- * 
+ *
  * @author Stephen Colebourne
  * @author Gary Gregory
  * @author Norm Deane
@@ -43,7 +43,7 @@ public class ClassLoaderUtil {
 
     /**
      * Add primitive type abbreviation to maps of abbreviations.
-     * 
+     *
      * @param primitive Canonical name of primitive type
      * @param abbreviation Corresponding abbreviation of primitive type
      */
@@ -84,7 +84,8 @@ public class ClassLoaderUtil {
         if (abbreviationMap.containsKey(className)) {
             String clsName = "[" + abbreviationMap.get(className);
             clazz = Class.forName(clsName, initialize, classLoader).getComponentType();
-        } else {
+        }
+        else {
             clazz = Class.forName(toCanonicalName(className), initialize, classLoader);
         }
         return clazz;
@@ -136,7 +137,8 @@ public class ClassLoaderUtil {
         if (contextCL != null) {
             try {
                 return getClass(contextCL, className, initialize);
-            } catch (ClassNotFoundException e) {
+            }
+            catch (ClassNotFoundException e) {//NOPMD
                 // ignore this exception and try the current class loader.
             }
         }
@@ -152,7 +154,8 @@ public class ClassLoaderUtil {
     private static String toCanonicalName(String className) {
         if (className == null) {
             throw new RuntimeException("Argument className was null.");
-        } else if (className.endsWith("[]")) {
+        }
+        else if (className.endsWith("[]")) {
             StringBuffer classNameBuffer = new StringBuffer();
             while (className.endsWith("[]")) {
                 className = className.substring(0, className.length() - 2);
@@ -161,7 +164,8 @@ public class ClassLoaderUtil {
             String abbreviation = (String) abbreviationMap.get(className);
             if (abbreviation != null) {
                 classNameBuffer.append(abbreviation);
-            } else {
+            }
+            else {
                 classNameBuffer.append("L").append(className).append(";");
             }
             className = classNameBuffer.toString();
