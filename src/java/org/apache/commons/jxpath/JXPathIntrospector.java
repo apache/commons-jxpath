@@ -16,6 +16,7 @@
  */
 package org.apache.commons.jxpath;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
@@ -31,8 +32,8 @@ import org.apache.commons.jxpath.util.ClassLoaderUtil;
  */
 public class JXPathIntrospector {
 
-    private static HashMap byClass = new HashMap();
-    private static HashMap byInterface = new HashMap();
+    private static Map byClass = Collections.synchronizedMap(new HashMap());
+    private static Map byInterface = Collections.synchronizedMap(new HashMap());
 
     static {
         registerAtomicClass(Class.class);
@@ -67,7 +68,9 @@ public class JXPathIntrospector {
      * @param beanClass to register
      */
     public static void registerAtomicClass(Class beanClass) {
-        byClass.put(beanClass, new JXPathBasicBeanInfo(beanClass, true));
+        synchronized (byClass) { 
+            byClass.put(beanClass, new JXPathBasicBeanInfo(beanClass, true));
+        }
     }
 
     /**
@@ -83,10 +86,14 @@ public class JXPathIntrospector {
         JXPathBasicBeanInfo bi =
             new JXPathBasicBeanInfo(beanClass, dynamicPropertyHandlerClass);
         if (beanClass.isInterface()) {
-            byInterface.put(beanClass, bi);
+            synchronized (byInterface) {
+                byInterface.put(beanClass, bi);
+            }
         }
         else {
-            byClass.put(beanClass, bi);
+            synchronized (byClass) {
+                byClass.put(beanClass, bi);
+            }
         }
     }
 
@@ -115,7 +122,9 @@ public class JXPathIntrospector {
                     beanInfo = new JXPathBasicBeanInfo(beanClass);
                 }
             }
-            byClass.put(beanClass, beanInfo);
+            synchronized (byClass) {
+                byClass.put(beanClass, beanInfo);
+            }
         }
         return beanInfo;
     }
