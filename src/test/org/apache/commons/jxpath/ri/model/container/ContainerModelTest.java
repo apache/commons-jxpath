@@ -44,7 +44,7 @@ public class ContainerModelTest extends JXPathTestCase {
         public void setValue(Object value) {
             throw new UnsupportedOperationException();
         }
-    };
+    }
 
     public class ListContainer implements Container
     {

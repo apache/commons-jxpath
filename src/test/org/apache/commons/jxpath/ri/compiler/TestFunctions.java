@@ -118,7 +118,7 @@ public class TestFunctions {
             if (!(element instanceof String)) {
                 throw new RuntimeException("Invalid argument");
             }
-        };
+        }
         return col.size();
     }
     
