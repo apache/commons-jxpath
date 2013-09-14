@@ -55,7 +55,7 @@ public class UnionContext extends NodeSetContext {
             BasicNodeSet nodeSet = (BasicNodeSet) getNodeSet();
             ArrayList pointers = new ArrayList();
             for (int i = 0; i < contexts.length; i++) {
-                EvalContext ctx = (EvalContext) contexts[i];
+                EvalContext ctx = contexts[i];
                 while (ctx.nextSet()) {
                     while (ctx.nextNode()) {
                         NodePointer ptr = ctx.getCurrentNodePointer();

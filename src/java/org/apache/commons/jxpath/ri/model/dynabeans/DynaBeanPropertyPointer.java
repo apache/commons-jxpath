@@ -257,7 +257,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
      * @return conversion result
      */
     private Object convert(Object value, boolean element) {
-        DynaClass dynaClass = (DynaClass) dynaBean.getDynaClass();
+        DynaClass dynaClass = dynaBean.getDynaClass();
         DynaProperty property = dynaClass.getDynaProperty(getPropertyName());
         Class type = property.getType();
         if (element) {

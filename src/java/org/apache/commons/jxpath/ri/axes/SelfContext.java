@@ -70,7 +70,7 @@ public class SelfContext extends EvalContext {
         super.setPosition(position);
         if (!startedSet) {
             startedSet = true;
-            nodePointer = (NodePointer) parentContext.getCurrentNodePointer();
+            nodePointer = parentContext.getCurrentNodePointer();
         }
 
         if (nodePointer == null) {

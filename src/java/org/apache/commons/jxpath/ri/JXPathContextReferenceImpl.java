@@ -631,7 +631,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         try {
             NodePointer pointer = (NodePointer) getPointer(xpath, expr);
             if (pointer != null) {
-                ((NodePointer) pointer).remove();
+                pointer.remove();
             }
         }
         catch (Throwable ex) {
