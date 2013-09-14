@@ -128,7 +128,7 @@ public class Step {
      * @param axis int code
      * @return String name.
      * @see Compiler
-     * @see http://www.w3.org/TR/xpath#axes
+     * @see "http://www.w3.org/TR/xpath#axes"
      */
     public static String axisToString(int axis) {
         switch (axis) {
