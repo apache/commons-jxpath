@@ -26,7 +26,7 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-jxpath</groupId>
   <artifactId>commons-jxpath</artifactId>
-  <name>Commons JXPath</name>
+  <name>Apache Commons JXPath</name>
   <!-- when cutting a release, be sure to modify the commons.release.version property,
     found at /project/properties/commons.release.version in this document -->
   <version>1.4-SNAPSHOT</version>
