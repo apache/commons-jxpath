@@ -380,17 +380,8 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * @version $Revision$ $Date$
  */
 public abstract class JXPathContext {
-	
-	static {
-		// Initialize in this order:
-		// 1) contextFactory
-	    contextFactory = JXPathContextFactory.newInstance();
-		// 2) compilationContext
-	    compilationContext = JXPathContext.newContext(null);		
-	}
-	
-    private static final JXPathContextFactory contextFactory;
-    private static final JXPathContext compilationContext;
+    private static volatile JXPathContextFactory contextFactory;
+    private static volatile JXPathContext compilationContext;
 
     private static final PackageFunctions GENERIC_FUNCTIONS =
         new PackageFunctions("", null);
@@ -444,6 +435,9 @@ public abstract class JXPathContext {
      * @return JXPathContextFactory
      */
     private static JXPathContextFactory getContextFactory () {
+        if (contextFactory == null) {
+            contextFactory = JXPathContextFactory.newInstance();
+        }
         return contextFactory;
     }
 
@@ -652,6 +646,9 @@ public abstract class JXPathContext {
      * @return CompiledExpression
      */
     public static CompiledExpression compile(String xpath) {
+        if (compilationContext == null) {
+            compilationContext = JXPathContext.newContext(null);
+        }
         return compilationContext.compilePath(xpath);
     }
 
