@@ -30,10 +30,10 @@ public class JXPath151Test extends JXPathTestCase {
     public void setUp() {
         TestBean testBean = new TestBean();
         HashMap m = new HashMap();
-        m.put("a", Integer.valueOf(1));
+        m.put("a", new Integer(1));
         m.put("b", null);
-        m.put("c", Integer.valueOf(1));
-        m.put("d", Integer.valueOf(0));
+        m.put("c", new Integer(1));
+        m.put("d", new Integer(0));
         testBean.setMap(m);
         context = JXPathContext.newContext(testBean);
         context.setLocale(Locale.US);
