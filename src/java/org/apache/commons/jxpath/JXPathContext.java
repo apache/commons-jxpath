@@ -365,6 +365,28 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * XPaths like "para[@type='warning']" are legitimate, they will always produce
  * empty results. The only attribute supported for JavaBeans is "name".  The
  * XPath "foo/bar" is equivalent to "foo[@name='bar']".
+ * 
+ * <li id='matches_no_property_in_the_graph'>The term <b>matches no property in the graph</b> is used
+ * throughout the documentation to mean a property / path that can be determined
+ * as not belonging to the graph. Determining whether a property path belongs to
+ * the graph is only possible for models where a description of the graph can be 
+ * obtained somehow, as happens for Java Objects that have Classes that describe
+ * them, is not possible with dynamic models (Map, DOM..).
+ * <p>When a XPath can be determined as matching no property in the graph, the
+ * methods of this class that retrieve a pointer will generally behave in the
+ * following way, depending on the last value configured with {@link #setLenient(boolean)}:
+ * 
+ *  <ol style='list-style:upper-alpha'>
+ *      <li>If <code>lenient</code> is <code>false</code> (default) -
+ *          methods will throw {@link JXPathNotFoundException}.
+ *      <li>If <code>lenient</code> is <code>true</code> - 
+ *          methods will throw no exception and return 
+ *          a value appropriate for that method to express the absence:
+ *          might be a Java <code>null</code> or 
+ *          a {@link Pointer} whose {@link Pointer#getValue()}
+ *          returns <code>null</code>, depends on the method.
+ *  </ol>
+ * </li> 
  * </ul>
  *
  * See  <a href="http://www.w3schools.com/xpath">XPath Tutorial by
@@ -771,14 +793,24 @@ public abstract class JXPathContext {
      */
     public abstract Iterator iterate(String xpath);
 
-    /**
-     * Traverses the xpath and returns a Pointer.
-     * A Pointer provides easy access to a property.
-     * If the xpath matches no properties
-     * in the graph, the pointer will be null.
+     /**
+     * Traverses the xpath and returns a Pointer. A Pointer provides easy access
+     * to a property.
+     * <p>
+     * If the xpath <A href='#matches_no_property_in_the_graph'>matches no
+     * properties in the graph</A> the behavior depends on the value that has
+     * been configured with {@link #setLenient(boolean)}:
+     * <ul>
+     * <li> <code>false</code> (default) the method will throw a
+     * {@link JXPathNotFoundException}.
+     * <li> <code>true</code> the method returns a pointer whose
+     * {@link Pointer#getValue()} method will always return null.
+     * </ul>
+     * 
      * @param xpath desired
-     * @return Pointer
-     */
+     * @return Pointer A {@link Pointer}, never <code>null</code>.
+     * @throws JXPathNotFoundException see method description.
+     /*
     public abstract Pointer getPointer(String xpath);
 
     /**
