@@ -260,9 +260,9 @@ under the License.
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>rat-maven-plugin</artifactId>
-        <version>1.0-alpha-3</version>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <version>${commons.rat.version}</version>
         <configuration>
           <excludes>
             <exclude>src/java/org/apache/commons/jxpath/ri/parser/*</exclude>
