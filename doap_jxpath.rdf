@@ -39,6 +39,8 @@
         <created>2008-08-14</created>
         <revision>1.3</revision>
       </Version>
+    </release>
+    <release>
       <Version>
         <name>commons-jxpath</name>
         <created>2004-08-02</created>
