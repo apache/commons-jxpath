@@ -23,9 +23,9 @@ public class JXPath149Test extends JXPathTestCase {
 
     public void testComplexOperationWithVariables() {
         JXPathContext context = JXPathContext.newContext(null);
-        context.getVariables().declareVariable("a", Integer.valueOf(0));
-        context.getVariables().declareVariable("b", Integer.valueOf(0));
-        context.getVariables().declareVariable("c", Integer.valueOf(1));
+        context.getVariables().declareVariable("a", new Integer(0));
+        context.getVariables().declareVariable("b", new Integer(0));
+        context.getVariables().declareVariable("c", new Integer(1));
         assertXPathValue(context, "$a + $b <= $c", Boolean.TRUE);
     }
 }
