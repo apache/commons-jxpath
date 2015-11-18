@@ -35,7 +35,7 @@ under the License.
       <item name="Wiki"            href="http://wiki.apache.org/commons/JXPath"/>
     </menu>
     <menu name="JXPath 1.3">
-      <item name="JavaDoc"         href="/apidocs/index.html"/>
+      <item name="JavaDoc"         href="/javadocs/api-1.3/"/>
       <item name="Release Notes"   href="/release-notes-1.3.html"/>
     </menu>
     <menu name="JXPath 1.2">
