@@ -47,8 +47,29 @@ The <action> type attribute can be add,update,fix,remove.
   <body>
     <!-- The release date is the date RC is cut -->
     <release version="1.4" date="2014-??-??" description="New features and bug fixes.">
-      <action issue="JXPATH-nnn" dev="you" type="fix" due-to="them">
-         ...
+      <action issue="JXPATH-141" dev="mbenson" type="fix">
+        FunctionLibrary Multithreading issue
+      </action>
+      <action issue="JXPATH-131" dev="mbenson" type="fix" due-to="Gabriel Buades Rubio">
+        Bean exception handling
+      </action>
+      <action issue="JXPATH-128" dev="mbenson" type="fix" due-to="Gabriel Buades Rubio">
+        JXPath support for LazyDynaBean is broken.
+      </action>
+      <action issue="JXPATH-129" dev="mbenson" type="fix">
+        MethodLookupUtils#matchType uses TypeUtils#canConvert which causes "Ambiguous method call" exception.
+      </action>
+      <action issue="JXPATH-153" dev="mbenson" type="fix">
+        Wrong entry IMPORT-PACKAGE in the file MANIFEST.MF for jdom and commons-beanutils
+      </action>
+      <action issue="JXPATH-153" dev="mbenson" type="update" due-to="John Trimble">
+        Change dynamic class loading to consult context class loader.
+      </action>
+      <action issue="JXPATH-123" dev="mbenson" type="add">
+        "ends-with" XPath function is not implemented (although "starts-with" is)
+      </action>
+      <action issue="JXPATH-152" dev="mbenson" type="fix">
+        Concurrent access on hashmap of JXPathIntrospector
       </action>
     </release>
   </body>
