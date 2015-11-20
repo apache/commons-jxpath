@@ -305,6 +305,10 @@ public class ValueUtils {
                 value = ((List) collection).get(index);
             }
             else if (collection instanceof Collection) {
+                if (index < 0 || index >= ((Collection) collection).size()) {
+                    return null;
+                }
+
                 int i = 0;
                 Iterator it = ((Collection) collection).iterator();
                 for (; i < index; i++) {
