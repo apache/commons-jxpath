@@ -1,0 +1,29 @@
+
+# Archives
+*.tar.bz    binary -delta
+*.tar.bz2   binary -delta
+*.tar.gz    binary -delta
+*.zip       binary -delta
+
+# Compiled
+*.dat       binary -delta
+*.jar       binary -delta
+*.so        binary -delta
+*.dll       binary -delta
+*.exe       binary -delta
+*.bin       binary -delta
+
+# Images
+*.ico       binary -delta
+*.jpg       binary -delta
+*.gif       binary -delta
+*.png       binary -delta
+
+# Java
+*.java      diff=java
+
+# Scripts
+#*.sh  eol=lf
+#*.bat eol=crlf
+#*.cmd eol=crlf
+
