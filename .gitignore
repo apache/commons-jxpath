@@ -1,0 +1,101 @@
+# global gitignore file
+
+*.releaseBackup
+release.properties
+*.versionsBackup
+*.pydevproject
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.log
+*~
+
+# Eclipse files
+*.launch
+.classpath
+.project
+.settings
+.externalToolBuilders/
+.cproject
+.buildpath
+.bindings
+.checkstyle
+.gb_project
+.metadata
+.pmd
+.refactorings
+local.properties
+bin
+code
+
+# JetBrains Intellij IDEA Files
+*.iml
+.idea
+
+# NetBEans files
+*/nbactions.xml
+nbproject/
+*/nb-configuration.xml
+
+# Java files
+*.class
+*.jar
+deploy
+log
+logs
+target
+tmp/
+temp/
+work
+classes
+
+#FEST output files
+failed-gui-tests/
+
+# CVS files
+/CVS/*
+*/CVS/*
+.cvsignore
+*/.cvsignore
+
+# SVN files
+.svn/
+
+# Windows files
+# Windows image file caches
+desktop.ini
+Thumbs.db
+ehthumbs.db
+# Folder config file
+Desktop.ini
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac files
+._*
+Icon?
+.DS_Store*
+
+# C and C++ Files
+# Object files
+*.o
+# Libraries
+*.lib
+*.a
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+# Executables
+*.exe
+*.app
+# Compiled Object files
+*.slo
+*.lo
+# Compiled Static libraries
+*.lai
+*.la
+*.versionsBackup
+*.releaseBackup
