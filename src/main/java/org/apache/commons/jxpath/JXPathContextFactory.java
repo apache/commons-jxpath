@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
-
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
 
 /**
@@ -56,7 +55,7 @@ public abstract class JXPathContextFactory {
         method is called the second time ( cache the result of
         finding the default impl )
     */
-    private static String factoryImplName = null;
+    private static final String FACTORY_IMPL_NAME = findFactory( FACTORY_NAME_PROPERTY, DEFAULT_FACTORY_CLASS );
 
     /**
      * Create a new JXPathContextFactory.
@@ -102,14 +101,9 @@ public abstract class JXPathContextFactory {
      *            is not available or cannot be instantiated.
      */
     public static JXPathContextFactory newInstance() {
-        if (factoryImplName == null) {
-            factoryImplName =
-                findFactory(FACTORY_NAME_PROPERTY, DEFAULT_FACTORY_CLASS);
-        }
-
         JXPathContextFactory factoryImpl;
         try {
-            Class clazz = ClassLoaderUtil.getClass(factoryImplName, true);
+            Class clazz = ClassLoaderUtil.getClass( FACTORY_IMPL_NAME, true );
             factoryImpl = (JXPathContextFactory) clazz.newInstance();
         }
         catch (ClassNotFoundException cnfe) {
