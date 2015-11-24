@@ -60,6 +60,9 @@ under the License.
     <contributor>
       <name>Michele Vivoda</name>
     </contributor>
+    <contributor>
+      <name>Uwe Barthel</name>
+    </contributor>
   </contributors>
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/jxpath/trunk</connection>
