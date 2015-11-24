@@ -136,7 +136,7 @@ public class JXPathIntrospector {
      * @return JXPathBeanInfo
      */
     private static JXPathBeanInfo findDynamicBeanInfo(Class beanClass) {
-        JXPathBeanInfo beanInfo = null;
+        JXPathBeanInfo beanInfo;
         if (beanClass.isInterface()) {
             beanInfo = (JXPathBeanInfo) byInterface.get(beanClass);
             if (beanInfo != null && beanInfo.isDynamic()) {

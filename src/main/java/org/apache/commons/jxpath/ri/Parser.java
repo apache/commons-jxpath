@@ -45,7 +45,7 @@ public class Parser {
         Compiler compiler) {
         synchronized (parser) {
             parser.setCompiler(compiler);
-            Object expr = null;
+            Object expr;
             try {
                 parser.ReInit(new StringReader(expression));
                 expr = parser.parseExpression();

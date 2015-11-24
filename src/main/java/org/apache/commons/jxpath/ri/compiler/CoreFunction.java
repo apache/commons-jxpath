@@ -882,7 +882,7 @@ public class CoreFunction extends Operation {
         String pattern =
             InfoSetUtil.stringValue(getArg2().computeValue(context));
 
-        DecimalFormatSymbols symbols = null;
+        DecimalFormatSymbols symbols;
         if (getArgumentCount() == maxArgs) {
             String symbolsName =
                 InfoSetUtil.stringValue(getArg3().computeValue(context));

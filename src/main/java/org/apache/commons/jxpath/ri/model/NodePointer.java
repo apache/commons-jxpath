@@ -75,7 +75,7 @@ public abstract class NodePointer implements Pointer {
         QName name,
         Object bean,
         Locale locale) {
-        NodePointer pointer = null;
+        NodePointer pointer;
         if (bean == null) {
             pointer = new NullPointer(name, locale);
             return pointer;

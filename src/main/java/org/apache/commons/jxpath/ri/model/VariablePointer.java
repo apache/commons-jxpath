@@ -120,7 +120,7 @@ public class VariablePointer extends NodePointer {
 
     public NodePointer getImmediateValuePointer() {
         if (valuePointer == null) {
-            Object value = null;
+            Object value;
             if (actual) {
                 value = getImmediateNode();
                 valuePointer =

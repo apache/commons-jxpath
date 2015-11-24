@@ -220,7 +220,7 @@ public abstract class JXPathContextFactory {
         // try to find services in CLASSPATH
         try {
             ClassLoader cl = JXPathContextFactory.class.getClassLoader();
-            InputStream is = null;
+            InputStream is;
             if (cl == null) {
                 is = ClassLoader.getSystemResourceAsStream(serviceId);
             }

@@ -105,7 +105,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
             }
             else {
                 try {
-                    BeanInfo bi = null;
+                    BeanInfo bi;
                     if (clazz.isInterface()) {
                         bi = Introspector.getBeanInfo(clazz);
                     }

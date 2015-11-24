@@ -495,7 +495,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     public Pointer createPath(String xpath, Expression expr) {
         try {
             Object result = expr.computeValue(getEvalContext());
-            Pointer pointer = null;
+            Pointer pointer;
 
             if (result instanceof Pointer) {
                 pointer = (Pointer) result;
@@ -552,7 +552,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     private Pointer setValue(String xpath, Expression expr, Object value,
             boolean create) {
         Object result = expr.computeValue(getEvalContext());
-        Pointer pointer = null;
+        Pointer pointer;
 
         if (result instanceof Pointer) {
             pointer = (Pointer) result;
@@ -734,7 +734,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         String namespace = functionName.getPrefix();
         String name = functionName.getName();
         JXPathContext funcCtx = this;
-        Function func = null;
+        Function func;
         Functions funcs;
         while (funcCtx != null) {
             funcs = funcCtx.getFunctions();
