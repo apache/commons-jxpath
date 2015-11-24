@@ -18,6 +18,7 @@ package org.apache.commons.jxpath.ri.model.dom;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
@@ -91,26 +92,16 @@ public class DOMAttributeIterator implements NodeIterator {
         if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)) {
             String testPrefix = name.getPrefix();
 
-            if (testPrefix == null || equalStrings(testPrefix, nodePrefix)) {
+            if (testPrefix == null || Objects.equals(testPrefix, nodePrefix)) {
                 return true;
             }
             if (nodePrefix == null) {
                 return false;
             }
-            return equalStrings(parent.getNamespaceURI(testPrefix), parent
-                    .getNamespaceURI(nodePrefix));
+            return Objects.equals(parent.getNamespaceURI(testPrefix), parent
+                        .getNamespaceURI(nodePrefix));
         }
         return false;
-    }
-
-    /**
-     * Test whether two strings are == or .equals()
-     * @param s1 first string
-     * @param s2 second string
-     * @return boolean
-     */
-    private static boolean equalStrings(String s1, String s2) {
-        return s1 == s2 || s1 != null && s1.equals(s2);
     }
 
     /**
