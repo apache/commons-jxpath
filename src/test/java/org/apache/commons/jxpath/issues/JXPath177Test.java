@@ -21,6 +21,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.Variables;
 
 public class JXPath177Test extends TestCase
 {
@@ -58,6 +59,55 @@ public class JXPath177Test extends TestCase
         Object result = p.getNode();
         assertNotNull(result);
         assertEquals(expected, result);
+
+    }
+
+    private static class JXPathVariablesResolver implements Variables
+    {
+
+        private static final long serialVersionUID = -1106360826446119597L;
+
+        public static final String ROOT_VAR = "__root";
+
+        private final Object root;
+
+        public JXPathVariablesResolver(Object root)
+        {
+            this.root = root;
+        }
+
+        public boolean isDeclaredVariable(String varName)
+        {
+            if (varName == null)
+            {
+                throw new IllegalArgumentException("varName");
+            }
+            return varName.equals(ROOT_VAR);
+        }
+
+        public Object getVariable(String varName)
+        {
+            if (varName == null)
+            {
+                throw new IllegalArgumentException("varName");
+            }
+            if (!varName.equals(ROOT_VAR))
+            {
+                throw new IllegalArgumentException("Variable is not declared: " + varName);
+            }
+
+            return root;
+        }
+
+        public void declareVariable(String varName, Object value)
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        public void undeclareVariable(String varName)
+        {
+            throw new UnsupportedOperationException();
+        }
 
     }
 }
