@@ -78,9 +78,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
         if (names == null) {
             String[] allNames = handler.getPropertyNames(getBean());
             names = new String[allNames.length];
-            for (int i = 0; i < names.length; i++) {
-                names[i] = allNames[i];
-            }
+            System.arraycopy(allNames, 0, names, 0, names.length);
             Arrays.sort(names);
             if (requiredPropertyName != null) {
                 int inx = Arrays.binarySearch(names, requiredPropertyName);
