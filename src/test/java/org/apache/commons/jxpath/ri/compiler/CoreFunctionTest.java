@@ -44,9 +44,9 @@ public class CoreFunctionTest extends JXPathTestCase {
         if (context == null) {
             context = JXPathContext.newContext(new TestMixedModelBean());
             Variables vars = context.getVariables();
-            vars.declareVariable("nan", new Double(Double.NaN));
-            vars.declareVariable("bool_true", new Boolean("true"));
-            vars.declareVariable("bool_false", new Boolean("false"));
+            vars.declareVariable("nan", Double.NaN);
+            vars.declareVariable("bool_true", Boolean.TRUE);
+            vars.declareVariable("bool_false", Boolean.FALSE);
         }
     }
 
