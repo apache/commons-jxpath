@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.jxpath.ri.jx177;
+package org.apache.commons.jxpath.issues;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 
-public class TestJxPath177 extends TestCase
+public class JXPath177Test extends TestCase
 {
     Map model = new HashMap();
     {

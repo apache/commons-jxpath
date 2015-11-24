@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.jxpath.ri.jx177;
+package org.apache.commons.jxpath.issues;
 
 import org.apache.commons.jxpath.Variables;
 

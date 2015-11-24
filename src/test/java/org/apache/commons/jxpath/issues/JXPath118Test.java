@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.jxpath.ri;
+package org.apache.commons.jxpath.issues;
 
 import java.util.Iterator;
 import junit.framework.Assert;
