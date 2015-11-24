@@ -31,7 +31,7 @@ import org.apache.commons.jxpath.ri.parser.XPathParser;
  */
 public class Parser {
 
-    private static XPathParser parser = new XPathParser(new StringReader(""));
+    private static final XPathParser PARSER = new XPathParser(new StringReader(""));
 
     /**
      * Parses the XPath expression. Throws a JXPathException in case
@@ -43,12 +43,12 @@ public class Parser {
     public static Object parseExpression(
         String expression,
         Compiler compiler) {
-        synchronized (parser) {
-            parser.setCompiler(compiler);
+        synchronized (PARSER) {
+            PARSER.setCompiler(compiler);
             Object expr;
             try {
-                parser.ReInit(new StringReader(expression));
-                expr = parser.parseExpression();
+                PARSER.ReInit(new StringReader(expression));
+                expr = PARSER.parseExpression();
             }
             catch (TokenMgrError e) {
                 throw new JXPathInvalidSyntaxException(
