@@ -57,10 +57,7 @@ public class ValueUtils {
         if (value.getClass().isArray()) {
             return true;
         }
-        if (value instanceof Collection) {
-            return true;
-        }
-        return false;
+        return value instanceof Collection;
     }
 
     /**
@@ -119,7 +116,7 @@ public class ValueUtils {
 
         for (int i = 0; i < UNKNOWN_LENGTH_MAX_COUNT; i++) {
             try {
-                readMethod.invoke(object, new Object[] { new Integer(i)});
+                readMethod.invoke(object, new Integer(i));
             }
             catch (Throwable t) {
                 return i;
@@ -368,7 +365,7 @@ public class ValueUtils {
             if (method == null) {
                 throw new JXPathException("No read method");
             }
-            value = method.invoke(bean, new Object[0]);
+            value = method.invoke(bean);
         }
         catch (Exception ex) {
             throw new JXPathException(
@@ -397,7 +394,7 @@ public class ValueUtils {
                 throw new JXPathException("No write method");
             }
             value = convert(value, propertyDescriptor.getPropertyType());
-            method.invoke(bean, new Object[] { value });
+            method.invoke(bean, value);
         }
         catch (Exception ex) {
             throw new JXPathException(
@@ -447,7 +444,7 @@ public class ValueUtils {
                 if (method != null) {
                     return method.invoke(
                         bean,
-                        new Object[] { new Integer(index)});
+                            new Integer(index));
                 }
             }
             catch (InvocationTargetException ex) {
@@ -490,9 +487,8 @@ public class ValueUtils {
                 if (method != null) {
                     method.invoke(
                         bean,
-                        new Object[] {
                             new Integer(index),
-                            convert(value, ipd.getIndexedPropertyType())});
+                            convert(value, ipd.getIndexedPropertyType()));
                     return;
                 }
             }

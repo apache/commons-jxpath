@@ -246,7 +246,7 @@ public class BasicTypeConverter implements TypeConverter {
             if ("java.util.concurrent.atomic.AtomicBoolean".equals(useType.getName())) {
                 try {
                     return useType.getConstructor(new Class[] { boolean.class })
-                            .newInstance(new Object[] { object });
+                            .newInstance(object);
                 }
                 catch (Exception e) {
                     throw new JXPathTypeConversionException(useType.getName(), e);
@@ -391,8 +391,8 @@ public class BasicTypeConverter implements TypeConverter {
                 return (Number) type.getConstructor(
                         new Class[] { initialValueType })
                         .newInstance(
-                                new Object[] { allocateNumber(initialValueType,
-                                        value) });
+                                allocateNumber(initialValueType,
+                                        value));
             }
             catch (Exception e) {
                 throw new JXPathTypeConversionException(classname, e);
@@ -410,7 +410,7 @@ public class BasicTypeConverter implements TypeConverter {
         if (!type.isInterface()
                 && ((type.getModifiers() & Modifier.ABSTRACT) == 0)) {
             try {
-                type.getConstructor(new Class[0]);
+                type.getConstructor();
                 return true;
             }
             catch (Exception e) {

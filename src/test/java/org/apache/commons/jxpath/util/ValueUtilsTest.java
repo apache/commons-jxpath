@@ -49,7 +49,7 @@ public class ValueUtilsTest extends TestCase {
 
     public void testGetValueFromList() {
         final Object data = new Object();
-        assertSame(data, ValueUtils.getValue(Arrays.asList(new Object[]{data}), 0));
+        assertSame(data, ValueUtils.getValue(Arrays.asList(data), 0));
     }
 
     public void testGetValueFromSet() {
@@ -66,7 +66,7 @@ public class ValueUtilsTest extends TestCase {
 
     public void testGetValueFromListNegativeIndex() {
         final Object data = new Object();
-        final Object res = ValueUtils.getValue(Arrays.asList(new Object[]{data}), -1);
+        final Object res = ValueUtils.getValue(Arrays.asList(data), -1);
         assertNull("Expected null, is " + res, res);
     }
 

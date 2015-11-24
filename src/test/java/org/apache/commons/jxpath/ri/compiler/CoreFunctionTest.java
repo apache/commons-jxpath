@@ -167,17 +167,16 @@ public class CoreFunctionTest extends JXPathTestCase {
                 return new NodeSet() {
 
                     public List getNodes() {
-                        return Arrays.asList(new Object[] { "53", "64" });
+                        return Arrays.asList("53", "64");
                     }
 
                     public List getPointers() {
-                        return Arrays.asList(new NodePointer[] {
-                                NodePointer.newNodePointer(null, "53", null),
-                                NodePointer.newNodePointer(null, "64", null) });
+                        return Arrays.asList(NodePointer.newNodePointer(null, "53", null),
+                                NodePointer.newNodePointer(null, "64", null));
                     }
 
                     public List getValues() {
-                        return Arrays.asList(new Object[] { "53", "64" });
+                        return Arrays.asList("53", "64");
                     }
 
                 };
