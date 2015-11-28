@@ -100,7 +100,7 @@ public class BeanPointer extends PropertyOwnerPointer {
     public boolean isLeaf() {
         Object value = getNode();
         return value == null
-            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
+            || this.beanInfo.isAtomic();
     }
 
     public int hashCode() {
