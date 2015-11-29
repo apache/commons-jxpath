@@ -68,9 +68,7 @@ public class JXPathIntrospector {
      * @param beanClass to register
      */
     public static void registerAtomicClass(Class beanClass) {
-        synchronized (byClass) { 
-            byClass.put(beanClass, new JXPathBasicBeanInfo(beanClass, true));
-        }
+        byClass.put(beanClass, new JXPathBasicBeanInfo(beanClass, true));
     }
 
     /**
@@ -86,14 +84,10 @@ public class JXPathIntrospector {
         JXPathBasicBeanInfo bi =
             new JXPathBasicBeanInfo(beanClass, dynamicPropertyHandlerClass);
         if (beanClass.isInterface()) {
-            synchronized (byInterface) {
-                byInterface.put(beanClass, bi);
-            }
+            byInterface.put(beanClass, bi);
         }
         else {
-            synchronized (byClass) {
-                byClass.put(beanClass, bi);
-            }
+            byClass.put(beanClass, bi);
         }
     }
 
@@ -122,9 +116,7 @@ public class JXPathIntrospector {
                     beanInfo = new JXPathBasicBeanInfo(beanClass);
                 }
             }
-            synchronized (byClass) {
-                byClass.put(beanClass, beanInfo);
-            }
+            byClass.put(beanClass, beanInfo);
         }
         return beanInfo;
     }
@@ -174,7 +166,7 @@ public class JXPathIntrospector {
      * @param beanClass for which to look for an info provider
      * @return JXPathBeanInfo instance or null if none found
      */
-    private static synchronized JXPathBeanInfo findInformant(Class beanClass) {
+    private static JXPathBeanInfo findInformant(Class beanClass) {
         String name = beanClass.getName() + "XBeanInfo";
         try {
             return (JXPathBeanInfo) instantiate(beanClass, name);
