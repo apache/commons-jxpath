@@ -97,7 +97,7 @@ public abstract class JXPathContextFactory {
      * obtain JXPathContext instances.
      *
      * @return JXPathContextFactory
-     * @exception JXPathContextFactoryConfigurationError if the implementation
+     * @throws JXPathContextFactoryConfigurationError if the implementation
      *            is not available or cannot be instantiated.
      */
     public static JXPathContextFactory newInstance() {
@@ -124,7 +124,7 @@ public abstract class JXPathContextFactory {
      * @param parentContext parent context
      * @param contextBean Object bean
      * @return JXPathContext
-     * @exception JXPathContextFactoryConfigurationError if a JXPathContext
+     * @throws JXPathContextFactoryConfigurationError if a JXPathContext
      *            cannot be created which satisfies the configuration requested
      */
 
