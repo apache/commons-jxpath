@@ -117,11 +117,33 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <includes>
-            <include>**/*Test.java</include>
-          </includes>
-        </configuration>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <configuration>
+              <includes>
+                <include>**/*Test.java</include>
+              </includes>
+              <excludes>
+                <exclude>**/*WithoutBeanUtilsTest.java</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>without-beanutils-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <includes>
+                <include>**/*WithoutBeanUtilsTest.java</include>
+              </includes>
+              <classpathDependencyExcludes>
+                <classpathDependencyExclude>commons-beanutils:commons-beanutils</classpathDependencyExclude>
+              </classpathDependencyExcludes>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
