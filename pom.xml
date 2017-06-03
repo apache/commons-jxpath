@@ -75,6 +75,7 @@ under the License.
     <maven.compiler.target>1.7</maven.compiler.target>
 
     <commons.componentid>jxpath</commons.componentid>
+    <commons.module.name>org.apache.commons.jxpath</commons.module.name>
     <!-- should agree with project.version for releases: -->
     <commons.release.version>1.4</commons.release.version>
     <commons.jira.id>JXPATH</commons.jira.id>
