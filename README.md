@@ -43,12 +43,15 @@
 Apache Commons JXPath
 ===================
 
+[![Build Status](https://travis-ci.org/apache/commons-jxpath.svg?branch=trunk)](https://travis-ci.org/apache/commons-jxpath)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/commons-jxpath/commons-jxpath/badge.svg)](https://maven-badges.herokuapp.com/maven-central/commons-jxpath/commons-jxpath/)
+
 A Java-based implementation of XPath 1.0 that, in addition to XML processing, can inspect/modify Java object graphs (the library's explicit purpose) and even mixed Java/XML structures.
 
 Documentation
 -------------
 
-More information can be found on the [homepage](https://commons.apache.org/proper/commons-jxpath).
+More information can be found on the [Apache Commons JXPath homepage](https://commons.apache.org/proper/commons-jxpath).
 The [JavaDoc](https://commons.apache.org/proper/commons-jxpath/javadocs/api-release) can be browsed.
 Questions related to the usage of Apache Commons JXPath should be posted to the [user mailing list][ml].
 
@@ -69,7 +72,7 @@ Alternatively you can pull it from the central Maven repositories:
 Contributing
 ------------
 
-We accept PRs via github. The [developer mailing list][ml] is the main channel of communication for contributors.
+We accept Pull Requests via GitHub. The [developer mailing list][ml] is the main channel of communication for contributors.
 There are some guidelines which will make applying PRs easier for us:
 + No tabs! Please use spaces for indentation.
 + Respect the code style.
@@ -81,7 +84,9 @@ You can learn more about contributing via GitHub in our [contribution guidelines
 
 License
 -------
-Code is under the [Apache Licence v2](https://www.apache.org/licenses/LICENSE-2.0.txt).
+This code is under the [Apache Licence v2](https://www.apache.org/licenses/LICENSE-2.0).
+
+See the `NOTICE.txt` file for required notices and attributions.
 
 Donations
 ---------
@@ -91,8 +96,8 @@ Additional Resources
 --------------------
 
 + [Apache Commons Homepage](https://commons.apache.org/)
-+ [Apache Bugtracker (JIRA)](https://issues.apache.org/jira/)
++ [Apache Issue Tracker (JIRA)](https://issues.apache.org/jira/browse/JXPATH)
 + [Apache Commons Twitter Account](https://twitter.com/ApacheCommons)
-+ #apachecommons IRC channel on freenode.org
++ `#apache-commons` IRC channel on `irc.freenode.org`
 
 [ml]:https://commons.apache.org/mail-lists.html
