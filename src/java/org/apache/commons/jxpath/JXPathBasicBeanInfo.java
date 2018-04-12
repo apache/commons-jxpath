@@ -40,12 +40,8 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
   private static final long serialVersionUID = -3863803443111484155L;
 
-  private static final Comparator PROPERTY_DESCRIPTOR_COMPARATOR = new Comparator() {
-    public int compare(Object left, Object right) {
-      return ((PropertyDescriptor) left).getName().compareTo(
-          ((PropertyDescriptor) right).getName());
-    }
-  };
+  private static final Comparator PROPERTY_DESCRIPTOR_COMPARATOR =
+      Comparator.comparing(left -> ((PropertyDescriptor) left).getName());
 
   private boolean atomic = false;
   private Class clazz;
