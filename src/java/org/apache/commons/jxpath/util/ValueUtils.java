@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.apache.commons.jxpath.JXPathException;
@@ -41,8 +42,12 @@ import org.apache.commons.jxpath.JXPathException;
  * @version $Revision$ $Date$
  */
 public class ValueUtils {
+
     private static Map dynamicPropertyHandlerMap = new HashMap();
     private static final int UNKNOWN_LENGTH_MAX_COUNT = 16000;
+
+    private static final Map<PropertyDescriptor,Method> READ_METHOD_CACHE = new ConcurrentHashMap<>();
+    private static final Map<PropertyDescriptor,Method> WRITE_METHOD_CACHE = new ConcurrentHashMap<>();
 
     /**
      * Returns true if the object is an array or a Collection.
@@ -359,12 +364,11 @@ public class ValueUtils {
             PropertyDescriptor propertyDescriptor) {
         Object value;
         try {
-            Method method =
-                getAccessibleMethod(propertyDescriptor.getReadMethod());
+            Method method = readMethod(propertyDescriptor);
             if (method == null) {
                 throw new JXPathException("No read method");
             }
-            value = method.invoke(bean, new Object[0]);
+            value = method.invoke(bean);
         }
         catch (Exception ex) {
             throw new JXPathException(
@@ -387,8 +391,7 @@ public class ValueUtils {
     public static void setValue(Object bean,
             PropertyDescriptor propertyDescriptor, Object value) {
         try {
-            Method method =
-                getAccessibleMethod(propertyDescriptor.getWriteMethod());
+            Method method = writeMethod(propertyDescriptor);
             if (method == null) {
                 throw new JXPathException("No write method");
             }
@@ -654,8 +657,19 @@ public class ValueUtils {
                 break;
             }
         }
-
         // Return whatever we have found
         return (method);
     }
+
+    private static Method readMethod(PropertyDescriptor propertyDescriptor) {
+        READ_METHOD_CACHE.computeIfAbsent(propertyDescriptor, (lol) -> propertyDescriptor.getReadMethod());
+        return READ_METHOD_CACHE.get(propertyDescriptor);
+    }
+
+
+    private static Method writeMethod(PropertyDescriptor propertyDescriptor) {
+        WRITE_METHOD_CACHE.computeIfAbsent(propertyDescriptor, (lol) -> propertyDescriptor.getWriteMethod());
+        return WRITE_METHOD_CACHE.get(propertyDescriptor);
+    }
+
 }
