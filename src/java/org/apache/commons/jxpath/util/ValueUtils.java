@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.apache.commons.jxpath.JXPathException;
@@ -42,29 +41,32 @@ import org.apache.commons.jxpath.JXPathException;
  * @version $Revision$ $Date$
  */
 public class ValueUtils {
-
   private static Map dynamicPropertyHandlerMap = new HashMap();
   private static final int UNKNOWN_LENGTH_MAX_COUNT = 16000;
 
-  private static final Map<PropertyDescriptor, Method> READ_METHOD_CACHE = new ConcurrentHashMap<>();
-  private static final Map<PropertyDescriptor, Method> WRITE_METHOD_CACHE = new ConcurrentHashMap<>();
-
   /**
    * Returns true if the object is an array or a Collection.
-   *
    * @param value to test
    * @return boolean
    */
   public static boolean isCollection(Object value) {
     value = getValue(value);
-    return value != null && (value.getClass().isArray() || value instanceof Collection);
+    if (value == null) {
+      return false;
+    }
+    if (value.getClass().isArray()) {
+      return true;
+    }
+    if (value instanceof Collection) {
+      return true;
+    }
+    return false;
   }
 
   /**
    * Returns 1 if the type is a collection,
    * -1 if it is definitely not
    * and 0 if it may be a collection in some cases.
-   *
    * @param clazz to test
    * @return int
    */
@@ -99,9 +101,8 @@ public class ValueUtils {
    * Otherwise, attempts to guess the length of the collection by
    * calling the indexed get method repeatedly.  The method is supposed
    * to throw an exception if the index is out of bounds.
-   *
    * @param object collection
-   * @param pd     IndexedPropertyDescriptor
+   * @param pd IndexedPropertyDescriptor
    * @return int
    */
   public static int getIndexedPropertyLength(Object object,
@@ -118,8 +119,9 @@ public class ValueUtils {
 
     for (int i = 0; i < UNKNOWN_LENGTH_MAX_COUNT; i++) {
       try {
-        readMethod.invoke(object, new Object[]{new Integer(i)});
-      } catch (Throwable t) {
+        readMethod.invoke(object, i);
+      }
+      catch (Throwable t) {
         return i;
       }
     }
@@ -132,7 +134,6 @@ public class ValueUtils {
   /**
    * Returns the length of the supplied collection. If the supplied object
    * is not a collection, returns 1. If collection is null, returns 0.
-   *
    * @param collection to check
    * @return int
    */
@@ -154,7 +155,6 @@ public class ValueUtils {
    * Returns an iterator for the supplied collection. If the argument
    * is null, returns an empty iterator. If the argument is not
    * a collection, returns an iterator that produces just that one object.
-   *
    * @param collection to iterate
    * @return Iterator
    */
@@ -182,9 +182,8 @@ public class ValueUtils {
   /**
    * Grows the collection if necessary to the specified size. Returns
    * the new, expanded collection.
-   *
    * @param collection to expand
-   * @param size       desired size
+   * @param size desired size
    * @return collection or array
    */
   public static Object expandCollection(Object collection, int size) {
@@ -223,9 +222,8 @@ public class ValueUtils {
 
   /**
    * Remove the index'th element from the supplied collection.
-   *
    * @param collection to edit
-   * @param index      int
+   * @param index int
    * @return the resulting collection
    */
   public static Object remove(Object collection, int index) {
@@ -286,9 +284,8 @@ public class ValueUtils {
 
   /**
    * Returns the index'th element of the supplied collection.
-   *
    * @param collection to read
-   * @param index      int
+   * @param index int
    * @return collection[index]
    */
   public static Object getValue(Object collection, int index) {
@@ -300,12 +297,14 @@ public class ValueUtils {
           return null;
         }
         value = Array.get(collection, index);
-      } else if (collection instanceof List) {
+      }
+      else if (collection instanceof List) {
         if (index < 0 || index >= ((List) collection).size()) {
           return null;
         }
         value = ((List) collection).get(index);
-      } else if (collection instanceof Collection) {
+      }
+      else if (collection instanceof Collection) {
         int i = 0;
         Iterator it = ((Collection) collection).iterator();
         for (; i < index; i++) {
@@ -313,7 +312,8 @@ public class ValueUtils {
         }
         if (it.hasNext()) {
           value = it.next();
-        } else {
+        }
+        else {
           value = null;
         }
       }
@@ -324,10 +324,9 @@ public class ValueUtils {
   /**
    * Modifies the index'th element of the supplied collection.
    * Converts the value to the required type if necessary.
-   *
    * @param collection to edit
-   * @param index      to replace
-   * @param value      new value
+   * @param index to replace
+   * @param value new value
    */
   public static void setValue(Object collection, int index, Object value) {
     collection = getValue(collection);
@@ -337,9 +336,11 @@ public class ValueUtils {
             collection,
             index,
             convert(value, collection.getClass().getComponentType()));
-      } else if (collection instanceof List) {
+      }
+      else if (collection instanceof List) {
         ((List) collection).set(index, value);
-      } else if (collection instanceof Collection) {
+      }
+      else if (collection instanceof Collection) {
         throw new UnsupportedOperationException(
             "Cannot set value of an element of a "
                 + collection.getClass().getName());
@@ -350,8 +351,7 @@ public class ValueUtils {
   /**
    * Returns the value of the bean's property represented by
    * the supplied property descriptor.
-   *
-   * @param bean               to read
+   * @param bean to read
    * @param propertyDescriptor indicating what to read
    * @return Object value
    */
@@ -359,12 +359,14 @@ public class ValueUtils {
                                 PropertyDescriptor propertyDescriptor) {
     Object value;
     try {
-      Method method = readMethod(propertyDescriptor);
+      Method method =
+          getAccessibleMethod(propertyDescriptor.getReadMethod());
       if (method == null) {
         throw new JXPathException("No read method");
       }
-      value = method.invoke(bean);
-    } catch (Exception ex) {
+      value = method.invoke(bean, new Object[0]);
+    }
+    catch (Exception ex) {
       throw new JXPathException(
           "Cannot access property: "
               + (bean == null ? "null" : bean.getClass().getName())
@@ -378,21 +380,22 @@ public class ValueUtils {
   /**
    * Modifies the value of the bean's property represented by
    * the supplied property descriptor.
-   *
-   * @param bean               to read
+   * @param bean to read
    * @param propertyDescriptor indicating what to read
-   * @param value              to set
+   * @param value to set
    */
   public static void setValue(Object bean,
                               PropertyDescriptor propertyDescriptor, Object value) {
     try {
-      Method method = writeMethod(propertyDescriptor);
+      Method method =
+          getAccessibleMethod(propertyDescriptor.getWriteMethod());
       if (method == null) {
         throw new JXPathException("No write method");
       }
       value = convert(value, propertyDescriptor.getPropertyType());
-      method.invoke(bean, new Object[]{value});
-    } catch (Exception ex) {
+      method.invoke(bean, new Object[] { value });
+    }
+    catch (Exception ex) {
       throw new JXPathException(
           "Cannot modify property: "
               + (bean == null ? "null" : bean.getClass().getName())
@@ -404,15 +407,15 @@ public class ValueUtils {
 
   /**
    * Convert value to type.
-   *
    * @param value Object
-   * @param type  destination
+   * @param type destination
    * @return conversion result
    */
   private static Object convert(Object value, Class type) {
     try {
       return TypeUtils.convert(value, type);
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       throw new JXPathException(
           "Cannot convert value of class "
               + (value == null ? "null" : value.getClass().getName())
@@ -425,10 +428,9 @@ public class ValueUtils {
   /**
    * Returns the index'th element of the bean's property represented by
    * the supplied property descriptor.
-   *
-   * @param bean               to read
+   * @param bean to read
    * @param propertyDescriptor indicating what to read
-   * @param index              int
+   * @param index int
    * @return Object
    */
   public static Object getValue(Object bean,
@@ -441,9 +443,10 @@ public class ValueUtils {
         if (method != null) {
           return method.invoke(
               bean,
-              new Object[]{new Integer(index)});
+              new Object[] { new Integer(index)});
         }
-      } catch (InvocationTargetException ex) {
+      }
+      catch (InvocationTargetException ex) {
         Throwable t = ex.getTargetException();
         if (t instanceof IndexOutOfBoundsException) {
           return null;
@@ -451,7 +454,8 @@ public class ValueUtils {
         throw new JXPathException(
             "Cannot access property: " + propertyDescriptor.getName(),
             t);
-      } catch (Throwable ex) {
+      }
+      catch (Throwable ex) {
         throw new JXPathException(
             "Cannot access property: " + propertyDescriptor.getName(),
             ex);
@@ -467,11 +471,10 @@ public class ValueUtils {
    * Modifies the index'th element of the bean's property represented by
    * the supplied property descriptor. Converts the value to the required
    * type if necessary.
-   *
-   * @param bean               to edit
+   * @param bean to edit
    * @param propertyDescriptor indicating what to set
-   * @param index              int
-   * @param value              to set
+   * @param index int
+   * @param value to set
    */
   public static void setValue(Object bean,
                               PropertyDescriptor propertyDescriptor, int index, Object value) {
@@ -483,12 +486,13 @@ public class ValueUtils {
         if (method != null) {
           method.invoke(
               bean,
-              new Object[]{
+              new Object[] {
                   new Integer(index),
                   convert(value, ipd.getIndexedPropertyType())});
           return;
         }
-      } catch (Exception ex) {
+      }
+      catch (Exception ex) {
         throw new RuntimeException(
             "Cannot access property: "
                 + propertyDescriptor.getName()
@@ -500,9 +504,11 @@ public class ValueUtils {
     Object collection = getValue(bean, propertyDescriptor);
     if (isCollection(collection)) {
       setValue(collection, index, value);
-    } else if (index == 0) {
+    }
+    else if (index == 0) {
       setValue(bean, propertyDescriptor, value);
-    } else {
+    }
+    else {
       throw new RuntimeException(
           "Not a collection: " + propertyDescriptor.getName());
     }
@@ -511,7 +517,6 @@ public class ValueUtils {
   /**
    * If the parameter is a container, opens the container and
    * return the contents.  The method is recursive.
-   *
    * @param object to read
    * @return Object
    */
@@ -525,7 +530,6 @@ public class ValueUtils {
   /**
    * Returns a shared instance of the dynamic property handler class
    * returned by <code>getDynamicPropertyHandlerClass()</code>.
-   *
    * @param clazz to handle
    * @return DynamicPropertyHandler
    */
@@ -535,7 +539,8 @@ public class ValueUtils {
     if (handler == null) {
       try {
         handler = (DynamicPropertyHandler) clazz.newInstance();
-      } catch (Exception ex) {
+      }
+      catch (Exception ex) {
         throw new JXPathException(
             "Cannot allocate dynamic property handler of class "
                 + clazz.getName(),
@@ -593,7 +598,8 @@ public class ValueUtils {
       if (clazz != null && Modifier.isPublic(clazz.getModifiers())) {
         try {
           return clazz.getDeclaredMethod(name, parameterTypes);
-        } catch (NoSuchMethodException e) { //NOPMD
+        }
+        catch (NoSuchMethodException e) { //NOPMD
           //ignore
         }
       }
@@ -607,8 +613,8 @@ public class ValueUtils {
    * all implemented interfaces and subinterfaces.  If no such Method
    * can be found, return <code>null</code>.
    *
-   * @param clazz          Parent class for the interfaces to be checked
-   * @param methodName     Method name of the method we wish to call
+   * @param clazz Parent class for the interfaces to be checked
+   * @param methodName Method name of the method we wish to call
    * @param parameterTypes The parameter type signatures
    * @return Method
    */
@@ -619,51 +625,37 @@ public class ValueUtils {
 
     // Check the implemented interfaces of the parent class
     Class[] interfaces = clazz.getInterfaces();
-    for (Class anInterface : interfaces) {
+    for (int i = 0; i < interfaces.length; i++) {
+
       // Is this interface public?
-      if (!Modifier.isPublic(anInterface.getModifiers())) {
+      if (!Modifier.isPublic(interfaces[i].getModifiers())) {
         continue;
       }
+
       // Does the method exist on this interface?
       try {
-        method = anInterface.getDeclaredMethod(methodName, parameterTypes);
-      } catch (NoSuchMethodException e) { //NOPMD
+        method =
+            interfaces[i].getDeclaredMethod(methodName, parameterTypes);
+      }
+      catch (NoSuchMethodException e) { //NOPMD
         //ignore
       }
       if (method != null) {
         break;
       }
+
       // Recursively check our parent interfaces
       method =
           getAccessibleMethodFromInterfaceNest(
-              anInterface,
+              interfaces[i],
               methodName,
               parameterTypes);
       if (method != null) {
         break;
       }
     }
+
     // Return whatever we have found
     return (method);
   }
-
-  private static Method readMethod(PropertyDescriptor propertyDescriptor) {
-    Method method = READ_METHOD_CACHE.get(propertyDescriptor);
-    if (method == null) {
-      method = propertyDescriptor.getReadMethod();
-      READ_METHOD_CACHE.put(propertyDescriptor, method);
-    }
-    return method;
-  }
-
-
-  private static Method writeMethod(PropertyDescriptor propertyDescriptor) {
-    Method method = WRITE_METHOD_CACHE.get(propertyDescriptor);
-    if (method == null) {
-      method = propertyDescriptor.getWriteMethod();
-      WRITE_METHOD_CACHE.put(propertyDescriptor, method);
-    }
-    return method;
-  }
-
 }
