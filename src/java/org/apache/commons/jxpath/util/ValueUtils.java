@@ -650,8 +650,8 @@ public class ValueUtils {
   private static Method readMethod(PropertyDescriptor propertyDescriptor) {
     Method method = READ_METHOD_CACHE.get(propertyDescriptor);
     if (method == null) {
-      READ_METHOD_CACHE.put(propertyDescriptor, propertyDescriptor.getReadMethod());
-      method = READ_METHOD_CACHE.get(propertyDescriptor);
+      method = propertyDescriptor.getReadMethod();
+      READ_METHOD_CACHE.put(propertyDescriptor, method);
     }
     return method;
   }
@@ -660,8 +660,8 @@ public class ValueUtils {
   private static Method writeMethod(PropertyDescriptor propertyDescriptor) {
     Method method = WRITE_METHOD_CACHE.get(propertyDescriptor);
     if (method == null) {
-      WRITE_METHOD_CACHE.put(propertyDescriptor, propertyDescriptor.getWriteMethod());
-      method = WRITE_METHOD_CACHE.get(propertyDescriptor);
+      method = propertyDescriptor.getWriteMethod();
+      WRITE_METHOD_CACHE.put(propertyDescriptor, method);
     }
     return method;
   }
