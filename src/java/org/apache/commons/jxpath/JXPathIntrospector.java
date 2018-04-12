@@ -18,7 +18,7 @@ package org.apache.commons.jxpath;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JXPathIntrospector  maintains a registry of {@link JXPathBeanInfo
@@ -29,8 +29,8 @@ import java.util.HashMap;
  */
 public class JXPathIntrospector {
 
-    private static HashMap byClass = new HashMap();
-    private static HashMap byInterface = new HashMap();
+    private static Map byClass = new ConcurrentHashMap();
+    private static Map byInterface = new ConcurrentHashMap();
 
     static {
         registerAtomicClass(Class.class);
@@ -163,7 +163,7 @@ public class JXPathIntrospector {
      * @param beanClass for which to look for an info provider
      * @return JXPathBeanInfo instance or null if none found
      */
-    private static synchronized JXPathBeanInfo findInformant(Class beanClass) {
+    private static JXPathBeanInfo findInformant(Class beanClass) {
         String name = beanClass.getName() + "XBeanInfo";
         try {
             return (JXPathBeanInfo) instantiate(beanClass, name);

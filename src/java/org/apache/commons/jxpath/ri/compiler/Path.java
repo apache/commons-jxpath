@@ -196,7 +196,7 @@ public abstract class Path extends Expression {
      * @param context evaluation context
      * @return Pointer
      */
-    private Pointer searchForPath(EvalContext context) {
+    protected Pointer searchForPath(EvalContext context) {
         EvalContext ctx = buildContextChain(context, steps.length, true);
         Pointer pointer = ctx.getSingleNodePointer();
 
@@ -245,7 +245,7 @@ public abstract class Path extends Expression {
      * @param createInitialContext whether to create the initial context
      * @return created context
      */
-    private EvalContext buildContextChain(
+    protected EvalContext buildContextChain(
             EvalContext context,
             int stepCount,
             boolean createInitialContext) {

@@ -127,6 +127,8 @@
 </li>
 <li>[<a href='https://issues.apache.org/jira/browse/JXPATH-108'>JXPATH-108</a>] -         problems with NodeSet returned from custom function.
 </li>
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-124'>JXPATH-124</a>] -         Make buildContextChain method of  Path class protected
+</li>
 </ul>
     
 <h2>        New Feature
