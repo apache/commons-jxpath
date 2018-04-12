@@ -303,7 +303,7 @@ public class BeanPropertyPointer extends PropertyPointer {
      * Get all PropertyDescriptors.
      * @return PropertyDescriptor[]
      */
-    protected synchronized PropertyDescriptor[] getPropertyDescriptors() {
+    protected PropertyDescriptor[] getPropertyDescriptors() {
         if (propertyDescriptors == null) {
             propertyDescriptors = beanInfo.getPropertyDescriptors();
         }
