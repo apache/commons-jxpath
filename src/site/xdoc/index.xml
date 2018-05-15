@@ -76,7 +76,7 @@ while (it.hasNext()){
             JXPath documentation currently contains:
             <ul>
               <li><a href="users-guide.html">User's Guide</a></li>
-              <li><a href="apidocs/index.html">JavaDoc API Documentation</a></li>
+              <li><a href="apidocs/index.html">Javadoc API Documentation</a></li>
 <!--              <li><a href="design.html">JXPath Design</a>, which is a document
                 primarily intended for those who are interested in extending JXPath.
                 It could also be quite useful if you are debugging a tough problem.
