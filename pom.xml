@@ -65,9 +65,9 @@ under the License.
     </contributor>
   </contributors>
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/jxpath/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/jxpath/trunk</developerConnection>
-    <url>http://svn.apache.org/repos/asf/commons/proper/jxpath/trunk</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/commons-jxpath</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-jxpath</developerConnection>
+    <url>https://gitbox.apache.org/repos/asf/commons-jxpath</url>
   </scm>
 
   <properties>
