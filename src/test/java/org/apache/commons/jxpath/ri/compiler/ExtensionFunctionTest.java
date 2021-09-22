@@ -30,13 +30,15 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.PackageFunctions;
-import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.TestBean;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.JXPath11CompatibleTypeConverter;
 import org.apache.commons.jxpath.util.TypeConverter;
 import org.apache.commons.jxpath.util.TypeUtils;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Test extension functions.
@@ -45,7 +47,8 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * @version $Revision$ $Date$
  */
 public class ExtensionFunctionTest extends JXPathTestCase {
-    private Functions functions;
+
+	private Functions functions;
     private JXPathContext context;
     private TestBean testBean;
     private TypeConverter typeConverter;
@@ -74,6 +77,16 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         typeConverter = TypeUtils.getTypeConverter();
     }
 
+    public static ExpressionContext mockExpressionContext1(Object object){
+        Object mockFieldVariableObject;
+        ExpressionContext mockInstance = mock(ExpressionContext.class);
+        mockFieldVariableObject=object;
+        when(mockInstance.getContextNodePointer()).thenAnswer((stubInvo) -> {
+            return NodePointer.newNodePointer(null,mockFieldVariableObject,Locale.getDefault()); 
+    	});
+        return mockInstance;
+    }
+    
     public void tearDown() {
         TypeUtils.setTypeConverter(typeConverter);
     }
@@ -82,72 +95,80 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         Object[] args = new Object[] { new Integer(1), "x" };
         Function func = functions.getFunction("test", "new", args);
 
-        assertEquals(
+        // Construct mock object
+		assertEquals(
             "test:new(1, x)",
-            func.invoke(new Context(null), args).toString(),
+            func.invoke(ExtensionFunctionTest.mockExpressionContext1(null), args).toString(),
             "foo=1; bar=x");
     }
 
     public void testConstructorLookupWithExpressionContext() {
         Object[] args = new Object[] { "baz" };
         Function func = functions.getFunction("test", "new", args);
-        assertEquals(
+        // Construct mock object
+		assertEquals(
             "test:new('baz')",
-            func.invoke(new Context(new Integer(1)), args).toString(),
+            func.invoke(ExtensionFunctionTest.mockExpressionContext1(new Integer(1)), args).toString(),
             "foo=1; bar=baz");
     }
 
     public void testStaticMethodLookup() {
         Object[] args = new Object[] { new Integer(1), "x" };
         Function func = functions.getFunction("test", "build", args);
-        assertEquals(
+        // Construct mock object
+		assertEquals(
             "test:build(1, x)",
-            func.invoke(new Context(null), args).toString(),
+            func.invoke(ExtensionFunctionTest.mockExpressionContext1(null), args).toString(),
             "foo=1; bar=x");
     }
 
     public void testStaticMethodLookupWithConversion() {
         Object[] args = new Object[] { "7", new Integer(1)};
         Function func = functions.getFunction("test", "build", args);
-        assertEquals(
+        // Construct mock object
+		assertEquals(
             "test:build('7', 1)",
-            func.invoke(new Context(null), args).toString(),
+            func.invoke(ExtensionFunctionTest.mockExpressionContext1(null), args).toString(),
             "foo=7; bar=1");
     }
 
     public void testMethodLookup() {
         Object[] args = new Object[] { new TestFunctions()};
         Function func = functions.getFunction("test", "getFoo", args);
-        assertEquals(
+        // Construct mock object
+		assertEquals(
             "test:getFoo($test, 1, x)",
-            func.invoke(new Context(null), args).toString(),
+            func.invoke(ExtensionFunctionTest.mockExpressionContext1(null), args).toString(),
             "0");
     }
 
     public void testStaticMethodLookupWithExpressionContext() {
         Object[] args = new Object[0];
         Function func = functions.getFunction("test", "path", args);
-        assertEquals(
+        // Construct mock object
+		assertEquals(
             "test:path()",
-            func.invoke(new Context(new Integer(1)), args),
+            func.invoke(ExtensionFunctionTest.mockExpressionContext1(new Integer(1)), args),
             "1");
     }
 
     public void testMethodLookupWithExpressionContext() {
         Object[] args = new Object[] { new TestFunctions()};
         Function func = functions.getFunction("test", "instancePath", args);
-        assertEquals(
+        // Construct mock object
+		assertEquals(
             "test:instancePath()",
-            func.invoke(new Context(new Integer(1)), args),
+            func.invoke(ExtensionFunctionTest.mockExpressionContext1(new Integer(1)), args),
             "1");
     }
 
     public void testMethodLookupWithExpressionContextAndArgument() {
         Object[] args = new Object[] { new TestFunctions(), "*" };
         Function func = functions.getFunction("test", "pathWithSuffix", args);
-        assertEquals(
+        // Construct mock object
+		assertEquals(
             "test:pathWithSuffix('*')",
-            func.invoke(new Context(new Integer(1)), args),
+            func.invoke(ExtensionFunctionTest.mockExpressionContext1(new Integer(1)), args),
             "1*");
     }
 
@@ -383,30 +404,5 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             context,
             "test:isInstance(//strings, $NodeSet.class)",
             Boolean.TRUE);
-    }
-
-    private static class Context implements ExpressionContext {
-        private Object object;
-
-        public Context(Object object) {
-            this.object = object;
-        }
-
-        public Pointer getContextNodePointer() {
-            return NodePointer
-                    .newNodePointer(null, object, Locale.getDefault());
-        }
-
-        public List getContextNodeList() {
-            return null;
-        }
-
-        public JXPathContext getJXPathContext() {
-            return null;
-        }
-
-        public int getPosition() {
-            return 0;
-        }
     }
 }
