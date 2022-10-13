@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.apache.commons.jxpath.functions.ConstructorFunction;
 import org.apache.commons.jxpath.functions.MethodFunction;
+import org.apache.commons.jxpath.ri.JXPathFilter;
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
 import org.apache.commons.jxpath.util.MethodLookupUtils;
 import org.apache.commons.jxpath.util.TypeUtils;
@@ -116,6 +117,36 @@ public class PackageFunctions implements Functions {
         final String namespace,
         final String name,
         Object[] parameters) {
+        return getFunction(namespace, name, parameters, null);
+    }
+
+    /**
+     * Returns a {@link Function}, if found, for the specified namespace,
+     * name and parameter types.
+     * <p>
+     * @param  namespace - if it is not the same as specified in the
+     * construction, this method returns null
+     * @param name - name of the method, which can one these forms:
+     * <ul>
+     * <li><b>methodname</b>, if invoking a method on an object passed as the
+     * first parameter</li>
+     * <li><b>Classname.new</b>, if looking for a constructor</li>
+     * <li><b>subpackage.subpackage.Classname.new</b>, if looking for a
+     * constructor in a subpackage</li>
+     * <li><b>Classname.methodname</b>, if looking for a static method</li>
+     * <li><b>subpackage.subpackage.Classname.methodname</b>, if looking for a
+     * static method of a class in a subpackage</li>
+     * </ul>
+     * @param parameters Object[] of parameters
+     * @param jxPathFilter  the XPath filter
+     * @return a MethodFunction, a ConstructorFunction or null if no function
+     * is found
+     */
+    public Function getFunction(
+        final String namespace,
+        final String name,
+        Object[] parameters,
+        final JXPathFilter jxPathFilter) {
         if (!Objects.equals(this.namespace, namespace)) {
             return null;
         }
@@ -185,7 +216,7 @@ public class PackageFunctions implements Functions {
 
         Class functionClass;
         try {
-            functionClass = ClassLoaderUtil.getClass(className, true);
+            functionClass = ClassLoaderUtil.getClass(className, true, jxPathFilter);
         }
         catch (final ClassNotFoundException ex) {
             throw new JXPathException(

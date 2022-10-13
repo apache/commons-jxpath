@@ -117,6 +117,7 @@ public void tearDown() {
    * JXPath and asserts the dynamic class load succeeds.
    */
   public static void callExampleMessageMethodAndAssertSuccess() {
+    System.setProperty("jxpath.class.allow", EXAMPLE_CLASS_NAME);
     final JXPathContext context = JXPathContext.newContext(new Object());
     Object value;
     try {
@@ -124,6 +125,8 @@ public void tearDown() {
       assertEquals("an example class", value);
     } catch( final Exception e ) {
       fail(e.getMessage());
+    } finally {
+      System.clearProperty("jxpath.class.allow");
     }
   }
 

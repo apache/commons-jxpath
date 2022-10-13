@@ -42,12 +42,20 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
     private JXPathContext context;
 
     @Override
-    public void setUp() {
+    public void setUp() throws Exception {
 //        if (context == null) {
-            context = JXPathContext.newContext(createContextBean());
-            context.setLocale(Locale.US);
-            context.setFactory(getAbstractFactory());
+        super.setUp();
+        System.setProperty("jxpath.class.allow", "*");
+        context = JXPathContext.newContext(createContextBean());
+        context.setLocale(Locale.US);
+        context.setFactory(getAbstractFactory());
 //        }
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        System.clearProperty("jxpath.class.allow");
+        super.tearDown();
     }
 
     protected abstract Object createContextBean();

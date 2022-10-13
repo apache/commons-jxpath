@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.jxpath.functions.ConstructorFunction;
 import org.apache.commons.jxpath.functions.MethodFunction;
+import org.apache.commons.jxpath.ri.JXPathFilter;
 import org.apache.commons.jxpath.util.MethodLookupUtils;
 
 /**
@@ -91,6 +92,28 @@ public class ClassFunctions implements Functions {
         final String namespace,
         final String name,
         Object[] parameters) {
+        return getFunction(namespace, name, parameters, null);
+    }
+
+    public Function getFunction(
+            String namespace,
+            String name,
+            Object[] parameters,
+            JXPathFilter jxPathFilter) {
+
+        // give chance to ClassFilter to filter out, if present
+        try {
+            if (jxPathFilter != null && !jxPathFilter.exposeToXPath(functionClass.getName())) {
+                throw new ClassNotFoundException(functionClass.getName());
+            }
+        }
+        catch (ClassNotFoundException ex) {
+            throw new JXPathException(
+                    "Cannot invoke extension function "
+                            + (namespace != null ? namespace + ":" + name : name),
+                    ex);
+            }
+
         if (namespace == null) {
             if (this.namespace != null) {
                 return null;

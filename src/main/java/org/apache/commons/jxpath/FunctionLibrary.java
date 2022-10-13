@@ -16,6 +16,8 @@
  */
 package org.apache.commons.jxpath;
 
+import org.apache.commons.jxpath.ri.JXPathFilter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -76,12 +78,30 @@ public class FunctionLibrary implements Functions {
     @Override
     public Function getFunction(final String namespace, final String name,
             final Object[] parameters) {
-        final Object candidates = functionCache().get(namespace);
+        return getFunction(namespace, name, parameters, null);
+    }
+
+    /**
+     * Returns a Function, if any, for the specified namespace,
+     * name and parameter types.
+     * @param namespace function namespace
+     * @param name function name
+     * @param parameters parameters
+     * @param jxPathFilter  the XPath filter
+     * @return Function found
+     */
+    public Function getFunction(
+            final String namespace,
+            final String name,
+            final Object[] parameters,
+            final JXPathFilter jxPathFilter) {
+        Object candidates = functionCache().get(namespace);
         if (candidates instanceof Functions) {
             return ((Functions) candidates).getFunction(
                 namespace,
                 name,
-                parameters);
+                parameters,
+                jxPathFilter);
         }
         if (candidates instanceof List) {
             final List list = (List) candidates;
@@ -91,7 +111,8 @@ public class FunctionLibrary implements Functions {
                     ((Functions) list.get(i)).getFunction(
                         namespace,
                         name,
-                        parameters);
+                        parameters,
+                        jxPathFilter);
                 if (function != null) {
                     return function;
                 }
