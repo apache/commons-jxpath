@@ -27,23 +27,10 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import org.apache.commons.jxpath.CompiledExpression;
-import org.apache.commons.jxpath.ExceptionHandler;
-import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.Functions;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.JXPathFunctionNotFoundException;
-import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
-import org.apache.commons.jxpath.JXPathNotFoundException;
-import org.apache.commons.jxpath.JXPathTypeConversionException;
-import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.axes.InitialContext;
 import org.apache.commons.jxpath.ri.axes.RootContext;
-import org.apache.commons.jxpath.ri.compiler.Expression;
-import org.apache.commons.jxpath.ri.compiler.LocationPath;
-import org.apache.commons.jxpath.ri.compiler.Path;
-import org.apache.commons.jxpath.ri.compiler.TreeCompiler;
+import org.apache.commons.jxpath.ri.compiler.*;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
 import org.apache.commons.jxpath.ri.model.VariablePointerFactory;
@@ -739,7 +726,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         while (funcCtx != null) {
             funcs = funcCtx.getFunctions();
             if (funcs != null) {
-                func = funcs.getFunction(namespace, name, parameters);
+                func = funcs.getFunction(namespace, name, parameters, new JXPathFilter());
                 if (func != null) {
                     return func;
                 }
