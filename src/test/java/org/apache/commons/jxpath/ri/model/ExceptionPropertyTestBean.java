@@ -20,7 +20,6 @@ import org.apache.commons.jxpath.TestBean;
 
 /**
  * 
- * @author <a href="mailto:dmitri@apache.org">Dmitri Plotnikov</a>
  * @version $Id$
  */
 public class ExceptionPropertyTestBean {

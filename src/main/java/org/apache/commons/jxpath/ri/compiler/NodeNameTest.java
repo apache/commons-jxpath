@@ -19,7 +19,6 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.ri.QName;
 
 /**
- * @author Dmitri Plotnikov
  */
 public class NodeNameTest extends NodeTest {
     private QName qname;

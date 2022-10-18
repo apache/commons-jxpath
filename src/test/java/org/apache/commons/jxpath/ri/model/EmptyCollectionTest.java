@@ -23,7 +23,6 @@ import org.apache.commons.jxpath.JXPathTestCase;
 
 /**
  * Be sure empty lists/sets/arrays work.
- * @author mbenson
  */
 public class EmptyCollectionTest extends JXPathTestCase {
     public static class HasChild {

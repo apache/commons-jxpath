@@ -20,7 +20,6 @@ package org.apache.commons.jxpath.util;
  * Test class for <code>org.apache.commons.jxpath.util.ClassLoaderUtilTest
  * </code> test case.
  * 
- * @author John Trimble
  */
 public class ClassLoadingExampleClass {
   public static String getMessage() { return "an example class"; }

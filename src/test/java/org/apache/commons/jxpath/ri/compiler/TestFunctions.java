@@ -29,7 +29,6 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.NodeSet;
 
 /**
- * @author Dmitri Plotnikov
  */
 public class TestFunctions {
 

@@ -17,7 +17,6 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 /**
- * @author Dmitri Plotnikov
  */
 public abstract class NodeTest {
 }

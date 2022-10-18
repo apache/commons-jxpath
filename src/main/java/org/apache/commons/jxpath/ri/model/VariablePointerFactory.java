@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * NodePointerFactory to create {@link VariablePointer VariablePointers}.
- * @author Matt Benson
  * @since JXPath 1.3
  */
 public class VariablePointerFactory implements NodePointerFactory {

@@ -32,7 +32,6 @@ import com.mockrunner.mock.web.MockServletContext;
 import junit.framework.TestCase;
 
 /**
- * @author Emmanuel Bourg
  * @version $Revision$, $Date$
  */
 public class JXPathServletContextTest extends TestCase {

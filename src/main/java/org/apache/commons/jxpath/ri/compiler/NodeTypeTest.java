@@ -19,7 +19,6 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.ri.Compiler;
 
 /**
- * @author Dmitri Plotnikov
  */
 public class NodeTypeTest extends NodeTest {
     private int nodeType;

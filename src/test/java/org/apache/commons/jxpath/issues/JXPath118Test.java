@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.Pointer;
 
 /**
  * Testcase proving JXPATH-118 issue with asPath() returning wrong names.
- * @author Michele Vivoda modified for pre annotations Java, reordered fields, in my version no failures in JDK1.4
  */
 public class JXPath118Test extends TestCase
 {

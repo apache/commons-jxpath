@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.JXPathTestCase;
 /**
  * JXPATH-104 test.
  * 
- * @author Matt Benson
  */
 public class EmbeddedColonMapKeysTest extends JXPathTestCase {
     private JXPathContext context;

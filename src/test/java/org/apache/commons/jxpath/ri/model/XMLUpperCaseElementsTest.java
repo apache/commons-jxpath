@@ -23,7 +23,6 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 /**
  * Test for uppercase element matching, etc. showing JXPATH-136 is not reproducible.
  * 
- * @author Matt Benson
  */
 public class XMLUpperCaseElementsTest extends JXPathTestCase {
     protected JXPathContext context;

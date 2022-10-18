@@ -18,7 +18,6 @@ package org.apache.commons.jxpath.ri.compiler;
 
 
 /**
- * @author Dmitri Plotnikov
  */
 public class TestFunctions2 {
 

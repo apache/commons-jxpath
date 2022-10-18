@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * Pointer whose value is <code>null</code>.
- * @author Dmitri Plotnikov
  */
 public class NullPointer extends PropertyOwnerPointer {
     private QName name;

@@ -23,7 +23,6 @@ import org.apache.commons.jxpath.NodeSet;
  * decoding. Suggested by JIRA issue JXPATH-10.
  *
  * @since JXPath 1.3
- * @author Matt Benson
  */
 public class JXPath11CompatibleTypeConverter extends BasicTypeConverter {
 
