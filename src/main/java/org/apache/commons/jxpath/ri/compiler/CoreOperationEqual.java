@@ -20,7 +20,6 @@ package org.apache.commons.jxpath.ri.compiler;
  * Implementation of {@link Expression} for the operation "=".
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class CoreOperationEqual extends CoreOperationCompare {
 

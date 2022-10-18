@@ -29,7 +29,6 @@ package org.apache.commons.jxpath;
  * {@link PackageFunctions PackageFunctions}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface Function {
 

@@ -35,7 +35,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Test basic functionality of JXPath - core functions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class CoreFunctionTest extends JXPathTestCase {
     private JXPathContext context;

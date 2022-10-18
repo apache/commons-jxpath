@@ -26,7 +26,6 @@ import org.apache.commons.jxpath.Variables;
  * operations.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class VariableTest extends JXPathTestCase {
     private JXPathContext context;

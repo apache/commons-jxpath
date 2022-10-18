@@ -26,7 +26,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * on to the parent context.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class InitialContext extends EvalContext {
     private boolean started = false;

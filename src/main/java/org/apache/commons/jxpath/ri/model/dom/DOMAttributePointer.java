@@ -29,7 +29,6 @@ import org.w3c.dom.Attr;
  * neither is this pointer class truly so.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class DOMAttributePointer extends NodePointer {
     private static final long serialVersionUID = 1115085175427555951L;

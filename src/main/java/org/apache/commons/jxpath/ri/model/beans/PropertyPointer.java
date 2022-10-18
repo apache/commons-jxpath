@@ -29,7 +29,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a property of the parent object.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public abstract class PropertyPointer extends NodePointer {
     public static final int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;

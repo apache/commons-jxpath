@@ -25,7 +25,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * aggregate attribute node iterator.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class CollectionAttributeNodeIterator extends CollectionNodeIterator {
 

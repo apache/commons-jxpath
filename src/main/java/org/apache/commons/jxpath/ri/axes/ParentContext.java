@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "parent::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class ParentContext extends EvalContext {
     private NodeTest nodeTest;

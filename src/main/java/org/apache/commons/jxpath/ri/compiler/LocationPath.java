@@ -21,7 +21,6 @@ import org.apache.commons.jxpath.ri.axes.InitialContext;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class LocationPath extends Path {
 

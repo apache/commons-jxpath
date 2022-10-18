@@ -20,7 +20,6 @@ package org.apache.commons.jxpath.ri.model;
  * Definition for an iterator for all kinds of Nodes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface NodeIterator {
 

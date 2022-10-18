@@ -33,7 +33,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
     private static final Object UNINITIALIZED = new Object();

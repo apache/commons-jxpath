@@ -23,7 +23,6 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  * Implementation of {@link Expression} for the operation "mod".
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class CoreOperationMod extends CoreOperation {
 

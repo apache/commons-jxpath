@@ -23,7 +23,6 @@ import javax.servlet.http.HttpSession;
  * Just a structure to hold a ServletRequest and ServletContext together.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class HttpSessionAndServletContext {
 

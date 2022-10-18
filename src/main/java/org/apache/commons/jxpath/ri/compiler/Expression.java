@@ -35,7 +35,6 @@ import java.util.Locale;
  * provides that hint.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public abstract class Expression {
 

@@ -49,7 +49,6 @@ import org.w3c.dom.ProcessingInstruction;
  * a DOMNodePointer instance may likewise not be properly Serializable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class DOMNodePointer extends NodePointer {
 

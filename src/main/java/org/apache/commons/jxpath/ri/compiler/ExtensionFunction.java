@@ -30,7 +30,6 @@ import org.apache.commons.jxpath.ri.axes.NodeSetContext;
  * call.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class ExtensionFunction extends Operation {
 

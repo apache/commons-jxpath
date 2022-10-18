@@ -42,7 +42,6 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * attribute and only simple, context-independent predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public abstract class NodePointer implements Pointer {
 

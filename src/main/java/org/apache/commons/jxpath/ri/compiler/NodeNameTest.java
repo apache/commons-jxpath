@@ -20,7 +20,6 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class NodeNameTest extends NodeTest {
     private QName qname;

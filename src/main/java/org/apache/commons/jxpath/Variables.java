@@ -25,7 +25,6 @@ import java.io.Serializable;
  * {@link JXPathContext#setVariables JXPathContext.setVariables()}
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface Variables extends Serializable {
 

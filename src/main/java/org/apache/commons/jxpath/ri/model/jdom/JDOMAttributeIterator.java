@@ -31,7 +31,6 @@ import org.jdom.Namespace;
  * An iterator of attributes of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class JDOMAttributeIterator implements NodeIterator {
     private NodePointer parent;

@@ -33,7 +33,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class CollectionPointer extends NodePointer {
     private Object collection;

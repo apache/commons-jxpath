@@ -23,7 +23,6 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  * A compile tree element containing a constant number or string.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class Constant extends Expression {
 

@@ -30,7 +30,6 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
  * @since JXPath 1.3
  *
  * @author Matt Benson
- * @version $Revision$ $Date$
  */
 public abstract class CoreOperationRelationalExpression extends CoreOperation {
 

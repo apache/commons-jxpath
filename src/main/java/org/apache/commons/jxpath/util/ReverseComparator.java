@@ -23,7 +23,6 @@ import java.util.Comparator;
  * Reverse comparator.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public final class ReverseComparator implements Comparator, Serializable {
     private static final long serialVersionUID = -2795475743948616649L;

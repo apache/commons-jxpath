@@ -38,7 +38,6 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * @deprecated 1.1 Please use {@link DocumentContainer}
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class XMLDocumentContainer implements Container {
 

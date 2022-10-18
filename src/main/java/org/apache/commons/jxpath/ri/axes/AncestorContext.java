@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class AncestorContext extends EvalContext {
     private NodeTest nodeTest;

@@ -30,7 +30,6 @@ import org.apache.commons.jxpath.TestBean;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class TestDynamicPropertyFactory extends AbstractFactory {
 

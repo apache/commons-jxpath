@@ -20,7 +20,6 @@ package org.apache.commons.jxpath;
  * Thrown when JXPath cannot find a requested path.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class JXPathNotFoundException extends JXPathException {
 

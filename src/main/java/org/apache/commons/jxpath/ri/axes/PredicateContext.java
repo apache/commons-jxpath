@@ -30,7 +30,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * EvalContext that checks predicates.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;

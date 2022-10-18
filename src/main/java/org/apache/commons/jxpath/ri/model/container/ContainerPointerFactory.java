@@ -27,7 +27,6 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * Implements NodePointerFactory for {@link Container} objects.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class ContainerPointerFactory implements NodePointerFactory {
     /** factory order for this factory */

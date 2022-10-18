@@ -39,7 +39,6 @@ import org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanModelTest;
  * Abstract superclass for Bean access with JXPath.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public abstract class BeanModelTestCase extends JXPathTestCase {
     private JXPathContext context;

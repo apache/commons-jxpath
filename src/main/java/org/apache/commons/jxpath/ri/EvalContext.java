@@ -41,7 +41,6 @@ import org.apache.commons.jxpath.util.ReverseComparator;
  * implement behavior of various XPath axes: "child::", "parent::" etc.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     /** parent context */

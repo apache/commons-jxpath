@@ -22,7 +22,6 @@ package org.apache.commons.jxpath;
  * target object model.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class JXPathInvalidAccessException extends JXPathException {
 

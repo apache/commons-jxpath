@@ -32,7 +32,6 @@ import java.io.Serializable;
  * JXPathBeanInfo interface.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface JXPathBeanInfo extends Serializable {
 

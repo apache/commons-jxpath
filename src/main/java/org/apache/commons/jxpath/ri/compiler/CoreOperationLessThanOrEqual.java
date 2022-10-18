@@ -20,7 +20,6 @@ package org.apache.commons.jxpath.ri.compiler;
  * Implementation of {@link Expression} for the operation "&lt;=".
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class CoreOperationLessThanOrEqual extends
         CoreOperationRelationalExpression {

@@ -40,7 +40,6 @@ import org.apache.commons.jxpath.Pointer;
  * The default implementation of TypeConverter.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class BasicTypeConverter implements TypeConverter {
 

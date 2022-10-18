@@ -24,7 +24,6 @@ import java.util.Set;
  * Implements the DynamicPropertyHandler interface for {@link java.util.Map}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 

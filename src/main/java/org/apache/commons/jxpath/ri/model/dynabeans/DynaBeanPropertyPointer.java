@@ -33,7 +33,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Serializable, so should this instance be.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class DynaBeanPropertyPointer extends PropertyPointer {
     private static final String CLASS = "class";

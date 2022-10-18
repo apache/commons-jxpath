@@ -27,7 +27,6 @@ import javax.servlet.jsp.PageContext;
  * "$page/foo" would only look in the "page" scope.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class PageScopeContext {
     private PageContext pageContext;

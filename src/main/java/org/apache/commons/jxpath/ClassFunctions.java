@@ -49,7 +49,6 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * the method.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class ClassFunctions implements Functions {
     private static final Object[] EMPTY_ARRAY = new Object[0];

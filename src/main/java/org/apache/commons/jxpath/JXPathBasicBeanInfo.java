@@ -33,7 +33,6 @@ import java.util.HashMap;
  * @see java.beans.Introspector
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private static final long serialVersionUID = -3863803443111484155L;

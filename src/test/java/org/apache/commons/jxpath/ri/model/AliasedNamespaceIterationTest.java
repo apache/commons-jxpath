@@ -25,7 +25,6 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 /**
  * Test aliased/doubled XML namespace iteration; JXPATH-125.
  *
- * @version $Revision$ $Date$
  */
 public class AliasedNamespaceIterationTest extends JXPathTestCase {
     protected JXPathContext context;

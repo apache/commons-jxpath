@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.JXPathContext;
  * Test thread safety.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class StressTest extends TestCase {
     

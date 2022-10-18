@@ -21,7 +21,6 @@ package org.apache.commons.jxpath;
  * function.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface KeyManager {
 

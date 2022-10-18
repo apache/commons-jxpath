@@ -33,7 +33,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * {@link LazyDynaClass#isDynaProperty(String)} when determining
  * {@link PropertyPointer#isActual()}.
  *
- * @version $Revision$ $Date$
  */
 public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
     /**

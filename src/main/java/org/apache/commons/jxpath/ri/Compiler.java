@@ -43,7 +43,6 @@ package org.apache.commons.jxpath.ri;
  * </pre></blockquote>
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface Compiler {
 

@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * well as the "xml:lang" attribute.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class BeanAttributeIterator extends PropertyIterator {
     private NodePointer parent;

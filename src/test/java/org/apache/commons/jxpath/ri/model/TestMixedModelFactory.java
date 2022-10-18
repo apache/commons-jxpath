@@ -30,7 +30,6 @@ import org.apache.commons.jxpath.TestMixedModelBean;
  * Test AbstractFactory.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class TestMixedModelFactory extends AbstractFactory {
 

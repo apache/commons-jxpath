@@ -27,7 +27,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Implements NodePointerFactory for stand-alone collections.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class CollectionPointerFactory implements NodePointerFactory {
 

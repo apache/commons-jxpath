@@ -63,7 +63,6 @@ import org.apache.commons.jxpath.JXPathIntrospector;
  * servlet. JXPath does not automatically create sessions.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public final class JXPathServletContexts {
 

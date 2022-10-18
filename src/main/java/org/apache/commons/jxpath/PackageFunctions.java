@@ -66,7 +66,6 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * </p>
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class PackageFunctions implements Functions {
     private String classPrefix;

@@ -20,7 +20,6 @@ import org.apache.commons.jxpath.ri.Compiler;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class NodeTypeTest extends NodeTest {
     private int nodeType;

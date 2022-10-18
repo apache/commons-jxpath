@@ -25,7 +25,6 @@ import org.apache.commons.jxpath.ri.model.BeanModelTestCase;
  * Tests JXPath with JavaBeans
 *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class BeanModelTest extends BeanModelTestCase {
 

@@ -33,7 +33,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * {@link PropertyPointer}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;

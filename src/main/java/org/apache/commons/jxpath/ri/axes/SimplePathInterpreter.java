@@ -46,7 +46,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * predicates that either integer or have the form <code>[@name = ...]</code>.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class SimplePathInterpreter {
 

@@ -24,7 +24,6 @@ import java.io.Serializable;
  * and an local name.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class QName implements Serializable {
     private static final long serialVersionUID = 7616199282015091496L;

@@ -33,7 +33,6 @@ import org.jdom.Text;
  * Tests JXPath with JDOM
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class JDOMModelTest extends XMLModelTestCase {
 

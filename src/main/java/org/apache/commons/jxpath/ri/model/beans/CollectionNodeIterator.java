@@ -28,7 +28,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * aggregate node iterator.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public abstract class CollectionNodeIterator implements NodeIterator {
     private CollectionPointer pointer;

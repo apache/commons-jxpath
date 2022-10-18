@@ -25,7 +25,6 @@ import org.apache.commons.jxpath.ri.model.BeanModelTestCase;
  * Test for support of DynaBeans (see BeanUtils)
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 
 public class DynaBeanModelTest extends BeanModelTestCase {

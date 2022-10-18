@@ -26,7 +26,6 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * access to attributes of a {@link PageScopeContext}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class PageScopeContextHandler implements DynamicPropertyHandler {
 

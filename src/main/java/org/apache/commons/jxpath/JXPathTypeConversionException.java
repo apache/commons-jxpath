@@ -20,7 +20,6 @@ package org.apache.commons.jxpath;
  * Thrown when JXPath cannot convert supplied value to the required type.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 
 public class JXPathTypeConversionException extends JXPathException {

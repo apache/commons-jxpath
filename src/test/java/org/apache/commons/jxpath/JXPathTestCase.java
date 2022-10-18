@@ -33,7 +33,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Abstract superclass for various JXPath tests.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public abstract class JXPathTestCase extends TestCase {
 

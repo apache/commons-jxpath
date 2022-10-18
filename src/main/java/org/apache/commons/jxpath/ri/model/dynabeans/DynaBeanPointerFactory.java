@@ -30,7 +30,6 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * </a>
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class DynaBeanPointerFactory implements NodePointerFactory {
 

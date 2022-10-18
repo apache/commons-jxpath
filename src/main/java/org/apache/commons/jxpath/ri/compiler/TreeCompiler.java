@@ -21,7 +21,6 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class TreeCompiler implements Compiler {
 

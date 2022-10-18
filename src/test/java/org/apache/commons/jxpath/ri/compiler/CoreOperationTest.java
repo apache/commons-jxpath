@@ -25,7 +25,6 @@ import org.apache.commons.jxpath.Variables;
  * operations.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class CoreOperationTest extends JXPathTestCase {
     private JXPathContext context;

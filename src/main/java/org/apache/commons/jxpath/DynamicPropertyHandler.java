@@ -35,7 +35,6 @@ package org.apache.commons.jxpath;
  * </ul>
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface DynamicPropertyHandler {
 

@@ -36,7 +36,6 @@ import org.apache.commons.jxpath.util.ClassLoaderUtil;
  * read at all.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class DocumentContainer extends XMLParser2 implements Container {
 

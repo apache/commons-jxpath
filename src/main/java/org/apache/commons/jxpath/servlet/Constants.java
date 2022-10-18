@@ -20,7 +20,6 @@ package org.apache.commons.jxpath.servlet;
  * String constants for this package.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public final class Constants {
 

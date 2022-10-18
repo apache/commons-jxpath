@@ -26,7 +26,6 @@ import java.io.Serializable;
  * rather than the container itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface Container extends Serializable {
 

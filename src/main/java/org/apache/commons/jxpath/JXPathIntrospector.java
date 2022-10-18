@@ -28,7 +28,6 @@ import org.apache.commons.jxpath.util.ClassLoaderUtil;
  * JXPathBeanInfo} objects for Java classes.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class JXPathIntrospector {
 

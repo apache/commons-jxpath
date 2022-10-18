@@ -27,7 +27,6 @@ import org.apache.commons.jxpath.JXPathException;
  * interface that provides access to attributes of a @{link HttpSession}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class HttpSessionHandler extends ServletContextHandler {
 

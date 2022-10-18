@@ -21,7 +21,6 @@ package org.apache.commons.jxpath;
  * the requested path.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 
 public class JXPathAbstractFactoryException extends JXPathException {

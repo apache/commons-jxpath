@@ -27,7 +27,6 @@ import org.apache.commons.jxpath.ri.parser.XPathParser;
  * XPath parser
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class Parser {
 

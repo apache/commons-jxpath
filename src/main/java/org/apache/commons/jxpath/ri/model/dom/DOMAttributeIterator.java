@@ -32,7 +32,6 @@ import org.w3c.dom.Node;
  * An iterator of attributes of a DOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class DOMAttributeIterator implements NodeIterator {
     private NodePointer parent;

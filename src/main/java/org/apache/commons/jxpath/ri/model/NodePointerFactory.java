@@ -26,7 +26,6 @@ import org.apache.commons.jxpath.ri.QName;
  * by the "getOrder" method and always queried in that order.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface NodePointerFactory {
 

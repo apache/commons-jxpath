@@ -28,7 +28,6 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * Implements NodePointerFactory for JavaBeans.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class BeanPointerFactory implements NodePointerFactory {
 

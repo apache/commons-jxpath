@@ -29,7 +29,6 @@ import org.apache.commons.jxpath.JXPathException;
  * as constructors based on a name and list of parameters.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class MethodLookupUtils {
 

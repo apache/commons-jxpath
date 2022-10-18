@@ -23,7 +23,6 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  * Implementation of {@link Expression} for the operation "div".
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class CoreOperationDivide extends CoreOperation {
 

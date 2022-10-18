@@ -29,7 +29,6 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  *
  * @author Matt Benson
  * @since JXPath 1.3
- * @version $Revision$ $Date$
  */
 public class KeyManagerUtils {
     /**

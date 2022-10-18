@@ -30,7 +30,6 @@ import org.apache.commons.jxpath.NodeSet;
 
 /**
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class TestFunctions {
 

@@ -33,7 +33,6 @@ import java.util.Iterator;
  * JXPathContext.compile}
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface CompiledExpression {
 

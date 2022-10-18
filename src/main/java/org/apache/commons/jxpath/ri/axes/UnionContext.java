@@ -29,7 +29,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of a union operation like (a | b)
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class UnionContext extends NodeSetContext {
     private EvalContext[] contexts;

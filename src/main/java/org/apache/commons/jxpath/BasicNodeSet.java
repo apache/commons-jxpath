@@ -25,7 +25,6 @@ import java.util.List;
  * of pointers.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class BasicNodeSet implements NodeSet {
     private List pointers = new ArrayList();

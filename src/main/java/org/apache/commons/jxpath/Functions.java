@@ -26,7 +26,6 @@ import java.util.Set;
  * to register extension functions implemented as Java methods.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public interface Functions {
 

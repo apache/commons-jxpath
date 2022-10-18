@@ -30,7 +30,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * /bar</code>.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class ExpressionPath extends Path {
 

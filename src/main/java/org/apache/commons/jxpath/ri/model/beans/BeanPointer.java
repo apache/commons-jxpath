@@ -30,7 +30,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * in the chain.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;

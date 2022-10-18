@@ -30,7 +30,6 @@ import java.util.Set;
  * that need to be registered.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class FunctionLibrary implements Functions {
     private final List allFunctions = new ArrayList();

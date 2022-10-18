@@ -29,7 +29,6 @@ import org.jdom.Element;
  * An iterator of children of a JDOM Node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class JDOMNodeIterator implements NodeIterator {
     private NodePointer parent;

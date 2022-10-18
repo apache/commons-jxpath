@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.NodeSet;
  *
  * @since JXPath 1.3
  * @author Matt Benson
- * @version $Revision$ $Date$
  */
 public class JXPath11CompatibleTypeConverter extends BasicTypeConverter {
 

@@ -400,7 +400,6 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public abstract class JXPathContext {
     private static volatile JXPathContextFactory contextFactory;

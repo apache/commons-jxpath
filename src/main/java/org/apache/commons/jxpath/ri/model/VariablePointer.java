@@ -32,7 +32,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer to a context variable.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;

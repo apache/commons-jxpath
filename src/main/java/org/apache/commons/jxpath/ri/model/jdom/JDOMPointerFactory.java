@@ -28,7 +28,6 @@ import org.jdom.Element;
  * Implements NodePointerFactory for DOM elements.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class JDOMPointerFactory implements NodePointerFactory {
 

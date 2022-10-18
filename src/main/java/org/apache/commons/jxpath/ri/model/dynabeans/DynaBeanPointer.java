@@ -30,7 +30,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * so should this instance be.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class DynaBeanPointer extends PropertyOwnerPointer {
     private static final long serialVersionUID = -9135052498044877965L;

@@ -45,7 +45,6 @@ import org.jdom.Text;
  * A Pointer that points to a DOM node.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class JDOMNodePointer extends NodePointer {
     private static final long serialVersionUID = -6346532297491082651L;

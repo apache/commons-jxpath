@@ -26,7 +26,6 @@ import javax.servlet.http.HttpSession;
  * together.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class ServletRequestAndContext extends HttpSessionAndServletContext {
     private ServletRequest request;

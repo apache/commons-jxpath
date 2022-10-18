@@ -26,7 +26,6 @@ import javax.servlet.ServletRequest;
  * of a {@link ServletRequest}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class ServletRequestHandler extends HttpSessionHandler {
 

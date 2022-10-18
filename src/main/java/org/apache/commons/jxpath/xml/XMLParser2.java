@@ -23,7 +23,6 @@ import java.io.InputStream;
  * The features have the same defaults as {@link javax.xml.parsers.DocumentBuilderFactory}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public abstract class XMLParser2 implements XMLParser {
     private boolean validating = false;

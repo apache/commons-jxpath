@@ -32,7 +32,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Pointer pointing to a property of an object with dynamic properties.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class DynamicPropertyPointer extends PropertyPointer {
 

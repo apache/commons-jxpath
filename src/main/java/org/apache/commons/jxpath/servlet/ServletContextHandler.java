@@ -29,7 +29,6 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  * access to attributes of a {@link ServletContext}.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class ServletContextHandler implements DynamicPropertyHandler {
 

@@ -24,7 +24,6 @@ package org.apache.commons.jxpath;
  * @author Sergey Vladimirov
  * @author Matt Benson
  * @since JXPath 1.3
- * @version $Revision$ $Date$
  */
 public interface ExtendedKeyManager extends KeyManager {
 

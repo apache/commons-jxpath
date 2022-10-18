@@ -27,7 +27,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "namespace::" axis.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class NamespaceContext extends EvalContext {
     private NodeTest nodeTest;

@@ -31,7 +31,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * itself.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class ContainerPointer extends NodePointer {
     private Container container;

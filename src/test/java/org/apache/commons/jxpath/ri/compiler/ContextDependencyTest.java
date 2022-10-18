@@ -23,7 +23,6 @@ import org.apache.commons.jxpath.ri.Parser;
  * Tests the determination of whether an expression is context dependent.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class ContextDependencyTest extends JXPathTestCase {
 

@@ -23,7 +23,6 @@ import org.apache.commons.jxpath.ri.EvalContext;
  * An element of the compile tree holding a variable reference.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class VariableReference extends Expression {
 

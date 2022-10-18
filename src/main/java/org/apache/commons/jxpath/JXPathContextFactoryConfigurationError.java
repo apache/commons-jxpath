@@ -23,7 +23,6 @@ package org.apache.commons.jxpath;
  * or instantiated.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class JXPathContextFactoryConfigurationError extends Error {
 

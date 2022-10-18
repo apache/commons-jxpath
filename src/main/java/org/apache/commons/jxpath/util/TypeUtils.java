@@ -22,7 +22,6 @@ import java.util.HashMap;
  * Global type conversion utilities.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class TypeUtils {
     private static TypeConverter typeConverter = new BasicTypeConverter();

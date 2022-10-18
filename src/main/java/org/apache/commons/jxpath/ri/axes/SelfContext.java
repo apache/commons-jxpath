@@ -26,7 +26,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * test succeeds.
  *
  * @author Dmitri Plotnikov
- * @version $Revision$ $Date$
  */
 public class SelfContext extends EvalContext {
     private NodeTest nodeTest;
