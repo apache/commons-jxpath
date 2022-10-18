@@ -160,7 +160,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Operation is not supported
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException Always thrown.
      */
     public void remove() {
         throw new UnsupportedOperationException(

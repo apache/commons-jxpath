@@ -54,8 +54,10 @@ public class TokenMgrError extends Error
    int errorCode;
 
    /**
-    * Replaces unprintable characters by their espaced (or unicode escaped)
-    * equivalents in the given string
+    * Replaces unprintable characters by their escaped (or Unicode escaped) equivalents in the given string
+    * 
+    * @param str TODO
+    * @return TODO
     */
    public static final String addEscapes(String str) {
       StringBuffer retval = new StringBuffer();
@@ -103,16 +105,17 @@ public class TokenMgrError extends Error
    }
 
    /**
-    * Returns a detailed message for the Error when it is thrown by the
-    * token manager to indicate a lexical error.
-    * Parameters :
-    *    EOFSeen     : indicates if EOF caused the lexicl error
-    *    curLexState : lexical state in which this error occurred
-    *    errorLine   : line number when the error occurred
-    *    errorColumn : column number when the error occurred
-    *    errorAfter  : prefix that was seen before this error occurred
-    *    curchar     : the offending character
+    * Returns a detailed message for the Error when it is thrown by the token manager to indicate a lexical error.
+    * 
     * Note: You can customize the lexical error message by modifying this method.
+    * 
+    * @param EOFSeen     indicates if EOF caused the lexicl error
+    * @param lexState    lexical state in which this error occurred
+    * @param errorLine   line number when the error occurred
+    * @param errorColumn column number when the error occurred
+    * @param errorAfter  prefix that was seen before this error occurred
+    * @param curChar     the offending character
+    * @return TODO
     */
    protected static String LexicalError(boolean EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar) {
       return("Lexical error at line " +

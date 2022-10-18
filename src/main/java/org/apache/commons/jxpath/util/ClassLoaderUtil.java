@@ -20,13 +20,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Port of class loading methods from <code>org.apache.commons.lang.ClassUtils</code> from
+ * Port of class loading methods from <code>org.apache.commons.lang3.ClassUtils</code> from
  * the Apache Commons Lang Component. Some adjustments made to remove dependency on
- * <code>org.apache.commons.lang.StringUtils</code>. Also modified to fall back on the
+ * <code>org.apache.commons.lang3.StringUtils</code>. Also modified to fall back on the
  * current class loader when an attempt to load a class with the context class loader
  * results in a <code>java.lang.ClassNotFoundException</code>.
  *
- * @see org.apache.commons.lang.ClassUtils
+ * See org.apache.commons.lang3.ClassUtils
  */
 public class ClassLoaderUtil {
     /**

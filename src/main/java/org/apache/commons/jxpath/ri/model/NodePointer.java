@@ -917,7 +917,7 @@ public abstract class NodePointer implements Pointer {
      * Verify the structure of a given NodePointer.
      * @param nodePointer to check
      * @return nodePointer
-     * @throws JXPathNotFoundException
+     * @throws JXPathNotFoundException Thrown when there is no value at the NodePointer.
      */
     public static NodePointer verify(NodePointer nodePointer) {
         if (!nodePointer.isActual()) {

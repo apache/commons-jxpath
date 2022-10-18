@@ -102,7 +102,7 @@
   </properties> 
 
   <build>
-    <defaultGoal>clean apache-rat:check package japicmp:cmp</defaultGoal>
+    <defaultGoal>clean apache-rat:check package japicmp:cmp javadoc:javadoc</defaultGoal>
     <plugins>
       <plugin>
         <groupId>org.apache.rat</groupId>
@@ -140,6 +140,21 @@
           <ignorePathsToDelete>
             <ignorePathToDelete>javadocs</ignorePathToDelete>
           </ignorePathsToDelete>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <linksource>true</linksource>
+          <links>
+            <link>${commons.javadoc8.java.link}</link>
+            <link>${commons.javadoc.javaee5.link}</link>
+            <link>https://commons.apache.org/proper/commons-beanutils/apidocs</link>
+            <link>https://commons.apache.org/proper/commons-lang/apidocs</link>
+            <!-- http://www.jdom.org/docs/apidocs/ is not a secure link -->
+            <link>https://javadoc.io/doc/org.jdom/jdom/1.1</link> 
+          </links>
         </configuration>
       </plugin>
     </plugins>

@@ -29,19 +29,17 @@ package org.apache.commons.jxpath.ri.parser;
  */
 public class ParseException extends Exception {
 
-  /**
-   * This constructor is used by the method "generateParseException"
-   * in the generated parser.  Calling this constructor generates
-   * a new object of this type with the fields "currentToken",
-   * "expectedTokenSequences", and "tokenImage" set.  The boolean
-   * flag "specialConstructor" is also set to true to indicate that
-   * this constructor was used to create this object.
-   * This constructor calls its super class with the empty string
-   * to force the "toString" method of parent class "Throwable" to
-   * print the error message in the form:
-   *     ParseException: <result of getMessage>
-   */
-  public ParseException(Token currentTokenVal,
+    /**
+     * This constructor is used by the method "generateParseException" in the generated parser. Calling this constructor generates a new object of this type
+     * with the fields "currentToken", "expectedTokenSequences", and "tokenImage" set. The boolean flag "specialConstructor" is also set to true to indicate
+     * that this constructor was used to create this object. This constructor calls its super class with the empty string to force the "toString" method of
+     * parent class "Throwable" to print the error message in the form: ParseException: "result of getMessage"
+     * 
+     * @param currentTokenVal TODO
+     * @param expectedTokenSequencesVal TODO
+     * @param tokenImageVal TODO
+     */
+    public ParseException(Token currentTokenVal,
                         int[][] expectedTokenSequencesVal,
                         String[] tokenImageVal
                        )
@@ -160,6 +158,9 @@ public class ParseException extends Exception {
    * Used to convert raw characters to their escaped version
    * when these raw version cannot be used as part of an ASCII
    * string literal.
+   *
+   * @param str raw characters.
+   * @return escaped version of the input.
    */
   protected String add_escapes(String str) {
       StringBuffer retval = new StringBuffer();

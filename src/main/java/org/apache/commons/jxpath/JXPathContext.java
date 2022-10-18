@@ -92,11 +92,10 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * <p>
  * A property identified by the xpath does not have to be a "leaf" property.
  * For instance, we can extract the whole Address object in above example:
- *
+ * </p>
  * <pre>
  *    Address addr = (Address)context.getValue("homeAddress");
  * </pre>
- * </p>
  *
  * <h3>Example 3: Collection Subscripts</h3>
  * JXPath can extract elements from arrays and collections.
