@@ -36,7 +36,7 @@ public class ServletContextHandler implements DynamicPropertyHandler {
     private static final int DEFAULT_PROPERTY_COUNT = 16;
 
     public String[] getPropertyNames(Object context) {
-        Set list = new HashSet(DEFAULT_PROPERTY_COUNT);
+        HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
         collectPropertyNames(list, context);
         return (String[]) list.toArray(new String[list.size()]);
     }
@@ -46,7 +46,7 @@ public class ServletContextHandler implements DynamicPropertyHandler {
      * @param set destination
      * @param bean to read
      */
-    protected void collectPropertyNames(Set set, Object bean) {
+    protected void collectPropertyNames(HashSet set, Object bean) {
         if (bean instanceof HttpSessionAndServletContext) {
             bean = ((HttpSessionAndServletContext) bean).getServletContext();
         }
