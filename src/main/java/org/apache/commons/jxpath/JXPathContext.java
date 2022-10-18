@@ -48,7 +48,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * JXPath can be used to access properties of a JavaBean.
  *
- * <pre><blockquote>
+ * <pre>
  * public class Employee {
  *    public String getFirstName(){
  *       ...
@@ -60,7 +60,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * JXPathContext context = JXPathContext.newContext(emp);
  * String fName = (String)context.getValue("firstName");
- * </blockquote></pre>
+ * </pre>
  *
  * In  this example, we are using JXPath to access a property of the
  * <code>emp</code> bean. In this simple case the invocation of JXPath is
@@ -69,7 +69,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * <h3>Example 2: Nested Bean Property Access</h3>
  * JXPath can traverse object graphs:
  *
- * <pre><blockquote>
+ * <pre>
  * public class Employee {
  *    public Address getHomeAddress(){
  *       ...
@@ -86,22 +86,22 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * JXPathContext context = JXPathContext.newContext(emp);
  * String sNumber = (String)context.getValue("homeAddress/streetNumber");
- * </blockquote></pre>
+ * </pre>
  *
  * In this case XPath is used to access a property of a nested bean.
  * <p>
  * A property identified by the xpath does not have to be a "leaf" property.
  * For instance, we can extract the whole Address object in above example:
  *
- * <pre><blockquote>
+ * <pre>
  *    Address addr = (Address)context.getValue("homeAddress");
- * </blockquote></pre>
+ * </pre>
  * </p>
  *
  * <h3>Example 3: Collection Subscripts</h3>
  * JXPath can extract elements from arrays and collections.
  *
- * <pre><blockquote>
+ * <pre>
  * public class Integers {
  *    public int[] getNumbers(){
  *       ...
@@ -113,7 +113,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * JXPathContext context = JXPathContext.newContext(ints);
  * Integer thirdInt = (Integer)context.getValue("numbers[3]");
- * </blockquote></pre>
+ * </pre>
  * A  collection can be an arbitrary array or an instance of java.util.
  * Collection.
  * <p>
@@ -123,7 +123,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * JXPath supports maps. To get a value use its key.
  *
- * <pre><blockquote>
+ * <pre>
  * public class Employee {
  *    public Map getAddresses(){
  *       return addressMap;
@@ -142,15 +142,15 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * JXPathContext context = JXPathContext.newContext(emp);
  * String homeZipCode = (String)context.getValue("addresses/home/zipCode");
- * </blockquote></pre>
+ * </pre>
  *
  * Often you will need to use the alternative syntax for accessing Map
  * elements:
  *
- * <pre><blockquote>
+ * <pre>
  * String homeZipCode =
  *     (String) context.getValue("addresses[@name='home']/zipCode");
- * </blockquote></pre>
+ * </pre>
  *
  * In this case, the key can be an expression, e.g. a variable.<br>
  *
@@ -164,7 +164,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * JXPath can retrieve multiple objects from a graph. Note that the method
  * called in this case is not <code>getValue</code>, but <code>iterate</code>.
  *
- * <pre><blockquote>
+ * <pre>
  * public class Author {
  *    public Book[] getBooks(){
  *       ...
@@ -176,7 +176,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * JXPathContext context = JXPathContext.newContext(auth);
  * Iterator threeBooks = context.iterate("books[position() &lt; 4]");
- * </blockquote></pre>
+ * </pre>
  *
  * This returns a list of at most three books from the array of all books
  * written by the author.
@@ -184,7 +184,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * <h3>Example 6: Setting Properties</h3>
  * JXPath can be used to modify property values.
  *
- * <pre><blockquote>
+ * <pre>
  * public class Employee {
  *    public Address getAddress() {
  *       ...
@@ -203,7 +203,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * context.setValue("address", addr);
  * context.setValue("address/zipCode", "90190");
  *
- * </blockquote></pre>
+ * </pre>
  *
  * <h3>Example 7: Creating objects</h3>
  * JXPath  can be used to create new objects. First, create a subclass of {@link
@@ -213,7 +213,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * that an intermediate node of the path is <b>null</b>.  It will not override
  * existing nodes.
  *
- * <pre><blockquote>
+ * <pre>
  * public class AddressFactory extends AbstractFactory {
  *    public boolean createObject(JXPathContext context,
  *               Pointer pointer, Object parent, String name, int index){
@@ -228,13 +228,13 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * JXPathContext context = JXPathContext.newContext(emp);
  * context.setFactory(new AddressFactory());
  * context.createPathAndSetValue("address/zipCode", "90190");
- * </blockquote></pre>
+ * </pre>
  *
  * <h3>Example 8: Using Variables</h3>
  * JXPath supports the notion of variables. The XPath syntax for accessing
  * variables is <i>"$varName"</i>.
  *
- * <pre><blockquote>
+ * <pre>
  * public class Author {
  *    public Book[] getBooks(){
  *       ...
@@ -248,13 +248,13 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * context.getVariables().declareVariable("index", new Integer(2));
  *
  * Book secondBook = (Book)context.getValue("books[$index]");
- * </blockquote></pre>
+ * </pre>
  *
  * You can also set variables using JXPath:
  *
- * <pre><blockquote>
+ * <pre>
  * context.setValue("$index", new Integer(3));
- * </blockquote></pre>
+ * </pre>
  *
  * Note: you can only <i>change</i> the value of an existing variable this
  * way, you cannot <i>define</i> a new variable.
@@ -262,7 +262,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * <p>
  * When a variable contains a JavaBean or a collection, you can
  * traverse the bean or collection as well:
- * <pre><blockquote>
+ * <pre>
  * ...
  * context.getVariables().declareVariable("book", myBook);
  * String title = (String)context.getValue("$book/title);
@@ -272,7 +272,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * context.getVariables().declareVariable("books", array);
  *
  * String title = (String)context.getValue("$books[2]/title);
- * </blockquote></pre>
+ * </pre>
  *
  * <h3>Example 9: Using Nested Contexts</h3>
  * If  you need to use the same set of variable while interpreting XPaths with
@@ -280,14 +280,14 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * and specify that context as a parent context every time you allocate a new
  * JXPathContext for a JavaBean.
  *
- * <pre><blockquote>
+ * <pre>
  * JXPathContext varContext = JXPathContext.newContext(null);
  * varContext.getVariables().declareVariable("title", "Java");
  *
  * JXPathContext context = JXPathContext.newContext(varContext, auth);
  *
  * Iterator javaBooks = context.iterate("books[title = $title]");
- * </blockquote></pre>
+ * </pre>
  *
  * <h3>Using Custom Variable Pools</h3>
  * By default, JXPathContext creates a HashMap of variables. However,
@@ -302,23 +302,23 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * The class names should be fully qualified.
  * <p>
  * Here's how you can create new objects:
- * <pre><blockquote>
+ * <pre>
  * Book book =
  *    (Book) context.getValue(
  *         "org.apache.commons.jxpath.example.Book.new ('John Updike')");
- * </blockquote></pre>
+ * </pre>
  *
  * Here's how you can call static methods:
- * <pre><blockquote>
+ * <pre>
  *   Book book =
  *    (Book) context.getValue(
  *       "org. apache.commons.jxpath.example.Book.getBestBook('John Updike')");
- * </blockquote></pre>
+ * </pre>
  *
  * Here's how you can call regular methods:
- * <pre><blockquote>
+ * <pre>
  * String firstName = (String)context.getValue("getAuthorsFirstName($book)");
- * </blockquote></pre>
+ * </pre>
  * As you can see, the target of the method is specified as the first parameter
  * of the function.
  *
@@ -328,25 +328,25 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * become extenstion functions.
  * <p>
  * Let's say the following class implements various formatting operations:
- * <pre><blockquote>
+ * <pre>
  * public class Formats {
  *    public static String date(Date d, String pattern){
  *        return new SimpleDateFormat(pattern).format(d);
  *    }
  *    ...
  * }
- * </blockquote></pre>
+ * </pre>
  *
  * We can register this class with a JXPathContext:
  *
- * <pre><blockquote>
+ * <pre>
  * context.setFunctions(new ClassFunctions(Formats.class, "format"));
  * ...
  *
  * context.getVariables().declareVariable("today", new Date());
  * String today = (String)context.getValue("format:date($today, 'MM/dd/yyyy')");
  *
- * </blockquote></pre>
+ * </pre>
  * You can also register whole packages of Java classes using PackageFunctions.
  * <p>
  * Also, see {@link FunctionLibrary FunctionLibrary}, which is a class
@@ -787,7 +787,7 @@ public abstract class JXPathContext {
      * for the path. If the xpath matches no properties
      * in the graph, the Iterator will be empty, but not null.
      * @param xpath to iterate
-     * @return Iterator<Object>
+     * @return Iterator
      */
     public abstract Iterator iterate(String xpath);
 
@@ -817,7 +817,7 @@ public abstract class JXPathContext {
      * If the xpath matches no properties
      * in the graph, the Iterator be empty, but not null.
      * @param xpath to iterate
-     * @return Iterator<Pointer>
+     * @return Iterator
      */
     public abstract Iterator iteratePointers(String xpath);
 

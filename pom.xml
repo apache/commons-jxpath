@@ -265,7 +265,7 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
+        <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <configuration>
           <excludeFilterFile>${basedir}/conf/findbugs-exclude-filter.xml</excludeFilterFile>
@@ -302,8 +302,12 @@
   <distributionManagement>
     <site>
       <id>apache.website</id>
-      <name>Default Site</name>
-      <url>scp://people.apache.org/www/commons.apache.org/jxpath/</url>
+      <name>Apache Commons Site</name>
+      <url>scm:svn:https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-jxpath/</url>
     </site>
   </distributionManagement>
+  <ciManagement>
+    <system>GitHub</system>
+    <url>https://github.com/apache/commons-jaxpth/actions</url>
+  </ciManagement>
 </project>

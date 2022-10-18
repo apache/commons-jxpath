@@ -58,7 +58,7 @@ public class FunctionLibrary implements Functions {
     /**
      * Returns a set containing all namespaces used by the aggregated
      * Functions.
-     * @return Set<String>
+     * @return Set
      */
     public Set getUsedNamespaces() {
         return functionCache().keySet();

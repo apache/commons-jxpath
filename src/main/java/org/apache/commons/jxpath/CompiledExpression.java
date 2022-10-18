@@ -117,7 +117,7 @@ public interface CompiledExpression {
      * If the xpath matches no properties
      * in the graph, the Iterator be empty, but not null.
      * @param context to iterate
-     * @return Iterator<Pointer>
+     * @return Iterator
      */
     Iterator iteratePointers(JXPathContext context);
 
