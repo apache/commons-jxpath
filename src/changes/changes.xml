@@ -46,7 +46,7 @@ The <action> type attribute can be add,update,fix,remove.
 
   <body>
     <!-- The release date is the date RC is cut -->
-    <release version="1.4" date="2014-??-??" description="New features and bug fixes.">
+    <release version="1.4" date="20YY-MM-DD" description="New features and bug fixes.">
       <!-- FIX -->
       <action issue="JXPATH-172" dev="britter" type="fix" due-to="Michele Vivoda">
         Clarify Javadoc of JXPathContext#getPointer.
