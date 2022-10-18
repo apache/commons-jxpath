@@ -23,8 +23,6 @@ import org.jdom.input.SAXBuilder;
 
 /**
  * An implementation of the XMLParser interface that produces a JDOM Document.
- *
- * @author Dmitri Plotnikov
  */
 public class JDOMParser extends XMLParser2 {
 

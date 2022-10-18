@@ -28,8 +28,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * An XPath extension function implemented as an individual Java method.
- *
- * @author Dmitri Plotnikov
  */
 public class MethodFunction implements Function {
 

@@ -18,8 +18,6 @@ package org.apache.commons.jxpath;
 
 /**
  * Thrown when JXPath cannot parse a supplied XPath.
- *
- * @author Dmitri Plotnikov
  */
 
 public class JXPathInvalidSyntaxException extends JXPathException {

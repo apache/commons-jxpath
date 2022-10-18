@@ -28,8 +28,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * the first element of a path or a pointer for a property value.
  * Typically there is a {@link BeanPropertyPointer} between two BeanPointers
  * in the chain.
- *
- * @author Dmitri Plotnikov
  */
 public class BeanPointer extends PropertyOwnerPointer {
     private QName name;

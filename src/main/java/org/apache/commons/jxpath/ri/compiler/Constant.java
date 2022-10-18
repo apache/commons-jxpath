@@ -21,8 +21,6 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
  * A compile tree element containing a constant number or string.
- *
- * @author Dmitri Plotnikov
  */
 public class Constant extends Expression {
 

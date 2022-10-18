@@ -23,8 +23,6 @@ import org.w3c.dom.Document;
 
 /**
  * Test bean for mixed model JUnit tests.
- *
- * @author Dmitri Plotnikov
  */
 public class TestBeanWithNode extends TestBean {
     private Object node;

@@ -44,8 +44,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * xpaths which have no context-dependent parts, consist entirely of
  * <code>child::name</code> and <code>self::node()</code> steps with
  * predicates that either integer or have the form <code>[@name = ...]</code>.
- *
- * @author Dmitri Plotnikov
  */
 public class SimplePathInterpreter {
 

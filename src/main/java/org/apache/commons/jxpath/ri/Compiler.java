@@ -41,8 +41,6 @@ package org.apache.commons.jxpath.ri;
  *      Object step2 = compiler.nodeTypeTest(Compiler.AXIS_CHILD, test2, null);
  *      Object expr5 = compiler.locationPath(false, new Object[]{step1, step2});
  * </pre></blockquote>
- *
- * @author Dmitri Plotnikov
  */
 public interface Compiler {
 

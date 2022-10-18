@@ -25,8 +25,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * EvalContext that walks the "preceding::" and "following::" axes.
- *
- * @author Dmitri Plotnikov
  */
 public class PrecedingOrFollowingContext extends EvalContext {
     private NodeTest nodeTest;

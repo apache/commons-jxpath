@@ -28,8 +28,6 @@ import org.apache.commons.jxpath.TestBean;
 
 /**
  * Test AbstractFactory.
- *
- * @author Dmitri Plotnikov
  */
 public class TestDynamicPropertyFactory extends AbstractFactory {
 

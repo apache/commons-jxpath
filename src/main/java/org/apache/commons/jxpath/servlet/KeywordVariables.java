@@ -21,8 +21,6 @@ import org.apache.commons.jxpath.Variables;
 /**
  * Implementation of the Variables interface that provides access
  * to a single object using a reserved name (keyword).
- *
- * @author Dmitri Plotnikov
  */
 public class KeywordVariables implements Variables {
     private static final long serialVersionUID = 894145608741325442L;

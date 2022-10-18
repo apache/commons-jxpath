@@ -27,8 +27,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * EvalContext that walks the "attribute::" axis.
- *
- * @author Dmitri Plotnikov
  */
 public class AttributeContext extends EvalContext {
     private static final QName WILDCARD = new QName(null, "*");

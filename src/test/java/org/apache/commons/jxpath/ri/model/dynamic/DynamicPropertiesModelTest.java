@@ -27,8 +27,6 @@ import org.apache.commons.jxpath.TestBean;
 
 /**
  * TODO more iterator testing with maps
- *
- * @author Dmitri Plotnikov
  */
 
 public class DynamicPropertiesModelTest extends JXPathTestCase {

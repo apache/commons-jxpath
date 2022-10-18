@@ -27,8 +27,6 @@ package org.apache.commons.jxpath;
  * most of the time JXPath's built-in implementations should suffice.
  * See {@link ClassFunctions ClassFunctions} and
  * {@link PackageFunctions PackageFunctions}.
- *
- * @author Dmitri Plotnikov
  */
 public interface Function {
 

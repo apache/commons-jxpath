@@ -24,8 +24,6 @@ import org.apache.commons.jxpath.Variables;
 /**
  * Test basic functionality of JXPath - infoset types,
  * operations.
- *
- * @author Dmitri Plotnikov
  */
 public class VariableTest extends JXPathTestCase {
     private JXPathContext context;

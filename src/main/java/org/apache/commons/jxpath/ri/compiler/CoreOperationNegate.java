@@ -21,8 +21,6 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
  * Implementation of {@link Expression} for the operation unary "-".
- *
- * @author Dmitri Plotnikov
  */
 public class CoreOperationNegate extends CoreOperation {
 

@@ -26,8 +26,6 @@ import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * An extension function that creates an instance using a constructor.
- *
- * @author Dmitri Plotnikov
  */
 public class ConstructorFunction implements Function {
     private static final Object[] EMPTY_ARRAY = new Object[0];

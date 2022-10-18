@@ -29,8 +29,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a Container. The {@link #getValue()} method
  * returns the contents of the container, rather than the container
  * itself.
- *
- * @author Dmitri Plotnikov
  */
 public class ContainerPointer extends NodePointer {
     private Container container;

@@ -22,8 +22,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * A simple context that is based on a {@link NodeSet}.
- *
- * @author Dmitri Plotnikov
  */
 public class NodeSetContext extends EvalContext {
     private boolean startedSet = false;

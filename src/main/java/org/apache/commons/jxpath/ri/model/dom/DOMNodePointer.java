@@ -47,8 +47,6 @@ import org.w3c.dom.ProcessingInstruction;
 /**
  * A Pointer that points to a DOM node. Because a DOM Node is not guaranteed Serializable,
  * a DOMNodePointer instance may likewise not be properly Serializable.
- *
- * @author Dmitri Plotnikov
  */
 public class DOMNodePointer extends NodePointer {
 

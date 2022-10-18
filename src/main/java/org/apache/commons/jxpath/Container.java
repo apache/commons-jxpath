@@ -24,8 +24,6 @@ import java.io.Serializable;
  * "foo" of the context node has a Container as its value,
  * the XPath "foo" will produce the contents of that Container,
  * rather than the container itself.
- *
- * @author Dmitri Plotnikov
  */
 public interface Container extends Serializable {
 

@@ -24,8 +24,6 @@ import javax.servlet.http.HttpSession;
 /**
  * Just a structure to hold a {@link ServletRequest} and {@link ServletContext}
  * together.
- *
- * @author Dmitri Plotnikov
  */
 public class ServletRequestAndContext extends HttpSessionAndServletContext {
     private ServletRequest request;

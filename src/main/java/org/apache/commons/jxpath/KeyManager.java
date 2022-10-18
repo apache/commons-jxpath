@@ -19,8 +19,6 @@ package org.apache.commons.jxpath;
 /**
  * A delegate of {@link JXPathContext} that implements the XPath <code>"key()"</code>
  * function.
- *
- * @author Dmitri Plotnikov
  */
 public interface KeyManager {
 

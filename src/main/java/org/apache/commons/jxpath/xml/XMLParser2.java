@@ -21,8 +21,6 @@ import java.io.InputStream;
 /**
  * The abstract superclass of XML parsers that produce DOM Documents.
  * The features have the same defaults as {@link javax.xml.parsers.DocumentBuilderFactory}.
- *
- * @author Dmitri Plotnikov
  */
 public abstract class XMLParser2 implements XMLParser {
     private boolean validating = false;

@@ -28,8 +28,6 @@ import org.w3c.dom.Node;
 
 /**
  * An iterator of namespaces of a DOM Node.
- *
- * @author Dmitri Plotnikov
  */
 public class DOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;

@@ -22,8 +22,6 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 
 /**
  * Test externally registered XML namespaces; JXPATH-97.
- *
- * @author Matt Benson
  */
 public class ExternalXMLNamespaceTest extends JXPathTestCase {
     protected JXPathContext context;

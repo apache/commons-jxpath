@@ -40,8 +40,6 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
  * a deterministic XPath that represents the location of a node in an
  * object graph. This XPath uses only simple axes: child, namespace and
  * attribute and only simple, context-independent predicates.
- *
- * @author Dmitri Plotnikov
  */
 public abstract class NodePointer implements Pointer {
 

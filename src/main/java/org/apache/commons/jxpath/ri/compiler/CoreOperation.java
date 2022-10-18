@@ -21,8 +21,6 @@ import org.apache.commons.jxpath.ri.EvalContext;
 /**
  * The common subclass for tree elements representing core operations like "+",
  * "- ", "*" etc.
- *
- * @author Dmitri Plotnikov
  */
 public abstract class CoreOperation extends Operation {
 

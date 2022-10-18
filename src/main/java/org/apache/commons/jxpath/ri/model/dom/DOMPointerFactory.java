@@ -25,8 +25,6 @@ import org.w3c.dom.Node;
 
 /**
  * Implements NodePointerFactory for DOM elements.
- *
- * @author Dmitri Plotnikov
  */
 public class DOMPointerFactory implements NodePointerFactory {
 

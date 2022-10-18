@@ -29,8 +29,6 @@ import org.apache.commons.jxpath.Pointer;
 
 /**
  * Badly-implemented Factory test.  From JIRA JXPATH-68.
- *
- * @author Matt Benson
  */
 public class BadlyImplementedFactoryTest extends TestCase {
 

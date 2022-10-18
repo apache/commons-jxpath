@@ -21,8 +21,6 @@ import org.apache.commons.jxpath.ri.axes.UnionContext;
 
 /**
  * Implementation of {@link Expression} for the operation "|".
- *
- * @author Dmitri Plotnikov
  */
 public class CoreOperationUnion extends CoreOperation {
 

@@ -31,8 +31,6 @@ import java.util.Iterator;
  * <p>
  * To acquire a CompiledExpression, call {@link JXPathContext#compile
  * JXPathContext.compile}
- *
- * @author Dmitri Plotnikov
  */
 public interface CompiledExpression {
 

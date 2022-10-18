@@ -23,8 +23,6 @@ import org.w3c.dom.Node;
 
 /**
  * An iterator of children of a DOM Node.
- *
- * @author Dmitri Plotnikov
  */
 public class DOMNodeIterator implements NodeIterator {
     private NodePointer parent;

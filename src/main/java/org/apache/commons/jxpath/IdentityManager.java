@@ -21,8 +21,6 @@ package org.apache.commons.jxpath;
  * function. This delegate is only used when there is no default implementation
  * of the <code>id()</code> function. For example, it is <i>not</i> used
  * when the root of the context is a DOM Node.
- *
- * @author Dmitri Plotnikov
  */
 public interface IdentityManager {
 

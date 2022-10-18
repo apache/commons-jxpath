@@ -25,8 +25,6 @@ import org.jdom.Element;
 
 /**
  * Test AbstractFactory.
- *
- * @author Dmitri Plotnikov
  */
 public class TestJDOMFactory extends AbstractFactory {
 

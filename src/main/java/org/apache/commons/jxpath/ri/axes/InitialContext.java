@@ -24,8 +24,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * A single-set EvalContext that provides access to the current node of
  * the parent context and nothing else.  It does not pass the iteration
  * on to the parent context.
- *
- * @author Dmitri Plotnikov
  */
 public class InitialContext extends EvalContext {
     private boolean started = false;

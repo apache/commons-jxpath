@@ -20,8 +20,6 @@ package org.apache.commons.jxpath.ri.compiler;
  * Captures the <code>foo[@name=<i>expr</i>]</code> expression. These
  * expressions are handled in a special way when applied to beans
  * or maps.
- *
- * @author Dmitri Plotnikov
  */
 public class NameAttributeTest extends CoreOperationEqual {
 

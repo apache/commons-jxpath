@@ -43,8 +43,6 @@ import org.apache.commons.jxpath.ri.compiler.VariableReference;
 
 /**
  * Test compiler.
- *
- * @author Dmitri Plotnikov
  */
 
 public class JXPathCompiledExpressionTest extends JXPathTestCase {

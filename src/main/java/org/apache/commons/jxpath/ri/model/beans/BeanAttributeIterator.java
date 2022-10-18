@@ -22,8 +22,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * An iterator of attributes of a JavaBean. Returns bean properties as
  * well as the "xml:lang" attribute.
- *
- * @author Dmitri Plotnikov
  */
 public class BeanAttributeIterator extends PropertyIterator {
     private NodePointer parent;

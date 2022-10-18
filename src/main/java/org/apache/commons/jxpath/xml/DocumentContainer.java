@@ -34,8 +34,6 @@ import org.apache.commons.jxpath.util.ClassLoaderUtil;
  * may not be accessed by XPaths.  If they are, they will be automatically
  * read, parsed and traversed. If they are not - they won't be
  * read at all.
- *
- * @author Dmitri Plotnikov
  */
 public class DocumentContainer extends XMLParser2 implements Container {
 

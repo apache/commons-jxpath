@@ -20,8 +20,6 @@ package org.apache.commons.jxpath;
  * Similary to {@link java.lang.reflect.InvocationTargetException} in that
  * it is thrown when JXPath cannot access properties, collection etc on the
  * target object model.
- *
- * @author Dmitri Plotnikov
  */
 public class JXPathInvalidAccessException extends JXPathException {
 

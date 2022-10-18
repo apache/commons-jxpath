@@ -27,8 +27,6 @@ import org.apache.commons.jxpath.JXPathException;
 /**
  * Method lookup utilities, which find static and non-static methods as well
  * as constructors based on a name and list of parameters.
- *
- * @author Dmitri Plotnikov
  */
 public class MethodLookupUtils {
 

@@ -27,8 +27,6 @@ import org.w3c.dom.Attr;
 /**
  * A Pointer that points to a DOM node. Because the underlying DOM Attr is not Serializable,
  * neither is this pointer class truly so.
- *
- * @author Dmitri Plotnikov
  */
 public class DOMAttributePointer extends NodePointer {
     private static final long serialVersionUID = 1115085175427555951L;

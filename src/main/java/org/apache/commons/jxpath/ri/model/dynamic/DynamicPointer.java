@@ -31,8 +31,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * A Pointer that points to an object with Dynamic Properties. It is used for
  * the first element of a path; following elements will by of type
  * {@link PropertyPointer}.
- *
- * @author Dmitri Plotnikov
  */
 public class DynamicPointer extends PropertyOwnerPointer {
     private QName name;

@@ -25,8 +25,6 @@ import javax.servlet.jsp.PageContext;
  * to attributes of the "page" scope.  This object is needed so that
  * XPath "foo" would lookup the attribute "foo" in all scopes, while
  * "$page/foo" would only look in the "page" scope.
- *
- * @author Dmitri Plotnikov
  */
 public class PageScopeContext {
     private PageContext pageContext;

@@ -27,8 +27,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * NullElementPointer can be used to capture this situation without putting a
  * regular NodePointer into an invalid state.  Just create a NullElementPointer
  * with index 2 (= 3 - 1) and a "foo" pointer as the parent.
- *
- * @author Dmitri Plotnikov
  */
 public class NullElementPointer extends CollectionPointer {
 

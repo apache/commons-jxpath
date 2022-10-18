@@ -24,8 +24,6 @@ import org.apache.commons.jxpath.ri.QName;
  * Creates NodePointers for objects of a certain type.
  * NodePointerFactories are ordered according to the values returned
  * by the "getOrder" method and always queried in that order.
- *
- * @author Dmitri Plotnikov
  */
 public interface NodePointerFactory {
 

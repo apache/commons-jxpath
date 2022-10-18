@@ -27,8 +27,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
 /**
  * A pointer allocated by a PropertyOwnerPointer to represent the value of
  * a property of the parent object.
- *
- * @author Dmitri Plotnikov
  */
 public abstract class PropertyPointer extends NodePointer {
     public static final int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;

@@ -23,8 +23,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * Iterates property values of an object pointed at with a {@link PropertyOwnerPointer}.
  * Examples of such objects are JavaBeans and objects with Dynamic Properties.
- *
- * @author Dmitri Plotnikov
  */
 public class PropertyIterator implements NodeIterator {
     private boolean empty = false;

@@ -25,8 +25,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * Namespace resolver for {@link JXPathContextReferenceImpl}.
- *
- * @author Dmitri Plotnikov
  */
 public class NamespaceResolver implements Cloneable, Serializable {
     private static final long serialVersionUID = 1085590057838651311L;

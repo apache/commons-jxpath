@@ -24,8 +24,6 @@ import java.util.Set;
  * {@link ClassFunctions ClassFunctions} and
  * {@link PackageFunctions PackageFunctions}
  * to register extension functions implemented as Java methods.
- *
- * @author Dmitri Plotnikov
  */
 public interface Functions {
 

@@ -29,8 +29,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * An EvalContext that walks the "descendant::" and "descendant-or-self::"
  * axes.
- *
- * @author Dmitri Plotnikov
  */
 public class DescendantContext extends EvalContext {
     private NodeTest nodeTest;

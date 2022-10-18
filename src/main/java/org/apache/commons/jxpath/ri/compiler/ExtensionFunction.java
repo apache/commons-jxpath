@@ -28,8 +28,6 @@ import org.apache.commons.jxpath.ri.axes.NodeSetContext;
 /**
  * Represents an element of the parse tree representing an extension function
  * call.
- *
- * @author Dmitri Plotnikov
  */
 public class ExtensionFunction extends Operation {
 

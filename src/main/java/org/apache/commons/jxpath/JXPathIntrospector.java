@@ -26,8 +26,6 @@ import org.apache.commons.jxpath.util.ClassLoaderUtil;
 /**
  * JXPathIntrospector  maintains a registry of {@link JXPathBeanInfo
  * JXPathBeanInfo} objects for Java classes.
- *
- * @author Dmitri Plotnikov
  */
 public class JXPathIntrospector {
 

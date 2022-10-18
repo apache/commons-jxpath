@@ -64,8 +64,6 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * <code>"java.util.Date.new()"</code> and <code>"length('foo')"</code>
  * without the explicit registration of any extension functions.
  * </p>
- *
- * @author Dmitri Plotnikov
  */
 public class PackageFunctions implements Functions {
     private String classPrefix;

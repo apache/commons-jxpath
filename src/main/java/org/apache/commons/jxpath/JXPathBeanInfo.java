@@ -30,8 +30,6 @@ import java.io.Serializable;
  * example, if you need to provide an alternative JXPathBeanInfo class for class
  * "com.foo.Bar", write a class "com.foo.BarXBeanInfo" and make it implement the
  * JXPathBeanInfo interface.
- *
- * @author Dmitri Plotnikov
  */
 public interface JXPathBeanInfo extends Serializable {
 

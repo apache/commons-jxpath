@@ -26,8 +26,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * Combines node iterators of all elements of a collection into one
  * aggregate node iterator.
- *
- * @author Dmitri Plotnikov
  */
 public abstract class CollectionNodeIterator implements NodeIterator {
     private CollectionPointer pointer;

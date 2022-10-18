@@ -22,8 +22,6 @@ package org.apache.commons.jxpath.util;
  * the time {@link BasicTypeConverter} should be used as the superclass.
  *
  * @see TypeUtils#setTypeConverter
- *
- * @author Dmitri Plotnikov
  */
 public interface TypeConverter {
 

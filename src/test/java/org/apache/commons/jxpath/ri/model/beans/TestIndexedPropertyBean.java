@@ -19,8 +19,6 @@ package org.apache.commons.jxpath.ri.model.beans;
 
 /**
  * Test bean for JUnit tests of indexed property handling.
- *
- * @author Dmitri Plotnikov
  */
 public class TestIndexedPropertyBean {
 

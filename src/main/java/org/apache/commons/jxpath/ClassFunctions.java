@@ -47,8 +47,6 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * If the first argument of a method is {@link ExpressionContext}, the
  * expression context in which the function is evaluated is passed to
  * the method.
- *
- * @author Dmitri Plotnikov
  */
 public class ClassFunctions implements Functions {
     private static final Object[] EMPTY_ARRAY = new Object[0];

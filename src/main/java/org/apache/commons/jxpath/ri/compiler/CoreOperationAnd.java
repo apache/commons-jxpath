@@ -21,8 +21,6 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
  * Implementation of {@link Expression} for the operation "and".
- *
- * @author Dmitri Plotnikov
  */
 public class CoreOperationAnd extends CoreOperation {
 

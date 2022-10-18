@@ -25,8 +25,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * EvalContext that can walk the "child::", "following-sibling::" and
  * "preceding-sibling::" axes.
- *
- * @author Dmitri Plotnikov
  */
 public class ChildContext extends EvalContext {
     private NodeTest nodeTest;

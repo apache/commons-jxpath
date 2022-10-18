@@ -31,8 +31,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
 /**
  * A pointer describing a node that has properties, each of which could be
  * a collection.
- *
- * @author Dmitri Plotnikov
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
     private static final Object UNINITIALIZED = new Object();

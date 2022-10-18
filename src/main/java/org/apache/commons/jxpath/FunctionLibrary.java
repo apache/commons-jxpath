@@ -28,8 +28,6 @@ import java.util.Set;
  * object. Since {@link JXPathContext} can only register a single Functions
  * object, FunctionLibrary should always be used to group all Functions objects
  * that need to be registered.
- *
- * @author Dmitri Plotnikov
  */
 public class FunctionLibrary implements Functions {
     private final List allFunctions = new ArrayList();

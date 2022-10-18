@@ -28,8 +28,6 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * See <a href="http://commons.apache.org/beanutils/">
  * Apache Commons BeanUtils
  * </a>
- *
- * @author Dmitri Plotnikov
  */
 public class DynaBeanPointerFactory implements NodePointerFactory {
 

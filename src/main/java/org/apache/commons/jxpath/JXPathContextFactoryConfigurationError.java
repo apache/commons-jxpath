@@ -21,8 +21,6 @@ package org.apache.commons.jxpath;
  * exists. This error will typically be thrown when the class of a
  * factory specified in the system properties cannot be found
  * or instantiated.
- *
- * @author Dmitri Plotnikov
  */
 public class JXPathContextFactoryConfigurationError extends Error {
 

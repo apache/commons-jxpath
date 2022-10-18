@@ -29,8 +29,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Implements NodePointerFactory for Dynamic classes like Map.
- *
- * @author Dmitri Plotnikov
  */
 public class DynamicPointerFactory implements NodePointerFactory {
 

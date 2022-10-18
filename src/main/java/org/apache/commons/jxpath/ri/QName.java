@@ -22,8 +22,6 @@ import java.io.Serializable;
 /**
  * A qualified name: a combination of an optional namespace prefix
  * and an local name.
- *
- * @author Dmitri Plotnikov
  */
 public class QName implements Serializable {
     private static final long serialVersionUID = 7616199282015091496L;

@@ -40,8 +40,6 @@ import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * Test extension functions.
- *
- * @author Dmitri Plotnikov
  */
 public class ExtensionFunctionTest extends JXPathTestCase {
     private Functions functions;

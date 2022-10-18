@@ -25,8 +25,6 @@ import org.apache.commons.jxpath.JXPathException;
 /**
  * Implementation of the {@link org.apache.commons.jxpath.DynamicPropertyHandler}
  * interface that provides access to attributes of a @{link HttpSession}.
- *
- * @author Dmitri Plotnikov
  */
 public class HttpSessionHandler extends ServletContextHandler {
 

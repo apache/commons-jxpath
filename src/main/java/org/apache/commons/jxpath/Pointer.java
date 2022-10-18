@@ -31,8 +31,6 @@ import java.io.Serializable;
  * pointer to the 3'rd element of the array, which is the value for the key
  * "aKey" of the map, which is the value of the property "aMap" of the root
  * object.
- *
- * @author Dmitri Plotnikov
  */
 public interface Pointer extends Cloneable, Comparable, Serializable {
 

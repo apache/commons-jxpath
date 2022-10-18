@@ -23,8 +23,6 @@ import java.util.List;
 /**
  * A simple implementation of {@link NodeSet} that behaves as a collection
  * of pointers.
- *
- * @author Dmitri Plotnikov
  */
 public class BasicNodeSet implements NodeSet {
     private List pointers = new ArrayList();

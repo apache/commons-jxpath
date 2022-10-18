@@ -24,8 +24,6 @@ import org.apache.commons.jxpath.Pointer;
 
 /**
  * Test AbstractFactory.
- *
- * @author Dmitri Plotnikov
  */
 public class TestDynaBeanFactory extends AbstractFactory {
 

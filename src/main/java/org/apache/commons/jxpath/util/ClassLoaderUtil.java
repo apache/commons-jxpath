@@ -27,8 +27,6 @@ import java.util.Map;
  * results in a <code>java.lang.ClassNotFoundException</code>.
  *
  * @see org.apache.commons.lang.ClassUtils
- *
- * @author Stephen Colebourne
  * @author Gary Gregory
  * @author Norm Deane
  * @author Alban Peignier

@@ -18,8 +18,6 @@ package org.apache.commons.jxpath.ri.compiler;
 
 /**
  * Implementation of {@link Expression} for the operation "&gt;=".
- *
- * @author Dmitri Plotnikov
  */
 public class CoreOperationGreaterThanOrEqual extends
         CoreOperationRelationalExpression {

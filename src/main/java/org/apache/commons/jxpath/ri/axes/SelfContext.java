@@ -24,8 +24,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * EvalContext that returns the current node from the parent context if the
  * test succeeds.
- *
- * @author Dmitri Plotnikov
  */
 public class SelfContext extends EvalContext {
     private NodeTest nodeTest;

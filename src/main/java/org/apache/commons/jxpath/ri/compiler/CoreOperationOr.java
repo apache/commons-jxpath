@@ -21,8 +21,6 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
  * Implementation of {@link Expression} for the operation "or".
- *
- * @author Dmitri Plotnikov
  */
 public class CoreOperationOr extends CoreOperation {
 

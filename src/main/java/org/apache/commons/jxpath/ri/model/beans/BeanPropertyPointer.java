@@ -27,8 +27,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Pointer pointing to a property of a JavaBean.
- *
- * @author Dmitri Plotnikov
  */
 public class BeanPropertyPointer extends PropertyPointer {
     private static final long serialVersionUID = -6008991447676468786L;

@@ -26,8 +26,6 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
 /**
  * Implementation of the {@link DynamicPropertyHandler} interface that provides
  * access to attributes of a {@link PageContext} in all scopes.
- *
- * @author Dmitri Plotnikov
  */
 public class PageContextHandler implements DynamicPropertyHandler {
 

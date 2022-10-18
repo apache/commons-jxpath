@@ -18,8 +18,6 @@ package org.apache.commons.jxpath.servlet;
 
 /**
  * String constants for this package.
- *
- * @author Dmitri Plotnikov
  */
 public final class Constants {
 

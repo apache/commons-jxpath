@@ -29,8 +29,6 @@ import org.jdom.Namespace;
 
 /**
  * An iterator of namespaces of a DOM Node.
- *
- * @author Dmitri Plotnikov
  */
 public class JDOMNamespaceIterator implements NodeIterator {
     private NodePointer parent;

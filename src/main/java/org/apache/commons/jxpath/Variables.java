@@ -23,8 +23,6 @@ import java.io.Serializable;
  * XPath can reference variables using the <code>"$varname"</code> syntax.
  * To use a custom implementation of this interface, pass it to
  * {@link JXPathContext#setVariables JXPathContext.setVariables()}
- *
- * @author Dmitri Plotnikov
  */
 public interface Variables extends Serializable {
 

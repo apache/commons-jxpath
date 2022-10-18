@@ -398,8 +398,6 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * <a href="http://commons.apache.org/jxpath/users-guide.html">
  * JXPath User's Guide</a>
  *
- *
- * @author Dmitri Plotnikov
  */
 public abstract class JXPathContext {
     private static volatile JXPathContextFactory contextFactory;

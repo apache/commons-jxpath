@@ -28,8 +28,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
 /**
  * EvalContext that checks predicates.
- *
- * @author Dmitri Plotnikov
  */
 public class PredicateContext extends EvalContext {
     private Expression expression;

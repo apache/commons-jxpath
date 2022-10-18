@@ -36,8 +36,6 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * read at all.
  *
  * @deprecated 1.1 Please use {@link DocumentContainer}
- *
- * @author Dmitri Plotnikov
  */
 public class XMLDocumentContainer implements Container {
 

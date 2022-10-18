@@ -24,8 +24,6 @@ import javax.servlet.ServletRequest;
  * Implementation of the {@link org.apache.commons.jxpath.DynamicPropertyHandler}
  * interface that provides access to attributes and parameters
  * of a {@link ServletRequest}.
- *
- * @author Dmitri Plotnikov
  */
 public class ServletRequestHandler extends HttpSessionHandler {
 

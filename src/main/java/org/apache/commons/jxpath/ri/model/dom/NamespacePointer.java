@@ -24,8 +24,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * Represents a namespace node.
- *
- * @author Dmitri Plotnikov
  */
 public class NamespacePointer extends NodePointer {
     private String prefix;

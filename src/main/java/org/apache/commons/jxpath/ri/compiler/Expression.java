@@ -33,8 +33,6 @@ import java.util.Locale;
  * expression only needs to executed once during the evaluation of an xpath
  * if that expression is context-independent.  Expression.isContextDependent()
  * provides that hint.
- *
- * @author Dmitri Plotnikov
  */
 public abstract class Expression {
 

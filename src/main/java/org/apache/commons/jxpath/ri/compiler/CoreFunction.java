@@ -36,8 +36,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * An element of the compile tree representing one of built-in functions
  * like "position()" or "number()".
- *
- * @author Dmitri Plotnikov
  */
 public class CoreFunction extends Operation {
 

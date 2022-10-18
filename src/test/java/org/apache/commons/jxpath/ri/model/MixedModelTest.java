@@ -35,8 +35,6 @@ import org.apache.commons.jxpath.Variables;
 
 /**
  * Tests JXPath with mixed model: beans, maps, DOM etc.
- *
- * @author Dmitri Plotnikov
  */
 public class MixedModelTest extends JXPathTestCase {
     private JXPathContext context;

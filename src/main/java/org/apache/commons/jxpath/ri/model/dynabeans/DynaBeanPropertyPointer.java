@@ -31,8 +31,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
 /**
  * Pointer pointing to a property of a {@link DynaBean}. If the target DynaBean is
  * Serializable, so should this instance be.
- *
- * @author Dmitri Plotnikov
  */
 public class DynaBeanPropertyPointer extends PropertyPointer {
     private static final String CLASS = "class";

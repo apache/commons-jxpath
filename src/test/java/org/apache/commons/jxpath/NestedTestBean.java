@@ -18,8 +18,6 @@ package org.apache.commons.jxpath;
 
 /**
  * A general purpose JavaBean for JUnit tests for the "jxpath" component.
- *
- * @author Dmitri Plotnikov
  */
 public class NestedTestBean {
     private String name = "Name 0";

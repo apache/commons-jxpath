@@ -39,8 +39,6 @@ import org.apache.commons.jxpath.util.ReverseComparator;
  * When  evaluating a path, a chain of EvalContexts is created, each context in
  * the chain representing a step of the path. Subclasses of EvalContext
  * implement behavior of various XPath axes: "child::", "parent::" etc.
- *
- * @author Dmitri Plotnikov
  */
 public abstract class EvalContext implements ExpressionContext, Iterator {
     /** parent context */

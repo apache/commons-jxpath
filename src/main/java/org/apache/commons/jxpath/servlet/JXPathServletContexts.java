@@ -61,8 +61,6 @@ import org.apache.commons.jxpath.JXPathIntrospector;
  * <p>
  * The  "session" variable will be undefined if there is no session for this
  * servlet. JXPath does not automatically create sessions.
- *
- * @author Dmitri Plotnikov
  */
 public final class JXPathServletContexts {
 

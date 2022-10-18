@@ -25,8 +25,6 @@ import org.apache.commons.jxpath.Pointer;
 
 /**
  * RI of CompiledExpression.
- *
- * @author Dmitri Plotnikov
  */
 public class JXPathCompiledExpression implements CompiledExpression {
 

@@ -27,8 +27,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * EvalContext that represents a union between other contexts - result
  * of a union operation like (a | b)
- *
- * @author Dmitri Plotnikov
  */
 public class UnionContext extends NodeSetContext {
     private EvalContext[] contexts;

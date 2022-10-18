@@ -21,8 +21,6 @@ import java.io.InputStream;
 /**
  * Common interface for XML parsers.  We are not using JAXP because
  * some of the parsers we want to support may not be JAXP compliant.
- *
- * @author Dmitri Plotnikov
  */
 public interface XMLParser {
 

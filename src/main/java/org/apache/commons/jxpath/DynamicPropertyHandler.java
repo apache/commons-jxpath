@@ -33,8 +33,6 @@ package org.apache.commons.jxpath;
  * <li><code>"myMap[@name = 'myKey']"</code></li>
  * <li><code>"myMap[name(.) = 'myKey']"</code></li>
  * </ul>
- *
- * @author Dmitri Plotnikov
  */
 public interface DynamicPropertyHandler {
 

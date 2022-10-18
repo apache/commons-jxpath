@@ -37,8 +37,6 @@ import org.apache.commons.jxpath.util.ClassLoaderUtil;
  *
  * @see JXPathContext#newContext(Object)
  * @see JXPathContext#newContext(JXPathContext,Object)
- *
- * @author Dmitri Plotnikov
  */
 public abstract class JXPathContextFactory {
 

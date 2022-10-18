@@ -21,8 +21,6 @@ import org.apache.commons.jxpath.JXPathContextFactory;
 
 /**
  * Default implementation of JXPathContextFactory.
- *
- * @author Dmitri Plotnikov
  */
 public class JXPathContextFactoryReferenceImpl extends JXPathContextFactory {
 

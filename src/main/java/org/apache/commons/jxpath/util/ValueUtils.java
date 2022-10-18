@@ -36,8 +36,6 @@ import org.apache.commons.jxpath.JXPathException;
 
 /**
  * Collection and property access utilities.
- *
- * @author Dmitri Plotnikov
  */
 public class ValueUtils {
     private static Map dynamicPropertyHandlerMap = new HashMap();

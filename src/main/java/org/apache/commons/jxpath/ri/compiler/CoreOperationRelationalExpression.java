@@ -28,8 +28,6 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
 /**
  * Base implementation of Expression for the operations "&gt;", "&gt;=", "&lt;", "&lt;=".
  * @since JXPath 1.3
- *
- * @author Matt Benson
  */
 public abstract class CoreOperationRelationalExpression extends CoreOperation {
 

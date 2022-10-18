@@ -18,8 +18,6 @@ package org.apache.commons.jxpath;
 
 /**
  * Thrown when JXPath encounters an unknown extension function.
- *
- * @author Dmitri Plotnikov
  */
 
 public class JXPathFunctionNotFoundException extends JXPathException {

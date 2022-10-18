@@ -28,8 +28,6 @@ import org.apache.commons.jxpath.TestMixedModelBean;
 
 /**
  * Test AbstractFactory.
- *
- * @author Dmitri Plotnikov
  */
 public class TestMixedModelFactory extends AbstractFactory {
 

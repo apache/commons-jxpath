@@ -29,8 +29,6 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
 /**
  * Common superclass for the implementations of Expression for the operations
  * "=" and "!=".
- *
- * @author Dmitri Plotnikov
  */
 public abstract class CoreOperationCompare extends CoreOperation {
     private boolean invert;

@@ -24,8 +24,6 @@ import org.apache.commons.jxpath.JXPathException;
 
 /**
  * An implementation of the XMLParser interface that produces a DOM Document.
- *
- * @author Dmitri Plotnikov
  */
 public class DOMParser extends XMLParser2 {
 

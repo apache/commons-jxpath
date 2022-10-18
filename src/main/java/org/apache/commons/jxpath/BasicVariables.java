@@ -20,8 +20,6 @@ import java.util.HashMap;
 
 /**
  * A basic implementation of the Variables interface that uses a HashMap.
- *
- * @author Dmitri Plotnikov
  */
 public class BasicVariables implements Variables {
     private static final long serialVersionUID = 2708263960832062725L;

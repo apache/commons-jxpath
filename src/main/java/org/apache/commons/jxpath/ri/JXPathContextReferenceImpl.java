@@ -57,8 +57,6 @@ import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
  * The reference implementation of JXPathContext.
- *
- * @author Dmitri Plotnikov
  */
 public class JXPathContextReferenceImpl extends JXPathContext {
 

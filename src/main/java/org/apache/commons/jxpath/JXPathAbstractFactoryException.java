@@ -19,8 +19,6 @@ package org.apache.commons.jxpath;
 /**
  * Thrown when an {@link AbstractFactory} cannot generate an object for
  * the requested path.
- *
- * @author Dmitri Plotnikov
  */
 
 public class JXPathAbstractFactoryException extends JXPathException {

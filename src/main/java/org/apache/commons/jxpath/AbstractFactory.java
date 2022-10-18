@@ -25,8 +25,6 @@ package org.apache.commons.jxpath;
  * <p>
  * All  methods of this class return false.  Override any of them to return true
  * to indicate that the factory has successfully created the described object.
- *
- * @author Dmitri Plotnikov
  */
 public abstract class AbstractFactory {
 

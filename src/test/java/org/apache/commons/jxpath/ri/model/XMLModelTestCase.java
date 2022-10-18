@@ -29,8 +29,6 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * Abstract superclass for pure XPath 1.0.  Subclasses
  * apply the same XPaths to contexts using different models:
  * DOM, JDOM etc.
- *
- * @author Dmitri Plotnikov
  */
 
 public abstract class XMLModelTestCase extends JXPathTestCase {
