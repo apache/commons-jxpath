@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.jxpath.functions.ConstructorFunction;
@@ -66,16 +67,16 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * </p>
  */
 public class PackageFunctions implements Functions {
-    private String classPrefix;
-    private String namespace;
-    private static final Object[] EMPTY_ARRAY = new Object[0];
+    private final String classPrefix;
+    private final String namespace;
+    private static final Object[] EMPTY_ARRAY = {};
 
     /**
      * Create a new PackageFunctions.
      * @param classPrefix class prefix
      * @param namespace namespace String
      */
-    public PackageFunctions(String classPrefix, String namespace) {
+    public PackageFunctions(final String classPrefix, final String namespace) {
         this.classPrefix = classPrefix;
         this.namespace = namespace;
     }
@@ -84,6 +85,7 @@ public class PackageFunctions implements Functions {
      * Returns the namespace specified in the constructor
      * @return (singleton) namespace Set
      */
+    @Override
     public Set getUsedNamespaces() {
         return Collections.singleton(namespace);
     }
@@ -109,12 +111,12 @@ public class PackageFunctions implements Functions {
      * @return a MethodFunction, a ConstructorFunction or null if no function
      * is found
      */
+    @Override
     public Function getFunction(
-        String namespace,
-        String name,
+        final String namespace,
+        final String name,
         Object[] parameters) {
-        if ((namespace == null && this.namespace != null) //NOPMD
-            || (namespace != null && !namespace.equals(this.namespace))) {
+        if (!Objects.equals(this.namespace, namespace)) {
             return null;
         }
 
@@ -148,7 +150,7 @@ public class PackageFunctions implements Functions {
                 }
 
                 if (target instanceof Collection) {
-                    Iterator iter = ((Collection) target).iterator();
+                    final Iterator iter = ((Collection) target).iterator();
                     if (iter.hasNext()) {
                         target = iter.next();
                         if (target instanceof Pointer) {
@@ -161,7 +163,7 @@ public class PackageFunctions implements Functions {
                 }
             }
             if (target != null) {
-                Method method =
+                final Method method =
                     MethodLookupUtils.lookupMethod(
                         target.getClass(),
                         name,
@@ -172,20 +174,20 @@ public class PackageFunctions implements Functions {
             }
         }
 
-        String fullName = classPrefix + name;
-        int inx = fullName.lastIndexOf('.');
+        final String fullName = classPrefix + name;
+        final int inx = fullName.lastIndexOf('.');
         if (inx == -1) {
             return null;
         }
 
-        String className = fullName.substring(0, inx);
-        String methodName = fullName.substring(inx + 1);
+        final String className = fullName.substring(0, inx);
+        final String methodName = fullName.substring(inx + 1);
 
         Class functionClass;
         try {
             functionClass = ClassLoaderUtil.getClass(className, true);
         }
-        catch (ClassNotFoundException ex) {
+        catch (final ClassNotFoundException ex) {
             throw new JXPathException(
                 "Cannot invoke extension function "
                     + (namespace != null ? namespace + ":" + name : name),
@@ -193,14 +195,14 @@ public class PackageFunctions implements Functions {
         }
 
         if (methodName.equals("new")) {
-            Constructor constructor =
+            final Constructor constructor =
                 MethodLookupUtils.lookupConstructor(functionClass, parameters);
             if (constructor != null) {
                 return new ConstructorFunction(constructor);
             }
         }
         else {
-            Method method =
+            final Method method =
                 MethodLookupUtils.lookupStaticMethod(
                     functionClass,
                     methodName,
