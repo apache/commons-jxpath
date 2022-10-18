@@ -34,10 +34,12 @@ public class BadlyImplementedFactoryTest extends TestCase {
 
     private JXPathContext context;
 
+    @Override
     public void setUp() {
         context = JXPathContext.newContext(new HashMap());
         context.setFactory(new AbstractFactory() {
-            public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index) {
+            @Override
+            public boolean createObject(final JXPathContext context, final Pointer pointer, final Object parent, final String name, final int index) {
                 ((Map) parent).put(name, null);
                 return true;
             }
@@ -48,7 +50,7 @@ public class BadlyImplementedFactoryTest extends TestCase {
         try {
             context.createPath("foo/bar");
             fail("should fail with JXPathException caused by JXPathAbstractFactoryException");
-        } catch (JXPathException e) {
+        } catch (final JXPathException e) {
             assertTrue(e.getCause() instanceof JXPathAbstractFactoryException);
         }
     }

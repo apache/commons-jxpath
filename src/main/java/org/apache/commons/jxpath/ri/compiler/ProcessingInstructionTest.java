@@ -19,13 +19,13 @@ package org.apache.commons.jxpath.ri.compiler;
 /**
  */
 public class ProcessingInstructionTest extends NodeTest {
-    private String target;
+    private final String target;
 
     /**
      * Create a new ProcessingInstructionTest.
      * @param target string
      */
-    public ProcessingInstructionTest(String target) {
+    public ProcessingInstructionTest(final String target) {
         this.target = target;
     }
 
@@ -37,6 +37,7 @@ public class ProcessingInstructionTest extends NodeTest {
         return target;
     }
 
+    @Override
     public String toString() {
         return "processing-instruction('" + target + "')";
     }

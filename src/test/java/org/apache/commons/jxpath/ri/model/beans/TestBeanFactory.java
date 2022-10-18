@@ -30,19 +30,20 @@ public class TestBeanFactory extends AbstractFactory {
     /**
      * Return <b>false</b> if this factory cannot create the requested object.
      */
+    @Override
     public boolean createObject(
-        JXPathContext context,
-        Pointer pointer,
-        Object parent,
-        String name,
-        int index) 
+        final JXPathContext context,
+        final Pointer pointer,
+        final Object parent,
+        final String name,
+        final int index)
     {
         if (name.equals("nestedBean")) {
             ((TestBean) parent).setNestedBean(new NestedTestBean("newName"));
             return true;
         }
         else if (name.equals("beans")) {
-            TestBean bean = (TestBean) parent;
+            final TestBean bean = (TestBean) parent;
             if (bean.getBeans() == null || index >= bean.getBeans().length) {
                 bean.setBeans(new NestedTestBean[index + 1]);
             }
@@ -50,7 +51,7 @@ public class TestBeanFactory extends AbstractFactory {
             return true;
         }
         else if (name.equals("integers")) {
-            // This will implicitly expand the collection        
+            // This will implicitly expand the collection
              ((TestBean) parent).setIntegers(index, 0);
             return true;
         }
@@ -60,7 +61,8 @@ public class TestBeanFactory extends AbstractFactory {
     /**
      * Create a new object and set it on the specified variable
      */
-    public boolean declareVariable(JXPathContext context, String name) {
+    @Override
+    public boolean declareVariable(final JXPathContext context, final String name) {
         return false;
     }
 }

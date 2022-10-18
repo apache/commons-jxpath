@@ -37,8 +37,10 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  *
  * @deprecated 1.1 Please use {@link DocumentContainer}
  */
+@Deprecated
 public class XMLDocumentContainer implements Container {
 
+    private static final long serialVersionUID = 1L;
     private DocumentContainer delegate;
     private Object document;
     private URL xmlURL;
@@ -49,7 +51,7 @@ public class XMLDocumentContainer implements Container {
      * @param xmlURL a URL for an XML file. Use getClass().getResource(resourceName)
      *               to load XML from a resource file.
      */
-    public XMLDocumentContainer(URL xmlURL) {
+    public XMLDocumentContainer(final URL xmlURL) {
         this.xmlURL = xmlURL;
         delegate = new DocumentContainer(xmlURL);
     }
@@ -58,7 +60,7 @@ public class XMLDocumentContainer implements Container {
      * Create a new XMLDocumentContainer.
      * @param source XML source
      */
-    public XMLDocumentContainer(Source source) {
+    public XMLDocumentContainer(final Source source) {
         this.source = source;
         if (source == null) {
             throw new RuntimeException("Source is null");
@@ -69,12 +71,13 @@ public class XMLDocumentContainer implements Container {
      * Reads XML, caches it internally and returns the Document.
      * @return Object value
      */
+    @Override
     public Object getValue() {
         if (document == null) {
             try {
                 if (source != null) {
-                    DOMResult result = new DOMResult();
-                    Transformer trans =
+                    final DOMResult result = new DOMResult();
+                    final Transformer trans =
                         TransformerFactory.newInstance().newTransformer();
                     trans.transform(source, result);
                     document = result.getNode();
@@ -83,14 +86,14 @@ public class XMLDocumentContainer implements Container {
                     document = delegate.getValue();
                 }
             }
-            catch (Exception ex) {
+            catch (final Exception ex) {
                 throw new JXPathException(
                     "Cannot read XML from: "
                         + (xmlURL != null
                             ? xmlURL.toString()
-                            : (source != null
+                            : source != null
                                 ? source.getSystemId()
-                                : "<<undefined source>>")),
+                                : "<<undefined source>>"),
                     ex);
             }
         }
@@ -101,7 +104,8 @@ public class XMLDocumentContainer implements Container {
      * Throws an UnsupportedOperationException
      * @param value to set
      */
-    public void setValue(Object value) {
+    @Override
+    public void setValue(final Object value) {
         throw new UnsupportedOperationException();
     }
 }

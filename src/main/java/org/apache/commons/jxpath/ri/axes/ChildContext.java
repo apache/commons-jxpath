@@ -27,9 +27,9 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * "preceding-sibling::" axes.
  */
 public class ChildContext extends EvalContext {
-    private NodeTest nodeTest;
-    private boolean startFromParentLocation;
-    private boolean reverse;
+    private final NodeTest nodeTest;
+    private final boolean startFromParentLocation;
+    private final boolean reverse;
     private NodeIterator iterator;
 
     /**
@@ -39,14 +39,15 @@ public class ChildContext extends EvalContext {
      * @param startFromParentLocation whether to start from parent location
      * @param reverse whether to iterate in reverse
      */
-    public ChildContext(EvalContext parentContext, NodeTest nodeTest,
-            boolean startFromParentLocation, boolean reverse) {
+    public ChildContext(final EvalContext parentContext, final NodeTest nodeTest,
+            final boolean startFromParentLocation, final boolean reverse) {
         super(parentContext);
         this.nodeTest = nodeTest;
         this.startFromParentLocation = startFromParentLocation;
         this.reverse = reverse;
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         if (position == 0 && !setPosition(1)) {
             return null;
@@ -62,6 +63,7 @@ public class ChildContext extends EvalContext {
      * of books rather than the first book from that collection.
      * @return Pointer
      */
+    @Override
     public Pointer getSingleNodePointer() {
         if (position == 0) {
             while (nextSet()) {
@@ -70,7 +72,7 @@ public class ChildContext extends EvalContext {
                     return null;
                 }
                 // See if there is a property there, singular or collection
-                NodePointer pointer = iterator.getNodePointer();
+                final NodePointer pointer = iterator.getNodePointer();
                 if (pointer != null) {
                     return pointer;
                 }
@@ -80,33 +82,36 @@ public class ChildContext extends EvalContext {
         return getCurrentNodePointer();
     }
 
+    @Override
     public boolean nextNode() {
         return setPosition(getCurrentPosition() + 1);
     }
 
+    @Override
     public void reset() {
         super.reset();
         iterator = null;
     }
 
-    public boolean setPosition(int position) {
-        int oldPosition = getCurrentPosition();
+    @Override
+    public boolean setPosition(final int position) {
+        final int oldPosition = getCurrentPosition();
         super.setPosition(position);
         if (oldPosition == 0) {
             prepare();
         }
-        return iterator == null ? false : iterator.setPosition(position);
+        return iterator != null && iterator.setPosition(position);
     }
 
     /**
      * Allocates a PropertyIterator.
      */
     private void prepare() {
-        NodePointer parent = parentContext.getCurrentNodePointer();
+        final NodePointer parent = parentContext.getCurrentNodePointer();
         if (parent == null) {
             return;
         }
-        NodePointer useParent = startFromParentLocation ? parent.getParent() : parent;
+        final NodePointer useParent = startFromParentLocation ? parent.getParent() : parent;
         iterator = useParent == null ? null : useParent.childIterator(nodeTest, reverse,
                 startFromParentLocation ? parent : null);
     }

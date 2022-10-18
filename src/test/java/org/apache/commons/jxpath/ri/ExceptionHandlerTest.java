@@ -32,13 +32,15 @@ public class ExceptionHandlerTest extends JXPathTestCase {
     }
 
     private JXPathContext context;
-    private Bar bar = new Bar();
+    private final Bar bar = new Bar();
 
+    @Override
     public void setUp() throws Exception {
         context = JXPathContext.newContext(this);
         context.setExceptionHandler(new ExceptionHandler() {
-            
-            public void handle(Throwable t, Pointer ptr) {
+
+            @Override
+            public void handle(final Throwable t, final Pointer ptr) {
                 if (t instanceof Error) {
                     throw (Error) t;
                 }
@@ -49,11 +51,11 @@ public class ExceptionHandlerTest extends JXPathTestCase {
             }
         });
     }
-    
+
     public Object getFoo() {
         throw new IllegalStateException("foo unavailable");
     }
-    
+
     public void testHandleFoo() throws Exception {
         try {
             context.getValue("foo");

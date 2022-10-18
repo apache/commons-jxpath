@@ -24,16 +24,16 @@ import javax.servlet.http.HttpSession;
  */
 public class HttpSessionAndServletContext {
 
-    private HttpSession session;
-    private ServletContext context;
+    private final HttpSession session;
+    private final ServletContext context;
 
     /**
      * Create a new HttpSessionAndServletContext.
      * @param session HttpSession
      * @param context ServletContext
      */
-    public HttpSessionAndServletContext(HttpSession session,
-            ServletContext context) {
+    public HttpSessionAndServletContext(final HttpSession session,
+            final ServletContext context) {
         this.session = session;
         this.context = context;
     }

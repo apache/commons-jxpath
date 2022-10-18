@@ -24,13 +24,13 @@ import org.apache.commons.jxpath.ri.EvalContext;
  */
 public class VariableReference extends Expression {
 
-    private QName varName;
+    private final QName varName;
 
     /**
      * Create a new VariableReference.
      * @param varName variable name
      */
-    public VariableReference(QName varName) {
+    public VariableReference(final QName varName) {
         this.varName = varName;
     }
 
@@ -42,19 +42,23 @@ public class VariableReference extends Expression {
         return varName;
     }
 
+    @Override
     public String toString() {
         return "$" + varName;
     }
 
+    @Override
     public boolean isContextDependent() {
         return false;
     }
 
+    @Override
     public boolean computeContextDependent() {
         return false;
     }
 
-    public Object compute(EvalContext context) {
+    @Override
+    public Object compute(final EvalContext context) {
         return computeValue(context);
     }
 
@@ -63,7 +67,8 @@ public class VariableReference extends Expression {
      * @param context EvalContext against which to compute the variable's value.
      * @return Object
      */
-    public Object computeValue(EvalContext context) {
+    @Override
+    public Object computeValue(final EvalContext context) {
         return context.getRootContext().getVariableContext(varName);
     }
 }

@@ -36,7 +36,8 @@ public final class ReverseComparator implements Comparator, Serializable {
     private ReverseComparator() {
     }
 
-    public int compare(Object o1, Object o2) {
+    @Override
+    public int compare(final Object o1, final Object o2) {
         return ((Comparable) o2).compareTo(o1);
     }
 

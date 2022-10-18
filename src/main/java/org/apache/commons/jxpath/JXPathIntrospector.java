@@ -64,8 +64,8 @@ public class JXPathIntrospector {
      * for the specified class. That object returns true to isAtomic().
      * @param beanClass to register
      */
-    public static void registerAtomicClass(Class beanClass) {
-        synchronized (byClass) { 
+    public static void registerAtomicClass(final Class beanClass) {
+        synchronized (byClass) {
             byClass.put(beanClass, new JXPathBasicBeanInfo(beanClass, true));
         }
     }
@@ -78,9 +78,9 @@ public class JXPathIntrospector {
      * @param beanClass to register
      * @param dynamicPropertyHandlerClass to handle beanClass
      */
-    public static void registerDynamicClass(Class beanClass,
-            Class dynamicPropertyHandlerClass) {
-        JXPathBasicBeanInfo bi =
+    public static void registerDynamicClass(final Class beanClass,
+            final Class dynamicPropertyHandlerClass) {
+        final JXPathBasicBeanInfo bi =
             new JXPathBasicBeanInfo(beanClass, dynamicPropertyHandlerClass);
         if (beanClass.isInterface()) {
             synchronized (byInterface) {
@@ -109,7 +109,7 @@ public class JXPathIntrospector {
      * @param beanClass whose info to get
      * @return JXPathBeanInfo
      */
-    public static JXPathBeanInfo getBeanInfo(Class beanClass) {
+    public static JXPathBeanInfo getBeanInfo(final Class beanClass) {
         JXPathBeanInfo beanInfo = (JXPathBeanInfo) byClass.get(beanClass);
         if (beanInfo == null) {
             beanInfo = findDynamicBeanInfo(beanClass);
@@ -132,7 +132,7 @@ public class JXPathIntrospector {
      * @param beanClass to search for
      * @return JXPathBeanInfo
      */
-    private static JXPathBeanInfo findDynamicBeanInfo(Class beanClass) {
+    private static JXPathBeanInfo findDynamicBeanInfo(final Class beanClass) {
         JXPathBeanInfo beanInfo;
         if (beanClass.isInterface()) {
             beanInfo = (JXPathBeanInfo) byInterface.get(beanClass);
@@ -141,17 +141,17 @@ public class JXPathIntrospector {
             }
         }
 
-        Class[] interfaces = beanClass.getInterfaces();
+        final Class[] interfaces = beanClass.getInterfaces();
         if (interfaces != null) {
-            for (int i = 0; i < interfaces.length; i++) {
-                beanInfo = findDynamicBeanInfo(interfaces[i]);
+            for (final Class element : interfaces) {
+                beanInfo = findDynamicBeanInfo(element);
                 if (beanInfo != null && beanInfo.isDynamic()) {
                     return beanInfo;
                 }
             }
         }
 
-        Class sup = beanClass.getSuperclass();
+        final Class sup = beanClass.getSuperclass();
         if (sup != null) {
             beanInfo = (JXPathBeanInfo) byClass.get(sup);
             if (beanInfo != null && beanInfo.isDynamic()) {
@@ -171,12 +171,12 @@ public class JXPathIntrospector {
      * @param beanClass for which to look for an info provider
      * @return JXPathBeanInfo instance or null if none found
      */
-    private static synchronized JXPathBeanInfo findInformant(Class beanClass) {
-        String name = beanClass.getName() + "XBeanInfo";
+    private static synchronized JXPathBeanInfo findInformant(final Class beanClass) {
+        final String name = beanClass.getName() + "XBeanInfo";
         try {
             return (JXPathBeanInfo) instantiate(beanClass, name);
         }
-        catch (Exception ex) { //NOPMD
+        catch (final Exception ignore) { // NOPMD
             // Just drop through
         }
 
@@ -186,7 +186,7 @@ public class JXPathIntrospector {
                 return (JXPathBeanInfo) beanClass.newInstance();
             }
         }
-        catch (Exception ex) { //NOPMD
+        catch (final Exception ignore) { // NOPMD
             // Just drop through
         }
 
@@ -202,23 +202,23 @@ public class JXPathIntrospector {
      * @return new Object
      * @throws Exception if instantiation fails
      */
-    private static Object instantiate(Class sibling, String className)
+    private static Object instantiate(final Class sibling, final String className)
             throws Exception {
 
         // First check with sibling's classloader (if any).
-        ClassLoader cl = sibling.getClassLoader();
+        final ClassLoader cl = sibling.getClassLoader();
         if (cl != null) {
             try {
-                Class cls = cl.loadClass(className);
+                final Class cls = cl.loadClass(className);
                 return cls.newInstance();
             }
-            catch (Exception ex) { //NOPMD
+            catch (final Exception ex) { //NOPMD
                 // Just drop through and use the ClassLoaderUtil.
             }
         }
 
         // Now try the ClassLoaderUtil.
-        Class cls = ClassLoaderUtil.getClass(className);
+        final Class cls = ClassLoaderUtil.getClass(className);
         return cls.newInstance();
     }
 }

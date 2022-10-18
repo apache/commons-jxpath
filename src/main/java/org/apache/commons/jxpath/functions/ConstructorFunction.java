@@ -28,15 +28,15 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * An extension function that creates an instance using a constructor.
  */
 public class ConstructorFunction implements Function {
-    private static final Object[] EMPTY_ARRAY = new Object[0];
+    private static final Object[] EMPTY_ARRAY = {};
 
-    private Constructor constructor;
+    private final Constructor constructor;
 
     /**
      * Create a new ConstructorFunction.
      * @param constructor the constructor to call.
      */
-    public ConstructorFunction(Constructor constructor) {
+    public ConstructorFunction(final Constructor constructor) {
         this.constructor = constructor;
     }
 
@@ -46,14 +46,15 @@ public class ConstructorFunction implements Function {
      * @param parameters constructor args
      * @return new instance
      */
-    public Object invoke(ExpressionContext context, Object[] parameters) {
+    @Override
+    public Object invoke(final ExpressionContext context, Object[] parameters) {
         try {
             Object[] args;
             if (parameters == null) {
                 parameters = EMPTY_ARRAY;
             }
             int pi = 0;
-            Class[] types = constructor.getParameterTypes();
+            final Class[] types = constructor.getParameterTypes();
             if (types.length > 0
                 && ExpressionContext.class.isAssignableFrom(types[0])) {
                 pi = 1;

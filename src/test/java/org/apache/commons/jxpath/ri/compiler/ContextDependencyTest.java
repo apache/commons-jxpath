@@ -37,8 +37,8 @@ public class ContextDependencyTest extends JXPathTestCase {
         testContextDependency("test:func(3, foo)", true);
     }
 
-    public void testContextDependency(String xpath, boolean expected) {
-        Expression expr = (Expression) Parser.parseExpression(xpath, new TreeCompiler());
+    public void testContextDependency(final String xpath, final boolean expected) {
+        final Expression expr = (Expression) Parser.parseExpression(xpath, new TreeCompiler());
 
         assertEquals("Context dependency <" + xpath + ">", expected, expr.isContextDependent());
     }

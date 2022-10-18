@@ -35,12 +35,13 @@ public class TestDynamicPropertyFactory extends AbstractFactory {
      * Create a new instance and put it in the collection on the parent object.
      * Return <b>false</b> if this factory cannot create the requested object.
      */
+    @Override
     public boolean createObject(
-        JXPathContext context,
-        Pointer pointer,
-        Object parent,
-        String name,
-        int index) 
+        final JXPathContext context,
+        final Pointer pointer,
+        final Object parent,
+        final String name,
+        final int index)
     {
         if (name.equals("map")) {
             ((TestBean) parent).setMap(new HashMap());
@@ -55,7 +56,7 @@ public class TestDynamicPropertyFactory extends AbstractFactory {
             return true;
         }
         else if (name.equals("TestKey3")) {
-            Vector v = new Vector();
+            final Vector v = new Vector();
             for (int i = 0; i <= index; i++) {
                 v.add(null);
             }
@@ -69,7 +70,8 @@ public class TestDynamicPropertyFactory extends AbstractFactory {
         return false;
     }
 
-    public boolean declareVariable(JXPathContext context, String name) {
+    @Override
+    public boolean declareVariable(final JXPathContext context, final String name) {
         return false;
     }
 }

@@ -91,11 +91,11 @@ public final class JXPathServletContexts {
      * @param pageContext as described
      * @return JXPathContext
      */
-    public static JXPathContext getPageContext(PageContext pageContext) {
+    public static JXPathContext getPageContext(final PageContext pageContext) {
         JXPathContext context =
             (JXPathContext) pageContext.getAttribute(Constants.JXPATH_CONTEXT);
         if (context == null) {
-            JXPathContext parentContext =
+            final JXPathContext parentContext =
                 getRequestContext(
                     pageContext.getRequest(),
                     pageContext.getServletContext());
@@ -116,15 +116,15 @@ public final class JXPathServletContexts {
      * @param servletContext operative
      * @return JXPathContext
      */
-    public static JXPathContext getRequestContext(ServletRequest request,
-            ServletContext servletContext) {
+    public static JXPathContext getRequestContext(final ServletRequest request,
+            final ServletContext servletContext) {
         JXPathContext context =
             (JXPathContext) request.getAttribute(Constants.JXPATH_CONTEXT);
         // If we are in an included JSP or Servlet, the request parameter
         // will represent the included URL, but the JXPathContext we have
         // just acquired will represent the outer request.
         if (context != null) {
-            ServletRequestAndContext handle =
+            final ServletRequestAndContext handle =
                 (ServletRequestAndContext) context.getContextBean();
             if (handle.getServletRequest() == request) {
                 return context;
@@ -133,7 +133,7 @@ public final class JXPathServletContexts {
 
         JXPathContext parentContext = null;
         if (request instanceof HttpServletRequest) {
-            HttpSession session =
+            final HttpSession session =
                 ((HttpServletRequest) request).getSession(false);
             if (session != null) {
                 parentContext = getSessionContext(session, servletContext);
@@ -142,7 +142,7 @@ public final class JXPathServletContexts {
                 parentContext = getApplicationContext(servletContext);
             }
         }
-        ServletRequestAndContext handle =
+        final ServletRequestAndContext handle =
             new ServletRequestAndContext(request, servletContext);
         context = factory.newContext(parentContext, handle);
         context.setVariables(
@@ -158,13 +158,13 @@ public final class JXPathServletContexts {
      * @param servletContext operative
      * @return JXPathContext
      */
-    public static JXPathContext getSessionContext(HttpSession session,
-            ServletContext servletContext) {
+    public static JXPathContext getSessionContext(final HttpSession session,
+            final ServletContext servletContext) {
         JXPathContext context =
             (JXPathContext) session.getAttribute(Constants.JXPATH_CONTEXT);
         if (context == null) {
-            JXPathContext parentContext = getApplicationContext(servletContext);
-            HttpSessionAndServletContext handle =
+            final JXPathContext parentContext = getApplicationContext(servletContext);
+            final HttpSessionAndServletContext handle =
                 new HttpSessionAndServletContext(session, servletContext);
             context = factory.newContext(parentContext, handle);
             context.setVariables(
@@ -181,7 +181,7 @@ public final class JXPathServletContexts {
      * @return JXPathContext
      */
     public static JXPathContext getApplicationContext(
-            ServletContext servletContext) {
+            final ServletContext servletContext) {
         JXPathContext context =
             (JXPathContext) servletContext.getAttribute(
                 Constants.JXPATH_CONTEXT);

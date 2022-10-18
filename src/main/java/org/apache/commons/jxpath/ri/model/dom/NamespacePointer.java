@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  */
 public class NamespacePointer extends NodePointer {
-    private String prefix;
+    private final String prefix;
     private String namespaceURI;
 
     private static final long serialVersionUID = -7622456151550131709L;
@@ -36,7 +36,7 @@ public class NamespacePointer extends NodePointer {
      * @param parent parent pointer
      * @param prefix associated ns prefix.
      */
-    public NamespacePointer(NodePointer parent, String prefix) {
+    public NamespacePointer(final NodePointer parent, final String prefix) {
         super(parent);
         this.prefix = prefix;
     }
@@ -48,34 +48,40 @@ public class NamespacePointer extends NodePointer {
      * @param namespaceURI associated ns URI.
      */
     public NamespacePointer(
-        NodePointer parent,
-        String prefix,
-        String namespaceURI) {
+        final NodePointer parent,
+        final String prefix,
+        final String namespaceURI) {
         super(parent);
         this.prefix = prefix;
         this.namespaceURI = namespaceURI;
     }
 
+    @Override
     public QName getName() {
         return new QName(prefix);
     }
 
+    @Override
     public Object getBaseValue() {
         return null;
     }
 
+    @Override
     public boolean isCollection() {
         return false;
     }
 
+    @Override
     public int getLength() {
         return 1;
     }
 
+    @Override
     public Object getImmediateNode() {
         return getNamespaceURI();
     }
 
+    @Override
     public String getNamespaceURI() {
         if (namespaceURI == null) {
             namespaceURI = parent.getNamespaceURI(prefix);
@@ -83,6 +89,7 @@ public class NamespacePointer extends NodePointer {
         return namespaceURI;
     }
 
+    @Override
     public boolean isLeaf() {
         return true;
     }
@@ -91,19 +98,22 @@ public class NamespacePointer extends NodePointer {
      * Throws UnsupportedOperationException.
      * @param value Object
      */
-    public void setValue(Object value) {
+    @Override
+    public void setValue(final Object value) {
         throw new UnsupportedOperationException("Cannot modify DOM trees");
     }
 
-    public boolean testNode(NodeTest nodeTest) {
+    @Override
+    public boolean testNode(final NodeTest nodeTest) {
         return nodeTest == null
-            || ((nodeTest instanceof NodeTypeTest)
+            || nodeTest instanceof NodeTypeTest
                 && ((NodeTypeTest) nodeTest).getNodeType()
-                    == Compiler.NODE_TYPE_NODE);
+                    == Compiler.NODE_TYPE_NODE;
     }
 
+    @Override
     public String asPath() {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         if (parent != null) {
             buffer.append(parent.asPath());
             if (buffer.length() == 0
@@ -116,11 +126,13 @@ public class NamespacePointer extends NodePointer {
         return buffer.toString();
     }
 
+    @Override
     public int hashCode() {
         return prefix.hashCode();
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         if (object == this) {
             return true;
         }
@@ -129,13 +141,14 @@ public class NamespacePointer extends NodePointer {
             return false;
         }
 
-        NamespacePointer other = (NamespacePointer) object;
+        final NamespacePointer other = (NamespacePointer) object;
         return prefix.equals(other.prefix);
     }
 
+    @Override
     public int compareChildNodePointers(
-        NodePointer pointer1,
-        NodePointer pointer2) {
+        final NodePointer pointer1,
+        final NodePointer pointer2) {
         // Won't happen - namespaces don't have children
         return 0;
     }

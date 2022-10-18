@@ -24,8 +24,8 @@ import junit.framework.TestCase;
 
 public class ValueUtilsTest extends TestCase {
 
-    
-    
+
+
     public void testGetValueFromArrayTooSmall() {
         assertNull(ValueUtils.getValue(new Object[0], 2));
     }
@@ -58,7 +58,7 @@ public class ValueUtilsTest extends TestCase {
         dataSet.add(data);
         assertSame(data, ValueUtils.getValue(dataSet, 0));
     }
-    
+
     public void testGetValueFromArrayNegativeIndex() {
         final Object data = new Object();
         assertNull(ValueUtils.getValue(new Object[] {data}, -1));

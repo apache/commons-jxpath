@@ -27,7 +27,7 @@ public class JXPathInvalidSyntaxException extends JXPathException {
      * Create a new JXPathInvalidSyntaxException.
      * @param message relevant message
      */
-    public JXPathInvalidSyntaxException(String message) {
+    public JXPathInvalidSyntaxException(final String message) {
         super(message);
     }
 }

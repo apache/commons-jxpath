@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * EvalContext that checks predicates.
  */
 public class PredicateContext extends EvalContext {
-    private Expression expression;
+    private final Expression expression;
     private boolean done = false;
     private Expression nameTestExpression;
     private PropertyPointer dynamicPropertyPointer;
@@ -40,7 +40,7 @@ public class PredicateContext extends EvalContext {
      * @param parentContext parent context
      * @param expression compiled Expression
      */
-    public PredicateContext(EvalContext parentContext, Expression expression) {
+    public PredicateContext(final EvalContext parentContext, final Expression expression) {
         super(parentContext);
         this.expression = expression;
         if (expression instanceof NameAttributeTest) {
@@ -49,14 +49,15 @@ public class PredicateContext extends EvalContext {
         }
     }
 
+    @Override
     public boolean nextNode() {
         if (done) {
             return false;
         }
         while (parentContext.nextNode()) {
             if (setupDynamicPropertyPointer()) {
-                Object pred = nameTestExpression.computeValue(parentContext);
-                String propertyName = InfoSetUtil.stringValue(pred);
+                final Object pred = nameTestExpression.computeValue(parentContext);
+                final String propertyName = InfoSetUtil.stringValue(pred);
 
                 // At this point it would be nice to say:
                 // dynamicPropertyPointer.setPropertyName(propertyName)
@@ -67,9 +68,9 @@ public class PredicateContext extends EvalContext {
                 // if the property is currently declared. Thus,
                 // we'll need to perform a search.
                 boolean ok = false;
-                String[] names = dynamicPropertyPointer.getPropertyNames();
-                for (int i = 0; i < names.length; i++) {
-                    if (names[i].equals(propertyName)) {
+                final String[] names = dynamicPropertyPointer.getPropertyNames();
+                for (final String name : names) {
+                    if (name.equals(propertyName)) {
                         ok = true;
                         break;
                     }
@@ -94,7 +95,7 @@ public class PredicateContext extends EvalContext {
                 }
 
                 if (pred instanceof Number) {
-                    int pos = (int) InfoSetUtil.doubleValue(pred);
+                    final int pos = (int) InfoSetUtil.doubleValue(pred);
                     position++;
                     done = true;
                     return parentContext.setPosition(pos);
@@ -133,7 +134,8 @@ public class PredicateContext extends EvalContext {
         return true;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         if (nameTestExpression == null) {
             return setPositionStandard(position);
         }
@@ -150,6 +152,7 @@ public class PredicateContext extends EvalContext {
         }
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         if (position == 0 && !setPosition(1)) {
             return null;
@@ -160,12 +163,14 @@ public class PredicateContext extends EvalContext {
         return parentContext.getCurrentNodePointer();
     }
 
+    @Override
     public void reset() {
         super.reset();
         parentContext.reset();
         done = false;
     }
 
+    @Override
     public boolean nextSet() {
         reset();
         return parentContext.nextSet();
@@ -176,7 +181,7 @@ public class PredicateContext extends EvalContext {
      * @param position to set
      * @return whether valid
      */
-    private boolean setPositionStandard(int position) {
+    private boolean setPositionStandard(final int position) {
         if (this.position > position) {
             reset();
         }

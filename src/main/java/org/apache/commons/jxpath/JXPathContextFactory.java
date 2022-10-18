@@ -100,16 +100,10 @@ public abstract class JXPathContextFactory {
     public static JXPathContextFactory newInstance() {
         JXPathContextFactory factoryImpl;
         try {
-            Class clazz = ClassLoaderUtil.getClass( FACTORY_IMPL_NAME, true );
+            final Class clazz = ClassLoaderUtil.getClass( FACTORY_IMPL_NAME, true );
             factoryImpl = (JXPathContextFactory) clazz.newInstance();
         }
-        catch (ClassNotFoundException cnfe) {
-            throw new JXPathContextFactoryConfigurationError(cnfe);
-        }
-        catch (IllegalAccessException iae) {
-            throw new JXPathContextFactoryConfigurationError(iae);
-        }
-        catch (InstantiationException ie) {
+        catch (final ClassNotFoundException | IllegalAccessException | InstantiationException ie) {
             throw new JXPathContextFactoryConfigurationError(ie);
         }
         return factoryImpl;
@@ -141,7 +135,7 @@ public abstract class JXPathContextFactory {
         try {
             debug = System.getProperty("jxpath.debug") != null;
         }
-        catch (SecurityException se) { //NOPMD
+        catch (final SecurityException ignore) {
             // This is ok
         }
     }
@@ -154,10 +148,10 @@ public abstract class JXPathContextFactory {
      *
      * @return class name of the JXPathContextFactory
      */
-    private static String findFactory(String property, String defaultFactory) {
+    private static String findFactory(final String property, final String defaultFactory) {
         // Use the factory ID system property first
         try {
-            String systemProp = System.getProperty(property);
+            final String systemProp = System.getProperty(property);
             if (systemProp != null) {
                 if (debug) {
                     System.err.println(
@@ -167,23 +161,23 @@ public abstract class JXPathContextFactory {
             }
 
         }
-        catch (SecurityException se) { //NOPMD
+        catch (final SecurityException ignore) {
             // Ignore
        }
 
         // try to read from $java.home/lib/xml.properties
         try {
-            String javah = System.getProperty("java.home");
-            String configFile =
+            final String javah = System.getProperty("java.home");
+            final String configFile =
                 javah
                     + File.separator
                     + "lib"
                     + File.separator
                     + "jxpath.properties";
-            File f = new File(configFile);
+            final File f = new File(configFile);
             if (f.exists()) {
-                Properties props = new Properties();
-                FileInputStream fis = new FileInputStream(f);
+                final Properties props = new Properties();
+                final FileInputStream fis = new FileInputStream(f);
                 try {
                     props.load(fis);
                 }
@@ -192,12 +186,12 @@ public abstract class JXPathContextFactory {
                         try {
                             fis.close();
                         }
-                        catch (IOException e) { //NOPMD
+                        catch (final IOException ignore) {
                             //swallow
                         }
                     }
                 }
-                String factory = props.getProperty(property);
+                final String factory = props.getProperty(property);
                 if (factory != null) {
                     if (debug) {
                         System.err.println(
@@ -207,16 +201,16 @@ public abstract class JXPathContextFactory {
                 }
             }
         }
-        catch (IOException ex) {
+        catch (final IOException ex) {
             if (debug) {
                 ex.printStackTrace();
             }
         }
 
-        String serviceId = "META-INF/services/" + property;
+        final String serviceId = "META-INF/services/" + property;
         // try to find services in CLASSPATH
         try {
-            ClassLoader cl = JXPathContextFactory.class.getClassLoader();
+            final ClassLoader cl = JXPathContextFactory.class.getClassLoader();
             InputStream is;
             if (cl == null) {
                 is = ClassLoader.getSystemResourceAsStream(serviceId);
@@ -229,7 +223,7 @@ public abstract class JXPathContextFactory {
                 if (debug) {
                     System.err.println("JXPath: found  " + serviceId);
                 }
-                BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                final BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 
                 String factory = null;
                 try {
@@ -239,7 +233,7 @@ public abstract class JXPathContextFactory {
                     try {
                         rd.close();
                     }
-                    catch (IOException e) { //NOPMD
+                    catch (final IOException ignore) {
                         //swallow
                     }
                 }
@@ -253,7 +247,7 @@ public abstract class JXPathContextFactory {
                 }
             }
         }
-        catch (Exception ex) {
+        catch (final Exception ex) {
             if (debug) {
                 ex.printStackTrace();
             }

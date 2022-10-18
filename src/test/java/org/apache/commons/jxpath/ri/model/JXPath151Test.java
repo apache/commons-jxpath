@@ -27,9 +27,10 @@ public class JXPath151Test extends JXPathTestCase {
 
     private JXPathContext context;
 
+    @Override
     public void setUp() {
-        TestBean testBean = new TestBean();
-        HashMap m = new HashMap();
+        final TestBean testBean = new TestBean();
+        final HashMap m = new HashMap();
         m.put("a", Integer.valueOf(1));
         m.put("b", null);
         m.put("c", Integer.valueOf(1));

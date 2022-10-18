@@ -33,7 +33,7 @@ public class JXPath172DynamicTest extends JXPathTestCase
      */
     public static TestSuite suite()
     {
-        return (new TestSuite(JXPath172DynamicTest.class));
+        return new TestSuite(JXPath172DynamicTest.class);
     }
 
     public void testIssue172_propertyExistAndIsNotNull()
@@ -112,11 +112,11 @@ public class JXPath172DynamicTest extends JXPathTestCase
     /**
      * Helper, returns a {@link JXPathContext} filled with a Map whose "value"
      * key is associated to the passed <code>val</code> value.
-     * 
+     *
      * @param val
      * @return A {@link JXPathContext}, never <code>null</code>.
      */
-    private JXPathContext getContext(final String val, boolean lenient)
+    private JXPathContext getContext(final String val, final boolean lenient)
     {
         final HashMap map = new HashMap();
         // if (val!=null) // no diffs

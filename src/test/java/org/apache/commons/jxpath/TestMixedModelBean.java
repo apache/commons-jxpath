@@ -30,15 +30,15 @@ import org.w3c.dom.Element;
  * Mixed model test bean: Java, collections, map, DOM, Container.
  */
 public class TestMixedModelBean {
-    private String string;
-    private TestBean bean;
-    private Container container;
-    private Document document;
-    private Element element;
+    private final String string;
+    private final TestBean bean;
+    private final Container container;
+    private final Document document;
+    private final Element element;
 
-    private Map map;
+    private final Map map;
 
-    private List list;
+    private final List list;
     private int[][] matrix;
 
     public TestMixedModelBean() {
@@ -104,7 +104,7 @@ public class TestMixedModelBean {
         return matrix;
     }
 
-    public void setMatrix(int[][] matrix) {
+    public void setMatrix(final int[][] matrix) {
         this.matrix = matrix;
     }
 }

@@ -35,7 +35,7 @@ public abstract class XMLParser2 implements XMLParser {
      * @param validating flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setValidating(boolean)
      */
-    public void setValidating(boolean validating) {
+    public void setValidating(final boolean validating) {
         this.validating = validating;
     }
 
@@ -62,7 +62,7 @@ public abstract class XMLParser2 implements XMLParser {
      * @param namespaceAware flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setNamespaceAware(boolean)
      */
-    public void setNamespaceAware(boolean namespaceAware) {
+    public void setNamespaceAware(final boolean namespaceAware) {
         this.namespaceAware = namespaceAware;
     }
 
@@ -71,7 +71,7 @@ public abstract class XMLParser2 implements XMLParser {
      * @param whitespace flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setIgnoringElementContentWhitespace(boolean)
      */
-    public void setIgnoringElementContentWhitespace(boolean whitespace) {
+    public void setIgnoringElementContentWhitespace(final boolean whitespace) {
         this.whitespace = whitespace;
     }
 
@@ -98,7 +98,7 @@ public abstract class XMLParser2 implements XMLParser {
      * @param expandEntityRef flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setExpandEntityReferences(boolean)
      */
-    public void setExpandEntityReferences(boolean expandEntityRef) {
+    public void setExpandEntityReferences(final boolean expandEntityRef) {
         this.expandEntityRef = expandEntityRef;
     }
 
@@ -116,7 +116,7 @@ public abstract class XMLParser2 implements XMLParser {
      * @param ignoreComments flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setIgnoringComments(boolean)
      */
-    public void setIgnoringComments(boolean ignoreComments) {
+    public void setIgnoringComments(final boolean ignoreComments) {
         this.ignoreComments = ignoreComments;
     }
 
@@ -134,9 +134,10 @@ public abstract class XMLParser2 implements XMLParser {
      * @param coalescing flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setCoalescing(boolean)
      */
-    public void setCoalescing(boolean coalescing) {
+    public void setCoalescing(final boolean coalescing) {
         this.coalescing = coalescing;
     }
 
+    @Override
     public abstract Object parseXML(InputStream stream);
 }

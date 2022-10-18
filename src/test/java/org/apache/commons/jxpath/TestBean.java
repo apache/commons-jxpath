@@ -47,7 +47,7 @@ public class TestBean {
         return beans;
     }
 
-    public void setBeans(NestedTestBean[] beans) {
+    public void setBeans(final NestedTestBean[] beans) {
         this.beans = beans;
     }
 
@@ -59,7 +59,7 @@ public class TestBean {
         return bool;
     }
 
-    public void setBoolean(boolean bool) {
+    public void setBoolean(final boolean bool) {
         this.bool = bool;
     }
 
@@ -71,7 +71,7 @@ public class TestBean {
         return integer;
     }
 
-    public void setInt(int integer) {
+    public void setInt(final int integer) {
         this.integer = integer;
     }
 
@@ -83,11 +83,11 @@ public class TestBean {
         return array;
     }
 
-    public int getIntegers(int index) {
+    public int getIntegers(final int index) {
         return array[index];
     }
 
-    public void setIntegers(int index, int value) {
+    public void setIntegers(final int index, final int value) {
         if (index >= array.length) {
             array = (int[]) ValueUtils.expandCollection(array, index + 1);
         }
@@ -102,7 +102,7 @@ public class TestBean {
         if (list == null) {
             list = new ArrayList();
             list.add("String 3");
-            list.add(new Integer(3));
+            list.add(Integer.valueOf(3));
             list.add(new NestedTestBean("Name 3"));
         }
         return list;
@@ -122,7 +122,7 @@ public class TestBean {
         return map;
     }
 
-    public void setMap(Map map) {
+    public void setMap(final Map map) {
         this.map = (HashMap) map;
     }
 
@@ -134,11 +134,11 @@ public class TestBean {
         return nestedBean;
     }
 
-    public void setNestedBean(NestedTestBean bean) {
+    public void setNestedBean(final NestedTestBean bean) {
         this.nestedBean = bean;
     }
 
-    private NestedTestBean object = new NestedTestBean("Name 5");
+    private final NestedTestBean object = new NestedTestBean("Name 5");
 
     /**
      * Returns a NestedTestBean: testing recognition of generic objects
@@ -162,12 +162,13 @@ public class TestBean {
         if (set == null) {
             set = new HashSet();
             set.add("String 4");
-            set.add(new Integer(4));
+            set.add(Integer.valueOf(4));
             set.add(new NestedTestBean("Name 4"));
         }
         return set;
     }
 
+    @Override
     public String toString() {
         return "ROOT";
     }

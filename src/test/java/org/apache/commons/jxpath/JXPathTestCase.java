@@ -40,103 +40,103 @@ public abstract class JXPathTestCase extends TestCase {
     public JXPathTestCase() {
         Locale.setDefault(Locale.US);
     }
-    
-    protected void assertXPathValue(JXPathContext ctx,
-                String xpath, Object expected)
+
+    protected void assertXPathValue(final JXPathContext ctx,
+                final String xpath, final Object expected)
     {
         ctx.setLenient(false);
-        Object actual = ctx.getValue(xpath);
+        final Object actual = ctx.getValue(xpath);
         assertEquals("Evaluating <" + xpath + ">", expected, actual);
     }
 
-    protected void assertXPathValue(JXPathContext ctx,
-                String xpath, Object expected, Class resultType)
+    protected void assertXPathValue(final JXPathContext ctx,
+                final String xpath, final Object expected, final Class resultType)
     {
         ctx.setLenient(false);
-        Object actual = ctx.getValue(xpath, resultType);
+        final Object actual = ctx.getValue(xpath, resultType);
         assertEquals("Evaluating <" + xpath + ">", expected, actual);
     }
 
-    protected void assertXPathValueLenient(JXPathContext ctx,
-                String xpath, Object expected)
+    protected void assertXPathValueLenient(final JXPathContext ctx,
+                final String xpath, final Object expected)
     {
         ctx.setLenient(true);
-        Object actual = ctx.getValue(xpath);
+        final Object actual = ctx.getValue(xpath);
         ctx.setLenient(false);
         assertEquals("Evaluating lenient <" + xpath + ">", expected, actual);
     }
 
-    protected void assertXPathSetValue(JXPathContext ctx,
-                String xpath, Object value)
+    protected void assertXPathSetValue(final JXPathContext ctx,
+                final String xpath, final Object value)
     {
         assertXPathSetValue(ctx, xpath, value, value);
     }
-    
-    protected void assertXPathSetValue(JXPathContext ctx,
-                String xpath, Object value, Object expected)
+
+    protected void assertXPathSetValue(final JXPathContext ctx,
+                final String xpath, final Object value, final Object expected)
     {
         ctx.setValue(xpath, value);
-        Object actual = ctx.getValue(xpath);
+        final Object actual = ctx.getValue(xpath);
         assertEquals("Modifying <" + xpath + ">", expected, actual);
     }
-    
-    protected void assertXPathCreatePath(JXPathContext ctx,
-                String xpath, 
-                Object expectedValue, String expectedPath)
+
+    protected void assertXPathCreatePath(final JXPathContext ctx,
+                final String xpath,
+                final Object expectedValue, final String expectedPath)
     {
-        Pointer pointer = ctx.createPath(xpath);
-        assertEquals("Creating path <" + xpath + ">", 
+        final Pointer pointer = ctx.createPath(xpath);
+        assertEquals("Creating path <" + xpath + ">",
                 expectedPath, pointer.asPath());
-                
-        assertEquals("Creating path (pointer value) <" + xpath + ">", 
+
+        assertEquals("Creating path (pointer value) <" + xpath + ">",
                 expectedValue, pointer.getValue());
-                
-        assertEquals("Creating path (context value) <" + xpath + ">", 
+
+        assertEquals("Creating path (context value) <" + xpath + ">",
                 expectedValue, ctx.getValue(pointer.asPath()));
     }
-    
-    protected void assertXPathCreatePathAndSetValue(JXPathContext ctx,
-                String xpath, Object value,
-                String expectedPath)
+
+    protected void assertXPathCreatePathAndSetValue(final JXPathContext ctx,
+                final String xpath, final Object value,
+                final String expectedPath)
     {
-        Pointer pointer = ctx.createPathAndSetValue(xpath, value);
-        assertEquals("Creating path <" + xpath + ">", 
+        final Pointer pointer = ctx.createPathAndSetValue(xpath, value);
+        assertEquals("Creating path <" + xpath + ">",
                 expectedPath, pointer.asPath());
-                
-        assertEquals("Creating path (pointer value) <" + xpath + ">", 
+
+        assertEquals("Creating path (pointer value) <" + xpath + ">",
                 value, pointer.getValue());
-                
-        assertEquals("Creating path (context value) <" + xpath + ">", 
+
+        assertEquals("Creating path (context value) <" + xpath + ">",
                 value, ctx.getValue(pointer.asPath()));
-    }    
-    
-    protected void assertXPathPointer(JXPathContext ctx,
-                String xpath, String expected)
+    }
+
+    protected void assertXPathPointer(final JXPathContext ctx,
+                final String xpath, final String expected)
     {
         ctx.setLenient(false);
-        Pointer pointer = ctx.getPointer(xpath);
-        String actual = pointer.toString();
+        final Pointer pointer = ctx.getPointer(xpath);
+        final String actual = pointer.toString();
         assertEquals("Evaluating pointer <" + xpath + ">", expected, actual);
     }
 
-    protected void assertXPathPointerLenient(JXPathContext ctx,
-                String xpath, String expected)
+    protected void assertXPathPointerLenient(final JXPathContext ctx,
+                final String xpath, final String expected)
     {
         ctx.setLenient(true);
-        Pointer pointer = ctx.getPointer(xpath);
-        String actual = pointer.toString();
+        final Pointer pointer = ctx.getPointer(xpath);
+        final String actual = pointer.toString();
         assertEquals("Evaluating pointer <" + xpath + ">", expected, actual);
     }
 
-    protected void assertXPathValueAndPointer(JXPathContext ctx,
-                String xpath, Object expectedValue, String expectedPointer)
+    protected void assertXPathValueAndPointer(final JXPathContext ctx,
+                final String xpath, final Object expectedValue, final String expectedPointer)
     {
         assertXPathValue(ctx, xpath, expectedValue);
         assertXPathPointer(ctx, xpath, expectedPointer);
     }
-    
-    protected void assertXPathValueIterator(JXPathContext ctx,
-                String xpath, Collection expected)
+
+    protected void assertXPathValueIterator(final JXPathContext ctx,
+                final String xpath, final Collection expected)
     {
         Collection actual;
         if (expected instanceof List) {
@@ -145,7 +145,7 @@ public abstract class JXPathTestCase extends TestCase {
         else {
             actual = new HashSet();
         }
-        Iterator it = ctx.iterate(xpath);
+        final Iterator it = ctx.iterate(xpath);
         while (it.hasNext()) {
             actual.add(it.next());
         }
@@ -154,9 +154,9 @@ public abstract class JXPathTestCase extends TestCase {
     }
 
     protected void assertXPathPointerIterator(
-        JXPathContext ctx,
-        String xpath,
-        Collection expected) 
+        final JXPathContext ctx,
+        final String xpath,
+        final Collection expected)
     {
         Collection actual;
         if (expected instanceof List) {
@@ -165,9 +165,9 @@ public abstract class JXPathTestCase extends TestCase {
         else {
             actual = new HashSet();
         }
-        Iterator it = ctx.iteratePointers(xpath);
+        final Iterator it = ctx.iteratePointers(xpath);
         while (it.hasNext()) {
-            Pointer pointer = (Pointer) it.next();
+            final Pointer pointer = (Pointer) it.next();
             actual.add(pointer.toString());
         }
         assertEquals(
@@ -177,13 +177,13 @@ public abstract class JXPathTestCase extends TestCase {
     }
 
     protected void assertDocumentOrder(
-        JXPathContext context,
-        String path1,
-        String path2,
-        int expected) 
+        final JXPathContext context,
+        final String path1,
+        final String path2,
+        final int expected)
     {
-        NodePointer np1 = (NodePointer) context.getPointer(path1);
-        NodePointer np2 = (NodePointer) context.getPointer(path2);
+        final NodePointer np1 = (NodePointer) context.getPointer(path1);
+        final NodePointer np2 = (NodePointer) context.getPointer(path2);
         int res = np1.compareTo(np2);
         if (res < 0) {
             res = -1;
@@ -196,80 +196,71 @@ public abstract class JXPathTestCase extends TestCase {
             expected,
             res);
     }
-    
+
     protected void assertXPathValueType(
-            JXPathContext ctx,
-            String xpath,
-            Class clazz) 
+            final JXPathContext ctx,
+            final String xpath,
+            final Class clazz)
     {
         ctx.setLenient(false);
-        Object actual = ctx.getValue(xpath);
-        assertTrue("Evaluating <" + xpath + "> = " + actual.getClass(), 
+        final Object actual = ctx.getValue(xpath);
+        assertTrue("Evaluating <" + xpath + "> = " + actual.getClass(),
                 clazz.isAssignableFrom(actual.getClass()));
     }
-    
+
     protected void assertXPathNodeType(
-            JXPathContext ctx,
-            String xpath,
-            Class clazz) 
+            final JXPathContext ctx,
+            final String xpath,
+            final Class clazz)
     {
         ctx.setLenient(false);
-        Pointer actual = ctx.getPointer(xpath);
-        assertTrue("Evaluating <" + xpath + "> = " + actual.getNode().getClass(), 
+        final Pointer actual = ctx.getPointer(xpath);
+        assertTrue("Evaluating <" + xpath + "> = " + actual.getNode().getClass(),
                 clazz.isAssignableFrom(actual.getNode().getClass()));
     }
-    
+
     protected static List list() {
         return Collections.EMPTY_LIST;
     }
 
-    protected static List list(Object o1) {
-        List list = new ArrayList();
+    protected static List list(final Object o1) {
+        final List list = new ArrayList();
         list.add(o1);
         return list;
     }
 
-    protected static List list(Object o1, Object o2) {
-        List list = new ArrayList();
-        list.add(o1);
-        list.add(o2);
-        return list;
-    }
-
-    protected static List list(Object o1, Object o2, Object o3) {
-        List list = new ArrayList();
-        list.add(o1);
-        list.add(o2);
-        list.add(o3);
-        return list;
-    }
-
-    protected static Set set(Object o1, Object o2) {
-        Set list = new HashSet();
+    protected static List list(final Object o1, final Object o2) {
+        final List list = new ArrayList();
         list.add(o1);
         list.add(o2);
         return list;
     }
 
-    protected static Set set(Object o1, Object o2, Object o3) {
-        Set list = new HashSet();
+    protected static List list(final Object o1, final Object o2, final Object o3) {
+        final List list = new ArrayList();
         list.add(o1);
         list.add(o2);
         list.add(o3);
         return list;
     }
 
-    protected static List list(Object o1, Object o2, Object o3, Object o4) {
-        List list = new ArrayList();
+    protected static Set set(final Object o1, final Object o2) {
+        final Set list = new HashSet();
         list.add(o1);
         list.add(o2);
-        list.add(o3);
-        list.add(o4);
         return list;
     }
 
-    protected static Set set(Object o1, Object o2, Object o3, Object o4) {
-        Set list = new HashSet();
+    protected static Set set(final Object o1, final Object o2, final Object o3) {
+        final Set list = new HashSet();
+        list.add(o1);
+        list.add(o2);
+        list.add(o3);
+        return list;
+    }
+
+    protected static List list(final Object o1, final Object o2, final Object o3, final Object o4) {
+        final List list = new ArrayList();
         list.add(o1);
         list.add(o2);
         list.add(o3);
@@ -277,10 +268,19 @@ public abstract class JXPathTestCase extends TestCase {
         return list;
     }
 
-    protected static List list(Object o1, Object o2, Object o3,
-                Object o4, Object o5)
+    protected static Set set(final Object o1, final Object o2, final Object o3, final Object o4) {
+        final Set list = new HashSet();
+        list.add(o1);
+        list.add(o2);
+        list.add(o3);
+        list.add(o4);
+        return list;
+    }
+
+    protected static List list(final Object o1, final Object o2, final Object o3,
+                final Object o4, final Object o5)
     {
-        List list = new ArrayList();
+        final List list = new ArrayList();
         list.add(o1);
         list.add(o2);
         list.add(o3);
@@ -289,10 +289,10 @@ public abstract class JXPathTestCase extends TestCase {
         return list;
     }
 
-    protected static Set set(Object o1, Object o2, Object o3, 
-                Object o4, Object o5) 
+    protected static Set set(final Object o1, final Object o2, final Object o3,
+                final Object o4, final Object o5)
     {
-        Set list = new HashSet();
+        final Set list = new HashSet();
         list.add(o1);
         list.add(o2);
         list.add(o3);
@@ -301,10 +301,23 @@ public abstract class JXPathTestCase extends TestCase {
         return list;
     }
 
-    protected static List list(Object o1, Object o2, Object o3,
-                Object o4, Object o5, Object o6)
+    protected static List list(final Object o1, final Object o2, final Object o3,
+                final Object o4, final Object o5, final Object o6)
     {
-        List list = new ArrayList();
+        final List list = new ArrayList();
+        list.add(o1);
+        list.add(o2);
+        list.add(o3);
+        list.add(o4);
+        list.add(o5);
+        list.add(o6);
+        return list;
+    }
+
+    protected static Set set(final Object o1, final Object o2, final Object o3,
+                final Object o4, final Object o5, final Object o6)
+    {
+        final Set list = new HashSet();
         list.add(o1);
         list.add(o2);
         list.add(o3);
@@ -314,23 +327,24 @@ public abstract class JXPathTestCase extends TestCase {
         return list;
     }
 
-    protected static Set set(Object o1, Object o2, Object o3,
-                Object o4, Object o5, Object o6)
+    protected static List list(final Object o1, final Object o2, final Object o3,
+                final Object o4, final Object o5, final Object o6, final Object o7)
     {
-        Set list = new HashSet();
+        final List list = new ArrayList();
         list.add(o1);
         list.add(o2);
         list.add(o3);
         list.add(o4);
         list.add(o5);
         list.add(o6);
+        list.add(o7);
         return list;
     }
-    
-    protected static List list(Object o1, Object o2, Object o3,
-                Object o4, Object o5, Object o6, Object o7)
+
+    protected static Set set(final Object o1, final Object o2, final Object o3,
+                final Object o4, final Object o5, final Object o6, final Object o7)
     {
-        List list = new ArrayList();
+        final Set list = new HashSet();
         list.add(o1);
         list.add(o2);
         list.add(o3);
@@ -341,18 +355,4 @@ public abstract class JXPathTestCase extends TestCase {
         return list;
     }
 
-    protected static Set set(Object o1, Object o2, Object o3,
-                Object o4, Object o5, Object o6, Object o7)
-    {
-        Set list = new HashSet();
-        list.add(o1);
-        list.add(o2);
-        list.add(o3);
-        list.add(o4);
-        list.add(o5);
-        list.add(o6);
-        list.add(o7);
-        return list;
-    }
-    
 }

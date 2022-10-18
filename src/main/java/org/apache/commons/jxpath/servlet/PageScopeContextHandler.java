@@ -29,20 +29,23 @@ public class PageScopeContextHandler implements DynamicPropertyHandler {
 
     private static final int DEFAULT_LIST_SIZE = 16;
 
-    public String[] getPropertyNames(Object pageScope) {
-        Enumeration e = ((PageScopeContext) pageScope).getAttributeNames();
-        ArrayList list = new ArrayList(DEFAULT_LIST_SIZE);
+    @Override
+    public String[] getPropertyNames(final Object pageScope) {
+        final Enumeration e = ((PageScopeContext) pageScope).getAttributeNames();
+        final ArrayList list = new ArrayList(DEFAULT_LIST_SIZE);
         while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
         return (String[]) list.toArray(new String[list.size()]);
     }
 
-    public Object getProperty(Object pageScope, String property) {
+    @Override
+    public Object getProperty(final Object pageScope, final String property) {
         return ((PageScopeContext) pageScope).getAttribute(property);
     }
 
-    public void setProperty(Object pageScope, String property, Object value) {
+    @Override
+    public void setProperty(final Object pageScope, final String property, final Object value) {
         ((PageScopeContext) pageScope).setAttribute(property, value);
     }
 }

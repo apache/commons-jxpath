@@ -41,6 +41,7 @@ import org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanModelTest;
 public abstract class BeanModelTestCase extends JXPathTestCase {
     private JXPathContext context;
 
+    @Override
     public void setUp() {
 //        if (context == null) {
             context = JXPathContext.newContext(createContextBean());
@@ -71,13 +72,13 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
     }
 
     private void testIndividual(
-        int relativePropertyIndex,
-        int offset,
-        boolean useStartLocation,
-        boolean reverse,
-        int expected) 
+        final int relativePropertyIndex,
+        final int offset,
+        final boolean useStartLocation,
+        final boolean reverse,
+        final int expected)
     {
-        PropertyOwnerPointer root =
+        final PropertyOwnerPointer root =
             (PropertyOwnerPointer) NodePointer.newNodePointer(
                 new QName(null, "root"),
                 createContextBean(),
@@ -133,13 +134,13 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
     }
 
     private void testMultiple(
-        int propertyIndex,
-        int offset,
-        boolean useStartLocation,
-        boolean reverse,
-        int expected) 
+        final int propertyIndex,
+        final int offset,
+        final boolean useStartLocation,
+        final boolean reverse,
+        final int expected)
     {
-        PropertyOwnerPointer root =
+        final PropertyOwnerPointer root =
             (PropertyOwnerPointer) NodePointer.newNodePointer(
                 new QName(null, "root"),
                 createContextBean(),
@@ -173,8 +174,8 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             size);
     }
 
-    private int relativeProperty(PropertyPointer holder, int offset) {
-        String[] names = holder.getPropertyNames();
+    private int relativeProperty(final PropertyPointer holder, final int offset) {
+        final String[] names = holder.getPropertyNames();
         for (int i = 0; i < names.length; i++) {
             if (names[i].equals("integers")) {
                 return i + offset;
@@ -184,9 +185,9 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
     }
 
     public void testIteratePropertyArrayWithHasNext() {
-        JXPathContext context = JXPathContext.newContext(createContextBean());
-        Iterator it = context.iteratePointers("/integers");
-        List actual = new ArrayList();
+        final JXPathContext context = JXPathContext.newContext(createContextBean());
+        final Iterator it = context.iteratePointers("/integers");
+        final List actual = new ArrayList();
         while (it.hasNext()) {
             actual.add(((Pointer) it.next()).asPath());
         }
@@ -201,9 +202,9 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
     }
 
     public void testIteratePropertyArrayWithoutHasNext() {
-        JXPathContext context = JXPathContext.newContext(createContextBean());
-        Iterator it = context.iteratePointers("/integers");
-        List actual = new ArrayList();
+        final JXPathContext context = JXPathContext.newContext(createContextBean());
+        final Iterator it = context.iteratePointers("/integers");
+        final List actual = new ArrayList();
         for (int i = 0; i < 4; i++) {
             actual.add(it.next().toString());
         }
@@ -218,23 +219,23 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
     }
 
     public void testIterateAndSet() {
-        JXPathContext context = JXPathContext.newContext(createContextBean());
+        final JXPathContext context = JXPathContext.newContext(createContextBean());
 
         Iterator it = context.iteratePointers("beans/int");
         int i = 5;
         while (it.hasNext()) {
-            NodePointer pointer = (NodePointer) it.next();
-            pointer.setValue(new Integer(i++));
+            final NodePointer pointer = (NodePointer) it.next();
+            pointer.setValue(Integer.valueOf(i++));
         }
 
         it = context.iteratePointers("beans/int");
-        List actual = new ArrayList();
+        final List actual = new ArrayList();
         while (it.hasNext()) {
             actual.add(((Pointer) it.next()).getValue());
         }
         assertEquals(
             "Iterating <" + "beans/int" + ">",
-            list(new Integer(5), new Integer(6)),
+            list(Integer.valueOf(5), Integer.valueOf(6)),
             actual);
     }
 
@@ -242,7 +243,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
      * Test contributed by Kate Dvortsova
      */
     public void testIteratePointerSetValue() {
-        JXPathContext context = JXPathContext.newContext(createContextBean());
+        final JXPathContext context = JXPathContext.newContext(createContextBean());
 
         assertXPathValue(context, "/beans[1]/name", "Name 1");
         assertXPathValue(context, "/beans[2]/name", "Name 2");
@@ -256,10 +257,10 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathValue(context, "/beans[2]/name", "Name 2");
 
         int iterCount = 0;
-        Iterator iter = context.iteratePointers("/beans/name");
+        final Iterator iter = context.iteratePointers("/beans/name");
         while (iter.hasNext()) {
             iterCount++;
-            Pointer pointer = (Pointer) iter.next();
+            final Pointer pointer = (Pointer) iter.next();
             String s = (String) pointer.getValue();
             s = s + "suffix";
             pointer.setValue(s);
@@ -287,7 +288,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "count(beans/name/ancestor-or-self::node())",
-            new Double(5));
+            Double.valueOf(5));
 
         assertXPathValue(
             context,
@@ -303,7 +304,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathPointerIterator(context, "boolean", list("/boolean"));
 
         // Count elements in a child collection
-        assertXPathValue(context, "count(set)", new Double(3));
+        assertXPathValue(context, "count(set)", Double.valueOf(3));
 
 //        assertXPathValue(context,"boolean/class/name", "java.lang.Boolean");
 
@@ -311,10 +312,10 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathValueIterator(context, "foo:boolean", list());
 
         // Count all children with a wildcard
-        assertXPathValue(context, "count(*)", new Double(21));
+        assertXPathValue(context, "count(*)", Double.valueOf(21));
 
         // Same, constrained by node type = node()
-        assertXPathValue(context, "count(child::node())", new Double(21));
+        assertXPathValue(context, "count(child::node())", Double.valueOf(21));
     }
 
     public void testAxisChildNestedBean() {
@@ -334,10 +335,10 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             context,
             "integers",
             list(
-                new Integer(1),
-                new Integer(2),
-                new Integer(3),
-                new Integer(4)));
+                Integer.valueOf(1),
+                Integer.valueOf(2),
+                Integer.valueOf(3),
+                Integer.valueOf(4)));
 
         assertXPathPointer(context, "integers", "/integers");
 
@@ -352,7 +353,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
     }
 
     public void testIndexPredicate() {
-        assertXPathValue(context, "integers[2]", new Integer(2));
+        assertXPathValue(context, "integers[2]", Integer.valueOf(2));
 
         assertXPathPointer(context, "integers[2]", "/integers[2]");
 
@@ -384,12 +385,12 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
 
     public void testAxisDescendant() {
         // descendant::
-        assertXPathValue(context, "count(descendant::node())", new Double(65));
+        assertXPathValue(context, "count(descendant::node())", Double.valueOf(65));
 
         // Should not find any descendants with name root
-        assertXPathValue(context, "count(descendant::root)", new Double(0));
+        assertXPathValue(context, "count(descendant::root)", Double.valueOf(0));
 
-        assertXPathValue(context, "count(descendant::name)", new Double(7));
+        assertXPathValue(context, "count(descendant::name)", Double.valueOf(7));
     }
 
     public void testAxisDescendantOrSelf() {
@@ -423,19 +424,19 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "count(descendant-or-self::root)",
-            new Double(1));
+            Double.valueOf(1));
 
         // Combine descendant-or-self:: and and self::
-        assertXPathValue(context, "count(nestedBean//.)", new Double(7));
+        assertXPathValue(context, "count(nestedBean//.)", Double.valueOf(7));
 
         // Combine descendant-or-self:: and and self::name
-        assertXPathValue(context, "count(//self::beans)", new Double(2));
+        assertXPathValue(context, "count(//self::beans)", Double.valueOf(2));
 
         // Count all nodes in the tree
         assertXPathValue(
             context,
             "count(descendant-or-self::node())",
-            new Double(66));
+            Double.valueOf(66));
 
     }
 
@@ -444,12 +445,12 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "count(nestedBean/strings[2]/following::node())",
-            new Double(21));
+            Double.valueOf(21));
 
         assertXPathValue(
             context,
             "count(nestedBean/strings[2]/following::strings)",
-            new Double(7));
+            Double.valueOf(7));
     }
 
     public void testAxisFollowingSibling() {
@@ -457,43 +458,43 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "count(/nestedBean/following-sibling::node())",
-            new Double(8));
+            Double.valueOf(8));
 
         assertXPathValue(
             context,
             "count(/nestedBean/following-sibling::object)",
-            new Double(1));
+            Double.valueOf(1));
 
         // Combine parent:: and following-sibling::
         assertXPathValue(
             context,
             "count(/nestedBean/boolean/../following-sibling::node())",
-            new Double(8));
+            Double.valueOf(8));
 
         assertXPathValue(
             context,
             "count(/nestedBean/boolean/../following-sibling::object)",
-            new Double(1));
+            Double.valueOf(1));
 
         // Combine descendant:: and following-sibling::
         assertXPathValue(
             context,
             "count(/descendant::boolean/following-sibling::node())",
-            new Double(53));
+            Double.valueOf(53));
 
         assertXPathValue(
             context,
             "count(/descendant::boolean/following-sibling::name)",
-            new Double(7));
+            Double.valueOf(7));
     }
 
     public void testAxisParent() {
         // parent::
-        assertXPathValue(context, "count(/beans/..)", new Double(1));
+        assertXPathValue(context, "count(/beans/..)", Double.valueOf(1));
 
-        assertXPathValue(context, "count(//..)", new Double(9));
+        assertXPathValue(context, "count(//..)", Double.valueOf(9));
 
-        assertXPathValue(context, "count(//../..)", new Double(2));
+        assertXPathValue(context, "count(//../..)", Double.valueOf(2));
 
         assertXPathValueIterator(
             context,
@@ -506,12 +507,12 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "count(beans[2]/int/preceding::node())",
-            new Double(8));
+            Double.valueOf(8));
 
         assertXPathValue(
             context,
             "count(beans[2]/int/preceding::boolean)",
-            new Double(2));
+            Double.valueOf(2));
     }
 
     public void testAxisPrecedingSibling() {
@@ -519,17 +520,17 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "count(/boolean/preceding-sibling::node())",
-            new Double(2));
+            Double.valueOf(2));
 
         assertXPathValue(
             context,
             "count(/nestedBean/int/../preceding-sibling::node())",
-            new Double(12));
+            Double.valueOf(12));
 
         assertXPathValue(
             context,
             "count(/descendant::int/preceding-sibling::node())",
-            new Double(10));
+            Double.valueOf(10));
     }
 
     public void testAxisSelf() {
@@ -548,29 +549,29 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
                 "String 1",
                 "String 2",
                 "String 3",
-                new Integer(1),
-                new Integer(2),
-                new Integer(3),
-                new Integer(4)));
+                Integer.valueOf(1),
+                Integer.valueOf(2),
+                Integer.valueOf(3),
+                Integer.valueOf(4)));
 
         assertXPathValue(
             context,
             "count((integers | beans[1]/strings)[contains(., '1')])",
-            new Double(2));
+            Double.valueOf(2));
 
         assertXPathValue(
             context,
             "count((integers | beans[1]/strings)[name(.) = 'strings'])",
-            new Double(3));
+            Double.valueOf(3));
 
         // Note that the following is different from "integer[2]" -
         // it is a filter expression
-        assertXPathValue(context, "(integers)[2]", new Integer(2));
+        assertXPathValue(context, "(integers)[2]", Integer.valueOf(2));
     }
 
     public void testAxisAttribute() {
         // Attributes are just like children to beans
-        assertXPathValue(context, "count(@*)", new Double(21.0));
+        assertXPathValue(context, "count(@*)", Double.valueOf(21.0));
 
         // Unknown attribute
         assertXPathValueLenient(context, "@foo", null);
@@ -581,7 +582,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
      * objects appear to have.
      */
     public void testAttributeName() {
-        assertXPathValue(context, "nestedBean[@name = 'int']", new Integer(1));
+        assertXPathValue(context, "nestedBean[@name = 'int']", Integer.valueOf(1));
 
         assertXPathPointer(
             context,
@@ -593,7 +594,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
 
         assertXPathValue(context, "@xml:lang", "en-US");
 
-        assertXPathValue(context, "count(@xml:*)", new Double(1));
+        assertXPathValue(context, "count(@xml:*)", Double.valueOf(1));
 
         assertXPathValue(context, "lang('en')", Boolean.TRUE);
 
@@ -616,12 +617,12 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             "boolean(integers[position() > 4])",
             Boolean.FALSE);
 
-        assertXPathValue(context, "sum(integers)", new Double(10));        
+        assertXPathValue(context, "sum(integers)", Double.valueOf(10));
 
         assertXPathValueAndPointer(
                 context,
                 "integers[last()]",
-                new Integer(4),
+                Integer.valueOf(4),
                 "/integers[4]");
 
         assertXPathValueAndPointer(
@@ -692,16 +693,16 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathValueIterator(
             context,
             "integers[position()<3]",
-            list(new Integer(1), new Integer(2)));
-            
+            list(Integer.valueOf(1), Integer.valueOf(2)));
+
         context.getVariables().declareVariable(
             "temp",
             context.getValue("beans"));
-        
+
         assertXPathValueIterator(
             context,
             "$temp[int < 2]/int",
-            list(new Integer(1)));
+            list(Integer.valueOf(1)));
     }
 
     public void testDocumentOrder() {
@@ -724,28 +725,28 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
 
     public void testSetPropertyValue() {
         // Simple property
-        assertXPathSetValue(context, "int", new Integer(2));
+        assertXPathSetValue(context, "int", Integer.valueOf(2));
 
         // Simple property with conversion from string
-        assertXPathSetValue(context, "int", "3", new Integer(3));
+        assertXPathSetValue(context, "int", "3", Integer.valueOf(3));
 
         // Simple property with conversion from array
-        assertXPathSetValue(context, "int", new int[] { 4 }, new Integer(4));
+        assertXPathSetValue(context, "int", new int[] { 4 }, Integer.valueOf(4));
 
         // Attribute (which is the same as a child for beans
-        assertXPathSetValue(context, "@int", new Integer(10));
+        assertXPathSetValue(context, "@int", Integer.valueOf(10));
     }
 
     public void testSetCollectionElement() {
         // Collection element
-        assertXPathSetValue(context, "integers[2]", new Integer(5));
+        assertXPathSetValue(context, "integers[2]", Integer.valueOf(5));
 
         // Collection element with conversion
         assertXPathSetValue(
             context,
             "integers[2]",
             new int[] { 6 },
-            new Integer(6));
+            Integer.valueOf(6));
     }
 
     public void testSetContextDependentNode() {
@@ -753,13 +754,13 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathSetValue(
             context,
             "integers[position() = 1]",
-            new Integer(8));
+            Integer.valueOf(8));
 
         // Find node without using SimplePathInterpreter and set its property
         assertXPathSetValue(
             context,
             "beans[name = 'Name 1']/int",
-            new Integer(9));
+            Integer.valueOf(9));
 
     }
 
@@ -783,7 +784,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathCreatePath(
             context,
             "/nestedBean/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/nestedBean/int");
 
         boolean ex = false;
@@ -791,14 +792,14 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             assertXPathCreatePath(
                 context,
                 "/nestedBean/beans[last() + 1]",
-                new Integer(1),
+                Integer.valueOf(1),
                 "/nestedBean/beans[last() + 1]");
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             ex = true;
         }
         assertTrue("Exception thrown on invalid path for creation", ex);
-        
+
     }
 
     public void testCreatePathAndSetValue() {
@@ -808,31 +809,31 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathCreatePathAndSetValue(
             context,
             "/nestedBean/int",
-            new Integer(2),
+            Integer.valueOf(2),
             "/nestedBean/int");
     }
 
     public void testCreatePathExpandNewCollection() {
         context.setValue("beans", null);
 
-        // Calls factory.createObject(..., testBean, "beans", 2), 
+        // Calls factory.createObject(..., testBean, "beans", 2),
         // then  factory.createObject(..., testBean, "beans", 2)
         assertXPathCreatePath(
             context,
             "/beans[2]/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/beans[2]/int");
     }
 
     public void testCreatePathAndSetValueExpandNewCollection() {
         context.setValue("beans", null);
 
-        // Calls factory.createObject(..., testBean, "beans", 2), 
+        // Calls factory.createObject(..., testBean, "beans", 2),
         // then factory.createObject(..., testBean, "beans", 2)
         assertXPathCreatePathAndSetValue(
             context,
             "/beans[2]/int",
-            new Integer(2),
+            Integer.valueOf(2),
             "/beans[2]/int");
     }
 
@@ -842,7 +843,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathCreatePathAndSetValue(
             context,
             "/integers[5]",
-            new Integer(3),
+            Integer.valueOf(3),
             "/integers[5]");
     }
 
@@ -851,7 +852,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathCreatePath(
             context,
             "/beans[3]/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/beans[3]/int");
     }
 
@@ -860,7 +861,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         assertXPathCreatePathAndSetValue(
             context,
             "/beans[3]/int",
-            new Integer(2),
+            Integer.valueOf(2),
             "/beans[3]/int");
     }
 
@@ -893,7 +894,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
         context.removePath("nestedBean/int");
         assertEquals(
             "Remove property value",
-            new Integer(0),
+            Integer.valueOf(0),
             context.getValue("nestedBean/int"));
     }
 
@@ -937,44 +938,44 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             null,
             context.getValue("nestedBean"));
     }
-    
+
     public void testRelativeContextRelativePath() {
-        JXPathContext relative =
+        final JXPathContext relative =
             context.getRelativeContext(context.getPointer("nestedBean"));
-        
-        assertXPathValueAndPointer(relative, 
-            "int", 
-            new Integer(1), 
+
+        assertXPathValueAndPointer(relative,
+            "int",
+            Integer.valueOf(1),
             "/nestedBean/int");
     }
 
     public void testRelativeContextAbsolutePath() {
-        JXPathContext relative =
+        final JXPathContext relative =
             context.getRelativeContext(context.getPointer("nestedBean"));
-        
-        assertXPathValueAndPointer(relative, 
-            "/integers[2]", 
-            new Integer(2), 
+
+        assertXPathValueAndPointer(relative,
+            "/integers[2]",
+            Integer.valueOf(2),
             "/integers[2]");
     }
 
     public void testRelativeContextParent() {
-        JXPathContext relative =
+        final JXPathContext relative =
             context.getRelativeContext(context.getPointer("nestedBean"));
-        
-        assertXPathValueAndPointer(relative, 
-            "../integers[2]", 
-            new Integer(2), 
+
+        assertXPathValueAndPointer(relative,
+            "../integers[2]",
+            Integer.valueOf(2),
             "/integers[2]");
     }
-    
+
     public void testRelativeContextInheritance() {
         context.setFunctions(new ClassFunctions(TestFunctions.class, "test"));
-        JXPathContext relative =
+        final JXPathContext relative =
             context.getRelativeContext(context.getPointer("nestedBean"));
-        
-        assertXPathValue(relative, 
-            "test:countPointers(strings)", 
-            new Integer(3));
+
+        assertXPathValue(relative,
+            "test:countPointers(strings)",
+            Integer.valueOf(3));
     }
 }

@@ -31,7 +31,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * itself.
  */
 public class ContainerPointer extends NodePointer {
-    private Container container;
+    private final Container container;
     private NodePointer valuePointer;
 
     private static final long serialVersionUID = 6140752946621686118L;
@@ -41,7 +41,7 @@ public class ContainerPointer extends NodePointer {
      * @param container Container object
      * @param locale Locale
      */
-    public ContainerPointer(Container container, Locale locale) {
+    public ContainerPointer(final Container container, final Locale locale) {
         super(null, locale);
         this.container = container;
     }
@@ -51,7 +51,7 @@ public class ContainerPointer extends NodePointer {
      * @param parent parent pointer
      * @param container Container object
      */
-    public ContainerPointer(NodePointer parent, Container container) {
+    public ContainerPointer(final NodePointer parent, final Container container) {
         super(parent);
         this.container = container;
     }
@@ -60,58 +60,69 @@ public class ContainerPointer extends NodePointer {
      * This type of node is auxiliary.
      * @return <code>true</code>.
      */
+    @Override
     public boolean isContainer() {
         return true;
     }
 
+    @Override
     public QName getName() {
         return null;
     }
 
+    @Override
     public Object getBaseValue() {
         return container;
     }
 
+    @Override
     public boolean isCollection() {
-        Object value = getBaseValue();
+        final Object value = getBaseValue();
         return value != null && ValueUtils.isCollection(value);
     }
 
+    @Override
     public int getLength() {
-        Object value = getBaseValue();
+        final Object value = getBaseValue();
         return value == null ? 1 : ValueUtils.getLength(value);
     }
 
+    @Override
     public boolean isLeaf() {
         return getValuePointer().isLeaf();
     }
 
+    @Override
     public Object getImmediateNode() {
-        Object value = getBaseValue();
+        final Object value = getBaseValue();
         if (index != WHOLE_COLLECTION) {
             return index >= 0 && index < getLength() ? ValueUtils.getValue(value, index) : null;
         }
         return ValueUtils.getValue(value);
     }
 
-    public void setValue(Object value) {
+    @Override
+    public void setValue(final Object value) {
         // TODO: what if this is a collection?
         container.setValue(value);
     }
 
+    @Override
     public NodePointer getImmediateValuePointer() {
         if (valuePointer == null) {
-            Object value = getImmediateNode();
+            final Object value = getImmediateNode();
             valuePointer = NodePointer.newChildNodePointer(this, getName(), value);
         }
         return valuePointer;
     }
 
+    @Override
     public int hashCode() {
         return System.identityHashCode(container) + index;
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         if (object == this) {
             return true;
         }
@@ -120,43 +131,51 @@ public class ContainerPointer extends NodePointer {
             return false;
         }
 
-        ContainerPointer other = (ContainerPointer) object;
+        final ContainerPointer other = (ContainerPointer) object;
         return container == other.container && index == other.index;
     }
 
+    @Override
     public NodeIterator childIterator(
-        NodeTest test,
-        boolean reverse,
-        NodePointer startWith) {
+        final NodeTest test,
+        final boolean reverse,
+        final NodePointer startWith) {
         return getValuePointer().childIterator(test, reverse, startWith);
     }
 
-    public NodeIterator attributeIterator(QName name) {
+    @Override
+    public NodeIterator attributeIterator(final QName name) {
         return getValuePointer().attributeIterator(name);
     }
 
+    @Override
     public NodeIterator namespaceIterator() {
         return getValuePointer().namespaceIterator();
     }
 
-    public NodePointer namespacePointer(String namespace) {
+    @Override
+    public NodePointer namespacePointer(final String namespace) {
         return getValuePointer().namespacePointer(namespace);
     }
 
-    public boolean testNode(NodeTest nodeTest) {
+    @Override
+    public boolean testNode(final NodeTest nodeTest) {
         return getValuePointer().testNode(nodeTest);
     }
 
+    @Override
     public int compareChildNodePointers(
-        NodePointer pointer1,
-        NodePointer pointer2) {
+        final NodePointer pointer1,
+        final NodePointer pointer2) {
         return pointer1.getIndex() - pointer2.getIndex();
     }
 
-    public String getNamespaceURI(String prefix) {
+    @Override
+    public String getNamespaceURI(final String prefix) {
         return getValuePointer().getNamespaceURI(prefix);
     }
 
+    @Override
     public String asPath() {
         return parent == null ? "/" : parent.asPath();
     }

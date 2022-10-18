@@ -34,11 +34,12 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 public abstract class XMLModelTestCase extends JXPathTestCase {
     protected JXPathContext context;
 
+    @Override
     public void setUp() {
         if (context == null) {
-            DocumentContainer docCtr = createDocumentContainer();
+            final DocumentContainer docCtr = createDocumentContainer();
             context = createContext();
-            Variables vars = context.getVariables();
+            final Variables vars = context.getVariables();
             vars.declareVariable("document", docCtr.getValue());
             vars.declareVariable("container", docCtr);
             vars.declareVariable("element", context.getPointer("vendor/location/address/street").getNode());
@@ -52,11 +53,11 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
                 JXPathTestCase.class.getResource("Vendor.xml"),
                 getModel());
     }
-    
+
     protected abstract AbstractFactory getAbstractFactory();
-        
+
     protected JXPathContext createContext() {
-        JXPathContext context =
+        final JXPathContext context =
             JXPathContext.newContext(createDocumentContainer());
         context.setFactory(getAbstractFactory());
         context.registerNamespace("product", "productNS");
@@ -76,16 +77,16 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         boolean pi);
 
     protected void assertXMLSignature(
-        JXPathContext context,
-        String path,
-        String signature,
-        boolean elements,
-        boolean attributes,
-        boolean text,
-        boolean pi) 
+        final JXPathContext context,
+        final String path,
+        final String signature,
+        final boolean elements,
+        final boolean attributes,
+        final boolean text,
+        final boolean pi)
     {
-        Object node = context.getPointer(path).getNode();
-        String sig = getXMLSignature(node, elements, attributes, text, pi);
+        final Object node = context.getPointer(path).getNode();
+        final String sig = getXMLSignature(node, elements, attributes, text, pi);
         assertEquals("XML Signature mismatch: ", signature, sig);
     }
 
@@ -110,7 +111,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             "vendor/location",
             1);
     }
-    
+
 
     public void testSetValue() {
         assertXPathSetValue(
@@ -178,9 +179,9 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             "/vendor[1]/location[4]/@manager",
             "",
             "/vendor[1]/location[4]/@manager");
-         
+
          context.registerNamespace("price", "priceNS");
-         
+
          // Create a DOM element
          assertXPathCreatePath(
              context,
@@ -219,21 +220,21 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             "vendor/location[1]/@manager",
             "John Doe",
             "/vendor[1]/location[1]/@manager");
-        
+
         assertXPathCreatePathAndSetValue(
             context,
             "/vendor[1]/location[4]/@manager",
             "James Dow",
             "/vendor[1]/location[4]/@manager");
-        
+
         assertXPathCreatePathAndSetValue(
             context,
             "vendor/product/product:name/attribute::price:language",
             "English",
             "/vendor[1]/product[1]/product:name[1]/@price:language");
-        
+
         context.registerNamespace("price", "priceNS");
-        
+
         // Create a DOM element
         assertXPathCreatePathAndSetValue(
             context,
@@ -256,19 +257,20 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         context.removePath("vendor/location[@id = '101']//street");
         assertEquals(
             "Remove DOM element",
-            new Double(0),
+            Double.valueOf(0),
             context.getValue("count(vendor/location[@id = '101']//street)"));
 
         context.removePath("vendor/location[@id = '100']/@name");
         assertEquals(
             "Remove DOM attribute",
-            new Double(0),
+            Double.valueOf(0),
             context.getValue("count(vendor/location[@id = '100']/@name)"));
     }
 
     public void testID() {
         context.setIdentityManager(new IdentityManager() {
-            public Pointer getPointerByID(JXPathContext context, String id) {
+            @Override
+            public Pointer getPointerByID(final JXPathContext context, final String id) {
                 NodePointer ptr = (NodePointer) context.getPointer("/");
                 ptr = ptr.getValuePointer(); // Unwrap the container
                 return ptr.getPointerByID(context, id);
@@ -298,13 +300,13 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             context,
             "vendor/location/address/city",
             "Fruit Market");
-        
+
         // local-name(qualified)
         assertXPathValue(
             context,
             "local-name(vendor/product/price:amount)",
             "amount");
-        
+
         // local-name(non-qualified)
         assertXPathValue(context, "local-name(vendor/location)", "location");
 
@@ -328,41 +330,41 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
 
         // default namespace does not affect search
         assertXPathValue(context, "vendor/product/prix", "934.99");
-        
+
         assertXPathValue(context, "/vendor/contact[@name='jim']", "Jim");
-        
+
         boolean nsv = false;
         try {
             context.setLenient(false);
             context.getValue("/vendor/contact[@name='jane']");
         }
-        catch (JXPathException ex) {
+        catch (final JXPathException ex) {
             nsv = true;
         }
         assertTrue("No such value: /vendor/contact[@name='jim']", nsv);
-                
+
         nsv = false;
         try {
             context.setLenient(false);
             context.getValue("/vendor/contact[@name='jane']/*");
         }
-        catch (JXPathException ex) {
+        catch (final JXPathException ex) {
             nsv = true;
         }
         assertTrue("No such value: /vendor/contact[@name='jane']/*", nsv);
-        
+
         // child:: with a wildcard
         assertXPathValue(
             context,
             "count(vendor/product/price:*)",
-            new Double(2));
+            Double.valueOf(2));
 
         // child:: with the default namespace
-        assertXPathValue(context, "count(vendor/product/*)", new Double(4));
+        assertXPathValue(context, "count(vendor/product/*)", Double.valueOf(4));
 
         // child:: with a qualified name
         assertXPathValue(context, "vendor/product/price:amount", "45.95");
-        
+
         // null default namespace
         context.registerNamespace("x", "temp");
         assertXPathValue(context, "vendor/x:pos//number", "109");
@@ -380,7 +382,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         assertXPathValue(context, "//street", "Orchard Road");
 
         // descendent:: with a namespace and wildcard
-        assertXPathValue(context, "count(//price:*)", new Double(2));
+        assertXPathValue(context, "count(//price:*)", Double.valueOf(2));
 
         assertXPathValueIterator(context, "vendor//saleEnds", list("never"));
 
@@ -396,7 +398,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             "vendor//promotion[../@stores = 'all']",
             list(""));
     }
-    
+
 //    public void testAxisDescendantDocumentOrder() {
 //        Iterator iter = context.iteratePointers("//*");
 //        while (iter.hasNext()) {
@@ -482,7 +484,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             context,
             "vendor/product/price:amount/@price:discount",
             "10%");
-        
+
         // namespace uri for an attribute
         assertXPathValue(
             context,
@@ -550,7 +552,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
                 "vendor/product/price:amount/attribute::node()",
                 //use a set because DOM returns attrs sorted by name, JDOM by occurrence order:
                 set("10%", "20%"));
-        
+
         // attribute:: select non-ns'd attributes only
         assertXPathValueIterator(
             context,
@@ -571,7 +573,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             context,
             "vendor/location[@id='101']//street",
             "Tangerine Drive");
-        
+
         assertXPathValueIterator(
             context,
             "/vendor/location[1]/@*[name()!= 'manager']", list("100",
@@ -590,7 +592,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "count(vendor/product/namespace::*)",
-            new Double(3));
+            Double.valueOf(3));
 
         // name of namespace
         assertXPathValue(
@@ -747,7 +749,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "number(vendor/location/employeeCount)",
-            new Double(10));
+            Double.valueOf(10));
     }
 
     public void testElementInVariable() {
@@ -759,7 +761,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         assertXPathValue(
             context,
             "vendor/location/employeeCount + 1",
-            new Double(11));
+            Double.valueOf(11));
 
         // Implicit conversion to boolean
         assertXPathValue(
@@ -784,7 +786,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             "boolean(vendor//promotion[../@stores = 'some'])",
             Boolean.FALSE);
     }
-    
+
     public void testFunctionsLastAndPosition() {
         assertXPathPointer(
                 context,
@@ -796,18 +798,18 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
         context.registerNamespace("rate", "priceNS");
         context.registerNamespace("goods", "productNS");
 
-        assertEquals("Context node namespace resolution", 
-                "priceNS", 
-                context.getNamespaceURI("price"));        
-        
-        assertEquals("Registered namespace resolution", 
-                "priceNS", 
+        assertEquals("Context node namespace resolution",
+                "priceNS",
+                context.getNamespaceURI("price"));
+
+        assertEquals("Registered namespace resolution",
+                "priceNS",
                 context.getNamespaceURI("rate"));
 
         // child:: with a namespace and wildcard
-        assertXPathValue(context, 
-                "count(vendor/product/rate:*)", 
-                new Double(2));
+        assertXPathValue(context,
+                "count(vendor/product/rate:*)",
+                Double.valueOf(2));
 
         assertXPathValue(context,
                 "vendor[1]/product[1]/rate:amount[1]/@rate:discount", "10%");
@@ -823,17 +825,17 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
                 "//product:name",
                 "Box of oranges",
                 "/vendor[1]/product[1]/goods:name[1]");
-        
-        // Same, but with a child context        
-        JXPathContext childCtx = 
+
+        // Same, but with a child context
+        final JXPathContext childCtx =
             JXPathContext.newContext(context, context.getContextBean());
         assertXPathValueAndPointer(childCtx,
                 "//product:name",
                 "Box of oranges",
                 "/vendor[1]/product[1]/goods:name[1]");
-        
-        // Same, but with a relative context        
-        JXPathContext relativeCtx = 
+
+        // Same, but with a relative context
+        final JXPathContext relativeCtx =
             context.getRelativeContext(context.getPointer("/vendor"));
         assertXPathValueAndPointer(relativeCtx,
                 "product/product:name",
@@ -847,7 +849,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
     }
 
     public void testNodes() {
-        Pointer pointer = context.getPointer("/vendor[1]/contact[1]");
+        final Pointer pointer = context.getPointer("/vendor[1]/contact[1]");
         assertFalse(pointer.getNode().equals(pointer.getValue()));
     }
 }

@@ -27,7 +27,7 @@ public class TestNull {
         return nothing;
     }
 
-    public void setNothing(Object something) {
+    public void setNothing(final Object something) {
         this.nothing = something;
     }
 

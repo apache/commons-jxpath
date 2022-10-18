@@ -37,7 +37,7 @@ public class FunctionLibrary implements Functions {
      * Add functions to the library
      * @param functions to add
      */
-    public void addFunctions(Functions functions) {
+    public void addFunctions(final Functions functions) {
         allFunctions.add(functions);
         synchronized (this) {
             byNamespace = null;
@@ -48,7 +48,7 @@ public class FunctionLibrary implements Functions {
      * Remove functions from the library.
      * @param functions to remove
      */
-    public void removeFunctions(Functions functions) {
+    public void removeFunctions(final Functions functions) {
         allFunctions.remove(functions);
         synchronized (this) {
             byNamespace = null;
@@ -60,6 +60,7 @@ public class FunctionLibrary implements Functions {
      * Functions.
      * @return Set
      */
+    @Override
     public Set getUsedNamespaces() {
         return functionCache().keySet();
     }
@@ -72,9 +73,10 @@ public class FunctionLibrary implements Functions {
      * @param parameters parameters
      * @return Function found
      */
-    public Function getFunction(String namespace, String name,
-            Object[] parameters) {
-        Object candidates = functionCache().get(namespace);
+    @Override
+    public Function getFunction(final String namespace, final String name,
+            final Object[] parameters) {
+        final Object candidates = functionCache().get(namespace);
         if (candidates instanceof Functions) {
             return ((Functions) candidates).getFunction(
                 namespace,
@@ -82,10 +84,10 @@ public class FunctionLibrary implements Functions {
                 parameters);
         }
         if (candidates instanceof List) {
-            List list = (List) candidates;
-            int count = list.size();
+            final List list = (List) candidates;
+            final int count = list.size();
             for (int i = 0; i < count; i++) {
-                Function function =
+                final Function function =
                     ((Functions) list.get(i)).getFunction(
                         namespace,
                         name,
@@ -105,18 +107,18 @@ public class FunctionLibrary implements Functions {
     private synchronized Map functionCache() {
         if (byNamespace == null) {
             byNamespace = new HashMap();
-            int count = allFunctions.size();
+            final int count = allFunctions.size();
             for (int i = 0; i < count; i++) {
-                Functions funcs = (Functions) allFunctions.get(i);
-                Set namespaces = funcs.getUsedNamespaces();
-                for (Iterator it = namespaces.iterator(); it.hasNext();) {
-                    String ns = (String) it.next();
-                    Object candidates = byNamespace.get(ns);
+                final Functions funcs = (Functions) allFunctions.get(i);
+                final Set namespaces = funcs.getUsedNamespaces();
+                for (final Iterator it = namespaces.iterator(); it.hasNext();) {
+                    final String ns = (String) it.next();
+                    final Object candidates = byNamespace.get(ns);
                     if (candidates == null) {
                         byNamespace.put(ns, funcs);
                     }
                     else if (candidates instanceof Functions) {
-                        List lst = new ArrayList();
+                        final List lst = new ArrayList();
                         lst.add(candidates);
                         lst.add(funcs);
                         byNamespace.put(ns, lst);

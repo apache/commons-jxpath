@@ -21,14 +21,14 @@ import org.apache.commons.jxpath.ri.QName;
 /**
  */
 public class NodeNameTest extends NodeTest {
-    private QName qname;
+    private final QName qname;
     private String namespaceURI;
 
     /**
      * Create a new NodeNameTest.
      * @param qname name to match
      */
-    public NodeNameTest(QName qname) {
+    public NodeNameTest(final QName qname) {
         this.qname = qname;
     }
 
@@ -37,7 +37,7 @@ public class NodeNameTest extends NodeTest {
      * @param qname name to match
      * @param namespaceURI uri to match
      */
-    public NodeNameTest(QName qname, String namespaceURI) {
+    public NodeNameTest(final QName qname, final String namespaceURI) {
         this.qname = qname;
         this.namespaceURI = namespaceURI;
     }
@@ -66,6 +66,7 @@ public class NodeNameTest extends NodeTest {
         return qname.getName().equals("*");
     }
 
+    @Override
     public String toString() {
         return qname.toString();
     }

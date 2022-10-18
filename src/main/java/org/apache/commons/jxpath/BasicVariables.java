@@ -27,7 +27,7 @@ public class BasicVariables implements Variables {
     /**
      * Contains the values of declared variables
      */
-    private HashMap vars = new HashMap();
+    private final HashMap vars = new HashMap();
 
     /**
      * Returns true if the variable has been defined, even if the
@@ -37,7 +37,8 @@ public class BasicVariables implements Variables {
      *
      * @return true if the variable is declared
      */
-    public boolean isDeclaredVariable(String varName) {
+    @Override
+    public boolean isDeclaredVariable(final String varName) {
         return vars.containsKey(varName);
     }
 
@@ -49,7 +50,8 @@ public class BasicVariables implements Variables {
      *
      * @return the value of the variable
      */
-    public Object getVariable(String varName) {
+    @Override
+    public Object getVariable(final String varName) {
         // Note that a variable may be defined with a null value
 
         if (vars.containsKey(varName)) {
@@ -67,7 +69,8 @@ public class BasicVariables implements Variables {
      * @param varName is a variable name without the "$" sign
      * @param value is the new value for the variable, which can be null
      */
-    public void declareVariable(String varName, Object value) {
+    @Override
+    public void declareVariable(final String varName, final Object value) {
         vars.put(varName, value);
     }
 
@@ -76,10 +79,12 @@ public class BasicVariables implements Variables {
      *
      * @param varName is a variable name without the "$" sign
      */
-    public void undeclareVariable(String varName) {
+    @Override
+    public void undeclareVariable(final String varName) {
         vars.remove(varName);
     }
 
+    @Override
     public String toString() {
         return vars.toString();
     }

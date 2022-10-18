@@ -31,7 +31,7 @@ import org.jdom.Namespace;
  * An iterator of namespaces of a DOM Node.
  */
 public class JDOMNamespaceIterator implements NodeIterator {
-    private NodePointer parent;
+    private final NodePointer parent;
     private List namespaces;
     private Set prefixes;
     private int position = 0;
@@ -40,7 +40,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
      * Create a new JDOMNamespaceIterator.
      * @param parent the parent NodePointer.
      */
-    public JDOMNamespaceIterator(NodePointer parent) {
+    public JDOMNamespaceIterator(final NodePointer parent) {
         this.parent = parent;
         Object node = parent.getNode();
         if (node instanceof Document) {
@@ -57,13 +57,13 @@ public class JDOMNamespaceIterator implements NodeIterator {
      * Collect the namespaces from a JDOM Element.
      * @param element the source Element
      */
-    private void collectNamespaces(Element element) {
+    private void collectNamespaces(final Element element) {
         Namespace ns = element.getNamespace();
         if (ns != null && !prefixes.contains(ns.getPrefix())) {
             namespaces.add(ns);
             prefixes.add(ns.getPrefix());
         }
-        List others = element.getAdditionalNamespaces();
+        final List others = element.getAdditionalNamespaces();
         for (int i = 0; i < others.size(); i++) {
             ns = (Namespace) others.get(i);
             if (ns != null && !prefixes.contains(ns.getPrefix())) {
@@ -71,12 +71,13 @@ public class JDOMNamespaceIterator implements NodeIterator {
                 prefixes.add(ns.getPrefix());
             }
         }
-        Object elementParent = element.getParent();
+        final Object elementParent = element.getParent();
         if (elementParent instanceof Element) {
             collectNamespaces((Element) elementParent);
         }
     }
 
+    @Override
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -88,15 +89,17 @@ public class JDOMNamespaceIterator implements NodeIterator {
         if (index < 0) {
             index = 0;
         }
-        Namespace ns = (Namespace) namespaces.get(index);
+        final Namespace ns = (Namespace) namespaces.get(index);
         return new JDOMNamespacePointer(parent, ns.getPrefix(), ns.getURI());
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         if (namespaces == null) {
             return false;
         }

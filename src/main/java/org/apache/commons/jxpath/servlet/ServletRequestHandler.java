@@ -27,10 +27,11 @@ import javax.servlet.ServletRequest;
  */
 public class ServletRequestHandler extends HttpSessionHandler {
 
-    protected void collectPropertyNames(HashSet set, Object bean) {
+    @Override
+    protected void collectPropertyNames(final HashSet set, final Object bean) {
         super.collectPropertyNames(set, bean);
-        ServletRequestAndContext handle = (ServletRequestAndContext) bean;
-        ServletRequest servletRequest = handle.getServletRequest();
+        final ServletRequestAndContext handle = (ServletRequestAndContext) bean;
+        final ServletRequest servletRequest = handle.getServletRequest();
         Enumeration e = servletRequest.getAttributeNames();
         while (e.hasMoreElements()) {
             set.add(e.nextElement());
@@ -41,10 +42,11 @@ public class ServletRequestHandler extends HttpSessionHandler {
         }
     }
 
-    public Object getProperty(Object bean, String property) {
-        ServletRequestAndContext handle = (ServletRequestAndContext) bean;
-        ServletRequest servletRequest = handle.getServletRequest();
-        String[] strings = servletRequest.getParameterValues(property);
+    @Override
+    public Object getProperty(final Object bean, final String property) {
+        final ServletRequestAndContext handle = (ServletRequestAndContext) bean;
+        final ServletRequest servletRequest = handle.getServletRequest();
+        final String[] strings = servletRequest.getParameterValues(property);
 
         if (strings != null) {
             if (strings.length == 0) {
@@ -56,7 +58,7 @@ public class ServletRequestHandler extends HttpSessionHandler {
             return strings;
         }
 
-        Object object = servletRequest.getAttribute(property);
+        final Object object = servletRequest.getAttribute(property);
         if (object != null) {
             return object;
         }
@@ -64,7 +66,8 @@ public class ServletRequestHandler extends HttpSessionHandler {
         return super.getProperty(bean, property);
     }
 
-    public void setProperty(Object request, String property, Object value) {
+    @Override
+    public void setProperty(final Object request, final String property, final Object value) {
         ((ServletRequestAndContext) request).getServletRequest().setAttribute(property, value);
     }
 }

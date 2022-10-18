@@ -25,125 +25,152 @@ public class TreeCompiler implements Compiler {
 
     private static final QName QNAME_NAME = new QName(null, "name");
 
-    public Object number(String value) {
-        return new Constant(new Double(value));
+    @Override
+    public Object number(final String value) {
+        return new Constant(Double.valueOf(value));
     }
 
-    public Object literal(String value) {
+    @Override
+    public Object literal(final String value) {
         return new Constant(value);
     }
 
-    public Object qname(String prefix, String name) {
+    @Override
+    public Object qname(final String prefix, final String name) {
         return new QName(prefix, name);
     }
 
-    public Object sum(Object[] arguments) {
+    @Override
+    public Object sum(final Object[] arguments) {
         return new CoreOperationAdd(toExpressionArray(arguments));
     }
 
-    public Object minus(Object left, Object right) {
+    @Override
+    public Object minus(final Object left, final Object right) {
         return new CoreOperationSubtract(
             (Expression) left,
             (Expression) right);
     }
 
-    public Object multiply(Object left, Object right) {
+    @Override
+    public Object multiply(final Object left, final Object right) {
         return new CoreOperationMultiply((Expression) left, (Expression) right);
     }
 
-    public Object divide(Object left, Object right) {
+    @Override
+    public Object divide(final Object left, final Object right) {
         return new CoreOperationDivide((Expression) left, (Expression) right);
     }
 
-    public Object mod(Object left, Object right) {
+    @Override
+    public Object mod(final Object left, final Object right) {
         return new CoreOperationMod((Expression) left, (Expression) right);
     }
 
-    public Object lessThan(Object left, Object right) {
+    @Override
+    public Object lessThan(final Object left, final Object right) {
         return new CoreOperationLessThan((Expression) left, (Expression) right);
     }
 
-    public Object lessThanOrEqual(Object left, Object right) {
+    @Override
+    public Object lessThanOrEqual(final Object left, final Object right) {
         return new CoreOperationLessThanOrEqual(
             (Expression) left,
             (Expression) right);
     }
 
-    public Object greaterThan(Object left, Object right) {
+    @Override
+    public Object greaterThan(final Object left, final Object right) {
         return new CoreOperationGreaterThan(
             (Expression) left,
             (Expression) right);
     }
 
-    public Object greaterThanOrEqual(Object left, Object right) {
+    @Override
+    public Object greaterThanOrEqual(final Object left, final Object right) {
         return new CoreOperationGreaterThanOrEqual(
             (Expression) left,
             (Expression) right);
     }
 
-    public Object equal(Object left, Object right) {
+    @Override
+    public Object equal(final Object left, final Object right) {
         return isNameAttributeTest((Expression) left)
                 ? new NameAttributeTest((Expression) left, (Expression) right)
                 : new CoreOperationEqual((Expression) left, (Expression) right);
     }
 
-    public Object notEqual(Object left, Object right) {
+    @Override
+    public Object notEqual(final Object left, final Object right) {
         return new CoreOperationNotEqual((Expression) left, (Expression) right);
     }
 
-    public Object minus(Object argument) {
+    @Override
+    public Object minus(final Object argument) {
         return new CoreOperationNegate((Expression) argument);
     }
 
-    public Object variableReference(Object qName) {
+    @Override
+    public Object variableReference(final Object qName) {
         return new VariableReference((QName) qName);
     }
 
-    public Object function(int code, Object[] args) {
+    @Override
+    public Object function(final int code, final Object[] args) {
         return new CoreFunction(code, toExpressionArray(args));
     }
 
-    public Object function(Object name, Object[] args) {
+    @Override
+    public Object function(final Object name, final Object[] args) {
         return new ExtensionFunction((QName) name, toExpressionArray(args));
     }
 
-    public Object and(Object[] arguments) {
+    @Override
+    public Object and(final Object[] arguments) {
         return new CoreOperationAnd(toExpressionArray(arguments));
     }
 
-    public Object or(Object[] arguments) {
+    @Override
+    public Object or(final Object[] arguments) {
         return new CoreOperationOr(toExpressionArray(arguments));
     }
 
-    public Object union(Object[] arguments) {
+    @Override
+    public Object union(final Object[] arguments) {
         return new CoreOperationUnion(toExpressionArray(arguments));
     }
 
-    public Object locationPath(boolean absolute, Object[] steps) {
+    @Override
+    public Object locationPath(final boolean absolute, final Object[] steps) {
         return new LocationPath(absolute, toStepArray(steps));
     }
 
-    public Object expressionPath(Object expression, Object[] predicates,
-            Object[] steps) {
+    @Override
+    public Object expressionPath(final Object expression, final Object[] predicates,
+            final Object[] steps) {
         return new ExpressionPath(
             (Expression) expression,
             toExpressionArray(predicates),
             toStepArray(steps));
     }
 
-    public Object nodeNameTest(Object qname) {
+    @Override
+    public Object nodeNameTest(final Object qname) {
         return new NodeNameTest((QName) qname);
     }
 
-    public Object nodeTypeTest(int nodeType) {
+    @Override
+    public Object nodeTypeTest(final int nodeType) {
         return new NodeTypeTest(nodeType);
     }
 
-    public Object processingInstructionTest(String instruction) {
+    @Override
+    public Object processingInstructionTest(final String instruction) {
         return new ProcessingInstructionTest(instruction);
     }
 
-    public Object step(int axis, Object nodeTest, Object[] predicates) {
+    @Override
+    public Object step(final int axis, final Object nodeTest, final Object[] predicates) {
         return new Step(
             axis,
             (NodeTest) nodeTest,
@@ -155,7 +182,7 @@ public class TreeCompiler implements Compiler {
      * @param array Object[]
      * @return Expression[]
      */
-    private Expression[] toExpressionArray(Object[] array) {
+    private Expression[] toExpressionArray(final Object[] array) {
         Expression[] expArray = null;
         if (array != null) {
             expArray = new Expression[array.length];
@@ -171,7 +198,7 @@ public class TreeCompiler implements Compiler {
      * @param array Object[]
      * @return Step[]
      */
-    private Step[] toStepArray(Object[] array) {
+    private Step[] toStepArray(final Object[] array) {
         Step[] stepArray = null;
         if (array != null) {
             stepArray = new Step[array.length];
@@ -187,19 +214,19 @@ public class TreeCompiler implements Compiler {
      * @param arg Expression to test
      * @return boolean
      */
-    private boolean isNameAttributeTest(Expression arg) {
+    private boolean isNameAttributeTest(final Expression arg) {
         if (!(arg instanceof LocationPath)) {
             return false;
         }
 
-        Step[] steps = ((LocationPath) arg).getSteps();
+        final Step[] steps = ((LocationPath) arg).getSteps();
         if (steps.length != 1) {
             return false;
         }
         if (steps[0].getAxis() != Compiler.AXIS_ATTRIBUTE) {
             return false;
         }
-        NodeTest test = steps[0].getNodeTest();
+        final NodeTest test = steps[0].getNodeTest();
         if (!(test instanceof NodeNameTest)) {
             return false;
         }

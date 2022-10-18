@@ -18,8 +18,6 @@ package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Set;
-
 import javax.servlet.ServletContext;
 
 import org.apache.commons.jxpath.DynamicPropertyHandler;
@@ -32,8 +30,9 @@ public class ServletContextHandler implements DynamicPropertyHandler {
 
     private static final int DEFAULT_PROPERTY_COUNT = 16;
 
-    public String[] getPropertyNames(Object context) {
-        HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
+    @Override
+    public String[] getPropertyNames(final Object context) {
+        final HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
         collectPropertyNames(list, context);
         return (String[]) list.toArray(new String[list.size()]);
     }
@@ -43,21 +42,23 @@ public class ServletContextHandler implements DynamicPropertyHandler {
      * @param set destination
      * @param bean to read
      */
-    protected void collectPropertyNames(HashSet set, Object bean) {
+    protected void collectPropertyNames(final HashSet set, Object bean) {
         if (bean instanceof HttpSessionAndServletContext) {
             bean = ((HttpSessionAndServletContext) bean).getServletContext();
         }
-        Enumeration e = ((ServletContext) bean).getAttributeNames();
+        final Enumeration e = ((ServletContext) bean).getAttributeNames();
         while (e.hasMoreElements()) {
             set.add(e.nextElement());
         }
     }
 
-    public Object getProperty(Object context, String property) {
+    @Override
+    public Object getProperty(final Object context, final String property) {
         return ((ServletContext) context).getAttribute(property);
     }
 
-    public void setProperty(Object context, String property, Object value) {
+    @Override
+    public void setProperty(final Object context, final String property, final Object value) {
         ((ServletContext) context).setAttribute(property, value);
     }
 }

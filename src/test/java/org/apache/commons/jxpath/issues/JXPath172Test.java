@@ -33,7 +33,7 @@ public class JXPath172Test extends JXPathTestCase
      */
     public static TestSuite suite()
     {
-        return (new TestSuite(JXPath172Test.class));
+        return new TestSuite(JXPath172Test.class);
     }
 
     public void testIssue172_propertyExistAndIsNotNull()
@@ -93,7 +93,7 @@ public class JXPath172Test extends JXPathTestCase
             final Object bRet = context.selectSingleNode("unexisting");
             fail(" " + bRet);
         }
-        catch (JXPathNotFoundException e)
+        catch (final JXPathNotFoundException e)
         {
 
         }
@@ -103,7 +103,7 @@ public class JXPath172Test extends JXPathTestCase
             final Pointer pointer = context.getPointer("unexisting");
             fail(" " + pointer);
         }
-        catch (JXPathNotFoundException e)
+        catch (final JXPathNotFoundException e)
         {
 
         }
@@ -113,7 +113,7 @@ public class JXPath172Test extends JXPathTestCase
             final Pointer pointer = context.getPointer("value.unexisting");
             fail(" " + pointer);
         }
-        catch (JXPathNotFoundException e)
+        catch (final JXPathNotFoundException e)
         {
 
         }
@@ -124,11 +124,11 @@ public class JXPath172Test extends JXPathTestCase
      * Helper, returns a {@link JXPathContext} filled with {@link TestBean172}
      * whose {@link TestBean172#getValue()} method returns the passed
      * <code>val</code> value.
-     * 
+     *
      * @param val
      * @return A {@link JXPathContext}, never <code>null</code>.
      */
-    private JXPathContext getContext(final String val, boolean lenient)
+    private JXPathContext getContext(final String val, final boolean lenient)
     {
         final TestBean172 b = new TestBean172();
         b.setValue(val);
@@ -147,7 +147,7 @@ public class JXPath172Test extends JXPathTestCase
             return value;
         }
 
-        public void setValue(String value)
+        public void setValue(final String value)
         {
             this.value = value;
         }

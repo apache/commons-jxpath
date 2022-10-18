@@ -33,11 +33,12 @@ public class DynamicAttributeIterator extends BeanAttributeIterator {
      * @param parent pointer
      * @param name to match properties
      */
-    public DynamicAttributeIterator(PropertyOwnerPointer parent, QName name) {
+    public DynamicAttributeIterator(final PropertyOwnerPointer parent, final QName name) {
         super(parent, name);
     }
 
-    protected void prepareForIndividualProperty(String name) {
+    @Override
+    protected void prepareForIndividualProperty(final String name) {
          ((DynamicPropertyPointer) getPropertyPointer()).setPropertyName(name);
          super.prepareForIndividualProperty(name);
     }

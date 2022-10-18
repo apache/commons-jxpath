@@ -40,7 +40,7 @@ public class ClassLoaderUtil {
      * @param primitive Canonical name of primitive type
      * @param abbreviation Corresponding abbreviation of primitive type
      */
-    private static void addAbbreviation(String primitive, String abbreviation) {
+    private static void addAbbreviation(final String primitive, final String abbreviation) {
         abbreviationMap.put(primitive, abbreviation);
     }
 
@@ -71,11 +71,11 @@ public class ClassLoaderUtil {
      * @return the class represented by <code>className</code> using the <code>classLoader</code>
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(ClassLoader classLoader, String className, boolean initialize)
+    public static Class getClass(final ClassLoader classLoader, final String className, final boolean initialize)
         throws ClassNotFoundException {
         Class clazz;
         if (abbreviationMap.containsKey(className)) {
-            String clsName = "[" + abbreviationMap.get(className);
+            final String clsName = "[" + abbreviationMap.get(className);
             clazz = Class.forName(clsName, initialize, classLoader).getComponentType();
         }
         else {
@@ -95,7 +95,7 @@ public class ClassLoaderUtil {
      * @return the class represented by <code>className</code> using the <code>classLoader</code>
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(ClassLoader classLoader, String className) throws ClassNotFoundException {
+    public static Class getClass(final ClassLoader classLoader, final String className) throws ClassNotFoundException {
         return getClass(classLoader, className, true);
     }
 
@@ -109,7 +109,7 @@ public class ClassLoaderUtil {
      * @return the class represented by <code>className</code> using the current thread's context class loader
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(String className) throws ClassNotFoundException {
+    public static Class getClass(final String className) throws ClassNotFoundException {
         return getClass(className, true);
     }
 
@@ -124,15 +124,15 @@ public class ClassLoaderUtil {
      * @return the class represented by <code>className</code> using the current thread's context class loader
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(String className, boolean initialize) throws ClassNotFoundException {
-        ClassLoader contextCL = Thread.currentThread().getContextClassLoader();
-        ClassLoader currentCL = ClassLoaderUtil.class.getClassLoader();
+    public static Class getClass(final String className, final boolean initialize) throws ClassNotFoundException {
+        final ClassLoader contextCL = Thread.currentThread().getContextClassLoader();
+        final ClassLoader currentCL = ClassLoaderUtil.class.getClassLoader();
         if (contextCL != null) {
             try {
                 return getClass(contextCL, className, initialize);
             }
-            catch (ClassNotFoundException e) {//NOPMD
-                // ignore this exception and try the current class loader.
+            catch (final ClassNotFoundException ignore) { // NOPMD
+                // ignore this exception and try the current class loader
             }
         }
         return getClass(currentCL, className, initialize);
@@ -149,12 +149,12 @@ public class ClassLoaderUtil {
             throw new RuntimeException("Argument className was null.");
         }
         else if (className.endsWith("[]")) {
-            StringBuffer classNameBuffer = new StringBuffer();
+            final StringBuffer classNameBuffer = new StringBuffer();
             while (className.endsWith("[]")) {
                 className = className.substring(0, className.length() - 2);
                 classNameBuffer.append("[");
             }
-            String abbreviation = (String) abbreviationMap.get(className);
+            final String abbreviation = (String) abbreviationMap.get(className);
             if (abbreviation != null) {
                 classNameBuffer.append(abbreviation);
             }

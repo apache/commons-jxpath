@@ -24,7 +24,7 @@ public class JXPathException extends RuntimeException {
     private static final long serialVersionUID = 4306409701468017766L;
 
     /** @serial */
-    private Throwable exception;
+    private final Throwable exception;
 
     /**
      * Create a new <code>JXPathException</code> with no
@@ -32,7 +32,6 @@ public class JXPathException extends RuntimeException {
      */
 
      public JXPathException() {
-         super();
          this.exception = null;
      }
 
@@ -42,7 +41,7 @@ public class JXPathException extends RuntimeException {
      *
      * @param msg The error message for the exception.
      */
-    public JXPathException(String msg) {
+    public JXPathException(final String msg) {
         super(msg);
         this.exception = null;
     }
@@ -55,7 +54,7 @@ public class JXPathException extends RuntimeException {
      * @param e The exception to be encapsulated in a
      * JXPathException.
      */
-    public JXPathException(Throwable e) {
+    public JXPathException(final Throwable e) {
         super(e.toString());
         this.exception = e;
     }
@@ -67,7 +66,7 @@ public class JXPathException extends RuntimeException {
      * @param msg The detail message.
      * @param e The exception to be encapsulated in a JXPathException
      */
-    public JXPathException(String msg, Throwable e) {
+    public JXPathException(final String msg, final Throwable e) {
         super(msg);
         this.exception = e;
     }
@@ -80,16 +79,17 @@ public class JXPathException extends RuntimeException {
      *
      * @return The error message.
      */
+    @Override
     public String getMessage() {
-        String message = super.getMessage();
+        final String message = super.getMessage();
         if (exception == null) {
             return message;
         }
-        StringBuffer buf = new StringBuffer();
+        final StringBuffer buf = new StringBuffer();
         if (message != null) {
             buf.append(message).append("; ");
         }
-        String eMsg = exception.getMessage();
+        final String eMsg = exception.getMessage();
         buf.append(eMsg == null ? exception.getClass().getName() : eMsg);
         return buf.toString();
     }
@@ -108,6 +108,7 @@ public class JXPathException extends RuntimeException {
      * Same as {@link #getException() getException()}
      * @return The encapsulated exception, or null if there is none.
      */
+    @Override
     public Throwable getCause() {
         return exception;
     }

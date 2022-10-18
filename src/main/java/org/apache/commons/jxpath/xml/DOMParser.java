@@ -27,9 +27,10 @@ import org.apache.commons.jxpath.JXPathException;
  */
 public class DOMParser extends XMLParser2 {
 
-    public Object parseXML(InputStream stream) {
+    @Override
+    public Object parseXML(final InputStream stream) {
         try {
-            DocumentBuilderFactory factory =
+            final DocumentBuilderFactory factory =
                     DocumentBuilderFactory.newInstance();
 
             factory.setValidating(isValidating());
@@ -41,7 +42,7 @@ public class DOMParser extends XMLParser2 {
             factory.setCoalescing(isCoalescing());
             return factory.newDocumentBuilder().parse(stream);
         }
-        catch (Exception ex) {
+        catch (final Exception ex) {
             throw new JXPathException("DOM parser error", ex);
         }
     }

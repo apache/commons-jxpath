@@ -22,7 +22,7 @@ import org.apache.commons.jxpath.JXPathTestCase;
 public class JXPath149Test extends JXPathTestCase {
 
     public void testComplexOperationWithVariables() {
-        JXPathContext context = JXPathContext.newContext(null);
+        final JXPathContext context = JXPathContext.newContext(null);
         context.getVariables().declareVariable("a", Integer.valueOf(0));
         context.getVariables().declareVariable("b", Integer.valueOf(0));
         context.getVariables().declareVariable("c", Integer.valueOf(1));

@@ -22,7 +22,7 @@ package org.apache.commons.jxpath.ri.model.beans;
  */
 public class TestIndexedPropertyBean {
 
-    public int getIndexed(int i) {
+    public int getIndexed(final int i) {
         if (i >= 2) {
             throw new ArrayIndexOutOfBoundsException(i);
         }

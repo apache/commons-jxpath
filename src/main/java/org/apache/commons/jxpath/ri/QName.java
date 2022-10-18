@@ -26,17 +26,17 @@ import java.io.Serializable;
 public class QName implements Serializable {
     private static final long serialVersionUID = 7616199282015091496L;
 
-    private String prefix;
-    private String name;
-    private String qualifiedName;
+    private final String prefix;
+    private final String name;
+    private final String qualifiedName;
 
     /**
      * Create a new QName.
      * @param qualifiedName value
      */
-    public QName(String qualifiedName) {
+    public QName(final String qualifiedName) {
         this.qualifiedName = qualifiedName;
-        int index = qualifiedName.indexOf(':');
+        final int index = qualifiedName.indexOf(':');
         prefix = index < 0 ? null : qualifiedName.substring(0, index);
         name = index < 0 ? qualifiedName : qualifiedName.substring(index + 1);
     }
@@ -46,7 +46,7 @@ public class QName implements Serializable {
      * @param prefix ns
      * @param localName String
      */
-    public QName(String prefix, String localName) {
+    public QName(final String prefix, final String localName) {
         this.prefix = prefix;
         this.name = localName;
         this.qualifiedName = prefix == null ? localName : prefix + ':' + localName;
@@ -68,15 +68,18 @@ public class QName implements Serializable {
         return name;
     }
 
+    @Override
     public String toString() {
         return qualifiedName;
     }
 
+    @Override
     public int hashCode() {
         return name.hashCode();
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         if (this == object) {
             return true;
         }

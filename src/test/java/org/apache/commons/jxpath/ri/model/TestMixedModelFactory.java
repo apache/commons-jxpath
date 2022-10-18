@@ -35,19 +35,20 @@ public class TestMixedModelFactory extends AbstractFactory {
      * Create a new instance and put it in the collection on the parent object.
      * Return <b>false</b> if this factory cannot create the requested object.
      */
+    @Override
     public boolean createObject(
-        JXPathContext context,
-        Pointer pointer,
-        Object parent,
-        String name,
-        int index) 
+        final JXPathContext context,
+        final Pointer pointer,
+        final Object parent,
+        final String name,
+        final int index)
     {
         if (name.equals("nestedBean")) {
             ((TestBean) parent).setNestedBean(new NestedTestBean("newName"));
             return true;
         }
         else if (name.equals("beans")) {
-            TestBean bean = (TestBean) parent;
+            final TestBean bean = (TestBean) parent;
             if (bean.getBeans() == null || index >= bean.getBeans().length) {
                 bean.setBeans(new NestedTestBean[index + 1]);
             }
@@ -59,14 +60,14 @@ public class TestMixedModelFactory extends AbstractFactory {
             return true;
         }
         else if (name.equals("TestKey5")) {
-            TestBean tb = new TestBean();
+            final TestBean tb = new TestBean();
             tb.setNestedBean(null);
             tb.setBeans(null);
             ((Map) parent).put(name, tb);
             return true;
         }
         else if (name.equals("matrix")) {
-            int[][] matrix = new int[2][];
+            final int[][] matrix = new int[2][];
             matrix[0] = new int[1];
             //            matrix[1] = new int[2];
              ((TestMixedModelBean) parent).setMatrix(matrix);
@@ -75,7 +76,8 @@ public class TestMixedModelFactory extends AbstractFactory {
         return false;
     }
 
-    public boolean declareVariable(JXPathContext context, String name) {
+    @Override
+    public boolean declareVariable(final JXPathContext context, final String name) {
         return false;
     }
 }

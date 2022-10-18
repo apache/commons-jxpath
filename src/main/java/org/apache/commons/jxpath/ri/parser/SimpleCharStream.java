@@ -45,11 +45,11 @@ public class SimpleCharStream
   protected int maxNextCharInd = 0;
   protected int inBuf = 0;
 
-  protected void ExpandBuff(boolean wrapAround)
+  protected void ExpandBuff(final boolean wrapAround)
   {
-     char[] newbuffer = new char[bufsize + 2048];
-     int newbufline[] = new int[bufsize + 2048];
-     int newbufcolumn[] = new int[bufsize + 2048];
+     final char[] newbuffer = new char[bufsize + 2048];
+     final int newbufline[] = new int[bufsize + 2048];
+     final int newbufcolumn[] = new int[bufsize + 2048];
 
      try
      {
@@ -68,7 +68,7 @@ public class SimpleCharStream
            System.arraycopy(bufcolumn, 0, newbufcolumn, bufsize - tokenBegin, bufpos);
            bufcolumn = newbufcolumn;
 
-           maxNextCharInd = (bufpos += (bufsize - tokenBegin));
+           maxNextCharInd = bufpos += bufsize - tokenBegin;
         }
         else
         {
@@ -81,10 +81,10 @@ public class SimpleCharStream
            System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0, bufsize - tokenBegin);
            bufcolumn = newbufcolumn;
 
-           maxNextCharInd = (bufpos -= tokenBegin);
+           maxNextCharInd = bufpos -= tokenBegin;
         }
      }
-     catch (Throwable t)
+     catch (final Throwable t)
      {
         throw new Error(t.getMessage());
      }
@@ -106,17 +106,19 @@ public class SimpleCharStream
               bufpos = maxNextCharInd = 0;
               available = tokenBegin;
            }
-           else if (tokenBegin < 0)
-              bufpos = maxNextCharInd = 0;
-           else
-              ExpandBuff(false);
+           else if (tokenBegin < 0) {
+            bufpos = maxNextCharInd = 0;
+        } else {
+            ExpandBuff(false);
         }
-        else if (available > tokenBegin)
-           available = bufsize;
-        else if ((tokenBegin - available) < 2048)
-           ExpandBuff(true);
-        else
-           available = tokenBegin;
+        }
+        else if (available > tokenBegin) {
+            available = bufsize;
+        } else if (tokenBegin - available < 2048) {
+            ExpandBuff(true);
+        } else {
+            available = tokenBegin;
+        }
      }
 
      int i;
@@ -126,16 +128,17 @@ public class SimpleCharStream
         {
            inputStream.close();
            throw new java.io.IOException();
+        } else {
+            maxNextCharInd += i;
         }
-        else
-           maxNextCharInd += i;
         return;
      }
-     catch(java.io.IOException e) {
+     catch(final java.io.IOException e) {
         --bufpos;
         backup(0);
-        if (tokenBegin == -1)
-           tokenBegin = bufpos;
+        if (tokenBegin == -1) {
+            tokenBegin = bufpos;
+        }
         throw e;
      }
   }
@@ -143,20 +146,20 @@ public class SimpleCharStream
   public char BeginToken() throws java.io.IOException
   {
      tokenBegin = -1;
-     char c = readChar();
+     final char c = readChar();
      tokenBegin = bufpos;
 
      return c;
   }
 
-  protected void UpdateLineColumn(char c)
+  protected void UpdateLineColumn(final char c)
   {
      column++;
 
      if (prevCharIsLF)
      {
         prevCharIsLF = false;
-        line += (column = 1);
+        line += column = 1;
      }
      else if (prevCharIsCR)
      {
@@ -164,9 +167,9 @@ public class SimpleCharStream
         if (c == '\n')
         {
            prevCharIsLF = true;
+        } else {
+            line += column = 1;
         }
-        else
-           line += (column = 1);
      }
 
      switch (c)
@@ -179,7 +182,7 @@ public class SimpleCharStream
            break;
         case '\t' :
            column--;
-           column += (8 - (column & 07));
+           column += 8 - (column & 07);
            break;
         default :
            break;
@@ -195,19 +198,21 @@ public class SimpleCharStream
      {
         --inBuf;
 
-        if (++bufpos == bufsize)
-           bufpos = 0;
+        if (++bufpos == bufsize) {
+            bufpos = 0;
+        }
 
         return buffer[bufpos];
      }
 
-     if (++bufpos >= maxNextCharInd)
+     if (++bufpos >= maxNextCharInd) {
         FillBuff();
+    }
 
-     char c = buffer[bufpos];
+     final char c = buffer[bufpos];
 
      UpdateLineColumn(c);
-     return (c);
+     return c;
   }
 
   /**
@@ -215,7 +220,8 @@ public class SimpleCharStream
    * @return the end column.
    * @see #getEndColumn
    */
-  public int getColumn() {
+  @Deprecated
+public int getColumn() {
      return bufcolumn[bufpos];
   }
 
@@ -224,7 +230,8 @@ public class SimpleCharStream
    * @return the line number.
    * @see #getEndLine
    */
-  public int getLine() {
+  @Deprecated
+public int getLine() {
      return bufline[bufpos];
   }
 
@@ -244,15 +251,16 @@ public class SimpleCharStream
      return bufline[tokenBegin];
   }
 
-  public void backup(int amount) {
+  public void backup(final int amount) {
 
     inBuf += amount;
-    if ((bufpos -= amount) < 0)
-       bufpos += bufsize;
+    if ((bufpos -= amount) < 0) {
+        bufpos += bufsize;
+    }
   }
 
-  public SimpleCharStream(java.io.Reader dstream, int startline,
-  int startcolumn, int buffersize)
+  public SimpleCharStream(final java.io.Reader dstream, final int startline,
+  final int startcolumn, final int buffersize)
   {
     inputStream = dstream;
     line = startline;
@@ -264,18 +272,18 @@ public class SimpleCharStream
     bufcolumn = new int[buffersize];
   }
 
-  public SimpleCharStream(java.io.Reader dstream, int startline,
-                                                           int startcolumn)
+  public SimpleCharStream(final java.io.Reader dstream, final int startline,
+                                                           final int startcolumn)
   {
      this(dstream, startline, startcolumn, 4096);
   }
 
-  public SimpleCharStream(java.io.Reader dstream)
+  public SimpleCharStream(final java.io.Reader dstream)
   {
      this(dstream, 1, 1, 4096);
   }
-  public void ReInit(java.io.Reader dstream, int startline,
-  int startcolumn, int buffersize)
+  public void ReInit(final java.io.Reader dstream, final int startline,
+  final int startcolumn, final int buffersize)
   {
     inputStream = dstream;
     line = startline;
@@ -293,64 +301,65 @@ public class SimpleCharStream
     bufpos = -1;
   }
 
-  public void ReInit(java.io.Reader dstream, int startline,
-                                                           int startcolumn)
+  public void ReInit(final java.io.Reader dstream, final int startline,
+                                                           final int startcolumn)
   {
      ReInit(dstream, startline, startcolumn, 4096);
   }
 
-  public void ReInit(java.io.Reader dstream)
+  public void ReInit(final java.io.Reader dstream)
   {
      ReInit(dstream, 1, 1, 4096);
   }
-  public SimpleCharStream(java.io.InputStream dstream, int startline,
-  int startcolumn, int buffersize)
+  public SimpleCharStream(final java.io.InputStream dstream, final int startline,
+  final int startcolumn, final int buffersize)
   {
      this(new java.io.InputStreamReader(dstream), startline, startcolumn, 4096);
   }
 
-  public SimpleCharStream(java.io.InputStream dstream, int startline,
-                                                           int startcolumn)
+  public SimpleCharStream(final java.io.InputStream dstream, final int startline,
+                                                           final int startcolumn)
   {
      this(dstream, startline, startcolumn, 4096);
   }
 
-  public SimpleCharStream(java.io.InputStream dstream)
+  public SimpleCharStream(final java.io.InputStream dstream)
   {
      this(dstream, 1, 1, 4096);
   }
 
-  public void ReInit(java.io.InputStream dstream, int startline,
-                          int startcolumn, int buffersize)
+  public void ReInit(final java.io.InputStream dstream, final int startline,
+                          final int startcolumn, final int buffersize)
   {
      ReInit(new java.io.InputStreamReader(dstream), startline, startcolumn, 4096);
   }
 
-  public void ReInit(java.io.InputStream dstream)
+  public void ReInit(final java.io.InputStream dstream)
   {
      ReInit(dstream, 1, 1, 4096);
   }
-  public void ReInit(java.io.InputStream dstream, int startline,
-                                                           int startcolumn)
+  public void ReInit(final java.io.InputStream dstream, final int startline,
+                                                           final int startcolumn)
   {
      ReInit(dstream, startline, startcolumn, 4096);
   }
   public String GetImage()
   {
-     if (bufpos >= tokenBegin)
+     if (bufpos >= tokenBegin) {
         return new String(buffer, tokenBegin, bufpos - tokenBegin + 1);
-     else
+    } else {
         return new String(buffer, tokenBegin, bufsize - tokenBegin) +
                               new String(buffer, 0, bufpos + 1);
+    }
   }
 
-  public char[] GetSuffix(int len)
+  public char[] GetSuffix(final int len)
   {
-     char[] ret = new char[len];
+     final char[] ret = new char[len];
 
-     if ((bufpos + 1) >= len)
+     if (bufpos + 1 >= len) {
         System.arraycopy(buffer, bufpos - len + 1, ret, 0, len);
-     else
+    } else
      {
         System.arraycopy(buffer, bufsize - (len - bufpos - 1), ret, 0,
                                                           len - bufpos - 1);
@@ -369,11 +378,11 @@ public class SimpleCharStream
 
   /**
    * Method to adjust line and column numbers for the start of a token.<BR>
-   * 
+   *
    * @param newLine TODO
    * @param newCol  TODO
    */
-  public void adjustBeginLineColumn(int newLine, int newCol)
+  public void adjustBeginLineColumn(int newLine, final int newCol)
   {
      int start = tokenBegin;
      int len;
@@ -407,10 +416,11 @@ public class SimpleCharStream
 
         while (i++ < len)
         {
-           if (bufline[j = start % bufsize] != bufline[++start % bufsize])
-              bufline[j] = newLine++;
-           else
-              bufline[j] = newLine;
+           if (bufline[j = start % bufsize] != bufline[++start % bufsize]) {
+            bufline[j] = newLine++;
+        } else {
+            bufline[j] = newLine;
+        }
         }
      }
 

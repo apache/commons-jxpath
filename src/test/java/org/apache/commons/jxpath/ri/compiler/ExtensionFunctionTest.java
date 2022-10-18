@@ -47,14 +47,15 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     private TestBean testBean;
     private TypeConverter typeConverter;
 
+    @Override
     public void setUp() {
         if (context == null) {
             testBean = new TestBean();
             context = JXPathContext.newContext(testBean);
-            Variables vars = context.getVariables();
+            final Variables vars = context.getVariables();
             vars.declareVariable("test", new TestFunctions(4, "test"));
 
-            FunctionLibrary lib = new FunctionLibrary();
+            final FunctionLibrary lib = new FunctionLibrary();
             lib.addFunctions(new ClassFunctions(TestFunctions.class, "test"));
             lib.addFunctions(new ClassFunctions(TestFunctions2.class, "test"));
             lib.addFunctions(new PackageFunctions("", "call"));
@@ -71,13 +72,14 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         typeConverter = TypeUtils.getTypeConverter();
     }
 
+    @Override
     public void tearDown() {
         TypeUtils.setTypeConverter(typeConverter);
     }
 
     public void testConstructorLookup() {
-        Object[] args = new Object[] { new Integer(1), "x" };
-        Function func = functions.getFunction("test", "new", args);
+        final Object[] args = { Integer.valueOf(1), "x" };
+        final Function func = functions.getFunction("test", "new", args);
 
         assertEquals(
             "test:new(1, x)",
@@ -86,17 +88,17 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     }
 
     public void testConstructorLookupWithExpressionContext() {
-        Object[] args = new Object[] { "baz" };
-        Function func = functions.getFunction("test", "new", args);
+        final Object[] args = { "baz" };
+        final Function func = functions.getFunction("test", "new", args);
         assertEquals(
             "test:new('baz')",
-            func.invoke(new Context(new Integer(1)), args).toString(),
+            func.invoke(new Context(Integer.valueOf(1)), args).toString(),
             "foo=1; bar=baz");
     }
 
     public void testStaticMethodLookup() {
-        Object[] args = new Object[] { new Integer(1), "x" };
-        Function func = functions.getFunction("test", "build", args);
+        final Object[] args = { Integer.valueOf(1), "x" };
+        final Function func = functions.getFunction("test", "build", args);
         assertEquals(
             "test:build(1, x)",
             func.invoke(new Context(null), args).toString(),
@@ -104,8 +106,8 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     }
 
     public void testStaticMethodLookupWithConversion() {
-        Object[] args = new Object[] { "7", new Integer(1)};
-        Function func = functions.getFunction("test", "build", args);
+        final Object[] args = { "7", Integer.valueOf(1)};
+        final Function func = functions.getFunction("test", "build", args);
         assertEquals(
             "test:build('7', 1)",
             func.invoke(new Context(null), args).toString(),
@@ -113,8 +115,8 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     }
 
     public void testMethodLookup() {
-        Object[] args = new Object[] { new TestFunctions()};
-        Function func = functions.getFunction("test", "getFoo", args);
+        final Object[] args = { new TestFunctions()};
+        final Function func = functions.getFunction("test", "getFoo", args);
         assertEquals(
             "test:getFoo($test, 1, x)",
             func.invoke(new Context(null), args).toString(),
@@ -122,34 +124,34 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     }
 
     public void testStaticMethodLookupWithExpressionContext() {
-        Object[] args = new Object[0];
-        Function func = functions.getFunction("test", "path", args);
+        final Object[] args = {};
+        final Function func = functions.getFunction("test", "path", args);
         assertEquals(
             "test:path()",
-            func.invoke(new Context(new Integer(1)), args),
+            func.invoke(new Context(Integer.valueOf(1)), args),
             "1");
     }
 
     public void testMethodLookupWithExpressionContext() {
-        Object[] args = new Object[] { new TestFunctions()};
-        Function func = functions.getFunction("test", "instancePath", args);
+        final Object[] args = { new TestFunctions()};
+        final Function func = functions.getFunction("test", "instancePath", args);
         assertEquals(
             "test:instancePath()",
-            func.invoke(new Context(new Integer(1)), args),
+            func.invoke(new Context(Integer.valueOf(1)), args),
             "1");
     }
 
     public void testMethodLookupWithExpressionContextAndArgument() {
-        Object[] args = new Object[] { new TestFunctions(), "*" };
-        Function func = functions.getFunction("test", "pathWithSuffix", args);
+        final Object[] args = { new TestFunctions(), "*" };
+        final Function func = functions.getFunction("test", "pathWithSuffix", args);
         assertEquals(
             "test:pathWithSuffix('*')",
-            func.invoke(new Context(new Integer(1)), args),
+            func.invoke(new Context(Integer.valueOf(1)), args),
             "1*");
     }
 
     public void testAllocation() {
-        
+
         // Allocate new object using the default constructor
         assertXPathValue(context, "string(test:new())", "foo=0; bar=null");
 
@@ -173,8 +175,8 @@ public class ExtensionFunctionTest extends JXPathTestCase {
 
         // Allocate new object using a custom constructor - type conversion
         assertXPathValue(context, "string(test:new('3', 4))", "foo=3; bar=4.0");
-        
-        context.getVariables().declareVariable("A", "baz");        
+
+        context.getVariables().declareVariable("A", "baz");
         assertXPathValue(
                 context,
                 "string(test:new(2, $A, false))",
@@ -182,14 +184,14 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     }
 
     public void testMethodCall() {
-        assertXPathValue(context, "length('foo')", new Integer(3));
+        assertXPathValue(context, "length('foo')", Integer.valueOf(3));
 
         // We are just calling a method - prefix is ignored
         assertXPathValue(context, "call:substring('foo', 1, 2)", "o");
 
         // Invoke a function implemented as a regular method
         assertXPathValue(context, "string(test:getFoo($test))", "4");
-        
+
         // Note that the prefix is ignored anyway, we are just calling a method
         assertXPathValue(context, "string(call:getFoo($test))", "4");
 
@@ -202,27 +204,27 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             "string(test:setFooAndBar($test, 7, 'biz'))",
             "foo=7; bar=biz");
     }
-    
+
     public void testCollectionMethodCall() {
-        
-        List list = new ArrayList();
+
+        final List list = new ArrayList();
         list.add("foo");
         context.getVariables().declareVariable("myList", list);
 
         assertXPathValue(
-            context, 
-            "size($myList)", 
-            new Integer(1));
-    
+            context,
+            "size($myList)",
+            Integer.valueOf(1));
+
         assertXPathValue(
-            context, 
-            "size(beans)", 
-            new Integer(2));
-            
+            context,
+            "size(beans)",
+            Integer.valueOf(2));
+
         context.getValue("add($myList, 'hello')");
         assertEquals("After adding an element", 2, list.size());
-        
-        JXPathContext context = JXPathContext.newContext(new ArrayList());
+
+        final JXPathContext context = JXPathContext.newContext(new ArrayList());
         assertEquals("Extension function on root collection", "0", String
                 .valueOf(context.getValue("size(/)")));
     }
@@ -249,7 +251,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         // Two ClassFunctions are sharing the same prefix.
         // This is TestFunctions2
         assertXPathValue(context, "string(test:increment(8))", "9");
-        
+
         // See that a NodeSet gets properly converted to a string
         assertXPathValue(context, "test:string(/beans/name)", "Name 1");
     }
@@ -259,8 +261,8 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         // The function uses ExpressionContext to get to the current
         // node.
         assertXPathValue(
-            context, 
-            "//.[test:isMap()]/Key1", 
+            context,
+            "//.[test:isMap()]/Key1",
             "Value 1");
 
         // The function gets all
@@ -268,23 +270,23 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         assertXPathValue(
             context,
             "count(//.[test:count(strings) = 3])",
-            new Double(7));
+            Double.valueOf(7));
 
         // The function receives a collection of strings
-        // and checks their type for testing purposes            
+        // and checks their type for testing purposes
         assertXPathValue(
             context,
             "test:count(//strings)",
-            new Integer(21));
+            Integer.valueOf(21));
 
-        
+
         // The function receives a collection of pointers
-        // and checks their type for testing purposes            
+        // and checks their type for testing purposes
         assertXPathValue(
             context,
             "test:countPointers(//strings)",
-            new Integer(21));
-            
+            Integer.valueOf(21));
+
         // The function uses ExpressionContext to get to the current
         // pointer and returns its path.
         assertXPathValue(
@@ -292,7 +294,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             "/beans[contains(test:path(), '[2]')]/name",
             "Name 2");
     }
-    
+
     public void testCollectionReturn() {
         assertXPathValueIterator(
             context,
@@ -303,22 +305,22 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             context,
             "test:collection()/name",
             list("/.[1]/name", "/.[2]/name"));
-            
+
         assertXPathValue(
             context,
             "test:collection()/name",
-            "foo");        
+            "foo");
 
         assertXPathValue(
             context,
             "test:collection()/@name",
-            "foo");   
-        
-        List list = new ArrayList();
+            "foo");
+
+        final List list = new ArrayList();
         list.add("foo");
         list.add("bar");
         context.getVariables().declareVariable("list", list);
-        Object values = context.getValue("test:items($list)");
+        final Object values = context.getValue("test:items($list)");
         assertTrue("Return type: ", values instanceof Collection);
         assertEquals(
             "Return values: ",
@@ -341,12 +343,12 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             context,
             "test:nodeSet()/name",
             list("/beans[1]/name", "/beans[2]/name"));
-            
+
         assertXPathValueAndPointer(
             context,
             "test:nodeSet()/name",
             "Name 1",
-            "/beans[1]/name");        
+            "/beans[1]/name");
 
         assertXPathValueAndPointer(
             context,
@@ -383,25 +385,29 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     }
 
     private static class Context implements ExpressionContext {
-        private Object object;
+        private final Object object;
 
-        public Context(Object object) {
+        public Context(final Object object) {
             this.object = object;
         }
 
+        @Override
         public Pointer getContextNodePointer() {
             return NodePointer
                     .newNodePointer(null, object, Locale.getDefault());
         }
 
+        @Override
         public List getContextNodeList() {
             return null;
         }
 
+        @Override
         public JXPathContext getJXPathContext() {
             return null;
         }
 
+        @Override
         public int getPosition() {
             return 0;
         }

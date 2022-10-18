@@ -31,14 +31,14 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
  * "=" and "!=".
  */
 public abstract class CoreOperationCompare extends CoreOperation {
-    private boolean invert;
+    private final boolean invert;
 
     /**
      * Create a new CoreOperationCompare.
      * @param arg1 left operand
      * @param arg2 right operand
      */
-    public CoreOperationCompare(Expression arg1, Expression arg2) {
+    public CoreOperationCompare(final Expression arg1, final Expression arg2) {
         this(arg1, arg2, false);
     }
 
@@ -48,19 +48,22 @@ public abstract class CoreOperationCompare extends CoreOperation {
      * @param arg2 right operand
      * @param invert whether to invert (not) the comparison
      */
-    protected CoreOperationCompare(Expression arg1, Expression arg2, boolean invert) {
+    protected CoreOperationCompare(final Expression arg1, final Expression arg2, final boolean invert) {
         super(new Expression[] { arg1, arg2 });
         this.invert = invert;
     }
 
-    public Object computeValue(EvalContext context) {
+    @Override
+    public Object computeValue(final EvalContext context) {
         return equal(context, args[0], args[1]) ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    @Override
     protected int getPrecedence() {
         return COMPARE_PRECEDENCE;
     }
 
+    @Override
     protected boolean isSymmetric() {
         return true;
     }
@@ -72,8 +75,8 @@ public abstract class CoreOperationCompare extends CoreOperation {
      * @param right operand
      * @return whether left = right in XPath terms
      */
-    protected boolean equal(EvalContext context, Expression left,
-            Expression right) {
+    protected boolean equal(final EvalContext context, final Expression left,
+            final Expression right) {
         Object l = left.compute(context);
         Object r = right.compute(context);
 
@@ -119,9 +122,9 @@ public abstract class CoreOperationCompare extends CoreOperation {
      * @param value for which to look
      * @return whether value was found
      */
-    protected boolean contains(Iterator it, Object value) {
+    protected boolean contains(final Iterator it, final Object value) {
         while (it.hasNext()) {
-            Object element = it.next();
+            final Object element = it.next();
             if (equal(element, value)) {
                 return true;
             }
@@ -135,8 +138,8 @@ public abstract class CoreOperationCompare extends CoreOperation {
      * @param rit right Iterator
      * @return boolean
      */
-    protected boolean findMatch(Iterator lit, Iterator rit) {
-        HashSet left = new HashSet();
+    protected boolean findMatch(final Iterator lit, final Iterator rit) {
+        final HashSet left = new HashSet();
         while (lit.hasNext()) {
             left.add(lit.next());
         }
@@ -169,11 +172,11 @@ public abstract class CoreOperationCompare extends CoreOperation {
         }
         else if (l instanceof Number || r instanceof Number) {
             //if either side is NaN, no comparison returns true:
-            double ld = InfoSetUtil.doubleValue(l);
+            final double ld = InfoSetUtil.doubleValue(l);
             if (Double.isNaN(ld)) {
                 return false;
             }
-            double rd = InfoSetUtil.doubleValue(r);
+            final double rd = InfoSetUtil.doubleValue(r);
             if (Double.isNaN(rd)) {
                 return false;
             }

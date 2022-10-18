@@ -27,12 +27,12 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "preceding::" and "following::" axes.
  */
 public class PrecedingOrFollowingContext extends EvalContext {
-    private NodeTest nodeTest;
+    private final NodeTest nodeTest;
     private boolean setStarted = false;
     private Stack stack = null;
     private NodePointer currentNodePointer;
     private NodePointer currentRootLocation;
-    private boolean reverse;
+    private final boolean reverse;
 
     /**
      * Create a new PrecedingOrFollowingContext.
@@ -41,28 +41,32 @@ public class PrecedingOrFollowingContext extends EvalContext {
      * @param reverse whether to iterate in reverse order
      */
     public PrecedingOrFollowingContext(
-        EvalContext parentContext,
-        NodeTest nodeTest,
-        boolean reverse) {
+        final EvalContext parentContext,
+        final NodeTest nodeTest,
+        final boolean reverse) {
         super(parentContext);
         this.nodeTest = nodeTest;
         this.reverse = reverse;
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
+    @Override
     public int getDocumentOrder() {
         return reverse ? -1 : 1;
     }
 
+    @Override
     public void reset() {
         super.reset();
         setStarted = false;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         if (position < this.position) {
             reset();
         }
@@ -75,6 +79,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
         return true;
     }
 
+    @Override
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;
@@ -85,7 +90,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
                 stack.clear();
             }
             currentRootLocation = parentContext.getCurrentNodePointer();
-            NodePointer parent = currentRootLocation.getParent();
+            final NodePointer parent = currentRootLocation.getParent();
             if (parent != null) {
                 // TBD: check type
                 stack.push(
@@ -102,7 +107,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
                     break;
                 }
 
-                NodePointer parent = currentRootLocation.getParent();
+                final NodePointer parent = currentRootLocation.getParent();
                 if (parent != null) {
                     stack.push(
                         parent.childIterator(
@@ -114,7 +119,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
 
             while (!stack.isEmpty()) {
                 if (!reverse) {
-                    NodeIterator it = (NodeIterator) stack.peek();
+                    final NodeIterator it = (NodeIterator) stack.peek();
                     if (it.setPosition(it.getPosition() + 1)) {
                         currentNodePointer = it.getNodePointer();
                         if (!currentNodePointer.isLeaf()) {

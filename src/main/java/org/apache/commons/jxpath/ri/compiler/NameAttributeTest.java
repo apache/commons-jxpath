@@ -28,7 +28,7 @@ public class NameAttributeTest extends CoreOperationEqual {
      * @param namePath Expression
      * @param nameValue Expression
      */
-    public NameAttributeTest(Expression namePath, Expression nameValue) {
+    public NameAttributeTest(final Expression namePath, final Expression nameValue) {
         super(namePath, nameValue);
     }
 
@@ -40,6 +40,7 @@ public class NameAttributeTest extends CoreOperationEqual {
         return args[1];
     }
 
+    @Override
     public boolean computeContextDependent() {
         return true;
     }

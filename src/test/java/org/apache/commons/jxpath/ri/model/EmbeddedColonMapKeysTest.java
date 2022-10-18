@@ -23,14 +23,15 @@ import org.apache.commons.jxpath.JXPathTestCase;
 
 /**
  * JXPATH-104 test.
- * 
+ *
  */
 public class EmbeddedColonMapKeysTest extends JXPathTestCase {
     private JXPathContext context;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
-        HashMap m = new HashMap();
+        final HashMap m = new HashMap();
         m.put("foo:key", "value");
         context = JXPathContext.newContext(m);
         context.setLenient(true);

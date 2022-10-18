@@ -32,9 +32,9 @@ import org.w3c.dom.Node;
  * An iterator of attributes of a DOM Node.
  */
 public class DOMAttributeIterator implements NodeIterator {
-    private NodePointer parent;
-    private QName name;
-    private List attributes;
+    private final NodePointer parent;
+    private final QName name;
+    private final List attributes;
     private int position = 0;
 
     /**
@@ -42,24 +42,24 @@ public class DOMAttributeIterator implements NodeIterator {
      * @param parent pointer
      * @param name to test
      */
-    public DOMAttributeIterator(NodePointer parent, QName name) {
+    public DOMAttributeIterator(final NodePointer parent, final QName name) {
         this.parent = parent;
         this.name = name;
         attributes = new ArrayList();
-        Node node = (Node) parent.getNode();
+        final Node node = (Node) parent.getNode();
         if (node.getNodeType() == Node.ELEMENT_NODE) {
-            String lname = name.getName();
+            final String lname = name.getName();
             if (!lname.equals("*")) {
-                Attr attr = getAttribute((Element) node, name);
+                final Attr attr = getAttribute((Element) node, name);
                 if (attr != null) {
                     attributes.add(attr);
                 }
             }
             else {
-                NamedNodeMap map = node.getAttributes();
-                int count = map.getLength();
+                final NamedNodeMap map = node.getAttributes();
+                final int count = map.getLength();
                 for (int i = 0; i < count; i++) {
-                    Attr attr = (Attr) map.item(i);
+                    final Attr attr = (Attr) map.item(i);
                     if (testAttr(attr)) {
                         attributes.add(attr);
                     }
@@ -73,9 +73,9 @@ public class DOMAttributeIterator implements NodeIterator {
      * @param attr to test
      * @return whether test succeeded
      */
-    private boolean testAttr(Attr attr) {
-        String nodePrefix = DOMNodePointer.getPrefix(attr);
-        String nodeLocalName = DOMNodePointer.getLocalName(attr);
+    private boolean testAttr(final Attr attr) {
+        final String nodePrefix = DOMNodePointer.getPrefix(attr);
+        final String nodeLocalName = DOMNodePointer.getLocalName(attr);
 
         if (nodePrefix != null && nodePrefix.equals("xmlns")) {
             return false;
@@ -85,9 +85,9 @@ public class DOMAttributeIterator implements NodeIterator {
             return false;
         }
 
-        String testLocalName = name.getName();
+        final String testLocalName = name.getName();
         if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)) {
-            String testPrefix = name.getPrefix();
+            final String testPrefix = name.getPrefix();
 
             if (testPrefix == null || Objects.equals(testPrefix, nodePrefix)) {
                 return true;
@@ -107,8 +107,8 @@ public class DOMAttributeIterator implements NodeIterator {
      * @param name to match
      * @return Attr found
      */
-    private Attr getAttribute(Element element, QName name) {
-        String testPrefix = name.getPrefix();
+    private Attr getAttribute(final Element element, final QName name) {
+        final String testPrefix = name.getPrefix();
         String testNS = null;
 
         if (testPrefix != null) {
@@ -124,7 +124,7 @@ public class DOMAttributeIterator implements NodeIterator {
             // This may mean that the parser does not support NS for
             // attributes, example - the version of Crimson bundled
             // with JDK 1.4.0
-            NamedNodeMap nnm = element.getAttributes();
+            final NamedNodeMap nnm = element.getAttributes();
             for (int i = 0; i < nnm.getLength(); i++) {
                 attr = (Attr) nnm.item(i);
                 if (testAttr(attr)) {
@@ -136,6 +136,7 @@ public class DOMAttributeIterator implements NodeIterator {
         return element.getAttributeNode(name.getName());
     }
 
+    @Override
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -150,11 +151,13 @@ public class DOMAttributeIterator implements NodeIterator {
         return new DOMAttributePointer(parent, (Attr) attributes.get(index));
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         this.position = position;
         return position >= 1 && position <= attributes.size();
     }

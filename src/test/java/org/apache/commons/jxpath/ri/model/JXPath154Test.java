@@ -25,12 +25,12 @@ public class JXPath154Test extends JXPathTestCase {
 
     protected JXPathContext context;
 
-    protected DocumentContainer createDocumentContainer(String model) {
+    protected DocumentContainer createDocumentContainer(final String model) {
         return new DocumentContainer(JXPathTestCase.class.getResource("InnerEmptyNamespace.xml"), model);
     }
 
-    protected void doTest(String path, String model, String expectedValue) {
-        JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
+    protected void doTest(final String path, final String model, final String expectedValue) {
+        final JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
         assertEquals(expectedValue, context.getPointer(path).asPath());
     }
 

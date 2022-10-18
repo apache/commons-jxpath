@@ -24,10 +24,10 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
  */
 public class AncestorContext extends EvalContext {
-    private NodeTest nodeTest;
+    private final NodeTest nodeTest;
     private boolean setStarted = false;
     private NodePointer currentNodePointer;
-    private boolean includeSelf;
+    private final boolean includeSelf;
 
     /**
      * Create a new AncestorContext.
@@ -37,28 +37,32 @@ public class AncestorContext extends EvalContext {
      * @param nodeTest is the name of the element(s) we are looking for
      */
     public AncestorContext(
-        EvalContext parentContext,
-        boolean includeSelf,
-        NodeTest nodeTest) {
+        final EvalContext parentContext,
+        final boolean includeSelf,
+        final NodeTest nodeTest) {
         super(parentContext);
         this.includeSelf = includeSelf;
         this.nodeTest = nodeTest;
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
+    @Override
     public int getDocumentOrder() {
         return -1;
     }
 
+    @Override
     public void reset() {
         super.reset();
         setStarted = false;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         if (position < getCurrentPosition()) {
             reset();
         }
@@ -71,6 +75,7 @@ public class AncestorContext extends EvalContext {
         return true;
     }
 
+    @Override
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;

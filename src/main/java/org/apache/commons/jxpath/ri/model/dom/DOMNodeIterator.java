@@ -25,11 +25,11 @@ import org.w3c.dom.Node;
  * An iterator of children of a DOM Node.
  */
 public class DOMNodeIterator implements NodeIterator {
-    private NodePointer parent;
-    private NodeTest nodeTest;
-    private Node node;
+    private final NodePointer parent;
+    private final NodeTest nodeTest;
+    private final Node node;
     private Node child = null;
-    private boolean reverse;
+    private final boolean reverse;
     private int position = 0;
 
     /**
@@ -40,10 +40,10 @@ public class DOMNodeIterator implements NodeIterator {
      * @param startWith starting pointer
      */
     public DOMNodeIterator(
-        NodePointer parent,
-        NodeTest nodeTest,
-        boolean reverse,
-        NodePointer startWith) {
+        final NodePointer parent,
+        final NodeTest nodeTest,
+        final boolean reverse,
+        final NodePointer startWith) {
         this.parent = parent;
         this.node = (Node) parent.getNode();
         if (startWith != null) {
@@ -53,6 +53,7 @@ public class DOMNodeIterator implements NodeIterator {
         this.reverse = reverse;
     }
 
+    @Override
     public NodePointer getNodePointer() {
         if (position == 0) {
             setPosition(1);
@@ -60,11 +61,13 @@ public class DOMNodeIterator implements NodeIterator {
         return child == null ? null : new DOMNodePointer(parent, child);
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         while (this.position < position) {
             if (!next()) {
                 return false;

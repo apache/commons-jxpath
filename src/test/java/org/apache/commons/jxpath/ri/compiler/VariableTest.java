@@ -28,25 +28,26 @@ import org.apache.commons.jxpath.Variables;
 public class VariableTest extends JXPathTestCase {
     private JXPathContext context;
 
+    @Override
     public void setUp() {
         if (context == null) {
             context = JXPathContext.newContext(new TestMixedModelBean());
             context.setFactory(new VariableFactory());
 
-            Variables vars = context.getVariables();
-            vars.declareVariable("a", new Double(1));
-            vars.declareVariable("b", new Double(1));
+            final Variables vars = context.getVariables();
+            vars.declareVariable("a", Double.valueOf(1));
+            vars.declareVariable("b", Double.valueOf(1));
             vars.declareVariable("c", null);
             vars.declareVariable("d", new String[] { "a", "b" });
-            vars.declareVariable("integer", new Integer(1));
-            vars.declareVariable("nan", new Double(Double.NaN));
+            vars.declareVariable("integer", Integer.valueOf(1));
+            vars.declareVariable("nan", Double.valueOf(Double.NaN));
             vars.declareVariable("x", null);
         }
     }
 
     public void testVariables() {
         // Variables
-        assertXPathValueAndPointer(context, "$a", new Double(1), "$a");
+        assertXPathValueAndPointer(context, "$a", Double.valueOf(1), "$a");
     }
 
     public void testVariablesInExpressions() {
@@ -54,7 +55,7 @@ public class VariableTest extends JXPathTestCase {
 
         assertXPathValue(context, "$a = $nan", Boolean.FALSE);
 
-        assertXPathValue(context, "$a + 1", new Double(2));
+        assertXPathValue(context, "$a + 1", Double.valueOf(2));
 
         assertXPathValue(context, "$c", null);
 
@@ -66,18 +67,18 @@ public class VariableTest extends JXPathTestCase {
         try {
             context.getValue("$none");
         }
-        catch (Exception ex) {
+        catch (final Exception ex) {
             exception = true;
         }
         assertTrue(
             "Evaluating '$none', expected exception - did not get it",
             exception);
-        
+
         exception = false;
         try {
-            context.setValue("$none", new Integer(1));
+            context.setValue("$none", Integer.valueOf(1));
         }
-        catch (Exception ex) {
+        catch (final Exception ex) {
             exception = true;
         }
         assertTrue(
@@ -86,13 +87,13 @@ public class VariableTest extends JXPathTestCase {
     }
 
     public void testNestedContext() {
-        JXPathContext nestedContext = JXPathContext.newContext(context, null);
+        final JXPathContext nestedContext = JXPathContext.newContext(context, null);
 
-        assertXPathValue(nestedContext, "$a", new Double(1));
+        assertXPathValue(nestedContext, "$a", Double.valueOf(1));
     }
 
     public void testSetValue() {
-        assertXPathSetValue(context, "$x", new Integer(1));
+        assertXPathSetValue(context, "$x", Integer.valueOf(1));
     }
 
     public void testCreatePathDeclareVariable() {
@@ -110,7 +111,7 @@ public class VariableTest extends JXPathTestCase {
     }
 
     public void testCreatePathDeclareVariableSetCollectionElement() {
-        // Calls factory.declareVariable("stringArray"). 
+        // Calls factory.declareVariable("stringArray").
         // The factory needs to create a collection
         assertXPathCreatePath(
             context,
@@ -126,7 +127,7 @@ public class VariableTest extends JXPathTestCase {
     }
 
     public void testCreateAndSetValuePathDeclareVariableSetCollectionElement() {
-        // Calls factory.declareVariable("stringArray"). 
+        // Calls factory.declareVariable("stringArray").
         // The factory needs to create a collection
         assertXPathCreatePathAndSetValue(
             context,
@@ -176,7 +177,7 @@ public class VariableTest extends JXPathTestCase {
     }
 
     public void testCreatePathDeclareVariableSetProperty() {
-        // Calls factory.declareVariable("test"). 
+        // Calls factory.declareVariable("test").
         // The factory should create a TestBean
         assertXPathCreatePath(
             context,
@@ -187,7 +188,7 @@ public class VariableTest extends JXPathTestCase {
     }
 
     public void testCreatePathAndSetValueDeclareVariableSetProperty() {
-        // Calls factory.declareVariable("test"). 
+        // Calls factory.declareVariable("test").
         // The factory should create a TestBean
         assertXPathCreatePathAndSetValue(
             context,
@@ -201,7 +202,7 @@ public class VariableTest extends JXPathTestCase {
         // Calls factory.declareVariable("testArray").
         // The factory should create a collection of TestBeans.
         // Then calls factory.createObject(..., collection, "testArray", 1).
-        // That one should produce an instance of TestBean and 
+        // That one should produce an instance of TestBean and
         // put it in the collection at index 1.
         assertXPathCreatePath(
             context,
@@ -214,7 +215,7 @@ public class VariableTest extends JXPathTestCase {
         // Calls factory.declareVariable("testArray").
         // The factory should create a collection of TestBeans.
         // Then calls factory.createObject(..., collection, "testArray", 1).
-        // That one should produce an instance of TestBean and 
+        // That one should produce an instance of TestBean and
         // put it in the collection at index 1.
         assertXPathCreatePathAndSetValue(
             context,
@@ -254,10 +255,10 @@ public class VariableTest extends JXPathTestCase {
             "temp2",
             context.getValue("$temp[1]"));
     }
-    
+
     public void testUnionOfVariableAndNode() throws Exception {
-        assertXPathValue(context, "count($a | /document/vendor/location)", new Double(3));
-        assertXPathValue(context, "count($a | /list)", new Double(7)); //$o + list which contains six discrete values (one is duped, wrapped in a Container)
+        assertXPathValue(context, "count($a | /document/vendor/location)", Double.valueOf(3));
+        assertXPathValue(context, "count($a | /list)", Double.valueOf(7)); //$o + list which contains six discrete values (one is duped, wrapped in a Container)
     }
 
     public void testIterateVariable() throws Exception {

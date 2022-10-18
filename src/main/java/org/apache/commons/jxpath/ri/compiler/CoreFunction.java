@@ -39,15 +39,15 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class CoreFunction extends Operation {
 
-    private static final Double ZERO = new Double(0);
-    private int functionCode;
+    private static final Double ZERO = Double.valueOf(0);
+    private final int functionCode;
 
     /**
      * Create a new CoreFunction.
      * @param functionCode int function code
      * @param args argument Expressions
      */
-    public CoreFunction(int functionCode, Expression[] args) {
+    public CoreFunction(final int functionCode, final Expression[] args) {
         super(args);
         this.functionCode = functionCode;
     }
@@ -172,6 +172,7 @@ public class CoreFunction extends Operation {
      * name(), string(), lang(), number().
      * @return boolean
      */
+    @Override
     public boolean computeContextDependent() {
         if (super.computeContextDependent()) {
             return true;
@@ -218,11 +219,12 @@ public class CoreFunction extends Operation {
         }
     }
 
+    @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         buffer.append(getFunctionName());
         buffer.append('(');
-        Expression[] args = getArguments();
+        final Expression[] args = getArguments();
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
                 if (i > 0) {
@@ -235,11 +237,13 @@ public class CoreFunction extends Operation {
         return buffer.toString();
     }
 
-    public Object compute(EvalContext context) {
+    @Override
+    public Object compute(final EvalContext context) {
         return computeValue(context);
     }
 
-    public Object computeValue(EvalContext context) {
+    @Override
+    public Object computeValue(final EvalContext context) {
         switch (functionCode) {
             case Compiler.FUNCTION_LAST :
                 return functionLast(context);
@@ -313,11 +317,11 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Number
      */
-    protected Object functionLast(EvalContext context) {
+    protected Object functionLast(final EvalContext context) {
         assertArgCount(0);
         // Move the position to the beginning and iterate through
         // the context to count nodes.
-        int old = context.getCurrentPosition();
+        final int old = context.getCurrentPosition();
         context.reset();
         int count = 0;
         while (context.nextNode()) {
@@ -328,7 +332,7 @@ public class CoreFunction extends Operation {
         if (old != 0) {
             context.setPosition(old);
         }
-        return new Double(count);
+        return Double.valueOf(count);
     }
 
     /**
@@ -336,9 +340,9 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Number
      */
-    protected Object functionPosition(EvalContext context) {
+    protected Object functionPosition(final EvalContext context) {
         assertArgCount(0);
-        return new Integer(context.getCurrentPosition());
+        return Integer.valueOf(context.getCurrentPosition());
     }
 
     /**
@@ -346,16 +350,16 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Number
      */
-    protected Object functionCount(EvalContext context) {
+    protected Object functionCount(final EvalContext context) {
         assertArgCount(1);
-        Expression arg1 = getArg1();
+        final Expression arg1 = getArg1();
         int count = 0;
         Object value = arg1.compute(context);
         if (value instanceof NodePointer) {
             value = ((NodePointer) value).getValue();
         }
         if (value instanceof EvalContext) {
-            EvalContext ctx = (EvalContext) value;
+            final EvalContext ctx = (EvalContext) value;
             while (ctx.hasNext()) {
                 ctx.next();
                 count++;
@@ -370,7 +374,7 @@ public class CoreFunction extends Operation {
         else {
             count = 1;
         }
-        return new Double(count);
+        return Double.valueOf(count);
     }
 
     /**
@@ -378,10 +382,10 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Boolean
      */
-    protected Object functionLang(EvalContext context) {
+    protected Object functionLang(final EvalContext context) {
         assertArgCount(1);
-        String lang = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        NodePointer pointer = (NodePointer) context.getSingleNodePointer();
+        final String lang = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final NodePointer pointer = (NodePointer) context.getSingleNodePointer();
         if (pointer == null) {
             return Boolean.FALSE;
         }
@@ -393,11 +397,11 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Pointer
      */
-    protected Object functionID(EvalContext context) {
+    protected Object functionID(final EvalContext context) {
         assertArgCount(1);
-        String id = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        JXPathContext jxpathContext = context.getJXPathContext();
-        NodePointer pointer = (NodePointer) jxpathContext.getContextPointer();
+        final String id = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final JXPathContext jxpathContext = context.getJXPathContext();
+        final NodePointer pointer = (NodePointer) jxpathContext.getContextPointer();
         return pointer.getPointerByID(jxpathContext, id);
     }
 
@@ -406,9 +410,9 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return various Object
      */
-    protected Object functionKey(EvalContext context) {
+    protected Object functionKey(final EvalContext context) {
         assertArgCount(2);
-        String key = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final String key = InfoSetUtil.stringValue(getArg1().computeValue(context));
         Object value = getArg2().compute(context);
         EvalContext ec = null;
         if (value instanceof EvalContext) {
@@ -420,10 +424,10 @@ public class CoreFunction extends Operation {
                 return new NodeSetContext(context, new BasicNodeSet());
             }
         }
-        JXPathContext jxpathContext = context.getJXPathContext();
+        final JXPathContext jxpathContext = context.getJXPathContext();
         NodeSet nodeSet = jxpathContext.getNodeSetByKey(key, value);
         if (ec != null && ec.hasNext()) {
-            BasicNodeSet accum = new BasicNodeSet();
+            final BasicNodeSet accum = new BasicNodeSet();
             accum.add(nodeSet);
             while (ec.hasNext()) {
                 value = ((NodePointer) ec.next()).getValue();
@@ -439,19 +443,19 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    protected Object functionNamespaceURI(EvalContext context) {
+    protected Object functionNamespaceURI(final EvalContext context) {
         if (getArgumentCount() == 0) {
-            NodePointer ptr = context.getCurrentNodePointer();
-            String str = ptr.getNamespaceURI();
+            final NodePointer ptr = context.getCurrentNodePointer();
+            final String str = ptr.getNamespaceURI();
             return str == null ? "" : str;
         }
         assertArgCount(1);
-        Object set = getArg1().compute(context);
+        final Object set = getArg1().compute(context);
         if (set instanceof EvalContext) {
-            EvalContext ctx = (EvalContext) set;
+            final EvalContext ctx = (EvalContext) set;
             if (ctx.hasNext()) {
-                NodePointer ptr = (NodePointer) ctx.next();
-                String str = ptr.getNamespaceURI();
+                final NodePointer ptr = (NodePointer) ctx.next();
+                final String str = ptr.getNamespaceURI();
                 return str == null ? "" : str;
             }
         }
@@ -463,17 +467,17 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    protected Object functionLocalName(EvalContext context) {
+    protected Object functionLocalName(final EvalContext context) {
         if (getArgumentCount() == 0) {
-            NodePointer ptr = context.getCurrentNodePointer();
+            final NodePointer ptr = context.getCurrentNodePointer();
             return ptr.getName().getName();
         }
         assertArgCount(1);
-        Object set = getArg1().compute(context);
+        final Object set = getArg1().compute(context);
         if (set instanceof EvalContext) {
-            EvalContext ctx = (EvalContext) set;
+            final EvalContext ctx = (EvalContext) set;
             if (ctx.hasNext()) {
-                NodePointer ptr = (NodePointer) ctx.next();
+                final NodePointer ptr = (NodePointer) ctx.next();
                 return ptr.getName().getName();
             }
         }
@@ -485,17 +489,17 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    protected Object functionName(EvalContext context) {
+    protected Object functionName(final EvalContext context) {
         if (getArgumentCount() == 0) {
-            NodePointer ptr = context.getCurrentNodePointer();
+            final NodePointer ptr = context.getCurrentNodePointer();
             return ptr.getName().toString();
         }
         assertArgCount(1);
-        Object set = getArg1().compute(context);
+        final Object set = getArg1().compute(context);
         if (set instanceof EvalContext) {
-            EvalContext ctx = (EvalContext) set;
+            final EvalContext ctx = (EvalContext) set;
             if (ctx.hasNext()) {
-                NodePointer ptr = (NodePointer) ctx.next();
+                final NodePointer ptr = (NodePointer) ctx.next();
                 return ptr.getName().toString();
             }
         }
@@ -507,7 +511,7 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    protected Object functionString(EvalContext context) {
+    protected Object functionString(final EvalContext context) {
         if (getArgumentCount() == 0) {
             return InfoSetUtil.stringValue(context.getCurrentNodePointer());
         }
@@ -520,14 +524,14 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    protected Object functionConcat(EvalContext context) {
+    protected Object functionConcat(final EvalContext context) {
         if (getArgumentCount() < 2) {
             assertArgCount(2);
         }
-        StringBuffer buffer = new StringBuffer();
-        Expression[] args = getArguments();
-        for (int i = 0; i < args.length; i++) {
-            buffer.append(InfoSetUtil.stringValue(args[i].compute(context)));
+        final StringBuffer buffer = new StringBuffer();
+        final Expression[] args = getArguments();
+        for (final Expression arg : args) {
+            buffer.append(InfoSetUtil.stringValue(arg.compute(context)));
         }
         return buffer.toString();
     }
@@ -537,10 +541,10 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Boolean
      */
-    protected Object functionStartsWith(EvalContext context) {
+    protected Object functionStartsWith(final EvalContext context) {
         assertArgCount(2);
-        String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
+        final String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
         return s1.startsWith(s2) ? Boolean.TRUE : Boolean.FALSE;
     }
 
@@ -550,10 +554,10 @@ public class CoreFunction extends Operation {
      * @return Boolean
      * @since 1.4
      */
-    protected Object functionEndsWith(EvalContext context) {
+    protected Object functionEndsWith(final EvalContext context) {
         assertArgCount(2);
-        String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
+        final String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
         return s1.endsWith(s2) ? Boolean.TRUE : Boolean.FALSE;
     }
 
@@ -562,10 +566,10 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Boolean
      */
-    protected Object functionContains(EvalContext context) {
+    protected Object functionContains(final EvalContext context) {
         assertArgCount(2);
-        String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
+        final String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
         return s1.indexOf(s2) != -1 ? Boolean.TRUE : Boolean.FALSE;
     }
 
@@ -574,11 +578,11 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    protected Object functionSubstringBefore(EvalContext context) {
+    protected Object functionSubstringBefore(final EvalContext context) {
         assertArgCount(2);
-        String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
-        int index = s1.indexOf(s2);
+        final String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
+        final int index = s1.indexOf(s2);
         if (index == -1) {
             return "";
         }
@@ -590,11 +594,11 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    protected Object functionSubstringAfter(EvalContext context) {
+    protected Object functionSubstringAfter(final EvalContext context) {
         assertArgCount(2);
-        String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
-        int index = s1.indexOf(s2);
+        final String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
+        final int index = s1.indexOf(s2);
         if (index == -1) {
             return "";
         }
@@ -606,13 +610,13 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    protected Object functionSubstring(EvalContext context) {
+    protected Object functionSubstring(final EvalContext context) {
         final int minArgs = 2;
         final int maxArgs = 3;
         assertArgRange(minArgs, maxArgs);
-        int ac = getArgumentCount();
+        final int ac = getArgumentCount();
 
-        String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
         double from = InfoSetUtil.doubleValue(getArg2().computeValue(context));
         if (Double.isNaN(from)) {
             return "";
@@ -635,7 +639,7 @@ public class CoreFunction extends Operation {
             return "";
         }
 
-        double to = from + length;
+        final double to = from + length;
         if (to < 1) {
             return "";
         }
@@ -658,7 +662,7 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Number
      */
-    protected Object functionStringLength(EvalContext context) {
+    protected Object functionStringLength(final EvalContext context) {
         String s;
         if (getArgumentCount() == 0) {
             s = InfoSetUtil.stringValue(context.getCurrentNodePointer());
@@ -667,7 +671,7 @@ public class CoreFunction extends Operation {
             assertArgCount(1);
             s = InfoSetUtil.stringValue(getArg1().computeValue(context));
         }
-        return new Double(s.length());
+        return Double.valueOf(s.length());
     }
 
     /**
@@ -675,10 +679,10 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    protected Object functionNormalizeSpace(EvalContext context) {
+    protected Object functionNormalizeSpace(final EvalContext context) {
         assertArgCount(1);
-        String s = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        char[] chars = s.toCharArray();
+        final String s = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final char[] chars = s.toCharArray();
         int out = 0;
         int phase = 0;
         for (int in = 0; in < chars.length; in++) {
@@ -708,17 +712,17 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    protected Object functionTranslate(EvalContext context) {
+    protected Object functionTranslate(final EvalContext context) {
         final int argCount = 3;
         assertArgCount(argCount);
-        String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
-        String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
-        String s3 = InfoSetUtil.stringValue(getArg3().computeValue(context));
-        char[] chars = s1.toCharArray();
+        final String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
+        final String s3 = InfoSetUtil.stringValue(getArg3().computeValue(context));
+        final char[] chars = s1.toCharArray();
         int out = 0;
         for (int in = 0; in < chars.length; in++) {
-            char c = chars[in];
-            int inx = s2.indexOf(c);
+            final char c = chars[in];
+            final int inx = s2.indexOf(c);
             if (inx != -1) {
                 if (inx < s3.length()) {
                     chars[out++] = s3.charAt(inx);
@@ -736,7 +740,7 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Boolean
      */
-    protected Object functionBoolean(EvalContext context) {
+    protected Object functionBoolean(final EvalContext context) {
         assertArgCount(1);
         return InfoSetUtil.booleanValue(getArg1().computeValue(context))
             ? Boolean.TRUE
@@ -748,7 +752,7 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Boolean
      */
-    protected Object functionNot(EvalContext context) {
+    protected Object functionNot(final EvalContext context) {
         assertArgCount(1);
         return InfoSetUtil.booleanValue(getArg1().computeValue(context))
             ? Boolean.FALSE
@@ -760,7 +764,7 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Boolean.TRUE
      */
-    protected Object functionTrue(EvalContext context) {
+    protected Object functionTrue(final EvalContext context) {
         assertArgCount(0);
         return Boolean.TRUE;
     }
@@ -770,7 +774,7 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Boolean.FALSE
      */
-    protected Object functionFalse(EvalContext context) {
+    protected Object functionFalse(final EvalContext context) {
         assertArgCount(0);
         return Boolean.FALSE;
     }
@@ -780,7 +784,7 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return null
      */
-    protected Object functionNull(EvalContext context) {
+    protected Object functionNull(final EvalContext context) {
         assertArgCount(0);
         return null;
     }
@@ -790,7 +794,7 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Number
      */
-    protected Object functionNumber(EvalContext context) {
+    protected Object functionNumber(final EvalContext context) {
         if (getArgumentCount() == 0) {
             return InfoSetUtil.number(context.getCurrentNodePointer());
         }
@@ -803,20 +807,20 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Number
      */
-    protected Object functionSum(EvalContext context) {
+    protected Object functionSum(final EvalContext context) {
         assertArgCount(1);
-        Object v = getArg1().compute(context);
+        final Object v = getArg1().compute(context);
         if (v == null) {
             return ZERO;
         }
         if (v instanceof EvalContext) {
             double sum = 0.0;
-            EvalContext ctx = (EvalContext) v;
+            final EvalContext ctx = (EvalContext) v;
             while (ctx.hasNext()) {
-                NodePointer ptr = (NodePointer) ctx.next();
+                final NodePointer ptr = (NodePointer) ctx.next();
                 sum += InfoSetUtil.doubleValue(ptr);
             }
-            return new Double(sum);
+            return Double.valueOf(sum);
         }
         throw new JXPathException(
             "Invalid argument type for 'sum': " + v.getClass().getName());
@@ -827,13 +831,13 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Number
      */
-    protected Object functionFloor(EvalContext context) {
+    protected Object functionFloor(final EvalContext context) {
         assertArgCount(1);
-        double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
+        final double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
         if (Double.isNaN(v) || Double.isInfinite(v)) {
-            return new Double(v);
+            return Double.valueOf(v);
         }
-        return new Double(Math.floor(v));
+        return Double.valueOf(Math.floor(v));
     }
 
     /**
@@ -841,13 +845,13 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Number
      */
-    protected Object functionCeiling(EvalContext context) {
+    protected Object functionCeiling(final EvalContext context) {
         assertArgCount(1);
-        double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
+        final double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
         if (Double.isNaN(v) || Double.isInfinite(v)) {
-            return new Double(v);
+            return Double.valueOf(v);
         }
-        return new Double(Math.ceil(v));
+        return Double.valueOf(Math.ceil(v));
     }
 
     /**
@@ -855,13 +859,13 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return Number
      */
-    protected Object functionRound(EvalContext context) {
+    protected Object functionRound(final EvalContext context) {
         assertArgCount(1);
-        double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
+        final double v = InfoSetUtil.doubleValue(getArg1().computeValue(context));
         if (Double.isNaN(v) || Double.isInfinite(v)) {
-            return new Double(v);
+            return Double.valueOf(v);
         }
-        return new Double(Math.round(v));
+        return Double.valueOf(Math.round(v));
     }
 
     /**
@@ -869,25 +873,25 @@ public class CoreFunction extends Operation {
      * @param context evaluation context
      * @return String
      */
-    private Object functionFormatNumber(EvalContext context) {
+    private Object functionFormatNumber(final EvalContext context) {
         final int minArgs = 2;
         final int maxArgs = 3;
         assertArgRange(minArgs, maxArgs);
 
-        double number =
+        final double number =
             InfoSetUtil.doubleValue(getArg1().computeValue(context));
-        String pattern =
+        final String pattern =
             InfoSetUtil.stringValue(getArg2().computeValue(context));
 
         DecimalFormatSymbols symbols;
         if (getArgumentCount() == maxArgs) {
-            String symbolsName =
+            final String symbolsName =
                 InfoSetUtil.stringValue(getArg3().computeValue(context));
             symbols =
                 context.getJXPathContext().getDecimalFormatSymbols(symbolsName);
         }
         else {
-            NodePointer pointer = context.getCurrentNodePointer();
+            final NodePointer pointer = context.getCurrentNodePointer();
             Locale locale;
             if (pointer != null) {
                 locale = pointer.getLocale();
@@ -898,7 +902,7 @@ public class CoreFunction extends Operation {
             symbols = new DecimalFormatSymbols(locale);
         }
 
-        DecimalFormat format = (DecimalFormat) NumberFormat.getInstance();
+        final DecimalFormat format = (DecimalFormat) NumberFormat.getInstance();
         format.setDecimalFormatSymbols(symbols);
         format.applyLocalizedPattern(pattern);
         return format.format(number);
@@ -908,7 +912,7 @@ public class CoreFunction extends Operation {
      * Assert <code>count</code> args.
      * @param count int
      */
-    private void assertArgCount(int count) {
+    private void assertArgCount(final int count) {
         assertArgRange(count, count);
     }
 
@@ -917,8 +921,8 @@ public class CoreFunction extends Operation {
      * @param min int
      * @param max int
      */
-    private void assertArgRange(int min, int max) {
-        int ct = getArgumentCount();
+    private void assertArgRange(final int min, final int max) {
+        final int ct = getArgumentCount();
         if (ct < min || ct > max) {
             throw new JXPathInvalidSyntaxException(
                     "Incorrect number of arguments: " + this);

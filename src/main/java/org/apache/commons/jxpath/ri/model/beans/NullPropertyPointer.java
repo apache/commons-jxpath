@@ -36,50 +36,61 @@ public class NullPropertyPointer extends PropertyPointer {
      * Create a new NullPropertyPointer.
      * @param parent pointer
      */
-    public NullPropertyPointer(NodePointer parent) {
+    public NullPropertyPointer(final NodePointer parent) {
         super(parent);
     }
 
+    @Override
     public QName getName() {
         return new QName(propertyName);
     }
 
-    public void setPropertyIndex(int index) {
+    @Override
+    public void setPropertyIndex(final int index) {
     }
 
+    @Override
     public int getLength() {
         return 0;
     }
 
+    @Override
     public Object getBaseValue() {
         return null;
     }
 
+    @Override
     public Object getImmediateNode() {
         return null;
     }
 
+    @Override
     public boolean isLeaf() {
         return true;
     }
 
+    @Override
     public NodePointer getValuePointer() {
         return new NullPointer(this,  new QName(getPropertyName()));
     }
 
+    @Override
     protected boolean isActualProperty() {
         return false;
     }
 
+    @Override
     public boolean isActual() {
         return false;
     }
 
+    @Override
     public boolean isContainer() {
         return true;
     }
 
-    public void setValue(Object value) {
+    @Override
+    public void setValue(final Object value) {
         if (parent == null || parent.isContainer()) {
             throw new JXPathInvalidAccessException(
                 "Cannot set property "
@@ -91,7 +102,7 @@ public class NullPropertyPointer extends PropertyPointer {
                         .isDynamicPropertyDeclarationSupported()) {
             // If the parent property owner can create
             // a property automatically - let it do so
-            PropertyPointer propertyPointer =
+            final PropertyPointer propertyPointer =
                 ((PropertyOwnerPointer) parent).getPropertyPointer();
             propertyPointer.setPropertyName(propertyName);
             propertyPointer.setValue(value);
@@ -104,7 +115,8 @@ public class NullPropertyPointer extends PropertyPointer {
         }
     }
 
-    public NodePointer createPath(JXPathContext context) {
+    @Override
+    public NodePointer createPath(final JXPathContext context) {
         NodePointer newParent = parent.createPath(context);
         if (isAttribute()) {
             return newParent.createAttribute(context, getName());
@@ -126,16 +138,17 @@ public class NullPropertyPointer extends PropertyPointer {
         //    case 1.  In the latter case, we simply request that the
         //    non-property pointer expand the collection by itself.
         if (newParent instanceof PropertyOwnerPointer) {
-            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            final PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
             newParent = pop.getPropertyPointer();
         }
         return newParent.createChild(context, getName(), getIndex());
     }
 
-    public NodePointer createPath(JXPathContext context, Object value) {
+    @Override
+    public NodePointer createPath(final JXPathContext context, final Object value) {
         NodePointer newParent = parent.createPath(context);
         if (isAttribute()) {
-            NodePointer pointer = newParent.createAttribute(context, getName());
+            final NodePointer pointer = newParent.createAttribute(context, getName());
             pointer.setValue(value);
             return pointer;
         }
@@ -143,26 +156,30 @@ public class NullPropertyPointer extends PropertyPointer {
             throw createBadFactoryException(context.getFactory());
         }
         if (newParent instanceof PropertyOwnerPointer) {
-            PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
+            final PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
             newParent = pop.getPropertyPointer();
         }
         return newParent.createChild(context, getName(), index, value);
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index) {
+    @Override
+    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
         return createPath(context).createChild(context, name, index);
     }
 
-    public NodePointer createChild(JXPathContext context, QName name,
-            int index, Object value) {
+    @Override
+    public NodePointer createChild(final JXPathContext context, final QName name,
+            final int index, final Object value) {
         return createPath(context).createChild(context, name, index, value);
     }
 
+    @Override
     public String getPropertyName() {
         return propertyName;
     }
 
-    public void setPropertyName(String propertyName) {
+    @Override
+    public void setPropertyName(final String propertyName) {
         this.propertyName = propertyName;
     }
 
@@ -170,28 +187,32 @@ public class NullPropertyPointer extends PropertyPointer {
      * Set the name attribute.
      * @param attributeValue value to set
      */
-    public void setNameAttributeValue(String attributeValue) {
+    public void setNameAttributeValue(final String attributeValue) {
         this.propertyName = attributeValue;
         byNameAttribute = true;
     }
 
+    @Override
     public boolean isCollection() {
         return getIndex() != WHOLE_COLLECTION;
     }
 
+    @Override
     public int getPropertyCount() {
         return 0;
     }
 
+    @Override
     public String[] getPropertyNames() {
         return new String[0];
     }
 
+    @Override
     public String asPath() {
         if (!byNameAttribute) {
             return super.asPath();
         }
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         buffer.append(getImmediateParentPointer().asPath());
         buffer.append("[@name='");
         buffer.append(escape(getPropertyName()));
@@ -207,7 +228,7 @@ public class NullPropertyPointer extends PropertyPointer {
      * @param factory AbstractFactory
      * @return JXPathAbstractFactoryException
      */
-    private JXPathAbstractFactoryException createBadFactoryException(AbstractFactory factory) {
+    private JXPathAbstractFactoryException createBadFactoryException(final AbstractFactory factory) {
         return new JXPathAbstractFactoryException("Factory " + factory
                 + " reported success creating object for path: " + asPath()
                 + " but object was null.  Terminating to avoid stack recursion.");

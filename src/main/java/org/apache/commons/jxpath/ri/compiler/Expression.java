@@ -37,13 +37,13 @@ import java.util.Locale;
 public abstract class Expression {
 
     /** zero */
-    protected static final Double ZERO = new Double(0);
+    protected static final Double ZERO = Double.valueOf(0);
 
     /** one */
-    protected static final Double ONE = new Double(1);
+    protected static final Double ONE = Double.valueOf(1);
 
     /** NaN */
-    protected static final Double NOT_A_NUMBER = new Double(Double.NaN);
+    protected static final Double NOT_A_NUMBER = Double.valueOf(Double.NaN);
 
     private boolean contextDependencyKnown = false;
     private boolean contextDependent;
@@ -88,8 +88,8 @@ public abstract class Expression {
      * @param context evaluation context
      * @return value Iterator
      */
-    public Iterator iterate(EvalContext context) {
-        Object result = compute(context);
+    public Iterator iterate(final EvalContext context) {
+        final Object result = compute(context);
         if (result instanceof EvalContext) {
             return new ValueIterator((EvalContext) result);
         }
@@ -104,8 +104,8 @@ public abstract class Expression {
      * @param context evaluation context
      * @return pointer Iterator
      */
-    public Iterator iteratePointers(EvalContext context) {
-        Object result = compute(context);
+    public Iterator iteratePointers(final EvalContext context) {
+        final Object result = compute(context);
         if (result == null) {
             return Collections.EMPTY_LIST.iterator();
         }
@@ -126,9 +126,9 @@ public abstract class Expression {
      * Pointer iterator
      */
     public static class PointerIterator implements Iterator {
-        private Iterator iterator;
-        private QName qname;
-        private Locale locale;
+        private final Iterator iterator;
+        private final QName qname;
+        private final Locale locale;
 
         //to what method does the following comment refer?
         /**
@@ -138,24 +138,28 @@ public abstract class Expression {
          * @param locale Locale
          * @deprecated Use the method that takes a NamespaceManager
          */
-        public PointerIterator(Iterator it, QName qname, Locale locale) {
+        @Deprecated
+        public PointerIterator(final Iterator it, final QName qname, final Locale locale) {
             this.iterator = it;
             this.qname = qname;
             this.locale = locale;
         }
 
+        @Override
         public boolean hasNext() {
             return iterator.hasNext();
         }
 
+        @Override
         public Object next() {
-            Object o = iterator.next();
+            final Object o = iterator.next();
             return o instanceof Pointer ? o : NodePointer.newNodePointer(qname, o, locale);
         }
 
         /**
          * Unsupported.
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -165,28 +169,31 @@ public abstract class Expression {
      * Value Iterator
      */
     public static class ValueIterator implements Iterator {
-        private Iterator iterator;
+        private final Iterator iterator;
 
         /**
          * Create a new ValueIterator.
          * @param it underlying Iterator, may contain pointers
          */
-        public ValueIterator(Iterator it) {
+        public ValueIterator(final Iterator it) {
             this.iterator = it;
         }
 
+        @Override
         public boolean hasNext() {
             return iterator.hasNext();
         }
 
+        @Override
         public Object next() {
-            Object o = iterator.next();
+            final Object o = iterator.next();
             return o instanceof Pointer ? ((Pointer) o).getValue() : o;
         }
 
         /**
          * Unsupported.
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

@@ -25,15 +25,15 @@ import org.apache.commons.jxpath.Variables;
 public class KeywordVariables implements Variables {
     private static final long serialVersionUID = 894145608741325442L;
 
-    private String keyword;
-    private Object object;
+    private final String keyword;
+    private final Object object;
 
     /**
      * Create a new KeywordVariables.
      * @param keyword String
      * @param object value
      */
-    public KeywordVariables(String keyword, Object object) {
+    public KeywordVariables(final String keyword, final Object object) {
         if (keyword == null) {
             throw new IllegalArgumentException("keyword cannot be null");
         }
@@ -41,20 +41,24 @@ public class KeywordVariables implements Variables {
         this.object = object;
     }
 
-    public boolean isDeclaredVariable(String variable) {
+    @Override
+    public boolean isDeclaredVariable(final String variable) {
         return variable.equals(keyword);
     }
 
-    public Object getVariable(String variable) {
+    @Override
+    public Object getVariable(final String variable) {
         return isDeclaredVariable(variable) ? object : null;
     }
 
-    public void declareVariable(String variable, Object value) {
+    @Override
+    public void declareVariable(final String variable, final Object value) {
         throw new UnsupportedOperationException(
             "Cannot declare new keyword variables.");
     }
 
-    public void undeclareVariable(String variable) {
+    @Override
+    public void undeclareVariable(final String variable) {
         throw new UnsupportedOperationException(
             "Cannot undeclare keyword variables.");
     }

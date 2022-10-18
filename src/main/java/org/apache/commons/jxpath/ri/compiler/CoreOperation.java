@@ -45,14 +45,16 @@ public abstract class CoreOperation extends Operation {
      * Create a new CoreOperation.
      * @param args Expression[]
      */
-    public CoreOperation(Expression[] args) {
+    public CoreOperation(final Expression[] args) {
         super(args);
     }
 
-    public Object compute(EvalContext context) {
+    @Override
+    public Object compute(final EvalContext context) {
         return computeValue(context);
     }
 
+    @Override
     public abstract Object computeValue(EvalContext context);
 
     /**
@@ -74,11 +76,12 @@ public abstract class CoreOperation extends Operation {
      */
     protected abstract int getPrecedence();
 
+    @Override
     public String toString() {
         if (args.length == 1) {
             return getSymbol() + parenthesize(args[0], false);
         }
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < args.length; i++) {
             if (i > 0) {
                 buffer.append(' ');
@@ -96,12 +99,12 @@ public abstract class CoreOperation extends Operation {
      * @param left whether <code>expression</code> is left of this one.
      * @return String
      */
-    private String parenthesize(Expression expression, boolean left) {
-        String s = expression.toString();
+    private String parenthesize(final Expression expression, final boolean left) {
+        final String s = expression.toString();
         if (!(expression instanceof CoreOperation)) {
             return s;
         }
-        int compared = getPrecedence() - ((CoreOperation) expression).getPrecedence();
+        final int compared = getPrecedence() - ((CoreOperation) expression).getPrecedence();
 
         if (compared < 0) {
             return s;

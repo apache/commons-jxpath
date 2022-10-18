@@ -29,23 +29,23 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 public class AliasedNamespaceIterationTest extends JXPathTestCase {
     protected JXPathContext context;
 
-    protected DocumentContainer createDocumentContainer(String model) {
-        DocumentContainer result = new DocumentContainer(JXPathTestCase.class
+    protected DocumentContainer createDocumentContainer(final String model) {
+        final DocumentContainer result = new DocumentContainer(JXPathTestCase.class
                 .getResource("IterateAliasedNS.xml"), model);
         return result;
     }
 
-    protected JXPathContext createContext(String model) {
-        JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
+    protected JXPathContext createContext(final String model) {
+        final JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
         context.registerNamespace("a", "ns");
         return context;
     }
 
-    protected void doTestIterate(String xpath, String model, Collection expected) {
+    protected void doTestIterate(final String xpath, final String model, final Collection expected) {
         assertXPathPointerIterator(createContext(model), xpath, expected);
     }
 
-    protected void doTestIterate(String model) {
+    protected void doTestIterate(final String model) {
         assertXPathPointerIterator(createContext(model), "/a:doc/a:elem", list("/a:doc[1]/a:elem[1]", "/a:doc[1]/a:elem[2]"));
     }
 

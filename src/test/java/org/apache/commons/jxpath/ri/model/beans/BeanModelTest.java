@@ -27,22 +27,24 @@ import org.apache.commons.jxpath.ri.model.BeanModelTestCase;
  */
 public class BeanModelTest extends BeanModelTestCase {
 
+    @Override
     protected Object createContextBean() {
         return new TestBean();
     }
 
+    @Override
     protected AbstractFactory getAbstractFactory() {
         return new TestBeanFactory();
     }
-    
+
     public void testIndexedProperty() {
-        JXPathContext context =
+        final JXPathContext context =
             JXPathContext.newContext(null, new TestIndexedPropertyBean());
-            
+
         assertXPathValueAndPointer(
             context,
             "indexed[1]",
-            new Integer(0),
+            Integer.valueOf(0),
             "/indexed[1]");
     }
 

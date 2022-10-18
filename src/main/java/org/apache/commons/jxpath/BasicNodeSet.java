@@ -25,7 +25,7 @@ import java.util.List;
  * of pointers.
  */
 public class BasicNodeSet implements NodeSet {
-    private List pointers = new ArrayList();
+    private final List pointers = new ArrayList();
     private List readOnlyPointers;
     private List nodes;
     private List values;
@@ -34,7 +34,7 @@ public class BasicNodeSet implements NodeSet {
      * Add a pointer to this NodeSet.
      * @param pointer to add
      */
-    public void add(Pointer pointer) {
+    public void add(final Pointer pointer) {
         if (pointers.add(pointer)) {
             clearCacheLists();
         }
@@ -44,7 +44,7 @@ public class BasicNodeSet implements NodeSet {
      * Add the specified NodeSet to this NodeSet.
      * @param nodeSet to add
      */
-    public void add(NodeSet nodeSet) {
+    public void add(final NodeSet nodeSet) {
         if (pointers.addAll(nodeSet.getPointers())) {
             clearCacheLists();
         }
@@ -54,12 +54,13 @@ public class BasicNodeSet implements NodeSet {
      * Remove a pointer from this NodeSet.
      * @param pointer to remove
      */
-    public void remove(Pointer pointer) {
+    public void remove(final Pointer pointer) {
         if (pointers.remove(pointer)) {
             clearCacheLists();
         }
     }
 
+    @Override
     public synchronized List getPointers() {
         if (readOnlyPointers == null) {
             readOnlyPointers = Collections.unmodifiableList(pointers);
@@ -67,11 +68,12 @@ public class BasicNodeSet implements NodeSet {
         return readOnlyPointers;
     }
 
+    @Override
     public synchronized List getNodes() {
         if (nodes == null) {
             nodes = new ArrayList();
             for (int i = 0; i < pointers.size(); i++) {
-                Pointer pointer = (Pointer) pointers.get(i);
+                final Pointer pointer = (Pointer) pointers.get(i);
                 nodes.add(pointer.getNode());
             }
             nodes = Collections.unmodifiableList(nodes);
@@ -79,11 +81,12 @@ public class BasicNodeSet implements NodeSet {
         return nodes;
     }
 
+    @Override
     public synchronized List getValues() {
         if (values == null) {
             values = new ArrayList();
             for (int i = 0; i < pointers.size(); i++) {
-                Pointer pointer = (Pointer) pointers.get(i);
+                final Pointer pointer = (Pointer) pointers.get(i);
                 values.add(pointer.getValue());
             }
             values = Collections.unmodifiableList(values);
@@ -91,6 +94,7 @@ public class BasicNodeSet implements NodeSet {
         return values;
     }
 
+    @Override
     public String toString() {
         return pointers.toString();
     }

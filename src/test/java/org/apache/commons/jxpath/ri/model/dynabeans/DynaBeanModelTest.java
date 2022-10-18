@@ -27,10 +27,12 @@ import org.apache.commons.jxpath.ri.model.BeanModelTestCase;
 
 public class DynaBeanModelTest extends BeanModelTestCase {
 
+    @Override
     protected Object createContextBean() {
         return new WrapDynaBean(new TestBean());
     }
 
+    @Override
     protected AbstractFactory getAbstractFactory() {
         return new TestDynaBeanFactory();
     }

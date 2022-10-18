@@ -23,7 +23,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  */
 public class JDOMNamespacePointer extends NodePointer {
-    private String prefix;
+    private final String prefix;
     private String namespaceURI;
 
     private static final long serialVersionUID = 7935311686545862379L;
@@ -33,7 +33,7 @@ public class JDOMNamespacePointer extends NodePointer {
      * @param parent parent pointer
      * @param prefix ns prefix
      */
-    public JDOMNamespacePointer(NodePointer parent, String prefix) {
+    public JDOMNamespacePointer(final NodePointer parent, final String prefix) {
         super(parent);
         this.prefix = prefix;
     }
@@ -45,34 +45,40 @@ public class JDOMNamespacePointer extends NodePointer {
      * @param namespaceURI ns URI
      */
     public JDOMNamespacePointer(
-            NodePointer parent,
-            String prefix,
-            String namespaceURI) {
+            final NodePointer parent,
+            final String prefix,
+            final String namespaceURI) {
         super(parent);
         this.prefix = prefix;
         this.namespaceURI = namespaceURI;
     }
 
+    @Override
     public QName getName() {
         return new QName(prefix);
     }
 
+    @Override
     public Object getBaseValue() {
         return null;
     }
 
+    @Override
     public boolean isCollection() {
         return false;
     }
 
+    @Override
     public int getLength() {
         return 1;
     }
 
+    @Override
     public Object getImmediateNode() {
         return getNamespaceURI();
     }
 
+    @Override
     public String getNamespaceURI() {
         if (namespaceURI == null) {
             namespaceURI = parent.getNamespaceURI(prefix);
@@ -80,6 +86,7 @@ public class JDOMNamespacePointer extends NodePointer {
         return namespaceURI;
     }
 
+    @Override
     public boolean isLeaf() {
         return true;
     }
@@ -88,12 +95,14 @@ public class JDOMNamespacePointer extends NodePointer {
      * Throws UnsupportedOperationException.
      * @param value Object value to set
      */
-    public void setValue(Object value) {
+    @Override
+    public void setValue(final Object value) {
         throw new UnsupportedOperationException("Cannot modify a namespace");
     }
 
+    @Override
     public String asPath() {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         if (parent != null) {
             buffer.append(parent.asPath());
             if (buffer.length() == 0
@@ -106,17 +115,20 @@ public class JDOMNamespacePointer extends NodePointer {
         return buffer.toString();
     }
 
+    @Override
     public int hashCode() {
         return prefix.hashCode();
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         return object == this || object instanceof JDOMNamespacePointer && prefix.equals(((JDOMNamespacePointer) object).prefix);
     }
 
+    @Override
     public int compareChildNodePointers(
-        NodePointer pointer1,
-        NodePointer pointer2) {
+        final NodePointer pointer1,
+        final NodePointer pointer2) {
         // Won't happen - namespaces don't have children
         return 0;
     }

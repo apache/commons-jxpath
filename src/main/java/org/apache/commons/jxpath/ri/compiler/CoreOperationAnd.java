@@ -28,27 +28,31 @@ public class CoreOperationAnd extends CoreOperation {
      * Create a new CoreOperationAnd.
      * @param args to combine
      */
-    public CoreOperationAnd(Expression[] args) {
+    public CoreOperationAnd(final Expression[] args) {
         super(args);
     }
 
-    public Object computeValue(EvalContext context) {
-        for (int i = 0; i < args.length; i++) {
-            if (!InfoSetUtil.booleanValue(args[i].computeValue(context))) {
+    @Override
+    public Object computeValue(final EvalContext context) {
+        for (final Expression arg : args) {
+            if (!InfoSetUtil.booleanValue(arg.computeValue(context))) {
                 return Boolean.FALSE;
             }
         }
         return Boolean.TRUE;
     }
 
+    @Override
     protected int getPrecedence() {
         return AND_PRECEDENCE;
     }
 
+    @Override
     protected boolean isSymmetric() {
         return true;
     }
 
+    @Override
     public String getSymbol() {
         return "and";
     }

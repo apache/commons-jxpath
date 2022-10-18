@@ -28,12 +28,13 @@ public class VariableFactory extends AbstractFactory {
 
     /**
      */
+    @Override
     public boolean createObject(
-        JXPathContext context,
-        Pointer pointer,
-        Object parent,
-        String name,
-        int index) 
+        final JXPathContext context,
+        final Pointer pointer,
+        final Object parent,
+        final String name,
+        final int index)
     {
         if (name.equals("testArray")) {
             ((TestBean[]) parent)[index] = new TestBean();
@@ -53,7 +54,8 @@ public class VariableFactory extends AbstractFactory {
     /**
      * Create a new object and set it on the specified variable
      */
-    public boolean declareVariable(JXPathContext context, String name) {
+    @Override
+    public boolean declareVariable(final JXPathContext context, final String name) {
         if (name.equals("test")) {
             context.getVariables().declareVariable(name, new TestBean());
             return true;

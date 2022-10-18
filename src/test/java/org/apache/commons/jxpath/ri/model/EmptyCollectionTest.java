@@ -26,12 +26,12 @@ import org.apache.commons.jxpath.JXPathTestCase;
  */
 public class EmptyCollectionTest extends JXPathTestCase {
     public static class HasChild {
-        private Object child;
+        private final Object child;
 
         /**
          * Construct a new EmptyCollectionTest.HasChild instance.
          */
-        public HasChild(Object child) {
+        public HasChild(final Object child) {
             this.child = child;
         }
 

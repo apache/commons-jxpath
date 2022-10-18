@@ -25,22 +25,24 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class NodeSetContext extends EvalContext {
     private boolean startedSet = false;
-    private NodeSet nodeSet;
+    private final NodeSet nodeSet;
 
     /**
      * Create a new NodeSetContext.
      * @param parentContext parent context
      * @param nodeSet associated NodeSet
      */
-    public NodeSetContext(EvalContext parentContext, NodeSet nodeSet) {
+    public NodeSetContext(final EvalContext parentContext, final NodeSet nodeSet) {
         super(parentContext);
         this.nodeSet = nodeSet;
     }
 
+    @Override
     public NodeSet getNodeSet() {
         return nodeSet;
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         if (position == 0 && !setPosition(1)) {
             return null;
@@ -48,11 +50,13 @@ public class NodeSetContext extends EvalContext {
         return (NodePointer) nodeSet.getPointers().get(position - 1);
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         super.setPosition(position);
         return position >= 1 && position <= nodeSet.getPointers().size();
     }
 
+    @Override
     public boolean nextSet() {
         if (startedSet) {
             return false;
@@ -61,6 +65,7 @@ public class NodeSetContext extends EvalContext {
         return true;
     }
 
+    @Override
     public boolean nextNode() {
         return setPosition(position + 1);
     }

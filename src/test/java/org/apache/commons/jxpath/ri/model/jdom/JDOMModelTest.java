@@ -34,10 +34,11 @@ import org.jdom.Text;
  */
 public class JDOMModelTest extends XMLModelTestCase {
 
+    @Override
     protected String getModel() {
         return DocumentContainer.MODEL_JDOM;
     }
-    
+
     public void testGetNode() {
         assertXPathNodeType(context, "/", Document.class);
         assertXPathNodeType(context, "/vendor/location", Element.class);
@@ -46,38 +47,41 @@ public class JDOMModelTest extends XMLModelTestCase {
     }
 
     public void testGetElementDescendantOrSelf() {
-        JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
+        final JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
         assertTrue(childContext.getContextBean() instanceof Element);
         assertXPathNodeType(childContext, "//vendor", Element.class);
     }
 
+    @Override
     public void testID() {
         // id() is not supported by JDOM
     }
 
+    @Override
     protected AbstractFactory getAbstractFactory() {
         return new TestJDOMFactory();
     }
 
+    @Override
     protected String getXMLSignature(
-        Object node,
-        boolean elements,
-        boolean attributes,
-        boolean text,
-        boolean pi) 
+        final Object node,
+        final boolean elements,
+        final boolean attributes,
+        final boolean text,
+        final boolean pi)
     {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         appendXMLSignature(buffer, node, elements, attributes, text, pi);
         return buffer.toString();
     }
 
     private void appendXMLSignature(
-        StringBuffer buffer,
-        Object object,
-        boolean elements,
-        boolean attributes,
-        boolean text,
-        boolean pi) 
+        final StringBuffer buffer,
+        final Object object,
+        final boolean elements,
+        final boolean attributes,
+        final boolean text,
+        final boolean pi)
     {
         if (object instanceof Document) {
             buffer.append("<D>");
@@ -91,7 +95,7 @@ public class JDOMModelTest extends XMLModelTestCase {
             buffer.append("</D");
         }
         else if (object instanceof Element) {
-            String tag = elements ? ((Element) object).getName() : "E";
+            final String tag = elements ? ((Element) object).getName() : "E";
             buffer.append("<");
             buffer.append(tag);
             buffer.append(">");
@@ -116,17 +120,17 @@ public class JDOMModelTest extends XMLModelTestCase {
     }
 
     private void appendXMLSignature(
-        StringBuffer buffer,
-        List children,
-        boolean elements,
-        boolean attributes,
-        boolean text,
-        boolean pi) 
+        final StringBuffer buffer,
+        final List children,
+        final boolean elements,
+        final boolean attributes,
+        final boolean text,
+        final boolean pi)
     {
-        for (int i = 0; i < children.size(); i++) {
+        for (final Object child : children) {
             appendXMLSignature(
                 buffer,
-                children.get(i),
+                child,
                 elements,
                 attributes,
                 text,

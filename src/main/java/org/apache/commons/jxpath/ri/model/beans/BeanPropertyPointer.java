@@ -34,7 +34,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     private static final Object UNINITIALIZED = new Object();
 
     private String propertyName;
-    private JXPathBeanInfo beanInfo;
+    private final JXPathBeanInfo beanInfo;
     private Object baseValue = UNINITIALIZED;
     private Object value = UNINITIALIZED;
     private transient String[] names;
@@ -46,7 +46,7 @@ public class BeanPropertyPointer extends PropertyPointer {
      * @param parent parent pointer
      * @param beanInfo describes the target property/ies.
      */
-    public BeanPropertyPointer(NodePointer parent, JXPathBeanInfo beanInfo) {
+    public BeanPropertyPointer(final NodePointer parent, final JXPathBeanInfo beanInfo) {
         super(parent);
         this.beanInfo = beanInfo;
     }
@@ -55,10 +55,12 @@ public class BeanPropertyPointer extends PropertyPointer {
      * This type of node is auxiliary.
      * @return true
      */
+    @Override
     public boolean isContainer() {
         return true;
     }
 
+    @Override
     public int getPropertyCount() {
         if (beanInfo.isAtomic()) {
             return 0;
@@ -70,9 +72,10 @@ public class BeanPropertyPointer extends PropertyPointer {
      * Get the names of all properties, sorted alphabetically
      * @return String[]
      */
+    @Override
     public String[] getPropertyNames() {
         if (names == null) {
-            PropertyDescriptor[] pds = getPropertyDescriptors();
+            final PropertyDescriptor[] pds = getPropertyDescriptors();
             names = new String[pds.length];
             for (int i = 0; i < names.length; i++) {
                 names[i] = pds[i].getName();
@@ -85,7 +88,8 @@ public class BeanPropertyPointer extends PropertyPointer {
      * Select a property by name.
      * @param propertyName String name
      */
-    public void setPropertyName(String propertyName) {
+    @Override
+    public void setPropertyName(final String propertyName) {
         setPropertyIndex(UNSPECIFIED_PROPERTY);
         this.propertyName = propertyName;
     }
@@ -94,7 +98,8 @@ public class BeanPropertyPointer extends PropertyPointer {
      * Selects a property by its offset in the alphabetically sorted list.
      * @param index property index
      */
-    public void setPropertyIndex(int index) {
+    @Override
+    public void setPropertyIndex(final int index) {
         if (propertyIndex != index) {
             super.setPropertyIndex(index);
             propertyName = null;
@@ -108,9 +113,10 @@ public class BeanPropertyPointer extends PropertyPointer {
      * Get the value of the currently selected property.
      * @return Object value
      */
+    @Override
     public Object getBaseValue() {
         if (baseValue == UNINITIALIZED) {
-            PropertyDescriptor pd = getPropertyDescriptor();
+            final PropertyDescriptor pd = getPropertyDescriptor();
             if (pd == null) {
                 return null;
             }
@@ -119,7 +125,8 @@ public class BeanPropertyPointer extends PropertyPointer {
         return baseValue;
     }
 
-    public void setIndex(int index) {
+    @Override
+    public void setIndex(final int index) {
         if (this.index == index) {
             return;
         }
@@ -140,13 +147,14 @@ public class BeanPropertyPointer extends PropertyPointer {
      * and the value will be the property itself.
      * @return Object
      */
+    @Override
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
             if (index == WHOLE_COLLECTION) {
                 value = ValueUtils.getValue(getBaseValue());
             }
             else {
-                PropertyDescriptor pd = getPropertyDescriptor();
+                final PropertyDescriptor pd = getPropertyDescriptor();
                 if (pd == null) {
                     value = null;
                 }
@@ -158,12 +166,14 @@ public class BeanPropertyPointer extends PropertyPointer {
         return value;
     }
 
+    @Override
     protected boolean isActualProperty() {
         return getPropertyDescriptor() != null;
     }
 
+    @Override
     public boolean isCollection() {
-        PropertyDescriptor pd = getPropertyDescriptor();
+        final PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null) {
             return false;
         }
@@ -172,7 +182,7 @@ public class BeanPropertyPointer extends PropertyPointer {
             return true;
         }
 
-        int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
+        final int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
         if (hint == -1) {
             return false;
         }
@@ -180,7 +190,7 @@ public class BeanPropertyPointer extends PropertyPointer {
             return true;
         }
 
-        Object value = getBaseValue();
+        final Object value = getBaseValue();
         return value != null && ValueUtils.isCollection(value);
     }
 
@@ -189,8 +199,9 @@ public class BeanPropertyPointer extends PropertyPointer {
      * collection, otherwise - 1.
      * @return int length
      */
+    @Override
     public int getLength() {
-        PropertyDescriptor pd = getPropertyDescriptor();
+        final PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null) {
             return 1;
         }
@@ -201,7 +212,7 @@ public class BeanPropertyPointer extends PropertyPointer {
                 (IndexedPropertyDescriptor) pd);
         }
 
-        int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
+        final int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
         if (hint == -1) {
             return 1;
         }
@@ -214,8 +225,9 @@ public class BeanPropertyPointer extends PropertyPointer {
      * represented by the property.
      * @param value value to set
      */
-    public void setValue(Object value) {
-        PropertyDescriptor pd = getPropertyDescriptor();
+    @Override
+    public void setValue(final Object value) {
+        final PropertyDescriptor pd = getPropertyDescriptor();
         if (pd == null) {
             throw new JXPathInvalidAccessException(
                 "Cannot set property: " + asPath() + " - no such property");
@@ -230,7 +242,8 @@ public class BeanPropertyPointer extends PropertyPointer {
         this.value = value;
     }
 
-    public NodePointer createPath(JXPathContext context) {
+    @Override
+    public NodePointer createPath(final JXPathContext context) {
         if (getImmediateNode() == null) {
             super.createPath(context);
             baseValue = UNINITIALIZED;
@@ -239,13 +252,14 @@ public class BeanPropertyPointer extends PropertyPointer {
         return this;
     }
 
+    @Override
     public void remove() {
         if (index == WHOLE_COLLECTION) {
             setValue(null);
         }
         else if (isCollection()) {
-            Object o = getBaseValue();
-            Object collection = ValueUtils.remove(getBaseValue(), index);
+            final Object o = getBaseValue();
+            final Object collection = ValueUtils.remove(getBaseValue(), index);
             if (collection != o) {
                 ValueUtils.setValue(getBean(), getPropertyDescriptor(), collection);
             }
@@ -260,9 +274,10 @@ public class BeanPropertyPointer extends PropertyPointer {
      * Get the name of the currently selected property.
      * @return String property name
      */
+    @Override
     public String getPropertyName() {
         if (propertyName == null) {
-            PropertyDescriptor pd = getPropertyDescriptor();
+            final PropertyDescriptor pd = getPropertyDescriptor();
             if (pd != null) {
                 propertyName = pd.getName();
             }
@@ -277,13 +292,13 @@ public class BeanPropertyPointer extends PropertyPointer {
      */
     private PropertyDescriptor getPropertyDescriptor() {
         if (propertyDescriptor == null) {
-            int inx = getPropertyIndex();
+            final int inx = getPropertyIndex();
             if (inx == UNSPECIFIED_PROPERTY) {
                 propertyDescriptor =
                     beanInfo.getPropertyDescriptor(propertyName);
             }
             else {
-                PropertyDescriptor[] propertyDescriptors =
+                final PropertyDescriptor[] propertyDescriptors =
                     getPropertyDescriptors();
                 if (inx >= 0 && inx < propertyDescriptors.length) {
                     propertyDescriptor = propertyDescriptors[inx];

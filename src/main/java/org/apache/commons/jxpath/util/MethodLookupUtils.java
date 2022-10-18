@@ -41,13 +41,13 @@ public class MethodLookupUtils {
      * @return Constructor found if any.
      */
     public static Constructor lookupConstructor(
-        Class targetClass,
-        Object[] parameters) {
+        final Class targetClass,
+        final Object[] parameters) {
         boolean tryExact = true;
-        int count = parameters == null ? 0 : parameters.length;
-        Class[] types = new Class[count];
+        final int count = parameters == null ? 0 : parameters.length;
+        final Class[] types = new Class[count];
         for (int i = 0; i < count; i++) {
-            Object param = parameters[i];
+            final Object param = parameters[i];
             if (param != null) {
                 types[i] = param.getClass();
             }
@@ -67,7 +67,7 @@ public class MethodLookupUtils {
                     return constructor;
                 }
             }
-            catch (NoSuchMethodException ex) { //NOPMD
+            catch (final NoSuchMethodException ignore) { // NOPMD
                 // Ignore
             }
         }
@@ -76,15 +76,15 @@ public class MethodLookupUtils {
         boolean ambiguous = false;
 
         // Then - with type conversion
-        Constructor[] constructors = targetClass.getConstructors();
-        for (int i = 0; i < constructors.length; i++) {
-            int match =
+        final Constructor[] constructors = targetClass.getConstructors();
+        for (final Constructor constructor2 : constructors) {
+            final int match =
                 matchParameterTypes(
-                    constructors[i].getParameterTypes(),
+                    constructor2.getParameterTypes(),
                     parameters);
             if (match != NO_MATCH) {
                 if (match > currentMatch) {
-                    constructor = constructors[i];
+                    constructor = constructor2;
                     currentMatch = match;
                     ambiguous = false;
                 }
@@ -108,14 +108,14 @@ public class MethodLookupUtils {
      * @return Method found if any
      */
     public static Method lookupStaticMethod(
-        Class targetClass,
-        String name,
-        Object[] parameters) {
+        final Class targetClass,
+        final String name,
+        final Object[] parameters) {
         boolean tryExact = true;
-        int count = parameters == null ? 0 : parameters.length;
-        Class[] types = new Class[count];
+        final int count = parameters == null ? 0 : parameters.length;
+        final Class[] types = new Class[count];
         for (int i = 0; i < count; i++) {
-            Object param = parameters[i];
+            final Object param = parameters[i];
             if (param != null) {
                 types[i] = param.getClass();
             }
@@ -136,7 +136,7 @@ public class MethodLookupUtils {
                     return method;
                 }
             }
-            catch (NoSuchMethodException ex) { //NOPMD
+            catch (final NoSuchMethodException ignore) { // NOPMD
                 // Ignore
             }
         }
@@ -145,17 +145,17 @@ public class MethodLookupUtils {
         boolean ambiguous = false;
 
         // Then - with type conversion
-        Method[] methods = targetClass.getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            if (Modifier.isStatic(methods[i].getModifiers())
-                && methods[i].getName().equals(name)) {
-                int match =
+        final Method[] methods = targetClass.getMethods();
+        for (final Method method2 : methods) {
+            if (Modifier.isStatic(method2.getModifiers())
+                && method2.getName().equals(name)) {
+                final int match =
                     matchParameterTypes(
-                        methods[i].getParameterTypes(),
+                        method2.getParameterTypes(),
                         parameters);
                 if (match != NO_MATCH) {
                     if (match > currentMatch) {
-                        method = methods[i];
+                        method = method2;
                         currentMatch = match;
                         ambiguous = false;
                     }
@@ -180,8 +180,8 @@ public class MethodLookupUtils {
      */
     public static Method lookupMethod(
         Class targetClass,
-        String name,
-        Object[] parameters) {
+        final String name,
+        final Object[] parameters) {
         if (parameters == null
             || parameters.length < 1
             || parameters[0] == null) {
@@ -195,11 +195,11 @@ public class MethodLookupUtils {
         targetClass = TypeUtils.convert(parameters[0], targetClass).getClass();
 
         boolean tryExact = true;
-        int count = parameters.length - 1;
-        Class[] types = new Class[count];
-        Object[] arguments = new Object[count];
+        final int count = parameters.length - 1;
+        final Class[] types = new Class[count];
+        final Object[] arguments = new Object[count];
         for (int i = 0; i < count; i++) {
-            Object param = parameters[i + 1];
+            final Object param = parameters[i + 1];
             arguments[i] = param;
             if (param != null) {
                 types[i] = param.getClass();
@@ -221,7 +221,7 @@ public class MethodLookupUtils {
                     return method;
                 }
             }
-            catch (NoSuchMethodException ex) { //NOPMD
+            catch (final NoSuchMethodException ignore) { // NOPMD
                 // Ignore
             }
         }
@@ -230,17 +230,17 @@ public class MethodLookupUtils {
         boolean ambiguous = false;
 
         // Then - with type conversion
-        Method[] methods = targetClass.getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            if (!Modifier.isStatic(methods[i].getModifiers())
-                && methods[i].getName().equals(name)) {
-                int match =
+        final Method[] methods = targetClass.getMethods();
+        for (final Method method2 : methods) {
+            if (!Modifier.isStatic(method2.getModifiers())
+                && method2.getName().equals(name)) {
+                final int match =
                     matchParameterTypes(
-                        methods[i].getParameterTypes(),
+                        method2.getParameterTypes(),
                         arguments);
                 if (match != NO_MATCH) {
                     if (match > currentMatch) {
-                        method = methods[i];
+                        method = method2;
                         currentMatch = match;
                         ambiguous = false;
                     }
@@ -263,20 +263,20 @@ public class MethodLookupUtils {
      * @return int code
      */
     private static int matchParameterTypes(
-        Class[] types,
-        Object[] parameters) {
+        final Class[] types,
+        final Object[] parameters) {
         int pi = 0;
         if (types.length >= 1
             && ExpressionContext.class.isAssignableFrom(types[0])) {
             pi++;
         }
-        int length = parameters == null ? 0 : parameters.length;
+        final int length = parameters == null ? 0 : parameters.length;
         if (types.length != length + pi) {
             return NO_MATCH;
         }
         int totalMatch = EXACT_MATCH;
         for (int i = 0; i < length; i++) {
-            int match = matchType(types[i + pi], parameters[i]);
+            final int match = matchType(types[i + pi], parameters[i]);
             if (match == NO_MATCH) {
                 return NO_MATCH;
             }
@@ -293,12 +293,12 @@ public class MethodLookupUtils {
      * @param object object to test
      * @return int code
      */
-    private static int matchType(Class expected, Object object) {
+    private static int matchType(final Class expected, final Object object) {
         if (object == null) {
             return APPROXIMATE_MATCH;
         }
 
-        Class actual = object.getClass();
+        final Class actual = object.getClass();
 
         if (expected.equals(actual)) {
             return EXACT_MATCH;

@@ -35,19 +35,22 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
      * Create a new CoreOperationRelationalExpression.
      * @param args arguments
      */
-    protected CoreOperationRelationalExpression(Expression[] args) {
+    protected CoreOperationRelationalExpression(final Expression[] args) {
         super(args);
     }
 
-    public final Object computeValue(EvalContext context) {
+    @Override
+    public final Object computeValue(final EvalContext context) {
         return compute(args[0].compute(context), args[1].compute(context))
                 ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    @Override
     protected final int getPrecedence() {
         return RELATIONAL_EXPR_PRECEDENCE;
     }
 
+    @Override
     protected final boolean isSymmetric() {
         return false;
     }
@@ -84,11 +87,11 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
         if (right instanceof Iterator) {
             return containsMatch(left, (Iterator) right);
         }
-        double ld = InfoSetUtil.doubleValue(left);
+        final double ld = InfoSetUtil.doubleValue(left);
         if (Double.isNaN(ld)) {
             return false;
         }
-        double rd = InfoSetUtil.doubleValue(right);
+        final double rd = InfoSetUtil.doubleValue(right);
         if (Double.isNaN(rd)) {
             return false;
         }
@@ -116,9 +119,9 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
      * @param value to look for
      * @return whether a match was found
      */
-    private boolean containsMatch(Iterator it, Object value) {
+    private boolean containsMatch(final Iterator it, final Object value) {
         while (it.hasNext()) {
-            Object element = it.next();
+            final Object element = it.next();
             if (compute(element, value)) {
                 return true;
             }
@@ -132,9 +135,9 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
      * @param value to look for
      * @return whether a match was found
      */
-    private boolean containsMatch(Object value, Iterator it) {
+    private boolean containsMatch(final Object value, final Iterator it) {
         while (it.hasNext()) {
-            Object element = it.next();
+            final Object element = it.next();
             if (compute(value, element)) {
                 return true;
             }
@@ -148,8 +151,8 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
      * @param rit right Iterator
      * @return whether a match was found
      */
-    private boolean findMatch(Iterator lit, Iterator rit) {
-        HashSet left = new HashSet();
+    private boolean findMatch(final Iterator lit, final Iterator rit) {
+        final HashSet left = new HashSet();
         while (lit.hasNext()) {
             left.add(lit.next());
         }

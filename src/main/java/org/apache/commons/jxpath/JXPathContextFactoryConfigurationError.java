@@ -24,15 +24,15 @@ package org.apache.commons.jxpath;
  */
 public class JXPathContextFactoryConfigurationError extends Error {
 
+    private static final long serialVersionUID = 1L;
     /** @serial */
-    private Exception exception;
+    private final Exception exception;
 
     /**
      * Create a new <code>JXPathContextFactoryConfigurationError</code> with no
      * detail mesage.
      */
      public JXPathContextFactoryConfigurationError() {
-         super();
          this.exception = null;
      }
 
@@ -42,7 +42,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
      *
      * @param msg The error message for the exception.
      */
-    public JXPathContextFactoryConfigurationError(String msg) {
+    public JXPathContextFactoryConfigurationError(final String msg) {
         super(msg);
         this.exception = null;
     }
@@ -55,7 +55,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
      * @param e The exception to be encapsulated in a
      * JXPathContextFactoryConfigurationError.
      */
-    public JXPathContextFactoryConfigurationError(Exception e) {
+    public JXPathContextFactoryConfigurationError(final Exception e) {
         super(e.toString());
         this.exception = e;
     }
@@ -68,7 +68,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
      * JXPathContextFactoryConfigurationError
      * @param msg The detail message.
      */
-    public JXPathContextFactoryConfigurationError(Exception e, String msg) {
+    public JXPathContextFactoryConfigurationError(final Exception e, final String msg) {
         super(msg);
         this.exception = e;
     }
@@ -81,8 +81,9 @@ public class JXPathContextFactoryConfigurationError extends Error {
      *
      * @return The error message.
      */
+    @Override
     public String getMessage () {
-        String message = super.getMessage();
+        final String message = super.getMessage();
         if (message == null && exception != null) {
             return exception.getMessage();
         }

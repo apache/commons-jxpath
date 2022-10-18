@@ -32,20 +32,20 @@ public class JXPath113Test extends JXPathTestCase
 
     public void testIssue113() throws Exception
     {
-        Document doc = JAXP.getDocument("<xml/>");
-        JXPathContext context = JXPathContext.newContext(doc);
+        final Document doc = JAXP.getDocument("<xml/>");
+        final JXPathContext context = JXPathContext.newContext(doc);
         context.selectNodes("//following-sibling::node()");
     }
 
     static class JAXP
     {
 
-        public static Document getDocument(String xml) throws Exception
+        public static Document getDocument(final String xml) throws Exception
         {
             return getDocument(new InputSource(new StringReader(xml)));
         }
 
-        public static Document getDocument(InputSource is) throws Exception
+        public static Document getDocument(final InputSource is) throws Exception
         {
 
             final DocumentBuilder builder = getDocumentBuilder();
@@ -56,13 +56,13 @@ public class JXPath113Test extends JXPathTestCase
         {
             try
             {
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 factory.setValidating(false);
                 factory.setNamespaceAware(true);
                 factory.setExpandEntityReferences(false);
                 return factory.newDocumentBuilder();
             }
-            catch (ParserConfigurationException e)
+            catch (final ParserConfigurationException e)
             {
                 throw new Error("JAXP config error:" + e.getMessage(), e);
             }

@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class CollectionAttributeNodeIterator extends CollectionNodeIterator {
 
-    private QName name;
+    private final QName name;
 
     /**
      * Create a new CollectionAttributeNodeIterator.
@@ -34,13 +34,14 @@ public class CollectionAttributeNodeIterator extends CollectionNodeIterator {
      * @param name attribute name
      */
     public CollectionAttributeNodeIterator(
-        CollectionPointer pointer,
-        QName name) {
+        final CollectionPointer pointer,
+        final QName name) {
         super(pointer, false, null);
         this.name = name;
     }
 
-    protected NodeIterator getElementNodeIterator(NodePointer elementPointer) {
+    @Override
+    protected NodeIterator getElementNodeIterator(final NodePointer elementPointer) {
         return elementPointer.attributeIterator(name);
     }
 }

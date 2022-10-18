@@ -34,26 +34,28 @@ public class KeyManagerUtils {
      */
     private static class SingleNodeExtendedKeyManager implements
             ExtendedKeyManager {
-        private KeyManager delegate;
+        private final KeyManager delegate;
 
         /**
          * Create a new SingleNodeExtendedKeyManager.
          * @param delegate KeyManager to wrap
          */
-        public SingleNodeExtendedKeyManager(KeyManager delegate) {
+        public SingleNodeExtendedKeyManager(final KeyManager delegate) {
             this.delegate = delegate;
         }
 
-        public NodeSet getNodeSetByKey(JXPathContext context, String key,
-                Object value) {
-            Pointer pointer = delegate.getPointerByKey(context, key, InfoSetUtil.stringValue(value));
-            BasicNodeSet result = new BasicNodeSet();
+        @Override
+        public NodeSet getNodeSetByKey(final JXPathContext context, final String key,
+                final Object value) {
+            final Pointer pointer = delegate.getPointerByKey(context, key, InfoSetUtil.stringValue(value));
+            final BasicNodeSet result = new BasicNodeSet();
             result.add(pointer);
             return result;
         }
 
-        public Pointer getPointerByKey(JXPathContext context, String keyName,
-                String keyValue) {
+        @Override
+        public Pointer getPointerByKey(final JXPathContext context, final String keyName,
+                final String keyValue) {
             return delegate.getPointerByKey(context, keyName, keyValue);
         }
     }
@@ -65,7 +67,7 @@ public class KeyManagerUtils {
      *         or a basic single-result ExtendedKeyManager that delegates to
      *         <code>keyManager</code>.
      */
-    public static ExtendedKeyManager getExtendedKeyManager(KeyManager keyManager) {
+    public static ExtendedKeyManager getExtendedKeyManager(final KeyManager keyManager) {
         return keyManager instanceof ExtendedKeyManager ? (ExtendedKeyManager) keyManager
                 : new SingleNodeExtendedKeyManager(keyManager);
     }

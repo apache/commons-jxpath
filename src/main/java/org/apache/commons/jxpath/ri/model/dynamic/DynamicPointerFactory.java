@@ -37,17 +37,19 @@ public class DynamicPointerFactory implements NodePointerFactory {
      */
     public static final int DYNAMIC_POINTER_FACTORY_ORDER = 800;
 
+    @Override
     public int getOrder() {
         return DYNAMIC_POINTER_FACTORY_ORDER;
     }
 
+    @Override
     public NodePointer createNodePointer(
-        QName name,
-        Object bean,
-        Locale locale) {
-        JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
+        final QName name,
+        final Object bean,
+        final Locale locale) {
+        final JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         if (bi.isDynamic()) {
-            DynamicPropertyHandler handler =
+            final DynamicPropertyHandler handler =
                 ValueUtils.getDynamicPropertyHandler(
                     bi.getDynamicPropertyHandlerClass());
             return new DynamicPointer(name, bean, handler, locale);
@@ -55,17 +57,18 @@ public class DynamicPointerFactory implements NodePointerFactory {
         return null;
     }
 
+    @Override
     public NodePointer createNodePointer(
-        NodePointer parent,
-        QName name,
-        Object bean) {
+        final NodePointer parent,
+        final QName name,
+        final Object bean) {
         if (bean == null) {
             return new NullPointer(parent, name);
         }
 
-        JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
+        final JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         if (bi.isDynamic()) {
-            DynamicPropertyHandler handler =
+            final DynamicPropertyHandler handler =
                 ValueUtils.getDynamicPropertyHandler(
                     bi.getDynamicPropertyHandlerClass());
             return new DynamicPointer(parent, name, bean, handler);

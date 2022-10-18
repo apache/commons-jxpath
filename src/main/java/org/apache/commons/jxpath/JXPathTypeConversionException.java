@@ -28,7 +28,7 @@ public class JXPathTypeConversionException extends JXPathException {
      * Create a new JXPathTypeConversionException.
      * @param message exception text
      */
-    public JXPathTypeConversionException(String message) {
+    public JXPathTypeConversionException(final String message) {
         super(message);
     }
 
@@ -37,7 +37,7 @@ public class JXPathTypeConversionException extends JXPathException {
      * @param message exception text
      * @param ex underlying cause
      */
-    public JXPathTypeConversionException(String message, Exception ex) {
+    public JXPathTypeConversionException(final String message, final Exception ex) {
         super(message, ex);
     }
 }

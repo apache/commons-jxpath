@@ -32,6 +32,7 @@ public class BasicNodeSetTest extends JXPathTestCase {
     /** BasicNodeSet */
     protected BasicNodeSet nodeSet;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         context = JXPathContext.newContext(new TestMixedModelBean());
@@ -40,11 +41,11 @@ public class BasicNodeSetTest extends JXPathTestCase {
 
     /**
      * Add the pointers for the specified path to <code>nodeSet</code>.
-     * 
+     *
      * @param xpath
      */
-    protected void addPointers(String xpath) {
-        for (Iterator iter = context.iteratePointers(xpath); iter.hasNext();) {
+    protected void addPointers(final String xpath) {
+        for (final Iterator iter = context.iteratePointers(xpath); iter.hasNext();) {
             nodeSet.add((Pointer) iter.next());
         }
         nudge();
@@ -52,11 +53,11 @@ public class BasicNodeSetTest extends JXPathTestCase {
 
     /**
      * Remove the pointers for the specified path from <code>nodeSet</code>.
-     * 
+     *
      * @param xpath
      */
-    protected void removePointers(String xpath) {
-        for (Iterator iter = context.iteratePointers(xpath); iter.hasNext();) {
+    protected void removePointers(final String xpath) {
+        for (final Iterator iter = context.iteratePointers(xpath); iter.hasNext();) {
             nodeSet.remove((Pointer) iter.next());
         }
         nudge();
@@ -78,10 +79,10 @@ public class BasicNodeSetTest extends JXPathTestCase {
         addPointers("/bean/integers");
         assertEquals(nodeSet.getPointers().toString(), list("/bean/integers[1]",
                 "/bean/integers[2]", "/bean/integers[3]", "/bean/integers[4]").toString());
-        assertEquals(list(new Integer(1), new Integer(2), new Integer(3),
-                new Integer(4)), nodeSet.getValues());
-        assertEquals(list(new Integer(1), new Integer(2), new Integer(3),
-                new Integer(4)), nodeSet.getNodes());
+        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3),
+                Integer.valueOf(4)), nodeSet.getValues());
+        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3),
+                Integer.valueOf(4)), nodeSet.getNodes());
     }
 
     /**
@@ -92,9 +93,9 @@ public class BasicNodeSetTest extends JXPathTestCase {
         removePointers("/bean/integers[4]");
         assertEquals(list("/bean/integers[1]", "/bean/integers[2]", "/bean/integers[3]")
                 .toString(), nodeSet.getPointers().toString());
-        assertEquals(list(new Integer(1), new Integer(2), new Integer(3)),
+        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3)),
                 nodeSet.getValues());
-        assertEquals(list(new Integer(1), new Integer(2), new Integer(3)),
+        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3)),
                 nodeSet.getNodes());
     }
 
@@ -119,10 +120,10 @@ public class BasicNodeSetTest extends JXPathTestCase {
      * @param names List of expected names
      * @param elements List of DOM elements
      */
-    protected void assertElementNames(List names, List elements) {
+    protected void assertElementNames(final List names, final List elements) {
         assertEquals(names.size(), elements.size());
-        Iterator nameIter = names.iterator();
-        Iterator elementIter = elements.iterator();
+        final Iterator nameIter = names.iterator();
+        final Iterator elementIter = elements.iterator();
         while (elementIter.hasNext()) {
             assertEquals(nameIter.next(), ((Element) elementIter.next()).getTagName());
         }
@@ -133,13 +134,13 @@ public class BasicNodeSetTest extends JXPathTestCase {
      * @param values List of expected values
      * @param elements List of DOM elements
      */
-    protected void assertElementValues(List values, List elements) {
+    protected void assertElementValues(final List values, final List elements) {
         assertEquals(values.size(), elements.size());
-        Iterator valueIter = values.iterator();
-        Iterator elementIter = elements.iterator();
+        final Iterator valueIter = values.iterator();
+        final Iterator elementIter = elements.iterator();
         while (elementIter.hasNext()) {
             assertEquals(valueIter.next(), ((Element) elementIter.next()).getFirstChild().getNodeValue());
         }
-        
+
     }
 }

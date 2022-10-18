@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * test succeeds.
  */
 public class SelfContext extends EvalContext {
-    private NodeTest nodeTest;
+    private final NodeTest nodeTest;
     private boolean startedSet = false;
     private NodePointer nodePointer;
 
@@ -35,15 +35,17 @@ public class SelfContext extends EvalContext {
      * @param parentContext EvalContext
      * @param nodeTest guard
      */
-    public SelfContext(EvalContext parentContext, NodeTest nodeTest) {
+    public SelfContext(final EvalContext parentContext, final NodeTest nodeTest) {
         super(parentContext);
         this.nodeTest = nodeTest;
     }
 
+    @Override
     public Pointer getSingleNodePointer() {
         return parentContext.getSingleNodePointer();
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         if (position == 0 && !setPosition(1)) {
             return null;
@@ -51,16 +53,19 @@ public class SelfContext extends EvalContext {
         return nodePointer;
     }
 
+    @Override
     public boolean nextNode() {
         return setPosition(getCurrentPosition() + 1);
     }
 
+    @Override
     public void reset() {
         super.reset();
         startedSet = false;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         if (position != 1) {
             return false;
         }

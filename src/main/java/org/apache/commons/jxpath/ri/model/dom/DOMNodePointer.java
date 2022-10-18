@@ -52,7 +52,7 @@ public class DOMNodePointer extends NodePointer {
 
     private static final long serialVersionUID = -8751046933894857319L;
 
-    private Node node;
+    private final Node node;
     private Map namespaces;
     private String defaultNamespace;
     private String id;
@@ -71,7 +71,7 @@ public class DOMNodePointer extends NodePointer {
      * @param node pointed at
      * @param locale Locale
      */
-    public DOMNodePointer(Node node, Locale locale) {
+    public DOMNodePointer(final Node node, final Locale locale) {
         super(null, locale);
         this.node = node;
     }
@@ -82,7 +82,7 @@ public class DOMNodePointer extends NodePointer {
      * @param locale Locale
      * @param id string id
      */
-    public DOMNodePointer(Node node, Locale locale, String id) {
+    public DOMNodePointer(final Node node, final Locale locale, final String id) {
         super(null, locale);
         this.node = node;
         this.id = id;
@@ -93,12 +93,13 @@ public class DOMNodePointer extends NodePointer {
      * @param parent pointer
      * @param node pointed
      */
-    public DOMNodePointer(NodePointer parent, Node node) {
+    public DOMNodePointer(final NodePointer parent, final Node node) {
         super(parent);
         this.node = node;
     }
 
-    public boolean testNode(NodeTest test) {
+    @Override
+    public boolean testNode(final NodeTest test) {
         return testNode(node, test);
     }
 
@@ -108,7 +109,7 @@ public class DOMNodePointer extends NodePointer {
      * @param test to execute
      * @return true if node passes test
      */
-    public static boolean testNode(Node node, NodeTest test) {
+    public static boolean testNode(final Node node, final NodeTest test) {
         if (test == null) {
             return true;
         }
@@ -117,25 +118,25 @@ public class DOMNodePointer extends NodePointer {
                 return false;
             }
 
-            NodeNameTest nodeNameTest = (NodeNameTest) test;
-            QName testName = nodeNameTest.getNodeName();
-            String namespaceURI = nodeNameTest.getNamespaceURI();
-            boolean wildcard = nodeNameTest.isWildcard();
-            String testPrefix = testName.getPrefix();
+            final NodeNameTest nodeNameTest = (NodeNameTest) test;
+            final QName testName = nodeNameTest.getNodeName();
+            final String namespaceURI = nodeNameTest.getNamespaceURI();
+            final boolean wildcard = nodeNameTest.isWildcard();
+            final String testPrefix = testName.getPrefix();
             if (wildcard && testPrefix == null) {
                 return true;
             }
             if (wildcard
                 || testName.getName()
                         .equals(DOMNodePointer.getLocalName(node))) {
-                String nodeNS = DOMNodePointer.getNamespaceURI(node);
+                final String nodeNS = DOMNodePointer.getNamespaceURI(node);
                 return equalStrings(namespaceURI, nodeNS) || nodeNS == null
                         && equalStrings(testPrefix, getPrefix(node));
             }
             return false;
         }
         if (test instanceof NodeTypeTest) {
-            int nodeType = node.getNodeType();
+            final int nodeType = node.getNodeType();
             switch (((NodeTypeTest) test).getNodeType()) {
                 case Compiler.NODE_TYPE_NODE :
                     return true;
@@ -152,8 +153,8 @@ public class DOMNodePointer extends NodePointer {
         }
         if (test instanceof ProcessingInstructionTest
                 && node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
-            String testPI = ((ProcessingInstructionTest) test).getTarget();
-            String nodePI = ((ProcessingInstruction) node).getTarget();
+            final String testPI = ((ProcessingInstructionTest) test).getTarget();
+            final String nodePI = ((ProcessingInstruction) node).getTarget();
             return testPI.equals(nodePI);
         }
         return false;
@@ -174,10 +175,11 @@ public class DOMNodePointer extends NodePointer {
         return s1.equals(s2);
     }
 
+    @Override
     public QName getName() {
         String ln = null;
         String ns = null;
-        int type = node.getNodeType();
+        final int type = node.getNodeType();
         if (type == Node.ELEMENT_NODE) {
             ns = DOMNodePointer.getPrefix(node);
             ln = DOMNodePointer.getLocalName(node);
@@ -188,27 +190,33 @@ public class DOMNodePointer extends NodePointer {
         return new QName(ns, ln);
     }
 
+    @Override
     public String getNamespaceURI() {
         return getNamespaceURI(node);
     }
 
-    public NodeIterator childIterator(NodeTest test, boolean reverse,
-            NodePointer startWith) {
+    @Override
+    public NodeIterator childIterator(final NodeTest test, final boolean reverse,
+            final NodePointer startWith) {
         return new DOMNodeIterator(this, test, reverse, startWith);
     }
 
-    public NodeIterator attributeIterator(QName name) {
+    @Override
+    public NodeIterator attributeIterator(final QName name) {
         return new DOMAttributeIterator(this, name);
     }
 
-    public NodePointer namespacePointer(String prefix) {
+    @Override
+    public NodePointer namespacePointer(final String prefix) {
         return new NamespacePointer(this, prefix);
     }
 
+    @Override
     public NodeIterator namespaceIterator() {
         return new DOMNamespaceIterator(this);
     }
 
+    @Override
     public synchronized NamespaceResolver getNamespaceResolver() {
         if (localNamespaceResolver == null) {
             localNamespaceResolver = new NamespaceResolver(super.getNamespaceResolver());
@@ -217,7 +225,8 @@ public class DOMNodePointer extends NodePointer {
         return localNamespaceResolver;
     }
 
-    public String getNamespaceURI(String prefix) {
+    @Override
+    public String getNamespaceURI(final String prefix) {
         if (prefix == null || prefix.equals("")) {
             return getDefaultNamespaceURI();
         }
@@ -239,14 +248,14 @@ public class DOMNodePointer extends NodePointer {
         }
 
         if (namespace == null) {
-            String qname = "xmlns:" + prefix;
+            final String qname = "xmlns:" + prefix;
             Node aNode = node;
             if (aNode instanceof Document) {
                 aNode = ((Document) aNode).getDocumentElement();
             }
             while (aNode != null) {
                 if (aNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Attr attr = ((Element) aNode).getAttributeNode(qname);
+                    final Attr attr = ((Element) aNode).getAttributeNode(qname);
                     if (attr != null) {
                         namespace = attr.getValue();
                         break;
@@ -268,6 +277,7 @@ public class DOMNodePointer extends NodePointer {
         return namespace;
     }
 
+    @Override
     public String getDefaultNamespaceURI() {
         if (defaultNamespace == null) {
             Node aNode = node;
@@ -276,7 +286,7 @@ public class DOMNodePointer extends NodePointer {
             }
             while (aNode != null) {
                 if (aNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Attr attr = ((Element) aNode).getAttributeNode("xmlns");
+                    final Attr attr = ((Element) aNode).getAttributeNode("xmlns");
                     if (attr != null) {
                         defaultNamespace = attr.getValue();
                         break;
@@ -292,26 +302,32 @@ public class DOMNodePointer extends NodePointer {
         return defaultNamespace.equals("") ? null : defaultNamespace;
     }
 
+    @Override
     public Object getBaseValue() {
         return node;
     }
 
+    @Override
     public Object getImmediateNode() {
         return node;
     }
 
+    @Override
     public boolean isActual() {
         return true;
     }
 
+    @Override
     public boolean isCollection() {
         return false;
     }
 
+    @Override
     public int getLength() {
         return 1;
     }
 
+    @Override
     public boolean isLeaf() {
         return !node.hasChildNodes();
     }
@@ -323,8 +339,9 @@ public class DOMNodePointer extends NodePointer {
      * @param lang ns to test
      * @return boolean
      */
-    public boolean isLanguage(String lang) {
-        String current = getLanguage();
+    @Override
+    public boolean isLanguage(final String lang) {
+        final String current = getLanguage();
         return current == null ? super.isLanguage(lang)
                 : current.toUpperCase(Locale.ENGLISH).startsWith(lang.toUpperCase(Locale.ENGLISH));
     }
@@ -336,11 +353,11 @@ public class DOMNodePointer extends NodePointer {
      * @param attrName attribute name
      * @return attribute value
      */
-    protected static String findEnclosingAttribute(Node n, String attrName) {
+    protected static String findEnclosingAttribute(Node n, final String attrName) {
         while (n != null) {
             if (n.getNodeType() == Node.ELEMENT_NODE) {
-                Element e = (Element) n;
-                String attr = e.getAttribute(attrName);
+                final Element e = (Element) n;
+                final String attr = e.getAttribute(attrName);
                 if (attr != null && !attr.equals("")) {
                     return attr;
                 }
@@ -365,10 +382,11 @@ public class DOMNodePointer extends NodePointer {
      * node are replaced with the children of the passed node.
      * @param value to set
      */
-    public void setValue(Object value) {
+    @Override
+    public void setValue(final Object value) {
         if (node.getNodeType() == Node.TEXT_NODE
             || node.getNodeType() == Node.CDATA_SECTION_NODE) {
-            String string = (String) TypeUtils.convert(value, String.class);
+            final String string = (String) TypeUtils.convert(value, String.class);
             if (string != null && !string.equals("")) {
                 node.setNodeValue(string);
             }
@@ -378,19 +396,19 @@ public class DOMNodePointer extends NodePointer {
         }
         else {
             NodeList children = node.getChildNodes();
-            int count = children.getLength();
+            final int count = children.getLength();
             for (int i = count; --i >= 0;) {
-                Node child = children.item(i);
+                final Node child = children.item(i);
                 node.removeChild(child);
             }
 
             if (value instanceof Node) {
-                Node valueNode = (Node) value;
+                final Node valueNode = (Node) value;
                 if (valueNode instanceof Element
                     || valueNode instanceof Document) {
                     children = valueNode.getChildNodes();
                     for (int i = 0; i < children.getLength(); i++) {
-                        Node child = children.item(i);
+                        final Node child = children.item(i);
                         node.appendChild(child.cloneNode(true));
                     }
                 }
@@ -399,9 +417,9 @@ public class DOMNodePointer extends NodePointer {
                 }
             }
             else {
-                String string = (String) TypeUtils.convert(value, String.class);
+                final String string = (String) TypeUtils.convert(value, String.class);
                 if (string != null && !string.equals("")) {
-                    Node textNode =
+                    final Node textNode =
                         node.getOwnerDocument().createTextNode(string);
                     node.appendChild(textNode);
                 }
@@ -409,11 +427,12 @@ public class DOMNodePointer extends NodePointer {
         }
     }
 
-    public NodePointer createChild(JXPathContext context, QName name, int index) {
+    @Override
+    public NodePointer createChild(final JXPathContext context, final QName name, int index) {
         if (index == WHOLE_COLLECTION) {
             index = 0;
         }
-        boolean success =
+        final boolean success =
             getAbstractFactory(context).createObject(
                 context,
                 this,
@@ -422,12 +441,12 @@ public class DOMNodePointer extends NodePointer {
                 index);
         if (success) {
             NodeTest nodeTest;
-            String prefix = name.getPrefix();
-            String namespaceURI = prefix == null ? null : context
+            final String prefix = name.getPrefix();
+            final String namespaceURI = prefix == null ? null : context
                     .getNamespaceURI(prefix);
             nodeTest = new NodeNameTest(name, namespaceURI);
 
-            NodeIterator it = childIterator(nodeTest, false, null);
+            final NodeIterator it = childIterator(nodeTest, false, null);
             if (it != null && it.setPosition(index + 1)) {
                 return it.getNodePointer();
             }
@@ -437,22 +456,24 @@ public class DOMNodePointer extends NodePointer {
                         + "/" + name + "[" + (index + 1) + "]");
     }
 
-    public NodePointer createChild(JXPathContext context, QName name,
-            int index, Object value) {
-        NodePointer ptr = createChild(context, name, index);
+    @Override
+    public NodePointer createChild(final JXPathContext context, final QName name,
+            final int index, final Object value) {
+        final NodePointer ptr = createChild(context, name, index);
         ptr.setValue(value);
         return ptr;
     }
 
-    public NodePointer createAttribute(JXPathContext context, QName name) {
+    @Override
+    public NodePointer createAttribute(final JXPathContext context, final QName name) {
         if (!(node instanceof Element)) {
             return super.createAttribute(context, name);
         }
-        Element element = (Element) node;
-        String prefix = name.getPrefix();
+        final Element element = (Element) node;
+        final String prefix = name.getPrefix();
         if (prefix != null) {
             String ns = null;
-            NamespaceResolver nsr = getNamespaceResolver();
+            final NamespaceResolver nsr = getNamespaceResolver();
             if (nsr != null) {
                 ns = nsr.getNamespaceURI(prefix);
             }
@@ -467,25 +488,27 @@ public class DOMNodePointer extends NodePointer {
                 element.setAttribute(name.getName(), "");
             }
         }
-        NodeIterator it = attributeIterator(name);
+        final NodeIterator it = attributeIterator(name);
         it.setPosition(1);
         return it.getNodePointer();
     }
 
+    @Override
     public void remove() {
-        Node parent = node.getParentNode();
+        final Node parent = node.getParentNode();
         if (parent == null) {
             throw new JXPathException("Cannot remove root DOM node");
         }
         parent.removeChild(node);
     }
 
+    @Override
     public String asPath() {
         if (id != null) {
             return "id('" + escape(id) + "')";
         }
 
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         if (parent != null) {
             buffer.append(parent.asPath());
         }
@@ -499,15 +522,15 @@ public class DOMNodePointer extends NodePointer {
                             || buffer.charAt(buffer.length() - 1) != '/') {
                         buffer.append('/');
                     }
-                    String ln = DOMNodePointer.getLocalName(node);
-                    String nsURI = getNamespaceURI();
+                    final String ln = DOMNodePointer.getLocalName(node);
+                    final String nsURI = getNamespaceURI();
                     if (nsURI == null) {
                         buffer.append(ln);
                         buffer.append('[');
                         buffer.append(getRelativePositionByQName()).append(']');
                     }
                     else {
-                        String prefix = getNamespaceResolver().getPrefix(nsURI);
+                        final String prefix = getNamespaceResolver().getPrefix(nsURI);
                         if (prefix != null) {
                             buffer.append(prefix);
                             buffer.append(':');
@@ -562,7 +585,7 @@ public class DOMNodePointer extends NodePointer {
         return count;
     }
 
-    private boolean matchesQName(Node n) {
+    private boolean matchesQName(final Node n) {
         if (getNamespaceURI() != null) {
             return equalStrings(getNamespaceURI(n), getNamespaceURI())
                     && equalStrings(node.getLocalName(), n.getLocalName());
@@ -609,7 +632,7 @@ public class DOMNodePointer extends NodePointer {
      */
     private int getRelativePositionOfPI() {
         int count = 1;
-        String target = ((ProcessingInstruction) node).getTarget();
+        final String target = ((ProcessingInstruction) node).getTarget();
         Node n = node.getPreviousSibling();
         while (n != null) {
             if (n.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE
@@ -621,11 +644,13 @@ public class DOMNodePointer extends NodePointer {
         return count;
     }
 
+    @Override
     public int hashCode() {
         return node.hashCode();
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         return object == this || object instanceof DOMNodePointer && node == ((DOMNodePointer) object).node;
     }
 
@@ -634,14 +659,14 @@ public class DOMNodePointer extends NodePointer {
      * @param node the node to check
      * @return String xml prefix
      */
-    public static String getPrefix(Node node) {
-        String prefix = node.getPrefix();
+    public static String getPrefix(final Node node) {
+        final String prefix = node.getPrefix();
         if (prefix != null) {
             return prefix;
         }
 
-        String name = node.getNodeName();
-        int index = name.lastIndexOf(':');
+        final String name = node.getNodeName();
+        final int index = name.lastIndexOf(':');
         return index < 0 ? null : name.substring(0, index);
     }
 
@@ -650,14 +675,14 @@ public class DOMNodePointer extends NodePointer {
      * @param node node to check
      * @return String local name
      */
-    public static String getLocalName(Node node) {
-        String localName = node.getLocalName();
+    public static String getLocalName(final Node node) {
+        final String localName = node.getLocalName();
         if (localName != null) {
             return localName;
         }
 
-        String name = node.getNodeName();
-        int index = name.lastIndexOf(':');
+        final String name = node.getNodeName();
+        final int index = name.lastIndexOf(':');
         return index < 0 ? name : name.substring(index + 1);
     }
 
@@ -671,17 +696,17 @@ public class DOMNodePointer extends NodePointer {
             node = ((Document) node).getDocumentElement();
         }
 
-        Element element = (Element) node;
+        final Element element = (Element) node;
 
         String uri = element.getNamespaceURI();
         if (uri == null) {
-            String prefix = getPrefix(node);
-            String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
+            final String prefix = getPrefix(node);
+            final String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
 
             Node aNode = node;
             while (aNode != null) {
                 if (aNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Attr attr = ((Element) aNode).getAttributeNode(qname);
+                    final Attr attr = ((Element) aNode).getAttributeNode(qname);
                     if (attr != null) {
                         uri = attr.getValue();
                         break;
@@ -693,9 +718,10 @@ public class DOMNodePointer extends NodePointer {
         return "".equals(uri) ? null : uri;
     }
 
+    @Override
     public Object getValue() {
         if (node.getNodeType() == Node.COMMENT_NODE) {
-            String text = ((Comment) node).getData();
+            final String text = ((Comment) node).getData();
             return text == null ? "" : text.trim();
         }
         return stringValue(node);
@@ -706,24 +732,24 @@ public class DOMNodePointer extends NodePointer {
      * @param node Node to check
      * @return String
      */
-    private String stringValue(Node node) {
-        int nodeType = node.getNodeType();
+    private String stringValue(final Node node) {
+        final int nodeType = node.getNodeType();
         if (nodeType == Node.COMMENT_NODE) {
             return "";
         }
-        boolean trim = !"preserve".equals(findEnclosingAttribute(node, "xml:space"));
+        final boolean trim = !"preserve".equals(findEnclosingAttribute(node, "xml:space"));
         if (nodeType == Node.TEXT_NODE || nodeType == Node.CDATA_SECTION_NODE) {
-            String text = node.getNodeValue();
+            final String text = node.getNodeValue();
             return text == null ? "" : trim ? text.trim() : text;
         }
         if (nodeType == Node.PROCESSING_INSTRUCTION_NODE) {
-            String text = ((ProcessingInstruction) node).getData();
+            final String text = ((ProcessingInstruction) node).getData();
             return text == null ? "" : trim ? text.trim() : text;
         }
-        NodeList list = node.getChildNodes();
-        StringBuffer buf = new StringBuffer();
+        final NodeList list = node.getChildNodes();
+        final StringBuffer buf = new StringBuffer();
         for (int i = 0; i < list.getLength(); i++) {
-            Node child = list.item(i);
+            final Node child = list.item(i);
             buf.append(stringValue(child));
         }
         return buf.toString();
@@ -735,24 +761,26 @@ public class DOMNodePointer extends NodePointer {
      * @param id to find
      * @return Pointer
      */
-    public Pointer getPointerByID(JXPathContext context, String id) {
-        Document document = node.getNodeType() == Node.DOCUMENT_NODE ? (Document) node
+    @Override
+    public Pointer getPointerByID(final JXPathContext context, final String id) {
+        final Document document = node.getNodeType() == Node.DOCUMENT_NODE ? (Document) node
                 : node.getOwnerDocument();
-        Element element = document.getElementById(id);
+        final Element element = document.getElementById(id);
         return element == null ? (Pointer) new NullPointer(getLocale(), id)
                 : new DOMNodePointer(element, getLocale(), id);
     }
 
-    public int compareChildNodePointers(NodePointer pointer1,
-            NodePointer pointer2) {
-        Node node1 = (Node) pointer1.getBaseValue();
-        Node node2 = (Node) pointer2.getBaseValue();
+    @Override
+    public int compareChildNodePointers(final NodePointer pointer1,
+            final NodePointer pointer2) {
+        final Node node1 = (Node) pointer1.getBaseValue();
+        final Node node2 = (Node) pointer2.getBaseValue();
         if (node1 == node2) {
             return 0;
         }
 
-        int t1 = node1.getNodeType();
-        int t2 = node2.getNodeType();
+        final int t1 = node1.getNodeType();
+        final int t2 = node2.getNodeType();
         if (t1 == Node.ATTRIBUTE_NODE && t2 != Node.ATTRIBUTE_NODE) {
             return -1;
         }
@@ -760,10 +788,10 @@ public class DOMNodePointer extends NodePointer {
             return 1;
         }
         if (t1 == Node.ATTRIBUTE_NODE && t2 == Node.ATTRIBUTE_NODE) {
-            NamedNodeMap map = ((Node) getNode()).getAttributes();
-            int length = map.getLength();
+            final NamedNodeMap map = ((Node) getNode()).getAttributes();
+            final int length = map.getLength();
             for (int i = 0; i < length; i++) {
-                Node n = map.item(i);
+                final Node n = map.item(i);
                 if (n == node1) {
                     return -1;
                 }

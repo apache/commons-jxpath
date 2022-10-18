@@ -49,17 +49,17 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * the method.
  */
 public class ClassFunctions implements Functions {
-    private static final Object[] EMPTY_ARRAY = new Object[0];
+    private static final Object[] EMPTY_ARRAY = {};
 
-    private Class functionClass;
-    private String namespace;
+    private final Class functionClass;
+    private final String namespace;
 
     /**
      * Create a new ClassFunctions.
      * @param functionClass Class providing the functions
      * @param namespace assigned ns
      */
-    public ClassFunctions(Class functionClass, String namespace) {
+    public ClassFunctions(final Class functionClass, final String namespace) {
         this.functionClass = functionClass;
         this.namespace = namespace;
     }
@@ -69,6 +69,7 @@ public class ClassFunctions implements Functions {
      *
      * @return a singleton
      */
+    @Override
     public Set getUsedNamespaces() {
         return Collections.singleton(namespace);
     }
@@ -85,9 +86,10 @@ public class ClassFunctions implements Functions {
      * @return a MethodFunction, a ConstructorFunction or null if there is no
      *      such function.
      */
+    @Override
     public Function getFunction(
-        String namespace,
-        String name,
+        final String namespace,
+        final String name,
         Object[] parameters) {
         if (namespace == null) {
             if (this.namespace != null) {
@@ -103,7 +105,7 @@ public class ClassFunctions implements Functions {
         }
 
         if (name.equals("new")) {
-            Constructor constructor =
+            final Constructor constructor =
                 MethodLookupUtils.lookupConstructor(functionClass, parameters);
             if (constructor != null) {
                 return new ConstructorFunction(constructor);

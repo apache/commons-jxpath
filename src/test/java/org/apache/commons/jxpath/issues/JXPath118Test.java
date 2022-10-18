@@ -30,9 +30,9 @@ public class JXPath118Test extends TestCase
 
     public void testJXPATH118IssueWithAsPath() throws Exception
     {
-        Object contextBean = new SomeChildClass();
-        JXPathContext context = JXPathContext.newContext(contextBean);
-        Iterator iteratePointers = context.iteratePointers("//*");
+        final Object contextBean = new SomeChildClass();
+        final JXPathContext context = JXPathContext.newContext(contextBean);
+        final Iterator iteratePointers = context.iteratePointers("//*");
         Assert.assertEquals("/bar", ((Pointer) iteratePointers.next()).asPath());
         Assert.assertEquals("/baz", ((Pointer) iteratePointers.next()).asPath());
         Assert.assertEquals("/foo", ((Pointer) iteratePointers.next()).asPath());
@@ -50,7 +50,7 @@ public class JXPath118Test extends TestCase
             return foo;
         }
 
-        public void setFoo(int foo)
+        public void setFoo(final int foo)
         {
             this.foo = foo;
         }
@@ -60,7 +60,7 @@ public class JXPath118Test extends TestCase
             return bar;
         }
 
-        public void setBar(int bar)
+        public void setBar(final int bar)
         {
             this.bar = bar;
         }
@@ -70,7 +70,7 @@ public class JXPath118Test extends TestCase
             return baz;
         }
 
-        public void setBaz(int baz)
+        public void setBaz(final int baz)
         {
             this.baz = baz;
         }

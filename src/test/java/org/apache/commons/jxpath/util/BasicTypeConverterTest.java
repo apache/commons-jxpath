@@ -31,19 +31,19 @@ import org.apache.commons.jxpath.Pointer;
 
 /**
  * Tests BasicTypeConverter
- * 
+ *
  */
 public class BasicTypeConverterTest extends TestCase {
 
     public void testPrimitiveToString() {
-        assertConversion(new Integer(1), String.class, "1");
+        assertConversion(Integer.valueOf(1), String.class, "1");
     }
 
     public void testArrayToList() {
         assertConversion(
             new int[] { 1, 2 },
             List.class,
-            Arrays.asList(new Object[] { new Integer(1), new Integer(2)}));
+            Arrays.asList(new Object[] { Integer.valueOf(1), Integer.valueOf(2)}));
     }
 
     public void testArrayToArray() {
@@ -55,14 +55,14 @@ public class BasicTypeConverterTest extends TestCase {
 
     public void testListToArray() {
         assertConversion(
-            Arrays.asList(new Integer[] { new Integer(1), new Integer(2)}),
+            Arrays.asList(new Integer[] { Integer.valueOf(1), Integer.valueOf(2)}),
             String[].class,
             Arrays.asList(new String[] { "1", "2" }));
 
         assertConversion(
             Arrays.asList(new String[] { "1", "2" }),
             int[].class,
-            Arrays.asList(new Integer[] { new Integer(1), new Integer(2)}));
+            Arrays.asList(new Integer[] { Integer.valueOf(1), Integer.valueOf(2)}));
     }
 
     public void testInvalidConversion() {
@@ -70,18 +70,18 @@ public class BasicTypeConverterTest extends TestCase {
         try {
             TypeUtils.convert("'foo'", Date.class);
         }
-        catch (Throwable ex) {
+        catch (final Throwable ex) {
             exception = true;
         }
         assertTrue("Type conversion exception", exception);
     }
 
-    public void assertConversion(Object from, Class toType, Object expected) {
-        boolean can = TypeUtils.canConvert(from, toType);
+    public void assertConversion(final Object from, final Class toType, final Object expected) {
+        final boolean can = TypeUtils.canConvert(from, toType);
         assertTrue("Can convert: " + from.getClass() + " to " + toType, can);
         Object result = TypeUtils.convert(from, toType);
         if (result.getClass().isArray()) {
-            ArrayList list = new ArrayList();
+            final ArrayList list = new ArrayList();
             for (int j = 0; j < Array.getLength(result); j++) {
                 list.add(Array.get(result, j));
             }
@@ -92,7 +92,7 @@ public class BasicTypeConverterTest extends TestCase {
             expected,
             result);
     }
-    
+
     public void testSingletonCollectionToString() {
         assertConversion(Collections.singleton("Earth"), String.class, "Earth");
     }
@@ -103,24 +103,32 @@ public class BasicTypeConverterTest extends TestCase {
 
     public void testPointerToString() {
         assertConversion(new Pointer() {
+            private static final long serialVersionUID = 1L;
+            @Override
             public Object getValue() {
                 return "value";
             }
+            @Override
             public Object getNode() {
                 return null;
             }
-            public void setValue(Object value) {
+            @Override
+            public void setValue(final Object value) {
             }
+            @Override
             public Object getRootNode() {
                 return null;
             }
+            @Override
             public String asPath() {
                 return null;
             }
+            @Override
             public Object clone() {
                 return null;
             }
-            public int compareTo(Object o) {
+            @Override
+            public int compareTo(final Object o) {
                 return 0;
             }
         }, String.class, "value");
@@ -128,14 +136,17 @@ public class BasicTypeConverterTest extends TestCase {
 
     public void testNodeSetToString() {
         assertConversion(new NodeSet() {
+            @Override
             public List getNodes() {
                 return null;
             }
+            @Override
             public List getPointers() {
                 return null;
             }
+            @Override
             public List getValues() {
-                List list = new ArrayList();
+                final List list = new ArrayList();
                 list.add("hello");
                 list.add("goodbye");
                 return Collections.singletonList(list);
@@ -146,18 +157,21 @@ public class BasicTypeConverterTest extends TestCase {
     // succeeds in current version
     public void testNodeSetToInteger() {
         assertConversion(new NodeSet() {
+            @Override
             public List getNodes() {
                 return null;
             }
+            @Override
             public List getPointers() {
                 return null;
             }
+            @Override
             public List getValues() {
                 return Collections.singletonList("9");
             }
-        }, Integer.class, new Integer(9));
-    }    
-    
+        }, Integer.class, Integer.valueOf(9));
+    }
+
     public void testBeanUtilsConverter() {
         assertConversion("12", BigDecimal.class, new BigDecimal(12));
     }

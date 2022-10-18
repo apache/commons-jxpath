@@ -36,24 +36,25 @@ public class TestBeanWithNode extends TestBean {
         return new Object[] { node };
     }
 
-    public void setVendor(Object node) {
+    public void setVendor(final Object node) {
         this.node = node;
     }
 
+    @Override
     public Object getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(final Object object) {
         this.object = object;
     }
 
     public static TestBeanWithNode createTestBeanWithDOM() {
-        DocumentContainer docCtr =
+        final DocumentContainer docCtr =
             new DocumentContainer(
                 JXPathTestCase.class.getResource("Vendor.xml"));
-        Document doc = (Document) docCtr.getValue();
-        TestBeanWithNode tbwdom = new TestBeanWithNode();
+        final Document doc = (Document) docCtr.getValue();
+        final TestBeanWithNode tbwdom = new TestBeanWithNode();
         tbwdom.setVendor(doc.getDocumentElement());
         tbwdom.setObject(docCtr);
         return tbwdom;

@@ -59,18 +59,21 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * Create a new EvalContext.
      * @param parentContext parent context
      */
-    public EvalContext(EvalContext parentContext) {
+    public EvalContext(final EvalContext parentContext) {
         this.parentContext = parentContext;
     }
 
+    @Override
     public Pointer getContextNodePointer() {
         return getCurrentNodePointer();
     }
 
+    @Override
     public JXPathContext getJXPathContext() {
         return getRootContext().getJXPathContext();
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
@@ -101,6 +104,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * Returns true if there are mode nodes matching the context's constraints.
      * @return boolean
      */
+    @Override
     public boolean hasNext() {
         if (pointerIterator != null) {
             return pointerIterator.hasNext();
@@ -118,6 +122,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * Returns the next node pointer in the context
      * @return Object
      */
+    @Override
     public Object next() {
         if (pointerIterator != null) {
             return pointerIterator.next();
@@ -162,6 +167,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * Operation is not supported
      * @throws UnsupportedOperationException Always thrown.
      */
+    @Override
     public void remove() {
         throw new UnsupportedOperationException(
             "JXPath iterators cannot remove nodes");
@@ -172,11 +178,11 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * @return whether the Iterator was constructed
      */
     private boolean constructIterator() {
-        HashSet set = new HashSet();
-        ArrayList list = new ArrayList();
+        final HashSet set = new HashSet();
+        final ArrayList list = new ArrayList();
         while (nextSet()) {
             while (nextNode()) {
-                NodePointer pointer = getCurrentNodePointer();
+                final NodePointer pointer = getCurrentNodePointer();
                 if (!set.contains(pointer)) {
                     set.add(pointer);
                     list.add(pointer);
@@ -197,7 +203,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * Sort a list of pointers based on document order.
      * @param l the list to sort.
      */
-    protected void sortPointers(List l) {
+    protected void sortPointers(final List l) {
         switch (getDocumentOrder()) {
         case 1:
             Collections.sort(l);
@@ -215,12 +221,13 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * position of the parent context.
      * @return List
      */
+    @Override
     public List getContextNodeList() {
-        int pos = position;
+        final int pos = position;
         if (pos != 0) {
             reset();
         }
-        List list = new ArrayList();
+        final List list = new ArrayList();
         while (nextNode()) {
             list.add(getCurrentNodePointer());
         }
@@ -246,7 +253,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
                     + "should not request pointer list while "
                     + "iterating over an EvalContext");
         }
-        BasicNodeSet set = new BasicNodeSet();
+        final BasicNodeSet set = new BasicNodeSet();
         while (nextSet()) {
             while (nextNode()) {
                 set.add((Pointer) getCurrentNodePointer().clone());
@@ -266,8 +273,9 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         return getNodeSet();
     }
 
+    @Override
     public String toString() {
-        Pointer ptr = getContextNodePointer();
+        final Pointer ptr = getContextNodePointer();
         return ptr == null ? "Empty expression context" : "Expression context [" + getPosition()
                 + "] " + ptr.asPath();
     }
@@ -373,7 +381,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * @param position to set
      * @return boolean
      */
-    public boolean setPosition(int position) {
+    public boolean setPosition(final int position) {
         this.position = position;
         return true;
     }

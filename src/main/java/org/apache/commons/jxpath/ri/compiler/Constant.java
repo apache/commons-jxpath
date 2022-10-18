@@ -24,13 +24,13 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
  */
 public class Constant extends Expression {
 
-    private Object value;
+    private final Object value;
 
     /**
      * Create a new Constant.
      * @param number constant
      */
-    public Constant(Number number) {
+    public Constant(final Number number) {
         this.value = number;
     }
 
@@ -38,15 +38,17 @@ public class Constant extends Expression {
      * Create a new Constant.
      * @param string constant
      */
-    public Constant(String string) {
+    public Constant(final String string) {
         this.value = string;
     }
 
-    public Object compute(EvalContext context) {
+    @Override
+    public Object compute(final EvalContext context) {
         return value;
     }
 
-    public Object computeValue(EvalContext context) {
+    @Override
+    public Object computeValue(final EvalContext context) {
         return value;
     }
 
@@ -54,6 +56,7 @@ public class Constant extends Expression {
      * Returns false
      * @return false
      */
+    @Override
     public boolean isContextDependent() {
         return false;
     }
@@ -62,10 +65,12 @@ public class Constant extends Expression {
      * Returns false
      * @return false
      */
+    @Override
     public boolean computeContextDependent() {
         return false;
     }
 
+    @Override
     public String toString() {
         if (value instanceof Number) {
             return InfoSetUtil.stringValue(value);

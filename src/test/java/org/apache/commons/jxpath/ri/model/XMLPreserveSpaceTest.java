@@ -26,19 +26,19 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 public class XMLPreserveSpaceTest extends JXPathTestCase {
     protected JXPathContext context;
 
-    protected DocumentContainer createDocumentContainer(String model) {
+    protected DocumentContainer createDocumentContainer(final String model) {
         return new DocumentContainer(JXPathTestCase.class
                 .getResource("XmlPreserveSpace.xml"), model);
     }
 
-    protected JXPathContext createContext(String model) {
-        JXPathContext context = JXPathContext
+    protected JXPathContext createContext(final String model) {
+        final JXPathContext context = JXPathContext
                 .newContext(createDocumentContainer(model));
         return context;
     }
 
-    protected void doTest(String id, String model, String expectedValue) {
-        JXPathContext context = JXPathContext
+    protected void doTest(final String id, final String model, final String expectedValue) {
+        final JXPathContext context = JXPathContext
                 .newContext(createDocumentContainer(model));
         assertEquals(context.getValue("test/text[@id='" + id + "']"), expectedValue);
     }

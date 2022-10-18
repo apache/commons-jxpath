@@ -31,8 +31,9 @@ public class JXPathContextReferenceImplTestCase extends TestCase {
         try {
             JXPathContextReferenceImpl.addNodePointerFactory(factory);
         } finally {
-            while (JXPathContextReferenceImpl.removeNodePointerFactory(factory))
-                ;
+            while (JXPathContextReferenceImpl.removeNodePointerFactory(factory)) {
+
+            }
         }
     }
 }

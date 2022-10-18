@@ -39,12 +39,13 @@ import org.apache.commons.jxpath.Variables;
 public class MixedModelTest extends JXPathTestCase {
     private JXPathContext context;
 
+    @Override
     public void setUp() {
-        TestMixedModelBean bean = new TestMixedModelBean();
+        final TestMixedModelBean bean = new TestMixedModelBean();
         context = JXPathContext.newContext(bean);
         context.setFactory(new TestMixedModelFactory());
         context.setLocale(Locale.US);
-        Variables vars = context.getVariables();
+        final Variables vars = context.getVariables();
         vars.declareVariable("string", bean.getString());
         vars.declareVariable("bean", bean.getBean());
         vars.declareVariable("map", bean.getMap());
@@ -54,7 +55,7 @@ public class MixedModelTest extends JXPathTestCase {
         vars.declareVariable("container", bean.getContainer());
         vars.declareVariable("testnull", new TestNull());
 
-        int[][] matrix = new int[1][];
+        final int[][] matrix = new int[1][];
         matrix[0] = new int[1];
         matrix[0][0] = 3;
         vars.declareVariable("matrix", matrix);
@@ -63,13 +64,13 @@ public class MixedModelTest extends JXPathTestCase {
     public void testVar() {
         context.getVariables().declareVariable("foo:bar", "baz");
 
-        assertXPathValueAndPointer(context, 
-            "$foo:bar", 
-            "baz", 
+        assertXPathValueAndPointer(context,
+            "$foo:bar",
+            "baz",
             "$foo:bar");
-        
+
     }
-    
+
     public void testVarPrimitive() {
         assertXPathValueAndPointer(context, "$string", "string", "$string");
     }
@@ -78,7 +79,7 @@ public class MixedModelTest extends JXPathTestCase {
         assertXPathValueAndPointer(
             context,
             "$bean/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "$bean/int");
     }
 
@@ -128,7 +129,7 @@ public class MixedModelTest extends JXPathTestCase {
         assertXPathValueAndPointer(
             context,
             "bean/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/bean/int");
     }
 
@@ -182,7 +183,7 @@ public class MixedModelTest extends JXPathTestCase {
         assertXPathValueAndPointer(
             context,
             "map/bean/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/map[@name='bean']/int");
     }
 
@@ -238,7 +239,7 @@ public class MixedModelTest extends JXPathTestCase {
         assertXPathValueAndPointer(
             context,
             "list[2]/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/list[2]/int");
     }
 
@@ -314,7 +315,7 @@ public class MixedModelTest extends JXPathTestCase {
             "$testnull/nothing[1]",
             list(null));
 
-        JXPathContext ctx = JXPathContext.newContext(new TestNull());
+        final JXPathContext ctx = JXPathContext.newContext(new TestNull());
         assertXPathValue(ctx, "nothing", null);
 
         assertXPathValue(ctx, "child/nothing", null);
@@ -334,20 +335,20 @@ public class MixedModelTest extends JXPathTestCase {
         context = JXPathContext.newContext(new TestBean());
         context.setFactory(new TestMixedModelFactory());
 
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
 
         assertXPathCreatePath(
             context,
             "/map[@name='TestKey5']/nestedBean/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/map[@name='TestKey5']/nestedBean/int");
 
         bean.setMap(null);
         assertXPathCreatePath(
             context,
             "/map[@name='TestKey5']/beans[2]/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/map[@name='TestKey5']/beans[2]/int");
     }
 
@@ -355,24 +356,24 @@ public class MixedModelTest extends JXPathTestCase {
      * Test JXPath.iterate() with map containing an array
      */
     public void testIterateArray() {
-        Map map = new HashMap();
+        final Map map = new HashMap();
         map.put("foo", new String[] { "a", "b", "c" });
 
-        JXPathContext context = JXPathContext.newContext(map);
+        final JXPathContext context = JXPathContext.newContext(map);
 
         assertXPathValueIterator(context, "foo", list("a", "b", "c"));
     }
 
     public void testIteratePointersArray() {
-        Map map = new HashMap();
+        final Map map = new HashMap();
         map.put("foo", new String[] { "a", "b", "c" });
 
-        JXPathContext context = JXPathContext.newContext(map);
+        final JXPathContext context = JXPathContext.newContext(map);
 
-        Iterator it = context.iteratePointers("foo");
-        List actual = new ArrayList();
+        final Iterator it = context.iteratePointers("foo");
+        final List actual = new ArrayList();
         while (it.hasNext()) {
-            Pointer ptr = (Pointer) it.next();
+            final Pointer ptr = (Pointer) it.next();
             actual.add(context.getValue(ptr.asPath()));
         }
         assertEquals(
@@ -382,28 +383,28 @@ public class MixedModelTest extends JXPathTestCase {
     }
 
     public void testIteratePointersArrayElementWithVariable() {
-        Map map = new HashMap();
+        final Map map = new HashMap();
         map.put("foo", new String[] { "a", "b", "c" });
 
-        JXPathContext context = JXPathContext.newContext(map);
-        context.getVariables().declareVariable("x", new Integer(2));
-        Iterator it = context.iteratePointers("foo[$x]");
-        List actual = new ArrayList();
+        final JXPathContext context = JXPathContext.newContext(map);
+        context.getVariables().declareVariable("x", Integer.valueOf(2));
+        final Iterator it = context.iteratePointers("foo[$x]");
+        final List actual = new ArrayList();
         while (it.hasNext()) {
-            Pointer ptr = (Pointer) it.next();
+            final Pointer ptr = (Pointer) it.next();
             actual.add(context.getValue(ptr.asPath()));
         }
         assertEquals("Iterating pointers <" + "foo" + ">", list("b"), actual);
     }
 
     public void testIterateVector() {
-        Map map = new HashMap();
-        Vector vec = new Vector();
+        final Map map = new HashMap();
+        final Vector vec = new Vector();
         vec.add(new HashMap());
         vec.add(new HashMap());
 
         map.put("vec", vec);
-        JXPathContext context = JXPathContext.newContext(map);
+        final JXPathContext context = JXPathContext.newContext(map);
         assertXPathPointerIterator(
             context,
             "/vec",
@@ -419,7 +420,7 @@ public class MixedModelTest extends JXPathTestCase {
         try {
             assertXPathValue(context, "$e/errorString", null);
         }
-        catch (Throwable t) {
+        catch (final Throwable t) {
             ex = true;
         }
         assertTrue("Legitimate exception accessing property", ex);
@@ -446,20 +447,20 @@ public class MixedModelTest extends JXPathTestCase {
         assertXPathValueAndPointer(
             context,
             "$matrix[1]/.[1]",
-            new Integer(3),
+            Integer.valueOf(3),
             "$matrix[1]/.[1]");
 
-        context.setValue("$matrix[1]/.[1]", new Integer(2));
+        context.setValue("$matrix[1]/.[1]", Integer.valueOf(2));
 
         assertXPathValueAndPointer(
             context,
             "matrix[1]/.[1]",
-            new Integer(3),
+            Integer.valueOf(3),
             "/matrix[1]/.[1]");
 
         context.setValue("matrix[1]/.[1]", "2");
 
-        assertXPathValue(context, "matrix[1]/.[1]", new Integer(2));
+        assertXPathValue(context, "matrix[1]/.[1]", Integer.valueOf(2));
 
         context.getVariables().declareVariable(
             "wholebean",
@@ -468,14 +469,14 @@ public class MixedModelTest extends JXPathTestCase {
         assertXPathValueAndPointer(
             context,
             "$wholebean/matrix[1]/.[1]",
-            new Integer(2),
+            Integer.valueOf(2),
             "$wholebean/matrix[1]/.[1]");
 
         boolean ex = false;
         try {
             context.setValue("$wholebean/matrix[1]/.[2]", "4");
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             ex = true;
         }
         assertTrue("Exception setting value of non-existent element", ex);
@@ -484,7 +485,7 @@ public class MixedModelTest extends JXPathTestCase {
         try {
             context.setValue("$wholebean/matrix[2]/.[1]", "4");
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             ex = true;
         }
         assertTrue("Exception setting value of non-existent element", ex);
@@ -499,38 +500,38 @@ public class MixedModelTest extends JXPathTestCase {
         assertXPathCreatePathAndSetValue(
             context,
             "/matrix[1]/.[1]",
-            new Integer(4),
+            Integer.valueOf(4),
             "/matrix[1]/.[1]");
     }
-    
+
     /**
      * Scott Heaberlin's test - collection of collections
      */
     public void testCollectionPointer() {
-        List list = new ArrayList();
-        Map map = new HashMap();
+        final List list = new ArrayList();
+        final Map map = new HashMap();
         map.put("KeyOne", "SomeStringOne");
         map.put("KeyTwo", "SomeStringTwo");
-        
-        Map map2 = new HashMap();
+
+        final Map map2 = new HashMap();
         map2.put("KeyA", "StringA");
         map2.put("KeyB", "StringB");
-        
+
         map.put("KeyThree", map2);
         list.add(map);
-        
-        List list2 = new ArrayList();
+
+        final List list2 = new ArrayList();
         list2.add("foo");
         list2.add(map);
         list2.add(map);
         list.add(list2);
-        
+
         context = JXPathContext.newContext(list);
-        
+
         assertEquals("SomeStringOne", context.getValue(".[1]/KeyOne"));
         assertEquals("StringA", context.getValue(".[1]/KeyThree/KeyA"));
-        assertEquals(new Integer(3), context.getValue("size(.[1]/KeyThree)"));
-        assertEquals(new Double(6.0), context.getValue("count(.[1]/KeyThree/*)"));
-        assertEquals(new Double(3.0), context.getValue("count(.[1]/KeyThree/KeyA)"));
+        assertEquals(Integer.valueOf(3), context.getValue("size(.[1]/KeyThree)"));
+        assertEquals(Double.valueOf(6.0), context.getValue("count(.[1]/KeyThree/*)"));
+        assertEquals(Double.valueOf(3.0), context.getValue("count(.[1]/KeyThree/KeyA)"));
     }
 }
