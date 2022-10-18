@@ -34,12 +34,16 @@ public class LazyDynaBeanTest extends JXPathTestCase {
     }
 
     public void testStrictLazyDynaBeanPropertyFactory() {
-        JXPathContextReferenceImpl.addNodePointerFactory(new StrictLazyDynaBeanPointerFactory());
+        final StrictLazyDynaBeanPointerFactory factory = new StrictLazyDynaBeanPointerFactory();
+        JXPathContextReferenceImpl.addNodePointerFactory(factory);
         try {
             testLazyProperty();
             fail();
         } catch (JXPathNotFoundException e) {
-            //okay
+            // okay
+        } finally {
+            while (JXPathContextReferenceImpl.removeNodePointerFactory(factory))
+                ;
         }
     }
 }

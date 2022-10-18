@@ -27,6 +27,12 @@ public class JXPathContextReferenceImplTestCase extends TestCase {
      * https://issues.apache.org/jira/browse/JXPATH-166
      */
     public void testInit() {
-        JXPathContextReferenceImpl.addNodePointerFactory(new ContainerPointerFactory());
+        final ContainerPointerFactory factory = new ContainerPointerFactory();
+        try {
+            JXPathContextReferenceImpl.addNodePointerFactory(factory);
+        } finally {
+            while (JXPathContextReferenceImpl.removeNodePointerFactory(factory))
+                ;
+        }
     }
 }

@@ -23,10 +23,6 @@ import org.w3c.dom.Element;
 
 /**
  * Test BasicNodeSet
- *
- * @author
- * @version $Revision$ $Date: 2007-12-10 15:15:27 -0600 (Mon, 10 Dec
- *          2007) $
  */
 public class BasicNodeSetTest extends JXPathTestCase {
 

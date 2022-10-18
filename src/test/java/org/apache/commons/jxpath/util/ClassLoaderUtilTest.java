@@ -30,8 +30,6 @@ import junit.framework.TestCase;
 
 /**
  * Tests org.apache.commons.jxpath.util.ClassLoaderUtil.
- *
- * @author
  */
 public class ClassLoaderUtilTest extends TestCase {
   
