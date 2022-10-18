@@ -1381,17 +1381,6 @@ private void jjCheckNAddTwoStates(final int state1, final int state2)
    jjCheckNAdd(state1);
    jjCheckNAdd(state2);
 }
-private void jjCheckNAddStates(int start, final int end)
-{
-   do {
-      jjCheckNAdd(jjnextStates[start]);
-   } while (start++ != end);
-}
-private void jjCheckNAddStates(final int start)
-{
-   jjCheckNAdd(jjnextStates[start]);
-   jjCheckNAdd(jjnextStates[start + 1]);
-}
 static final long[] jjbitVec0 = {
    0xfffffffffffffffeL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL
 };
@@ -1517,12 +1506,10 @@ static final long[] jjbitVec41 = {
 };
 private int jjMoveNfa_0(final int startState, int curPos)
 {
-   final int[] nextStates;
    int startsAt = 0;
    jjnewStateCnt = 13;
    int i = 1;
    jjstateSet[0] = startState;
-   final int j;
 int kind = 0x7fffffff;
    for (;;)
    {
@@ -1918,9 +1905,8 @@ public void SwitchTo(final int lexState)
 {
    if (lexState >= 1 || lexState < 0) {
     throw new TokenMgrError("Error: Ignoring invalid lexical state : " + lexState + ". State unchanged.", TokenMgrError.INVALID_LEXICAL_STATE);
-} else {
-    curLexState = lexState;
 }
+curLexState = lexState;
 }
 
 protected Token jjFillToken()
@@ -1945,8 +1931,6 @@ int jjmatchedKind;
 
 public Token getNextToken()
 {
-  final int kind;
-  final Token specialToken = null;
   Token matchedToken;
   int curPos = 0;
 
@@ -1983,10 +1967,7 @@ public Token getNextToken()
          matchedToken = jjFillToken();
          return matchedToken;
       }
-      else
-      {
-         continue EOFLoop;
-      }
+    continue EOFLoop;
    }
    int error_line = input_stream.getEndLine();
    int error_column = input_stream.getEndColumn();

@@ -633,23 +633,21 @@ public class SimplePathInterpreter {
                 predicates,
                 currentPredicate + 1);
         }
-        else {
-            // For a subscript, simply take the corresponding
-            // element from the list of results and
-            // proceed to the remaining predicates with that element
-            final int index = indexFromPredicate(context, predicate);
-            if (index < 0 || index >= parents.size()) {
-                return null;
-            }
-            final NodePointer ptr = (NodePointer) parents.get(index);
-            return doPredicate(
-                context,
-                ptr,
-                steps,
-                currentStep,
-                predicates,
-                currentPredicate + 1);
+        // For a subscript, simply take the corresponding
+        // element from the list of results and
+        // proceed to the remaining predicates with that element
+        final int index = indexFromPredicate(context, predicate);
+        if (index < 0 || index >= parents.size()) {
+            return null;
         }
+        final NodePointer ptr = (NodePointer) parents.get(index);
+        return doPredicate(
+            context,
+            ptr,
+            steps,
+            currentStep,
+            predicates,
+            currentPredicate + 1);
     }
 
     /**

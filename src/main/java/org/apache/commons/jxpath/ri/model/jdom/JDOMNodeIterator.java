@@ -151,24 +151,22 @@ public class JDOMNodeIterator implements NodeIterator {
             }
             return false;
         }
-        else {
-            if (position == 1) {
-                index = children.size() - 1;
-                if (child != null) {
-                    index = children.indexOf(child) - 1;
-                }
+        if (position == 1) {
+            index = children.size() - 1;
+            if (child != null) {
+                index = children.indexOf(child) - 1;
             }
-            else {
-                index--;
-            }
-            for (; index >= 0; index--) {
-                child = children.get(index);
-                if (testChild()) {
-                    return true;
-                }
-            }
-            return false;
         }
+        else {
+            index--;
+        }
+        for (; index >= 0; index--) {
+            child = children.get(index);
+            if (testChild()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

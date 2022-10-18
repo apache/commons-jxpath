@@ -139,17 +139,15 @@ public class PredicateContext extends EvalContext {
         if (nameTestExpression == null) {
             return setPositionStandard(position);
         }
-        else {
-            if (dynamicPropertyPointer == null && !setupDynamicPropertyPointer()) {
-                return setPositionStandard(position);
-            }
-            if (position < 1
-                || position > dynamicPropertyPointer.getLength()) {
-                return false;
-            }
-            dynamicPropertyPointer.setIndex(position - 1);
-            return true;
+        if (dynamicPropertyPointer == null && !setupDynamicPropertyPointer()) {
+            return setPositionStandard(position);
         }
+        if (position < 1
+            || position > dynamicPropertyPointer.getLength()) {
+            return false;
+        }
+        dynamicPropertyPointer.setIndex(position - 1);
+        return true;
     }
 
     @Override
