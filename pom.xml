@@ -102,7 +102,7 @@
   </properties> 
 
   <build>
-    <defaultGoal>clean apache-rat:check package japicmp:cmp checkstyle:check javadoc:javadoc</defaultGoal>
+    <defaultGoal>clean apache-rat:check package japicmp:cmp checkstyle:check pmd:check javadoc:javadoc</defaultGoal>
     <plugins>
       <plugin>
         <groupId>org.apache.rat</groupId>
@@ -163,6 +163,16 @@
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <excludes>org/apache/commons/jxpath/ri/parser/*</excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <configuration>
+          <targetJdk>1.8</targetJdk>
+          <excludes>
+            <exclude>org/apache/commons/jxpath/ri/parser/*</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>

@@ -375,7 +375,8 @@ public class BasicTypeConverter implements TypeConverter {
             return BigInteger.valueOf((long) value);
         }
         if (type == BigDecimal.class) {
-            return new BigDecimal(value);
+            // TODO ? https://pmd.sourceforge.io/pmd-6.50.0/pmd_rules_java_errorprone.html#avoiddecimalliteralsinbigdecimalconstructor
+            return new BigDecimal(value); // NOPMD
         }
         final String classname = type.getName();
         Class initialValueType = null;

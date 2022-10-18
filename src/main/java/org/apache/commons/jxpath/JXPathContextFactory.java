@@ -136,7 +136,7 @@ public abstract class JXPathContextFactory {
         try {
             debug = System.getProperty("jxpath.debug") != null;
         }
-        catch (final SecurityException ignore) {
+        catch (final SecurityException ignore) { // NOPMD
             // This is ok
         }
     }
@@ -162,7 +162,7 @@ public abstract class JXPathContextFactory {
             }
 
         }
-        catch (final SecurityException ignore) {
+        catch (final SecurityException ignore) { // NOPMD
             // Ignore
        }
 
@@ -187,7 +187,7 @@ public abstract class JXPathContextFactory {
                         try {
                             fis.close();
                         }
-                        catch (final IOException ignore) {
+                        catch (final IOException ignore) { // NOPMD
                             //swallow
                         }
                     }
@@ -234,8 +234,8 @@ public abstract class JXPathContextFactory {
                     try {
                         rd.close();
                     }
-                    catch (final IOException ignore) {
-                        //swallow
+                    catch (final IOException ignore) { // NOPMD
+                        // Ignore
                     }
                 }
 
