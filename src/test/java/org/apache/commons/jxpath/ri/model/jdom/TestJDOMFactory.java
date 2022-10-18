@@ -21,7 +21,7 @@ import java.util.List;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * Test AbstractFactory.

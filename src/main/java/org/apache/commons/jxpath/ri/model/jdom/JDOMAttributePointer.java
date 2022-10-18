@@ -19,7 +19,7 @@ package org.apache.commons.jxpath.ri.model.jdom;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.TypeUtils;
-import org.jdom.Attribute;
+import org.jdom2.Attribute;
 
 /**
  * A Pointer that points to a DOM node.

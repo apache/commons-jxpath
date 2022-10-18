@@ -19,7 +19,7 @@ package org.apache.commons.jxpath.xml;
 import java.io.InputStream;
 
 import org.apache.commons.jxpath.JXPathException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.input.SAXBuilder;
 
 /**
  * An implementation of the XMLParser interface that produces a JDOM Document.
