@@ -24,8 +24,8 @@ import org.apache.commons.jxpath.BasicNodeSet;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.NestedTestBean;
-import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.NodeSet;
+import org.apache.commons.jxpath.Pointer;
 
 /**
  */

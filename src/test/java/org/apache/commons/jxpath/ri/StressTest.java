@@ -16,9 +16,9 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.jxpath.JXPathContext;
+
+import junit.framework.TestCase;
 
 /**
  * Test thread safety.

@@ -18,10 +18,10 @@ package org.apache.commons.jxpath.ri;
 
 import java.util.Iterator;
 
-import org.apache.commons.jxpath.ri.compiler.Expression;
 import org.apache.commons.jxpath.CompiledExpression;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.compiler.Expression;
 
 /**
  * RI of CompiledExpression.

@@ -17,9 +17,9 @@
 
 package org.apache.commons.jxpath.ri;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
+
+import junit.framework.TestCase;
 
 public class JXPathContextReferenceImplTestCase extends TestCase {
 

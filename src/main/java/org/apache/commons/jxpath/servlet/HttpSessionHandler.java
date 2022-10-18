@@ -18,6 +18,7 @@ package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
 import java.util.HashSet;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.jxpath.JXPathException;

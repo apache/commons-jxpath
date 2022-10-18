@@ -18,6 +18,7 @@
 package org.apache.commons.jxpath.servlet;
 
 import java.util.Iterator;
+
 import javax.servlet.ServletContext;
 
 import org.apache.commons.jxpath.JXPathContext;
@@ -29,6 +30,7 @@ import com.mockrunner.mock.web.MockHttpSession;
 import com.mockrunner.mock.web.MockPageContext;
 import com.mockrunner.mock.web.MockServletConfig;
 import com.mockrunner.mock.web.MockServletContext;
+
 import junit.framework.TestCase;
 
 /**

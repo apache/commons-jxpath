@@ -18,8 +18,6 @@ package org.apache.commons.jxpath.ri.axes;
 
 import java.util.HashMap;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.NestedTestBean;
 import org.apache.commons.jxpath.Pointer;
@@ -36,6 +34,8 @@ import org.apache.commons.jxpath.ri.model.beans.TestBeanFactory;
 import org.apache.commons.jxpath.ri.model.dom.DOMNodePointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
+
+import junit.framework.TestCase;
 
 public class SimplePathInterpreterTest extends TestCase {
 

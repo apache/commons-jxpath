@@ -18,10 +18,12 @@ package org.apache.commons.jxpath.issues;
 
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.TestCase;
+
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.Variables;
+
+import junit.framework.TestCase;
 
 public class JXPath177Test extends TestCase
 {

@@ -18,12 +18,12 @@ package org.apache.commons.jxpath.issues;
 
 import java.util.HashMap;
 
-import junit.framework.TestSuite;
-
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
+
+import junit.framework.TestSuite;
 
 public class JXPath172DynamicTest extends JXPathTestCase
 {

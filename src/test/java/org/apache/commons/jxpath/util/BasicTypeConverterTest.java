@@ -24,10 +24,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
+
+import junit.framework.TestCase;
 
 /**
  * Tests BasicTypeConverter

@@ -18,8 +18,8 @@ package org.apache.commons.jxpath;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
 

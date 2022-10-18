@@ -17,10 +17,12 @@
 package org.apache.commons.jxpath.issues;
 
 import java.util.Iterator;
-import junit.framework.Assert;
-import junit.framework.TestCase;
+
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
 /**
  * Testcase proving JXPATH-118 issue with asPath() returning wrong names.

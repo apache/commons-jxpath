@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.jxpath.ri.model.NodePointer;
+
+import junit.framework.TestCase;
 
 /**
  * Abstract superclass for various JXPath tests.
