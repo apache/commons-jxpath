@@ -98,6 +98,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action issue="JXPATH-184" dev="ggregory" type="update" due-to="Dependabot">
         Bump commons-logging from 1.1.1 to 1.2 #34.
       </action>
+      <action issue="JXPATH-184" dev="ggregory" type="update" due-to="Dependabot">
+        Bump commons-beanutils from 1.8.2 to 1.9.4 #24.
+      </action>
     </release>
   </body>
 </document>
