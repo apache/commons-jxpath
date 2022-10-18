@@ -48,7 +48,7 @@ The <action> type attribute can be add,update,fix,remove.
     <!-- The release date is the date RC is cut -->
     <release version="1.4" date="2014-??-??" description="New features and bug fixes.">
       <action issue="JXPATH-184" dev="britter" type="update" >
-        Update to Java 7
+        Update to Java 8
       </action>
       <action issue="JXPATH-172" dev="britter" type="update" due-to="Michele Vivoda">
         Clarify Javadoc of JXPathContext#getPointer
