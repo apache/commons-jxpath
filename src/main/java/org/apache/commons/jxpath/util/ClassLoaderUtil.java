@@ -16,6 +16,8 @@
  */
 package org.apache.commons.jxpath.util;
 
+import org.apache.commons.jxpath.ri.JXPathFilter;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,12 +70,19 @@ public class ClassLoaderUtil {
      * @param classLoader  the class loader to use to load the class
      * @param className  the class name
      * @param initialize  whether the class must be initialized
+     * @param jxPathFilter  the XPath filter
      * @return the class represented by <code>className</code> using the <code>classLoader</code>
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(ClassLoader classLoader, String className, boolean initialize)
+    public static Class getClass(ClassLoader classLoader, String className, boolean initialize, JXPathFilter jxPathFilter)
         throws ClassNotFoundException {
         Class clazz;
+
+        // give chance to ClassFilter to filter out, if present
+        if (jxPathFilter != null && !jxPathFilter.exposeToXPath(className)) {
+            throw new ClassNotFoundException(className);
+        }
+
         if (abbreviationMap.containsKey(className)) {
             String clsName = "[" + abbreviationMap.get(className);
             clazz = Class.forName(clsName, initialize, classLoader).getComponentType();
@@ -82,6 +91,38 @@ public class ClassLoaderUtil {
             clazz = Class.forName(toCanonicalName(className), initialize, classLoader);
         }
         return clazz;
+    }
+
+    /**
+     * Returns the class represented by <code>className</code> using the
+     * <code>classLoader</code>.  This implementation supports names like
+     * "<code>java.lang.String[]</code>" as well as "<code>[Ljava.lang.String;</code>".
+     *
+     * @param classLoader  the class loader to use to load the class
+     * @param className  the class name
+     * @param initialize  whether the class must be initialized
+     * @return the class represented by <code>className</code> using the <code>classLoader</code>
+     * @throws ClassNotFoundException if the class is not found
+     */
+    public static Class getClass(ClassLoader classLoader, String className, boolean initialize)
+            throws ClassNotFoundException {
+        return getClass(classLoader, className, initialize, null);
+    }
+
+    /**
+     * Returns the (initialized) class represented by <code>className</code>
+     * using the <code>classLoader</code>.  This implementation supports names
+     * like "<code>java.lang.String[]</code>" as well as
+     * "<code>[Ljava.lang.String;</code>".
+     *
+     * @param classLoader  the class loader to use to load the class
+     * @param className  the class name
+     * @param jxPathFilter  the XPath filter
+     * @return the class represented by <code>className</code> using the <code>classLoader</code>
+     * @throws ClassNotFoundException if the class is not found
+     */
+    public static Class getClass(ClassLoader classLoader, String className, JXPathFilter jxPathFilter) throws ClassNotFoundException {
+        return getClass(classLoader, className, true, jxPathFilter);
     }
 
     /**
@@ -96,7 +137,7 @@ public class ClassLoaderUtil {
      * @throws ClassNotFoundException if the class is not found
      */
     public static Class getClass(ClassLoader classLoader, String className) throws ClassNotFoundException {
-        return getClass(classLoader, className, true);
+        return getClass(classLoader, className, true, null);
     }
 
     /**
@@ -110,7 +151,22 @@ public class ClassLoaderUtil {
      * @throws ClassNotFoundException if the class is not found
      */
     public static Class getClass(String className) throws ClassNotFoundException {
-        return getClass(className, true);
+        return getClass(className, true, null);
+    }
+
+    /**
+     * Returns the (initialized) class represented by <code>className</code>
+     * using the current thread's context class loader. This implementation
+     * supports names like "<code>java.lang.String[]</code>" as well as
+     * "<code>[Ljava.lang.String;</code>".
+     *
+     * @param className  the class name
+     * @param jxPathFilter  the XPath filter
+     * @return the class represented by <code>className</code> using the current thread's context class loader
+     * @throws ClassNotFoundException if the class is not found
+     */
+    public static Class getClass(String className, JXPathFilter jxPathFilter) throws ClassNotFoundException {
+        return getClass(className, true, jxPathFilter);
     }
 
     /**
@@ -125,17 +181,33 @@ public class ClassLoaderUtil {
      * @throws ClassNotFoundException if the class is not found
      */
     public static Class getClass(String className, boolean initialize) throws ClassNotFoundException {
+        return getClass(className, initialize, null);
+    }
+
+    /**
+     * Returns the class represented by <code>className</code> using the
+     * current thread's context class loader. This implementation supports
+     * names like "<code>java.lang.String[]</code>" as well as
+     * "<code>[Ljava.lang.String;</code>".
+     *
+     * @param className  the class name
+     * @param initialize  whether the class must be initialized
+     * @param jxPathFilter  the XPath filter
+     * @return the class represented by <code>className</code> using the current thread's context class loader
+     * @throws ClassNotFoundException if the class is not found
+     */
+    public static Class getClass(String className, boolean initialize, JXPathFilter jxPathFilter) throws ClassNotFoundException {
         ClassLoader contextCL = Thread.currentThread().getContextClassLoader();
         ClassLoader currentCL = ClassLoaderUtil.class.getClassLoader();
         if (contextCL != null) {
             try {
-                return getClass(contextCL, className, initialize);
+                return getClass(contextCL, className, initialize, jxPathFilter);
             }
             catch (ClassNotFoundException e) {//NOPMD
                 // ignore this exception and try the current class loader.
             }
         }
-        return getClass(currentCL, className, initialize);
+        return getClass(currentCL, className, initialize, jxPathFilter);
     }
 
     /**

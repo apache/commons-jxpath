@@ -16,23 +16,10 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-import org.apache.commons.jxpath.ClassFunctions;
-import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.FunctionLibrary;
-import org.apache.commons.jxpath.Functions;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
-import org.apache.commons.jxpath.NodeSet;
-import org.apache.commons.jxpath.PackageFunctions;
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.TestBean;
-import org.apache.commons.jxpath.Variables;
+import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.ri.JXPathFilter;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.JXPath11CompatibleTypeConverter;
 import org.apache.commons.jxpath.util.TypeConverter;
@@ -46,6 +33,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     private JXPathContext context;
     private TestBean testBean;
     private TypeConverter typeConverter;
+    JXPathFilter jxPathFilter = new JXPathFilter();
 
     public void setUp() {
         if (context == null) {
@@ -380,6 +368,139 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             context,
             "test:isInstance(//strings, $NodeSet.class)",
             Boolean.TRUE);
+    }
+
+    public void testClassFunctionsWithClassFilter() {
+        try {
+            Functions iFunctions = new ClassFunctions(TestFunctions3.class, "test3");
+
+            System.setProperty("jxpath.class.deny", "org.apache.commons.jxpath.ri.compiler.TestFunctions3");
+            jxPathFilter.init();
+
+            Function classFunction = iFunctions.getFunction("test3", "testFunction3Method1", null, jxPathFilter);
+            classFunction = null;
+            throw new Exception("testClassFunctionsWithClassFilter() failed.");
+        } catch (Throwable t) {
+            assertTrue((t.getMessage().indexOf("Cannot invoke extension function test3:testFunction3Method1; org.apache.commons.jxpath.ri.compiler.TestFunctions3") > -1)
+                    || (t.getMessage().indexOf("java.lang.ClassNotFoundException: org.apache.commons.jxpath.ri.compiler.TestFunctions3") > -1));
+        } finally {
+            System.clearProperty("jxpath.class.deny");
+        }
+    }
+
+    public void testClassFunctionsWithoutClassFilter() {
+        Function classFunction = null;
+        try {
+            Functions iFunctions = new ClassFunctions(TestFunctions3.class, "test3");
+
+            System.clearProperty("jxpath.class.deny");
+            jxPathFilter.init();
+
+            classFunction = iFunctions.getFunction("test3", "testFunction3Method1", null, jxPathFilter);
+        } catch (Throwable t) {
+            fail(t.getMessage());
+        } finally {
+            System.clearProperty("jxpath.class.deny");
+            assertTrue(classFunction != null);
+            classFunction = null;
+        }
+    }
+
+    public void testPackageFunctionsWithClassFilter() {
+        try {
+            Functions iFunctions = new PackageFunctions("org.apache.commons.jxpath.ri.compiler.","jxpathtests");
+
+            System.setProperty("jxpath.class.deny", "org.apache.commons.jxpath.ri.compiler.TestFunctions3");
+            jxPathFilter.init();
+
+            Function packageFunction = iFunctions.getFunction("jxpathtests", "TestFunctions3.testFunction3Method1", null, jxPathFilter);
+            packageFunction = null;
+            throw new Exception("testPackageFunctionsWithClassFilter() failed.");
+        } catch (Throwable t) {
+            assertTrue((t.getMessage().indexOf("Cannot invoke extension function jxpathtests:TestFunctions3.testFunction3Method1; org.apache.commons.jxpath.ri.compiler.TestFunctions3") > -1)
+                    || (t.getMessage().indexOf("java.lang.ClassNotFoundException: org.apache.commons.jxpath.ri.compiler.TestFunctions3") > -1));
+        } finally {
+            System.clearProperty("jxpath.class.deny");
+        }
+    }
+
+    public void testPackageFunctionsWithoutClassFilter() {
+        Function packageFunction = null;
+        try {
+            Functions iFunctions = new PackageFunctions("org.apache.commons.jxpath.ri.compiler.","jxpathtests");
+
+            System.clearProperty("jxpath.class.deny");
+            jxPathFilter.init();
+
+            packageFunction = iFunctions.getFunction("jxpathtests", "TestFunctions3.testFunction3Method1", null, jxPathFilter);
+        } catch (Throwable t) {
+            fail(t.getMessage());
+        } finally {
+            System.clearProperty("jxpath.class.deny");
+            assertTrue(packageFunction != null);
+            packageFunction = null;
+        }
+    }
+
+    public void testJXPathContextFunctionsWithClassFilter() {
+        String failedMethods = null;
+        try {
+            System.setProperty("jxpath.class.deny", "java.lang.Thread");
+            jxPathFilter.init();
+
+            try {
+                context.iterate("java.lang.Thread.sleep(5000)");
+                throw new Exception("testJXPathContextFunctionsWithClassFilter() failed for iterate()");
+            } catch (Throwable t) {
+                if ((t.getMessage().indexOf("Cannot invoke extension function java.lang.Thread.sleep; java.lang.Thread") > -1)
+                        || (t.getMessage().indexOf("java.lang.ClassNotFoundException: java.lang.Thread") > -1)) {
+                    //success
+                } else {
+                    failedMethods = "org.apache.commons.jxpath.JXPathContext.iterate()";
+                }
+            }
+
+            try {
+                context.selectSingleNode("java.lang.Thread.sleep(5000)");
+                throw new Exception("testJXPathContextFunctionsWithClassFilter() failed for iterate()");
+            } catch (Throwable t) {
+                if ((t.getMessage().indexOf("Cannot invoke extension function java.lang.Thread.sleep; java.lang.Thread") > -1)
+                        || (t.getMessage().indexOf("java.lang.ClassNotFoundException: java.lang.Thread") > -1)) {
+                    //success
+                } else {
+                    failedMethods += ("".equals(failedMethods) ? "org.apache.commons.jxpath.JXPathContext.selectSingleNode()" : ", org.apache.commons.jxpath.JXPathContext.selectSingleNode()");
+                }
+            }
+
+        } catch (Throwable t) {
+            fail(t.getMessage());
+        } finally {
+            System.clearProperty("jxpath.class.deny");
+            if (failedMethods != null) {
+                fail("Problem exists in: " + failedMethods);
+            }
+        }
+    }
+
+    public void testJXPathContextFunctionsWithoutClassFilter() {
+        try {
+            System.clearProperty("jxpath.class.deny");
+            jxPathFilter.init();
+
+            long t = System.currentTimeMillis();
+            context.iterate("java.lang.Thread.sleep(5000)");
+            t = System.currentTimeMillis() - t;
+            assertTrue(t >= 5);
+
+            t = System.currentTimeMillis();
+            context.selectSingleNode("java.lang.Thread.sleep(5000)");
+            t = System.currentTimeMillis() - t;
+            assertTrue(t >= 5);
+        } catch (Throwable t) {
+            fail(t.getMessage());
+        } finally {
+            System.clearProperty("jxpath.class.deny");
+        }
     }
 
     private static class Context implements ExpressionContext {
