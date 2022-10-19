@@ -16,8 +16,9 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A filter to be used by JXPath, to evaluate the xpath string values to impose any restrictions.
@@ -29,7 +30,7 @@ import java.util.Arrays;
  * @version $Revision$ $Date$
  */
 public class JXPathFilter implements JXPathClassFilter {
-    ArrayList<String> allowedClassesList = null;
+    Set<String> allowedClassesList = null;
 
     public JXPathFilter() {
         init();
@@ -39,7 +40,7 @@ public class JXPathFilter implements JXPathClassFilter {
         String restrictedClasses = System.getProperty("jxpath.class.allow");
         allowedClassesList = null;
         if ((restrictedClasses != null) && (restrictedClasses.trim().length() > 0)) {
-            allowedClassesList = new ArrayList<>();
+            allowedClassesList = new HashSet<>();
             allowedClassesList.addAll(Arrays.asList(restrictedClasses.split(",")));
         }
     }
