@@ -19,11 +19,11 @@ package org.apache.commons.jxpath.ri;
 /**
  * Class filter (optional) to be used by JXPath.
  *
- * System property "jxpath.class.allow" can be set to specify the list of allowd classnames.
+ * System property "jxpath.class.allow" can be set to specify the list of allowed classnames.
  * This property takes a list of java classnames (use comma as separator to specify more than one class).
  * If this property is not set, it exposes no java classes
  * Ex: jxpath.class.allow=java.lang.Runtime will allow exposing java.lang.Runtime class via xpath, while all other
- * classes will be not exposed.
+ * classes will be not exposed. You can use the wildcard (*) to allow all classes.
  *
  * @author bhmohanr-techie
  * @version $Revision$ $Date$
