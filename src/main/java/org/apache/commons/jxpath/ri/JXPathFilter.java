@@ -39,7 +39,7 @@ public class JXPathFilter implements JXPathClassFilter {
         String restrictedClasses = System.getProperty("jxpath.class.allow");
         allowedClassesList = null;
         if ((restrictedClasses != null) && (restrictedClasses.trim().length() > 0)) {
-            allowedClassesList = new ArrayList<String>();
+            allowedClassesList = new ArrayList<>();
             allowedClassesList.addAll(Arrays.asList(restrictedClasses.split(",")));
         }
     }

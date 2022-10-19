@@ -92,7 +92,7 @@ public class ClassFunctions implements Functions {
         final String namespace,
         final String name,
         Object[] parameters) {
-        return getFunction(namespace, name, parameters, null);
+        return getFunction(namespace, name, parameters, new JXPathFilter());
     }
 
     public Function getFunction(

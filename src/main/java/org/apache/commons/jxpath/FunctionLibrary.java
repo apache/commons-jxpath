@@ -78,7 +78,7 @@ public class FunctionLibrary implements Functions {
     @Override
     public Function getFunction(final String namespace, final String name,
             final Object[] parameters) {
-        return getFunction(namespace, name, parameters, null);
+        return getFunction(namespace, name, parameters, new JXPathFilter());
     }
 
     /**
