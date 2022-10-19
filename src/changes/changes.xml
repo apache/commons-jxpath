@@ -92,17 +92,20 @@ The <action> type attribute can be add,update,fix,remove.
       <action issue="JXPATH-184" dev="britter" type="update" due-to="britter, Gary Gregory">
         Bump Java to 8.
       </action>
-      <action issue="JXPATH-184" dev="ggregory" type="update" due-to="britter, Gary Gregory">
+      <action dev="ggregory" type="update" due-to="britter, Gary Gregory">
         Bump JUnit 3.8.1 to 4.13.2.
       </action>
-      <action issue="JXPATH-184" dev="ggregory" type="update" due-to="Dependabot">
+      <action dev="ggregory" type="update" due-to="Dependabot">
         Bump commons-logging from 1.1.1 to 1.2 #34.
       </action>
-      <action issue="JXPATH-184" dev="ggregory" type="update" due-to="Dependabot">
+      <action dev="ggregory" type="update" due-to="Dependabot">
         Bump commons-beanutils from 1.8.2 to 1.9.4 #24.
       </action>
-      <action issue="JXPATH-184" dev="ggregory" type="update" due-to="Dependabot">
+      <action dev="ggregory" type="update" due-to="Dependabot">
         Bump taglist-maven-plugin from 2.2 to 3.0.0 #32.
+      </action>
+      <action dev="ggregory" type="update" due-to="Dependabot">
+        Bump servlet-api from 2.4 to 2.5 #29.
       </action>
     </release>
   </body>
