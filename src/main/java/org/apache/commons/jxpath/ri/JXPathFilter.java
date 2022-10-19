@@ -30,7 +30,7 @@ import java.util.Set;
  * @version $Revision$ $Date$
  */
 public class JXPathFilter implements JXPathClassFilter {
-    Set<String> allowedClassesList = null;
+    private Set<String> allowedClassesList = null;
 
     public JXPathFilter() {
         init();
@@ -39,7 +39,7 @@ public class JXPathFilter implements JXPathClassFilter {
     public void init() {
         String restrictedClasses = System.getProperty("jxpath.class.allow");
         allowedClassesList = null;
-        if ((restrictedClasses != null) && (restrictedClasses.trim().length() > 0)) {
+        if (restrictedClasses != null && restrictedClasses.trim().length() > 0) {
             allowedClassesList = new HashSet<>();
             allowedClassesList.addAll(Arrays.asList(restrictedClasses.split(",")));
         }
@@ -54,15 +54,11 @@ public class JXPathFilter implements JXPathClassFilter {
      */
     @Override
     public boolean exposeToXPath(String className) {
-        if ((allowedClassesList == null) || (allowedClassesList.size() < 1)) {
+        if (allowedClassesList == null || allowedClassesList.size() < 1) {
             return false;
         }
 
-        if (allowedClassesList.contains(className) ||  allowedClassesList.contains("*")) {
-            return true;
-        }
-
-        return false;
+        return allowedClassesList.contains(className) || allowedClassesList.contains("*");
     }
 }
 

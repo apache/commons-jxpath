@@ -37,5 +37,5 @@ public interface JXPathClassFilter {
      * passed.
      * @return true if the java class can be exposed via xpath, false otherwise
      */
-    public boolean exposeToXPath(String className);
+    boolean exposeToXPath(String className);
 }
