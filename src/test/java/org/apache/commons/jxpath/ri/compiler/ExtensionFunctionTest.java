@@ -384,8 +384,8 @@ public class ExtensionFunctionTest extends JXPathTestCase {
 
             classFunction = iFunctions.getFunction("test3", "testFunction3Method1", null, jxPathFilter);
         } catch (Throwable t) {
-            assertTrue((t.getMessage().contains("Cannot invoke extension function test3:testFunction3Method1; org.apache.commons.jxpath.ri.compiler.TestFunctions3"))
-                    || (t.getMessage().contains("java.lang.ClassNotFoundException: org.apache.commons.jxpath.ri.compiler.TestFunctions3")));
+            System.err.println(t.getMessage());
+            assertTrue((t.getMessage().contains("Extension function is not allowed: test3:testFunction3Method1 (in org.apache.commons.jxpath.ri.compiler.TestFunctions3)")));
         } finally {
             assertNull(classFunction);
         }

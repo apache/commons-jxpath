@@ -102,17 +102,11 @@ public class ClassFunctions implements Functions {
             JXPathFilter jxPathFilter) {
 
         // give chance to ClassFilter to filter out, if present
-        try {
-            if (jxPathFilter != null && !jxPathFilter.exposeToXPath(functionClass.getName())) {
-                throw new ClassNotFoundException(functionClass.getName());
-            }
-        }
-        catch (ClassNotFoundException ex) {
+        if (jxPathFilter != null && !jxPathFilter.exposeToXPath(functionClass.getName())) {
             throw new JXPathException(
-                    "Cannot invoke extension function "
-                            + (namespace != null ? namespace + ":" + name : name),
-                    ex);
-            }
+                    "Extension function is not allowed: " + (namespace != null ? namespace + ":" + name : name)
+                    + " (in " + functionClass.getName() + ")");
+        }
 
         if (namespace == null) {
             if (this.namespace != null) {
