@@ -50,7 +50,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     @Override
     public void setUp() {
         System.setProperty("jxpath.class.allow",
-                "org.apache.commons.jxpath.ri.compiler.TestFunctions,org.apache.commons.jxpath.ri.compiler.TestFunctions2");
+                "java.lang.String,java.util.*,org.apache.commons.jxpath.ri.compiler.TestFunctions,org.apache.commons.jxpath.ri.compiler.TestFunctions2,org.apache.commons.jxpath.ri.JXPath*");
         if (context == null) {
             testBean = new TestBean();
             context = JXPathContext.newContext(testBean);
@@ -393,7 +393,6 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             Functions iFunctions = new ClassFunctions(TestFunctions3.class, "test3");
             classFunction = iFunctions.getFunction("test3", "testFunction3Method1", null);
         } catch (Throwable t) {
-            System.err.println(t.getMessage());
             assertTrue((t.getMessage().contains("Extension function is not allowed: test3:testFunction3Method1 (in org.apache.commons.jxpath.ri.compiler.TestFunctions3)")));
         } finally {
             assertNull(classFunction);
@@ -444,7 +443,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     public void testJXPathContextFunctionsWithoutClassFilter() {
         String failedMethods = "";
         try {
-            context.iterate("java.lang.Thread.sleep(5000)");
+            context.iterate("java.lang.Thread.sleep(5)");
             throw new Exception("testJXPathContextFunctionsWithClassFilter() failed for iterate()");
         } catch (Throwable t) {
             if (!t.getMessage().contains("Cannot invoke extension function java.lang.Thread.sleep; java.lang.Thread")
@@ -454,7 +453,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         }
 
         try {
-            context.selectSingleNode("java.lang.Thread.sleep(5000)");
+            context.selectSingleNode("java.lang.Thread.sleep(5)");
             throw new Exception("testJXPathContextFunctionsWithClassFilter() failed for iterate()");
         } catch (Throwable t) {
             if (!(t.getMessage().contains("Cannot invoke extension function java.lang.Thread.sleep; java.lang.Thread"))

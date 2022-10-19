@@ -16,44 +16,24 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
- * A filter to be used by JXPath, to evaluate the xpath string values to impose any restrictions.
- * This class implements specific filter interfaces, and implements methods in those. 
- * For instance, it JXPathClassFilter interface, which is used to check if any restricted java classes are passed via xpath
- * JXPath uses this filter instance when an extension function instance is created.
+ * Class filter (optional) to be used by JXPath.
+ *
+ * System property "jxpath.class.allow" can be set to specify the list of allowed classnames.
+ * This property takes a list of java classnames (use comma as separator to specify more than one class).
+ * If this property is not set, it exposes no java classes
+ * Ex: jxpath.class.allow=java.lang.Runtime will allow exposing java.lang.Runtime class via xpath, while all other
+ * classes will be not exposed. You can use the wildcard (*) to allow all classes.
+ * @since 1.4
  */
-public class JXPathFilter implements JXPathClassFilter {
-    private Set<String> allowedClassesList = null;
-
-    public JXPathFilter() {
-        init();
-    }
-
-    public void init() {
-        final String allowedClasses = System.getProperty("jxpath.class.allow");
-        if (allowedClasses != null && !allowedClasses.isEmpty()) {
-            allowedClassesList = new HashSet<>();
-            allowedClassesList.addAll(Arrays.asList(allowedClasses.split(",")));
-        }
-    }
+public interface JXPathFilter {
 
     /**
-     * Specifies whether the Java class of the specified name be exposed via xpath
-     *
-     * @param className is the fully qualified name of the java class being checked.
-     *                  This will not be null. Only non-array class names will be passed.
+     * Should the Java class of the specified name be exposed via xpath?
+     * @param className is the fully qualified name of the java class being
+     * checked. This will not be null. Only non-array class names will be
+     * passed.
      * @return true if the java class can be exposed via xpath, false otherwise
      */
-    @Override
-    public boolean exposeToXPath(String className) {
-        if (allowedClassesList == null || allowedClassesList.size() < 1) {
-            return false;
-        }
-
-        return allowedClassesList.contains(className) || allowedClassesList.contains("*");
-    }
+    boolean isClassNameExposed(String className);
 }

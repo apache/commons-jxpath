@@ -16,6 +16,8 @@
  */
 package org.apache.commons.jxpath;
 
+import org.apache.commons.jxpath.ri.JXPathFilter;
+
 import java.util.Set;
 
 /**
@@ -43,4 +45,17 @@ public interface Functions {
      * @return Function
      */
     Function getFunction(String namespace, String name, Object[] parameters);
+
+    /**
+     * Returns a Function, if any, for the specified namespace,
+     * name and parameter types if the function is allowed by the filter.
+     * @param namespace ns
+     * @param name function name
+     * @param parameters Object[]
+     * @param filter JXPathFilter
+     * @return Function
+     */
+    default Function getFunction(String namespace, String name, Object[] parameters, JXPathFilter filter) {
+        return getFunction(namespace, name, parameters);
+    }
 }

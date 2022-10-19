@@ -25,6 +25,18 @@ public class JXPath154Test extends JXPathTestCase {
 
     protected JXPathContext context;
 
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        System.setProperty("jxpath.class.allow", "*");
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        System.clearProperty("jxpath.class.allow");
+        super.tearDown();
+    }
+
     protected DocumentContainer createDocumentContainer(final String model) {
         return new DocumentContainer(JXPathTestCase.class.getResource("InnerEmptyNamespace.xml"), model);
     }

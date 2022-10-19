@@ -17,6 +17,7 @@
 package org.apache.commons.jxpath.util;
 
 import org.apache.commons.jxpath.ri.JXPathFilter;
+import org.apache.commons.jxpath.ri.SystemPropertyJXPathFilter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,7 +80,7 @@ public class ClassLoaderUtil {
         Class clazz;
 
         // give chance to ClassFilter to filter out, if present
-        if (jxPathFilter == null || !jxPathFilter.exposeToXPath(className)) {
+        if (jxPathFilter == null || !jxPathFilter.isClassNameExposed(className)) {
             throw new ClassNotFoundException(className);
         }
 
@@ -106,7 +107,7 @@ public class ClassLoaderUtil {
      */
     public static Class getClass(ClassLoader classLoader, String className, boolean initialize)
             throws ClassNotFoundException {
-        return getClass(classLoader, className, initialize, new JXPathFilter());
+        return getClass(classLoader, className, initialize, new SystemPropertyJXPathFilter());
     }
 
     /**
@@ -137,7 +138,7 @@ public class ClassLoaderUtil {
      * @throws ClassNotFoundException if the class is not found
      */
     public static Class getClass(final ClassLoader classLoader, final String className) throws ClassNotFoundException {
-        return getClass(classLoader, className, true, null);
+        return getClass(classLoader, className, true, new SystemPropertyJXPathFilter());
     }
 
     /**
@@ -151,7 +152,7 @@ public class ClassLoaderUtil {
      * @throws ClassNotFoundException if the class is not found
      */
     public static Class getClass(final String className) throws ClassNotFoundException {
-        return getClass(className, true, null);
+        return getClass(className, true, new SystemPropertyJXPathFilter());
     }
 
     /**
@@ -181,7 +182,7 @@ public class ClassLoaderUtil {
      * @throws ClassNotFoundException if the class is not found
      */
     public static Class getClass(final String className, final boolean initialize) throws ClassNotFoundException {
-        return getClass(className, initialize, new JXPathFilter());
+        return getClass(className, initialize, new SystemPropertyJXPathFilter());
     }
 
     /**

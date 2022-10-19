@@ -24,6 +24,7 @@ import java.util.Set;
 import org.apache.commons.jxpath.functions.ConstructorFunction;
 import org.apache.commons.jxpath.functions.MethodFunction;
 import org.apache.commons.jxpath.ri.JXPathFilter;
+import org.apache.commons.jxpath.ri.SystemPropertyJXPathFilter;
 import org.apache.commons.jxpath.util.MethodLookupUtils;
 
 /**
@@ -92,8 +93,16 @@ public class ClassFunctions implements Functions {
         final String namespace,
         final String name,
         Object[] parameters) {
-        JXPathFilter jxPathFilter = new JXPathFilter();
-        if (!jxPathFilter.exposeToXPath(functionClass.getName())) {
+        return getFunction(namespace, name, parameters, new SystemPropertyJXPathFilter());
+    }
+
+    @Override
+    public Function getFunction(
+            final String namespace,
+            final String name,
+            Object[] parameters,
+            JXPathFilter jxPathFilter) {
+        if (!jxPathFilter.isClassNameExposed(functionClass.getName())) {
             throw new JXPathException(
                     "Extension function is not allowed: " + (namespace != null ? namespace + ":" + name : name)
                     + " (in " + functionClass.getName() + ")");
