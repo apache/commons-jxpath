@@ -16,16 +16,8 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import org.apache.commons.jxpath.Functions;
-import org.apache.commons.jxpath.JXPathContext;
-
-import java.util.*;
-
 /**
  * A test class with few methods, with different argument list
- *
- * @author bhmohanr-techie
- * @version $Revision$ $Date$
  */
 public final class TestFunctions3 {
 

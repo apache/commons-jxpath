@@ -25,9 +25,6 @@ import java.util.Set;
  * This class implements specific filter interfaces, and implements methods in those. 
  * For instance, it JXPathClassFilter interface, which is used to check if any restricted java classes are passed via xpath
  * JXPath uses this filter instance when an extension function instance is created.
- *
- * @author bhmohanr-techie
- * @version $Revision$ $Date$
  */
 public class JXPathFilter implements JXPathClassFilter {
     private Set<String> allowedClassesList = null;
@@ -37,11 +34,10 @@ public class JXPathFilter implements JXPathClassFilter {
     }
 
     public void init() {
-        String restrictedClasses = System.getProperty("jxpath.class.allow");
-        allowedClassesList = null;
-        if (restrictedClasses != null && restrictedClasses.trim().length() > 0) {
+        final String allowedClasses = System.getProperty("jxpath.class.allow");
+        if (allowedClasses != null && !allowedClasses.isEmpty()) {
             allowedClassesList = new HashSet<>();
-            allowedClassesList.addAll(Arrays.asList(restrictedClasses.split(",")));
+            allowedClassesList.addAll(Arrays.asList(allowedClasses.split(",")));
         }
     }
 
@@ -61,4 +57,3 @@ public class JXPathFilter implements JXPathClassFilter {
         return allowedClassesList.contains(className) || allowedClassesList.contains("*");
     }
 }
-

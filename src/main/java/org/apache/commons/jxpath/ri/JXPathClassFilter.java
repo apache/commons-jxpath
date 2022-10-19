@@ -24,9 +24,7 @@ package org.apache.commons.jxpath.ri;
  * If this property is not set, it exposes no java classes
  * Ex: jxpath.class.allow=java.lang.Runtime will allow exposing java.lang.Runtime class via xpath, while all other
  * classes will be not exposed. You can use the wildcard (*) to allow all classes.
- *
- * @author bhmohanr-techie
- * @version $Revision$ $Date$
+ * @since 1.4
  */
 public interface JXPathClassFilter {
 
