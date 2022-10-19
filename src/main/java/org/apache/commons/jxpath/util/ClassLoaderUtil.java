@@ -79,7 +79,7 @@ public class ClassLoaderUtil {
         Class clazz;
 
         // give chance to ClassFilter to filter out, if present
-        if (jxPathFilter != null && !jxPathFilter.exposeToXPath(className)) {
+        if (jxPathFilter == null || !jxPathFilter.exposeToXPath(className)) {
             throw new ClassNotFoundException(className);
         }
 
@@ -106,7 +106,7 @@ public class ClassLoaderUtil {
      */
     public static Class getClass(ClassLoader classLoader, String className, boolean initialize)
             throws ClassNotFoundException {
-        return getClass(classLoader, className, initialize, null);
+        return getClass(classLoader, className, initialize, new JXPathFilter());
     }
 
     /**
@@ -181,7 +181,7 @@ public class ClassLoaderUtil {
      * @throws ClassNotFoundException if the class is not found
      */
     public static Class getClass(final String className, final boolean initialize) throws ClassNotFoundException {
-        return getClass(className, initialize, null);
+        return getClass(className, initialize, new JXPathFilter());
     }
 
     /**

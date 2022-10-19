@@ -36,6 +36,18 @@ public class JXPath172DynamicTest extends JXPathTestCase
         return new TestSuite(JXPath172DynamicTest.class);
     }
 
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        System.setProperty("jxpath.class.allow", "*");
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        System.clearProperty("jxpath.class.allow");
+        super.tearDown();
+    }
+
     public void testIssue172_propertyExistAndIsNotNull()
     {
         final JXPathContext context = getContext("ciao", false);

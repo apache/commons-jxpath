@@ -38,6 +38,18 @@ import junit.framework.TestCase;
  */
 public class JXPathServletContextTest extends TestCase {
 
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        System.setProperty("jxpath.class.allow", "*");
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        System.clearProperty("jxpath.class.allow");
+        super.tearDown();
+    }
+
     private ServletContext getServletContext() {
         final MockServletContext context = new MockServletContext();
         context.setAttribute("app", "OK");

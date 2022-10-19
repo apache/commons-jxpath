@@ -92,17 +92,8 @@ public class ClassFunctions implements Functions {
         final String namespace,
         final String name,
         Object[] parameters) {
-        return getFunction(namespace, name, parameters, new JXPathFilter());
-    }
-
-    public Function getFunction(
-            String namespace,
-            String name,
-            Object[] parameters,
-            JXPathFilter jxPathFilter) {
-
-        // give chance to ClassFilter to filter out, if present
-        if (jxPathFilter != null && !jxPathFilter.exposeToXPath(functionClass.getName())) {
+        JXPathFilter jxPathFilter = new JXPathFilter();
+        if (!jxPathFilter.exposeToXPath(functionClass.getName())) {
             throw new JXPathException(
                     "Extension function is not allowed: " + (namespace != null ? namespace + ":" + name : name)
                     + " (in " + functionClass.getName() + ")");

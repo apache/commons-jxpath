@@ -24,14 +24,24 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 
 /**
  * Test aliased/doubled XML namespace iteration; JXPATH-125.
- *
  */
 public class AliasedNamespaceIterationTest extends JXPathTestCase {
     protected JXPathContext context;
 
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        System.setProperty("jxpath.class.allow", "*");
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        System.clearProperty("jxpath.class.allow");
+        super.tearDown();
+    }
+
     protected DocumentContainer createDocumentContainer(final String model) {
-        final DocumentContainer result = new DocumentContainer(JXPathTestCase.class
-                .getResource("IterateAliasedNS.xml"), model);
+        final DocumentContainer result = new DocumentContainer(JXPathTestCase.class.getResource("IterateAliasedNS.xml"), model);
         return result;
     }
 

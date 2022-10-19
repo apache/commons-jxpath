@@ -21,6 +21,18 @@ import org.apache.commons.jxpath.JXPathTestCase;
 
 public class JXPath149Test extends JXPathTestCase {
 
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        System.setProperty("jxpath.class.allow", "*");
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        System.clearProperty("jxpath.class.allow");
+        super.tearDown();
+    }
+
     public void testComplexOperationWithVariables() {
         final JXPathContext context = JXPathContext.newContext(null);
         context.getVariables().declareVariable("a", Integer.valueOf(0));

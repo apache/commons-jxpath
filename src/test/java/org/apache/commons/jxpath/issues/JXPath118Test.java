@@ -29,6 +29,17 @@ import junit.framework.TestCase;
  */
 public class JXPath118Test extends TestCase
 {
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        System.setProperty("jxpath.class.allow", "*");
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        System.clearProperty("jxpath.class.allow");
+        super.tearDown();
+    }
 
     public void testJXPATH118IssueWithAsPath() throws Exception
     {
