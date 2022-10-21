@@ -16,10 +16,7 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A filter to be used by JXPath, to evaluate the xpath string values to impose any restrictions.
@@ -31,11 +28,11 @@ public class SystemPropertyJXPathFilter implements JXPathFilter {
     private final Set<String> allowedClasses;
 
     public SystemPropertyJXPathFilter() {
-        this.allowedClasses = new HashSet<>();
         final String allowedClasses = System.getProperty("jxpath.class.allow");
-        if (allowedClasses != null && !allowedClasses.isEmpty()) {
-            this.allowedClasses.addAll(Arrays.asList(allowedClasses.split(",")));
-        }
+        List<String> allowedClassesList = (allowedClasses != null && !allowedClasses.isEmpty())
+                ? Arrays.asList(allowedClasses.split(","))
+                : Collections.emptyList();
+        this.allowedClasses = Collections.unmodifiableSet(new HashSet<>(allowedClassesList));
     }
 
     /**
@@ -58,8 +55,7 @@ public class SystemPropertyJXPathFilter implements JXPathFilter {
         return allowedClasses.stream().anyMatch(pattern -> {
             if (Objects.equals(className, pattern)) {
                 return true;
-            }
-            else if (pattern.endsWith("*")) {
+            } else if (pattern.endsWith("*")) {
                 return className.startsWith(pattern.substring(0, pattern.length() - 1));
             }
             return false;

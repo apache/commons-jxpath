@@ -46,11 +46,11 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     private JXPathContext context;
     private TestBean testBean;
     private TypeConverter typeConverter;
+    private final String DEFAULT_ALLOW_LIST = "org.w3c.*,org.jdom.*,java.lang.String,java.util.*,org.apache.commons.*";
 
     @Override
     public void setUp() {
-        System.setProperty("jxpath.class.allow",
-                "java.lang.String,java.util.*,org.apache.commons.jxpath.ri.compiler.TestFunctions,org.apache.commons.jxpath.ri.compiler.TestFunctions2,org.apache.commons.jxpath.ri.JXPath*");
+        System.setProperty("jxpath.class.allow", DEFAULT_ALLOW_LIST);
         if (context == null) {
             testBean = new TestBean();
             context = JXPathContext.newContext(testBean);
@@ -388,6 +388,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     }
 
     public void testClassFunctionsWithoutClassFilter() {
+        System.setProperty("jxpath.class.allow", "org.w3c.*,org.jdom.*,java.lang.String,java.util.*");
         Function classFunction = null;
         try {
             Functions iFunctions = new ClassFunctions(TestFunctions3.class, "test3");
@@ -396,6 +397,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
             assertTrue((t.getMessage().contains("Extension function is not allowed: test3:testFunction3Method1 (in org.apache.commons.jxpath.ri.compiler.TestFunctions3)")));
         } finally {
             assertNull(classFunction);
+            System.setProperty("jxpath.class.allow", DEFAULT_ALLOW_LIST);
         }
     }
 
@@ -412,6 +414,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     }
 
     public void testPackageFunctionsWithoutClassFilter() {
+        System.setProperty("jxpath.class.allow", "org.w3c.*,org.jdom.*,java.lang.String,java.util.*");
         Function packageFunction = null;
         try {
             Functions iFunctions = new PackageFunctions("org.apache.commons.jxpath.ri.compiler.", "jxpathtests");
@@ -422,21 +425,21 @@ public class ExtensionFunctionTest extends JXPathTestCase {
                     || (t.getMessage().contains("java.lang.ClassNotFoundException: org.apache.commons.jxpath.ri.compiler.TestFunctions3")));
         } finally {
             assertNull(packageFunction);
+            System.setProperty("jxpath.class.allow", DEFAULT_ALLOW_LIST);
         }
     }
 
     public void testPackageFunctionsWithClassFilter() {
+        System.setProperty("jxpath.class.allow", "org.apache.commons.jxpath.ri.compiler.TestFunctions3");
         Function packageFunction = null;
-        String defaultAllowList = System.getProperty("jxpath.class.allow");
         try {
             Functions iFunctions = new PackageFunctions("org.apache.commons.jxpath.ri.compiler.", "jxpathtests");
-            System.setProperty("jxpath.class.allow", defaultAllowList + ",org.apache.commons.jxpath.ri.compiler.TestFunctions3");
             packageFunction = iFunctions.getFunction("jxpathtests", "TestFunctions3.testFunction3Method1", null);
         } catch (Throwable t) {
             fail(t.getMessage());
         } finally {
             assertNotNull(packageFunction);
-            System.setProperty("jxpath.class.allow", defaultAllowList);
+            System.setProperty("jxpath.class.allow", DEFAULT_ALLOW_LIST);
         }
     }
 

@@ -39,8 +39,6 @@ public class ClassLoaderUtilTest extends TestCase {
   private static final String TEST_CASE_CLASS_NAME = "org.apache.commons.jxpath.util.ClassLoaderUtilTest";
   private static final String EXAMPLE_CLASS_NAME = "org.apache.commons.jxpath.util.ClassLoadingExampleClass";
 
-  private static final String DEFAULT_FACTORY_CLASS = "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl";
-
   private ClassLoader orginalContextClassLoader;
 
   /**
@@ -48,7 +46,7 @@ public class ClassLoaderUtilTest extends TestCase {
    */
   @Override
 public void setUp() {
-    System.setProperty("jxpath.class.allow", "*");
+    System.setProperty("jxpath.class.allow", "java.lang.ObjectXBeanInfo,org.apache.commons.jxpath.*");
     this.orginalContextClassLoader = Thread.currentThread().getContextClassLoader();
   }
 
@@ -121,7 +119,6 @@ public void tearDown() {
    * JXPath and asserts the dynamic class load succeeds.
    */
   public static void callExampleMessageMethodAndAssertSuccess() {
-    System.setProperty("jxpath.class.allow", EXAMPLE_CLASS_NAME+","+DEFAULT_FACTORY_CLASS);
     final JXPathContext context = JXPathContext.newContext(new Object());
     Object value;
     try {
@@ -129,8 +126,6 @@ public void tearDown() {
       assertEquals("an example class", value);
     } catch( final Exception e ) {
       fail(e.getMessage());
-    } finally {
-      System.clearProperty("jxpath.class.allow");
     }
   }
 

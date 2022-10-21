@@ -39,6 +39,7 @@ public class CoreFunctionTest extends JXPathTestCase {
 
     @Override
     public void setUp() {
+        System.setProperty("jxpath.class.allow", "*");
         if (context == null) {
             context = JXPathContext.newContext(new TestMixedModelBean());
             final Variables vars = context.getVariables();
@@ -46,6 +47,12 @@ public class CoreFunctionTest extends JXPathTestCase {
             vars.declareVariable("bool_true", Boolean.TRUE);
             vars.declareVariable("bool_false", Boolean.FALSE);
         }
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        System.clearProperty("jxpath.class.allow");
     }
 
     public void testCoreFunctions() {

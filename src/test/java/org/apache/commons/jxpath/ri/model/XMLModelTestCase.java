@@ -36,6 +36,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
 
     @Override
     public void setUp() {
+        System.setProperty("jxpath.class.allow", "*");
         if (context == null) {
             final DocumentContainer docCtr = createDocumentContainer();
             context = createContext();
@@ -44,6 +45,12 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
             vars.declareVariable("container", docCtr);
             vars.declareVariable("element", context.getPointer("vendor/location/address/street").getNode());
         }
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        System.clearProperty("jxpath.class.allow");
     }
 
     protected abstract String getModel();

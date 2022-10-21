@@ -41,7 +41,7 @@ public class MixedModelTest extends JXPathTestCase {
 
     @Override
     public void setUp() {
-        System.setProperty("jxpath.class.allow", "java.util.*");
+        System.setProperty("jxpath.class.allow", "java.util.*,org.apache.commons.jxpath.*");
         final TestMixedModelBean bean = new TestMixedModelBean();
         context = JXPathContext.newContext(bean);
         context.setFactory(new TestMixedModelFactory());
