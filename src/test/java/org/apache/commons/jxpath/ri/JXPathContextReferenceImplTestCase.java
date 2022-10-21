@@ -17,11 +17,24 @@
 
 package org.apache.commons.jxpath.ri;
 
+import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
+import org.apache.commons.jxpath.JXPathContext;
 
-import junit.framework.TestCase;
 
-public class JXPathContextReferenceImplTestCase extends TestCase {
+public class JXPathContextReferenceImplTestCase extends JXPathTestCase {
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        System.setProperty("jxpath.class.allow", "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl");
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        System.clearProperty("jxpath.class.allow");
+    }
 
     /**
      * https://issues.apache.org/jira/browse/JXPATH-166
@@ -34,6 +47,17 @@ public class JXPathContextReferenceImplTestCase extends TestCase {
             while (JXPathContextReferenceImpl.removeNodePointerFactory(factory)) {
 
             }
+        }
+    }
+
+    public void testDangerousClass() {
+        try {
+            JXPathContext context = JXPathContext.newContext(new Object() {});
+            String jxPath = "run(newInstance(loadClass(getClassLoader(getClass(/)), \"org.apache.commons.jxpath.ri.TestDangerousClass\")), \"blabla\")";
+            context.getValue(jxPath);
+            fail("failed to block org.apache.commons.jxpath.ri.TestDangerousClass.run()");
+        } catch (Exception e) {
+            assertTrue(e.getMessage().contains("Calling method is not allowed: class java.lang.Object.getClass()"));
         }
     }
 }
