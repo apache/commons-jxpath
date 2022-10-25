@@ -33,6 +33,7 @@ import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.SystemPropertyJXPathFilter;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.JXPath11CompatibleTypeConverter;
 import org.apache.commons.jxpath.util.TypeConverter;
@@ -472,17 +473,18 @@ public class ExtensionFunctionTest extends JXPathTestCase {
     public void testJXPathContextFunctionsWithClassFilter() {
         try {
             System.setProperty("jxpath.class.allow", "java.lang.Thread");
+            context.setFilter(new SystemPropertyJXPathFilter());
             long startTime = System.currentTimeMillis();
             context.iterate("java.lang.Thread.sleep(5)");
             assertTrue(System.currentTimeMillis() >= startTime + 5);
 
             startTime = System.currentTimeMillis();
-            context.selectSingleNode("java.lang.Thread.sleep(50)");
+            context.selectSingleNode("java.lang.Thread.sleep(5)");
             assertTrue(System.currentTimeMillis() >= startTime + 5);
         } catch (Throwable t) {
             fail(t.getMessage());
         } finally {
-            System.clearProperty("jxpath.class.allow");
+            System.setProperty("jxpath.class.allow", DEFAULT_ALLOW_LIST);
         }
     }
 

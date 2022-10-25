@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.jxpath.ri.JXPathFilter;
+import org.apache.commons.jxpath.ri.SystemPropertyJXPathFilter;
 import org.apache.commons.jxpath.util.KeyManagerUtils;
 
 /**
@@ -422,6 +424,8 @@ public abstract class JXPathContext {
     /** decimal format map */
     protected HashMap decimalFormats;
 
+    protected JXPathFilter filter;
+
     private Locale locale;
     private boolean lenientSet = false;
     private boolean lenient = false;
@@ -469,6 +473,7 @@ public abstract class JXPathContext {
     protected JXPathContext(final JXPathContext parentContext, final Object contextBean) {
         this.parentContext = parentContext;
         this.contextBean = contextBean;
+        this.filter = new SystemPropertyJXPathFilter();
     }
 
     /**
@@ -596,6 +601,22 @@ public abstract class JXPathContext {
             locale = Locale.getDefault();
         }
         return locale;
+    }
+
+    /**
+     * Returns the filter that specifies which classes are allowed.
+     * @return JXPathFilter
+     */
+    public JXPathFilter getFilter() {
+        return filter;
+    }
+
+    /**
+     * Sets the filter for the context.
+     * @param filter JXPathFilter
+     */
+    public void setFilter(JXPathFilter filter) {
+        this.filter = filter;
     }
 
     /**

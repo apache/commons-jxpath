@@ -29,7 +29,8 @@ public class SystemPropertyJXPathFilter implements JXPathFilter {
 
     public SystemPropertyJXPathFilter() {
         final String allowedClasses = System.getProperty("jxpath.class.allow");
-        List<String> allowedClassesList = (allowedClasses != null && !allowedClasses.isEmpty())
+        List<String> allowedClassesList =
+                allowedClasses != null && !allowedClasses.isEmpty()
                 ? Arrays.asList(allowedClasses.split(","))
                 : Collections.emptyList();
         this.allowedClasses = Collections.unmodifiableSet(new HashSet<>(allowedClassesList));

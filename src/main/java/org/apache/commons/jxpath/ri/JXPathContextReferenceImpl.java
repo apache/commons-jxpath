@@ -765,7 +765,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         while (funcCtx != null) {
             funcs = funcCtx.getFunctions();
             if (funcs != null) {
-                func = funcs.getFunction(namespace, name, parameters);
+                func = funcs.getFunction(namespace, name, parameters, filter);
                 if (func != null) {
                     return func;
                 }

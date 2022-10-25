@@ -36,14 +36,24 @@ public class MethodFunction implements Function {
     private final Method method;
     private static final Object[] EMPTY_ARRAY = {};
 
-    private JXPathFilter jxpathFilter = new SystemPropertyJXPathFilter();
+    private final JXPathFilter filter;
 
     /**
      * Create a new MethodFunction.
      * @param method implementing Method
      */
     public MethodFunction(final Method method) {
+        this(method, new SystemPropertyJXPathFilter());
+    }
+
+    /**
+     * Create a new MethodFunction.
+     * @param method implementing Method
+     * @param filter JXPathFilter
+     */
+    public MethodFunction(final Method method, final JXPathFilter filter) {
         this.method = ValueUtils.getAccessibleMethod(method);
+        this.filter = filter;
     }
 
     @Override
@@ -92,7 +102,7 @@ public class MethodFunction implements Function {
                 }
             }
 
-            if (!jxpathFilter.isClassNameExposed(method.getDeclaringClass().getName())) {
+            if (!filter.isClassNameExposed(method.getDeclaringClass().getName())) {
                 throw new Exception("Calling method is not allowed: " + method.getDeclaringClass() + "." + method.getName() + "()");
             }
             return method.invoke(target, args);
