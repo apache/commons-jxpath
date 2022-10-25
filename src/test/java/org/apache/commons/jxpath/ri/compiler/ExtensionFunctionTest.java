@@ -16,10 +16,7 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.Functions;
@@ -33,6 +30,7 @@ import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.CustomJXPathFilter;
 import org.apache.commons.jxpath.ri.SystemPropertyJXPathFilter;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.JXPath11CompatibleTypeConverter;
@@ -470,7 +468,7 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         }
     }
 
-    public void testJXPathContextFunctionsWithClassFilter() {
+    public void testJXPathContextFunctionsWithSystemPropertyFilter() {
         try {
             System.setProperty("jxpath.class.allow", "java.lang.Thread");
             context.setFilter(new SystemPropertyJXPathFilter());
@@ -486,6 +484,51 @@ public class ExtensionFunctionTest extends JXPathTestCase {
         } finally {
             System.setProperty("jxpath.class.allow", DEFAULT_ALLOW_LIST);
         }
+    }
+
+    public void testJXPathAllowContextFunctionsWithCustomFilter() {
+        try {
+            System.clearProperty("jxpath.class.allow");
+            context.setFilter(new CustomJXPathFilter(new HashSet<>(Collections.singletonList("java.lang.Thread"))));
+            long startTime = System.currentTimeMillis();
+            context.iterate("java.lang.Thread.sleep(5)");
+            assertTrue(System.currentTimeMillis() >= startTime + 5);
+
+            startTime = System.currentTimeMillis();
+            context.selectSingleNode("java.lang.Thread.sleep(5)");
+            assertTrue(System.currentTimeMillis() >= startTime + 5);
+        } catch (Throwable t) {
+            fail(t.getMessage());
+        } finally {
+            System.setProperty("jxpath.class.allow", DEFAULT_ALLOW_LIST);
+        }
+    }
+
+    public void testJXPathDenyContextFunctionsWithCustomFilter() {
+        System.setProperty("jxpath.class.allow", "*");
+        context.setFilter(new CustomJXPathFilter(Collections.emptySet()));
+        try {
+            context.iterate("java.lang.Thread.sleep(5)");
+            throw new Exception("testJXPathDenyContextFunctionsWithCustomFilter() failed for iterate()");
+        } catch (Throwable t) {
+            if (!(t.getMessage().contains("Cannot invoke extension function java.lang.Thread.sleep; java.lang.Thread"))
+                    && !(t.getMessage().contains("java.lang.ClassNotFoundException: java.lang.Thread"))) {
+                fail("failed to deny calling java.lang.Thread.sleep(5)");
+            }
+        }
+
+        context.setFilter(new CustomJXPathFilter(Collections.emptySet()));
+        try {
+            context.selectSingleNode("java.lang.Thread.sleep(5)");
+            throw new Exception("testJXPathDenyContextFunctionsWithCustomFilter() failed for iterate()");
+        } catch (Throwable t) {
+            if (!(t.getMessage().contains("Cannot invoke extension function java.lang.Thread.sleep; java.lang.Thread"))
+                    && !(t.getMessage().contains("java.lang.ClassNotFoundException: java.lang.Thread"))) {
+                fail("failed to deny calling java.lang.Thread.sleep(5)");
+            }
+        }
+
+        System.setProperty("jxpath.class.allow", DEFAULT_ALLOW_LIST);
     }
 
     private static class Context implements ExpressionContext {

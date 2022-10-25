@@ -16,29 +16,16 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
- * A filter to be used by JXPath based on the system property jxpath.class.allow.
- * This property is a comma separated list of patterns defining which classes
- * are allowed to be loaded by JXPath.
+ * A filter to be used by JXPath based on a configurable custom list of pattern
+ * provided to the constructor.
  */
-public class SystemPropertyJXPathFilter extends AbstractJXPathFilter {
+public class CustomJXPathFilter extends AbstractJXPathFilter {
 
-    public SystemPropertyJXPathFilter() {
-        super(loadAllowedClassesFromSystemProperty());
-    }
-
-    private static Set<String> loadAllowedClassesFromSystemProperty() {
-        final String allowedClasses = System.getProperty("jxpath.class.allow");
-        List<String> allowedClassesList =
-                allowedClasses != null && !allowedClasses.isEmpty()
-                        ? Arrays.asList(allowedClasses.split(","))
-                        : Collections.emptyList();
-        return Collections.unmodifiableSet(new HashSet<>(allowedClassesList));
+    public CustomJXPathFilter(Set<String> allowedClasses) {
+        super(Collections.unmodifiableSet(allowedClasses));
     }
 }
