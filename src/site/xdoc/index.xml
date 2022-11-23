@@ -72,6 +72,18 @@ while (it.hasNext()){
             for those who work with mixtures of Java objects and XML and need to frequently
             traverse through graphs of those.
           </p>
+         <p>
+            <b>Warning:</b> XPath expressions can contain functions, which can trigger resource consumption
+            and also have direct access to Java classes and methods. When working with object input also
+            XPath navigation can cause methods being invoked on this input graphs. For this reason XPath
+            expressions MUST NOT be constructed from untrusted input or allow untrusted users
+            to influence them. This can lead to all kind of security critical behavior including remote
+            code execution RCE. Also mind injection attacks if you plan string concatenation for XPath
+            expressions. A (meanwhile rejected) vulnerability entry (<em>CVE-2022-41852</em>) exists for
+            this topic. It was rejected because the behavior is by design - XPath is intended as a powerful
+            scripting and expression language. However, improvements (like function allow lists) are planned
+            for future releases.
+         </p>
           <p>
             JXPath documentation currently contains:
             <ul>
