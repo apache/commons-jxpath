@@ -107,6 +107,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump servlet-api from 2.4 to 2.5 #29.
       </action>
+      <action dev="ggregory" type="update" due-to="Dependabot">
+        Bump commons-parent from 54 to 55 #45.
+      </action>
     </release>
   </body>
 </document>
