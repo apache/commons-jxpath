@@ -24,7 +24,7 @@ import java.io.Serializable;
  * ({@link JXPathContext#getPointer(java.lang.String) getPointer()}
  * and  ({@link JXPathContext#iteratePointers(java.lang.String)
  * iteratePointers()}, which, given an XPath, produce Pointers for the objects
- * or properties described the the path. For example, <code>ctx.getPointer
+ * or properties described the path. For example, <code>ctx.getPointer
  * ("foo/bar")</code> will produce a Pointer that can get and set the property
  * "bar" of the object which is the value of the property "foo" of the root
  * object. The value of <code>ctx.getPointer("aMap/aKey[3]")</code> will be a
