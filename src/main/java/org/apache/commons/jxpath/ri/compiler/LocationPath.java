@@ -50,7 +50,7 @@ public class LocationPath extends Path {
 
     @Override
     public String toString() {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         final Step[] steps = getSteps();
         if (steps != null) {
             for (int i = 0; i < steps.length; i++) {

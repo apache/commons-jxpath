@@ -270,7 +270,7 @@ public class JDOMNodePointer extends NodePointer {
     @Override
     public Object getValue() {
         if (node instanceof Element) {
-            final StringBuffer buf = new StringBuffer();
+            final StringBuilder buf = new StringBuilder();
             for (final NodeIterator children = childIterator(null, false, null); children.setPosition(children.getPosition() + 1);) {
                 final NodePointer ptr = children.getNodePointer();
                 if (ptr.getImmediateNode() instanceof Element || ptr.getImmediateNode() instanceof Text) {
@@ -642,7 +642,7 @@ public class JDOMNodePointer extends NodePointer {
             return "id('" + escape(id) + "')";
         }
 
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
             buffer.append(parent.asPath());
         }

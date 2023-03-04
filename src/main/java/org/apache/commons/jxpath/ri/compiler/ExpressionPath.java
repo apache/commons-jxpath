@@ -102,7 +102,7 @@ public class ExpressionPath extends Path {
 
     @Override
     public String toString() {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         if (expression instanceof CoreOperation
             || expression instanceof ExpressionPath
             || expression instanceof LocationPath) {

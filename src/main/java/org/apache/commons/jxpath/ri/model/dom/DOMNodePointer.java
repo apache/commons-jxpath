@@ -508,7 +508,7 @@ public class DOMNodePointer extends NodePointer {
             return "id('" + escape(id) + "')";
         }
 
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
             buffer.append(parent.asPath());
         }
@@ -747,7 +747,7 @@ public class DOMNodePointer extends NodePointer {
             return text == null ? "" : trim ? text.trim() : text;
         }
         final NodeList list = node.getChildNodes();
-        final StringBuffer buf = new StringBuffer();
+        final StringBuilder buf = new StringBuilder();
         for (int i = 0; i < list.getLength(); i++) {
             final Node child = list.item(i);
             buf.append(stringValue(child));

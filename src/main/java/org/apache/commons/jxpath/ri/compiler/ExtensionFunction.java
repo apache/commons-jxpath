@@ -63,7 +63,7 @@ public class ExtensionFunction extends Operation {
 
     @Override
     public String toString() {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append(functionName);
         buffer.append('(');
         final Expression[] args = getArguments();

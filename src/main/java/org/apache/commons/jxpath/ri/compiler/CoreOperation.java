@@ -81,7 +81,7 @@ public abstract class CoreOperation extends Operation {
         if (args.length == 1) {
             return getSymbol() + parenthesize(args[0], false);
         }
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         for (int i = 0; i < args.length; i++) {
             if (i > 0) {
                 buffer.append(' ');

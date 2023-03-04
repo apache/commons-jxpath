@@ -157,7 +157,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     @Override
     public String toString() {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append("BeanInfo [class = ");
         buffer.append(clazz.getName());
         if (isDynamic()) {

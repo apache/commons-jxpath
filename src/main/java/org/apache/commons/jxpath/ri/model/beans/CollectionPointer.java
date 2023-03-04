@@ -232,7 +232,7 @@ public class CollectionPointer extends NodePointer {
 
     @Override
     public String asPath() {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         final NodePointer parent = getImmediateParentPointer();
         if (parent != null) {
             buffer.append(parent.asPath());

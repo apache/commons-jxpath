@@ -65,7 +65,7 @@ public class TokenMgrError extends Error
     * @return TODO
     */
    public static final String addEscapes(final String str) {
-      final StringBuffer retval = new StringBuffer();
+      final StringBuilder retval = new StringBuilder();
       char ch;
       for (int i = 0; i < str.length(); i++) {
         switch (str.charAt(i))

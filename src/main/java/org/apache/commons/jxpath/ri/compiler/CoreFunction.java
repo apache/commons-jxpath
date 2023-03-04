@@ -221,7 +221,7 @@ public class CoreFunction extends Operation {
 
     @Override
     public String toString() {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append(getFunctionName());
         buffer.append('(');
         final Expression[] args = getArguments();
@@ -528,7 +528,7 @@ public class CoreFunction extends Operation {
         if (getArgumentCount() < 2) {
             assertArgCount(2);
         }
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         final Expression[] args = getArguments();
         for (final Expression arg : args) {
             buffer.append(InfoSetUtil.stringValue(arg.compute(context)));

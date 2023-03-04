@@ -320,7 +320,7 @@ public class VariablePointer extends NodePointer {
 
     @Override
     public String asPath() {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append('$');
         buffer.append(name);
         if (!actual) {

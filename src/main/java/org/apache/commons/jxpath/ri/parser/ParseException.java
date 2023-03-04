@@ -170,7 +170,7 @@ public String getMessage() {
    * @return escaped version of the input.
    */
   protected String add_escapes(final String str) {
-      final StringBuffer retval = new StringBuffer();
+      final StringBuilder retval = new StringBuilder();
       char ch;
       for (int i = 0; i < str.length(); i++) {
         switch (str.charAt(i))

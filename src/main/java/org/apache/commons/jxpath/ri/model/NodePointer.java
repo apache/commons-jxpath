@@ -686,7 +686,7 @@ public abstract class NodePointer implements Pointer {
             return parent.asPath();
         }
 
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
             buffer.append(parent.asPath());
         }
@@ -849,10 +849,10 @@ public abstract class NodePointer implements Pointer {
     protected String escape(final String string) {
         final char[] c = { '\'', '"' };
         final String[] esc = { "&apos;", "&quot;" };
-        StringBuffer sb = null;
+        StringBuilder sb = null;
         for (int i = 0; sb == null && i < c.length; i++) {
             if (string.indexOf(c[i]) >= 0) {
-                sb = new StringBuffer(string);
+                sb = new StringBuilder(string);
             }
         }
         if (sb == null) {

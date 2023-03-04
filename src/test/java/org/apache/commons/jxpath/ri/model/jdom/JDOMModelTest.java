@@ -69,13 +69,13 @@ public class JDOMModelTest extends XMLModelTestCase {
         final boolean text,
         final boolean pi)
     {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         appendXMLSignature(buffer, node, elements, attributes, text, pi);
         return buffer.toString();
     }
 
     private void appendXMLSignature(
-        final StringBuffer buffer,
+        final StringBuilder buffer,
         final Object object,
         final boolean elements,
         final boolean attributes,
@@ -119,7 +119,7 @@ public class JDOMModelTest extends XMLModelTestCase {
     }
 
     private void appendXMLSignature(
-        final StringBuffer buffer,
+        final StringBuilder buffer,
         final List children,
         final boolean elements,
         final boolean attributes,

@@ -78,7 +78,7 @@ public class Step {
 
     @Override
     public String toString() {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         final int axis = getAxis();
         if (axis == Compiler.AXIS_CHILD) {
             buffer.append(nodeTest);

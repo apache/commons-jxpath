@@ -212,7 +212,7 @@ public class NullPropertyPointer extends PropertyPointer {
         if (!byNameAttribute) {
             return super.asPath();
         }
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append(getImmediateParentPointer().asPath());
         buffer.append("[@name='");
         buffer.append(escape(getPropertyName()));

@@ -296,7 +296,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
 
     @Override
     public String asPath() {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append(getImmediateParentPointer().asPath());
         if (buffer.length() == 0) {
             buffer.append("/.");

@@ -85,7 +85,7 @@ public class JXPathException extends RuntimeException {
         if (exception == null) {
             return message;
         }
-        final StringBuffer buf = new StringBuffer();
+        final StringBuilder buf = new StringBuilder();
         if (message != null) {
             buf.append(message).append("; ");
         }

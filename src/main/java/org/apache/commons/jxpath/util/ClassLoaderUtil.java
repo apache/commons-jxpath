@@ -149,7 +149,7 @@ public class ClassLoaderUtil {
             throw new RuntimeException("Argument className was null.");
         }
         else if (className.endsWith("[]")) {
-            final StringBuffer classNameBuffer = new StringBuffer();
+            final StringBuilder classNameBuffer = new StringBuilder();
             while (className.endsWith("[]")) {
                 className = className.substring(0, className.length() - 2);
                 classNameBuffer.append("[");
