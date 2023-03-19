@@ -20,7 +20,6 @@ import org.apache.commons.jxpath.TestBean;
 
 /**
  *
- * @version $Id$
  */
 public class ExceptionPropertyTestBean {
 

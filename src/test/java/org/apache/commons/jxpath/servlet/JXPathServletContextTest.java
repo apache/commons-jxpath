@@ -34,7 +34,6 @@ import com.mockrunner.mock.web.MockServletContext;
 import junit.framework.TestCase;
 
 /**
- * @version $Revision$, $Date$
  */
 public class JXPathServletContextTest extends TestCase {
 

@@ -23,7 +23,6 @@ import java.util.List;
  * function.  Alternatively, the function can declare the argument as
  * a Collection (or List or Set), in which case it will be given a collection
  * of <i>values</i> matching the path.
- * @version $Id$
  */
 public interface NodeSet {
 
