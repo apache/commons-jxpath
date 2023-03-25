@@ -19,7 +19,6 @@ package org.apache.commons.jxpath.ri.model;
 import org.apache.commons.jxpath.TestBean;
 
 /**
- *
  */
 public class ExceptionPropertyTestBean {
 

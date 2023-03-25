@@ -23,7 +23,6 @@ import org.apache.commons.jxpath.JXPathTestCase;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 /**
- *
  */
 public class LazyDynaBeanTest extends JXPathTestCase {
 

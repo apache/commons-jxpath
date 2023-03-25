@@ -32,7 +32,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * <code>PropertyPointer</code>s returned by these will respect
  * {@link LazyDynaClass#isDynaProperty(String)} when determining
  * {@link PropertyPointer#isActual()}.
- *
  */
 public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
     /**

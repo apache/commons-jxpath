@@ -31,7 +31,6 @@ import junit.framework.TestCase;
 
 /**
  * Tests BasicTypeConverter
- *
  */
 public class BasicTypeConverterTest extends TestCase {
 
