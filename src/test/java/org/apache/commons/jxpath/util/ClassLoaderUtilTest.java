@@ -107,7 +107,7 @@ public void tearDown() {
     try {
       context.selectSingleNode(EXAMPLE_CLASS_NAME+".getMessage()");
       fail("We should not be able to load "+EXAMPLE_CLASS_NAME+".");
-    } catch( final Exception e ) {
+    } catch ( final Exception e ) {
       assertTrue( e instanceof JXPathException );
     }
   }
@@ -122,7 +122,7 @@ public void tearDown() {
     try {
       value = context.selectSingleNode(EXAMPLE_CLASS_NAME+".getMessage()");
       assertEquals("an example class", value);
-    } catch( final Exception e ) {
+    } catch ( final Exception e ) {
       fail(e.getMessage());
     }
   }
@@ -195,11 +195,11 @@ public void tearDown() {
             for( int read = in.read(buffer); read > -1; read = in.read(buffer) ) {
               out.write(buffer, 0, read);
             }
-          } catch( final IOException e ) {
+          } catch ( final IOException e ) {
             throw new ClassNotFoundException("Could not read class from resource "+clazzUrl+".", e);
           } finally {
-            try { in.close(); } catch( final Exception e ) { }
-            try { out.close(); } catch( final Exception e ) { }
+            try { in.close(); } catch ( final Exception e ) { }
+            try { out.close(); } catch ( final Exception e ) { }
           }
 
           final byte[] clazzBytes = out.toByteArray();

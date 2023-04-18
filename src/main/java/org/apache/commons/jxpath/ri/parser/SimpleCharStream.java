@@ -132,7 +132,7 @@ public class SimpleCharStream
         maxNextCharInd += i;
         return;
      }
-     catch(final java.io.IOException e) {
+     catch (final java.io.IOException e) {
         --bufpos;
         backup(0);
         if (tokenBegin == -1) {

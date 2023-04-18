@@ -1937,42 +1937,42 @@ specified to disambiguate the grammar:
   private boolean jj_2_1(final int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_1(); }
-    catch(final LookaheadSuccess ls) { return true; }
+    catch (final LookaheadSuccess ls) { return true; }
     finally { jj_save(0, xla); }
   }
 
   private boolean jj_2_2(final int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_2(); }
-    catch(final LookaheadSuccess ls) { return true; }
+    catch (final LookaheadSuccess ls) { return true; }
     finally { jj_save(1, xla); }
   }
 
   private boolean jj_2_3(final int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_3(); }
-    catch(final LookaheadSuccess ls) { return true; }
+    catch (final LookaheadSuccess ls) { return true; }
     finally { jj_save(2, xla); }
   }
 
   private boolean jj_2_4(final int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_4(); }
-    catch(final LookaheadSuccess ls) { return true; }
+    catch (final LookaheadSuccess ls) { return true; }
     finally { jj_save(3, xla); }
   }
 
   private boolean jj_2_5(final int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_5(); }
-    catch(final LookaheadSuccess ls) { return true; }
+    catch (final LookaheadSuccess ls) { return true; }
     finally { jj_save(4, xla); }
   }
 
   private boolean jj_2_6(final int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_6(); }
-    catch(final LookaheadSuccess ls) { return true; }
+    catch (final LookaheadSuccess ls) { return true; }
     finally { jj_save(5, xla); }
   }
 

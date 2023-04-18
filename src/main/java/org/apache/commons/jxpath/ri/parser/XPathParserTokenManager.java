@@ -425,7 +425,7 @@ private int jjStartNfaWithStates_0(final int pos, final int kind, final int stat
    jjmatchedKind = kind;
    jjmatchedPos = pos;
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) { return pos + 1; }
+   catch (final java.io.IOException e) { return pos + 1; }
    return jjMoveNfa_0(state, pos + 1);
 }
 private int jjMoveStringLiteralDfa0_0()
@@ -511,7 +511,7 @@ private int jjMoveStringLiteralDfa0_0()
 private int jjMoveStringLiteralDfa1_0(final long active0, final long active1)
 {
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(0, active0, active1);
       return 1;
    }
@@ -575,7 +575,7 @@ private int jjMoveStringLiteralDfa2_0(final long old0, long active0, final long 
     return jjStartNfa_0(0, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(1, active0, active1);
       return 2;
    }
@@ -643,7 +643,7 @@ private int jjMoveStringLiteralDfa3_0(final long old0, long active0, final long 
     return jjStartNfa_0(1, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(2, active0, active1);
       return 3;
    }
@@ -709,7 +709,7 @@ private int jjMoveStringLiteralDfa4_0(final long old0, long active0, final long 
     return jjStartNfa_0(2, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(3, active0, active1);
       return 4;
    }
@@ -762,7 +762,7 @@ private int jjMoveStringLiteralDfa5_0(final long old0, long active0, final long 
     return jjStartNfa_0(3, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(4, active0, active1);
       return 5;
    }
@@ -821,7 +821,7 @@ private int jjMoveStringLiteralDfa6_0(final long old0, long active0, final long 
     return jjStartNfa_0(4, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(5, active0, active1);
       return 6;
    }
@@ -872,7 +872,7 @@ private int jjMoveStringLiteralDfa7_0(final long old0, long active0, final long 
     return jjStartNfa_0(5, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(6, active0, active1);
       return 7;
    }
@@ -920,7 +920,7 @@ private int jjMoveStringLiteralDfa8_0(final long old0, long active0, final long 
     return jjStartNfa_0(6, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(7, active0, active1);
       return 8;
    }
@@ -966,7 +966,7 @@ private int jjMoveStringLiteralDfa9_0(final long old0, long active0, final long 
     return jjStartNfa_0(7, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(8, active0, active1);
       return 9;
    }
@@ -1005,7 +1005,7 @@ private int jjMoveStringLiteralDfa10_0(final long old0, long active0, final long
     return jjStartNfa_0(8, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(9, active0, active1);
       return 10;
    }
@@ -1052,7 +1052,7 @@ private int jjMoveStringLiteralDfa11_0(final long old0, long active0, final long
     return jjStartNfa_0(9, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(10, active0, active1);
       return 11;
    }
@@ -1090,7 +1090,7 @@ private int jjMoveStringLiteralDfa12_0(final long old0, long active0, final long
     return jjStartNfa_0(10, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(11, active0, active1);
       return 12;
    }
@@ -1134,7 +1134,7 @@ private int jjMoveStringLiteralDfa13_0(final long old0, long active0, final long
     return jjStartNfa_0(11, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(12, active0, active1);
       return 13;
    }
@@ -1163,7 +1163,7 @@ private int jjMoveStringLiteralDfa14_0(final long old0, long active0, final long
     return jjStartNfa_0(12, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(13, active0, active1);
       return 14;
    }
@@ -1198,7 +1198,7 @@ private int jjMoveStringLiteralDfa15_0(final long old0, long active0, final long
     return jjStartNfa_0(13, old0, old1);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(14, active0, 0L);
       return 15;
    }
@@ -1226,7 +1226,7 @@ private int jjMoveStringLiteralDfa16_0(final long old0, long active0)
     return jjStartNfa_0(14, old0, 0L);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(15, active0, 0L);
       return 16;
    }
@@ -1251,7 +1251,7 @@ private int jjMoveStringLiteralDfa17_0(final long old0, long active0)
     return jjStartNfa_0(15, old0, 0L);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(16, active0, 0L);
       return 17;
    }
@@ -1277,7 +1277,7 @@ private int jjMoveStringLiteralDfa18_0(final long old0, long active0)
     return jjStartNfa_0(16, old0, 0L);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(17, active0, 0L);
       return 18;
    }
@@ -1303,7 +1303,7 @@ private int jjMoveStringLiteralDfa19_0(final long old0, long active0)
     return jjStartNfa_0(17, old0, 0L);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(18, active0, 0L);
       return 19;
    }
@@ -1327,7 +1327,7 @@ private int jjMoveStringLiteralDfa20_0(final long old0, long active0)
     return jjStartNfa_0(18, old0, 0L);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(19, active0, 0L);
       return 20;
    }
@@ -1346,7 +1346,7 @@ private int jjMoveStringLiteralDfa21_0(final long old0, long active0)
     return jjStartNfa_0(19, old0, 0L);
 }
    try { curChar = input_stream.readChar(); }
-   catch(final java.io.IOException e) {
+   catch (final java.io.IOException e) {
       jjStopStringLiteralDfa_0(20, active0, 0L);
       return 21;
    }
@@ -1699,7 +1699,7 @@ int kind = 0x7fffffff;
         return curPos;
     }
       try { curChar = input_stream.readChar(); }
-      catch(final java.io.IOException e) { return curPos; }
+      catch (final java.io.IOException e) { return curPos; }
    }
 }
 static final int[] jjnextStates = {
@@ -1941,7 +1941,7 @@ public Token getNextToken()
    {
       curChar = input_stream.BeginToken();
    }
-   catch(final java.io.IOException e)
+   catch (final java.io.IOException e)
    {
       jjmatchedKind = 0;
       matchedToken = jjFillToken();
