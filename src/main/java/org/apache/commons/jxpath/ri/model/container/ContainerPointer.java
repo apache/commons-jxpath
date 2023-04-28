@@ -58,7 +58,7 @@ public class ContainerPointer extends NodePointer {
 
     /**
      * This type of node is auxiliary.
-     * @return <code>true</code>.
+     * @return {@code true}.
      */
     @Override
     public boolean isContainer() {

@@ -250,7 +250,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Returns <code>true</code> if the value of the pointer is an array or
+     * Returns {@code true} if the value of the pointer is an array or
      * a Collection.
      * @return boolean
      */
@@ -620,7 +620,7 @@ public abstract class NodePointer implements Pointer {
      * Returns true if the supplied prefix represents the
      * default namespace in the context of the current node.
      * @param prefix the prefix to check
-     * @return <code>true</code> if prefix is default
+     * @return {@code true} if prefix is default
      */
     protected boolean isDefaultNamespace(final String prefix) {
         if (prefix == null) {

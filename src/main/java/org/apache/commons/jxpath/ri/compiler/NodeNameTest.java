@@ -60,7 +60,7 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Learn whether this is a wildcard test.
-     * @return <code>true</code> if the node name is "*".
+     * @return {@code true} if the node name is "*".
      */
     public boolean isWildcard() {
         return qname.getName().equals("*");

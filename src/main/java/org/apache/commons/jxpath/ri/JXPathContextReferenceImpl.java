@@ -61,7 +61,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
-     * Change this to <code>false</code> to disable soft caching of
+     * Change this to {@code false} to disable soft caching of
      * CompiledExpressions.
      */
     public static final boolean USE_SOFT_CACHE = true;

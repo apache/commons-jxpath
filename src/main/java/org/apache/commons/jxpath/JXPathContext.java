@@ -378,9 +378,9 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * depending on the last value configured with {@link #setLenient(boolean)}:</p>
  *
  *  <ol style='list-style:upper-alpha'>
- *      <li>If <code>lenient</code> is <code>false</code> (default) - methods
+ *      <li>If <code>lenient</code> is {@code false} (default) - methods
  *          will throw {@link JXPathNotFoundException}.
- *      <li>If <code>lenient</code> is <code>true</code> - methods will throw
+ *      <li>If <code>lenient</code> is {@code true} - methods will throw
  *          no exception and return a value appropriate for that method to
  *          express the absence: might be a Java <code>null</code> or a
  *          {@link Pointer} whose {@link Pointer#getValue()} returns
@@ -797,9 +797,9 @@ public abstract class JXPathContext {
      * properties in the graph</a> the behavior depends on the value that has
      * been configured with {@link #setLenient(boolean)}:</p>
      * <ul>
-     * <li> <code>false</code> (default) the method will throw a
+     * <li> {@code false} (default) the method will throw a
      * {@link JXPathNotFoundException}.
-     * <li> <code>true</code> the method returns a pointer whose
+     * <li> {@code true} the method returns a pointer whose
      * {@link Pointer#getValue()} method will always return null.
      * </ul>
      *
