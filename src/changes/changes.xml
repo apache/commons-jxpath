@@ -110,7 +110,7 @@ The <action> type attribute can be add,update,fix,remove.
         Bump servlet-api from 2.4 to 2.5 #29.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
-        Bump commons-parent from 54 to 56 #45, #49.
+        Bump commons-parent from 54 to 57 #45, #49, #64.
       </action>
     </release>
   </body>
