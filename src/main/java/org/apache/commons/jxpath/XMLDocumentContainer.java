@@ -17,6 +17,7 @@
 package org.apache.commons.jxpath;
 
 import java.net.URL;
+import java.util.Objects;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -61,10 +62,7 @@ public class XMLDocumentContainer implements Container {
      * @param source XML source
      */
     public XMLDocumentContainer(final Source source) {
-        this.source = source;
-        if (source == null) {
-            throw new RuntimeException("Source is null");
-        }
+        this.source = Objects.requireNonNull(source);
     }
 
     /**
