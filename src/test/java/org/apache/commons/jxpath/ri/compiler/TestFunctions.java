@@ -113,7 +113,7 @@ public class TestFunctions {
     public static int count(final ExpressionContext context, final Collection col) {
         for (final Object element : col) {
             if (!(element instanceof String)) {
-                throw new RuntimeException("Invalid argument");
+                throw new IllegalArgumentException("Invalid argument");
             }
         }
         return col.size();

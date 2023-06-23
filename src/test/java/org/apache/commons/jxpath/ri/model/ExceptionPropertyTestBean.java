@@ -23,14 +23,14 @@ import org.apache.commons.jxpath.TestBean;
 public class ExceptionPropertyTestBean {
 
     public String getErrorString() {
-        throw new RuntimeException("errorString");
+        throw new IllegalStateException("errorString");
     }
 
     public String[] getErrorStringArray() {
-        throw new RuntimeException("errorStringArray");
+        throw new IllegalStateException("errorStringArray");
     }
 
     public TestBean getErrorBean() {
-        throw new RuntimeException("errorBean");
+        throw new IllegalStateException("errorBean");
     }
 }
