@@ -198,10 +198,7 @@ public class JDOMNodePointer extends NodePointer {
         }
 
         if (!(node instanceof Element)) {
-            throw new RuntimeException(
-                "JXPath internal error: "
-                    + "compareChildNodes called for "
-                    + node);
+            throw new IllegalStateException("JXPath internal error: " + "compareChildNodes called for " + node);
         }
 
         final List children = ((Element) node).getContent();

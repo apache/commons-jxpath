@@ -86,6 +86,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix">
         Fix possible NPE in PackageFunctions.getFunction(String, String, Object[]).
       </action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">
+        JDOMNodePointer.compareChildNodePointers() now throws IllegalStateException instead of RuntimeException.
+      </action>      
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).
