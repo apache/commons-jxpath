@@ -478,23 +478,15 @@ public class ValueUtils {
             final PropertyDescriptor propertyDescriptor, final int index, final Object value) {
         if (propertyDescriptor instanceof IndexedPropertyDescriptor) {
             try {
-                final IndexedPropertyDescriptor ipd =
-                    (IndexedPropertyDescriptor) propertyDescriptor;
+                final IndexedPropertyDescriptor ipd = (IndexedPropertyDescriptor) propertyDescriptor;
                 final Method method = ipd.getIndexedWriteMethod();
                 if (method != null) {
-                    method.invoke(
-                        bean,
-                            Integer.valueOf(index),
-                            convert(value, ipd.getIndexedPropertyType()));
+                    method.invoke(bean, Integer.valueOf(index), convert(value, ipd.getIndexedPropertyType()));
                     return;
                 }
             }
             catch (final Exception ex) {
-                throw new RuntimeException(
-                    "Cannot access property: "
-                        + propertyDescriptor.getName()
-                        + ", "
-                        + ex.getMessage());
+                throw new IllegalArgumentException("Cannot access property: " + propertyDescriptor.getName() + ", " + ex.getMessage());
             }
         }
         // We will fall through if there is no indexed read
@@ -506,8 +498,7 @@ public class ValueUtils {
             setValue(bean, propertyDescriptor, value);
         }
         else {
-            throw new RuntimeException(
-                "Not a collection: " + propertyDescriptor.getName());
+            throw new IllegalArgumentException("Not a collection: " + propertyDescriptor.getName());
         }
     }
 

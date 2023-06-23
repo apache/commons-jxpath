@@ -88,7 +88,10 @@ The <action> type attribute can be add,update,fix,remove.
       </action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">
         JDOMNodePointer.compareChildNodePointers() now throws IllegalStateException instead of RuntimeException.
-      </action>      
+      </action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">
+        ValueUtils.setValue() now throws IllegalArgumentException instead of RuntimeException.
+      </action>
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).
