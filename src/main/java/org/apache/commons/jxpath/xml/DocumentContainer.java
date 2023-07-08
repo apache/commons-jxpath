@@ -172,22 +172,18 @@ public class DocumentContainer extends XMLParser2 implements Container {
      * @return XMLParser
      */
     private static XMLParser getParser(final String model) {
-        XMLParser parser = (XMLParser) parsers.get(model);
-        if (parser == null) {
+        return (XMLParser) parsers.computeIfAbsent(model, k -> {
             final String className = (String) parserClasses.get(model);
             if (className == null) {
                 throw new JXPathException("Unsupported XML model: " + model);
             }
             try {
                 final Class clazz = ClassLoaderUtil.getClass(className, true);
-                parser = (XMLParser) clazz.newInstance();
+                return (XMLParser) clazz.newInstance();
             }
             catch (final Exception ex) {
-                throw new JXPathException(
-                    "Cannot allocate XMLParser: " + className, ex);
+                throw new JXPathException("Cannot allocate XMLParser: " + className, ex);
             }
-            parsers.put(model, parser);
-        }
-        return parser;
+        });
     }
 }

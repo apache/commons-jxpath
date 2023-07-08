@@ -522,21 +522,14 @@ public class ValueUtils {
      * @return DynamicPropertyHandler
      */
     public static DynamicPropertyHandler getDynamicPropertyHandler(final Class clazz) {
-        DynamicPropertyHandler handler =
-            (DynamicPropertyHandler) dynamicPropertyHandlerMap.get(clazz);
-        if (handler == null) {
+        return (DynamicPropertyHandler) dynamicPropertyHandlerMap.computeIfAbsent(clazz, k -> {
             try {
-                handler = (DynamicPropertyHandler) clazz.newInstance();
-            }
+                return (DynamicPropertyHandler) clazz.newInstance();
+            } 
             catch (final Exception ex) {
-                throw new JXPathException(
-                    "Cannot allocate dynamic property handler of class "
-                        + clazz.getName(),
-                    ex);
+                throw new JXPathException("Cannot allocate dynamic property handler of class " + clazz.getName(), ex);
             }
-            dynamicPropertyHandlerMap.put(clazz, handler);
-        }
-        return handler;
+        });
     }
 
     // -------------------------------------------------------- Private Methods
