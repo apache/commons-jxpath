@@ -154,7 +154,7 @@ public void tearDown() {
     } catch (final IllegalArgumentException | IllegalAccessException e) {
       fail(e.getMessage());
     } catch (final InvocationTargetException e) {
-      if( e.getCause() instanceof RuntimeException ) {
+      if (e.getCause() instanceof RuntimeException) {
         // Allow the runtime exception to propagate up.
         throw (RuntimeException) e.getCause();
       }
@@ -180,11 +180,11 @@ public void tearDown() {
 
     @Override
     public synchronized Class loadClass(final String name, final boolean resolved) throws ClassNotFoundException {
-      if( EXAMPLE_CLASS_NAME.equals(name) ) {
+      if ( EXAMPLE_CLASS_NAME.equals(name) ) {
         throw new ClassNotFoundException();
       }
-      else if( TEST_CASE_CLASS_NAME.equals(name) ) {
-        if( testCaseClass == null ) {
+      else if ( TEST_CASE_CLASS_NAME.equals(name) ) {
+        if ( testCaseClass == null ) {
           final URL clazzUrl = this.getParent().getResource("org/apache/commons/jxpath/util/ClassLoaderUtilTest.class");
 
           final ByteArrayOutputStream out = new ByteArrayOutputStream();
