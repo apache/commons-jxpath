@@ -179,7 +179,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
             }
             try {
                 final Class clazz = ClassLoaderUtil.getClass(className, true);
-                return (XMLParser) clazz.newInstance();
+                return (XMLParser) clazz.getConstructor().newInstance();
             }
             catch (final Exception ex) {
                 throw new JXPathException("Cannot allocate XMLParser: " + className, ex);

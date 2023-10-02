@@ -429,7 +429,7 @@ public class BasicTypeConverter implements TypeConverter {
         if (!type.isInterface()
                 && (type.getModifiers() & Modifier.ABSTRACT) == 0) {
             try {
-                return (Collection) type.newInstance();
+                return (Collection) type.getConstructor().newInstance();
             }
             catch (final Exception ex) {
                 throw new JXPathInvalidAccessException(

@@ -102,9 +102,9 @@ public abstract class JXPathContextFactory {
         JXPathContextFactory factoryImpl;
         try {
             final Class clazz = ClassLoaderUtil.getClass( FACTORY_IMPL_NAME, true );
-            factoryImpl = (JXPathContextFactory) clazz.newInstance();
+            factoryImpl = (JXPathContextFactory) clazz.getConstructor().newInstance();
         }
-        catch (final ClassNotFoundException | IllegalAccessException | InstantiationException ie) {
+        catch (final ReflectiveOperationException ie) {
             throw new JXPathContextFactoryConfigurationError(ie);
         }
         return factoryImpl;

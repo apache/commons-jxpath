@@ -183,7 +183,7 @@ public class JXPathIntrospector {
         // Now try checking if the bean is its own JXPathBeanInfo.
         try {
             if (JXPathBeanInfo.class.isAssignableFrom(beanClass)) {
-                return (JXPathBeanInfo) beanClass.newInstance();
+                return (JXPathBeanInfo) beanClass.getConstructor().newInstance();
             }
         }
         catch (final Exception ignore) { // NOPMD
@@ -210,7 +210,7 @@ public class JXPathIntrospector {
         if (cl != null) {
             try {
                 final Class cls = cl.loadClass(className);
-                return cls.newInstance();
+                return cls.getConstructor().newInstance();
             }
             catch (final Exception ex) { //NOPMD
                 // Just drop through and use the ClassLoaderUtil.

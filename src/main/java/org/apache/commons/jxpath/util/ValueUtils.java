@@ -524,7 +524,7 @@ public class ValueUtils {
     public static DynamicPropertyHandler getDynamicPropertyHandler(final Class clazz) {
         return (DynamicPropertyHandler) dynamicPropertyHandlerMap.computeIfAbsent(clazz, k -> {
             try {
-                return (DynamicPropertyHandler) clazz.newInstance();
+                return (DynamicPropertyHandler) clazz.getConstructor().newInstance();
             } 
             catch (final Exception ex) {
                 throw new JXPathException("Cannot allocate dynamic property handler of class " + clazz.getName(), ex);

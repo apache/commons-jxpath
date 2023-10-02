@@ -847,7 +847,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 return null;
             }
             final Class cls = ClassLoaderUtil.getClass(className, true);
-            return cls.newInstance();
+            return cls.getConstructor().newInstance();
         }
         catch (final Exception ex) {
             throw new JXPathException("Cannot allocate " + className, ex);
