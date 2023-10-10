@@ -128,7 +128,7 @@ The <action> type attribute can be add,update,fix,remove.
         Bump commons-parent from 54 to 64 #45, #49, #64.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
-        Bump JDOM from jdom:jdom 1.0 to org.jdom:jdom 1.1.
+        Bump JDOM from jdom:jdom 1.0 to org.jdom:jdom 1.1.3.
       </action>
     </release>
   </body>
