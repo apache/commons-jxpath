@@ -93,7 +93,7 @@ public class PackageFunctions implements Functions {
     /**
      * Returns a {@link Function}, if found, for the specified namespace,
      * name and parameter types.
-     * <p>
+     *
      * @param  namespace - if it is not the same as specified in the
      * construction, this method returns null
      * @param name - name of the method, which can one these forms:
