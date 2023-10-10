@@ -99,6 +99,7 @@
     <commons.jira.pid>12310480</commons.jira.pid>
 
     <commons.osgi.import>*;resolution:=optional</commons.osgi.import>
+    <moditect.skip>true</moditect.skip>
   </properties> 
 
   <build>
