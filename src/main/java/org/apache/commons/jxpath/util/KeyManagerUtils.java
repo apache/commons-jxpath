@@ -32,7 +32,7 @@ public class KeyManagerUtils {
     /**
      * Adapt KeyManager to implement ExtendedKeyManager.
      */
-    private static class SingleNodeExtendedKeyManager implements
+    private static final class SingleNodeExtendedKeyManager implements
             ExtendedKeyManager {
         private final KeyManager delegate;
 

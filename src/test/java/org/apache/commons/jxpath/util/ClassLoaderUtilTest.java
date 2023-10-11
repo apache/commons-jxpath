@@ -171,7 +171,7 @@ public void tearDown() {
    * whether the parent can/has loaded it.
    *
    */
-  private static class TestClassLoader extends ClassLoader {
+  private static final class TestClassLoader extends ClassLoader {
     private Class testCaseClass = null;
 
     public TestClassLoader(final ClassLoader classLoader) {

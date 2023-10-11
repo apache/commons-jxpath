@@ -64,7 +64,7 @@ public class JXPath177Test extends TestCase
 
     }
 
-    private static class JXPathVariablesResolver implements Variables
+    private static final class JXPathVariablesResolver implements Variables
     {
 
         private static final long serialVersionUID = -1106360826446119597L;

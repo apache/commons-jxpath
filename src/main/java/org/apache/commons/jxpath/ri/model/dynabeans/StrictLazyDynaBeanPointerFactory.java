@@ -37,7 +37,7 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
     /**
      * Pointer implementation.
      */
-    private static class StrictLazyDynaBeanPointer extends DynaBeanPointer {
+    private static final class StrictLazyDynaBeanPointer extends DynaBeanPointer {
         private static final long serialVersionUID = 1L;
 
         private final LazyDynaBean lazyDynaBean;
