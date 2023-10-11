@@ -41,6 +41,7 @@ public class MixedModelTest extends JXPathTestCase {
 
     @Override
     public void setUp() {
+        System.setProperty("jxpath.class.allow", "java.util.*,org.apache.commons.jxpath.*");
         final TestMixedModelBean bean = new TestMixedModelBean();
         context = JXPathContext.newContext(bean);
         context.setFactory(new TestMixedModelFactory());
@@ -59,6 +60,12 @@ public class MixedModelTest extends JXPathTestCase {
         matrix[0] = new int[1];
         matrix[0][0] = 3;
         vars.declareVariable("matrix", matrix);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        System.clearProperty("jxpath.class.allow");
     }
 
     public void testVar() {

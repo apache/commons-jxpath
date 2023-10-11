@@ -46,6 +46,7 @@ public class ClassLoaderUtilTest extends TestCase {
    */
   @Override
 public void setUp() {
+    System.setProperty("jxpath.class.allow", "java.lang.ObjectXBeanInfo,org.apache.commons.jxpath.*");
     this.orginalContextClassLoader = Thread.currentThread().getContextClassLoader();
   }
 
@@ -55,6 +56,7 @@ public void setUp() {
   @Override
 public void tearDown() {
     Thread.currentThread().setContextClassLoader(this.orginalContextClassLoader);
+    System.clearProperty("jxpath.class.allow");
   }
 
   /**

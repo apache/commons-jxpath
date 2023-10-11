@@ -22,6 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.JXPathInvalidAccessException;
+import org.apache.commons.jxpath.ri.JXPathFilter;
+import org.apache.commons.jxpath.ri.SystemPropertyJXPathFilter;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
@@ -32,12 +34,19 @@ public class ConstructorFunction implements Function {
 
     private final Constructor constructor;
 
+    private final JXPathFilter filter;
+
     /**
      * Create a new ConstructorFunction.
      * @param constructor the constructor to call.
      */
     public ConstructorFunction(final Constructor constructor) {
+        this(constructor, new SystemPropertyJXPathFilter());
+    }
+
+    public ConstructorFunction(final Constructor constructor, JXPathFilter filter) {
         this.constructor = constructor;
+        this.filter = filter;
     }
 
     /**
@@ -66,6 +75,11 @@ public class ConstructorFunction implements Function {
             for (int i = 0; i < parameters.length; i++) {
                 args[i + pi] = TypeUtils.convert(parameters[i], types[i + pi]);
             }
+
+            if (!filter.isClassNameExposed(constructor.getDeclaringClass().getName())) {
+                throw new Exception("Calling constructors is not allowed for class: " + constructor.getDeclaringClass().getName());
+            }
+
             return constructor.newInstance(args);
         }
         catch (Throwable ex) {

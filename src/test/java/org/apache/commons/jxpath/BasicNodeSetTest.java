@@ -35,8 +35,15 @@ public class BasicNodeSetTest extends JXPathTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        System.setProperty("jxpath.class.allow", "*");
         context = JXPathContext.newContext(new TestMixedModelBean());
         nodeSet = new BasicNodeSet();
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        System.clearProperty("jxpath.class.allow");
+        super.tearDown();
     }
 
     /**

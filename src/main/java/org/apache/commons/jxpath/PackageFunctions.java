@@ -26,6 +26,8 @@ import java.util.Set;
 
 import org.apache.commons.jxpath.functions.ConstructorFunction;
 import org.apache.commons.jxpath.functions.MethodFunction;
+import org.apache.commons.jxpath.ri.JXPathFilter;
+import org.apache.commons.jxpath.ri.SystemPropertyJXPathFilter;
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
 import org.apache.commons.jxpath.util.MethodLookupUtils;
 import org.apache.commons.jxpath.util.TypeUtils;
@@ -116,6 +118,15 @@ public class PackageFunctions implements Functions {
         final String namespace,
         final String name,
         Object[] parameters) {
+        return getFunction(namespace, name, parameters, new SystemPropertyJXPathFilter());
+    }
+
+    @Override
+    public Function getFunction(final String namespace, final String name, Object[] parameters, final JXPathFilter filter) {
+        if (filter == null) {
+            throw new JXPathException("No extension function is allowed");
+        }
+
         if (!Objects.equals(this.namespace, namespace)) {
             return null;
         }
@@ -124,6 +135,7 @@ public class PackageFunctions implements Functions {
             parameters = EMPTY_ARRAY;
         }
 
+        String functionName = namespace != null ? namespace + ":" + name : name;
         if (parameters.length >= 1) {
             Object target = TypeUtils.convert(parameters[0], Object.class);
             if (target != null) {
@@ -133,7 +145,7 @@ public class PackageFunctions implements Functions {
                         name,
                         parameters);
                 if (method != null) {
-                    return new MethodFunction(method);
+                    return new MethodFunction(method, filter);
                 }
 
                 if (target instanceof NodeSet) {
@@ -146,7 +158,7 @@ public class PackageFunctions implements Functions {
                         name,
                         parameters);
                 if (method != null) {
-                    return new MethodFunction(method);
+                    return new MethodFunction(method, filter);
                 }
 
                 if (target instanceof Collection) {
@@ -169,7 +181,7 @@ public class PackageFunctions implements Functions {
                         name,
                         parameters);
                 if (method != null) {
-                    return new MethodFunction(method);
+                    return new MethodFunction(method, filter);
                 }
             }
         }
@@ -185,12 +197,11 @@ public class PackageFunctions implements Functions {
 
         Class functionClass;
         try {
-            functionClass = ClassLoaderUtil.getClass(className, true);
+            functionClass = ClassLoaderUtil.getClass(className, true, filter);
         }
         catch (final ClassNotFoundException ex) {
             throw new JXPathException(
-                "Cannot invoke extension function "
-                    + (namespace != null ? namespace + ":" + name : name),
+                "Cannot invoke extension function " + functionName,
                 ex);
         }
 
@@ -208,7 +219,7 @@ public class PackageFunctions implements Functions {
                     methodName,
                     parameters);
             if (method != null) {
-                return new MethodFunction(method);
+                return new MethodFunction(method, filter);
             }
         }
         return null;

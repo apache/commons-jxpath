@@ -29,6 +29,17 @@ import org.xml.sax.InputSource;
 
 public class JXPath113Test extends JXPathTestCase
 {
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        System.setProperty("jxpath.class.allow", "*");
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        System.clearProperty("jxpath.class.allow");
+        super.tearDown();
+    }
 
     public void testIssue113() throws Exception
     {
