@@ -73,7 +73,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
      * Add a class of a custom XML parser.
      * Parsers for the models "DOM" and "JDOM" are pre-registered.
      * @param model model name
-     * @param parserClassName parser classname
+     * @param parserClassName parser class name
      */
     public static void registerXMLParser(final String model, final String parserClassName) {
         parserClasses.put(model, parserClassName);
