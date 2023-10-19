@@ -80,8 +80,8 @@ public abstract class JXPathContextFactory {
      * </li>
      * <li>
      * Use the Services API (as detailed in the JAR specification), if
-     * available, to determine the classname. The Services API will look
-     * for a classname in the file
+     * available, to determine the class name. The Services API will look
+     * for a class name in the file
      * <code>META- INF/services/<i>org.apache.commons.jxpath.
      * JXPathContextFactory</i></code> in jars available to the runtime.
      * </li>
