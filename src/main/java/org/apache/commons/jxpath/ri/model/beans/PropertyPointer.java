@@ -57,7 +57,7 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     /**
-     * Set the property index.
+     * Sets the property index.
      * @param index property index
      */
     public void setPropertyIndex(final int index) {
@@ -90,7 +90,7 @@ public abstract class PropertyPointer extends NodePointer {
     public abstract String getPropertyName();
 
     /**
-     * Set the property name.
+     * Sets the property name.
      * @param propertyName property name to set.
      */
     public abstract void setPropertyName(String propertyName);

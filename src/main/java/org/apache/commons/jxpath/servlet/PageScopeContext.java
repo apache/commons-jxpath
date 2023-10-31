@@ -55,7 +55,7 @@ public class PageScopeContext {
     }
 
     /**
-     * Set the specified attribute.
+     * Sets the specified attribute.
      * @param attribute to set
      * @param value to set
      */

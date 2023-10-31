@@ -486,7 +486,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Set the value of xpath to value.
+     * Sets the value of xpath to value.
      * @param xpath path
      * @param expr compiled Expression
      * @param value Object
@@ -563,7 +563,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Set the specified value.
+     * Sets the specified value.
      * @param xpath path
      * @param expr compiled Expression
      * @param value destination value

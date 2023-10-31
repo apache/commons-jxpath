@@ -153,7 +153,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Set the NamespaceResolver for this NodePointer.
+     * Sets the NamespaceResolver for this NodePointer.
      * @param namespaceResolver NamespaceResolver
      */
     public void setNamespaceResolver(final NamespaceResolver namespaceResolver) {
@@ -181,7 +181,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Set to true if the pointer represents the "attribute::" axis.
+     * Sets to true if the pointer represents the "attribute::" axis.
      * @param attribute boolean
      */
     public void setAttribute(final boolean attribute) {
@@ -242,7 +242,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Set the index of this NodePointer.
+     * Sets the index of this NodePointer.
      * @param index int
      */
     public void setIndex(final int index) {
@@ -809,7 +809,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Set the exceptionHandler of this NodePointer.
+     * Sets the exceptionHandler of this NodePointer.
      * @param exceptionHandler the ExceptionHandler to set
      */
     public void setExceptionHandler(final ExceptionHandler exceptionHandler) {

@@ -184,7 +184,7 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Set the name attribute.
+     * Sets the name attribute.
      * @param attributeValue value to set
      */
     public void setNameAttributeValue(final String attributeValue) {

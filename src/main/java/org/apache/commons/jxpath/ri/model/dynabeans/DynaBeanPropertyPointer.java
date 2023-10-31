@@ -241,7 +241,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Set an indexed value.
+     * Sets an indexed value.
      * @param index to change
      * @param value to set
      */

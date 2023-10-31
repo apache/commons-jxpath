@@ -82,7 +82,7 @@ public class DOMNodeIterator implements NodeIterator {
     }
 
     /**
-     * Set the previous position.
+     * Sets the previous position.
      * @return whether valid
      */
     private boolean previous() {
@@ -111,7 +111,7 @@ public class DOMNodeIterator implements NodeIterator {
     }
 
     /**
-     * Set the next position.
+     * Sets the next position.
      * @return whether valid
      */
     private boolean next() {

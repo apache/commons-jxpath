@@ -158,7 +158,7 @@ public class RootContext extends EvalContext {
     }
 
     /**
-     * Set the next registered value.
+     * Sets the next registered value.
      * @param value Object
      * @return the id that can reclaim value.
      */

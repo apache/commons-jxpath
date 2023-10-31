@@ -571,7 +571,7 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Set the locale for this context.  The value of the "lang"
+     * Sets the locale for this context.  The value of the "lang"
      * attribute as well as the lang() function will be
      * affected by the locale.  By default, JXPath uses
      * <code>Locale.getDefault()</code>
@@ -973,7 +973,7 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Set the ExceptionHandler used by this context, if any.
+     * Sets the ExceptionHandler used by this context, if any.
      * @param exceptionHandler to set
      * @since 1.4
      */

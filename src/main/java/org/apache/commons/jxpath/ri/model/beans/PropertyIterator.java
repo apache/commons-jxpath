@@ -140,7 +140,7 @@ public class PropertyIterator implements NodeIterator {
     }
 
     /**
-     * Set position for an individual property.
+     * Sets position for an individual property.
      * @param position int position
      * @return whether this was a valid position
      */
@@ -187,7 +187,7 @@ public class PropertyIterator implements NodeIterator {
     }
 
     /**
-     * Set position for all properties
+     * Sets position for all properties
      * @param position int position
      * @return whether this was a valid position
      */

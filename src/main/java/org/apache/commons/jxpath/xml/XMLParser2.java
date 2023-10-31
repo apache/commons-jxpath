@@ -31,7 +31,7 @@ public abstract class XMLParser2 implements XMLParser {
     private boolean coalescing = false;
 
     /**
-     * Set whether the underlying parser should be validating.
+     * Sets whether the underlying parser should be validating.
      * @param validating flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setValidating(boolean)
      */
@@ -58,7 +58,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Set whether the underlying parser is ns-aware.
+     * Sets whether the underlying parser is ns-aware.
      * @param namespaceAware flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setNamespaceAware(boolean)
      */
@@ -67,7 +67,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Set whether the underlying parser is ignoring whitespace.
+     * Sets whether the underlying parser is ignoring whitespace.
      * @param whitespace flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setIgnoringElementContentWhitespace(boolean)
      */
@@ -94,7 +94,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Set whether the underlying parser expands entity references.
+     * Sets whether the underlying parser expands entity references.
      * @param expandEntityRef flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setExpandEntityReferences(boolean)
      */
@@ -112,7 +112,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Set whether the underlying parser ignores comments.
+     * Sets whether the underlying parser ignores comments.
      * @param ignoreComments flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setIgnoringComments(boolean)
      */
@@ -130,7 +130,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Set whether the underlying parser is coalescing.
+     * Sets whether the underlying parser is coalescing.
      * @param coalescing flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setCoalescing(boolean)
      */
