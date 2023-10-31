@@ -47,7 +47,7 @@ public class ServletRequestAndContext extends HttpSessionAndServletContext {
     }
 
     /**
-     * Get the request.
+     * Gets the request.
      *
      * @return ServletRequest
      */

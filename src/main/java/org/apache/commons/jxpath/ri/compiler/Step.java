@@ -38,7 +38,7 @@ public class Step {
     }
 
     /**
-     * Get the axis code.
+     * Gets the axis code.
      * @return int
      */
     public int getAxis() {
@@ -46,7 +46,7 @@ public class Step {
     }
 
     /**
-     * Get the step test.
+     * Gets the step test.
      * @return NodeTest
      */
     public NodeTest getNodeTest() {
@@ -54,7 +54,7 @@ public class Step {
     }
 
     /**
-     * Get the predicates.
+     * Gets the predicates.
      * @return Expression[]
      */
     public Expression[] getPredicates() {

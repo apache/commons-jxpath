@@ -49,7 +49,7 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     /**
-     * Get the property index.
+     * Gets the property index.
      * @return int index
      */
     public int getPropertyIndex() {
@@ -68,7 +68,7 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     /**
-     * Get the parent bean.
+     * Gets the parent bean.
      * @return Object
      */
     public Object getBean() {
@@ -84,7 +84,7 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     /**
-     * Get the property name.
+     * Gets the property name.
      * @return String property name.
      */
     public abstract String getPropertyName();
@@ -102,7 +102,7 @@ public abstract class PropertyPointer extends NodePointer {
     public abstract int getPropertyCount();
 
     /**
-     * Get the names of the included properties.
+     * Gets the names of the included properties.
      * @return String[]
      */
     public abstract String[] getPropertyNames();

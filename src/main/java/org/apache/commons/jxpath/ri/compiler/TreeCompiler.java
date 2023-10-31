@@ -178,7 +178,7 @@ public class TreeCompiler implements Compiler {
     }
 
     /**
-     * Get an Object[] as an Expression[].
+     * Gets an Object[] as an Expression[].
      * @param array Object[]
      * @return Expression[]
      */
@@ -194,7 +194,7 @@ public class TreeCompiler implements Compiler {
     }
 
     /**
-     * Get an Object[] as a Step[].
+     * Gets an Object[] as a Step[].
      * @param array Object[]
      * @return Step[]
      */

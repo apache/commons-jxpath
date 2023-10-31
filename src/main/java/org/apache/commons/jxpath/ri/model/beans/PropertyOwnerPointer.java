@@ -168,7 +168,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     /**
-     * Get a PropertyPointer for this PropertyOwnerPointer.
+     * Gets a PropertyPointer for this PropertyOwnerPointer.
      * @return PropertyPointer
      */
     public abstract PropertyPointer getPropertyPointer();

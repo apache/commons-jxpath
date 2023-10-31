@@ -81,7 +81,7 @@ public class PropertyIterator implements NodeIterator {
     }
 
     /**
-     * Get the property pointer.
+     * Gets the property pointer.
      * @return NodePointer
      */
     protected NodePointer getPropertyPointer() {

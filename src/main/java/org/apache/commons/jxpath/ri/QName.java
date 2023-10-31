@@ -53,7 +53,7 @@ public class QName implements Serializable {
     }
 
     /**
-     * Get the prefix of this QName.
+     * Gets the prefix of this QName.
      * @return String
      */
     public String getPrefix() {
@@ -61,7 +61,7 @@ public class QName implements Serializable {
     }
 
     /**
-     * Get the local name.
+     * Gets the local name.
      * @return String
      */
     public String getName() {

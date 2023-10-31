@@ -45,7 +45,7 @@ public class VariablePointerFactory implements NodePointerFactory {
         }
 
         /**
-         * Get the original (unwrapped) context.
+         * Gets the original (unwrapped) context.
          *
          * @return JXPathContext.
          */

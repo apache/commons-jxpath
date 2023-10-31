@@ -46,7 +46,7 @@ public class PageScopeContext {
     }
 
     /**
-     * Get the value of the specified attribute.
+     * Gets the value of the specified attribute.
      * @param attribute name
      * @return Object
      */

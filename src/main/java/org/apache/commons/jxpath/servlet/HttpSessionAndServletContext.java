@@ -39,7 +39,7 @@ public class HttpSessionAndServletContext {
     }
 
     /**
-     * Get the session.
+     * Gets the session.
      * @return HttpSession
      */
     public HttpSession getSession() {
@@ -47,7 +47,7 @@ public class HttpSessionAndServletContext {
     }
 
     /**
-     * Get the ServletContext.
+     * Gets the ServletContext.
      * @return ServletContext
      */
     public ServletContext getServletContext() {

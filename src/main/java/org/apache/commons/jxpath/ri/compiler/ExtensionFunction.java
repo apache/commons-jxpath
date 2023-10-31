@@ -44,7 +44,7 @@ public class ExtensionFunction extends Operation {
     }
 
     /**
-     * Get the function name
+     * Gets the function name
      * @return QName
      */
     public QName getFunctionName() {

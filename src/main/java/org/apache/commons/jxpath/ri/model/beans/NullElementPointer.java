@@ -68,7 +68,7 @@ public class NullElementPointer extends CollectionPointer {
     }
 
     /**
-     * Get the property pointer for this.
+     * Gets the property pointer for this.
      * @return PropertyPointer
      */
     public PropertyPointer getPropertyPointer() {

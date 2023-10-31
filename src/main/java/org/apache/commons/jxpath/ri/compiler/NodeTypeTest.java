@@ -32,7 +32,7 @@ public class NodeTypeTest extends NodeTest {
     }
 
     /**
-     * Get the nodeType.
+     * Gets the nodeType.
      * @return int
      */
     public int getNodeType() {

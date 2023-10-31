@@ -53,7 +53,7 @@ public class CoreFunction extends Operation {
     }
 
     /**
-     * Get the function code.
+     * Gets the function code.
      * @return int function code
      */
     public int getFunctionCode() {
@@ -61,7 +61,7 @@ public class CoreFunction extends Operation {
     }
 
     /**
-     * Get the name of this function.
+     * Gets the name of this function.
      * @return String function name
      */
     protected String getFunctionName() {

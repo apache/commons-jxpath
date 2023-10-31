@@ -102,7 +102,7 @@ public class DOMAttributeIterator implements NodeIterator {
     }
 
     /**
-     * Get the named attribute.
+     * Gets the named attribute.
      * @param element to search
      * @param name to match
      * @return Attr found

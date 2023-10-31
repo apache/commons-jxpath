@@ -35,7 +35,7 @@ public class VariableReference extends Expression {
     }
 
     /**
-     * Get the variable name.
+     * Gets the variable name.
      * @return QName
      */
     public QName getVariableName() {

@@ -142,7 +142,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Get the NamespaceResolver associated with this NodePointer.
+     * Gets the NamespaceResolver associated with this NodePointer.
      * @return NamespaceResolver
      */
     public NamespaceResolver getNamespaceResolver() {
@@ -161,7 +161,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Get the parent pointer.
+     * Gets the parent pointer.
      * @return NodePointer
      */
     public NodePointer getParent() {
@@ -173,7 +173,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Get the immediate parent pointer.
+     * Gets the immediate parent pointer.
      * @return NodePointer
      */
     public NodePointer getImmediateParentPointer() {
@@ -368,7 +368,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Get the root node.
+     * Gets the root node.
      * @return Object value of this pointer's root (top parent).
      */
     @Override
@@ -632,7 +632,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Get the default ns uri
+     * Gets the default ns uri
      * @return String uri
      */
     protected String getDefaultNamespaceURI() {
@@ -877,7 +877,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Get the AbstractFactory associated with the specified JXPathContext.
+     * Gets the AbstractFactory associated with the specified JXPathContext.
      * @param context JXPathContext
      * @return AbstractFactory
      */

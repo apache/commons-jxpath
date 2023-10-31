@@ -30,7 +30,7 @@ public class ProcessingInstructionTest extends NodeTest {
     }
 
     /**
-     * Get the target.
+     * Gets the target.
      * @return String
      */
     public String getTarget() {

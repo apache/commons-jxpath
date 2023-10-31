@@ -42,7 +42,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * Get the source expression.
+     * Gets the source expression.
      * @return String
      */
     protected String getXPath() {
@@ -50,7 +50,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * Get the compiled expression.
+     * Gets the compiled expression.
      * @return Expression
      */
     protected Expression getExpression() {

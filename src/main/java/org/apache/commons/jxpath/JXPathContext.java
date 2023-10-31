@@ -615,7 +615,7 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Get the named DecimalFormatSymbols.
+     * Gets the named DecimalFormatSymbols.
      * @param name key
      * @return DecimalFormatSymbols
      * @see #setDecimalFormatSymbols(String, DecimalFormatSymbols)
@@ -936,7 +936,7 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Get the prefix associated with the specifed namespace URI.
+     * Gets the prefix associated with the specifed namespace URI.
      * @param namespaceURI the ns URI to check.
      * @return String prefix
      * @since JXPath 1.3

@@ -159,7 +159,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get the registered NodePointerFactories.
+     * Gets the registered NodePointerFactories.
      * @return NodePointerFactory[]
      */
     public static NodePointerFactory[] getNodePointerFactories() {
@@ -361,7 +361,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 //    }
 
     /**
-     * Get the value indicated.
+     * Gets the value indicated.
      * @param xpath String
      * @param expr Expression
      * @return Object
@@ -407,7 +407,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get the value indicated.
+     * Gets the value indicated.
      * @param xpath expression
      * @param expr compiled Expression
      * @param requiredType Class
@@ -460,7 +460,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get a pointer to the specified path/expression.
+     * Gets a pointer to the specified path/expression.
      * @param xpath String
      * @param expr compiled Expression
      * @return Pointer
@@ -715,7 +715,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get absolute root pointer.
+     * Gets absolute root pointer.
      * @return NodePointer
      */
     private NodePointer getAbsoluteRootPointer() {
@@ -723,7 +723,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get the evaluation context.
+     * Gets the evaluation context.
      * @return EvalContext
      */
     private EvalContext getEvalContext() {
@@ -732,7 +732,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get the absolute root context.
+     * Gets the absolute root context.
      * @return EvalContext
      */
     public EvalContext getAbsoluteRootContext() {
@@ -741,7 +741,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get a VariablePointer for the given variable name.
+     * Gets a VariablePointer for the given variable name.
      * @param name variable name
      * @return NodePointer
      */
@@ -751,7 +751,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get the named Function.
+     * Gets the named Function.
      * @param functionName name
      * @param parameters function args
      * @return Function
@@ -812,7 +812,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get the namespace resolver.
+     * Gets the namespace resolver.
      * @return NamespaceResolver
      */
     public NamespaceResolver getNamespaceResolver() {

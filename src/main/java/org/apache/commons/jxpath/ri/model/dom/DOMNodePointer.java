@@ -368,7 +368,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the language attribute for this node.
+     * Gets the language attribute for this node.
      * @return String language name
      */
     protected String getLanguage() {
@@ -570,7 +570,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get relative position of this among like-named siblings.
+     * Gets relative position of this among like-named siblings.
      * @return 1..n
      */
     private int getRelativePositionByQName() {
@@ -594,7 +594,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get relative position of this among all siblings.
+     * Gets relative position of this among all siblings.
      * @return 1..n
      */
     private int getRelativePositionOfElement() {
@@ -610,7 +610,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the relative position of this among sibling text nodes.
+     * Gets the relative position of this among sibling text nodes.
      * @return 1..n
      */
     private int getRelativePositionOfTextNode() {
@@ -627,7 +627,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the relative position of this among same-target processing instruction siblings.
+     * Gets the relative position of this among same-target processing instruction siblings.
      * @return 1..n
      */
     private int getRelativePositionOfPI() {
@@ -655,7 +655,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get any prefix from the specified node.
+     * Gets any prefix from the specified node.
      * @param node the node to check
      * @return String xml prefix
      */
@@ -671,7 +671,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the local name of the specified node.
+     * Gets the local name of the specified node.
      * @param node node to check
      * @return String local name
      */
@@ -687,7 +687,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the ns uri of the specified node.
+     * Gets the ns uri of the specified node.
      * @param node Node to check
      * @return String ns uri
      */
@@ -728,7 +728,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the string value of the specified node.
+     * Gets the string value of the specified node.
      * @param node Node to check
      * @return String
      */

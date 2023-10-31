@@ -51,7 +51,7 @@ public class ExpressionPath extends Path {
     }
 
     /**
-     * Get the expression.
+     * Gets the expression.
      * @return Expression
      */
     public Expression getExpression() {

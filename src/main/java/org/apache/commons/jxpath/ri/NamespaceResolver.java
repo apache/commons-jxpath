@@ -104,7 +104,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
     }
 
     /**
-     * Get the namespace context pointer.
+     * Gets the namespace context pointer.
      * @return Pointer
      */
     public Pointer getNamespaceContextPointer() {
@@ -145,7 +145,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
     }
 
     /**
-     * Get the prefix associated with the specifed namespace URI.
+     * Gets the prefix associated with the specifed namespace URI.
      * @param namespaceURI the ns URI to check.
      * @return String prefix
      */
@@ -156,7 +156,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
     }
 
     /**
-     * Get the nearest prefix found that matches an externally-registered namespace.
+     * Gets the nearest prefix found that matches an externally-registered namespace.
      * @param namespaceURI the ns URI to check.
      * @return String prefix if found.
      * @since JXPath 1.3

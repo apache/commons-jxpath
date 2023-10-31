@@ -448,7 +448,7 @@ public class BasicTypeConverter implements TypeConverter {
     }
 
     /**
-     * Get an unmodifiable version of a collection.
+     * Gets an unmodifiable version of a collection.
      * @param collection to wrap
      * @return Collection
      */

@@ -45,21 +45,21 @@ import java.util.List;
 public interface ExpressionContext {
 
     /**
-     * Get the JXPathContext in which this function is being evaluated.
+     * Gets the JXPathContext in which this function is being evaluated.
      *
      * @return A list representing the current context nodes.
      */
     JXPathContext getJXPathContext();
 
     /**
-     * Get the current context node.
+     * Gets the current context node.
      *
      * @return The current context node pointer.
      */
     Pointer getContextNodePointer();
 
     /**
-     * Get the current context node list.  Each element of the list is
+     * Gets the current context node list.  Each element of the list is
      * a Pointer.
      *
      * @return A list representing the current context nodes.

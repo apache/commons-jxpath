@@ -33,7 +33,7 @@ public class NameAttributeTest extends CoreOperationEqual {
     }
 
     /**
-     * Get the name test expression.
+     * Gets the name test expression.
      * @return Expression
      */
     public Expression getNameTestExpression() {

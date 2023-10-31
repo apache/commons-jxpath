@@ -69,7 +69,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Get the names of all properties, sorted alphabetically
+     * Gets the names of all properties, sorted alphabetically
      * @return String[]
      */
     @Override
@@ -110,7 +110,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Get the value of the currently selected property.
+     * Gets the value of the currently selected property.
      * @return Object value
      */
     @Override
@@ -271,7 +271,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Get the name of the currently selected property.
+     * Gets the name of the currently selected property.
      * @return String property name
      */
     @Override
@@ -312,7 +312,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Get all PropertyDescriptors.
+     * Gets all PropertyDescriptors.
      * @return PropertyDescriptor[]
      */
     protected synchronized PropertyDescriptor[] getPropertyDescriptors() {

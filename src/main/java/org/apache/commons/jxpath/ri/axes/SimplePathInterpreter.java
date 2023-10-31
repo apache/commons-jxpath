@@ -869,7 +869,7 @@ public class SimplePathInterpreter {
     }
 
     /**
-     * Get a NodeIterator.
+     * Gets a NodeIterator.
      * @param context evaluation context
      * @param pointer owning pointer
      * @param step triggering step

@@ -120,7 +120,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the ns uri of the specified node.
+     * Gets the ns uri of the specified node.
      * @param node Node to check
      * @return String
      */
@@ -452,7 +452,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the prefix from a given node.
+     * Gets the prefix from a given node.
      * @param node to check
      * @return String
      */
@@ -469,7 +469,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the local name of the specified node.
+     * Gets the local name of the specified node.
      * @param node to check
      * @return String local name
      */
@@ -498,7 +498,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the language of this element.
+     * Gets the language of this element.
      * @return String language
      */
     protected String getLanguage() {
@@ -528,7 +528,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the parent of the specified node.
+     * Gets the parent of the specified node.
      * @param node to check
      * @return parent Element
      */
@@ -695,7 +695,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get relative position of this among like-named siblings.
+     * Gets relative position of this among like-named siblings.
      * @return 1..n
      */
     private int getRelativePositionByQName() {
@@ -731,7 +731,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get relative position of this among all siblings.
+     * Gets relative position of this among all siblings.
      * @return 1..n
      */
     private int getRelativePositionOfElement() {
@@ -759,7 +759,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the relative position of this among sibling text nodes.
+     * Gets the relative position of this among sibling text nodes.
      * @return 1..n
      */
     private int getRelativePositionOfTextNode() {
@@ -787,7 +787,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Get the relative position of this among same-target processing instruction siblings.
+     * Gets the relative position of this among same-target processing instruction siblings.
      * @return 1..n
      */
     private int getRelativePositionOfPI() {

@@ -51,7 +51,7 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * Get the steps.
+     * Gets the steps.
      * @return Step[]
      */
     public Step[] getSteps() {

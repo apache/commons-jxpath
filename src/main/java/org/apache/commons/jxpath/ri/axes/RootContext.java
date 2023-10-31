@@ -61,7 +61,7 @@ public class RootContext extends EvalContext {
     }
 
     /**
-     * Get absolute root context
+     * Gets absolute root context
      * @return EvalContext
      */
     public EvalContext getAbsoluteRootContext() {
@@ -99,7 +99,7 @@ public class RootContext extends EvalContext {
     }
 
     /**
-     * Get a context that points to the specified object.
+     * Gets a context that points to the specified object.
      * @param constant object
      * @return EvalContext
      */
@@ -124,7 +124,7 @@ public class RootContext extends EvalContext {
     }
 
     /**
-     * Get variable context.
+     * Gets variable context.
      * @param variableName variable name
      * @return EvalContext
      */
@@ -136,7 +136,7 @@ public class RootContext extends EvalContext {
     }
 
     /**
-     * Get the specified function from the context.
+     * Gets the specified function from the context.
      * @param functionName QName
      * @param parameters Object[]
      * @return Function
@@ -146,7 +146,7 @@ public class RootContext extends EvalContext {
     }
 
     /**
-     * Get a registered value.
+     * Gets a registered value.
      * @param id int
      * @return Object
      */

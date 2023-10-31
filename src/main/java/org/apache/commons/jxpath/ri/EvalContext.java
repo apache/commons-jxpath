@@ -300,7 +300,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     }
 
     /**
-     * Get the current position.
+     * Gets the current position.
      * @return int position.
      */
     public int getCurrentPosition() {

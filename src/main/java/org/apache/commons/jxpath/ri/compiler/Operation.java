@@ -32,7 +32,7 @@ public abstract class Operation extends Expression {
     }
 
     /**
-     * Get the arguments.
+     * Gets the arguments.
      * @return Expression[]
      */
     public Expression[] getArguments() {

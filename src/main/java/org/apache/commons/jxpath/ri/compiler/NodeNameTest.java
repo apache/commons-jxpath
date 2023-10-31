@@ -43,7 +43,7 @@ public class NodeNameTest extends NodeTest {
     }
 
     /**
-     * Get the node name.
+     * Gets the node name.
      * @return QName
      */
     public QName getNodeName() {
@@ -51,7 +51,7 @@ public class NodeNameTest extends NodeTest {
     }
 
     /**
-     * Get the ns URI.
+     * Gets the ns URI.
      * @return String
      */
     public String getNamespaceURI() {
