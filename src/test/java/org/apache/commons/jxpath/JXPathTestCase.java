@@ -35,7 +35,7 @@ import junit.framework.TestCase;
 public abstract class JXPathTestCase extends TestCase {
 
     /**
-     * Construct a new instance of this test case.
+     * Constructs a new instance of this test case.
      */
     public JXPathTestCase() {
         Locale.setDefault(Locale.US);

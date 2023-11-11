@@ -91,7 +91,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
     }
 
     /**
-     * Construct a new DocumentContainer.
+     * Constructs a new DocumentContainer.
      * @param xmlURL is a URL for an XML file. Use getClass().getResource
      *               (resourceName) to load XML from a resource file.
      *

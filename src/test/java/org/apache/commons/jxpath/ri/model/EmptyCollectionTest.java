@@ -29,7 +29,7 @@ public class EmptyCollectionTest extends JXPathTestCase {
         private final Object child;
 
         /**
-         * Construct a new EmptyCollectionTest.HasChild instance.
+         * Constructs a new EmptyCollectionTest.HasChild instance.
          */
         public HasChild(final Object child) {
             this.child = child;
