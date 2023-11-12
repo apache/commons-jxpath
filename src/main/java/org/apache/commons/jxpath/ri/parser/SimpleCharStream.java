@@ -258,68 +258,68 @@ public int getLine() {
     }
   }
 
-  public SimpleCharStream(final java.io.Reader dstream, final int startline,
-  final int startcolumn, final int buffersize)
+  public SimpleCharStream(final java.io.Reader dstream, final int startLine,
+  final int startColumn, final int bufferSize)
   {
     inputStream = dstream;
-    line = startline;
-    column = startcolumn - 1;
+    line = startLine;
+    column = startColumn - 1;
 
-    available = bufsize = buffersize;
-    buffer = new char[buffersize];
-    bufline = new int[buffersize];
-    bufcolumn = new int[buffersize];
+    available = bufsize = bufferSize;
+    buffer = new char[bufferSize];
+    bufline = new int[bufferSize];
+    bufcolumn = new int[bufferSize];
   }
 
-  public SimpleCharStream(final java.io.Reader dstream, final int startline,
-                                                           final int startcolumn)
+  public SimpleCharStream(final java.io.Reader dstream, final int startLine,
+                                                           final int startColumn)
   {
-     this(dstream, startline, startcolumn, 4096);
+     this(dstream, startLine, startColumn, 4096);
   }
 
   public SimpleCharStream(final java.io.Reader dstream)
   {
      this(dstream, 1, 1, 4096);
   }
-  public void ReInit(final java.io.Reader dstream, final int startline,
-  final int startcolumn, final int buffersize)
+  public void ReInit(final java.io.Reader dstream, final int startLine,
+  final int startColumn, final int bufferSize)
   {
     inputStream = dstream;
-    line = startline;
-    column = startcolumn - 1;
+    line = startLine;
+    column = startColumn - 1;
 
-    if (buffer == null || buffersize != buffer.length)
+    if (buffer == null || bufferSize != buffer.length)
     {
-      available = bufsize = buffersize;
-      buffer = new char[buffersize];
-      bufline = new int[buffersize];
-      bufcolumn = new int[buffersize];
+      available = bufsize = bufferSize;
+      buffer = new char[bufferSize];
+      bufline = new int[bufferSize];
+      bufcolumn = new int[bufferSize];
     }
     prevCharIsLF = prevCharIsCR = false;
     tokenBegin = inBuf = maxNextCharInd = 0;
     bufpos = -1;
   }
 
-  public void ReInit(final java.io.Reader dstream, final int startline,
-                                                           final int startcolumn)
+  public void ReInit(final java.io.Reader dstream, final int startLine,
+                                                           final int startColumn)
   {
-     ReInit(dstream, startline, startcolumn, 4096);
+     ReInit(dstream, startLine, startColumn, 4096);
   }
 
   public void ReInit(final java.io.Reader dstream)
   {
      ReInit(dstream, 1, 1, 4096);
   }
-  public SimpleCharStream(final java.io.InputStream dstream, final int startline,
-  final int startcolumn, final int buffersize)
+  public SimpleCharStream(final java.io.InputStream dstream, final int startLine,
+  final int startColumn, final int buffersize)
   {
-     this(new java.io.InputStreamReader(dstream), startline, startcolumn, 4096);
+     this(new java.io.InputStreamReader(dstream), startLine, startColumn, 4096);
   }
 
-  public SimpleCharStream(final java.io.InputStream dstream, final int startline,
-                                                           final int startcolumn)
+  public SimpleCharStream(final java.io.InputStream dstream, final int startLine,
+                                                           final int startColumn)
   {
-     this(dstream, startline, startcolumn, 4096);
+     this(dstream, startLine, startColumn, 4096);
   }
 
   public SimpleCharStream(final java.io.InputStream dstream)
@@ -327,20 +327,20 @@ public int getLine() {
      this(dstream, 1, 1, 4096);
   }
 
-  public void ReInit(final java.io.InputStream dstream, final int startline,
-                          final int startcolumn, final int buffersize)
+  public void ReInit(final java.io.InputStream dstream, final int startLine,
+                          final int startColumn, final int buffersize)
   {
-     ReInit(new java.io.InputStreamReader(dstream), startline, startcolumn, 4096);
+     ReInit(new java.io.InputStreamReader(dstream), startLine, startColumn, 4096);
   }
 
   public void ReInit(final java.io.InputStream dstream)
   {
      ReInit(dstream, 1, 1, 4096);
   }
-  public void ReInit(final java.io.InputStream dstream, final int startline,
-                                                           final int startcolumn)
+  public void ReInit(final java.io.InputStream dstream, final int startLine,
+                                                           final int startColumn)
   {
-     ReInit(dstream, startline, startcolumn, 4096);
+     ReInit(dstream, startLine, startColumn, 4096);
   }
   public String GetImage()
   {
