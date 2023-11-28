@@ -59,7 +59,7 @@ public class DOMAttributePointer extends NodePointer {
     @Override
     public Object getValue() {
         final String value = attr.getValue();
-        if (value == null || value.equals("") && !attr.getSpecified()) {
+        if (value == null || value.isEmpty() && !attr.getSpecified()) {
             return null;
         }
         return value;

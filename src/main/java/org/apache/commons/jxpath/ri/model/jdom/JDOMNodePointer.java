@@ -248,7 +248,7 @@ public class JDOMNodePointer extends NodePointer {
         String ln = null;
         if (node instanceof Element) {
             ns = ((Element) node).getNamespacePrefix();
-            if (ns != null && ns.equals("")) {
+            if (ns != null && ns.isEmpty()) {
                 ns = null;
             }
             ln = ((Element) node).getName();
@@ -298,7 +298,7 @@ public class JDOMNodePointer extends NodePointer {
     public void setValue(final Object value) {
         if (node instanceof Text) {
             final String string = (String) TypeUtils.convert(value, String.class);
-            if (string != null && !string.equals("")) {
+            if (string != null && !string.isEmpty()) {
                 ((Text) node).setText(string);
             }
             else {
@@ -333,7 +333,7 @@ public class JDOMNodePointer extends NodePointer {
             }
             else {
                 final String string = (String) TypeUtils.convert(value, String.class);
-                if (string != null && !string.equals("")) {
+                if (string != null && !string.isEmpty()) {
                     element.addContent(new Text(string));
                 }
             }
@@ -459,11 +459,11 @@ public class JDOMNodePointer extends NodePointer {
     public static String getPrefix(final Object node) {
         if (node instanceof Element) {
             final String prefix = ((Element) node).getNamespacePrefix();
-            return prefix == null || prefix.equals("") ? null : prefix;
+            return prefix == null || prefix.isEmpty() ? null : prefix;
         }
         if (node instanceof Attribute) {
             final String prefix = ((Attribute) node).getNamespacePrefix();
-            return prefix == null || prefix.equals("") ? null : prefix;
+            return prefix == null || prefix.isEmpty() ? null : prefix;
         }
         return null;
     }
@@ -518,7 +518,7 @@ public class JDOMNodePointer extends NodePointer {
             if (n instanceof Element) {
                 final Element e = (Element) n;
                 final String attr = e.getAttributeValue(attrName, ns);
-                if (attr != null && !attr.equals("")) {
+                if (attr != null && !attr.isEmpty()) {
                     return attr;
                 }
             }

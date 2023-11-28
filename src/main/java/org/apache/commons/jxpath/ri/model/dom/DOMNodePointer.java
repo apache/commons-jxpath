@@ -227,7 +227,7 @@ public class DOMNodePointer extends NodePointer {
 
     @Override
     public String getNamespaceURI(final String prefix) {
-        if (prefix == null || prefix.equals("")) {
+        if (prefix == null || prefix.isEmpty()) {
             return getDefaultNamespaceURI();
         }
 
@@ -263,7 +263,7 @@ public class DOMNodePointer extends NodePointer {
                 }
                 aNode = aNode.getParentNode();
             }
-            if (namespace == null || namespace.equals("")) {
+            if (namespace == null || namespace.isEmpty()) {
                 namespace = NodePointer.UNKNOWN_NAMESPACE;
             }
         }
@@ -299,7 +299,7 @@ public class DOMNodePointer extends NodePointer {
             defaultNamespace = "";
         }
         // TBD: We are supposed to resolve relative URIs to absolute ones.
-        return defaultNamespace.equals("") ? null : defaultNamespace;
+        return defaultNamespace.isEmpty() ? null : defaultNamespace;
     }
 
     @Override
@@ -358,7 +358,7 @@ public class DOMNodePointer extends NodePointer {
             if (n.getNodeType() == Node.ELEMENT_NODE) {
                 final Element e = (Element) n;
                 final String attr = e.getAttribute(attrName);
-                if (attr != null && !attr.equals("")) {
+                if (attr != null && !attr.isEmpty()) {
                     return attr;
                 }
             }
@@ -387,7 +387,7 @@ public class DOMNodePointer extends NodePointer {
         if (node.getNodeType() == Node.TEXT_NODE
             || node.getNodeType() == Node.CDATA_SECTION_NODE) {
             final String string = (String) TypeUtils.convert(value, String.class);
-            if (string != null && !string.equals("")) {
+            if (string != null && !string.isEmpty()) {
                 node.setNodeValue(string);
             }
             else {
@@ -418,7 +418,7 @@ public class DOMNodePointer extends NodePointer {
             }
             else {
                 final String string = (String) TypeUtils.convert(value, String.class);
-                if (string != null && !string.equals("")) {
+                if (string != null && !string.isEmpty()) {
                     final Node textNode =
                         node.getOwnerDocument().createTextNode(string);
                     node.appendChild(textNode);

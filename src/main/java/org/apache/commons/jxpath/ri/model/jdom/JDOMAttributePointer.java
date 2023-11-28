@@ -49,7 +49,7 @@ public class JDOMAttributePointer extends NodePointer {
     @Override
     public String getNamespaceURI() {
         String uri = attr.getNamespaceURI();
-        if (uri != null && uri.equals("")) {
+        if (uri != null && uri.isEmpty()) {
             uri = null;
         }
         return uri;
