@@ -234,10 +234,10 @@ public class JDOMNodePointer extends NodePointer {
     @Override
     public boolean isLeaf() {
         if (node instanceof Element) {
-            return ((Element) node).getContent().size() == 0;
+            return ((Element) node).getContent().isEmpty();
         }
         if (node instanceof Document) {
-            return ((Document) node).getContent().size() == 0;
+            return ((Document) node).getContent().isEmpty();
         }
         return true;
     }

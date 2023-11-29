@@ -600,7 +600,7 @@ public class SimplePathInterpreter {
                 final EvalContext context, final List parents,
                 final Step[] steps, final int currentStep,
                 final Expression[] predicates, final int currentPredicate) {
-        if (parents.size() == 0) {
+        if (parents.isEmpty()) {
             return null;
         }
 
@@ -622,7 +622,7 @@ public class SimplePathInterpreter {
                     newList.add(pointer);
                 }
             }
-            if (newList.size() == 0) {
+            if (newList.isEmpty()) {
                 return null;
             }
             return doPredicatesStandard(
