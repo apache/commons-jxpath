@@ -36,10 +36,10 @@ import org.apache.commons.jxpath.util.ValueUtils;
  */
 public abstract class Expression {
 
-    /** zero */
+    /** Zero */
     protected static final Double ZERO = Double.valueOf(0);
 
-    /** one */
+    /** One */
     protected static final Double ONE = Double.valueOf(1);
 
     /** NaN */

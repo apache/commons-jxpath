@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * Implements NodePointerFactory for {@link Container} objects.
  */
 public class ContainerPointerFactory implements NodePointerFactory {
-    /** factory order for this factory */
+    /** Factory order for this factory */
     public static final int CONTAINER_POINTER_FACTORY_ORDER = 200;
 
     @Override

@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  */
 public class CollectionPointerFactory implements NodePointerFactory {
 
-    /** factory order constant */
+    /** Factory order constant */
     public static final int COLLECTION_POINTER_FACTORY_ORDER = 10;
 
     @Override

@@ -33,10 +33,10 @@ public abstract class PropertyPointer extends NodePointer {
 
     public static final int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
 
-    /** property index */
+    /** Property index */
     protected int propertyIndex = UNSPECIFIED_PROPERTY;
 
-    /** owning object */
+    /** Owning object */
     protected Object bean;
 
     /**

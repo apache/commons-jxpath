@@ -29,7 +29,7 @@ import org.jdom.Element;
  */
 public class JDOMPointerFactory implements NodePointerFactory {
 
-    /** factory order constant */
+    /** Factory order constant */
     public static final int JDOM_POINTER_FACTORY_ORDER = 110;
 
     @Override

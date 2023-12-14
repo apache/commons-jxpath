@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
  */
 public class DOMPointerFactory implements NodePointerFactory {
 
-    /** factory order */
+    /** Factory order */
     public static final int DOM_POINTER_FACTORY_ORDER = 100;
 
     @Override

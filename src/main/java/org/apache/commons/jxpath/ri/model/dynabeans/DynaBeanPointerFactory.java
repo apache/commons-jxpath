@@ -31,7 +31,7 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  */
 public class DynaBeanPointerFactory implements NodePointerFactory {
 
-    /** factory order constant */
+    /** Factory order constant */
     public static final int DYNA_BEAN_POINTER_FACTORY_ORDER = 700;
 
     @Override

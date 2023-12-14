@@ -31,11 +31,11 @@ public class NamespaceResolver implements Cloneable, Serializable {
 
     /** Parent NamespaceResolver */
     protected final NamespaceResolver parent;
-    /** namespace map */
+    /** Namespace map */
     protected HashMap namespaceMap = new HashMap();
-    /** reverse lookup map */
+    /** Reverse lookup map */
     protected HashMap reverseMap = new HashMap();
-    /** pointer */
+    /** Pointer */
     protected NodePointer pointer;
     private boolean sealed;
 

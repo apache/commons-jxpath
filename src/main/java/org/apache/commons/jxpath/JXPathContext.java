@@ -404,13 +404,13 @@ public abstract class JXPathContext {
     private static final PackageFunctions GENERIC_FUNCTIONS =
         new PackageFunctions("", null);
 
-    /** parent context */
+    /** Parent context */
     protected JXPathContext parentContext;
-    /** context bean */
+    /** Context bean */
     protected Object contextBean;
-    /**  variables */
+    /**  Variables */
     protected Variables vars;
-    /** functions */
+    /** Functions */
     protected Functions functions;
     /** AbstractFactory */
     protected AbstractFactory factory;
@@ -418,7 +418,7 @@ public abstract class JXPathContext {
     protected IdentityManager idManager;
     /** KeyManager */
     protected KeyManager keyManager;
-    /** decimal format map */
+    /** Decimal format map */
     protected HashMap decimalFormats;
 
     private Locale locale;

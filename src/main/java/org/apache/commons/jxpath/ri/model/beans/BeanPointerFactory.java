@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  */
 public class BeanPointerFactory implements NodePointerFactory {
 
-    /** factory order constant */
+    /** Factory order constant */
     public static final int BEAN_POINTER_FACTORY_ORDER = 900;
 
     @Override
