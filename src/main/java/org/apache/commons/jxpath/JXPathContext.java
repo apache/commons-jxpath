@@ -394,7 +394,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * Language (XPath) Version 1.0</a><br><br>
  *
  * You will also find more information and examples in
- * <a href="http://commons.apache.org/jxpath/users-guide.html">
+ * <a href="https://commons.apache.org/jxpath/users-guide.html">
  * JXPath User's Guide</a>
  */
 public abstract class JXPathContext {
