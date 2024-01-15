@@ -262,7 +262,7 @@ public abstract class BeanModelTestCase extends JXPathTestCase {
             iterCount++;
             final Pointer pointer = (Pointer) iter.next();
             String s = (String) pointer.getValue();
-            s = s + "suffix";
+            s += "suffix";
             pointer.setValue(s);
             assertEquals("pointer.getValue", s, pointer.getValue());
             // fails right here, the value isn't getting set in the bean.
