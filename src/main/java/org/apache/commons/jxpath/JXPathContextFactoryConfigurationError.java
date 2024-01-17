@@ -75,7 +75,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
 
 
     /**
-     * Return the message (if any) for this error . If there is no
+     * Gets the message (if any) for this error . If there is no
      * message for the exception and there is an encapsulated
      * exception then the message of that exception will be returned.
      *
@@ -91,7 +91,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
     }
 
     /**
-     * Return the actual exception (if any) that caused this exception to
+     * Gets the actual exception (if any) that caused this exception to
      * be raised.
      *
      * @return The encapsulated exception, or null if there is none.

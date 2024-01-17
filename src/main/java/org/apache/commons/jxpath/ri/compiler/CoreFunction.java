@@ -156,7 +156,7 @@ public class CoreFunction extends Operation {
     }
 
     /**
-     * Return the number of argument Expressions.
+     * Gets the number of argument Expressions.
      * @return int count
      */
     public int getArgumentCount() {

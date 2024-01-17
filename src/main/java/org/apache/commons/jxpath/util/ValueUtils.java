@@ -540,7 +540,7 @@ public class ValueUtils {
     //
 
     /**
-     * Return an accessible method (that is, one that can be invoked via
+     * Gets an accessible method (that is, one that can be invoked via
      * reflection) that implements the specified Method.  If no such method
      * can be found, return {@code null}.
      *
@@ -589,7 +589,7 @@ public class ValueUtils {
     }
 
     /**
-     * Return an accessible method (that is, one that can be invoked via
+     * Gets an accessible method (that is, one that can be invoked via
      * reflection) that implements the specified method, by scanning through
      * all implemented interfaces and subinterfaces.  If no such Method
      * can be found, return {@code null}.
