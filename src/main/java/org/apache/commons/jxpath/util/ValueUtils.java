@@ -542,7 +542,7 @@ public class ValueUtils {
     /**
      * Return an accessible method (that is, one that can be invoked via
      * reflection) that implements the specified Method.  If no such method
-     * can be found, return <code>null</code>.
+     * can be found, return {@code null}.
      *
      * @param method The method that we wish to call
      * @return Method
@@ -592,7 +592,7 @@ public class ValueUtils {
      * Return an accessible method (that is, one that can be invoked via
      * reflection) that implements the specified method, by scanning through
      * all implemented interfaces and subinterfaces.  If no such Method
-     * can be found, return <code>null</code>.
+     * can be found, return {@code null}.
      *
      * @param clazz Parent class for the interfaces to be checked
      * @param methodName Method name of the method we wish to call

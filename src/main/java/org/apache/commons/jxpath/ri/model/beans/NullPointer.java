@@ -23,7 +23,7 @@ import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * Pointer whose value is <code>null</code>.
+ * Pointer whose value is {@code null}.
  */
 public class NullPointer extends PropertyOwnerPointer {
     private QName name;

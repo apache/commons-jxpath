@@ -382,9 +382,9 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *          will throw {@link JXPathNotFoundException}.
  *      <li>If <code>lenient</code> is {@code true} - methods will throw
  *          no exception and return a value appropriate for that method to
- *          express the absence: might be a Java <code>null</code> or a
+ *          express the absence: might be a Java {@code null} or a
  *          {@link Pointer} whose {@link Pointer#getValue()} returns
- *          <code>null</code>, depends on the method.
+ *          {@code null}, depends on the method.
  *  </ol>
  * </li>
  * </ul>
@@ -804,7 +804,7 @@ public abstract class JXPathContext {
      * </ul>
      *
      * @param xpath desired
-     * @return Pointer A {@link Pointer}, never <code>null</code>.
+     * @return Pointer A {@link Pointer}, never {@code null}.
      * @throws JXPathNotFoundException see method description.
      */
     public abstract Pointer getPointer(String xpath);

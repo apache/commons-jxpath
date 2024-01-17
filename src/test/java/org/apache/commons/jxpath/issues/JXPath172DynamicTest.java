@@ -114,7 +114,7 @@ public class JXPath172DynamicTest extends JXPathTestCase
      * key is associated to the passed <code>val</code> value.
      *
      * @param val
-     * @return A {@link JXPathContext}, never <code>null</code>.
+     * @return A {@link JXPathContext}, never {@code null}.
      */
     private JXPathContext getContext(final String val, final boolean lenient)
     {

@@ -126,7 +126,7 @@ public class JXPath172Test extends JXPathTestCase
      * <code>val</code> value.
      *
      * @param val
-     * @return A {@link JXPathContext}, never <code>null</code>.
+     * @return A {@link JXPathContext}, never {@code null}.
      */
     private JXPathContext getContext(final String val, final boolean lenient)
     {
