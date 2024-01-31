@@ -124,7 +124,6 @@ public abstract class JXPathContextFactory {
         JXPathContext parentContext,
         Object contextBean);
 
-    // -------------------- private methods --------------------
     // This code is duplicated in all factories.
     // Keep it in sync or move it to a common place
     // Because it's small probably it's easier to keep it here

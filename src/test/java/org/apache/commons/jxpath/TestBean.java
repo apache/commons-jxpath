@@ -30,8 +30,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
  */
 public class TestBean {
 
-    // ------------------------------------------------------------- Properties
-
     /**
      * An array of nested java beans.
      */

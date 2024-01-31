@@ -60,7 +60,6 @@ public class ClassLoaderUtil {
     }
 
     // Class loading
-    // ----------------------------------------------------------------------
     /**
      * Returns the class represented by <code>className</code> using the
      * <code>classLoader</code>.  This implementation supports names like

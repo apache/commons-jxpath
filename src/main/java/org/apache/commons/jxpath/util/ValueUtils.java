@@ -532,7 +532,6 @@ public class ValueUtils {
         });
     }
 
-    // -------------------------------------------------------- Private Methods
     //
     //  The rest of the code in this file was copied FROM
     //  org.apache.commons.beanutils.PropertyUtil. We don't want to introduce
