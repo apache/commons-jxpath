@@ -570,7 +570,7 @@ public class CoreFunction extends Operation {
         assertArgCount(2);
         final String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
         final String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
-        return s1.indexOf(s2) != -1 ? Boolean.TRUE : Boolean.FALSE;
+        return Boolean.valueOf(s1.contains(s2));
     }
 
     /**
