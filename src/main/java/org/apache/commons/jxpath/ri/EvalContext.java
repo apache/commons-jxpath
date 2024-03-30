@@ -23,12 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.jxpath.BasicNodeSet;
-import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.NodeSet;
-import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.axes.RootContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ReverseComparator;
@@ -45,7 +40,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     protected EvalContext parentContext;
 
     /** Root context */
-    protected RootContext rootContext;
+    protected EvalContext rootContext;
 
     /** Position */
     protected int position = 0;
@@ -283,9 +278,9 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Returns the root context of the path, which provides easy
      * access to variables and functions.
-     * @return RootContext
+     * @return EvalContext
      */
-    public RootContext getRootContext() {
+    public EvalContext getRootContext() {
         if (rootContext == null) {
             rootContext = parentContext.getRootContext();
         }
@@ -384,5 +379,21 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     public boolean setPosition(final int position) {
         this.position = position;
         return true;
+    }
+
+    public Function getFunction(final QName functionName, final Object[] parameters) {
+        return null;
+    }
+
+    public EvalContext getConstantContext(final Object constant){
+        return this;
+    }
+
+    public EvalContext getAbsoluteRootContext() {
+        return this;
+    }
+
+    public EvalContext getVariableContext(final QName variableName) {
+        return this;
     }
 }
