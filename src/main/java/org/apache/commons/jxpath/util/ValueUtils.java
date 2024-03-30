@@ -286,34 +286,9 @@ public class ValueUtils {
         collection = getValue(collection);
         Object value = collection;
         if (collection != null) {
-            if (collection.getClass().isArray()) {
-                if (index < 0 || index >= Array.getLength(collection)) {
-                    return null;
-                }
-                value = Array.get(collection, index);
-            }
-            else if (collection instanceof List) {
-                if (index < 0 || index >= ((List) collection).size()) {
-                    return null;
-                }
-                value = ((List) collection).get(index);
-            }
-            else if (collection instanceof Collection) {
-                if (index < 0 || index >= ((Collection) collection).size()) {
-                    return null;
-                }
-
-                int i = 0;
-                final Iterator it = ((Collection) collection).iterator();
-                for (; i < index; i++) {
-                    it.next();
-                }
-                if (it.hasNext()) {
-                    value = it.next();
-                }
-                else {
-                    value = null;
-                }
+            CollectionHandler handler = AccessorFactory.getAccessor(collection);
+            if (handler != null) {
+                value = handler.getValue(collection, index);
             }
         }
         return value;
@@ -637,5 +612,65 @@ public class ValueUtils {
 
         // Return whatever we have found
         return method;
+    }
+}
+
+
+interface CollectionHandler {
+    Object getValue(Object collection, final int index);
+}
+
+class ArrayAccessor implements CollectionHandler {
+    @Override
+    public Object getValue(Object collection, final int index) {
+        if (index < 0 || index >= Array.getLength(collection)) {
+            return null;
+        }
+        return Array.get(collection, index);
+    }
+}
+
+class ListAccessor implements CollectionHandler {
+    @Override
+    public Object getValue(Object collection, final int index) {
+        if (index < 0 || index >= ((List) collection).size()) {
+            return null;
+        }
+        return ((List) collection).get(index);
+    } 
+}
+
+class CollectionAccessorImpl implements CollectionHandler {
+    @Override
+    public Object getValue(Object collection, int index) {
+        if (index < 0 || index >= ((Collection) collection).size()) {
+            return null;
+        }
+        Object value = collection;
+        int i = 0;
+        final Iterator it = ((Collection) collection).iterator();
+        for (; i < index; i++) {
+            it.next();
+        }
+        if (it.hasNext()) {
+            value = it.next();
+        }
+        else {
+            value = null;
+        }
+        return value;
+    }
+}
+
+class AccessorFactory {
+    public static CollectionHandler getAccessor(Object collection) {
+        if (collection.getClass().isArray()) {
+            return new ArrayAccessor();
+        } else if (collection instanceof List) {
+            return new ListAccessor();
+        } else if (collection instanceof Collection) {
+            return new CollectionAccessorImpl();
+        }
+        return null;
     }
 }
