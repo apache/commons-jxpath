@@ -117,46 +117,51 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     @Override
     public boolean equals(final Object object) {
+        // Check if the object is the same instance as this one
         if (object == this) {
             return true;
         }
 
+        // Check if the object is an instance of BeanPointer
         if (!(object instanceof BeanPointer)) {
             return false;
         }
 
+        // Cast the object to BeanPointer for comparison
         final BeanPointer other = (BeanPointer) object;
 
-        // Check if the parent pointers are equal or both null
-        final boolean parentsEqualOrNull = parent == other.parent || (parent == null && other.parent == null);
-        if (!parentsEqualOrNull) {
+        // Compare the parent objects
+        final boolean parentsEqual = (parent != other.parent) &&
+                (parent == null || !parent.equals(other.parent));
+        if (parentsEqual) {
             return false;
         }
 
-        // Check if the names are equal or both null
-        final boolean namesEqualOrNull = (name == null && other.name == null) || (name != null && name.equals(other.name));
-        if (!namesEqualOrNull) {
+        // Compare the name strings
+        final boolean namesEqual = (name == null && other.name != null) ||
+                (name != null && !name.equals(other.name));
+        if (namesEqual) {
             return false;
         }
 
-        // Normalize the indexes for comparison
-        final int normalizedIndexThis = index == WHOLE_COLLECTION ? 0 : index;
-        final int normalizedIndexOther = other.index == WHOLE_COLLECTION ? 0 : other.index;
-        if (normalizedIndexThis != normalizedIndexOther) {
+        // Normalize the indices for comparison
+        final int thisIndex = index == WHOLE_COLLECTION ? 0 : index;
+        final int otherIndex = other.index == WHOLE_COLLECTION ? 0 : other.index;
+        if (thisIndex != otherIndex) {
             return false;
         }
+
+        boolean isNumeric = bean instanceof Number;
+        boolean isStringy = bean instanceof String;
+        boolean isBoolean = bean instanceof Boolean;
+        boolean isSpecialInstance = isNumeric || isStringy || isBoolean;
 
         // Compare beans based on their types
-        boolean isNumberInstance = bean instanceof Number;
-        boolean isStringInstance = bean instanceof String;
-        boolean isBooleanInstance = bean instanceof Boolean;
-
-        boolean isSpecialInstance = isBooleanInstance || isNumberInstance || isStringInstance;
-
         if (isSpecialInstance) {
             return bean.equals(other.bean);
         }
-        
+
+        // If the bean is not one of the specified types, compare references
         return bean == other.bean;
     }
 
