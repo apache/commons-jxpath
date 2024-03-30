@@ -29,18 +29,22 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * Extension functions provided by a Java class.
  *
  * Let's say we declared a ClassFunction like this:
- * <blockquote><pre>
- *     new ClassFunctions(Integer.class, "int")
- * </pre></blockquote>
+ * <blockquote>
+ * 
+ * <pre>
+ * new ClassFunctions(Integer.class, "int")
+ * </pre>
+ * 
+ * </blockquote>
  *
  * We can now use XPaths like:
  * <dl>
- *  <dt><code>"int:new(3)"</code></dt>
- *  <dd>Equivalent to <code>new Integer(3)</code></dd>
- *  <dt><code>"int:getInteger('foo')"</code></dt>
- *  <dd>Equivalent to <code>Integer.getInteger("foo")</code></dd>
- *  <dt><code>"int:floatValue(int:new(4))"</code></dt>
- *  <dd>Equivalent to <code>new Integer(4).floatValue()</code></dd>
+ * <dt><code>"int:new(3)"</code></dt>
+ * <dd>Equivalent to <code>new Integer(3)</code></dd>
+ * <dt><code>"int:getInteger('foo')"</code></dt>
+ * <dd>Equivalent to <code>Integer.getInteger("foo")</code></dd>
+ * <dt><code>"int:floatValue(int:new(4))"</code></dt>
+ * <dd>Equivalent to <code>new Integer(4).floatValue()</code></dd>
  * </dl>
  *
  * <p>
@@ -56,8 +60,9 @@ public class ClassFunctions implements Functions {
 
     /**
      * Create a new ClassFunctions.
+     * 
      * @param functionClass Class providing the functions
-     * @param namespace assigned ns
+     * @param namespace     assigned ns
      */
     public ClassFunctions(final Class functionClass, final String namespace) {
         this.functionClass = functionClass;
@@ -78,51 +83,57 @@ public class ClassFunctions implements Functions {
      * Returns a {@link Function}, if any, for the specified namespace,
      * name and parameter types.
      *
-     * @param namespace if it is not the namespace specified in the constructor,
-     *     the method returns null
-     * @param name is a function name or "new" for a constructor.
+     * @param namespace  if it is not the namespace specified in the constructor,
+     *                   the method returns null
+     * @param name       is a function name or "new" for a constructor.
      * @param parameters Object[] of parameters
      *
      * @return a MethodFunction, a ConstructorFunction or null if there is no
-     *      such function.
+     *         such function.
      */
     @Override
-    public Function getFunction(
-        final String namespace,
-        final String name,
-        Object[] parameters) {
-        if (namespace == null) {
-            if (this.namespace != null) {
-                return null;
+    public Function getFunction(final String namespace, final String name, Object[] parameters) {
+        if (isNamespaceValid(namespace)) {
+            if (parameters == null) {
+                parameters = EMPTY_ARRAY;
+            }
+            if (name.equals("new")) {
+                return getConstructorFunction(parameters);
+            } else {
+                return getMethodFunction(name, parameters);
             }
         }
-        else if (!namespace.equals(this.namespace)) {
-            return null;
-        }
+        return null;
+    }
 
+    private boolean isNamespaceValid(final String namespace) {
+        if (namespace == null) {
+            return this.namespace == null;
+        }
+        return namespace.equals(this.namespace);
+    }
+
+    private Function getConstructorFunction(Object[] parameters) {
         if (parameters == null) {
             parameters = EMPTY_ARRAY;
         }
-
-        if (name.equals("new")) {
-            final Constructor constructor =
-                MethodLookupUtils.lookupConstructor(functionClass, parameters);
-            if (constructor != null) {
-                return new ConstructorFunction(constructor);
-            }
+        final Constructor constructor = MethodLookupUtils.lookupConstructor(functionClass, parameters);
+        if (constructor != null) {
+            return new ConstructorFunction(constructor);
         }
-        else {
-            Method method = MethodLookupUtils.
-                lookupStaticMethod(functionClass, name, parameters);
-            if (method != null) {
-                return new MethodFunction(method);
-            }
+        return null;
+    }
 
-            method = MethodLookupUtils.
-                lookupMethod(functionClass, name, parameters);
-            if (method != null) {
-                return new MethodFunction(method);
-            }
+    private Function getMethodFunction(final String name, Object[] parameters) {
+        
+        Method method = MethodLookupUtils.lookupStaticMethod(functionClass, name, parameters);
+        if (method != null) {
+            return new MethodFunction(method);
+        }
+
+        method = MethodLookupUtils.lookupMethod(functionClass, name, parameters);
+        if (method != null) {
+            return new MethodFunction(method);
         }
 
         return null;
