@@ -38,10 +38,11 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     /**
      * Create a new BeanPointer.
-     * @param name is the name given to the first node
-     * @param bean pointed
+     * 
+     * @param name     is the name given to the first node
+     * @param bean     pointed
      * @param beanInfo JXPathBeanInfo
-     * @param locale Locale
+     * @param locale   Locale
      */
     public BeanPointer(final QName name, final Object bean, final JXPathBeanInfo beanInfo,
             final Locale locale) {
@@ -53,9 +54,10 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     /**
      * Create a new BeanPointer.
-     * @param parent pointer
-     * @param name is the name given to the first node
-     * @param bean pointed
+     * 
+     * @param parent   pointer
+     * @param name     is the name given to the first node
+     * @param bean     pointed
      * @param beanInfo JXPathBeanInfo
      */
     public BeanPointer(final NodePointer parent, final QName name, final Object bean,
@@ -83,6 +85,7 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     /**
      * {@inheritDoc}
+     * 
      * @return false
      */
     @Override
@@ -92,6 +95,7 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     /**
      * {@inheritDoc}
+     * 
      * @return 1
      */
     @Override
@@ -103,7 +107,7 @@ public class BeanPointer extends PropertyOwnerPointer {
     public boolean isLeaf() {
         final Object value = getNode();
         return value == null
-            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
+                || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
     @Override
@@ -122,26 +126,37 @@ public class BeanPointer extends PropertyOwnerPointer {
         }
 
         final BeanPointer other = (BeanPointer) object;
-        if (parent != other.parent && (parent == null || !parent.equals(other.parent))) {
+
+        // Check if the parent pointers are equal or both null
+        final boolean parentsEqualOrNull = parent == other.parent || (parent == null && other.parent == null);
+        if (!parentsEqualOrNull) {
             return false;
         }
 
-        if (name == null && other.name != null
-                || name != null && !name.equals(other.name)) {
+        // Check if the names are equal or both null
+        final boolean namesEqualOrNull = (name == null && other.name == null) || (name != null && name.equals(other.name));
+        if (!namesEqualOrNull) {
             return false;
         }
 
-        final int iThis = index == WHOLE_COLLECTION ? 0 : index;
-        final int iOther = other.index == WHOLE_COLLECTION ? 0 : other.index;
-        if (iThis != iOther) {
+        // Normalize the indexes for comparison
+        final int normalizedIndexThis = index == WHOLE_COLLECTION ? 0 : index;
+        final int normalizedIndexOther = other.index == WHOLE_COLLECTION ? 0 : other.index;
+        if (normalizedIndexThis != normalizedIndexOther) {
             return false;
         }
 
-        if (bean instanceof Number
-                || bean instanceof String
-                || bean instanceof Boolean) {
+        // Compare beans based on their types
+        boolean isNumberInstance = bean instanceof Number;
+        boolean isStringInstance = bean instanceof String;
+        boolean isBooleanInstance = bean instanceof Boolean;
+
+        boolean isSpecialInstance = isBooleanInstance || isNumberInstance || isStringInstance;
+
+        if (isSpecialInstance) {
             return bean.equals(other.bean);
         }
+        
         return bean == other.bean;
     }
 
