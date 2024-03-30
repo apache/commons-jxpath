@@ -143,13 +143,31 @@ public abstract class JXPathContextFactory {
     /**
      * Private implementation method - will find the implementation
      * class in the specified order.
-     * @param property    Property name
+     * @param property       Property name
      * @param defaultFactory Default implementation, if nothing else is found
      *
      * @return class name of the JXPathContextFactory
      */
     private static String findFactory(final String property, final String defaultFactory) {
-        // Use the factory ID system property first
+        String systemPropertyFactory = findFactoryFromSystemProperty(property);
+        if (systemPropertyFactory != null) {
+            return systemPropertyFactory;
+        }
+    
+        String javaHomeFactory = findFactoryFromJavaHome(property);
+        if (javaHomeFactory != null) {
+            return javaHomeFactory;
+        }
+    
+        String serviceFactory = findFactoryFromService(property);
+        if (serviceFactory != null) {
+            return serviceFactory;
+        }
+    
+        return defaultFactory;
+    }
+
+    private static String findFactoryFromSystemProperty(final String property) {
         try {
             final String systemProp = System.getProperty(property);
             if (systemProp != null) {
@@ -159,13 +177,13 @@ public abstract class JXPathContextFactory {
                 }
                 return systemProp;
             }
-
-        }
-        catch (final SecurityException ignore) { // NOPMD
+        } catch (final SecurityException ignore) {
             // Ignore
-       }
+        }
+        return null;
+    }
 
-        // try to read from $java.home/lib/xml.properties
+    private static String findFactoryFromJavaHome(final String property) {
         try {
             final String javah = System.getProperty("java.home");
             final String configFile =
@@ -177,19 +195,8 @@ public abstract class JXPathContextFactory {
             final File f = new File(configFile);
             if (f.exists()) {
                 final Properties props = new Properties();
-                final FileInputStream fis = new FileInputStream(f);
-                try {
+                try (FileInputStream fis = new FileInputStream(f)) {
                     props.load(fis);
-                }
-                finally {
-                    if (fis != null) {
-                        try {
-                            fis.close();
-                        }
-                        catch (final IOException ignore) { // NOPMD
-                            //swallow
-                        }
-                    }
                 }
                 final String factory = props.getProperty(property);
                 if (factory != null) {
@@ -200,58 +207,45 @@ public abstract class JXPathContextFactory {
                     return factory;
                 }
             }
-        }
-        catch (final IOException ex) {
+        } catch (final IOException ex) {
             if (debug) {
                 ex.printStackTrace();
             }
         }
+        return null;
+    }
 
+    private static String findFactoryFromService(final String property) {
         final String serviceId = "META-INF/services/" + property;
-        // try to find services in CLASSPATH
         try {
             final ClassLoader cl = JXPathContextFactory.class.getClassLoader();
             InputStream is;
             if (cl == null) {
                 is = ClassLoader.getSystemResourceAsStream(serviceId);
-            }
-            else {
+            } else {
                 is = cl.getResourceAsStream(serviceId);
             }
-
+    
             if (is != null) {
                 if (debug) {
                     System.err.println("JXPath: found  " + serviceId);
                 }
-                final BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-
-                String factory = null;
-                try {
-                    factory = rd.readLine();
-                }
-                finally {
-                    try {
-                        rd.close();
+                try (BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+                    String factory = rd.readLine();
+                    if (factory != null && !"".equals(factory)) {
+                        if (debug) {
+                            System.err.println(
+                                "JXPath: loaded from services: " + factory);
+                        }
+                        return factory;
                     }
-                    catch (final IOException ignore) { // NOPMD
-                        // Ignore
-                    }
-                }
-
-                if (factory != null && !"".equals(factory)) {
-                    if (debug) {
-                        System.err.println(
-                            "JXPath: loaded from services: " + factory);
-                    }
-                    return factory;
                 }
             }
-        }
-        catch (final Exception ex) {
+        } catch (final Exception ex) {
             if (debug) {
                 ex.printStackTrace();
             }
         }
-        return defaultFactory;
-    }
+        return null;
+    }    
 }
