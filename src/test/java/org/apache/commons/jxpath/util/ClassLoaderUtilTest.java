@@ -161,6 +161,53 @@ public void tearDown() {
     }
   }
 
+  public void testGetClassTakingStringThrowsClassNotFoundException() {
+    try {
+      ClassLoaderUtil.getClass("[]");
+      fail("Expecting exception: ClassNotFoundException");
+    } catch(ClassNotFoundException e) {
+    }
+  }
+
+
+
+  public void testGetClassTakingStringThrowsRuntimeException() throws ClassNotFoundException {
+    try {
+      ClassLoaderUtil.getClass(null);
+      fail("Expecting exception: RuntimeException");
+    } catch(RuntimeException e) {
+      assertEquals(ClassLoaderUtil.class.getName(), e.getStackTrace()[0].getClassName());
+    }
+  }
+
+
+
+  public void testGetClassTakingString() throws ClassNotFoundException {
+    Class clasz = ClassLoaderUtil.getClass("char");
+
+    assertEquals(1041, clasz.getModifiers());
+    assertFalse(clasz.isArray());
+
+    assertFalse(clasz.isAnnotation());
+    assertEquals("char", clasz.toString());
+
+    assertFalse(clasz.isInterface());
+    assertTrue(clasz.isPrimitive());
+
+    assertFalse(clasz.isEnum());
+    assertFalse(clasz.isSynthetic());
+  }
+
+
+  public void testGetClassTaking2ArgumentsThrowsClassNotFoundException() {
+    try {
+      ClassLoaderUtil.getClass(ClassLoader.getSystemClassLoader(), "/B`j\\*xtz.Eb!s");
+      fail("Expecting exception: ClassNotFoundException");
+    } catch(ClassNotFoundException e) {
+    }
+  }
+
+
   /**
    * A simple class loader which delegates all class loading to its parent
    * with two exceptions. First, attempts to load the class
