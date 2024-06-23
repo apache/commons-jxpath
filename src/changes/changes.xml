@@ -100,7 +100,8 @@ The <action> type attribute can be add,update,fix,remove.
       </action>
       <action dev="ggregory" type="fix" due-to="step-security-bot, Gary Gregory">
         [StepSecurity] ci: Harden GitHub Actions #66.
-      </action>            
+      </action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix PMD UnnecessaryFullyQualifiedName.</action>
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).
@@ -124,8 +125,8 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump servlet-api from 2.4 to 2.5 #29.
       </action>
-      <action dev="ggregory" type="update" due-to="Dependabot">
-        Bump commons-parent from 54 to 69 #45, #49, #64, #110, #121, #403.
+      <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
+        Bump commons-parent from 54 to 71 #45, #49, #64, #110, #121, #403.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump JDOM from jdom:jdom 1.0 to org.jdom:jdom 1.1.3.
