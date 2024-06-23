@@ -119,8 +119,7 @@ public class CollectionPointer extends NodePointer {
             }
             else {
                 final Object value = getImmediateNode();
-                valuePointer =
-                    NodePointer.newChildNodePointer(this, getName(), value);
+                valuePointer = newChildNodePointer(this, getName(), value);
             }
         }
         return valuePointer;
