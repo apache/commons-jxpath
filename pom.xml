@@ -179,6 +179,14 @@
           </excludes>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <configuration>
+          <excludeFilterFile>${basedir}/src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
+          <xmlOutput>true</xmlOutput>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <dependencyManagement>
@@ -290,7 +298,7 @@
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <configuration>
-          <excludeFilterFile>${basedir}/conf/findbugs-exclude-filter.xml</excludeFilterFile>
+          <excludeFilterFile>${basedir}/src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
           <xmlOutput>true</xmlOutput>
         </configuration>
       </plugin>
