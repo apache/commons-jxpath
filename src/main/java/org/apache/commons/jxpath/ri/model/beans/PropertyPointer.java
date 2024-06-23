@@ -165,7 +165,7 @@ public abstract class PropertyPointer extends NodePointer {
      */
     @Override
     public NodePointer getImmediateValuePointer() {
-        return NodePointer.newChildNodePointer(
+        return newChildNodePointer(
             (NodePointer) this.clone(),
             getName(),
             getImmediateNode());
