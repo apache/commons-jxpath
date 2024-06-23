@@ -665,7 +665,7 @@ public abstract class JXPathContext {
      */
     public static CompiledExpression compile(final String xpath) {
         if (compilationContext == null) {
-            compilationContext = JXPathContext.newContext(null);
+            compilationContext = newContext(null);
         }
         return compilationContext.compilePath(xpath);
     }
