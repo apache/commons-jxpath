@@ -111,7 +111,7 @@ public class ContainerPointer extends NodePointer {
     public NodePointer getImmediateValuePointer() {
         if (valuePointer == null) {
             final Object value = getImmediateNode();
-            valuePointer = NodePointer.newChildNodePointer(this, getName(), value);
+            valuePointer = newChildNodePointer(this, getName(), value);
         }
         return valuePointer;
     }
