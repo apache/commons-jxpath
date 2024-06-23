@@ -223,7 +223,7 @@ public class TreeCompiler implements Compiler {
         if (steps.length != 1) {
             return false;
         }
-        if (steps[0].getAxis() != Compiler.AXIS_ATTRIBUTE) {
+        if (steps[0].getAxis() != AXIS_ATTRIBUTE) {
             return false;
         }
         final NodeTest test = steps[0].getNodeTest();
