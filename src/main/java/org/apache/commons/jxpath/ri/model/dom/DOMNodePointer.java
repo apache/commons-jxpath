@@ -264,7 +264,7 @@ public class DOMNodePointer extends NodePointer {
                 aNode = aNode.getParentNode();
             }
             if (namespace == null || namespace.isEmpty()) {
-                namespace = NodePointer.UNKNOWN_NAMESPACE;
+                namespace = UNKNOWN_NAMESPACE;
             }
         }
 
