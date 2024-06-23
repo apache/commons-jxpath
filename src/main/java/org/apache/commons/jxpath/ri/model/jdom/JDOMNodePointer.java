@@ -407,8 +407,8 @@ public class JDOMNodePointer extends NodePointer {
             }
             if (wildcard
                 || testName.getName()
-                        .equals(JDOMNodePointer.getLocalName(node))) {
-                final String nodeNS = JDOMNodePointer.getNamespaceURI(node);
+                        .equals(getLocalName(node))) {
+                final String nodeNS = getNamespaceURI(node);
                 return equalStrings(namespaceURI, nodeNS) || nodeNS == null
                         && equalStrings(testPrefix, getPrefix(node));
             }
@@ -653,7 +653,7 @@ public class JDOMNodePointer extends NodePointer {
                     buffer.append('/');
                 }
                 final String nsURI = getNamespaceURI();
-                final String ln = JDOMNodePointer.getLocalName(node);
+                final String ln = getLocalName(node);
 
                 if (nsURI == null) {
                     buffer.append(ln);
