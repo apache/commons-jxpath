@@ -130,8 +130,7 @@ public class VariablePointer extends NodePointer {
             Object value;
             if (actual) {
                 value = getImmediateNode();
-                valuePointer =
-                    NodePointer.newChildNodePointer(this, null, value);
+                valuePointer = newChildNodePointer(this, null, value);
             }
             else {
                 return new NullPointer(this, getName()) {
