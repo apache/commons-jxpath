@@ -26,8 +26,8 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * An  element of the parse tree that represents an expression path, which is a
- * path that starts with an expression like a function call: <code>getFoo(.)
- * /bar</code>.
+ * path that starts with an expression like a function call: {@code getFoo(.)
+ * /bar}.
  */
 public class ExpressionPath extends Path {
 
@@ -88,7 +88,7 @@ public class ExpressionPath extends Path {
     }
 
     /**
-     * Recognized paths formatted as <code>$x[3]/foo[2]</code>.  The
+     * Recognized paths formatted as {@code $x[3]/foo[2]}.  The
      * evaluation of such "simple" paths is optimized and streamlined.
      * @return boolean
      */

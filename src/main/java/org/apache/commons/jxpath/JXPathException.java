@@ -27,7 +27,7 @@ public class JXPathException extends RuntimeException {
     private final Throwable exception;
 
     /**
-     * Create a new <code>JXPathException</code> with no
+     * Create a new {@code JXPathException} with no
      * detail mesage.
      */
 
@@ -36,8 +36,8 @@ public class JXPathException extends RuntimeException {
      }
 
     /**
-     * Create a new <code>JXPathException</code> with
-     * the <code>String </code> specified as an error message.
+     * Create a new {@code JXPathException} with
+     * the {@code String } specified as an error message.
      *
      * @param msg The error message for the exception.
      */
@@ -48,8 +48,8 @@ public class JXPathException extends RuntimeException {
 
 
     /**
-     * Create a new <code>JXPathException</code> with a
-     * given <code>Throwable</code> base cause of the error.
+     * Create a new {@code JXPathException} with a
+     * given {@code Throwable} base cause of the error.
      *
      * @param e The exception to be encapsulated in a
      * JXPathException.
@@ -60,8 +60,8 @@ public class JXPathException extends RuntimeException {
     }
 
     /**
-     * Create a new <code>JXPathException</code> with the
-     * given <code>Exception</code> base cause and detail message.
+     * Create a new {@code JXPathException} with the
+     * given {@code Exception} base cause and detail message.
      *
      * @param msg The detail message.
      * @param e The exception to be encapsulated in a JXPathException

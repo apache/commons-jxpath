@@ -24,10 +24,10 @@ import java.io.Serializable;
  * ({@link JXPathContext#getPointer(java.lang.String) getPointer()}
  * and  ({@link JXPathContext#iteratePointers(java.lang.String)
  * iteratePointers()}, which, given an XPath, produce Pointers for the objects
- * or properties described the path. For example, <code>ctx.getPointer
- * ("foo/bar")</code> will produce a Pointer that can get and set the property
+ * or properties described the path. For example, {@code ctx.getPointer
+ * ("foo/bar")} will produce a Pointer that can get and set the property
  * "bar" of the object which is the value of the property "foo" of the root
- * object. The value of <code>ctx.getPointer("aMap/aKey[3]")</code> will be a
+ * object. The value of {@code ctx.getPointer("aMap/aKey[3]")} will be a
  * pointer to the 3'rd element of the array, which is the value for the key
  * "aKey" of the map, which is the value of the property "aMap" of the root
  * object.
@@ -73,14 +73,14 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
     /**
      * Returns a string that is a proper "canonical" XPath that corresponds to
      * this pointer.  Consider this example:
-     * <p><code>Pointer  ptr = ctx.getPointer("//employees[firstName = 'John']")
-     * </code>
-     * <p>The  value of <code>ptr.asPath()</code> will look something like
-     * <code>"/departments[2]/employees[3]"</code>, so, basically, it represents
+     * <p>{@code Pointer  ptr = ctx.getPointer("//employees[firstName = 'John']")
+     * }
+     * <p>The  value of {@code ptr.asPath()} will look something like
+     * {@code "/departments[2]/employees[3]"}, so, basically, it represents
      * the concrete location(s) of the result of a search performed by JXPath.
      * If an object in the pointer's path is a Dynamic Property object (like a
-     * Map), the asPath method generates an XPath that looks like this: <code>"
-     * /departments[@name = 'HR']/employees[3]"</code>.
+     * Map), the asPath method generates an XPath that looks like this: {@code "
+     * /departments[@name = 'HR']/employees[3]"}.
      * @return String path
      */
     String asPath();

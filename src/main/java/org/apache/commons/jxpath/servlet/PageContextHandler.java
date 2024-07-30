@@ -60,7 +60,7 @@ public class PageContextHandler implements DynamicPropertyHandler {
     }
 
     /**
-     * Returns <code>pageContext.findAttribute(property)</code>.
+     * Returns {@code pageContext.findAttribute(property)}.
      * @param pageContext to search
      * @param property name
      * @return Object value

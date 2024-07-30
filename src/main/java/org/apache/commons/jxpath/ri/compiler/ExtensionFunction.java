@@ -108,7 +108,7 @@ public class ExtensionFunction extends Operation {
     /**
      * Convert any incoming context to a value.
      * @param object Object to convert
-     * @return context value or <code>object</code> unscathed.
+     * @return context value or {@code object} unscathed.
      */
     private Object convert(final Object object) {
         return object instanceof EvalContext ? ((EvalContext) object).getValue() : object;

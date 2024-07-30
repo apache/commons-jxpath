@@ -33,7 +33,7 @@ import org.apache.commons.jxpath.util.ClassLoaderUtil;
  * This method returns a concrete JXPathContextFactory.
  * Then call {@link #newContext} on that instance.  You will rarely
  * need to perform these steps explicitly: usually you can call one of the
- * <code>JXPathContex.newContext</code> methods, which will perform these steps
+ * {@code JXPathContex.newContext} methods, which will perform these steps
  * for you.
  *
  * @see JXPathContext#newContext(Object)
@@ -63,35 +63,35 @@ public abstract class JXPathContextFactory {
     }
 
     /**
-     * Obtain a new instance of a <code>JXPathContextFactory</code>.
+     * Obtain a new instance of a {@code JXPathContextFactory}.
      * This static method creates a new factory instance.
      * This method uses the following ordered lookup procedure to determine
-     * the <code>JXPathContextFactory</code> implementation class to load:
+     * the {@code JXPathContextFactory} implementation class to load:
      * <ul>
      * <li>
-     * Use  the <code>org.apache.commons.jxpath.JXPathContextFactory</code>
+     * Use  the {@code org.apache.commons.jxpath.JXPathContextFactory}
      * system property.
      * </li>
      * <li>
      * Alternatively, use the JAVA_HOME (the parent directory where jdk is
      * installed)/lib/jxpath.properties for a property file that contains the
      * name of the implementation class keyed on
-     * <code>org.apache.commons.jxpath.JXPathContextFactory</code>.
+     * {@code org.apache.commons.jxpath.JXPathContextFactory}.
      * </li>
      * <li>
      * Use the Services API (as detailed in the JAR specification), if
      * available, to determine the class name. The Services API will look
      * for a class name in the file
-     * <code>META- INF/services/<i>org.apache.commons.jxpath.
-     * JXPathContextFactory</i></code> in jars available to the runtime.
+     * {@code META- INF/services/<i>org.apache.commons.jxpath.
+     * JXPathContextFactory</i>} in jars available to the runtime.
      * </li>
      * <li>
-     * Platform default <code>JXPathContextFactory</code> instance.
+     * Platform default {@code JXPathContextFactory} instance.
      * </li>
      * </ul>
      *
      * Once an application has obtained a reference to a
-     * <code>JXPathContextFactory</code> it can use the factory to
+     * {@code JXPathContextFactory} it can use the factory to
      * obtain JXPathContext instances.
      *
      * @return JXPathContextFactory

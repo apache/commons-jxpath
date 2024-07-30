@@ -29,7 +29,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
     private final Exception exception;
 
     /**
-     * Create a new <code>JXPathContextFactoryConfigurationError</code> with no
+     * Create a new {@code JXPathContextFactoryConfigurationError} with no
      * detail mesage.
      */
      public JXPathContextFactoryConfigurationError() {
@@ -37,8 +37,8 @@ public class JXPathContextFactoryConfigurationError extends Error {
      }
 
     /**
-     * Create a new <code>JXPathContextFactoryConfigurationError</code> with
-     * the <code>String </code> specified as an error message.
+     * Create a new {@code JXPathContextFactoryConfigurationError} with
+     * the {@code String } specified as an error message.
      *
      * @param msg The error message for the exception.
      */
@@ -49,8 +49,8 @@ public class JXPathContextFactoryConfigurationError extends Error {
 
 
     /**
-     * Create a new <code>JXPathContextFactoryConfigurationError</code> with a
-     * given <code>Exception</code> base cause of the error.
+     * Create a new {@code JXPathContextFactoryConfigurationError} with a
+     * given {@code Exception} base cause of the error.
      *
      * @param e The exception to be encapsulated in a
      * JXPathContextFactoryConfigurationError.
@@ -61,8 +61,8 @@ public class JXPathContextFactoryConfigurationError extends Error {
     }
 
     /**
-     * Create a new <code>JXPathContextFactoryConfigurationError</code> with the
-     * given <code>Exception</code> base cause and detail message.
+     * Create a new {@code JXPathContextFactoryConfigurationError} with the
+     * given {@code Exception} base cause and detail message.
      *
      * @param e The exception to be encapsulated in a
      * JXPathContextFactoryConfigurationError

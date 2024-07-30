@@ -164,9 +164,9 @@ public void tearDown() {
   /**
    * A simple class loader which delegates all class loading to its parent
    * with two exceptions. First, attempts to load the class
-   * <code>org.apache.commons.jxpath.util.ClassLoaderUtilTest</code> will
+   * {@code org.apache.commons.jxpath.util.ClassLoaderUtilTest} will
    * always result in a ClassNotFoundException. Second, loading the class
-   * <code>org.apache.commons.jxpath.util.ClassLoadingExampleClass</code> will
+   * {@code org.apache.commons.jxpath.util.ClassLoadingExampleClass} will
    * result in the class being loaded by this class loader, regardless of
    * whether the parent can/has loaded it.
    *

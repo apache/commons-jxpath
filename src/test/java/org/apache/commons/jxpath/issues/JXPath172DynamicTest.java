@@ -111,7 +111,7 @@ public class JXPath172DynamicTest extends JXPathTestCase
 
     /**
      * Helper, returns a {@link JXPathContext} filled with a Map whose "value"
-     * key is associated to the passed <code>val</code> value.
+     * key is associated to the passed {@code val} value.
      *
      * @param val
      * @return A {@link JXPathContext}, never {@code null}.

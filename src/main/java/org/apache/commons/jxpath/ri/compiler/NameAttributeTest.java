@@ -17,7 +17,7 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 /**
- * Captures the <code>foo[@name=<i>expr</i>]</code> expression. These
+ * Captures the {@code foo[@name=<i>expr</i>]} expression. These
  * expressions are handled in a special way when applied to beans
  * or maps.
  */

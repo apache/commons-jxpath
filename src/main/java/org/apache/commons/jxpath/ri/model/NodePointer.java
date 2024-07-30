@@ -231,8 +231,8 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * If the pointer represents a collection, the index identifies
-     * an element of that collection.  The default value of <code>index</code>
-     * is <code>WHOLE_COLLECTION</code>, which just means that the pointer
+     * an element of that collection.  The default value of {@code index}
+     * is {@code WHOLE_COLLECTION}, which just means that the pointer
      * is not indexed at all.
      * Note: the index on NodePointer starts with 0, not 1.
      * @return int
@@ -265,7 +265,7 @@ public abstract class NodePointer implements Pointer {
     public abstract int getLength();
 
     /**
-     * By default, returns <code>getNode()</code>, can be overridden to
+     * By default, returns {@code getNode()}, can be overridden to
      * return a "canonical" value, like for instance a DOM element should
      * return its string value.
      * @return Object value
@@ -286,14 +286,14 @@ public abstract class NodePointer implements Pointer {
      * Only an auxiliary (non-node) pointer can (and should) return a
      * value pointer other than itself.
      * Note that you probably don't want to override
-     * <code>getValuePointer()</code> directly.  Override the
-     * <code>getImmediateValuePointer()</code> method instead.  The
-     * <code>getValuePointer()</code> method is calls
-     * <code>getImmediateValuePointer()</code> and, if the result is not
-     * <code>this</code>, invokes <code>getValuePointer()</code> recursively.
+     * {@code getValuePointer()} directly.  Override the
+     * {@code getImmediateValuePointer()} method instead.  The
+     * {@code getValuePointer()} method is calls
+     * {@code getImmediateValuePointer()} and, if the result is not
+     * {@code this}, invokes {@code getValuePointer()} recursively.
      * The idea here is to open all nested containers. Let's say we have a
      * container within a container within a container. The
-     * <code>getValuePointer()</code> method should then open all those
+     * {@code getValuePointer()} method should then open all those
      * containers and return the pointer to the ultimate contents. It does so
      * with the above recursion.
      * @return NodePointer
@@ -306,7 +306,7 @@ public abstract class NodePointer implements Pointer {
     /**
      * @see #getValuePointer()
      *
-     * @return NodePointer is either <code>this</code> or a pointer
+     * @return NodePointer is either {@code this} or a pointer
      *   for the immediately contained value.
      */
     public NodePointer getImmediateValuePointer() {
@@ -593,7 +593,7 @@ public abstract class NodePointer implements Pointer {
      * if namespaces are not supported.
      * Will return UNKNOWN_NAMESPACE if there is no such namespace.
      * @param namespace incoming namespace
-     * @return NodePointer for <code>namespace</code>
+     * @return NodePointer for {@code namespace}
      */
     public NodePointer namespacePointer(final String namespace) {
         return null;

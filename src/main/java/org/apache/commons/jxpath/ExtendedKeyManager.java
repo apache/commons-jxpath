@@ -17,7 +17,7 @@
 package org.apache.commons.jxpath;
 
 /**
- * More complete implementation for the XPath <code>"key()"</code> function.
+ * More complete implementation for the XPath {@code "key()"} function.
  * Returns NodeSet results and allows Object values for better compatibility
  * with non-XML graphs.
  * @since JXPath 1.3

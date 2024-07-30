@@ -33,7 +33,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * <p>
  * JXPathContext  allows alternative implementations. This is why instead of
  * allocating JXPathContext directly, you should call a static
- * <code>newContext</code> method.  This method will utilize the
+ * {@code newContext} method.  This method will utilize the
  * {@link JXPathContextFactory} API to locate a suitable implementation of
  * JXPath. Bundled with JXPath comes a default implementation called Reference
  * Implementation.
@@ -63,7 +63,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * </pre>
  *
  * In  this example, we are using JXPath to access a property of the
- * <code>emp</code> bean. In this simple case the invocation of JXPath is
+ * {@code emp} bean. In this simple case the invocation of JXPath is
  * equivalent to invocation of getFirstName() on the bean.
  *
  * <h3>Example 2: Nested Bean Property Access</h3>
@@ -161,9 +161,9 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * <h3>Example 5: Retrieving Multiple Results</h3>
  *
  * JXPath can retrieve multiple objects from a graph. Note that the method
- * called in this case is not <code>getValue</code>, but <code>iterate</code>.
+ * called in this case is not {@code getValue}, but {@code iterate}.
  *
- * <pre>
+ * <pre>{@code
  * public class Author {
  *    public Book[] getBooks(){
  *       ...
@@ -174,8 +174,8 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * ...
  *
  * JXPathContext context = JXPathContext.newContext(auth);
- * Iterator threeBooks = context.iterate("books[position() &lt; 4]");
- * </pre>
+ * Iterator threeBooks = context.iterate("books[position() < 4]");
+ * }</pre>
  *
  * This returns a list of at most three books from the array of all books
  * written by the author.
@@ -378,9 +378,9 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * depending on the last value configured with {@link #setLenient(boolean)}:</p>
  *
  *  <ol style='list-style:upper-alpha'>
- *      <li>If <code>lenient</code> is {@code false} (default) - methods
+ *      <li>If {@code lenient} is {@code false} (default) - methods
  *          will throw {@link JXPathNotFoundException}.
- *      <li>If <code>lenient</code> is {@code true} - methods will throw
+ *      <li>If {@code lenient} is {@code true} - methods will throw
  *          no exception and return a value appropriate for that method to
  *          express the absence: might be a Java {@code null} or a
  *          {@link Pointer} whose {@link Pointer#getValue()} returns
@@ -549,7 +549,7 @@ public abstract class JXPathContext {
 
     /**
      * Install an abstract factory that should be used by the
-     * <code>createPath()</code> and <code>createPathAndSetValue()</code>
+     * {@code createPath()} and {@code createPathAndSetValue()}
      * methods.
      * @param factory AbstractFactory
      */
@@ -574,7 +574,7 @@ public abstract class JXPathContext {
      * Sets the locale for this context.  The value of the "lang"
      * attribute as well as the lang() function will be
      * affected by the locale.  By default, JXPath uses
-     * <code>Locale.getDefault()</code>
+     * {@code Locale.getDefault()}
      * @param locale Locale
      */
     public synchronized void setLocale(final Locale locale) {
@@ -600,7 +600,7 @@ public abstract class JXPathContext {
     /**
      * Sets {@link DecimalFormatSymbols} for a given name. The DecimalFormatSymbols
      * can be referenced as the third, optional argument in the invocation of
-     * <code>format-number (number,format,decimal-format-name)</code> function.
+     * {@code format-number (number,format,decimal-format-name)} function.
      * By default, JXPath uses the symbols for the current locale.
      *
      * @param name the format name or null for default format.
@@ -672,7 +672,7 @@ public abstract class JXPathContext {
 
     /**
      * Overridden by each concrete implementation of JXPathContext
-     * to perform compilation. Is called by <code>compile()</code>.
+     * to perform compilation. Is called by {@code compile()}.
      * @param xpath to compile
      * @return CompiledExpression
      */
@@ -680,8 +680,8 @@ public abstract class JXPathContext {
 
     /**
      * Finds the first object that matches the specified XPath. It is equivalent
-     * to <code>getPointer(xpath).getNode()</code>. Note that this method
-     * produces the same result as <code>getValue()</code> on object models
+     * to {@code getPointer(xpath).getNode()}. Note that this method
+     * produces the same result as {@code getValue()} on object models
      * like JavaBeans, but a different result for DOM/JDOM etc., because it
      * returns the Node itself, rather than its textual contents.
      *

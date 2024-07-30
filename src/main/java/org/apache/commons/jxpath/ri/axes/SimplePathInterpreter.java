@@ -42,8 +42,8 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * An evaluation mechanism for simple XPaths, which
  * is much faster than the usual process. It is only used for
  * xpaths which have no context-dependent parts, consist entirely of
- * <code>child::name</code> and <code>self::node()</code> steps with
- * predicates that either integer or have the form <code>[@name = ...]</code>.
+ * {@code child::name} and {@code self::node()} steps with
+ * predicates that either integer or have the form {@code [@name = ...]}.
  */
 public class SimplePathInterpreter {
 
@@ -90,7 +90,7 @@ public class SimplePathInterpreter {
      * of type [@name=...] or simply [...] interpreted as an index.
      * @param context evaluation context
      * @param root root pointer
-     * @param predicates predicates corresponding to <code>steps</code>
+     * @param predicates predicates corresponding to {@code steps}
      * @param steps path steps
      * @return NodePointer
      */
@@ -901,7 +901,7 @@ public class SimplePathInterpreter {
     }
 
     /**
-     * Learn whether <code>name</code> is a lang attribute.
+     * Learn whether {@code name} is a lang attribute.
      * @param name to compare
      * @return boolean
      */

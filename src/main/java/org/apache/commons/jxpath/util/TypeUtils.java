@@ -79,7 +79,7 @@ public class TypeUtils {
     /**
      * Return the appropriate wrapper type for the specified class.
      * @param p Class for which to retrieve a wrapper class.
-     * @return the wrapper if <code>p</code> is primitive, else <code>p</code>.
+     * @return the wrapper if {@code p} is primitive, else {@code p}.
      * @since JXPath 1.3
      */
     public static Class wrapPrimitive(final Class p) {

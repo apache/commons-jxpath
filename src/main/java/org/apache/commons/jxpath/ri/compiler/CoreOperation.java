@@ -96,7 +96,7 @@ public abstract class CoreOperation extends Operation {
     /**
      * Wrap an expression in parens if necessary.
      * @param expression other Expression
-     * @param left whether <code>expression</code> is left of this one.
+     * @param left whether {@code expression} is left of this one.
      * @return String
      */
     private String parenthesize(final Expression expression, final boolean left) {

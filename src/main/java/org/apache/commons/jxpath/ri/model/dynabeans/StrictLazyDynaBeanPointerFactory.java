@@ -27,9 +27,9 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
 /**
  * Implemented in response to [JXPATH-144]. Optionally pluggable
- * <code>NodePointerFactory</code> that returns a special type of
- * <code>NodePointer</code> for <code>LazyDynaBean</code>s. The
- * <code>PropertyPointer</code>s returned by these will respect
+ * {@code NodePointerFactory} that returns a special type of
+ * {@code NodePointer} for {@code LazyDynaBean}s. The
+ * {@code PropertyPointer}s returned by these will respect
  * {@link LazyDynaClass#isDynaProperty(String)} when determining
  * {@link PropertyPointer#isActual()}.
  */

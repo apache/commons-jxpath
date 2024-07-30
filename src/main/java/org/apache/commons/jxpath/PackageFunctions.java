@@ -42,12 +42,12 @@ import org.apache.commons.jxpath.util.TypeUtils;
  *
  * We can now use XPaths like:
  * <dl>
- *  <dt><code>"util:Date.new()"</code></dt>
- *  <dd>Equivalent to <code>new java.util.Date()</code></dd>
- *  <dt><code>"util:Collections.singleton('foo')"</code></dt>
- *  <dd>Equivalent to <code>java.util.Collections.singleton("foo")</code></dd>
- *  <dt><code>"util:substring('foo', 1, 2)"</code></dt>
- *  <dd>Equivalent to <code>"foo".substring(1, 2)</code>.  Note that in
+ *  <dt>{@code "util:Date.new()"}</dt>
+ *  <dd>Equivalent to {@code new java.util.Date()}</dd>
+ *  <dt>{@code "util:Collections.singleton('foo')"}</dt>
+ *  <dd>Equivalent to {@code java.util.Collections.singleton("foo")}</dd>
+ *  <dt>{@code "util:substring('foo', 1, 2)"}</dt>
+ *  <dd>Equivalent to {@code "foo".substring(1, 2)}.  Note that in
  *  this case, the class prefix is not used. JXPath does not check that
  *  the first parameter of the function (the method target) is in fact
  *  a member of the package described by this PackageFunctions object.</dd>
@@ -62,7 +62,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * There is one PackageFunctions object registered by default with each
  * JXPathContext.  It does not have a namespace and uses no class prefix.
  * The existence of this object allows us to use XPaths like:
- * <code>"java.util.Date.new()"</code> and <code>"length('foo')"</code>
+ * {@code "java.util.Date.new()"} and {@code "length('foo')"}
  * without the explicit registration of any extension functions.
  * </p>
  */

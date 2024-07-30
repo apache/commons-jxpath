@@ -63,9 +63,9 @@ public class KeyManagerUtils {
     /**
      * Gets an ExtendedKeyManager from the specified KeyManager.
      * @param keyManager to adapt, if necessary
-     * @return <code>keyManager</code> if it implements ExtendedKeyManager
+     * @return {@code keyManager} if it implements ExtendedKeyManager
      *         or a basic single-result ExtendedKeyManager that delegates to
-     *         <code>keyManager</code>.
+     *         {@code keyManager}.
      */
     public static ExtendedKeyManager getExtendedKeyManager(final KeyManager keyManager) {
         return keyManager instanceof ExtendedKeyManager ? (ExtendedKeyManager) keyManager

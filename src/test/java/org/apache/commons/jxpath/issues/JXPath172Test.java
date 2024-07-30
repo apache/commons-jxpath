@@ -123,7 +123,7 @@ public class JXPath172Test extends JXPathTestCase
     /**
      * Helper, returns a {@link JXPathContext} filled with {@link TestBean172}
      * whose {@link TestBean172#getValue()} method returns the passed
-     * <code>val</code> value.
+     * {@code val} value.
      *
      * @param val
      * @return A {@link JXPathContext}, never {@code null}.

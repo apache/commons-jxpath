@@ -517,7 +517,7 @@ public class ValueUtils {
 
     /**
      * Returns a shared instance of the dynamic property handler class
-     * returned by <code>getDynamicPropertyHandlerClass()</code>.
+     * returned by {@code getDynamicPropertyHandlerClass()}.
      * @param clazz to handle
      * @return DynamicPropertyHandler
      */

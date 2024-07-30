@@ -335,7 +335,7 @@ public class DOMNodePointer extends NodePointer {
     /**
      * Returns true if the xml:lang attribute for the current node
      * or its parent has the specified prefix <i>lang</i>.
-     * If no node has this prefix, calls <code>super.isLanguage(lang)</code>.
+     * If no node has this prefix, calls {@code super.isLanguage(lang)}.
      * @param lang ns to test
      * @return boolean
      */

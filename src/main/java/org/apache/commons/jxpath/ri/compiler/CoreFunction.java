@@ -909,7 +909,7 @@ public class CoreFunction extends Operation {
     }
 
     /**
-     * Assert <code>count</code> args.
+     * Assert {@code count} args.
      * @param count int
      */
     private void assertArgCount(final int count) {
@@ -917,7 +917,7 @@ public class CoreFunction extends Operation {
     }
 
     /**
-     * Assert at least <code>min</code>/at most <code>max</code> args.
+     * Assert at least {@code min}/at most {@code max} args.
      * @param min int
      * @param max int
      */

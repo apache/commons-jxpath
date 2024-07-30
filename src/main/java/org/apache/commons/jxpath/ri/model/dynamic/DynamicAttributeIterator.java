@@ -21,8 +21,8 @@ import org.apache.commons.jxpath.ri.model.beans.BeanAttributeIterator;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 
 /**
- * <code>DynamicAttributeIterator</code> is different from a regular
- * <code>BeanAttributeIterator</code> in that given a property name it
+ * {@code DynamicAttributeIterator} is different from a regular
+ * {@code BeanAttributeIterator} in that given a property name it
  * will always find that property (albeit with a null value).
  */
 public class DynamicAttributeIterator extends BeanAttributeIterator {
