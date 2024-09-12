@@ -483,10 +483,8 @@ public class DOMNodePointer extends NodePointer {
             }
             element.setAttributeNS(ns, name.toString(), "");
         }
-        else {
-            if (!element.hasAttribute(name.getName())) {
-                element.setAttribute(name.getName(), "");
-            }
+        else if (!element.hasAttribute(name.getName())) {
+            element.setAttribute(name.getName(), "");
         }
         final NodeIterator it = attributeIterator(name);
         it.setPosition(1);
@@ -537,14 +535,13 @@ public class DOMNodePointer extends NodePointer {
                             buffer.append(ln);
                             buffer.append('[');
                             buffer.append(getRelativePositionByQName());
-                            buffer.append(']');
                         }
                         else {
                             buffer.append("node()");
                             buffer.append('[');
                             buffer.append(getRelativePositionOfElement());
-                            buffer.append(']');
                         }
+                        buffer.append(']');
                     }
                 }
             break;
