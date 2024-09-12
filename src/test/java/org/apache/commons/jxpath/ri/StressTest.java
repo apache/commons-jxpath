@@ -57,7 +57,7 @@ public class StressTest extends TestCase {
         assertEquals("Test count", THREAD_COUNT * THREAD_DURATION, count);
     }
 
-    private final class StressRunnable implements Runnable {
+    private static final class StressRunnable implements Runnable {
         @Override
         public void run() {
             for (int j = 0; j < THREAD_DURATION && exception == null; j++) {
