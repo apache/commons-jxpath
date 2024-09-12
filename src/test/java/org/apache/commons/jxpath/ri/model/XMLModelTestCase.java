@@ -17,7 +17,6 @@
 package org.apache.commons.jxpath.ri.model;
 
 import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.IdentityManager;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathTestCase;
@@ -266,13 +265,10 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
     }
 
     public void testID() {
-        context.setIdentityManager(new IdentityManager() {
-            @Override
-            public Pointer getPointerByID(final JXPathContext context, final String id) {
-                NodePointer ptr = (NodePointer) context.getPointer("/");
-                ptr = ptr.getValuePointer(); // Unwrap the container
-                return ptr.getPointerByID(context, id);
-            }
+        context.setIdentityManager((context, id) -> {
+            NodePointer ptr = (NodePointer) context.getPointer("/");
+            ptr = ptr.getValuePointer(); // Unwrap the container
+            return ptr.getPointerByID(context, id);
         });
 
         assertXPathValueAndPointer(
