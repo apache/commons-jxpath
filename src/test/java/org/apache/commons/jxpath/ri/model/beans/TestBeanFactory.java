@@ -38,11 +38,11 @@ public class TestBeanFactory extends AbstractFactory {
         final String name,
         final int index)
     {
-        if (name.equals("nestedBean")) {
+        switch (name) {
+        case "nestedBean":
             ((TestBean) parent).setNestedBean(new NestedTestBean("newName"));
             return true;
-        }
-        else if (name.equals("beans")) {
+        case "beans": {
             final TestBean bean = (TestBean) parent;
             if (bean.getBeans() == null || index >= bean.getBeans().length) {
                 bean.setBeans(new NestedTestBean[index + 1]);
@@ -50,10 +50,12 @@ public class TestBeanFactory extends AbstractFactory {
             bean.getBeans()[index] = new NestedTestBean("newName");
             return true;
         }
-        else if (name.equals("integers")) {
+        case "integers":
             // This will implicitly expand the collection
              ((TestBean) parent).setIntegers(index, 0);
             return true;
+        default:
+            break;
         }
         return false;
     }
