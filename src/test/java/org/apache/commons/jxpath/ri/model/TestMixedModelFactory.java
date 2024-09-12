@@ -43,11 +43,11 @@ public class TestMixedModelFactory extends AbstractFactory {
         final String name,
         final int index)
     {
-        if (name.equals("nestedBean")) {
+        switch (name) {
+        case "nestedBean":
             ((TestBean) parent).setNestedBean(new NestedTestBean("newName"));
             return true;
-        }
-        else if (name.equals("beans")) {
+        case "beans": {
             final TestBean bean = (TestBean) parent;
             if (bean.getBeans() == null || index >= bean.getBeans().length) {
                 bean.setBeans(new NestedTestBean[index + 1]);
@@ -55,23 +55,25 @@ public class TestMixedModelFactory extends AbstractFactory {
             bean.getBeans()[index] = new NestedTestBean("newName");
             return true;
         }
-        else if (name.equals("map")) {
+        case "map":
             ((TestBean) parent).setMap(new HashMap());
             return true;
-        }
-        else if (name.equals("TestKey5")) {
+        case "TestKey5": {
             final TestBean tb = new TestBean();
             tb.setNestedBean(null);
             tb.setBeans(null);
             ((Map) parent).put(name, tb);
             return true;
         }
-        else if (name.equals("matrix")) {
+        case "matrix": {
             final int[][] matrix = new int[2][];
             matrix[0] = new int[1];
             //            matrix[1] = new int[2];
              ((TestMixedModelBean) parent).setMatrix(matrix);
             return true;
+        }
+        default:
+            break;
         }
         return false;
     }
