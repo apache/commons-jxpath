@@ -20,7 +20,6 @@ import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -119,13 +118,10 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             nodeFactoryArray =
                 (NodePointerFactory[]) nodeFactories.
                     toArray(new NodePointerFactory[nodeFactories.size()]);
-            Arrays.sort(nodeFactoryArray, new Comparator() {
-                @Override
-                public int compare(final Object a, final Object b) {
-                    final int orderA = ((NodePointerFactory) a).getOrder();
-                    final int orderB = ((NodePointerFactory) b).getOrder();
-                    return orderA - orderB;
-                }
+            Arrays.sort(nodeFactoryArray, (a, b) -> {
+                final int orderA = ((NodePointerFactory) a).getOrder();
+                final int orderB = ((NodePointerFactory) b).getOrder();
+                return orderA - orderB;
             });
         }
     }
