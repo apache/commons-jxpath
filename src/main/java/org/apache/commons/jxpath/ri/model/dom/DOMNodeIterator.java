@@ -117,13 +117,8 @@ public class DOMNodeIterator implements NodeIterator {
     private boolean next() {
         position++;
         if (!reverse) {
-            if (position == 1) {
-                if (child == null) {
-                    child = node.getFirstChild();
-                }
-                else {
-                    child = child.getNextSibling();
-                }
+            if (position == 1 && child == null) {
+                child = node.getFirstChild();
             }
             else {
                 child = child.getNextSibling();
@@ -133,13 +128,8 @@ public class DOMNodeIterator implements NodeIterator {
             }
         }
         else {
-            if (position == 1) {
-                if (child == null) {
-                    child = node.getLastChild();
-                }
-                else {
-                    child = child.getPreviousSibling();
-                }
+            if (position == 1 && child == null) {
+                child = node.getLastChild();
             }
             else {
                 child = child.getPreviousSibling();
