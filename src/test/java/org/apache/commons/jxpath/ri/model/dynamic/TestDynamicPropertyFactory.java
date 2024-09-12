@@ -43,19 +43,17 @@ public class TestDynamicPropertyFactory extends AbstractFactory {
         final String name,
         final int index)
     {
-        if (name.equals("map")) {
+        switch (name) {
+        case "map":
             ((TestBean) parent).setMap(new HashMap());
             return true;
-        }
-        else if (name.equals("TestKey1")) {
+        case "TestKey1":
             ((Map) parent).put(name, "");
             return true;
-        }
-        else if (name.equals("TestKey2")) {
+        case "TestKey2":
             ((Map) parent).put(name, new NestedTestBean("newName"));
             return true;
-        }
-        else if (name.equals("TestKey3")) {
+        case "TestKey3": {
             final Vector v = new Vector();
             for (int i = 0; i <= index; i++) {
                 v.add(null);
@@ -63,9 +61,11 @@ public class TestDynamicPropertyFactory extends AbstractFactory {
             ((Map) parent).put(name, v);
             return true;
         }
-        else if (name.equals("TestKey4")) {
+        case "TestKey4":
             ((Map) parent).put(name, new Object[] { new TestBean()});
             return true;
+        default:
+            break;
         }
         return false;
     }
