@@ -21,10 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.jxpath.ExtendedKeyManager;
-import org.apache.commons.jxpath.IdentityManager;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
-import org.apache.commons.jxpath.KeyManager;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.TestMixedModelBean;
@@ -119,13 +117,10 @@ public class CoreFunctionTest extends JXPathTestCase {
     }
 
     public void testIDFunction() {
-        context.setIdentityManager(new IdentityManager() {
-            @Override
-            public Pointer getPointerByID(final JXPathContext context, final String id) {
-                NodePointer ptr = (NodePointer) context.getPointer("/document");
-                ptr = ptr.getValuePointer();
-                return ptr.getPointerByID(context, id);
-            }
+        context.setIdentityManager((context, id) -> {
+            NodePointer ptr = (NodePointer) context.getPointer("/document");
+            ptr = ptr.getValuePointer();
+            return ptr.getPointerByID(context, id);
         });
 
         assertXPathValueAndPointer(
@@ -141,16 +136,7 @@ public class CoreFunctionTest extends JXPathTestCase {
     }
 
     public void testKeyFunction() {
-        context.setKeyManager(new KeyManager() {
-            @Override
-            public Pointer getPointerByKey(
-                final JXPathContext context,
-                final String key,
-                final String value)
-            {
-                return NodePointer.newNodePointer(null, "42", null);
-            }
-        });
+        context.setKeyManager((context, key, value) -> NodePointer.newNodePointer(null, "42", null));
 
         assertXPathValue(context, "key('a', 'b')", "42");
     }
