@@ -31,7 +31,7 @@ import org.apache.commons.jxpath.JXPathTestCase;
 
 public class ContainerModelTest extends JXPathTestCase {
 
-    private final class ArrayContainer implements Container
+    private static final class ArrayContainer implements Container
     {
         private static final long serialVersionUID = 1L;
         private final String[] array = {"foo", "bar"};
