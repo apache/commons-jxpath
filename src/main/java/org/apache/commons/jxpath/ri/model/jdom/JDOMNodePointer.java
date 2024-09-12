@@ -668,14 +668,13 @@ public class JDOMNodePointer extends NodePointer {
                         buffer.append(ln);
                         buffer.append('[');
                         buffer.append(getRelativePositionByQName());
-                        buffer.append(']');
                     }
                     else {
                         buffer.append("node()");
                         buffer.append('[');
                         buffer.append(getRelativePositionOfElement());
-                        buffer.append(']');
                     }
+                    buffer.append(']');
                 }
 
             }
