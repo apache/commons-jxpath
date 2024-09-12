@@ -37,13 +37,13 @@ public class TestDynaBeanFactory extends AbstractFactory {
         final String name,
         final int index)
     {
-        if (name.equals("nestedBean")) {
+        switch (name) {
+        case "nestedBean":
             ((DynaBean) parent).set(
                 "nestedBean",
                 new NestedTestBean("newName"));
             return true;
-        }
-        else if (name.equals("beans")) {
+        case "beans": {
             final DynaBean bean = (DynaBean) parent;
             Object beans[] = (Object[]) bean.get("beans");
             if (beans == null || index >= beans.length) {
@@ -53,10 +53,13 @@ public class TestDynaBeanFactory extends AbstractFactory {
             beans[index] = new NestedTestBean("newName");
             return true;
         }
-        else if (name.equals("integers")) {
+        case "integers": {
             final DynaBean bean = (DynaBean) parent;
             bean.set("integers", index, Integer.valueOf(0));
             return true;
+        }
+        default:
+            break;
         }
         return false;
     }
