@@ -108,13 +108,10 @@ public class JDOMModelTest extends XMLModelTestCase {
             buffer.append("</");
             buffer.append(tag);
             buffer.append(">");
-        }
-        else if (object instanceof Text || object instanceof CDATA) {
-            if (text) {
-                String string = ((Text) object).getText();
-                string = string.replace('\n', '=');
-                buffer.append(string);
-            }
+        } else if ((object instanceof Text || object instanceof CDATA) && text) {
+            String string = ((Text) object).getText();
+            string = string.replace('\n', '=');
+            buffer.append(string);
         }
     }
 
