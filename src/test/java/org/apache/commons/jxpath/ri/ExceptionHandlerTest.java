@@ -16,10 +16,8 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import org.apache.commons.jxpath.ExceptionHandler;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathTestCase;
-import org.apache.commons.jxpath.Pointer;
 
 /**
  * Test simple ExceptionHandler.
@@ -37,18 +35,14 @@ public class ExceptionHandlerTest extends JXPathTestCase {
     @Override
     public void setUp() throws Exception {
         context = JXPathContext.newContext(this);
-        context.setExceptionHandler(new ExceptionHandler() {
-
-            @Override
-            public void handle(final Throwable t, final Pointer ptr) {
-                if (t instanceof Error) {
-                    throw (Error) t;
-                }
-                if (t instanceof RuntimeException) {
-                    throw (RuntimeException) t;
-                }
-                throw new RuntimeException(t);
+        context.setExceptionHandler((t, ptr) -> {
+            if (t instanceof Error) {
+                throw (Error) t;
             }
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            }
+            throw new RuntimeException(t);
         });
     }
 
