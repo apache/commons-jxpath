@@ -1530,13 +1530,20 @@ int kind = 0x7fffffff;
                         kind = 20;
                     }
                      jjCheckNAddTwoStates(6, 7);
-                  }
-                  else if (curChar == 46) {
-                    jjCheckNAdd(10);
-                } else if (curChar == 39) {
-                    jjCheckNAddTwoStates(4, 5);
-                } else if (curChar == 34) {
-                    jjCheckNAddTwoStates(1, 2);
+                  } else {
+                    switch (curChar) {
+                    case 46:
+                        jjCheckNAdd(10);
+                        break;
+                    case 39:
+                        jjCheckNAddTwoStates(4, 5);
+                        break;
+                    case 34:
+                        jjCheckNAddTwoStates(1, 2);
+                        break;
+                    default:
+                        break;
+                    }
                 }
                   break;
                case 1:
