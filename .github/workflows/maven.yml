@@ -33,7 +33,7 @@ jobs:
         include:
           - java: 23
             os: windows-latest
-            experimental: true        
+            experimental: false        
           - java: 24-ea
             os: macos-latest
             experimental: true        
