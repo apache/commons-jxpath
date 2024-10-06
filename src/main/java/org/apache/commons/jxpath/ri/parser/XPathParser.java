@@ -417,7 +417,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 //}
 //
 //
-///* [XSLT2] LocationPathPattern ::=
+// /* [XSLT2] LocationPathPattern ::=
 //   '/' RelativePathPattern? | IdKeyPattern (('/' | '//' RelativePathPattern)? | '//'? RelativePathPattern
 //*/
 //
@@ -434,7 +434,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 //
 //
 //
-///* [XSLT3] IdKeyPattern    ::=    'id' '(' Literal ')' | 'key' '(' Literal ',' Literal ')'  */
+// /* [XSLT3] IdKeyPattern    ::=    'id' '(' Literal ')' | 'key' '(' Literal ',' Literal ')'  */
 //
 //void IdKeyPattern() :
 //{}
@@ -444,7 +444,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 //}
 //
 //
-///* [XSLT4] RelativePathPattern    ::=    StepPattern | RelativePathPattern '/' StepPattern
+// /* [XSLT4] RelativePathPattern    ::=    StepPattern | RelativePathPattern '/' StepPattern
 //                           | RelativePathPattern '//' StepPattern
 //*/
 //void RelativePathPattern() :
@@ -454,7 +454,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 //}
 //
 //
-///* [XSLT5]    StepPattern    ::=    AbbreviatedAxisSpecifier NodeTest Predicate*   */
+// /* [XSLT5]    StepPattern    ::=    AbbreviatedAxisSpecifier NodeTest Predicate*   */
 //void StepPattern() :
 //{}
 //{
