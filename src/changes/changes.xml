@@ -106,6 +106,9 @@ The <action> type attribute can be add,update,fix,remove.
         XPath function "ends-with" is not implemented (although "starts-with" is).
       </action>
       <!-- UPDATE -->
+      <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
+        Bump commons-parent from 54 to 77 #45, #49, #64, #110, #121, #403, #167, #173, #176, #181, #185, #188.
+      </action>
       <action issue="JXPATH-184" dev="britter" type="update" due-to="britter, Gary Gregory">
         Bump Java to 8.
       </action>
@@ -123,9 +126,6 @@ The <action> type attribute can be add,update,fix,remove.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump servlet-api from 2.4 to 2.5 #29.
-      </action>
-      <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
-        Bump commons-parent from 54 to 77 #45, #49, #64, #110, #121, #403, #167, #173, #176, #181, #185, #188.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump JDOM from jdom:jdom 1.0 to org.jdom:jdom 1.1.3.
