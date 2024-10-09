@@ -125,7 +125,7 @@ The <action> type attribute can be add,update,fix,remove.
         Bump servlet-api from 2.4 to 2.5 #29.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
-        Bump commons-parent from 54 to 76 #45, #49, #64, #110, #121, #403, #167, #173, #176, #181, #185.
+        Bump commons-parent from 54 to 77 #45, #49, #64, #110, #121, #403, #167, #173, #176, #181, #185, #188.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump JDOM from jdom:jdom 1.0 to org.jdom:jdom 1.1.3.
