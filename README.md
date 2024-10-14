@@ -44,7 +44,7 @@ Apache Commons JXPath
 ===================
 
 [![Java CI](https://github.com/apache/commons-jxpath/actions/workflows/maven.yml/badge.svg)](https://github.com/apache/commons-jxpath/actions/workflows/maven.yml)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/commons-jxpath/commons-jxpath/badge.svg)](https://maven-badges.herokuapp.com/maven-central/commons-jxpath/commons-jxpath/)
+[![Maven Central](https://img.shields.io/maven-central/v/commons-jxpath/commons-jxpath?label=Maven%20Central)](https://search.maven.org/artifact/commons-jxpath/commons-jxpath)
 
 A Java-based implementation of XPath 1.0 that, in addition to XML processing, can inspect/modify Java object graphs (the library's explicit purpose) and even mixed Java/XML structures.
 
