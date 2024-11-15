@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.TestBean;
 public class TestBeanFactory extends AbstractFactory {
 
     /**
-     * Return <b>false</b> if this factory cannot create the requested object.
+     * Return <strong>false</strong> if this factory cannot create the requested object.
      */
     @Override
     public boolean createObject(

@@ -98,13 +98,13 @@ public class PackageFunctions implements Functions {
      * construction, this method returns null
      * @param name - name of the method, which can one these forms:
      * <ul>
-     * <li><b>methodname</b>, if invoking a method on an object passed as the
+     * <li><strong>methodname</strong>, if invoking a method on an object passed as the
      * first parameter</li>
-     * <li><b>Classname.new</b>, if looking for a constructor</li>
-     * <li><b>subpackage.subpackage.Classname.new</b>, if looking for a
+     * <li><strong>Classname.new</strong>, if looking for a constructor</li>
+     * <li><strong>subpackage.subpackage.Classname.new</strong>, if looking for a
      * constructor in a subpackage</li>
-     * <li><b>Classname.methodname</b>, if looking for a static method</li>
-     * <li><b>subpackage.subpackage.Classname.methodname</b>, if looking for a
+     * <li><strong>Classname.methodname</strong>, if looking for a static method</li>
+     * <li><strong>subpackage.subpackage.Classname.methodname</strong>, if looking for a
      * static method of a class in a subpackage</li>
      * </ul>
      * @param parameters Object[] of parameters

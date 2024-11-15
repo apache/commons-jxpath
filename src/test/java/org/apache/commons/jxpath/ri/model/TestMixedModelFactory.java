@@ -33,7 +33,7 @@ public class TestMixedModelFactory extends AbstractFactory {
 
     /**
      * Create a new instance and put it in the collection on the parent object.
-     * Return <b>false</b> if this factory cannot create the requested object.
+     * Return <strong>false</strong> if this factory cannot create the requested object.
      */
     @Override
     public boolean createObject(
