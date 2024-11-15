@@ -485,7 +485,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Returns true if the xml:lang attribute for the current node
-     * or its parent has the specified prefix <i>lang</i>.
+     * or its parent has the specified prefix <em>lang</em>.
      * If no node has this prefix, calls {@code super.isLanguage(lang)}.
      * @param lang to compare
      * @return true if this element uses the specified language.

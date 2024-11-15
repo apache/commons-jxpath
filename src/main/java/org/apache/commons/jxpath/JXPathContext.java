@@ -231,7 +231,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * <h3>Example 8: Using Variables</h3>
  * JXPath supports the notion of variables. The XPath syntax for accessing
- * variables is <i>"$varName"</i>.
+ * variables is <em>"$varName"</em>.
  *
  * <pre>
  * public class Author {
@@ -255,8 +255,8 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * context.setValue("$index", new Integer(3));
  * </pre>
  *
- * Note: you can only <i>change</i> the value of an existing variable this
- * way, you cannot <i>define</i> a new variable.
+ * Note: you can only <em>change</em> the value of an existing variable this
+ * way, you cannot <em>define</em> a new variable.
  *
  * <p>
  * When a variable contains a JavaBean or a collection, you can
@@ -631,7 +631,7 @@ public abstract class JXPathContext {
      * If the context is in the lenient mode, then getValue() returns null
      * for inexistent paths.  Otherwise, a path that does not map to
      * an existing property will throw an exception.  Note that if the
-     * property exists, but its value is null, the exception is <i>not</i>
+     * property exists, but its value is null, the exception is <em>not</em>
      * thrown.
      * <p>
      * By default, lenient = false

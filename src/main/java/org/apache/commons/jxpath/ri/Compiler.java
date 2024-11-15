@@ -127,7 +127,7 @@ public interface Compiler {
     Object sum(Object[] arguments);
 
     /**
-     * Produces an EXPRESSION object representing <i>left</i> minus <i>right</i>
+     * Produces an EXPRESSION object representing <em>left</em> minus <em>right</em>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -136,8 +136,8 @@ public interface Compiler {
     Object minus(Object left, Object right);
 
     /**
-     * Produces  an EXPRESSION object representing <i>left</i> multiplied by
-     * <i>right</i>
+     * Produces  an EXPRESSION object representing <em>left</em> multiplied by
+     * <em>right</em>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -146,8 +146,8 @@ public interface Compiler {
     Object multiply(Object left, Object right);
 
     /**
-     * Produces  an EXPRESSION object representing <i>left</i> divided by
-     * <i>right</i>
+     * Produces  an EXPRESSION object representing <em>left</em> divided by
+     * <em>right</em>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -156,8 +156,8 @@ public interface Compiler {
     Object divide(Object left, Object right);
 
     /**
-     * Produces  an EXPRESSION object representing <i>left</i> modulo
-     * <i>right</i>
+     * Produces  an EXPRESSION object representing <em>left</em> modulo
+     * <em>right</em>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -167,7 +167,7 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object representing the comparison:
-     * <i>left</i> less than <i>right</i>
+     * <em>left</em> less than <em>right</em>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -177,7 +177,7 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object representing the comparison:
-     * <i>left</i> less than or equal to <i>right</i>
+     * <em>left</em> less than or equal to <em>right</em>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -187,7 +187,7 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object representing the comparison:
-     * <i>left</i> greater than <i>right</i>
+     * <em>left</em> greater than <em>right</em>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -197,7 +197,7 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object representing the comparison:
-     * <i>left</i> greater than or equal to <i>right</i>
+     * <em>left</em> greater than or equal to <em>right</em>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -207,7 +207,7 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object representing the comparison:
-     * <i>left</i> equals to <i>right</i>
+     * <em>left</em> equals to <em>right</em>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object
@@ -217,7 +217,7 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object representing the comparison:
-     * <i>left</i> is not equal to <i>right</i>
+     * <em>left</em> is not equal to <em>right</em>
      *
      * @param left is an EXPRESSION object
      * @param right is an EXPRESSION object

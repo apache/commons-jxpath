@@ -540,7 +540,7 @@ public abstract class NodePointer implements Pointer {
      * Check whether our locale matches the specified language.
      * @param lang String language to check
      * @return true if the selected locale name starts
-     *              with the specified prefix <i>lang</i>, case-insensitive.
+     *              with the specified prefix <em>lang</em>, case-insensitive.
      */
     public boolean isLanguage(final String lang) {
         final Locale loc = getLocale();
