@@ -18,7 +18,7 @@ package org.apache.commons.jxpath.ri.model.dom;
 
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
+import org.apache.commons.jxpath.ri.model.AbstractXMLModelTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -30,7 +30,7 @@ import org.w3c.dom.NodeList;
  * Tests JXPath with DOM
  */
 
-public class DOMModelTest extends XMLModelTestCase {
+public class DOMModelTest extends AbstractXMLModelTest {
 
     @Override
     protected String getModel() {

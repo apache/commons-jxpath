@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
+import org.apache.commons.jxpath.ri.model.AbstractXMLModelTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 import org.jdom.Attribute;
 import org.jdom.CDATA;
@@ -31,7 +31,7 @@ import org.jdom.Text;
 /**
  * Tests JXPath with JDOM
  */
-public class JDOMModelTest extends XMLModelTestCase {
+public class JDOMModelTest extends AbstractXMLModelTest {
 
     @Override
     protected String getModel() {

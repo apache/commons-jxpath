@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  */
 
-public abstract class XMLModelTestCase extends AbstractJXPathTest {
+public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     protected JXPathContext context;
 
     @Override
