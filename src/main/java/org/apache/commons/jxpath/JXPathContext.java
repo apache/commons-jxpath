@@ -419,7 +419,7 @@ public abstract class JXPathContext {
     /** KeyManager */
     protected KeyManager keyManager;
     /** Decimal format map */
-    protected HashMap decimalFormats;
+    protected HashMap<String, DecimalFormatSymbols> decimalFormats;
 
     private Locale locale;
     private boolean lenientSet = false;
@@ -609,7 +609,7 @@ public abstract class JXPathContext {
     public synchronized void setDecimalFormatSymbols(final String name,
             final DecimalFormatSymbols symbols) {
         if (decimalFormats == null) {
-            decimalFormats = new HashMap();
+            decimalFormats = new HashMap<>();
         }
         decimalFormats.put(name, symbols);
     }
@@ -624,7 +624,7 @@ public abstract class JXPathContext {
         if (decimalFormats == null) {
             return parentContext == null ? null : parentContext.getDecimalFormatSymbols(name);
         }
-        return (DecimalFormatSymbols) decimalFormats.get(name);
+        return decimalFormats.get(name);
     }
 
     /**
