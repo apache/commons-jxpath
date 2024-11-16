@@ -18,14 +18,14 @@ package org.apache.commons.jxpath.issues;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.BeanPropertyPointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer;
 
 import junit.framework.TestSuite;
 
-public class JXPath172Test extends JXPathTestCase
+public class JXPath172Test extends AbstractJXPathTest
 {
 
     /**

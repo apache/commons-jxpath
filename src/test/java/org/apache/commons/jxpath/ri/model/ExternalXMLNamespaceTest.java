@@ -17,17 +17,17 @@
 package org.apache.commons.jxpath.ri.model;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 
 /**
  * Test externally registered XML namespaces; JXPATH-97.
  */
-public class ExternalXMLNamespaceTest extends JXPathTestCase {
+public class ExternalXMLNamespaceTest extends AbstractJXPathTest {
     protected JXPathContext context;
 
     protected DocumentContainer createDocumentContainer(final String model) {
-        final DocumentContainer result = new DocumentContainer(JXPathTestCase.class
+        final DocumentContainer result = new DocumentContainer(AbstractJXPathTest.class
                 .getResource("ExternalNS.xml"), model);
         // this setting only works for DOM, so no JDOM tests :|
         result.setNamespaceAware(false);

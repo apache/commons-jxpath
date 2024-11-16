@@ -16,13 +16,13 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ri.Parser;
 
 /**
  * Tests the determination of whether an expression is context dependent.
  */
-public class ContextDependencyTest extends JXPathTestCase {
+public class ContextDependencyTest extends AbstractJXPathTest {
 
     public void testContextDependency() {
         testContextDependency("1", false);

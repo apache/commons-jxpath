@@ -19,17 +19,17 @@ package org.apache.commons.jxpath.ri.model;
 import java.util.Collection;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 
 /**
  * Test aliased/doubled XML namespace iteration; JXPATH-125.
  */
-public class AliasedNamespaceIterationTest extends JXPathTestCase {
+public class AliasedNamespaceIterationTest extends AbstractJXPathTest {
     protected JXPathContext context;
 
     protected DocumentContainer createDocumentContainer(final String model) {
-        final DocumentContainer result = new DocumentContainer(JXPathTestCase.class
+        final DocumentContainer result = new DocumentContainer(AbstractJXPathTest.class
                 .getResource("IterateAliasedNS.xml"), model);
         return result;
     }

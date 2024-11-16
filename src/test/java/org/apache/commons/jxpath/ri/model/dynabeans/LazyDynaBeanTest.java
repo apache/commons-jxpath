@@ -19,12 +19,12 @@ package org.apache.commons.jxpath.ri.model.dynabeans;
 import org.apache.commons.beanutils.LazyDynaBean;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 /**
  */
-public class LazyDynaBeanTest extends JXPathTestCase {
+public class LazyDynaBeanTest extends AbstractJXPathTest {
 
     public void testLazyProperty() throws JXPathNotFoundException {
         final LazyDynaBean bean = new LazyDynaBean();

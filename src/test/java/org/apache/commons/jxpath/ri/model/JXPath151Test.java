@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.TestBean;
 
-public class JXPath151Test extends JXPathTestCase {
+public class JXPath151Test extends AbstractJXPathTest {
 
     private JXPathContext context;
 

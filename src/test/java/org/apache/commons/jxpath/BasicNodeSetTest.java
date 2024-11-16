@@ -24,7 +24,7 @@ import org.w3c.dom.Element;
 /**
  * Test BasicNodeSet
  */
-public class BasicNodeSetTest extends JXPathTestCase {
+public class BasicNodeSetTest extends AbstractJXPathTest {
 
     /** JXPathContext */
     protected JXPathContext context;

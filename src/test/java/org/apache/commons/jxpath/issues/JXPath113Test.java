@@ -23,11 +23,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class JXPath113Test extends JXPathTestCase
+public class JXPath113Test extends AbstractJXPathTest
 {
 
     public void testIssue113() throws Exception

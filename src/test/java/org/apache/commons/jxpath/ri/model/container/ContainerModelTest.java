@@ -23,13 +23,13 @@ import java.util.Map;
 
 import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 
 /**
  * Tests JXPath with containers as root or value of a variable, property, etc.
  */
 
-public class ContainerModelTest extends JXPathTestCase {
+public class ContainerModelTest extends AbstractJXPathTest {
 
     private static final class ArrayContainer implements Container
     {

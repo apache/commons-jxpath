@@ -19,12 +19,12 @@ package org.apache.commons.jxpath.ri.model;
 import java.util.Collections;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 
 /**
  * Be sure empty lists/sets/arrays work.
  */
-public class EmptyCollectionTest extends JXPathTestCase {
+public class EmptyCollectionTest extends AbstractJXPathTest {
     public static class HasChild {
         private final Object child;
 

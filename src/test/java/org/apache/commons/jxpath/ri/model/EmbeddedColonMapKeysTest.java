@@ -19,12 +19,12 @@ package org.apache.commons.jxpath.ri.model;
 import java.util.HashMap;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 
 /**
  * JXPATH-104 test.
  */
-public class EmbeddedColonMapKeysTest extends JXPathTestCase {
+public class EmbeddedColonMapKeysTest extends AbstractJXPathTest {
     private JXPathContext context;
 
     @Override

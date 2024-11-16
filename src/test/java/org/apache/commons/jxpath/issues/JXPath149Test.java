@@ -17,9 +17,9 @@
 package org.apache.commons.jxpath.issues;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 
-public class JXPath149Test extends JXPathTestCase {
+public class JXPath149Test extends AbstractJXPathTest {
 
     public void testComplexOperationWithVariables() {
         final JXPathContext context = JXPathContext.newContext(null);

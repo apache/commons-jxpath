@@ -18,15 +18,15 @@
 package org.apache.commons.jxpath.ri.model;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 
-public class JXPath154Test extends JXPathTestCase {
+public class JXPath154Test extends AbstractJXPathTest {
 
     protected JXPathContext context;
 
     protected DocumentContainer createDocumentContainer(final String model) {
-        return new DocumentContainer(JXPathTestCase.class.getResource("InnerEmptyNamespace.xml"), model);
+        return new DocumentContainer(AbstractJXPathTest.class.getResource("InnerEmptyNamespace.xml"), model);
     }
 
     protected void doTest(final String path, final String model, final String expectedValue) {

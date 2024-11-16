@@ -17,12 +17,12 @@
 package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 
 /**
  * Test simple ExceptionHandler.
  */
-public class ExceptionHandlerTest extends JXPathTestCase {
+public class ExceptionHandlerTest extends AbstractJXPathTest {
     public static class Bar {
         public Object getBaz() {
             throw new IllegalStateException("baz unavailable");

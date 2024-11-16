@@ -25,7 +25,7 @@ import java.util.Locale;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.NestedTestBean;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.QName;
@@ -38,7 +38,7 @@ import org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanModelTest;
 /**
  * Abstract superclass for Bean access with JXPath.
  */
-public abstract class AbstractBeanModelTest extends JXPathTestCase {
+public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
     private JXPathContext context;
 
     @Override

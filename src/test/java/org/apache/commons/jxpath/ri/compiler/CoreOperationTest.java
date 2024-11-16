@@ -17,14 +17,14 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.Variables;
 
 /**
  * Test basic functionality of JXPath - infoset types,
  * operations.
  */
-public class CoreOperationTest extends JXPathTestCase {
+public class CoreOperationTest extends AbstractJXPathTest {
     private JXPathContext context;
 
     @Override

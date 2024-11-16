@@ -17,13 +17,13 @@
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 
 /**
  * Test for the protection mechanism that stops infinite recursion
  * in descent down a recursive graph.
  */
-public class RecursiveAxesTest extends JXPathTestCase {
+public class RecursiveAxesTest extends AbstractJXPathTest {
 
     private RecursiveBean bean;
     private JXPathContext context;

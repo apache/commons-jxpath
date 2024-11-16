@@ -19,7 +19,7 @@ package org.apache.commons.jxpath.ri.model;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.xml.DocumentContainer;
@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
  * DOM, JDOM etc.
  */
 
-public abstract class XMLModelTestCase extends JXPathTestCase {
+public abstract class XMLModelTestCase extends AbstractJXPathTest {
     protected JXPathContext context;
 
     @Override
@@ -49,7 +49,7 @@ public abstract class XMLModelTestCase extends JXPathTestCase {
 
     protected DocumentContainer createDocumentContainer() {
         return new DocumentContainer(
-                JXPathTestCase.class.getResource("Vendor.xml"),
+                AbstractJXPathTest.class.getResource("Vendor.xml"),
                 getModel());
     }
 

@@ -17,17 +17,17 @@
 package org.apache.commons.jxpath.ri.model;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 
 /**
  * Test for uppercase element matching, etc. showing JXPATH-136 is not reproducible.
  */
-public class XMLUpperCaseElementsTest extends JXPathTestCase {
+public class XMLUpperCaseElementsTest extends AbstractJXPathTest {
     protected JXPathContext context;
 
     protected DocumentContainer createDocumentContainer(final String model) {
-        return new DocumentContainer(JXPathTestCase.class.getResource("VendorUpper.xml"), model);
+        return new DocumentContainer(AbstractJXPathTest.class.getResource("VendorUpper.xml"), model);
     }
 
     protected JXPathContext createContext(final String model) {

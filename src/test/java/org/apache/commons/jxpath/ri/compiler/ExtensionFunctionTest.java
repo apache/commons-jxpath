@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.PackageFunctions;
 import org.apache.commons.jxpath.Pointer;
@@ -41,7 +41,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 /**
  * Test extension functions.
  */
-public class ExtensionFunctionTest extends JXPathTestCase {
+public class ExtensionFunctionTest extends AbstractJXPathTest {
     private Functions functions;
     private JXPathContext context;
     private TestBean testBean;

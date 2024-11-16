@@ -22,14 +22,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.TestBean;
 
 /**
  * TODO more iterator testing with maps
  */
 
-public class DynamicPropertiesModelTest extends JXPathTestCase {
+public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     private JXPathContext context;
 
     @Override

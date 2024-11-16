@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.TestBean;
 import org.apache.commons.jxpath.TestMixedModelBean;
@@ -36,7 +36,7 @@ import org.apache.commons.jxpath.Variables;
 /**
  * Tests JXPath with mixed model: beans, maps, DOM etc.
  */
-public class MixedModelTest extends JXPathTestCase {
+public class MixedModelTest extends AbstractJXPathTest {
     private JXPathContext context;
 
     @Override

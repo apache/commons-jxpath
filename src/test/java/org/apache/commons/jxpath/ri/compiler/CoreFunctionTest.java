@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.apache.commons.jxpath.ExtendedKeyManager;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.TestMixedModelBean;
@@ -32,7 +32,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 /**
  * Test basic functionality of JXPath - core functions.
  */
-public class CoreFunctionTest extends JXPathTestCase {
+public class CoreFunctionTest extends AbstractJXPathTest {
     private JXPathContext context;
 
     @Override

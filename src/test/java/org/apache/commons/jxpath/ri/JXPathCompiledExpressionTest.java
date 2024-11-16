@@ -17,7 +17,7 @@
 package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ri.compiler.Constant;
 import org.apache.commons.jxpath.ri.compiler.CoreFunction;
 import org.apache.commons.jxpath.ri.compiler.CoreOperationAdd;
@@ -45,7 +45,7 @@ import org.apache.commons.jxpath.ri.compiler.VariableReference;
  * Test compiler.
  */
 
-public class JXPathCompiledExpressionTest extends JXPathTestCase {
+public class JXPathCompiledExpressionTest extends AbstractJXPathTest {
 
     public void testConstant() {
         assertXPathExpression("1", Constant.class);

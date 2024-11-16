@@ -32,12 +32,12 @@ import junit.framework.TestCase;
 /**
  * Abstract superclass for various JXPath tests.
  */
-public abstract class JXPathTestCase extends TestCase {
+public abstract class AbstractJXPathTest extends TestCase {
 
     /**
      * Constructs a new instance of this test case.
      */
-    public JXPathTestCase() {
+    public AbstractJXPathTest() {
         Locale.setDefault(Locale.US);
     }
 
