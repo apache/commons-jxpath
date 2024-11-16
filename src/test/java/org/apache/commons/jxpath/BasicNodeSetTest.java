@@ -45,8 +45,8 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
      * @param xpath
      */
     protected void addPointers(final String xpath) {
-        for (final Iterator iter = context.iteratePointers(xpath); iter.hasNext();) {
-            nodeSet.add((Pointer) iter.next());
+        for (final Iterator<Pointer> iter = context.iteratePointers(xpath); iter.hasNext();) {
+            nodeSet.add(iter.next());
         }
         nudge();
     }
@@ -57,8 +57,8 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
      * @param xpath
      */
     protected void removePointers(final String xpath) {
-        for (final Iterator iter = context.iteratePointers(xpath); iter.hasNext();) {
-            nodeSet.remove((Pointer) iter.next());
+        for (final Iterator<Pointer> iter = context.iteratePointers(xpath); iter.hasNext();) {
+            nodeSet.remove(iter.next());
         }
         nudge();
     }

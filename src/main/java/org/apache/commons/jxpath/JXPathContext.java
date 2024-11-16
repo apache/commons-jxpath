@@ -701,9 +701,9 @@ public abstract class JXPathContext {
      */
     public List selectNodes(final String xpath) {
         final ArrayList list = new ArrayList();
-        final Iterator iterator = iteratePointers(xpath);
+        final Iterator<Pointer> iterator = iteratePointers(xpath);
         while (iterator.hasNext()) {
-            final Pointer pointer = (Pointer) iterator.next();
+            final Pointer pointer = iterator.next();
             list.add(pointer.getNode());
         }
         return list;
@@ -819,7 +819,7 @@ public abstract class JXPathContext {
      * @param xpath to iterate
      * @return Iterator
      */
-    public abstract Iterator iteratePointers(String xpath);
+    public abstract Iterator<Pointer> iteratePointers(String xpath);
 
     /**
      * Install an identity manager that will be used by the context

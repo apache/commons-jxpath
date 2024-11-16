@@ -166,9 +166,9 @@ public abstract class AbstractJXPathTest extends TestCase {
         else {
             actual = new HashSet();
         }
-        final Iterator it = ctx.iteratePointers(xpath);
+        final Iterator<Pointer> it = ctx.iteratePointers(xpath);
         while (it.hasNext()) {
-            final Pointer pointer = (Pointer) it.next();
+            final Pointer pointer = it.next();
             actual.add(pointer.toString());
         }
         assertEquals(

@@ -186,10 +186,10 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
 
     public void testIteratePropertyArrayWithHasNext() {
         final JXPathContext context = JXPathContext.newContext(createContextBean());
-        final Iterator it = context.iteratePointers("/integers");
-        final List actual = new ArrayList();
+        final Iterator<Pointer> it = context.iteratePointers("/integers");
+        final List<String> actual = new ArrayList<>();
         while (it.hasNext()) {
-            actual.add(((Pointer) it.next()).asPath());
+            actual.add(it.next().asPath());
         }
         assertEquals(
             "Iterating 'hasNext'/'next'<" + "/integers" + ">",
@@ -203,8 +203,8 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
 
     public void testIteratePropertyArrayWithoutHasNext() {
         final JXPathContext context = JXPathContext.newContext(createContextBean());
-        final Iterator it = context.iteratePointers("/integers");
-        final List actual = new ArrayList();
+        final Iterator<Pointer> it = context.iteratePointers("/integers");
+        final List<String> actual = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             actual.add(it.next().toString());
         }
@@ -221,7 +221,7 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
     public void testIterateAndSet() {
         final JXPathContext context = JXPathContext.newContext(createContextBean());
 
-        Iterator it = context.iteratePointers("beans/int");
+        Iterator<Pointer> it = context.iteratePointers("beans/int");
         int i = 5;
         while (it.hasNext()) {
             final NodePointer pointer = (NodePointer) it.next();
@@ -229,9 +229,9 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
         }
 
         it = context.iteratePointers("beans/int");
-        final List actual = new ArrayList();
+        final List<Object> actual = new ArrayList<>();
         while (it.hasNext()) {
-            actual.add(((Pointer) it.next()).getValue());
+            actual.add(it.next().getValue());
         }
         assertEquals(
             "Iterating <" + "beans/int" + ">",
@@ -257,10 +257,10 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
         assertXPathValue(context, "/beans[2]/name", "Name 2");
 
         int iterCount = 0;
-        final Iterator iter = context.iteratePointers("/beans/name");
+        final Iterator<Pointer> iter = context.iteratePointers("/beans/name");
         while (iter.hasNext()) {
             iterCount++;
-            final Pointer pointer = (Pointer) iter.next();
+            final Pointer pointer = iter.next();
             String s = (String) pointer.getValue();
             s += "suffix";
             pointer.setValue(s);

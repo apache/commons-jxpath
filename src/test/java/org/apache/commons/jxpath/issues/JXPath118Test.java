@@ -34,10 +34,10 @@ public class JXPath118Test extends TestCase
     {
         final Object contextBean = new SomeChildClass();
         final JXPathContext context = JXPathContext.newContext(contextBean);
-        final Iterator iteratePointers = context.iteratePointers("//*");
-        Assert.assertEquals("/bar", ((Pointer) iteratePointers.next()).asPath());
-        Assert.assertEquals("/baz", ((Pointer) iteratePointers.next()).asPath());
-        Assert.assertEquals("/foo", ((Pointer) iteratePointers.next()).asPath());
+        final Iterator<Pointer> iteratePointers = context.iteratePointers("//*");
+        Assert.assertEquals("/bar", iteratePointers.next().asPath());
+        Assert.assertEquals("/baz", iteratePointers.next().asPath());
+        Assert.assertEquals("/foo", iteratePointers.next().asPath());
     }
 
     public static class SomeChildClass
