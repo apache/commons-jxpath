@@ -135,22 +135,23 @@ public abstract class AbstractJXPathTest extends TestCase {
         assertXPathPointer(ctx, xpath, expectedPointer);
     }
 
-    protected void assertXPathValueIterator(final JXPathContext ctx,
-                final String xpath, final Collection expected)
+    protected <E> void assertXPathValueIterator(final JXPathContext ctx,
+                final String xpath, final Collection<E> expected)
     {
-        Collection actual;
+        Collection<E> actual;
         if (expected instanceof List) {
-            actual = new ArrayList();
+            actual = new ArrayList<>();
+        } else {
+            actual = new HashSet<>();
         }
-        else {
-            actual = new HashSet();
-        }
-        final Iterator it = ctx.iterate(xpath);
+        final Iterator<E> it = ctx.iterate(xpath);
         while (it.hasNext()) {
             actual.add(it.next());
         }
-        assertEquals("Evaluating value iterator <" + xpath + ">",
-                expected, actual);
+        assertEquals(String.format("[hashCode()] Evaluating value iterator <%s>, expected.class %s(%,d): %s, actual.class %s(%,d): %s", xpath,
+                expected.getClass(), expected.size(), expected, actual.getClass(), actual.size(), actual), expected.hashCode(), actual.hashCode());
+        assertEquals(String.format("[equals()] Evaluating value iterator <%s>, expected.class %s(%,d): %s, actual.class %s(%,d): %s", xpath,
+                expected.getClass(), expected.size(), expected, actual.getClass(), actual.size(), actual), expected, actual);
     }
 
     protected void assertXPathPointerIterator(
