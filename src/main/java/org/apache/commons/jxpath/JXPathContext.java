@@ -784,10 +784,12 @@ public abstract class JXPathContext {
      * Traverses the xpath and returns an Iterator of all results found
      * for the path. If the xpath matches no properties
      * in the graph, the Iterator will be empty, but not null.
+     *
+     * @param <E> the type of elements returned by the iterator.
      * @param xpath to iterate
      * @return Iterator
      */
-    public abstract Iterator iterate(String xpath);
+    public abstract <E> Iterator<E> iterate(String xpath);
 
     /**
      * Traverses the xpath and returns a Pointer. A Pointer provides easy access
