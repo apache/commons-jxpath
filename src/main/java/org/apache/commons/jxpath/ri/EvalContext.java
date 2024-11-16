@@ -53,7 +53,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     private boolean startedSetIteration = false;
     private boolean done = false;
     private boolean hasPerformedIteratorStep = false;
-    private Iterator pointerIterator;
+    private Iterator<Pointer> pointerIterator;
 
     /**
      * Create a new EvalContext.
@@ -178,8 +178,8 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * @return whether the Iterator was constructed
      */
     private boolean constructIterator() {
-        final HashSet set = new HashSet();
-        final ArrayList list = new ArrayList();
+        final HashSet<Pointer> set = new HashSet<>();
+        final ArrayList<Pointer> list = new ArrayList<>();
         while (nextSet()) {
             while (nextNode()) {
                 final NodePointer pointer = getCurrentNodePointer();
@@ -227,7 +227,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         if (pos != 0) {
             reset();
         }
-        final List list = new ArrayList();
+        final List<Pointer> list = new ArrayList<>();
         while (nextNode()) {
             list.add(getCurrentNodePointer());
         }
