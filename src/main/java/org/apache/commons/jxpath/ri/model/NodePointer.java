@@ -305,7 +305,6 @@ public abstract class NodePointer implements Pointer {
 
     /**
      * @see #getValuePointer()
-     *
      * @return NodePointer is either {@code this} or a pointer
      *   for the immediately contained value.
      */

@@ -82,7 +82,6 @@ public class ClassFunctions implements Functions {
      *     the method returns null
      * @param name is a function name or "new" for a constructor.
      * @param parameters Object[] of parameters
-     *
      * @return a MethodFunction, a ConstructorFunction or null if there is no
      *      such function.
      */

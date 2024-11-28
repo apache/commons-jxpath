@@ -60,7 +60,6 @@ public abstract class AbstractFactory {
      * @param context hosts variable pools. See
      * {@link JXPathContext#getVariables() JXPathContext.getVariables()}
      * @param name is the name of the variable without the "$" sign
-     *
      * @return true if the variable was successfully defined
      */
     public boolean declareVariable(final JXPathContext context, final String name) {

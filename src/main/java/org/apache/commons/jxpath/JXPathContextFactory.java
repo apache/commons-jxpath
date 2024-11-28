@@ -145,7 +145,6 @@ public abstract class JXPathContextFactory {
      * class in the specified order.
      * @param property    Property name
      * @param defaultFactory Default implementation, if nothing else is found
-     *
      * @return class name of the JXPathContextFactory
      */
     private static String findFactory(final String property, final String defaultFactory) {

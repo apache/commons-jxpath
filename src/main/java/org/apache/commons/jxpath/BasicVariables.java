@@ -34,7 +34,6 @@ public class BasicVariables implements Variables {
      * value of the variable is null.
      *
      * @param varName is a variable name without the "$" sign
-     *
      * @return true if the variable is declared
      */
     @Override
@@ -47,7 +46,6 @@ public class BasicVariables implements Variables {
      * otherwise, throws IllegalArgumentException
      *
      * @param varName is a variable name without the "$" sign
-     *
      * @return the value of the variable
      */
     @Override
