@@ -16,7 +16,6 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-
 /**
  * This bean is used to test infinite recursion protection in
  * descendant search contexts.

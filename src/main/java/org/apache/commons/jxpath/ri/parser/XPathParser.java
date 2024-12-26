@@ -462,9 +462,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 //}
 
 
-
 // See XPath Syntax (http://www.w3.org/TR/xpath )
-
 
 //void XPath() :
 //{}
@@ -472,7 +470,6 @@ import org.apache.commons.jxpath.ri.Compiler;
 //    LocationPath()
 //    <EOF>
 //}
-
 
 /* [1] LocationPath ::= RelativeLocationPath | AbsoluteLocationPath  */
   final public Object LocationPath() throws ParseException {
@@ -613,7 +610,6 @@ import org.apache.commons.jxpath.ri.Compiler;
 
 /* [3] RelativeLocationPath ::= Step | RelativeLocationPath '/' Step | AbbreviatedRelativeLocationPath */
 /* [11]    AbbreviatedRelativeLocationPath    ::=    RelativeLocationPath '//' Step  */
-
 
 /*--------------------*/
 /* 2.1 Location Steps */

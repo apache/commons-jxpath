@@ -48,5 +48,4 @@ public class BeanModelTest extends AbstractBeanModelTest {
             "/indexed[1]");
     }
 
-
 }

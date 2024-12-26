@@ -258,7 +258,6 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
         }
     }
 
-
     /**
      * Convert a value to the appropriate property type.
      * @param value to convert

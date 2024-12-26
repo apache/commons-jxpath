@@ -47,7 +47,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
         this.exception = null;
     }
 
-
     /**
      * Create a new {@code JXPathContextFactoryConfigurationError} with a
      * given {@code Exception} base cause of the error.
@@ -72,7 +71,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
         super(msg);
         this.exception = e;
     }
-
 
     /**
      * Gets the message (if any) for this error . If there is no

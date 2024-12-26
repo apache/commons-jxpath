@@ -26,7 +26,6 @@ import junit.framework.TestCase;
 public class ValueUtilsTest extends TestCase {
 
 
-
     public void testGetValueFromArrayTooSmall() {
         assertNull(ValueUtils.getValue(new Object[0], 2));
     }

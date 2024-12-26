@@ -16,7 +16,6 @@
  */
 package org.apache.commons.jxpath;
 
-
 /**
  * General purpose test bean for JUnit tests for the "jxpath" component.
  */

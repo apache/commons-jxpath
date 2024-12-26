@@ -18,7 +18,6 @@ package org.apache.commons.jxpath.ri;
 
 import java.io.Serializable;
 
-
 /**
  * A qualified name: a combination of an optional namespace prefix
  * and an local name.

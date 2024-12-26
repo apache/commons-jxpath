@@ -46,7 +46,6 @@ public class JXPathException extends RuntimeException {
         this.exception = null;
     }
 
-
     /**
      * Create a new {@code JXPathException} with a
      * given {@code Throwable} base cause of the error.
@@ -70,7 +69,6 @@ public class JXPathException extends RuntimeException {
         super(msg);
         this.exception = e;
     }
-
 
     /**
      * Gets the message (if any) for this error . If there is no

@@ -109,7 +109,6 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
             1);
     }
 
-
     public void testSetValue() {
         assertXPathSetValue(
             context,

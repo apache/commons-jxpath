@@ -279,7 +279,6 @@ public class ExtensionFunctionTest extends AbstractJXPathTest {
             "test:count(//strings)",
             Integer.valueOf(21));
 
-
         // The function receives a collection of pointers
         // and checks their type for testing purposes
         assertXPathValue(

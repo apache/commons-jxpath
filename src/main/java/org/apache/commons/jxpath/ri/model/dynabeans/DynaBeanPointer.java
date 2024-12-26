@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
-
 /**
  * A Pointer that points to a {@link DynaBean}.  If the target DynaBean is Serializable,
  * so should this instance be.

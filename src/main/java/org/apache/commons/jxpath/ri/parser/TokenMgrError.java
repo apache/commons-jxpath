@@ -164,10 +164,8 @@ public String getMessage() {
       character = curChar;
    }
 
-
    private int position;
    private char character;
-
 
    public int getPosition(){
     return position;

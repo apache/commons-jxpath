@@ -155,7 +155,6 @@ public class JXPathServletContextTest extends TestCase {
 
         assertSame("Request session", session, request.getSession());
 
-
         final JXPathContext context = JXPathServletContexts.getPageContext(pageContext);
         context.setLenient(true);
 
