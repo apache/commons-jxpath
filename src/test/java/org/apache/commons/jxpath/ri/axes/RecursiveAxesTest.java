@@ -18,6 +18,8 @@ package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test for the protection mechanism that stops infinite recursion
@@ -29,6 +31,7 @@ public class RecursiveAxesTest extends AbstractJXPathTest {
     private JXPathContext context;
 
     @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         bean = new RecursiveBean("zero");
         final RecursiveBean bean1 = new RecursiveBean("one");
@@ -42,6 +45,7 @@ public class RecursiveAxesTest extends AbstractJXPathTest {
         context = JXPathContext.newContext(null, bean);
     }
 
+    @Test
     public void testInfiniteDescent() {
         // Existing scalar property
         assertXPathPointer(

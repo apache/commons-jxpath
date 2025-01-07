@@ -23,9 +23,12 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.Variables;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class JXPath177Test extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public class JXPath177Test
 {
     Map model = new HashMap();
     {
@@ -36,17 +39,22 @@ public class JXPath177Test extends TestCase
         x.put("name", "X name");
     }
 
+    @Test
     public void testJx177()
     {
         doTest("name", "ROOT name");
         doTest("/x/name", "X name");
         doTest("$__root/x/name", "X name");
     }
+
+    @Test
     public void testJx177_Union1()
     {
         doTest("$__root/x/name|name", "X name");
 
     }
+
+    @Test
     public void testJx177_Union2()
     {
         doTest("$__root/x/unexisting|name", "ROOT name");

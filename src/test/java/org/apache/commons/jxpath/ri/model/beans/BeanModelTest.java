@@ -20,6 +20,7 @@ import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.TestBean;
 import org.apache.commons.jxpath.ri.model.AbstractBeanModelTest;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests JXPath with JavaBeans
@@ -37,6 +38,7 @@ public class BeanModelTest extends AbstractBeanModelTest {
         return new TestBeanFactory();
     }
 
+    @Test
     public void testIndexedProperty() {
         final JXPathContext context =
             JXPathContext.newContext(null, new TestIndexedPropertyBean());

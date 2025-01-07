@@ -21,6 +21,7 @@ import java.util.Collection;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test aliased/doubled XML namespace iteration; JXPATH-125.
@@ -48,10 +49,12 @@ public class AliasedNamespaceIterationTest extends AbstractJXPathTest {
         assertXPathPointerIterator(createContext(model), "/a:doc/a:elem", list("/a:doc[1]/a:elem[1]", "/a:doc[1]/a:elem[2]"));
     }
 
+    @Test
     public void testIterateDOM() {
         doTestIterate(DocumentContainer.MODEL_DOM);
     }
 
+    @Test
     public void testIterateJDOM() {
         doTestIterate(DocumentContainer.MODEL_JDOM);
     }

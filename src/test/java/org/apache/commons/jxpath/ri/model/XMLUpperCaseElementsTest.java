@@ -19,6 +19,9 @@ package org.apache.commons.jxpath.ri.model;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test for uppercase element matching, etc. showing JXPATH-136 is not reproducible.
@@ -37,24 +40,28 @@ public class XMLUpperCaseElementsTest extends AbstractJXPathTest {
 
     protected void doTest(final String id, final String model, final String expectedValue) {
         final JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
-        assertEquals(context.getValue("test/text[@id='" + id + "']"), expectedValue);
+        assertEquals(expectedValue, context.getValue("test/text[@id='" + id + "']"));
     }
 
+    @Test
     public void testBasicGetDOM() {
         assertXPathValue(createContext(DocumentContainer.MODEL_DOM), "/Vendor[1]/Contact[1]",
                 "John");
     }
 
+    @Test
     public void testBasicGetJDOM() {
         assertXPathValue(createContext(DocumentContainer.MODEL_JDOM), "/Vendor[1]/Contact[1]",
                 "John");
     }
 
+    @Test
     public void testBasicIterateDOM() {
         assertXPathValueIterator(createContext(DocumentContainer.MODEL_DOM), "/Vendor/Contact",
                 list("John", "Jack", "Jim", "Jack Black"));
     }
 
+    @Test
     public void testBasicIterateJDOM() {
         assertXPathValueIterator(createContext(DocumentContainer.MODEL_JDOM), "/Vendor/Contact",
                 list("John", "Jack", "Jim", "Jack Black"));

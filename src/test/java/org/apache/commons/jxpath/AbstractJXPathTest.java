@@ -26,18 +26,24 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.junit.jupiter.api.BeforeEach;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Abstract superclass for various JXPath tests.
  */
-public abstract class AbstractJXPathTest extends TestCase {
+public abstract class AbstractJXPathTest {
 
     /**
      * Constructs a new instance of this test case.
+     *
+     * @throws Exception In case of errors during setup
      */
-    public AbstractJXPathTest() {
+    @BeforeEach
+    protected void setUp() throws Exception
+    {
         Locale.setDefault(Locale.US);
     }
 
@@ -46,7 +52,7 @@ public abstract class AbstractJXPathTest extends TestCase {
     {
         ctx.setLenient(false);
         final Object actual = ctx.getValue(xpath);
-        assertEquals("Evaluating <" + xpath + ">", expected, actual);
+        assertEquals(expected, actual, "Evaluating <" + xpath + ">");
     }
 
     protected void assertXPathValue(final JXPathContext ctx,
@@ -54,7 +60,7 @@ public abstract class AbstractJXPathTest extends TestCase {
     {
         ctx.setLenient(false);
         final Object actual = ctx.getValue(xpath, resultType);
-        assertEquals("Evaluating <" + xpath + ">", expected, actual);
+        assertEquals(expected, actual, "Evaluating <" + xpath + ">");
     }
 
     protected void assertXPathValueLenient(final JXPathContext ctx,
@@ -63,7 +69,7 @@ public abstract class AbstractJXPathTest extends TestCase {
         ctx.setLenient(true);
         final Object actual = ctx.getValue(xpath);
         ctx.setLenient(false);
-        assertEquals("Evaluating lenient <" + xpath + ">", expected, actual);
+        assertEquals(expected, actual, "Evaluating lenient <" + xpath + ">");
     }
 
     protected void assertXPathSetValue(final JXPathContext ctx,
@@ -77,7 +83,7 @@ public abstract class AbstractJXPathTest extends TestCase {
     {
         ctx.setValue(xpath, value);
         final Object actual = ctx.getValue(xpath);
-        assertEquals("Modifying <" + xpath + ">", expected, actual);
+        assertEquals(expected, actual, "Modifying <" + xpath + ">");
     }
 
     protected void assertXPathCreatePath(final JXPathContext ctx,
@@ -85,14 +91,14 @@ public abstract class AbstractJXPathTest extends TestCase {
                 final Object expectedValue, final String expectedPath)
     {
         final Pointer pointer = ctx.createPath(xpath);
-        assertEquals("Creating path <" + xpath + ">",
-                expectedPath, pointer.asPath());
+        assertEquals(expectedPath, pointer.asPath(),
+                "Creating path <" + xpath + ">");
 
-        assertEquals("Creating path (pointer value) <" + xpath + ">",
-                expectedValue, pointer.getValue());
+        assertEquals(expectedValue, pointer.getValue(),
+                "Creating path (pointer value) <" + xpath + ">");
 
-        assertEquals("Creating path (context value) <" + xpath + ">",
-                expectedValue, ctx.getValue(pointer.asPath()));
+        assertEquals(expectedValue, ctx.getValue(pointer.asPath()),
+                "Creating path (context value) <" + xpath + ">");
     }
 
     protected void assertXPathCreatePathAndSetValue(final JXPathContext ctx,
@@ -100,14 +106,14 @@ public abstract class AbstractJXPathTest extends TestCase {
                 final String expectedPath)
     {
         final Pointer pointer = ctx.createPathAndSetValue(xpath, value);
-        assertEquals("Creating path <" + xpath + ">",
-                expectedPath, pointer.asPath());
+        assertEquals(expectedPath, pointer.asPath(),
+                "Creating path <" + xpath + ">");
 
-        assertEquals("Creating path (pointer value) <" + xpath + ">",
-                value, pointer.getValue());
+        assertEquals(value, pointer.getValue(),
+                "Creating path (pointer value) <" + xpath + ">");
 
-        assertEquals("Creating path (context value) <" + xpath + ">",
-                value, ctx.getValue(pointer.asPath()));
+        assertEquals(value, ctx.getValue(pointer.asPath()),
+                "Creating path (context value) <" + xpath + ">");
     }
 
     protected void assertXPathPointer(final JXPathContext ctx,
@@ -116,7 +122,7 @@ public abstract class AbstractJXPathTest extends TestCase {
         ctx.setLenient(false);
         final Pointer pointer = ctx.getPointer(xpath);
         final String actual = pointer.toString();
-        assertEquals("Evaluating pointer <" + xpath + ">", expected, actual);
+        assertEquals(expected, actual, "Evaluating pointer <" + xpath + ">");
     }
 
     protected void assertXPathPointerLenient(final JXPathContext ctx,
@@ -125,7 +131,7 @@ public abstract class AbstractJXPathTest extends TestCase {
         ctx.setLenient(true);
         final Pointer pointer = ctx.getPointer(xpath);
         final String actual = pointer.toString();
-        assertEquals("Evaluating pointer <" + xpath + ">", expected, actual);
+        assertEquals(expected, actual, "Evaluating pointer <" + xpath + ">");
     }
 
     protected void assertXPathValueAndPointer(final JXPathContext ctx,
@@ -148,10 +154,12 @@ public abstract class AbstractJXPathTest extends TestCase {
         while (it.hasNext()) {
             actual.add(it.next());
         }
-        assertEquals(String.format("[hashCode()] Evaluating value iterator <%s>, expected.class %s(%,d): %s, actual.class %s(%,d): %s", xpath,
-                expected.getClass(), expected.size(), expected, actual.getClass(), actual.size(), actual), expected.hashCode(), actual.hashCode());
-        assertEquals(String.format("[equals()] Evaluating value iterator <%s>, expected.class %s(%,d): %s, actual.class %s(%,d): %s", xpath,
-                expected.getClass(), expected.size(), expected, actual.getClass(), actual.size(), actual), expected, actual);
+        assertEquals(expected.hashCode(), actual.hashCode(),
+                String.format("[hashCode()] Evaluating value iterator <%s>, expected.class %s(%,d): %s, actual.class %s(%,d): %s", xpath,
+                        expected.getClass(), expected.size(), expected, actual.getClass(), actual.size(), actual));
+        assertEquals(expected, actual,
+                String.format("[equals()] Evaluating value iterator <%s>, expected.class %s(%,d): %s, actual.class %s(%,d): %s", xpath,
+                        expected.getClass(), expected.size(), expected, actual.getClass(), actual.size(), actual));
     }
 
     protected void assertXPathPointerIterator(
@@ -172,9 +180,9 @@ public abstract class AbstractJXPathTest extends TestCase {
             actual.add(pointer.toString());
         }
         assertEquals(
-            "Evaluating pointer iterator <" + xpath + ">",
             expected,
-            actual);
+            actual,
+            "Evaluating pointer iterator <" + xpath + ">");
     }
 
     protected void assertDocumentOrder(
@@ -193,9 +201,9 @@ public abstract class AbstractJXPathTest extends TestCase {
             res = 1;
         }
         assertEquals(
-            "Comparing paths '" + path1 + "' and '" + path2 + "'",
             expected,
-            res);
+            res,
+            "Comparing paths '" + path1 + "' and '" + path2 + "'");
     }
 
     protected void assertXPathValueType(
@@ -205,8 +213,7 @@ public abstract class AbstractJXPathTest extends TestCase {
     {
         ctx.setLenient(false);
         final Object actual = ctx.getValue(xpath);
-        assertTrue("Evaluating <" + xpath + "> = " + actual.getClass(),
-                clazz.isAssignableFrom(actual.getClass()));
+        assertTrue(clazz.isAssignableFrom(actual.getClass()), "Evaluating <" + xpath + "> = " + actual.getClass());
     }
 
     protected void assertXPathNodeType(
@@ -216,8 +223,8 @@ public abstract class AbstractJXPathTest extends TestCase {
     {
         ctx.setLenient(false);
         final Pointer actual = ctx.getPointer(xpath);
-        assertTrue("Evaluating <" + xpath + "> = " + actual.getNode().getClass(),
-                clazz.isAssignableFrom(actual.getNode().getClass()));
+        assertTrue(clazz.isAssignableFrom(actual.getNode().getClass()),
+                "Evaluating <" + xpath + "> = " + actual.getNode().getClass());
     }
 
     protected static List list() {

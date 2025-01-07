@@ -21,17 +21,22 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
 public class LazyDynaBeanTest extends AbstractJXPathTest {
 
+    @Test
     public void testLazyProperty() throws JXPathNotFoundException {
         final LazyDynaBean bean = new LazyDynaBean();
         final JXPathContext context = JXPathContext.newContext(bean);
         context.getValue("nosuch");
     }
 
+    @Test
     public void testStrictLazyDynaBeanPropertyFactory() {
         final StrictLazyDynaBeanPointerFactory factory = new StrictLazyDynaBeanPointerFactory();
         JXPathContextReferenceImpl.addNodePointerFactory(factory);

@@ -20,6 +20,7 @@ import java.util.Collections;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.junit.jupiter.api.Test;
 
 /**
  * Be sure empty lists/sets/arrays work.
@@ -40,30 +41,36 @@ public class EmptyCollectionTest extends AbstractJXPathTest {
         }
     }
 
+    @Test
     public void testEmptyList() {
         assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_LIST), "/*",
                 Collections.EMPTY_LIST);
     }
 
+    @Test
     public void testEmptyArray() {
         assertXPathPointerIterator(JXPathContext.newContext(new Object[0]), "/*", list());
     }
 
+    @Test
     public void testEmptySet() {
         assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_SET), "/*",
                 Collections.EMPTY_SET);
     }
 
+    @Test
     public void testEmptyChildList() {
         assertXPathPointerIterator(JXPathContext.newContext(new HasChild(Collections.EMPTY_LIST)),
                 "/child/*", Collections.EMPTY_LIST);
     }
 
+    @Test
     public void testEmptyChildArray() {
         assertXPathPointerIterator(JXPathContext.newContext(new HasChild(new Object[0])),
                 "/child/*", list());
     }
 
+    @Test
     public void testEmptyChildSet() {
         assertXPathPointerIterator(JXPathContext.newContext(new HasChild(Collections.EMPTY_SET)),
                 "/child/*", Collections.EMPTY_SET);

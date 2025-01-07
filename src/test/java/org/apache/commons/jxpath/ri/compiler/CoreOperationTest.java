@@ -19,6 +19,8 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.Variables;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test basic functionality of JXPath - infoset types,
@@ -28,6 +30,7 @@ public class CoreOperationTest extends AbstractJXPathTest {
     private JXPathContext context;
 
     @Override
+    @BeforeEach
     public void setUp() {
         if (context == null) {
             context = JXPathContext.newContext(null);
@@ -38,6 +41,7 @@ public class CoreOperationTest extends AbstractJXPathTest {
         }
     }
 
+    @Test
     public void testInfoSetTypes() {
 
         // Numbers
@@ -85,6 +89,7 @@ public class CoreOperationTest extends AbstractJXPathTest {
         assertXPathValue(context, "'true'", Boolean.TRUE, Boolean.class);
     }
 
+    @Test
     public void testNodeSetOperations() {
         assertXPathValue(context, "$array > 0", Boolean.TRUE, Boolean.class);
         assertXPathValue(context, "$array >= 0", Boolean.TRUE, Boolean.class);
@@ -100,6 +105,7 @@ public class CoreOperationTest extends AbstractJXPathTest {
         assertXPathValue(context, "$array < 0", Boolean.FALSE, Boolean.class);
     }
 
+    @Test
     public void testEmptyNodeSetOperations() {
         assertXPathValue(context, "/idonotexist = 0", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "/idonotexist != 0", Boolean.FALSE, Boolean.class);
@@ -115,6 +121,7 @@ public class CoreOperationTest extends AbstractJXPathTest {
         assertXPathValue(context, "$array[position() < 1] <= 0", Boolean.FALSE, Boolean.class);
     }
 
+    @Test
     public void testNan() {
         assertXPathValue(context, "$nan > $nan", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan < $nan", Boolean.FALSE, Boolean.class);
