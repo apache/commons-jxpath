@@ -20,11 +20,14 @@ import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.ri.model.AbstractXMLModelTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /**
  * Tests JXPath with DOM
@@ -42,6 +45,7 @@ public class DOMModelTest extends AbstractXMLModelTest {
         return new TestDOMFactory();
     }
 
+    @Test
     public void testGetNode() {
         assertXPathNodeType(context, "/", Document.class);
         assertXPathNodeType(context, "/vendor/location", Element.class);
@@ -49,9 +53,10 @@ public class DOMModelTest extends AbstractXMLModelTest {
         assertXPathNodeType(context, "//vendor", Element.class);
     }
 
+    @Test
     public void testGetElementDescendantOrSelf() {
         final JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
-        assertTrue(childContext.getContextBean() instanceof Element);
+        assertInstanceOf(Element.class, childContext.getContextBean());
         assertXPathNodeType(childContext, "//vendor", Element.class);
     }
 

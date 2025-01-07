@@ -19,6 +19,9 @@ package org.apache.commons.jxpath.ri.model;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test for text trimming from JXPATH-83.
@@ -40,45 +43,55 @@ public class XMLPreserveSpaceTest extends AbstractJXPathTest {
     protected void doTest(final String id, final String model, final String expectedValue) {
         final JXPathContext context = JXPathContext
                 .newContext(createDocumentContainer(model));
-        assertEquals(context.getValue("test/text[@id='" + id + "']"), expectedValue);
+        assertEquals(expectedValue, context.getValue("test/text[@id='" + id + "']"));
     }
 
+    @Test
     public void testUnspecifiedDOM() {
         doTest("unspecified", DocumentContainer.MODEL_DOM, " foo ");
     }
 
+    @Test
     public void testDefaultDOM() {
         doTest("default", DocumentContainer.MODEL_DOM, "foo");
     }
 
+    @Test
     public void testPreserveDOM() {
         doTest("preserve", DocumentContainer.MODEL_DOM, " foo ");
     }
 
+    @Test
     public void testNestedDOM() {
         doTest("nested", DocumentContainer.MODEL_DOM, " foo ;bar; baz ");
     }
 
+    @Test
     public void testNestedWithCommentsDOM() {
         doTest("nested-with-comments", DocumentContainer.MODEL_DOM, " foo ;bar; baz ");
     }
 
+    @Test
     public void testUnspecifiedJDOM() {
         doTest("unspecified", DocumentContainer.MODEL_JDOM, " foo ");
     }
 
+    @Test
     public void testDefaultJDOM() {
         doTest("default", DocumentContainer.MODEL_JDOM, "foo");
     }
 
+    @Test
     public void testPreserveJDOM() {
         doTest("preserve", DocumentContainer.MODEL_JDOM, " foo ");
     }
 
+    @Test
     public void testNestedJDOM() {
         doTest("nested", DocumentContainer.MODEL_JDOM, " foo ;bar; baz ");
     }
 
+    @Test
     public void testNestedWithCommentsJDOM() {
         doTest("nested-with-comments", DocumentContainer.MODEL_JDOM, " foo ;bar; baz ");
     }

@@ -19,7 +19,11 @@ package org.apache.commons.jxpath;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test BasicNodeSet
@@ -33,6 +37,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
     protected BasicNodeSet nodeSet;
 
     @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         super.setUp();
         context = JXPathContext.newContext(new TestMixedModelBean());
@@ -75,10 +80,12 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
     /**
      * Test adding pointers.
      */
+    @Test
     public void testAdd() {
         addPointers("/bean/integers");
-        assertEquals(nodeSet.getPointers().toString(), list("/bean/integers[1]",
-                "/bean/integers[2]", "/bean/integers[3]", "/bean/integers[4]").toString());
+        assertEquals(list("/bean/integers[1]",
+                "/bean/integers[2]", "/bean/integers[3]", "/bean/integers[4]").toString(),
+                nodeSet.getPointers().toString());
         assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3),
                 Integer.valueOf(4)), nodeSet.getValues());
         assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3),
@@ -88,6 +95,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
     /**
      * Test removing a pointer.
      */
+    @Test
     public void testRemove() {
         addPointers("/bean/integers");
         removePointers("/bean/integers[4]");
@@ -102,6 +110,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
     /**
      * Demonstrate when nodes != values:  in XML models.
      */
+    @Test
     public void testNodes() {
         addPointers("/document/vendor/contact");
         assertEquals(list("/document/vendor[1]/contact[1]",

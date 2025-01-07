@@ -20,6 +20,9 @@ package org.apache.commons.jxpath.ri.model;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JXPath154Test extends AbstractJXPathTest {
 
@@ -34,10 +37,12 @@ public class JXPath154Test extends AbstractJXPathTest {
         assertEquals(expectedValue, context.getPointer(path).asPath());
     }
 
+    @Test
     public void testInnerEmptyNamespaceDOM() {
         doTest("b:foo/test", DocumentContainer.MODEL_DOM, "/b:foo[1]/test[1]");
     }
 
+    @Test
     public void testInnerEmptyNamespaceJDOM() {
         doTest("b:foo/test", DocumentContainer.MODEL_JDOM, "/b:foo[1]/test[1]");
     }

@@ -18,12 +18,15 @@ package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.JXPathContext;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test thread safety.
  */
-public class StressTest extends TestCase {
+public class StressTest {
 
     private static final int THREAD_COUNT = 50;
     private static final int THREAD_DURATION = 1000;
@@ -31,6 +34,7 @@ public class StressTest extends TestCase {
     private static int count;
     private static Throwable exception;
 
+    @Test
     public void testThreads() throws Throwable {
         context = JXPathContext.newContext(null, Double.valueOf(100));
         final Thread[] threadArray = new Thread[THREAD_COUNT];
@@ -47,14 +51,14 @@ public class StressTest extends TestCase {
                 element.join();
             }
             catch (final InterruptedException e) {
-                assertTrue("Interrupted", false);
+                fail("Interrupted");
             }
         }
 
         if (exception != null) {
             throw exception;
         }
-        assertEquals("Test count", THREAD_COUNT * THREAD_DURATION, count);
+        assertEquals(THREAD_COUNT * THREAD_DURATION, count, "Test count");
     }
 
     private static final class StressRunnable implements Runnable {
@@ -66,7 +70,7 @@ public class StressTest extends TestCase {
                     final double sum =
                         ((Double) context.getValue("/ + " + random))
                             .doubleValue();
-                    assertEquals(100 + random, sum, 0.0001);
+                    assertEquals(0.0001, sum, 100 + random);
                     synchronized (context) {
                         count++;
                     }

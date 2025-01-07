@@ -27,6 +27,10 @@ import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Text;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /**
  * Tests JXPath with JDOM
@@ -38,6 +42,7 @@ public class JDOMModelTest extends AbstractXMLModelTest {
         return DocumentContainer.MODEL_JDOM;
     }
 
+    @Test
     public void testGetNode() {
         assertXPathNodeType(context, "/", Document.class);
         assertXPathNodeType(context, "/vendor/location", Element.class);
@@ -45,13 +50,16 @@ public class JDOMModelTest extends AbstractXMLModelTest {
         assertXPathNodeType(context, "//vendor", Element.class); //bugzilla #38586
     }
 
+    @Test
     public void testGetElementDescendantOrSelf() {
         final JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
-        assertTrue(childContext.getContextBean() instanceof Element);
+        assertInstanceOf(Element.class, childContext.getContextBean());
         assertXPathNodeType(childContext, "//vendor", Element.class);
     }
 
     @Override
+    @Test
+    @Disabled("id() is not supported by JDOM")
     public void testID() {
         // id() is not supported by JDOM
     }

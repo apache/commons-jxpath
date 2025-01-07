@@ -24,12 +24,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 public class JXPath113Test extends AbstractJXPathTest
 {
 
+    @Test
     public void testIssue113() throws Exception
     {
         final Document doc = JAXP.getDocument("<xml/>");

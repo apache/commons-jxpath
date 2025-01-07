@@ -21,15 +21,19 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class ValueUtilsTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+public class ValueUtilsTest {
 
+    @Test
     public void testGetValueFromArrayTooSmall() {
         assertNull(ValueUtils.getValue(new Object[0], 2));
     }
 
+    @Test
     public void testGetValueFromListTooSmall() {
         assertNull(ValueUtils.getValue(Collections.EMPTY_LIST, 2));
     }
@@ -38,20 +42,24 @@ public class ValueUtilsTest extends TestCase {
      * This test would break without the patch and an NoSuchElementException being
      * thrown instead.
      */
+    @Test
     public void testGetValueFromSetTooSmall() {
         assertNull(ValueUtils.getValue(Collections.EMPTY_SET, 2));
     }
 
+    @Test
     public void testGetValueFromArray() {
         final Object data = new Object();
         assertSame(data, ValueUtils.getValue(new Object[] {data}, 0));
     }
 
+    @Test
     public void testGetValueFromList() {
         final Object data = new Object();
         assertSame(data, ValueUtils.getValue(Arrays.asList(data), 0));
     }
 
+    @Test
     public void testGetValueFromSet() {
         final Object data = new Object();
         final Set dataSet = new HashSet();
@@ -59,17 +67,20 @@ public class ValueUtilsTest extends TestCase {
         assertSame(data, ValueUtils.getValue(dataSet, 0));
     }
 
+    @Test
     public void testGetValueFromArrayNegativeIndex() {
         final Object data = new Object();
         assertNull(ValueUtils.getValue(new Object[] {data}, -1));
     }
 
+    @Test
     public void testGetValueFromListNegativeIndex() {
         final Object data = new Object();
         final Object res = ValueUtils.getValue(Arrays.asList(data), -1);
-        assertNull("Expected null, is " + res, res);
+        assertNull(res, "Expected null, is " + res);
     }
 
+    @Test
     public void testGetValueFromSetNegativeIndex() {
         final Object data = new Object();
         final Set dataSet = new HashSet();

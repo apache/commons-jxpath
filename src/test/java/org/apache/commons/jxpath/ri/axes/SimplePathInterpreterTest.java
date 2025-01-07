@@ -35,14 +35,19 @@ import org.apache.commons.jxpath.ri.model.dom.DOMNodePointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class SimplePathInterpreterTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public class SimplePathInterpreterTest  {
 
     private TestBeanWithNode bean;
     private JXPathContext context;
 
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         bean = TestBeanWithNode.createTestBeanWithDOM();
         final HashMap submap = new HashMap();
@@ -66,6 +71,7 @@ public class SimplePathInterpreterTest extends TestCase {
         context.setFactory(new TestBeanFactory());
     }
 
+    @Test
     public void testDoStepNoPredicatesPropertyOwner() {
         // Existing scalar property
         assertValueAndPointer("/int",
@@ -157,6 +163,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbC");
     }
 
+    @Test
     public void testDoStepNoPredicatesStandard() {
         // Existing DOM node
         assertValueAndPointer("/vendor/location/address/city",
@@ -180,6 +187,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbMMMMn");
     }
 
+    @Test
     public void testDoStepPredicatesPropertyOwner() {
         // missingProperty[@name=foo]
         assertNullPointer("/foo[@name='foo']",
@@ -192,6 +200,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "Bn");
     }
 
+    @Test
     public void testDoStepPredicatesStandard() {
         // Looking for an actual XML attribute called "name"
         // nodeProperty/name[@name=value]
@@ -224,6 +233,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbMM");
     }
 
+    @Test
     public void testDoPredicateName() {
         // existingProperty[@name=existingProperty]
         assertValueAndPointer("/nestedBean[@name='int']",
@@ -360,6 +370,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbDdM");
     }
 
+    @Test
     public void testDoPredicatesStandard() {
         // bean/map/collection/node
         assertValueAndPointer("map[@name='Key3'][@name='fruitco']",
@@ -401,6 +412,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbMM");
     }
 
+    @Test
     public void testDoPredicateIndex() {
         // Existing dynamic property + existing property + index
         assertValueAndPointer("/map[@name='Key2'][@name='strings'][2]",
@@ -547,6 +559,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbB");
     }
 
+    @Test
     public void testInterpretExpressionPath() {
         context.getVariables().declareVariable("array", new String[]{"Value1"});
         context.getVariables().declareVariable("testnull", new TestNull());
@@ -573,36 +586,36 @@ public class SimplePathInterpreterTest extends TestCase {
             final String expectedSignature, final String expectedValueSignature)
     {
         final Object value = context.getValue(path);
-        assertEquals("Checking value: " + path, expectedValue, value);
+        assertEquals(expectedValue, value, "Checking value: " + path);
 
         final Pointer pointer = context.getPointer(path);
-        assertEquals("Checking pointer: " + path,
-                expectedPath, pointer.toString());
+        assertEquals(expectedPath, pointer.toString(),
+                "Checking pointer: " + path);
 
-        assertEquals("Checking signature: " + path,
-                expectedSignature, pointerSignature(pointer));
+        assertEquals(expectedSignature, pointerSignature(pointer),
+                "Checking signature: " + path);
 
         final Pointer vPointer = ((NodePointer) pointer).getValuePointer();
-        assertEquals("Checking value pointer signature: " + path,
-                expectedValueSignature, pointerSignature(vPointer));
+        assertEquals(expectedValueSignature, pointerSignature(vPointer),
+                "Checking value pointer signature: " + path);
     }
 
     private void assertNullPointer(final String path, final String expectedPath,
             final String expectedSignature)
     {
         final Pointer pointer = context.getPointer(path);
-        assertNotNull("Null path exists: " + path,
-                    pointer);
-        assertEquals("Null path as path: " + path,
-                    expectedPath, pointer.asPath());
-        assertEquals("Checking Signature: " + path,
-                    expectedSignature, pointerSignature(pointer));
+        assertNotNull(pointer,
+                "Null path exists: " + path);
+        assertEquals(expectedPath, pointer.asPath(),
+                "Null path as path: " + path);
+        assertEquals(expectedSignature, pointerSignature(pointer),
+                "Checking Signature: " + path);
 
         final Pointer vPointer = ((NodePointer) pointer).getValuePointer();
-        assertTrue("Null path is null: " + path,
-                    !((NodePointer) vPointer).isActual());
-        assertEquals("Checking value pointer signature: " + path,
-                    expectedSignature + "N", pointerSignature(vPointer));
+        assertFalse(((NodePointer) vPointer).isActual(),
+                "Null path is null: " + path);
+        assertEquals(expectedSignature + "N", pointerSignature(vPointer),
+                "Checking value pointer signature: " + path);
     }
 
     /**

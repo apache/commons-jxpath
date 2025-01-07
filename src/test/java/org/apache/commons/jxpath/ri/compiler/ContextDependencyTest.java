@@ -18,12 +18,16 @@ package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ri.Parser;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests the determination of whether an expression is context dependent.
  */
 public class ContextDependencyTest extends AbstractJXPathTest {
 
+    @Test
     public void testContextDependency() {
         testContextDependency("1", false);
         testContextDependency("$x", false);
@@ -40,6 +44,6 @@ public class ContextDependencyTest extends AbstractJXPathTest {
     public void testContextDependency(final String xpath, final boolean expected) {
         final Expression expr = (Expression) Parser.parseExpression(xpath, new TreeCompiler());
 
-        assertEquals("Context dependency <" + xpath + ">", expected, expr.isContextDependent());
+        assertEquals(expected, expr.isContextDependent(), "Context dependency <" + xpath + ">");
     }
 }

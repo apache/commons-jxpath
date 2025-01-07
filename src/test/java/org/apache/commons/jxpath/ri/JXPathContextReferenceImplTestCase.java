@@ -19,13 +19,14 @@ package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class JXPathContextReferenceImplTestCase extends TestCase {
+public class JXPathContextReferenceImplTestCase {
 
     /**
      * https://issues.apache.org/jira/browse/JXPATH-166
      */
+    @Test
     public void testInit() {
         final ContainerPointerFactory factory = new ContainerPointerFactory();
         try {

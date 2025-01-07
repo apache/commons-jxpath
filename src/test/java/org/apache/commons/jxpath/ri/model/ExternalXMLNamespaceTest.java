@@ -19,6 +19,7 @@ package org.apache.commons.jxpath.ri.model;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test externally registered XML namespaces; JXPATH-97.
@@ -59,14 +60,17 @@ public class ExternalXMLNamespaceTest extends AbstractJXPathTest {
                 "/ElementA/@A:newAttr", "newValue", "/ElementA[1]/@A:newAttr");
     }
 
+    @Test
     public void testAttributeDOM() {
         doTestAttribute(DocumentContainer.MODEL_DOM);
     }
 
+    @Test
     public void testElementDOM() {
         doTestElement(DocumentContainer.MODEL_DOM);
     }
 
+    @Test
     public void testCreateAndSetAttributeDOM() {
         doTestCreateAndSetAttribute(DocumentContainer.MODEL_DOM);
     }

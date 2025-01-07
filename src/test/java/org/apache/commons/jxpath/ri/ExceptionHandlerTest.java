@@ -18,6 +18,10 @@ package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test simple ExceptionHandler.
@@ -33,6 +37,7 @@ public class ExceptionHandlerTest extends AbstractJXPathTest {
     private final Bar bar = new Bar();
 
     @Override
+    @BeforeEach
     public void setUp() throws Exception {
         context = JXPathContext.newContext(this);
         context.setExceptionHandler((t, ptr) -> {
@@ -50,6 +55,7 @@ public class ExceptionHandlerTest extends AbstractJXPathTest {
         throw new IllegalStateException("foo unavailable");
     }
 
+    @Test
     public void testHandleFoo() throws Exception {
         try {
             context.getValue("foo");
@@ -65,6 +71,7 @@ public class ExceptionHandlerTest extends AbstractJXPathTest {
         }
     }
 
+    @Test
     public void testHandleBarBaz() throws Exception {
         try {
             context.getValue("bar/baz");

@@ -23,25 +23,23 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.BeanPropertyPointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer;
 
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class JXPath172Test extends AbstractJXPathTest
 {
 
-    /**
-     * Return the tests included in this test suite.
-     */
-    public static TestSuite suite()
-    {
-        return new TestSuite(JXPath172Test.class);
-    }
-
+    @Test
     public void testIssue172_propertyExistAndIsNotNull()
     {
         final JXPathContext context = getContext("ciao", false);
         final Object bRet = context.selectSingleNode("value");
-        assertNotNull("null!!", bRet);
-        assertEquals("Is " + bRet.getClass(), "ciao", bRet);
+        assertNotNull(bRet, "null!!");
+        assertEquals("ciao", bRet, "Is " + bRet.getClass());
 
         final Pointer pointer = context.getPointer("value");
         assertNotNull(pointer);
@@ -49,11 +47,12 @@ public class JXPath172Test extends AbstractJXPathTest
         assertEquals("ciao", pointer.getValue());
     }
 
+    @Test
     public void testIssue172_propertyExistAndIsNull()
     {
         final JXPathContext context = getContext(null, false);
         final Object bRet = context.selectSingleNode("value");
-        assertNull("not null!!", bRet);
+        assertNull(bRet, "not null!!");
 
         final Pointer pointer = context.getPointer("value");
         assertNotNull(pointer);
@@ -61,11 +60,12 @@ public class JXPath172Test extends AbstractJXPathTest
         assertNull(pointer.getValue());
     }
 
+    @Test
     public void testIssue172_PropertyUnexisting()
     {
         final JXPathContext context = getContext(null, true);
         final Object bRet = context.selectSingleNode("unexisting");
-        assertNull("not null!!", bRet);
+        assertNull(bRet, "not null!!");
 
         final Pointer pointer = context.getPointer("unexisting");
         assertNotNull(pointer);
@@ -73,11 +73,12 @@ public class JXPath172Test extends AbstractJXPathTest
         assertNull(pointer.getValue());
     }
 
+    @Test
     public void testIssue172_NestedPropertyUnexisting()
     {
         final JXPathContext context = getContext(null, true);
         final Object bRet = context.selectSingleNode("value.child");
-        assertNull("not null!!", bRet);
+        assertNull(bRet, "not null!!");
 
         final Pointer pointer = context.getPointer("value.child");
         assertNotNull(pointer);
@@ -85,13 +86,14 @@ public class JXPath172Test extends AbstractJXPathTest
         assertNull(pointer.getValue());
     }
 
+    @Test
     public void testIssue172_propertyDoesNotExist_NotLenient()
     {
         final JXPathContext context = getContext(null, false);
         try
         {
             final Object bRet = context.selectSingleNode("unexisting");
-            fail(" " + bRet);
+            fail("" + bRet);
         }
         catch (final JXPathNotFoundException e)
         {
