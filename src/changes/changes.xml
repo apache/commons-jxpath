@@ -104,6 +104,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Add generics to JXPathContext.iterate(String).</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Add generics to JXPathContext.iteratePointers(String).</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Add generics to JXPathContext.decimalFormats.</action>
+      <action dev="ggregory" type="fix" due-to="strangelookingnerd">Migrate tests to JUnit5 #214.</action>
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).
