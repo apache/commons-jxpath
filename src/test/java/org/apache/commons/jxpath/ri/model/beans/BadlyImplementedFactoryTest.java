@@ -29,7 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Badly-implemented Factory test.  From JIRA JXPATH-68.
@@ -52,12 +52,9 @@ public class BadlyImplementedFactoryTest {
 
     @Test
     public void testBadFactoryImplementation() {
-        try {
-            context.createPath("foo/bar");
-            fail("should fail with JXPathException caused by JXPathAbstractFactoryException");
-        } catch (final JXPathException e) {
-            assertInstanceOf(JXPathAbstractFactoryException.class, e.getCause());
-        }
+        JXPathException e = assertThrows(JXPathException.class, () -> context.createPath("foo/bar"),
+            "should fail with JXPathException caused by JXPathAbstractFactoryException");
+        assertInstanceOf(JXPathAbstractFactoryException.class, e.getCause());
     }
 
 }

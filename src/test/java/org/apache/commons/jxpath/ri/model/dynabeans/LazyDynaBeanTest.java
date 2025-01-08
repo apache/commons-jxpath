@@ -23,7 +23,7 @@ import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  */
@@ -40,15 +40,10 @@ public class LazyDynaBeanTest extends AbstractJXPathTest {
     public void testStrictLazyDynaBeanPropertyFactory() {
         final StrictLazyDynaBeanPointerFactory factory = new StrictLazyDynaBeanPointerFactory();
         JXPathContextReferenceImpl.addNodePointerFactory(factory);
-        try {
-            testLazyProperty();
-            fail();
-        } catch (final JXPathNotFoundException e) {
-            // okay
-        } finally {
-            while (JXPathContextReferenceImpl.removeNodePointerFactory(factory)) {
+        assertThrows(JXPathNotFoundException.class, this::testLazyProperty);
 
-            }
+        while (JXPathContextReferenceImpl.removeNodePointerFactory(factory)) {
+            // NOP
         }
     }
 }

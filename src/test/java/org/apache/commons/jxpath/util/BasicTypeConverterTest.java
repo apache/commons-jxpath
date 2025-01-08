@@ -30,6 +30,7 @@ import org.apache.commons.jxpath.Pointer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -73,14 +74,8 @@ public class BasicTypeConverterTest {
 
     @Test
     public void testInvalidConversion() {
-        boolean exception = false;
-        try {
-            TypeUtils.convert("'foo'", Date.class);
-        }
-        catch (final Throwable ex) {
-            exception = true;
-        }
-        assertTrue(exception, "Type conversion exception");
+        assertThrows(Exception.class, () -> TypeUtils.convert("'foo'", Date.class),
+            "Type conversion exception");
     }
 
     public void assertConversion(final Object from, final Class toType, final Object expected) {

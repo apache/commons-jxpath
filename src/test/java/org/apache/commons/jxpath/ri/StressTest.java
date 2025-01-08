@@ -20,8 +20,8 @@ import org.apache.commons.jxpath.JXPathContext;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test thread safety.
@@ -32,7 +32,6 @@ public class StressTest {
     private static final int THREAD_DURATION = 1000;
     private static JXPathContext context;
     private static int count;
-    private static Throwable exception;
 
     @Test
     public void testThreads() throws Throwable {
@@ -47,16 +46,7 @@ public class StressTest {
         }
 
         for (final Thread element : threadArray) {
-            try {
-                element.join();
-            }
-            catch (final InterruptedException e) {
-                fail("Interrupted");
-            }
-        }
-
-        if (exception != null) {
-            throw exception;
+            assertDoesNotThrow(() -> element.join(), "Interrupted");
         }
         assertEquals(THREAD_COUNT * THREAD_DURATION, count, "Test count");
     }
@@ -64,8 +54,8 @@ public class StressTest {
     private static final class StressRunnable implements Runnable {
         @Override
         public void run() {
-            for (int j = 0; j < THREAD_DURATION && exception == null; j++) {
-                try {
+            for (int j = 0; j < THREAD_DURATION; j++) {
+                assertDoesNotThrow(() -> {
                     final double random = 1 + Math.random();
                     final double sum =
                         ((Double) context.getValue("/ + " + random))
@@ -74,10 +64,7 @@ public class StressTest {
                     synchronized (context) {
                         count++;
                     }
-                }
-                catch (final Throwable t) {
-                    exception = t;
-                }
+                });
             }
         }
     }

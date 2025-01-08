@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JXPath172Test extends AbstractJXPathTest
 {
@@ -90,36 +90,10 @@ public class JXPath172Test extends AbstractJXPathTest
     public void testIssue172_propertyDoesNotExist_NotLenient()
     {
         final JXPathContext context = getContext(null, false);
-        try
-        {
-            final Object bRet = context.selectSingleNode("unexisting");
-            fail("" + bRet);
-        }
-        catch (final JXPathNotFoundException e)
-        {
 
-        }
-
-        try
-        {
-            final Pointer pointer = context.getPointer("unexisting");
-            fail(" " + pointer);
-        }
-        catch (final JXPathNotFoundException e)
-        {
-
-        }
-
-        try
-        {
-            final Pointer pointer = context.getPointer("value.unexisting");
-            fail(" " + pointer);
-        }
-        catch (final JXPathNotFoundException e)
-        {
-
-        }
-
+        assertThrows(JXPathNotFoundException.class, () -> context.selectSingleNode("unexisting"));
+        assertThrows(JXPathNotFoundException.class, () -> context.getPointer("unexisting"));
+        assertThrows(JXPathNotFoundException.class, () -> context.getPointer("value.unexisting"));
     }
 
     /**

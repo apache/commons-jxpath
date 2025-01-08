@@ -21,6 +21,8 @@ import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class JXPathContextReferenceImplTestCase {
 
     /**
@@ -29,12 +31,10 @@ public class JXPathContextReferenceImplTestCase {
     @Test
     public void testInit() {
         final ContainerPointerFactory factory = new ContainerPointerFactory();
-        try {
-            JXPathContextReferenceImpl.addNodePointerFactory(factory);
-        } finally {
-            while (JXPathContextReferenceImpl.removeNodePointerFactory(factory)) {
+        assertDoesNotThrow(() -> JXPathContextReferenceImpl.addNodePointerFactory(factory));
 
-            }
+        while (JXPathContextReferenceImpl.removeNodePointerFactory(factory)) {
+            // NOP
         }
     }
 }

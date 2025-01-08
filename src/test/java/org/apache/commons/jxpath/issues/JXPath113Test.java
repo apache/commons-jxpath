@@ -28,6 +28,8 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class JXPath113Test extends AbstractJXPathTest
 {
 
@@ -36,7 +38,8 @@ public class JXPath113Test extends AbstractJXPathTest
     {
         final Document doc = JAXP.getDocument("<xml/>");
         final JXPathContext context = JXPathContext.newContext(doc);
-        context.selectNodes("//following-sibling::node()");
+
+        assertDoesNotThrow(() -> context.selectNodes("//following-sibling::node()"));
     }
 
     static class JAXP
@@ -54,21 +57,12 @@ public class JXPath113Test extends AbstractJXPathTest
             return builder.parse(is);
         }
 
-        private static DocumentBuilder getDocumentBuilder()
-        {
-            try
-            {
-                final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                factory.setValidating(false);
-                factory.setNamespaceAware(true);
-                factory.setExpandEntityReferences(false);
-                return factory.newDocumentBuilder();
-            }
-            catch (final ParserConfigurationException e)
-            {
-                throw new Error("JAXP config error:" + e.getMessage(), e);
-            }
-
+        private static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(false);
+            factory.setNamespaceAware(true);
+            factory.setExpandEntityReferences(false);
+            return factory.newDocumentBuilder();
         }
     }
 

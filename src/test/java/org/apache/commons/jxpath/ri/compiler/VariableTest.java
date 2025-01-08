@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test basic functionality of JXPath - infoset types,
@@ -73,26 +73,10 @@ public class VariableTest extends AbstractJXPathTest {
 
     @Test
     public void testInvalidVariableName() {
-        boolean exception = false;
-        try {
-            context.getValue("$none");
-        }
-        catch (final Exception ex) {
-            exception = true;
-        }
-        assertTrue(
-            exception,
+        assertThrows(Exception.class, () -> context.getValue("$none"),
             "Evaluating '$none', expected exception - did not get it");
 
-        exception = false;
-        try {
-            context.setValue("$none", Integer.valueOf(1));
-        }
-        catch (final Exception ex) {
-            exception = true;
-        }
-        assertTrue(
-            exception,
+        assertThrows(Exception.class, () -> context.setValue("$none", Integer.valueOf(1)),
             "Setting '$none = 1', expected exception - did not get it");
     }
 
