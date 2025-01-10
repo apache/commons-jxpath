@@ -30,7 +30,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -125,8 +124,13 @@ public class ClassLoaderUtilTest {
    */
   public static void callExampleMessageMethodAndAssertSuccess() {
     final JXPathContext context = JXPathContext.newContext(new Object());
-    Object value = assertDoesNotThrow(() -> context.selectSingleNode(EXAMPLE_CLASS_NAME+".getMessage()"));
-    assertEquals("an example class", value);
+    Object value;
+    try {
+      value = context.selectSingleNode(EXAMPLE_CLASS_NAME+".getMessage()");
+      assertEquals("an example class", value);
+    } catch ( final Exception e ) {
+      fail(e.getMessage());
+    }
   }
 
   /**
@@ -138,8 +142,18 @@ public class ClassLoaderUtilTest {
    * to invoke.
    */
   private void executeTestMethodUnderClassLoader(final ClassLoader cl, final String methodName) {
-    Class testClass = assertDoesNotThrow(() -> cl.loadClass(TEST_CASE_CLASS_NAME));
-    Method testMethod = assertDoesNotThrow(() -> testClass.getMethod(methodName, null));
+    Class testClass = null;
+    try {
+      testClass = cl.loadClass(TEST_CASE_CLASS_NAME);
+    } catch (final ClassNotFoundException e) {
+      fail(e.getMessage());
+    }
+    Method testMethod = null;
+    try {
+      testMethod = testClass.getMethod(methodName, null);
+    } catch (final SecurityException | NoSuchMethodException e) {
+      fail(e.getMessage());
+    }
 
     try {
       testMethod.invoke(null, null);
