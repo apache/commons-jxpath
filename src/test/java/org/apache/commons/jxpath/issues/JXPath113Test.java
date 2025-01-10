@@ -17,6 +17,7 @@
 package org.apache.commons.jxpath.issues;
 
 import java.io.StringReader;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,7 +29,8 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JXPath113Test extends AbstractJXPathTest
 {
@@ -39,7 +41,9 @@ public class JXPath113Test extends AbstractJXPathTest
         final Document doc = JAXP.getDocument("<xml/>");
         final JXPathContext context = JXPathContext.newContext(doc);
 
-        assertDoesNotThrow(() -> context.selectNodes("//following-sibling::node()"));
+        List result = context.selectNodes("//following-sibling::node()");
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
 
     static class JAXP
