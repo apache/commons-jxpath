@@ -33,7 +33,7 @@ public class JXPathContextReferenceImplTestCase {
             JXPathContextReferenceImpl.addNodePointerFactory(factory);
         } finally {
             while (JXPathContextReferenceImpl.removeNodePointerFactory(factory)) {
-
+                // NOP
             }
         }
     }

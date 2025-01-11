@@ -36,7 +36,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests JXPath with mixed model: beans, maps, DOM etc.
@@ -453,14 +453,8 @@ public class MixedModelTest extends AbstractJXPathTest {
             "e",
             new ExceptionPropertyTestBean());
 
-        boolean ex = false;
-        try {
-            assertXPathValue(context, "$e/errorString", null);
-        }
-        catch (final Throwable t) {
-            ex = true;
-        }
-        assertTrue(ex, "Legitimate exception accessing property");
+        assertThrows(Throwable.class, () -> assertXPathValue(context, "$e/errorString", null),
+            "Legitimate exception accessing property");
 
         assertXPathPointer(context, "$e/errorString", "$e/errorString");
 
@@ -510,23 +504,11 @@ public class MixedModelTest extends AbstractJXPathTest {
             Integer.valueOf(2),
             "$wholebean/matrix[1]/.[1]");
 
-        boolean ex = false;
-        try {
-            context.setValue("$wholebean/matrix[1]/.[2]", "4");
-        }
-        catch (final Exception e) {
-            ex = true;
-        }
-        assertTrue(ex, "Exception setting value of non-existent element");
+        assertThrows(Exception.class, () -> context.setValue("$wholebean/matrix[1]/.[2]", "4"),
+            "Exception setting value of non-existent element");
 
-        ex = false;
-        try {
-            context.setValue("$wholebean/matrix[2]/.[1]", "4");
-        }
-        catch (final Exception e) {
-            ex = true;
-        }
-        assertTrue(ex, "Exception setting value of non-existent element");
+        assertThrows(Exception.class, () -> context.setValue("$wholebean/matrix[2]/.[1]", "4"),
+           "Exception setting value of non-existent element");
     }
 
     @Test
