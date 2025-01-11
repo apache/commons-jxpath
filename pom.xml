@@ -86,6 +86,7 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
     <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
     <commons.componentid>jxpath</commons.componentid>
     <commons.module.name>org.apache.commons.jxpath</commons.module.name>
