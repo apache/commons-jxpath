@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Abstract superclass for pure XPath 1.0.  Subclasses
@@ -340,25 +340,15 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
 
         assertXPathValue(context, "/vendor/contact[@name='jim']", "Jim");
 
-        boolean nsv = false;
-        try {
+        assertThrows(JXPathException.class, () -> {
             context.setLenient(false);
             context.getValue("/vendor/contact[@name='jane']");
-        }
-        catch (final JXPathException ex) {
-            nsv = true;
-        }
-        assertTrue(nsv, "No such value: /vendor/contact[@name='jim']");
+        }, "No such value: /vendor/contact[@name='jim']");
 
-        nsv = false;
-        try {
+        assertThrows(JXPathException.class, () -> {
             context.setLenient(false);
             context.getValue("/vendor/contact[@name='jane']/*");
-        }
-        catch (final JXPathException ex) {
-            nsv = true;
-        }
-        assertTrue(nsv, "No such value: /vendor/contact[@name='jane']/*");
+        }, "No such value: /vendor/contact[@name='jane']/*");
 
         // child:: with a wildcard
         assertXPathValue(

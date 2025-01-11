@@ -31,7 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -114,12 +114,8 @@ public class ClassLoaderUtilTest {
    */
   public static void callExampleMessageMethodAndAssertClassNotFoundJXPathException() {
     final JXPathContext context = JXPathContext.newContext(new Object());
-    try {
-      context.selectSingleNode(EXAMPLE_CLASS_NAME+".getMessage()");
-      fail("We should not be able to load "+EXAMPLE_CLASS_NAME+".");
-    } catch ( final Exception e ) {
-      assertInstanceOf(JXPathException.class, e);
-    }
+    assertThrows(JXPathException.class, () -> context.selectSingleNode(EXAMPLE_CLASS_NAME+".getMessage()"),
+      "We should not be able to load "+EXAMPLE_CLASS_NAME+".");
   }
 
   /**

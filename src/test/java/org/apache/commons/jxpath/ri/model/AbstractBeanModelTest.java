@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Abstract superclass for Bean access with JXPath.
@@ -827,19 +827,13 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
             Integer.valueOf(1),
             "/nestedBean/int");
 
-        boolean ex = false;
-        try {
+        assertThrows(Exception.class, () ->
             assertXPathCreatePath(
                 context,
                 "/nestedBean/beans[last() + 1]",
                 Integer.valueOf(1),
-                "/nestedBean/beans[last() + 1]");
-        }
-        catch (final Exception e) {
-            ex = true;
-        }
-        assertTrue(ex, "Exception thrown on invalid path for creation");
-
+                "/nestedBean/beans[last() + 1]"),
+            "Exception thrown on invalid path for creation");
     }
 
     @Test

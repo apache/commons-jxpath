@@ -63,14 +63,8 @@ public class CoreFunctionTest extends AbstractJXPathTest {
         assertXPathValue(context, "ends-with('xabc', 'ab')", Boolean.FALSE);
         assertXPathValue(context, "contains('xabc', 'ab')", Boolean.TRUE);
         assertXPathValue(context, "contains('xabc', 'ba')", Boolean.FALSE);
-        assertXPathValue(
-            context,
-            "substring-before('1999/04/01', '/')",
-            "1999");
-        assertXPathValue(
-            context,
-            "substring-after('1999/04/01', '/')",
-            "04/01");
+        assertXPathValue(context,"substring-before('1999/04/01', '/')","1999");
+        assertXPathValue(context,"substring-after('1999/04/01', '/')","04/01");
         assertXPathValue(context, "substring('12345', 2, 3)", "234");
         assertXPathValue(context, "substring('12345', 2)", "2345");
         assertXPathValue(context, "substring('12345', 1.5, 2.6)", "234");
