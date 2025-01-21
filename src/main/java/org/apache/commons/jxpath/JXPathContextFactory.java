@@ -53,7 +53,7 @@ public abstract class JXPathContextFactory {
         method is called the second time ( cache the result of
         finding the default impl )
     */
-    private static final String FACTORY_IMPL_NAME = findFactory( FACTORY_NAME_PROPERTY, DEFAULT_FACTORY_CLASS );
+    private static final String FACTORY_IMPL_NAME = findFactory(FACTORY_NAME_PROPERTY, DEFAULT_FACTORY_CLASS);
 
     /**
      * Create a new JXPathContextFactory.
@@ -101,7 +101,7 @@ public abstract class JXPathContextFactory {
     public static JXPathContextFactory newInstance() {
         JXPathContextFactory factoryImpl;
         try {
-            final Class clazz = ClassLoaderUtil.getClass( FACTORY_IMPL_NAME, true );
+            final Class clazz = ClassLoaderUtil.getClass(FACTORY_IMPL_NAME, true);
             factoryImpl = (JXPathContextFactory) clazz.getConstructor().newInstance();
         }
         catch (final ReflectiveOperationException ie) {
