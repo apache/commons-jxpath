@@ -36,11 +36,11 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * We can now use XPaths like:
  * <dl>
  *  <dt>{@code "int:new(3)"}</dt>
- *  <dd>Equivalent to {@code new Integer(3)}</dd>
+ *  <dd>Equivalent to {@code Integer.valueOf(3)}</dd>
  *  <dt>{@code "int:getInteger('foo')"}</dt>
  *  <dd>Equivalent to {@code Integer.getInteger("foo")}</dd>
  *  <dt>{@code "int:floatValue(int:new(4))"}</dt>
- *  <dd>Equivalent to {@code new Integer(4).floatValue()}</dd>
+ *  <dd>Equivalent to {@code Integer.valueOf(4).floatValue()}</dd>
  * </dl>
  *
  * <p>

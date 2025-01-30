@@ -244,7 +244,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * ...
  *
  * JXPathContext context = JXPathContext.newContext(auth);
- * context.getVariables().declareVariable("index", new Integer(2));
+ * context.getVariables().declareVariable("index", Integer.valueOf(2));
  *
  * Book secondBook = (Book)context.getValue("books[$index]");
  * </pre>
@@ -252,7 +252,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * You can also set variables using JXPath:
  *
  * <pre>
- * context.setValue("$index", new Integer(3));
+ * context.setValue("$index", Integer.valueOf(3));
  * </pre>
  *
  * Note: you can only <em>change</em> the value of an existing variable this
