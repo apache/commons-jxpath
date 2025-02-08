@@ -121,7 +121,7 @@ The <action> type attribute can be add,update,fix,remove.
         Bump JUnit 3.8.1 to 4.13.2.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
-        Bump commons-logging from 1.1.1 to 1.3.4 #34, #129, #147, #160, #174.
+        Bump commons-logging from 1.1.1 to 1.3.5 #34, #129, #147, #160, #174.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
         Bump commons-beanutils from 1.8.2 to 1.10.0 #24.
