@@ -24,35 +24,37 @@ import org.apache.commons.jxpath.ri.EvalContext;
  */
 public abstract class CoreOperation extends Operation {
 
-    /** or precedence */
+    /** Or precedence */
     protected static final int OR_PRECEDENCE = 0;
-    /** and precedence */
+    /** And precedence */
     protected static final int AND_PRECEDENCE = 1;
-    /** compare precedence */
+    /** Compare precedence */
     protected static final int COMPARE_PRECEDENCE = 2;
-    /** relational expression precedence */
+    /** Relational expression precedence */
     protected static final int RELATIONAL_EXPR_PRECEDENCE = 3;
-    /** add/subtract precedence */
+    /** Add/subtract precedence */
     protected static final int ADD_PRECEDENCE = 4;
-    /** multiply/divide/mod precedence */
+    /** Multiply/divide/mod precedence */
     protected static final int MULTIPLY_PRECEDENCE = 5;
-    /** negate precedence */
+    /** Negate precedence */
     protected static final int NEGATE_PRECEDENCE = 6;
-    /** union precedence */
+    /** Union precedence */
     protected static final int UNION_PRECEDENCE = 7;
 
     /**
      * Create a new CoreOperation.
      * @param args Expression[]
      */
-    public CoreOperation(Expression[] args) {
+    public CoreOperation(final Expression[] args) {
         super(args);
     }
 
-    public Object compute(EvalContext context) {
+    @Override
+    public Object compute(final EvalContext context) {
         return computeValue(context);
     }
 
+    @Override
     public abstract Object computeValue(EvalContext context);
 
     /**
@@ -74,11 +76,12 @@ public abstract class CoreOperation extends Operation {
      */
     protected abstract int getPrecedence();
 
+    @Override
     public String toString() {
         if (args.length == 1) {
             return getSymbol() + parenthesize(args[0], false);
         }
-        StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         for (int i = 0; i < args.length; i++) {
             if (i > 0) {
                 buffer.append(' ');
@@ -93,15 +96,15 @@ public abstract class CoreOperation extends Operation {
     /**
      * Wrap an expression in parens if necessary.
      * @param expression other Expression
-     * @param left whether <code>expression</code> is left of this one.
+     * @param left whether {@code expression} is left of this one.
      * @return String
      */
-    private String parenthesize(Expression expression, boolean left) {
-        String s = expression.toString();
+    private String parenthesize(final Expression expression, final boolean left) {
+        final String s = expression.toString();
         if (!(expression instanceof CoreOperation)) {
             return s;
         }
-        int compared = getPrecedence() - ((CoreOperation) expression).getPrecedence();
+        final int compared = getPrecedence() - ((CoreOperation) expression).getPrecedence();
 
         if (compared < 0) {
             return s;

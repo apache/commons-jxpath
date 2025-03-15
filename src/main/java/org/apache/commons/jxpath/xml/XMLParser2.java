@@ -31,11 +31,11 @@ public abstract class XMLParser2 implements XMLParser {
     private boolean coalescing = false;
 
     /**
-     * Set whether the underlying parser should be validating.
+     * Sets whether the underlying parser should be validating.
      * @param validating flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setValidating(boolean)
      */
-    public void setValidating(boolean validating) {
+    public void setValidating(final boolean validating) {
         this.validating = validating;
     }
 
@@ -58,20 +58,20 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Set whether the underlying parser is ns-aware.
+     * Sets whether the underlying parser is ns-aware.
      * @param namespaceAware flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setNamespaceAware(boolean)
      */
-    public void setNamespaceAware(boolean namespaceAware) {
+    public void setNamespaceAware(final boolean namespaceAware) {
         this.namespaceAware = namespaceAware;
     }
 
     /**
-     * Set whether the underlying parser is ignoring whitespace.
+     * Sets whether the underlying parser is ignoring whitespace.
      * @param whitespace flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setIgnoringElementContentWhitespace(boolean)
      */
-    public void setIgnoringElementContentWhitespace(boolean whitespace) {
+    public void setIgnoringElementContentWhitespace(final boolean whitespace) {
         this.whitespace = whitespace;
     }
 
@@ -94,11 +94,11 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Set whether the underlying parser expands entity references.
+     * Sets whether the underlying parser expands entity references.
      * @param expandEntityRef flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setExpandEntityReferences(boolean)
      */
-    public void setExpandEntityReferences(boolean expandEntityRef) {
+    public void setExpandEntityReferences(final boolean expandEntityRef) {
         this.expandEntityRef = expandEntityRef;
     }
 
@@ -112,11 +112,11 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Set whether the underlying parser ignores comments.
+     * Sets whether the underlying parser ignores comments.
      * @param ignoreComments flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setIgnoringComments(boolean)
      */
-    public void setIgnoringComments(boolean ignoreComments) {
+    public void setIgnoringComments(final boolean ignoreComments) {
         this.ignoreComments = ignoreComments;
     }
 
@@ -130,13 +130,14 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Set whether the underlying parser is coalescing.
+     * Sets whether the underlying parser is coalescing.
      * @param coalescing flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setCoalescing(boolean)
      */
-    public void setCoalescing(boolean coalescing) {
+    public void setCoalescing(final boolean coalescing) {
         this.coalescing = coalescing;
     }
 
+    @Override
     public abstract Object parseXML(InputStream stream);
 }

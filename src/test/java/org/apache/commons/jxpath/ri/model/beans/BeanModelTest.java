@@ -19,32 +19,35 @@ package org.apache.commons.jxpath.ri.model.beans;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.TestBean;
-import org.apache.commons.jxpath.ri.model.BeanModelTestCase;
+import org.apache.commons.jxpath.ri.model.AbstractBeanModelTest;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests JXPath with JavaBeans
 *
  */
-public class BeanModelTest extends BeanModelTestCase {
+public class BeanModelTest extends AbstractBeanModelTest {
 
+    @Override
     protected Object createContextBean() {
         return new TestBean();
     }
 
+    @Override
     protected AbstractFactory getAbstractFactory() {
         return new TestBeanFactory();
     }
-    
+
+    @Test
     public void testIndexedProperty() {
-        JXPathContext context =
+        final JXPathContext context =
             JXPathContext.newContext(null, new TestIndexedPropertyBean());
-            
+
         assertXPathValueAndPointer(
             context,
             "indexed[1]",
-            new Integer(0),
+            Integer.valueOf(0),
             "/indexed[1]");
     }
-
 
 }

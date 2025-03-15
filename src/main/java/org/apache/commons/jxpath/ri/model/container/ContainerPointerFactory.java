@@ -27,20 +27,23 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  * Implements NodePointerFactory for {@link Container} objects.
  */
 public class ContainerPointerFactory implements NodePointerFactory {
-    /** factory order for this factory */
+    /** Factory order for this factory */
     public static final int CONTAINER_POINTER_FACTORY_ORDER = 200;
 
+    @Override
     public int getOrder() {
         return CONTAINER_POINTER_FACTORY_ORDER;
     }
 
-    public NodePointer createNodePointer(QName name, Object bean, Locale locale) {
+    @Override
+    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
         return bean instanceof Container ? new ContainerPointer(
                 (Container) bean, locale) : null;
     }
 
-    public NodePointer createNodePointer(NodePointer parent, QName name,
-            Object bean) {
+    @Override
+    public NodePointer createNodePointer(final NodePointer parent, final QName name,
+            final Object bean) {
         return bean instanceof Container ? new ContainerPointer(parent,
                 (Container) bean) : null;
     }

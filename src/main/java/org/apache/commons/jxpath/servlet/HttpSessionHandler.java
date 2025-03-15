@@ -18,6 +18,7 @@ package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
 import java.util.HashSet;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.jxpath.JXPathException;
@@ -28,25 +29,27 @@ import org.apache.commons.jxpath.JXPathException;
  */
 public class HttpSessionHandler extends ServletContextHandler {
 
-    protected void collectPropertyNames(HashSet set, Object bean) {
-        HttpSessionAndServletContext handle =
+    @Override
+    protected void collectPropertyNames(final HashSet set, final Object bean) {
+        final HttpSessionAndServletContext handle =
             (HttpSessionAndServletContext) bean;
         super.collectPropertyNames(set, handle.getServletContext());
-        HttpSession session = handle.getSession();
+        final HttpSession session = handle.getSession();
         if (session != null) {
-            Enumeration e = session.getAttributeNames();
+            final Enumeration e = session.getAttributeNames();
             while (e.hasMoreElements()) {
                 set.add(e.nextElement());
             }
         }
     }
 
-    public Object getProperty(Object bean, String property) {
-        HttpSessionAndServletContext handle =
+    @Override
+    public Object getProperty(final Object bean, final String property) {
+        final HttpSessionAndServletContext handle =
             (HttpSessionAndServletContext) bean;
-        HttpSession session = handle.getSession();
+        final HttpSession session = handle.getSession();
         if (session != null) {
-            Object object = session.getAttribute(property);
+            final Object object = session.getAttribute(property);
             if (object != null) {
                 return object;
             }
@@ -54,10 +57,11 @@ public class HttpSessionHandler extends ServletContextHandler {
         return super.getProperty(handle.getServletContext(), property);
     }
 
-    public void setProperty(Object bean, String property, Object value) {
-        HttpSessionAndServletContext handle =
+    @Override
+    public void setProperty(final Object bean, final String property, final Object value) {
+        final HttpSessionAndServletContext handle =
             (HttpSessionAndServletContext) bean;
-        HttpSession session = handle.getSession();
+        final HttpSession session = handle.getSession();
         if (session != null) {
             session.setAttribute(property, value);
         }

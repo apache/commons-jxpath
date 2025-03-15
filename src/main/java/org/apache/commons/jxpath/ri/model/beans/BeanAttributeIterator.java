@@ -24,40 +24,43 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * well as the "xml:lang" attribute.
  */
 public class BeanAttributeIterator extends PropertyIterator {
-    private NodePointer parent;
+    private final NodePointer parent;
     private int position = 0;
-    private boolean includeXmlLang;
+    private final boolean includeXmlLang;
 
     /**
      * Create a new BeanAttributeIterator.
      * @param parent parent pointer
      * @param name name of this bean
      */
-    public BeanAttributeIterator(PropertyOwnerPointer parent, QName name) {
+    public BeanAttributeIterator(final PropertyOwnerPointer parent, final QName name) {
         super(
             parent,
-            (name.getPrefix() == null
-                && (name.getName() == null || name.getName().equals("*")))
+            name.getPrefix() == null
+                && (name.getName() == null || name.getName().equals("*"))
                 ? null
                 : name.toString(),
             false,
             null);
         this.parent = parent;
         includeXmlLang =
-            (name.getPrefix() != null && name.getPrefix().equals("xml"))
+            name.getPrefix() != null && name.getPrefix().equals("xml")
                 && (name.getName().equals("lang")
                 || name.getName().equals("*"));
     }
 
+    @Override
     public NodePointer getNodePointer() {
         return includeXmlLang && position == 1 ? new LangAttributePointer(parent) : super.getNodePointer();
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         this.position = position;
         if (includeXmlLang) {
             return position == 1 || super.setPosition(position - 1);

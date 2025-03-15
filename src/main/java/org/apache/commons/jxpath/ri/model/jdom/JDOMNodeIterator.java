@@ -29,10 +29,10 @@ import org.jdom2.Element;
  * An iterator of children of a JDOM Node.
  */
 public class JDOMNodeIterator implements NodeIterator {
-    private NodePointer parent;
-    private NodeTest nodeTest;
+    private final NodePointer parent;
+    private final NodeTest nodeTest;
 
-    private boolean reverse;
+    private final boolean reverse;
     private int position = 0;
     private int index = 0;
     private List children;
@@ -46,14 +46,14 @@ public class JDOMNodeIterator implements NodeIterator {
      * @param startWith starting pointer
      */
     public JDOMNodeIterator(
-            NodePointer parent, NodeTest nodeTest,
-            boolean reverse, NodePointer startWith) {
+            final NodePointer parent, final NodeTest nodeTest,
+            final boolean reverse, final NodePointer startWith) {
         this.parent = parent;
         if (startWith != null) {
             this.child = startWith.getNode();
         }
         // TBD: optimize me for different node tests
-        Object node = parent.getNode();
+        final Object node = parent.getNode();
         if (node instanceof Document) {
             this.children = ((Document) node).getContent();
         }
@@ -67,6 +67,7 @@ public class JDOMNodeIterator implements NodeIterator {
         this.reverse = reverse;
     }
 
+    @Override
     public NodePointer getNodePointer() {
         if (child == null) {
             if (!setPosition(1)) {
@@ -78,11 +79,13 @@ public class JDOMNodeIterator implements NodeIterator {
         return new JDOMNodePointer(parent, child);
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         while (this.position < position) {
             if (!next()) {
                 return false;
@@ -148,24 +151,22 @@ public class JDOMNodeIterator implements NodeIterator {
             }
             return false;
         }
-        else {
-            if (position == 1) {
-                index = children.size() - 1;
-                if (child != null) {
-                    index = children.indexOf(child) - 1;
-                }
+        if (position == 1) {
+            index = children.size() - 1;
+            if (child != null) {
+                index = children.indexOf(child) - 1;
             }
-            else {
-                index--;
-            }
-            for (; index >= 0; index--) {
-                child = children.get(index);
-                if (testChild()) {
-                    return true;
-                }
-            }
-            return false;
         }
+        else {
+            index--;
+        }
+        for (; index >= 0; index--) {
+            child = children.get(index);
+            if (testChild()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

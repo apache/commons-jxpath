@@ -16,15 +16,18 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import org.apache.commons.jxpath.ExceptionHandler;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
-import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test simple ExceptionHandler.
  */
-public class ExceptionHandlerTest extends JXPathTestCase {
+public class ExceptionHandlerTest extends AbstractJXPathTest {
     public static class Bar {
         public Object getBaz() {
             throw new IllegalStateException("baz unavailable");
@@ -32,56 +35,53 @@ public class ExceptionHandlerTest extends JXPathTestCase {
     }
 
     private JXPathContext context;
-    private Bar bar = new Bar();
+    private final Bar bar = new Bar();
 
+    @Override
+    @BeforeEach
     public void setUp() throws Exception {
         context = JXPathContext.newContext(this);
-        context.setExceptionHandler(new ExceptionHandler() {
-            
-            public void handle(Throwable t, Pointer ptr) {
-                if (t instanceof Error) {
-                    throw (Error) t;
-                }
-                if (t instanceof RuntimeException) {
-                    throw (RuntimeException) t;
-                }
-                throw new RuntimeException(t);
+        context.setExceptionHandler((t, ptr) -> {
+            if (t instanceof Error) {
+                throw (Error) t;
             }
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            }
+            throw new RuntimeException(t);
         });
     }
-    
+
     public Object getFoo() {
         throw new IllegalStateException("foo unavailable");
     }
-    
+
+    @Test
     public void testHandleFoo() throws Exception {
-        try {
-            context.getValue("foo");
-            fail("expected Throwable");
-        } catch (Throwable t) {
-            while (t != null) {
-                if ("foo unavailable".equals(t.getMessage())) {
-                    return;
-                }
-                t = t.getCause();
+        Throwable t = assertThrows(Throwable.class, () -> context.getValue("foo"),
+            "expected Throwable");
+
+        while (t != null) {
+            if ("foo unavailable".equals(t.getMessage())) {
+                return;
             }
-            fail("expected \"foo unavailable\" in throwable chain");
+            t = t.getCause();
         }
+        fail("expected \"foo unavailable\" in throwable chain");
     }
 
+    @Test
     public void testHandleBarBaz() throws Exception {
-        try {
-            context.getValue("bar/baz");
-            fail("expected Throwable");
-        } catch (Throwable t) {
-            while (t != null) {
-                if ("baz unavailable".equals(t.getMessage())) {
-                    return;
-                }
-                t = t.getCause();
+        Throwable t = assertThrows(Throwable.class, () -> context.getValue("bar/baz"),
+            "expected Throwable");
+
+        while (t != null) {
+            if ("baz unavailable".equals(t.getMessage())) {
+                return;
             }
-            fail("expected \"baz unavailable\" in throwable chain");
+            t = t.getCause();
         }
+        fail("expected \"baz unavailable\" in throwable chain");
     }
 
     public Bar getBar() {

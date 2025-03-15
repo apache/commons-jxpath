@@ -33,7 +33,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
  */
 public class VariablePointer extends NodePointer {
     private Variables variables;
-    private QName name;
+    private final QName name;
     private NodePointer valuePointer;
     private boolean actual;
 
@@ -44,7 +44,7 @@ public class VariablePointer extends NodePointer {
      * @param variables Variables instance
      * @param name variable name
      */
-    public VariablePointer(Variables variables, QName name) {
+    public VariablePointer(final Variables variables, final QName name) {
         super(null);
         this.variables = variables;
         this.name = name;
@@ -55,20 +55,23 @@ public class VariablePointer extends NodePointer {
      * Create a new (non-actual) VariablePointer.
      * @param name variable name
      */
-    public VariablePointer(QName name) {
+    public VariablePointer(final QName name) {
         super(null);
         this.name = name;
         actual = false;
     }
 
+    @Override
     public boolean isContainer() {
         return true;
     }
 
+    @Override
     public QName getName() {
         return name;
     }
 
+    @Override
     public Object getBaseValue() {
         if (!actual) {
             throw new JXPathException("Undefined variable: " + name);
@@ -76,29 +79,33 @@ public class VariablePointer extends NodePointer {
         return variables.getVariable(name.toString());
     }
 
+    @Override
     public boolean isLeaf() {
-        Object value = getNode();
+        final Object value = getNode();
         return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
+    @Override
     public boolean isCollection() {
-        Object value = getBaseValue();
+        final Object value = getBaseValue();
         return value != null && ValueUtils.isCollection(value);
     }
 
+    @Override
     public Object getImmediateNode() {
-        Object value = getBaseValue();
+        final Object value = getBaseValue();
         return index == WHOLE_COLLECTION ? ValueUtils.getValue(value)
                 : ValueUtils.getValue(value, index);
     }
 
-    public void setValue(Object value) {
+    @Override
+    public void setValue(final Object value) {
         if (!actual) {
             throw new JXPathException("Cannot set undefined variable: " + name);
         }
         valuePointer = null;
         if (index != WHOLE_COLLECTION) {
-            Object collection = getBaseValue();
+            final Object collection = getBaseValue();
             ValueUtils.setValue(collection, index, value);
         }
         else {
@@ -106,25 +113,30 @@ public class VariablePointer extends NodePointer {
         }
     }
 
+    @Override
     public boolean isActual() {
         return actual;
     }
 
-    public void setIndex(int index) {
+    @Override
+    public void setIndex(final int index) {
         super.setIndex(index);
         valuePointer = null;
     }
 
+    @Override
     public NodePointer getImmediateValuePointer() {
         if (valuePointer == null) {
             Object value;
             if (actual) {
                 value = getImmediateNode();
-                valuePointer =
-                    NodePointer.newChildNodePointer(this, null, value);
+                valuePointer = newChildNodePointer(this, null, value);
             }
             else {
                 return new NullPointer(this, getName()) {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
                     public Object getImmediateNode() {
                         throw new JXPathException(
                             "Undefined variable: " + name);
@@ -135,27 +147,30 @@ public class VariablePointer extends NodePointer {
         return valuePointer;
     }
 
+    @Override
     public int getLength() {
         if (actual) {
-            Object value = getBaseValue();
+            final Object value = getBaseValue();
             return value == null ? 1 : ValueUtils.getLength(value);
         }
         return 0;
     }
 
-    public NodePointer createPath(JXPathContext context, Object value) {
+    @Override
+    public NodePointer createPath(final JXPathContext context, final Object value) {
         if (actual) {
             setValue(value);
             return this;
         }
-        NodePointer ptr = createPath(context);
+        final NodePointer ptr = createPath(context);
         ptr.setValue(value);
         return ptr;
     }
 
-    public NodePointer createPath(JXPathContext context) {
+    @Override
+    public NodePointer createPath(final JXPathContext context) {
         if (!actual) {
-            AbstractFactory factory = getAbstractFactory(context);
+            final AbstractFactory factory = getAbstractFactory(context);
             if (!factory.declareVariable(context, name.toString())) {
                 throw new JXPathAbstractFactoryException(
                         "Factory cannot define variable '" + name
@@ -167,14 +182,15 @@ public class VariablePointer extends NodePointer {
         return this;
     }
 
+    @Override
     public NodePointer createChild(
-        JXPathContext context,
-        QName name,
-        int index) {
-        Object collection = createCollection(context, index);
-        if (!isActual() || (index != 0 && index != WHOLE_COLLECTION)) {
-            AbstractFactory factory = getAbstractFactory(context);
-            boolean success =
+        final JXPathContext context,
+        final QName name,
+        final int index) {
+        final Object collection = createCollection(context, index);
+        if (!isActual() || index != 0 && index != WHOLE_COLLECTION) {
+            final AbstractFactory factory = getAbstractFactory(context);
+            final boolean success =
                 factory.createObject(
                     context,
                     this,
@@ -185,21 +201,22 @@ public class VariablePointer extends NodePointer {
                 throw new JXPathAbstractFactoryException(
                         "Factory could not create object path: " + asPath());
             }
-            NodePointer cln = (NodePointer) clone();
+            final NodePointer cln = (NodePointer) clone();
             cln.setIndex(index);
             return cln;
         }
         return this;
     }
 
+    @Override
     public NodePointer createChild(
-            JXPathContext context,
-            QName name,
-            int index,
-            Object value) {
-        Object collection = createCollection(context, index);
+            final JXPathContext context,
+            final QName name,
+            final int index,
+            final Object value) {
+        final Object collection = createCollection(context, index);
         ValueUtils.setValue(collection, index, value);
-        NodePointer cl = (NodePointer) clone();
+        final NodePointer cl = (NodePointer) clone();
         cl.setIndex(index);
         return cl;
     }
@@ -210,7 +227,7 @@ public class VariablePointer extends NodePointer {
      * @param index collection index
      * @return Object
      */
-    private Object createCollection(JXPathContext context, int index) {
+    private Object createCollection(final JXPathContext context, int index) {
         createPath(context);
 
         Object collection = getBaseValue();
@@ -238,6 +255,7 @@ public class VariablePointer extends NodePointer {
         return collection;
     }
 
+    @Override
     public void remove() {
         if (actual) {
             if (index == WHOLE_COLLECTION) {
@@ -262,7 +280,7 @@ public class VariablePointer extends NodePointer {
      * Assimilate the Variables instance associated with the specified context.
      * @param context JXPathContext to search
      */
-    protected void findVariables(JXPathContext context) {
+    protected void findVariables(final JXPathContext context) {
         valuePointer = null;
         JXPathContext varCtx = context;
         while (varCtx != null) {
@@ -276,13 +294,15 @@ public class VariablePointer extends NodePointer {
         }
     }
 
+    @Override
     public int hashCode() {
         return (actual ? System.identityHashCode(variables) : 0)
             + name.hashCode()
             + index;
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         if (object == this) {
             return true;
         }
@@ -291,14 +311,15 @@ public class VariablePointer extends NodePointer {
             return false;
         }
 
-        VariablePointer other = (VariablePointer) object;
+        final VariablePointer other = (VariablePointer) object;
         return variables == other.variables
             && name.equals(other.name)
             && index == other.index;
     }
 
+    @Override
     public String asPath() {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append('$');
         buffer.append(name);
         if (!actual) {
@@ -314,32 +335,38 @@ public class VariablePointer extends NodePointer {
         return buffer.toString();
     }
 
+    @Override
     public NodeIterator childIterator(
-        NodeTest test,
-        boolean reverse,
-        NodePointer startWith) {
+        final NodeTest test,
+        final boolean reverse,
+        final NodePointer startWith) {
         return getValuePointer().childIterator(test, reverse, startWith);
     }
 
-    public NodeIterator attributeIterator(QName name) {
+    @Override
+    public NodeIterator attributeIterator(final QName name) {
         return getValuePointer().attributeIterator(name);
     }
 
+    @Override
     public NodeIterator namespaceIterator() {
         return getValuePointer().namespaceIterator();
     }
 
-    public NodePointer namespacePointer(String name) {
+    @Override
+    public NodePointer namespacePointer(final String name) {
         return getValuePointer().namespacePointer(name);
     }
 
-    public boolean testNode(NodeTest nodeTest) {
+    @Override
+    public boolean testNode(final NodeTest nodeTest) {
         return getValuePointer().testNode(nodeTest);
     }
 
+    @Override
     public int compareChildNodePointers(
-        NodePointer pointer1,
-        NodePointer pointer2) {
+        final NodePointer pointer1,
+        final NodePointer pointer2) {
         return pointer1.getIndex() - pointer2.getIndex();
     }
 }

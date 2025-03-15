@@ -29,12 +29,14 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a property of the parent object.
  */
 public abstract class PropertyPointer extends NodePointer {
+    private static final long serialVersionUID = 1L;
+
     public static final int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
 
-    /** property index */
+    /** Property index */
     protected int propertyIndex = UNSPECIFIED_PROPERTY;
 
-    /** owning object */
+    /** Owning object */
     protected Object bean;
 
     /**
@@ -42,12 +44,12 @@ public abstract class PropertyPointer extends NodePointer {
      * an offset within that property (starting with 0).
      * @param parent parent pointer
      */
-    public PropertyPointer(NodePointer parent) {
+    public PropertyPointer(final NodePointer parent) {
         super(parent);
     }
 
     /**
-     * Get the property index.
+     * Gets the property index.
      * @return int index
      */
     public int getPropertyIndex() {
@@ -55,10 +57,10 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     /**
-     * Set the property index.
+     * Sets the property index.
      * @param index property index
      */
-    public void setPropertyIndex(int index) {
+    public void setPropertyIndex(final int index) {
         if (propertyIndex != index) {
             propertyIndex = index;
             setIndex(WHOLE_COLLECTION);
@@ -66,7 +68,7 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     /**
-     * Get the parent bean.
+     * Gets the parent bean.
      * @return Object
      */
     public Object getBean() {
@@ -76,18 +78,19 @@ public abstract class PropertyPointer extends NodePointer {
         return bean;
     }
 
+    @Override
     public QName getName() {
         return new QName(null, getPropertyName());
     }
 
     /**
-     * Get the property name.
+     * Gets the property name.
      * @return String property name.
      */
     public abstract String getPropertyName();
 
     /**
-     * Set the property name.
+     * Sets the property name.
      * @param propertyName property name to set.
      */
     public abstract void setPropertyName(String propertyName);
@@ -99,7 +102,7 @@ public abstract class PropertyPointer extends NodePointer {
     public abstract int getPropertyCount();
 
     /**
-     * Get the names of the included properties.
+     * Gets the names of the included properties.
      * @return String[]
      */
     public abstract String[] getPropertyNames();
@@ -110,6 +113,7 @@ public abstract class PropertyPointer extends NodePointer {
      */
     protected abstract boolean isActualProperty();
 
+    @Override
     public boolean isActual() {
         if (!isActualProperty()) {
             return false;
@@ -122,6 +126,7 @@ public abstract class PropertyPointer extends NodePointer {
 
     private Object value = UNINITIALIZED;
 
+    @Override
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
             value = index == WHOLE_COLLECTION ? ValueUtils.getValue(getBaseValue())
@@ -130,13 +135,15 @@ public abstract class PropertyPointer extends NodePointer {
         return value;
     }
 
+    @Override
     public boolean isCollection() {
-        Object value = getBaseValue();
+        final Object value = getBaseValue();
         return value != null && ValueUtils.isCollection(value);
     }
 
+    @Override
     public boolean isLeaf() {
-        Object value = getNode();
+        final Object value = getNode();
         return value == null || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
@@ -145,8 +152,9 @@ public abstract class PropertyPointer extends NodePointer {
      * collection, otherwise - 1.
      * @return int length
      */
+    @Override
     public int getLength() {
-        Object baseValue = getBaseValue();
+        final Object baseValue = getBaseValue();
         return baseValue == null ? 1 : ValueUtils.getLength(baseValue);
     }
 
@@ -155,18 +163,20 @@ public abstract class PropertyPointer extends NodePointer {
      * selected property value.
      * @return NodePointer
      */
+    @Override
     public NodePointer getImmediateValuePointer() {
-        return NodePointer.newChildNodePointer(
-            (NodePointer) this.clone(),
+        return newChildNodePointer(
+            (NodePointer) clone(),
             getName(),
             getImmediateNode());
     }
 
-    public NodePointer createPath(JXPathContext context) {
+    @Override
+    public NodePointer createPath(final JXPathContext context) {
         if (getImmediateNode() == null) {
-            AbstractFactory factory = getAbstractFactory(context);
-            int inx = (index == WHOLE_COLLECTION ? 0 : index);
-            boolean success =
+            final AbstractFactory factory = getAbstractFactory(context);
+            final int inx = index == WHOLE_COLLECTION ? 0 : index;
+            final boolean success =
                 factory.createObject(
                     context,
                     this,
@@ -181,7 +191,8 @@ public abstract class PropertyPointer extends NodePointer {
         return this;
     }
 
-    public NodePointer createPath(JXPathContext context, Object value) {
+    @Override
+    public NodePointer createPath(final JXPathContext context, final Object value) {
         // If neccessary, expand collection
         if (index != WHOLE_COLLECTION && index >= getLength()) {
             createPath(context);
@@ -190,12 +201,13 @@ public abstract class PropertyPointer extends NodePointer {
         return this;
     }
 
+    @Override
     public NodePointer createChild(
-        JXPathContext context,
-        QName name,
-        int index,
-        Object value) {
-        PropertyPointer prop = (PropertyPointer) clone();
+        final JXPathContext context,
+        final QName name,
+        final int index,
+        final Object value) {
+        final PropertyPointer prop = (PropertyPointer) clone();
         if (name != null) {
             prop.setPropertyName(name.toString());
         }
@@ -203,11 +215,12 @@ public abstract class PropertyPointer extends NodePointer {
         return prop.createPath(context, value);
     }
 
+    @Override
     public NodePointer createChild(
-        JXPathContext context,
-        QName name,
-        int index) {
-        PropertyPointer prop = (PropertyPointer) clone();
+        final JXPathContext context,
+        final QName name,
+        final int index) {
+        final PropertyPointer prop = (PropertyPointer) clone();
         if (name != null) {
             prop.setPropertyName(name.toString());
         }
@@ -215,11 +228,13 @@ public abstract class PropertyPointer extends NodePointer {
         return prop.createPath(context);
     }
 
+    @Override
     public int hashCode() {
         return getImmediateParentPointer().hashCode() + propertyIndex + index;
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         if (object == this) {
             return true;
         }
@@ -228,7 +243,7 @@ public abstract class PropertyPointer extends NodePointer {
             return false;
         }
 
-        PropertyPointer other = (PropertyPointer) object;
+        final PropertyPointer other = (PropertyPointer) object;
         if (parent != other.parent && (parent == null || !parent.equals(other.parent))) {
             return false;
         }
@@ -238,14 +253,15 @@ public abstract class PropertyPointer extends NodePointer {
             return false;
         }
 
-        int iThis = (index == WHOLE_COLLECTION ? 0 : index);
-        int iOther = (other.index == WHOLE_COLLECTION ? 0 : other.index);
+        final int iThis = index == WHOLE_COLLECTION ? 0 : index;
+        final int iOther = other.index == WHOLE_COLLECTION ? 0 : other.index;
         return iThis == iOther;
     }
 
+    @Override
     public int compareChildNodePointers(
-        NodePointer pointer1,
-        NodePointer pointer2) {
+        final NodePointer pointer1,
+        final NodePointer pointer2) {
         return getValuePointer().compareChildNodePointers(pointer1, pointer2);
     }
 

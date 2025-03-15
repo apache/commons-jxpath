@@ -39,34 +39,33 @@ then tweak the source formatting if necessary and regenerate, then commit
 The <action> type attribute can be add,update,fix,remove.
 -->
 
-<document>
+<document xmlns="http://maven.apache.org/changes/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/2.0.0 https://maven.apache.org/xsd/changes-2.0.0.xsd">
   <properties>
     <title>Release Notes</title>
   </properties>
-
   <body>
     <!-- The release date is the date RC is cut -->
-    <release version="1.4" date="2014-??-??" description="New features and bug fixes.">
-      <action issue="JXPATH-184" dev="britter" type="update" >
-        Update to Java 8
-      </action>
-      <action issue="JXPATH-172" dev="britter" type="update" due-to="Michele Vivoda">
-        Clarify Javadoc of JXPathContext#getPointer
+    <release version="1.4" date="YYYY-MM-DD" description="New features and bug fixes.">
+      <!-- FIX -->
+      <action issue="JXPATH-172" dev="britter" type="fix" due-to="Michele Vivoda">
+        Clarify Javadoc of JXPathContext#getPointer.
       </action>
       <action issue="JXPATH-113" dev="britter" type="fix" due-to="Michele Vivoda">
-        NullPointerException in ChildContext when document only contains an empty root node
+        NullPointerException in ChildContext when document only contains an empty root node.
       </action>
       <action issue="JXPATH-160" dev="britter" type="fix" due-to="Stefan Albrecht, Michele Vivoda, Uwe Barthel">
-        ValueUtils.getValue throws exception with set and index above size
+        ValueUtils.getValue throws exception with set and index above size.
       </action>
       <action issue="JXPATH-162" dev="britter" type="fix" due-to="Uwe Barthel">
-        Concurrency problem for JXPathContextFactory.factoryImplName static field
+        Concurrency problem for JXPathContextFactory.factoryImplName static field.
       </action>
       <action issue="JXPATH-141" dev="mbenson" type="fix">
-        FunctionLibrary Multithreading issue
+        FunctionLibrary Multithreading issue.
       </action>
       <action issue="JXPATH-131" dev="mbenson" type="fix" due-to="Gabriel Buades Rubio">
-        Bean exception handling
+        Bean exception handling.
       </action>
       <action issue="JXPATH-128" dev="mbenson" type="fix" due-to="Gabriel Buades Rubio">
         JXPath support for LazyDynaBean is broken.
@@ -75,16 +74,69 @@ The <action> type attribute can be add,update,fix,remove.
         MethodLookupUtils#matchType uses TypeUtils#canConvert which causes "Ambiguous method call" exception.
       </action>
       <action issue="JXPATH-153" dev="mbenson" type="fix">
-        Wrong entry IMPORT-PACKAGE in the file MANIFEST.MF for jdom and commons-beanutils
+        Wrong entry IMPORT-PACKAGE in the file MANIFEST.MF for jdom and commons-beanutils.
       </action>
-      <action issue="JXPATH-153" dev="mbenson" type="update" due-to="John Trimble">
+      <action issue="JXPATH-153" dev="mbenson" type="fix" due-to="John Trimble">
         Change dynamic class loading to consult context class loader.
       </action>
-      <action issue="JXPATH-123" dev="mbenson" type="add">
-        "ends-with" XPath function is not implemented (although "starts-with" is)
-      </action>
       <action issue="JXPATH-152" dev="mbenson" type="fix">
-        Concurrent access on hashmap of JXPathIntrospector
+        Concurrent access on hashmap of JXPathIntrospector.
+      </action>
+      <action dev="ggregory" type="fix">
+        Fix possible NPE in PackageFunctions.getFunction(String, String, Object[]).
+      </action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">
+        JDOMNodePointer.compareChildNodePointers() now throws IllegalStateException instead of RuntimeException.
+      </action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">
+        ValueUtils.setValue() now throws IllegalArgumentException instead of RuntimeException.
+      </action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">
+        ClassLoaderUtil.toCanonicalName() now calls Objects.requireNonNull() instead of throwing a RuntimeException.
+      </action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">
+        XMLDocumentContainer.XMLDocumentContainer(Source) now calls Objects.requireNonNull() instead of throwing a RuntimeException.
+      </action>
+      <action dev="ggregory" type="fix" due-to="step-security-bot, Gary Gregory">
+        [StepSecurity] CI: Harden GitHub Actions #66.
+      </action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix PMD UnnecessaryFullyQualifiedName.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Add generics to JXPathContext.iterate(String).</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Add generics to JXPathContext.iteratePointers(String).</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Add generics to JXPathContext.decimalFormats.</action>
+      <action dev="ggregory" type="fix" due-to="strangelookingnerd">Migrate tests to JUnit5 #214.</action>
+      <action dev="ggregory" type="fix" due-to="strangelookingnerd, Gary Gregory">Replace try-catch constructs in tests with assertThrows #215.</action>
+      <!-- ADD -->
+      <action issue="JXPATH-123" dev="mbenson" type="add">
+        XPath function "ends-with" is not implemented (although "starts-with" is).
+      </action>
+      <!-- UPDATE -->
+      <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
+        Bump commons-parent from 54 to 78 #45, #49, #64, #110, #121, #403, #167, #173, #176, #181, #185, #188, #196.
+      </action>
+      <action issue="JXPATH-184" dev="britter" type="update" due-to="britter, Gary Gregory">
+        Bump Java to 8.
+      </action>
+      <action dev="ggregory" type="update" due-to="britter, Gary Gregory">
+        Bump JUnit 3.8.1 to 4.13.2.
+      </action>
+      <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
+        Bump commons-logging from 1.1.1 to 1.3.5 #34, #129, #147, #160, #174.
+      </action>
+      <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
+        Bump commons-beanutils from 1.8.2 to 1.10.1 #24.
+      </action>
+      <action dev="ggregory" type="update" due-to="Dependabot">
+        Bump taglist-maven-plugin from 2.2 to 3.0.0 #32.
+      </action>
+      <action dev="ggregory" type="update" due-to="Dependabot">
+        Bump servlet-api from 2.4 to 2.5 #29.
+      </action>
+      <action dev="ggregory" type="update" due-to="Dependabot">
+        Bump JDOM from jdom:jdom 1.0 to org.jdom:jdom 1.1.3.
+      </action>
+      <action dev="ggregory" type="update" due-to="Dependabot">
+        Bump org.codehaus.mojo:taglist-maven-plugin from 3.0.0 to 3.2.1 #161, #194.
       </action>
     </release>
   </body>

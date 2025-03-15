@@ -23,14 +23,14 @@ import org.apache.commons.jxpath.ri.axes.InitialContext;
  */
 public class LocationPath extends Path {
 
-    private boolean absolute;
+    private final boolean absolute;
 
     /**
      * Create a new LocationPath.
      * @param absolute whether this is an absolute path
      * @param steps to evaluate
      */
-    public LocationPath(boolean absolute, Step[] steps) {
+    public LocationPath(final boolean absolute, final Step[] steps) {
         super(steps);
         this.absolute = absolute;
     }
@@ -43,13 +43,15 @@ public class LocationPath extends Path {
         return absolute;
     }
 
+    @Override
     public boolean computeContextDependent() {
         return !absolute || super.computeContextDependent();
     }
 
+    @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
-        Step[] steps = getSteps();
+        final StringBuilder buffer = new StringBuilder();
+        final Step[] steps = getSteps();
         if (steps != null) {
             for (int i = 0; i < steps.length; i++) {
                 if (i > 0 || absolute) {
@@ -61,7 +63,8 @@ public class LocationPath extends Path {
         return buffer.toString();
     }
 
-    public Object compute(EvalContext context) {
+    @Override
+    public Object compute(final EvalContext context) {
         // Create a chain of contexts
         EvalContext rootContext;
         if (isAbsolute()) {
@@ -73,7 +76,8 @@ public class LocationPath extends Path {
         return evalSteps(rootContext);
     }
 
-    public Object computeValue(EvalContext context) {
+    @Override
+    public Object computeValue(final EvalContext context) {
         // Create a chain of contexts
         EvalContext rootContext;
         if (isAbsolute()) {

@@ -31,11 +31,11 @@ public class NamespaceResolver implements Cloneable, Serializable {
 
     /** Parent NamespaceResolver */
     protected final NamespaceResolver parent;
-    /** namespace map */
+    /** Namespace map */
     protected HashMap namespaceMap = new HashMap();
-    /** reverse lookup map */
+    /** Reverse lookup map */
     protected HashMap reverseMap = new HashMap();
-    /** pointer */
+    /** Pointer */
     protected NodePointer pointer;
     private boolean sealed;
 
@@ -46,15 +46,15 @@ public class NamespaceResolver implements Cloneable, Serializable {
      * @return prefix if found
      * @since JXPath 1.3
      */
-    protected static String getPrefix(final NodePointer pointer, String namespaceURI) {
+    protected static String getPrefix(final NodePointer pointer, final String namespaceURI) {
         NodePointer currentPointer = pointer;
         while (currentPointer != null) {
-            NodeIterator ni = currentPointer.namespaceIterator();
+            final NodeIterator ni = currentPointer.namespaceIterator();
             for (int position = 1; ni != null && ni.setPosition(position); position++) {
-                NodePointer nsPointer = ni.getNodePointer();
-                String uri = nsPointer.getNamespaceURI();
+                final NodePointer nsPointer = ni.getNodePointer();
+                final String uri = nsPointer.getNamespaceURI();
                 if (uri.equals(namespaceURI)) {
-                    String prefix = nsPointer.getName().getName();
+                    final String prefix = nsPointer.getName().getName();
                     if (!"".equals(prefix)) {
                         return prefix;
                     }
@@ -76,7 +76,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
      * Create a new NamespaceResolver.
      * @param parent NamespaceResolver
      */
-    public NamespaceResolver(NamespaceResolver parent) {
+    public NamespaceResolver(final NamespaceResolver parent) {
         this.parent = parent;
     }
 
@@ -86,7 +86,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
      * @param prefix A namespace prefix
      * @param namespaceURI A URI for that prefix
      */
-    public synchronized void registerNamespace(String prefix, String namespaceURI) {
+    public synchronized void registerNamespace(final String prefix, final String namespaceURI) {
         if (isSealed()) {
             throw new IllegalStateException(
                     "Cannot register namespaces on a sealed NamespaceResolver");
@@ -99,12 +99,12 @@ public class NamespaceResolver implements Cloneable, Serializable {
      * Register a namespace for the expression context.
      * @param pointer the Pointer to set.
      */
-    public void setNamespaceContextPointer(NodePointer pointer) {
+    public void setNamespaceContextPointer(final NodePointer pointer) {
         this.pointer = pointer;
     }
 
     /**
-     * Get the namespace context pointer.
+     * Gets the namespace context pointer.
      * @return Pointer
      */
     public Pointer getNamespaceContextPointer() {
@@ -124,8 +124,8 @@ public class NamespaceResolver implements Cloneable, Serializable {
      * @param prefix The namespace prefix to look up
      * @return namespace URI or null if the prefix is undefined.
      */
-    public synchronized String getNamespaceURI(String prefix) {
-        String uri = getExternallyRegisteredNamespaceURI(prefix);
+    public synchronized String getNamespaceURI(final String prefix) {
+        final String uri = getExternallyRegisteredNamespaceURI(prefix);
         return uri == null && pointer != null ? pointer.getNamespaceURI(prefix)
                 : uri;
     }
@@ -138,31 +138,31 @@ public class NamespaceResolver implements Cloneable, Serializable {
      * @since JXPath 1.3
      */
      protected synchronized String getExternallyRegisteredNamespaceURI(
-            String prefix) {
-        String uri = (String) namespaceMap.get(prefix);
+            final String prefix) {
+        final String uri = (String) namespaceMap.get(prefix);
         return uri == null && parent != null ? parent
                 .getExternallyRegisteredNamespaceURI(prefix) : uri;
     }
 
     /**
-     * Get the prefix associated with the specifed namespace URI.
+     * Gets the prefix associated with the specifed namespace URI.
      * @param namespaceURI the ns URI to check.
      * @return String prefix
      */
-    public synchronized String getPrefix(String namespaceURI) {
-        String prefix = getExternallyRegisteredPrefix(namespaceURI);
+    public synchronized String getPrefix(final String namespaceURI) {
+        final String prefix = getExternallyRegisteredPrefix(namespaceURI);
         return prefix == null && pointer != null ? getPrefix(pointer,
                 namespaceURI) : prefix;
     }
 
     /**
-     * Get the nearest prefix found that matches an externally-registered namespace.
+     * Gets the nearest prefix found that matches an externally-registered namespace.
      * @param namespaceURI the ns URI to check.
      * @return String prefix if found.
      * @since JXPath 1.3
      */
-    protected synchronized String getExternallyRegisteredPrefix(String namespaceURI) {
-        String prefix = (String) reverseMap.get(namespaceURI);
+    protected synchronized String getExternallyRegisteredPrefix(final String namespaceURI) {
+        final String prefix = (String) reverseMap.get(namespaceURI);
         return prefix == null && parent != null ? parent
                 .getExternallyRegisteredPrefix(namespaceURI) : prefix;
     }
@@ -185,13 +185,14 @@ public class NamespaceResolver implements Cloneable, Serializable {
         }
     }
 
+    @Override
     public Object clone() {
         try {
-            NamespaceResolver result = (NamespaceResolver) super.clone();
+            final NamespaceResolver result = (NamespaceResolver) super.clone();
             result.sealed = false;
             return result;
         }
-        catch (CloneNotSupportedException e) {
+        catch (final CloneNotSupportedException e) {
             // Of course, it's supported.
             e.printStackTrace();
             return null;

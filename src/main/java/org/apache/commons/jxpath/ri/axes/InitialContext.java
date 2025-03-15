@@ -28,39 +28,44 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class InitialContext extends EvalContext {
     private boolean started = false;
     private boolean collection;
-    private NodePointer nodePointer;
+    private final NodePointer nodePointer;
 
     /**
      * Create a new InitialContext.
      * @param parentContext parent context
      */
-    public InitialContext(EvalContext parentContext) {
+    public InitialContext(final EvalContext parentContext) {
         super(parentContext);
         nodePointer =
             (NodePointer) parentContext.getCurrentNodePointer().clone();
         if (nodePointer != null) {
             collection =
-                (nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION);
+                nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION;
         }
     }
 
+    @Override
     public Pointer getSingleNodePointer() {
         return nodePointer;
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         return nodePointer;
     }
 
+    @Override
     public Object getValue() {
         return nodePointer.getValue();
     }
 
+    @Override
     public boolean nextNode() {
         return setPosition(position + 1);
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         this.position = position;
         if (collection) {
             if (position >= 1 && position <= nodePointer.getLength()) {
@@ -72,6 +77,7 @@ public class InitialContext extends EvalContext {
         return position == 1;
     }
 
+    @Override
     public boolean nextSet() {
         if (started) {
             return false;

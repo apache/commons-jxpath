@@ -25,7 +25,7 @@ import org.jdom2.Attribute;
  * A Pointer that points to a DOM node.
  */
 public class JDOMAttributePointer extends NodePointer {
-    private Attribute attr;
+    private final Attribute attr;
 
     private static final long serialVersionUID = 8896050354479644028L;
 
@@ -34,63 +34,75 @@ public class JDOMAttributePointer extends NodePointer {
      * @param parent NodePointer parent
      * @param attr JDOM Attribute
      */
-    public JDOMAttributePointer(NodePointer parent, Attribute attr) {
+    public JDOMAttributePointer(final NodePointer parent, final Attribute attr) {
         super(parent);
         this.attr = attr;
     }
 
+    @Override
     public QName getName() {
         return new QName(
             JDOMNodePointer.getPrefix(attr),
             JDOMNodePointer.getLocalName(attr));
     }
 
+    @Override
     public String getNamespaceURI() {
         String uri = attr.getNamespaceURI();
-        if (uri != null && uri.equals("")) {
+        if (uri != null && uri.isEmpty()) {
             uri = null;
         }
         return uri;
     }
 
+    @Override
     public Object getValue() {
         return attr.getValue();
     }
 
+    @Override
     public Object getBaseValue() {
         return attr;
     }
 
+    @Override
     public boolean isCollection() {
         return false;
     }
 
+    @Override
     public int getLength() {
         return 1;
     }
 
+    @Override
     public Object getImmediateNode() {
         return attr;
     }
 
+    @Override
     public boolean isActual() {
         return true;
     }
 
+    @Override
     public boolean isLeaf() {
         return true;
     }
 
-    public void setValue(Object value) {
+    @Override
+    public void setValue(final Object value) {
         attr.setValue((String) TypeUtils.convert(value, String.class));
     }
 
+    @Override
     public void remove() {
         attr.getParent().removeAttribute(attr);
     }
 
+    @Override
     public String asPath() {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
             buffer.append(parent.asPath());
             if (buffer.length() == 0
@@ -103,18 +115,21 @@ public class JDOMAttributePointer extends NodePointer {
         return buffer.toString();
     }
 
+    @Override
     public int hashCode() {
         return System.identityHashCode(attr);
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         return object == this || object instanceof JDOMAttributePointer
                 && ((JDOMAttributePointer) object).attr == attr;
     }
 
+    @Override
     public int compareChildNodePointers(
-            NodePointer pointer1,
-            NodePointer pointer2) {
+            final NodePointer pointer1,
+            final NodePointer pointer2) {
         // Won't happen - attributes don't have children
         return 0;
     }

@@ -19,28 +19,33 @@ package org.apache.commons.jxpath.ri.model;
 import java.util.HashMap;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * JXPATH-104 test.
- * 
  */
-public class EmbeddedColonMapKeysTest extends JXPathTestCase {
+public class EmbeddedColonMapKeysTest extends AbstractJXPathTest {
     private JXPathContext context;
 
+    @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         super.setUp();
-        HashMap m = new HashMap();
+        final HashMap m = new HashMap();
         m.put("foo:key", "value");
         context = JXPathContext.newContext(m);
         context.setLenient(true);
     }
 
+    @Test
     public void testSelectNodes() throws Exception {
         assertXPathValueIterator(context, "/.[@name='foo:key']", list("value"));
         assertXPathValueIterator(context, "/foo:key", list());
     }
 
+    @Test
     public void testSelectSingleNode() throws Exception {
         assertXPathValue(context, "/.[@name='foo:key']", "value");
         assertXPathValueLenient(context, "/foo:key", null);

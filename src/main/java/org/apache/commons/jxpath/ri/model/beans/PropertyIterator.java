@@ -26,12 +26,12 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class PropertyIterator implements NodeIterator {
     private boolean empty = false;
-    private boolean reverse;
-    private String name;
+    private final boolean reverse;
+    private final String name;
     private int startIndex = 0;
     private boolean targetReady = false;
     private int position = 0;
-    private PropertyPointer propertyNodePointer;
+    private final PropertyPointer propertyNodePointer;
     private int startPropertyIndex;
 
     private boolean includeStart = false;
@@ -44,9 +44,9 @@ public class PropertyIterator implements NodeIterator {
      * @param startWith beginning pointer
      */
     public PropertyIterator(
-        PropertyOwnerPointer pointer,
-        String name,
-        boolean reverse,
+        final PropertyOwnerPointer pointer,
+        final String name,
+        final boolean reverse,
         NodePointer startWith) {
         propertyNodePointer =
             (PropertyPointer) pointer.getPropertyPointer().clone();
@@ -81,7 +81,7 @@ public class PropertyIterator implements NodeIterator {
     }
 
     /**
-     * Get the property pointer.
+     * Gets the property pointer.
      * @return NodePointer
      */
     protected NodePointer getPropertyPointer() {
@@ -96,6 +96,7 @@ public class PropertyIterator implements NodeIterator {
         targetReady = false;
     }
 
+    @Override
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (name != null) {
@@ -117,9 +118,9 @@ public class PropertyIterator implements NodeIterator {
         try {
             return propertyNodePointer.getValuePointer();
         }
-        catch (Throwable t) {
+        catch (final Throwable t) {
             propertyNodePointer.handle(t);
-            NullPropertyPointer npp =
+            final NullPropertyPointer npp =
                 new NullPropertyPointer(
                         propertyNodePointer.getImmediateParentPointer());
             npp.setPropertyName(propertyNodePointer.getPropertyName());
@@ -128,20 +129,22 @@ public class PropertyIterator implements NodeIterator {
         }
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         return name == null ? setPositionAllProperties(position) : setPositionIndividualProperty(position);
     }
 
     /**
-     * Set position for an individual property.
+     * Sets position for an individual property.
      * @param position int position
      * @return whether this was a valid position
      */
-    private boolean setPositionIndividualProperty(int position) {
+    private boolean setPositionIndividualProperty(final int position) {
         this.position = position;
         if (position < 1) {
             return false;
@@ -155,7 +158,7 @@ public class PropertyIterator implements NodeIterator {
             return false;
         }
 
-        int length = getLength();
+        final int length = getLength();
         int index;
         if (!reverse) {
             index = position + startIndex;
@@ -184,18 +187,18 @@ public class PropertyIterator implements NodeIterator {
     }
 
     /**
-     * Set position for all properties
+     * Sets position for all properties
      * @param position int position
      * @return whether this was a valid position
      */
-    private boolean setPositionAllProperties(int position) {
+    private boolean setPositionAllProperties(final int position) {
         this.position = position;
         if (position < 1) {
             return false;
         }
 
         int offset;
-        int count = propertyNodePointer.getPropertyCount();
+        final int count = propertyNodePointer.getPropertyCount();
         if (!reverse) {
             int index = 1;
             for (int i = startPropertyIndex; i < count; i++) {
@@ -260,11 +263,11 @@ public class PropertyIterator implements NodeIterator {
      * Prepare for an individual property.
      * @param name property name
      */
-    protected void prepareForIndividualProperty(String name) {
+    protected void prepareForIndividualProperty(final String name) {
         targetReady = true;
         empty = true;
 
-        String[] names = propertyNodePointer.getPropertyNames();
+        final String[] names = propertyNodePointer.getPropertyNames();
         if (!reverse) {
             if (startPropertyIndex == PropertyPointer.UNSPECIFIED_PROPERTY) {
                 startPropertyIndex = 0;
@@ -314,7 +317,7 @@ public class PropertyIterator implements NodeIterator {
         try {
             length = propertyNodePointer.getLength(); // TBD: cache length
         }
-        catch (Throwable t) {
+        catch (final Throwable t) {
             propertyNodePointer.handle(t);
             length = 0;
         }

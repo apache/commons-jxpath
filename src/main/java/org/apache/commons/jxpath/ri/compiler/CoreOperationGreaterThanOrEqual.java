@@ -27,14 +27,16 @@ public class CoreOperationGreaterThanOrEqual extends
      * @param arg1 operand 1
      * @param arg2 operand 2
      */
-    public CoreOperationGreaterThanOrEqual(Expression arg1, Expression arg2) {
+    public CoreOperationGreaterThanOrEqual(final Expression arg1, final Expression arg2) {
         super(new Expression[] { arg1, arg2 });
     }
 
-    protected boolean evaluateCompare(int compare) {
+    @Override
+    protected boolean evaluateCompare(final int compare) {
         return compare >= 0;
     }
 
+    @Override
     public String getSymbol() {
         return ">=";
     }

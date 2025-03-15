@@ -22,8 +22,8 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 
 /**
  * @deprecated - no longer needed, as it is identical to PropertyIterator.
- * @version $Id$
  */
+@Deprecated
 public class DynamicPropertyIterator extends PropertyIterator {
 
     /**
@@ -34,10 +34,10 @@ public class DynamicPropertyIterator extends PropertyIterator {
      * @param startWith beginning child
      */
     public DynamicPropertyIterator(
-            PropertyOwnerPointer pointer,
-            String name,
-            boolean reverse,
-            NodePointer startWith) {
+            final PropertyOwnerPointer pointer,
+            final String name,
+            final boolean reverse,
+            final NodePointer startWith) {
         super(pointer, name, reverse, startWith);
     }
 }

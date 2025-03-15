@@ -25,22 +25,22 @@ import org.apache.commons.jxpath.ri.model.VariablePointer;
  */
 public class InfoSetUtil {
 
-    private static final Double ZERO = new Double(0);
-    private static final Double ONE = new Double(1);
-    private static final Double NOT_A_NUMBER = new Double(Double.NaN);
+    private static final Double ZERO = Double.valueOf(0);
+    private static final Double ONE = Double.valueOf(1);
+    private static final Double NOT_A_NUMBER = Double.valueOf(Double.NaN);
 
     /**
      * Converts the supplied object to String.
      * @param object to convert
      * @return String value
      */
-    public static String stringValue(Object object) {
+    public static String stringValue(final Object object) {
         if (object instanceof String) {
             return (String) object;
         }
         if (object instanceof Number) {
-            double d = ((Number) object).doubleValue();
-            long l = ((Number) object).longValue();
+            final double d = ((Number) object).doubleValue();
+            final long l = ((Number) object).longValue();
             return d == l ? String.valueOf(l) : String.valueOf(d);
         }
         if (object instanceof Boolean) {
@@ -53,8 +53,8 @@ public class InfoSetUtil {
             return stringValue(((NodePointer) object).getValue());
         }
         if (object instanceof EvalContext) {
-            EvalContext ctx = (EvalContext) object;
-            Pointer ptr = ctx.getSingleNodePointer();
+            final EvalContext ctx = (EvalContext) object;
+            final Pointer ptr = ctx.getSingleNodePointer();
             return ptr == null ? "" : stringValue(ptr);
         }
         return String.valueOf(object);
@@ -65,7 +65,7 @@ public class InfoSetUtil {
      * @param object to convert
      * @return Number result
      */
-    public static Number number(Object object) {
+    public static Number number(final Object object) {
         if (object instanceof Number) {
             return (Number) object;
         }
@@ -74,15 +74,15 @@ public class InfoSetUtil {
         }
         if (object instanceof String) {
             try {
-                return new Double((String) object);
+                return Double.valueOf((String) object);
             }
-            catch (NumberFormatException ex) {
+            catch (final NumberFormatException ex) {
                 return NOT_A_NUMBER;
             }
         }
         if (object instanceof EvalContext) {
-            EvalContext ctx = (EvalContext) object;
-            Pointer ptr = ctx.getSingleNodePointer();
+            final EvalContext ctx = (EvalContext) object;
+            final Pointer ptr = ctx.getSingleNodePointer();
             return ptr == null ? NOT_A_NUMBER : number(ptr);
         }
         if (object instanceof NodePointer) {
@@ -96,7 +96,7 @@ public class InfoSetUtil {
      * @param object to convert
      * @return double
      */
-    public static double doubleValue(Object object) {
+    public static double doubleValue(final Object object) {
         if (object instanceof Number) {
             return ((Number) object).doubleValue();
         }
@@ -110,7 +110,7 @@ public class InfoSetUtil {
             try {
                 return Double.parseDouble((String) object);
             }
-            catch (NumberFormatException ex) {
+            catch (final NumberFormatException ex) {
                 return Double.NaN;
             }
         }
@@ -118,8 +118,8 @@ public class InfoSetUtil {
             return doubleValue(((NodePointer) object).getValue());
         }
         if (object instanceof EvalContext) {
-            EvalContext ctx = (EvalContext) object;
-            Pointer ptr = ctx.getSingleNodePointer();
+            final EvalContext ctx = (EvalContext) object;
+            final Pointer ptr = ctx.getSingleNodePointer();
             return ptr == null ? Double.NaN : doubleValue(ptr);
         }
         return doubleValue(stringValue(object));
@@ -130,9 +130,9 @@ public class InfoSetUtil {
      * @param object to convert
      * @return boolean
      */
-    public static boolean booleanValue(Object object) {
+    public static boolean booleanValue(final Object object) {
         if (object instanceof Number) {
-            double value = ((Number) object).doubleValue();
+            final double value = ((Number) object).doubleValue();
             final int negZero = -0;
             return value != 0 && value != negZero && !Double.isNaN(value);
         }
@@ -140,9 +140,9 @@ public class InfoSetUtil {
             return ((Boolean) object).booleanValue();
         }
         if (object instanceof EvalContext) {
-            EvalContext ctx = (EvalContext) object;
-            Pointer ptr = ctx.getSingleNodePointer();
-            return ptr == null ? false : booleanValue(ptr);
+            final EvalContext ctx = (EvalContext) object;
+            final Pointer ptr = ctx.getSingleNodePointer();
+            return ptr != null && booleanValue(ptr);
         }
         if (object instanceof String) {
             return ((String) object).length() != 0;

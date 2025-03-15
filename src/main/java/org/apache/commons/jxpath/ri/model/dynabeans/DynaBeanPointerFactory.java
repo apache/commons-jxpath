@@ -25,25 +25,28 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
 
 /**
  * Implements NodePointerFactory for DynaBeans.
- * See <a href="http://commons.apache.org/beanutils/">
+ * See <a href="https://commons.apache.org/beanutils/">
  * Apache Commons BeanUtils
  * </a>
  */
 public class DynaBeanPointerFactory implements NodePointerFactory {
 
-    /** factory order constant */
+    /** Factory order constant */
     public static final int DYNA_BEAN_POINTER_FACTORY_ORDER = 700;
 
+    @Override
     public int getOrder() {
         return DYNA_BEAN_POINTER_FACTORY_ORDER;
     }
 
-    public NodePointer createNodePointer(QName name, Object bean, Locale locale) {
+    @Override
+    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
         return bean instanceof DynaBean ? new DynaBeanPointer(name, (DynaBean) bean, locale) : null;
     }
 
-    public NodePointer createNodePointer(NodePointer parent, QName name,
-            Object bean) {
+    @Override
+    public NodePointer createNodePointer(final NodePointer parent, final QName name,
+            final Object bean) {
         return bean instanceof DynaBean ? new DynaBeanPointer(parent, name, (DynaBean) bean) : null;
     }
 }

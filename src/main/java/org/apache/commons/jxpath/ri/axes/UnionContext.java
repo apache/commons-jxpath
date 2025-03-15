@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * of a union operation like (a | b)
  */
 public class UnionContext extends NodeSetContext {
-    private EvalContext[] contexts;
+    private final EvalContext[] contexts;
     private boolean prepared;
 
     /**
@@ -37,25 +37,26 @@ public class UnionContext extends NodeSetContext {
      * @param parentContext parent context
      * @param contexts child contexts
      */
-    public UnionContext(EvalContext parentContext, EvalContext[] contexts) {
+    public UnionContext(final EvalContext parentContext, final EvalContext[] contexts) {
         super(parentContext, new BasicNodeSet());
         this.contexts = contexts;
     }
 
+    @Override
     public int getDocumentOrder() {
         return contexts.length > 1 ? 1 : super.getDocumentOrder();
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         if (!prepared) {
             prepared = true;
-            BasicNodeSet nodeSet = (BasicNodeSet) getNodeSet();
-            ArrayList pointers = new ArrayList();
-            for (int i = 0; i < contexts.length; i++) {
-                EvalContext ctx = contexts[i];
+            final BasicNodeSet nodeSet = (BasicNodeSet) getNodeSet();
+            final ArrayList pointers = new ArrayList();
+            for (final EvalContext ctx : contexts) {
                 while (ctx.nextSet()) {
                     while (ctx.nextNode()) {
-                        NodePointer ptr = ctx.getCurrentNodePointer();
+                        final NodePointer ptr = ctx.getCurrentNodePointer();
                         if (!pointers.contains(ptr)) {
                             pointers.add(ptr);
                         }
@@ -64,7 +65,7 @@ public class UnionContext extends NodeSetContext {
             }
             sortPointers(pointers);
 
-            for (Iterator it = pointers.iterator(); it.hasNext();) {
+            for (final Iterator it = pointers.iterator(); it.hasNext();) {
                 nodeSet.add((Pointer) it.next());
             }
         }

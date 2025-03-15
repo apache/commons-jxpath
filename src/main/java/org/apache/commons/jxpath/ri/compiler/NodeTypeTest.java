@@ -21,24 +21,25 @@ import org.apache.commons.jxpath.ri.Compiler;
 /**
  */
 public class NodeTypeTest extends NodeTest {
-    private int nodeType;
+    private final int nodeType;
 
     /**
      * Create a new NodeTypeTest.
      * @param nodeType to match
      */
-    public NodeTypeTest(int nodeType) {
+    public NodeTypeTest(final int nodeType) {
         this.nodeType = nodeType;
     }
 
     /**
-     * Get the nodeType.
+     * Gets the nodeType.
      * @return int
      */
     public int getNodeType() {
         return nodeType;
     }
 
+    @Override
     public String toString() {
         return nodeTypeToString(nodeType) + "()";
     }
@@ -48,7 +49,7 @@ public class NodeTypeTest extends NodeTest {
      * @param code int
      * @return String
      */
-    public static String nodeTypeToString(int code) {
+    public static String nodeTypeToString(final int code) {
         switch (code) {
             case Compiler.NODE_TYPE_NODE :
                 return "node";

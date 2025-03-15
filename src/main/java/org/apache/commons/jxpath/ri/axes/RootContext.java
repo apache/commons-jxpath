@@ -28,8 +28,8 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that is used to hold the root node for the path traversal.
  */
 public class RootContext extends EvalContext {
-    private JXPathContextReferenceImpl jxpathContext;
-    private NodePointer pointer;
+    private final JXPathContextReferenceImpl jxpathContext;
+    private final NodePointer pointer;
     private Object[] registers;
     private int availableRegister = 0;
     public static final Object UNKNOWN_VALUE = new Object();
@@ -40,8 +40,8 @@ public class RootContext extends EvalContext {
      * @param jxpathContext context
      * @param pointer pointer
      */
-    public RootContext(JXPathContextReferenceImpl jxpathContext,
-            NodePointer pointer) {
+    public RootContext(final JXPathContextReferenceImpl jxpathContext,
+            final NodePointer pointer) {
         super(null);
         this.jxpathContext = jxpathContext;
         this.pointer = pointer;
@@ -50,52 +50,60 @@ public class RootContext extends EvalContext {
         }
     }
 
+    @Override
     public JXPathContext getJXPathContext() {
         return jxpathContext;
     }
 
+    @Override
     public RootContext getRootContext() {
         return this;
     }
 
     /**
-     * Get absolute root context
+     * Gets absolute root context
      * @return EvalContext
      */
     public EvalContext getAbsoluteRootContext() {
         return jxpathContext.getAbsoluteRootContext();
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         return pointer;
     }
 
+    @Override
     public Object getValue() {
         return pointer;
     }
 
+    @Override
     public int getCurrentPosition() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public boolean nextNode() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public boolean nextSet() {
         throw new UnsupportedOperationException();
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * Get a context that points to the specified object.
+     * Gets a context that points to the specified object.
      * @param constant object
      * @return EvalContext
      */
-    public EvalContext getConstantContext(Object constant) {
+    public EvalContext getConstantContext(final Object constant) {
         if (constant instanceof NodeSet) {
             return new NodeSetContext(
                 new RootContext(jxpathContext, null),
@@ -116,11 +124,11 @@ public class RootContext extends EvalContext {
     }
 
     /**
-     * Get variable context.
+     * Gets variable context.
      * @param variableName variable name
      * @return EvalContext
      */
-    public EvalContext getVariableContext(QName variableName) {
+    public EvalContext getVariableContext(final QName variableName) {
         return new InitialContext(
             new RootContext(
                 jxpathContext,
@@ -128,21 +136,21 @@ public class RootContext extends EvalContext {
     }
 
     /**
-     * Get the specified function from the context.
+     * Gets the specified function from the context.
      * @param functionName QName
      * @param parameters Object[]
      * @return Function
      */
-    public Function getFunction(QName functionName, Object[] parameters) {
+    public Function getFunction(final QName functionName, final Object[] parameters) {
         return jxpathContext.getFunction(functionName, parameters);
     }
 
     /**
-     * Get a registered value.
+     * Gets a registered value.
      * @param id int
      * @return Object
      */
-    public Object getRegisteredValue(int id) {
+    public Object getRegisteredValue(final int id) {
         if (registers == null || id >= MAX_REGISTER || id == -1) {
             return UNKNOWN_VALUE;
         }
@@ -150,11 +158,11 @@ public class RootContext extends EvalContext {
     }
 
     /**
-     * Set the next registered value.
+     * Sets the next registered value.
      * @param value Object
      * @return the id that can reclaim value.
      */
-    public int setRegisteredValue(Object value) {
+    public int setRegisteredValue(final Object value) {
         if (registers == null) {
             registers = new Object[MAX_REGISTER];
             for (int i = 0; i < MAX_REGISTER; i++) {
@@ -169,6 +177,7 @@ public class RootContext extends EvalContext {
         return availableRegister - 1;
     }
 
+    @Override
     public String toString() {
         return super.toString() + ":" + pointer.asPath();
     }

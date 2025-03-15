@@ -17,7 +17,7 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 /**
- * Captures the <code>foo[@name=<i>expr</i>]</code> expression. These
+ * Captures the {@code foo[@name=<em>expr</em>]} expression. These
  * expressions are handled in a special way when applied to beans
  * or maps.
  */
@@ -28,18 +28,19 @@ public class NameAttributeTest extends CoreOperationEqual {
      * @param namePath Expression
      * @param nameValue Expression
      */
-    public NameAttributeTest(Expression namePath, Expression nameValue) {
+    public NameAttributeTest(final Expression namePath, final Expression nameValue) {
         super(namePath, nameValue);
     }
 
     /**
-     * Get the name test expression.
+     * Gets the name test expression.
      * @return Expression
      */
     public Expression getNameTestExpression() {
         return args[1];
     }
 
+    @Override
     public boolean computeContextDependent() {
         return true;
     }

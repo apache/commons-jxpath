@@ -18,8 +18,6 @@ package org.apache.commons.jxpath.ri.axes;
 
 import java.util.HashMap;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.NestedTestBean;
 import org.apache.commons.jxpath.Pointer;
@@ -37,14 +35,22 @@ import org.apache.commons.jxpath.ri.model.dom.DOMNodePointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
 
-public class SimplePathInterpreterTest extends TestCase {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public class SimplePathInterpreterTest  {
 
     private TestBeanWithNode bean;
     private JXPathContext context;
 
+    @BeforeEach
     protected void setUp() throws Exception {
         bean = TestBeanWithNode.createTestBeanWithDOM();
-        HashMap submap = new HashMap();
+        final HashMap submap = new HashMap();
         submap.put("key", new NestedTestBean("Name 9"));
         submap.put("strings", bean.getNestedBean().getStrings());
         bean.getList().add(new int[]{1, 2});
@@ -52,7 +58,7 @@ public class SimplePathInterpreterTest extends TestCase {
         bean.getMap().put("Key3",
             new Object[]{
                 new NestedTestBean("some"),
-                new Integer(2),
+                Integer.valueOf(2),
                 bean.getVendor(),
                 submap
             }
@@ -65,17 +71,18 @@ public class SimplePathInterpreterTest extends TestCase {
         context.setFactory(new TestBeanFactory());
     }
 
+    @Test
     public void testDoStepNoPredicatesPropertyOwner() {
         // Existing scalar property
         assertValueAndPointer("/int",
-                new Integer(1),
+                Integer.valueOf(1),
                 "/int",
                 "Bb",
                 "BbB");
 
         // self::
         assertValueAndPointer("/./int",
-                new Integer(1),
+                Integer.valueOf(1),
                 "/int",
                 "Bb",
                 "BbB");
@@ -87,7 +94,7 @@ public class SimplePathInterpreterTest extends TestCase {
 
         // existingProperty/existingScalarProperty
         assertValueAndPointer("/nestedBean/int",
-                new Integer(1),
+                Integer.valueOf(1),
                 "/nestedBean/int",
                 "BbBb",
                 "BbBbB");
@@ -111,7 +118,7 @@ public class SimplePathInterpreterTest extends TestCase {
 
         // Existing property by search in collection
         assertValueAndPointer("/list/int",
-                new Integer(1),
+                Integer.valueOf(1),
                 "/list[3]/int",
                 "BbBb",
                 "BbBbB");
@@ -156,6 +163,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbC");
     }
 
+    @Test
     public void testDoStepNoPredicatesStandard() {
         // Existing DOM node
         assertValueAndPointer("/vendor/location/address/city",
@@ -179,6 +187,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbMMMMn");
     }
 
+    @Test
     public void testDoStepPredicatesPropertyOwner() {
         // missingProperty[@name=foo]
         assertNullPointer("/foo[@name='foo']",
@@ -191,6 +200,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "Bn");
     }
 
+    @Test
     public void testDoStepPredicatesStandard() {
         // Looking for an actual XML attribute called "name"
         // nodeProperty/name[@name=value]
@@ -223,17 +233,18 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbMM");
     }
 
+    @Test
     public void testDoPredicateName() {
         // existingProperty[@name=existingProperty]
         assertValueAndPointer("/nestedBean[@name='int']",
-                new Integer(1),
+                Integer.valueOf(1),
                 "/nestedBean/int",
                 "BbBb",
                 "BbBbB");
 
         // /self::node()[@name=existingProperty]
         assertValueAndPointer("/.[@name='int']",
-                new Integer(1),
+                Integer.valueOf(1),
                 "/int",
                 "Bb",
                 "BbB");
@@ -263,7 +274,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "/map[@name='Key3']",
                 "BbDd",
                 "BbDdC");
-                
+
         // map[@name=missingProperty]
         assertNullPointer("/map[@name='foo']",
                 "/map[@name='foo']",
@@ -359,6 +370,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbDdM");
     }
 
+    @Test
     public void testDoPredicatesStandard() {
         // bean/map/collection/node
         assertValueAndPointer("map[@name='Key3'][@name='fruitco']",
@@ -400,6 +412,7 @@ public class SimplePathInterpreterTest extends TestCase {
                 "BbMM");
     }
 
+    @Test
     public void testDoPredicateIndex() {
         // Existing dynamic property + existing property + index
         assertValueAndPointer("/map[@name='Key2'][@name='strings'][2]",
@@ -427,7 +440,7 @@ public class SimplePathInterpreterTest extends TestCase {
 
         // map[@name=collectionProperty][index]
         assertValueAndPointer("/map[@name='Key3'][2]",
-                new Integer(2),
+                Integer.valueOf(2),
                 "/map[@name='Key3'][2]",
                 "BbDd",
                 "BbDdB");
@@ -456,7 +469,7 @@ public class SimplePathInterpreterTest extends TestCase {
 
         // Existing dynamic property + indexing
         assertValueAndPointer("/map[@name='Key3'][2]",
-                new Integer(2),
+                Integer.valueOf(2),
                 "/map[@name='Key3'][2]",
                 "BbDd",
                 "BbDdB");
@@ -475,7 +488,7 @@ public class SimplePathInterpreterTest extends TestCase {
 
         // collectionProperty[index]
         assertValueAndPointer("/integers[2]",
-                new Integer(2),
+                Integer.valueOf(2),
                 "/integers[2]",
                 "Bb",
                 "BbB");
@@ -489,7 +502,7 @@ public class SimplePathInterpreterTest extends TestCase {
 
         // existingProperty[index]/existingProperty
         assertValueAndPointer("/list[3]/int",
-                new Integer(1),
+                Integer.valueOf(1),
                 "/list[3]/int",
                 "BbBb",
                 "BbBbB");
@@ -533,19 +546,20 @@ public class SimplePathInterpreterTest extends TestCase {
 
         // scalarPropertyAsCollection[index]
         assertValueAndPointer("/int[1]",
-                new Integer(1),
+                Integer.valueOf(1),
                 "/int",
                 "Bb",
                 "BbB");
 
         // scalarPropertyAsCollection[index]
         assertValueAndPointer(".[1]/int",
-                new Integer(1),
+                Integer.valueOf(1),
                 "/int",
                 "Bb",
                 "BbB");
     }
 
+    @Test
     public void testInterpretExpressionPath() {
         context.getVariables().declareVariable("array", new String[]{"Value1"});
         context.getVariables().declareVariable("testnull", new TestNull());
@@ -556,8 +570,8 @@ public class SimplePathInterpreterTest extends TestCase {
     }
 
     private void assertValueAndPointer(
-            String path, Object expectedValue, String expectedPath,
-            String expectedSignature)
+            final String path, final Object expectedValue, final String expectedPath,
+            final String expectedSignature)
     {
         assertValueAndPointer(
             path,
@@ -566,42 +580,42 @@ public class SimplePathInterpreterTest extends TestCase {
             expectedSignature,
             expectedSignature);
     }
-    
+
     private void assertValueAndPointer(
-            String path, Object expectedValue, String expectedPath,
-            String expectedSignature, String expectedValueSignature)
+            final String path, final Object expectedValue, final String expectedPath,
+            final String expectedSignature, final String expectedValueSignature)
     {
-        Object value = context.getValue(path);
-        assertEquals("Checking value: " + path, expectedValue, value);
+        final Object value = context.getValue(path);
+        assertEquals(expectedValue, value, "Checking value: " + path);
 
-        Pointer pointer = context.getPointer(path);
-        assertEquals("Checking pointer: " + path,
-                expectedPath, pointer.toString());
+        final Pointer pointer = context.getPointer(path);
+        assertEquals(expectedPath, pointer.toString(),
+                "Checking pointer: " + path);
 
-        assertEquals("Checking signature: " + path,
-                expectedSignature, pointerSignature(pointer));
-        
-        Pointer vPointer = ((NodePointer) pointer).getValuePointer();
-        assertEquals("Checking value pointer signature: " + path,
-                expectedValueSignature, pointerSignature(vPointer));
+        assertEquals(expectedSignature, pointerSignature(pointer),
+                "Checking signature: " + path);
+
+        final Pointer vPointer = ((NodePointer) pointer).getValuePointer();
+        assertEquals(expectedValueSignature, pointerSignature(vPointer),
+                "Checking value pointer signature: " + path);
     }
 
-    private void assertNullPointer(String path, String expectedPath,
-            String expectedSignature)
+    private void assertNullPointer(final String path, final String expectedPath,
+            final String expectedSignature)
     {
-        Pointer pointer = context.getPointer(path);
-        assertNotNull("Null path exists: " + path,
-                    pointer);
-        assertEquals("Null path as path: " + path,
-                    expectedPath, pointer.asPath());
-        assertEquals("Checking Signature: " + path,
-                    expectedSignature, pointerSignature(pointer));
-                
-        Pointer vPointer = ((NodePointer) pointer).getValuePointer();
-        assertTrue("Null path is null: " + path,
-                    !((NodePointer) vPointer).isActual());
-        assertEquals("Checking value pointer signature: " + path,
-                    expectedSignature + "N", pointerSignature(vPointer));
+        final Pointer pointer = context.getPointer(path);
+        assertNotNull(pointer,
+                "Null path exists: " + path);
+        assertEquals(expectedPath, pointer.asPath(),
+                "Null path as path: " + path);
+        assertEquals(expectedSignature, pointerSignature(pointer),
+                "Checking Signature: " + path);
+
+        final Pointer vPointer = ((NodePointer) pointer).getValuePointer();
+        assertFalse(((NodePointer) vPointer).isActual(),
+                "Null path is null: " + path);
+        assertEquals(expectedSignature + "N", pointerSignature(vPointer),
+                "Checking value pointer signature: " + path);
     }
 
     /**
@@ -609,7 +623,7 @@ public class SimplePathInterpreterTest extends TestCase {
      * we will get a signature which will contain a single character
      * per pointer in the chain, representing that pointer's type.
      */
-    private String pointerSignature(Pointer pointer) {
+    private String pointerSignature(final Pointer pointer) {
         if (pointer == null) {
             return "";
         }
@@ -628,7 +642,7 @@ public class SimplePathInterpreterTest extends TestCase {
         else {
             System.err.println("UNKNOWN TYPE: " + pointer.getClass());
         }
-        NodePointer parent = 
+        final NodePointer parent =
             ((NodePointer) pointer).getImmediateParentPointer();
         return pointerSignature(parent) + type;
     }

@@ -18,15 +18,16 @@ package org.apache.commons.jxpath.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
- * Port of class loading methods from <code>org.apache.commons.lang.ClassUtils</code> from
+ * Port of class loading methods from {@code org.apache.commons.lang3.ClassUtils} from
  * the Apache Commons Lang Component. Some adjustments made to remove dependency on
- * <code>org.apache.commons.lang.StringUtils</code>. Also modified to fall back on the
+ * {@code org.apache.commons.lang3.StringUtils}. Also modified to fall back on the
  * current class loader when an attempt to load a class with the context class loader
- * results in a <code>java.lang.ClassNotFoundException</code>.
+ * results in a {@code java.lang.ClassNotFoundException}.
  *
- * @see org.apache.commons.lang.ClassUtils
+ * See org.apache.commons.lang3.ClassUtils
  */
 public class ClassLoaderUtil {
     /**
@@ -40,7 +41,7 @@ public class ClassLoaderUtil {
      * @param primitive Canonical name of primitive type
      * @param abbreviation Corresponding abbreviation of primitive type
      */
-    private static void addAbbreviation(String primitive, String abbreviation) {
+    private static void addAbbreviation(final String primitive, final String abbreviation) {
         abbreviationMap.put(primitive, abbreviation);
     }
 
@@ -59,23 +60,22 @@ public class ClassLoaderUtil {
     }
 
     // Class loading
-    // ----------------------------------------------------------------------
     /**
-     * Returns the class represented by <code>className</code> using the
-     * <code>classLoader</code>.  This implementation supports names like
-     * "<code>java.lang.String[]</code>" as well as "<code>[Ljava.lang.String;</code>".
+     * Returns the class represented by {@code className} using the
+     * {@code classLoader}.  This implementation supports names like
+     * "{@code java.lang.String[]}" as well as "{@code [Ljava.lang.String;}".
      *
      * @param classLoader  the class loader to use to load the class
      * @param className  the class name
      * @param initialize  whether the class must be initialized
-     * @return the class represented by <code>className</code> using the <code>classLoader</code>
+     * @return the class represented by {@code className} using the {@code classLoader}
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(ClassLoader classLoader, String className, boolean initialize)
+    public static Class getClass(final ClassLoader classLoader, final String className, final boolean initialize)
         throws ClassNotFoundException {
         Class clazz;
         if (abbreviationMap.containsKey(className)) {
-            String clsName = "[" + abbreviationMap.get(className);
+            final String clsName = "[" + abbreviationMap.get(className);
             clazz = Class.forName(clsName, initialize, classLoader).getComponentType();
         }
         else {
@@ -85,54 +85,54 @@ public class ClassLoaderUtil {
     }
 
     /**
-     * Returns the (initialized) class represented by <code>className</code>
-     * using the <code>classLoader</code>.  This implementation supports names
-     * like "<code>java.lang.String[]</code>" as well as
-     * "<code>[Ljava.lang.String;</code>".
+     * Returns the (initialized) class represented by {@code className}
+     * using the {@code classLoader}.  This implementation supports names
+     * like "{@code java.lang.String[]}" as well as
+     * "{@code [Ljava.lang.String;}".
      *
      * @param classLoader  the class loader to use to load the class
      * @param className  the class name
-     * @return the class represented by <code>className</code> using the <code>classLoader</code>
+     * @return the class represented by {@code className} using the {@code classLoader}
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(ClassLoader classLoader, String className) throws ClassNotFoundException {
+    public static Class getClass(final ClassLoader classLoader, final String className) throws ClassNotFoundException {
         return getClass(classLoader, className, true);
     }
 
     /**
-     * Returns the (initialized) class represented by <code>className</code>
+     * Returns the (initialized) class represented by {@code className}
      * using the current thread's context class loader. This implementation
-     * supports names like "<code>java.lang.String[]</code>" as well as
-     * "<code>[Ljava.lang.String;</code>".
+     * supports names like "{@code java.lang.String[]}" as well as
+     * "{@code [Ljava.lang.String;}".
      *
      * @param className  the class name
-     * @return the class represented by <code>className</code> using the current thread's context class loader
+     * @return the class represented by {@code className} using the current thread's context class loader
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(String className) throws ClassNotFoundException {
+    public static Class getClass(final String className) throws ClassNotFoundException {
         return getClass(className, true);
     }
 
     /**
-     * Returns the class represented by <code>className</code> using the
+     * Returns the class represented by {@code className} using the
      * current thread's context class loader. This implementation supports
-     * names like "<code>java.lang.String[]</code>" as well as
-     * "<code>[Ljava.lang.String;</code>".
+     * names like "{@code java.lang.String[]}" as well as
+     * "{@code [Ljava.lang.String;}".
      *
      * @param className  the class name
      * @param initialize  whether the class must be initialized
-     * @return the class represented by <code>className</code> using the current thread's context class loader
+     * @return the class represented by {@code className} using the current thread's context class loader
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(String className, boolean initialize) throws ClassNotFoundException {
-        ClassLoader contextCL = Thread.currentThread().getContextClassLoader();
-        ClassLoader currentCL = ClassLoaderUtil.class.getClassLoader();
+    public static Class getClass(final String className, final boolean initialize) throws ClassNotFoundException {
+        final ClassLoader contextCL = Thread.currentThread().getContextClassLoader();
+        final ClassLoader currentCL = ClassLoaderUtil.class.getClassLoader();
         if (contextCL != null) {
             try {
                 return getClass(contextCL, className, initialize);
             }
-            catch (ClassNotFoundException e) {//NOPMD
-                // ignore this exception and try the current class loader.
+            catch (final ClassNotFoundException ignore) { // NOPMD
+                // ignore this exception and try the current class loader
             }
         }
         return getClass(currentCL, className, initialize);
@@ -145,16 +145,14 @@ public class ClassLoaderUtil {
      * @return the converted name
      */
     private static String toCanonicalName(String className) {
-        if (className == null) {
-            throw new RuntimeException("Argument className was null.");
-        }
-        else if (className.endsWith("[]")) {
-            StringBuffer classNameBuffer = new StringBuffer();
+        Objects.requireNonNull(className, "className");
+        if (className.endsWith("[]")) {
+            final StringBuilder classNameBuffer = new StringBuilder();
             while (className.endsWith("[]")) {
                 className = className.substring(0, className.length() - 2);
                 classNameBuffer.append("[");
             }
-            String abbreviation = (String) abbreviationMap.get(className);
+            final String abbreviation = (String) abbreviationMap.get(className);
             if (abbreviation != null) {
                 classNameBuffer.append(abbreviation);
             }

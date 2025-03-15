@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "namespace::" axis.
  */
 public class NamespaceContext extends EvalContext {
-    private NodeTest nodeTest;
+    private final NodeTest nodeTest;
     private boolean setStarted = false;
     private NodeIterator iterator;
     private NodePointer currentNodePointer;
@@ -36,22 +36,25 @@ public class NamespaceContext extends EvalContext {
      * @param parentContext represents the previous step on the path
      * @param nodeTest is the name of the namespace we are looking for
      */
-    public NamespaceContext(EvalContext parentContext, NodeTest nodeTest) {
+    public NamespaceContext(final EvalContext parentContext, final NodeTest nodeTest) {
         super(parentContext);
         this.nodeTest = nodeTest;
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
+    @Override
     public void reset() {
         setStarted = false;
         iterator = null;
         super.reset();
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         if (position < getCurrentPosition()) {
             reset();
         }
@@ -64,6 +67,7 @@ public class NamespaceContext extends EvalContext {
         return true;
     }
 
+    @Override
     public boolean nextNode() {
         super.setPosition(getCurrentPosition() + 1);
         if (!setStarted) {
@@ -72,8 +76,8 @@ public class NamespaceContext extends EvalContext {
                 return false;
             }
 
-            NodeNameTest nodeNameTest = (NodeNameTest) nodeTest;
-            QName testName = nodeNameTest.getNodeName();
+            final NodeNameTest nodeNameTest = (NodeNameTest) nodeTest;
+            final QName testName = nodeNameTest.getNodeName();
             if (testName.getPrefix() != null) {
                 return false;
             }

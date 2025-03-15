@@ -30,9 +30,9 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * in the chain.
  */
 public class BeanPointer extends PropertyOwnerPointer {
-    private QName name;
-    private Object bean;
-    private JXPathBeanInfo beanInfo;
+    private final QName name;
+    private final Object bean;
+    private final JXPathBeanInfo beanInfo;
 
     private static final long serialVersionUID = -8227317938284982440L;
 
@@ -43,8 +43,8 @@ public class BeanPointer extends PropertyOwnerPointer {
      * @param beanInfo JXPathBeanInfo
      * @param locale Locale
      */
-    public BeanPointer(QName name, Object bean, JXPathBeanInfo beanInfo,
-            Locale locale) {
+    public BeanPointer(final QName name, final Object bean, final JXPathBeanInfo beanInfo,
+            final Locale locale) {
         super(null, locale);
         this.name = name;
         this.bean = bean;
@@ -58,22 +58,25 @@ public class BeanPointer extends PropertyOwnerPointer {
      * @param bean pointed
      * @param beanInfo JXPathBeanInfo
      */
-    public BeanPointer(NodePointer parent, QName name, Object bean,
-            JXPathBeanInfo beanInfo) {
+    public BeanPointer(final NodePointer parent, final QName name, final Object bean,
+            final JXPathBeanInfo beanInfo) {
         super(parent);
         this.name = name;
         this.bean = bean;
         this.beanInfo = beanInfo;
     }
 
+    @Override
     public PropertyPointer getPropertyPointer() {
         return new BeanPropertyPointer(this, beanInfo);
     }
 
+    @Override
     public QName getName() {
         return name;
     }
 
+    @Override
     public Object getBaseValue() {
         return bean;
     }
@@ -82,6 +85,7 @@ public class BeanPointer extends PropertyOwnerPointer {
      * {@inheritDoc}
      * @return false
      */
+    @Override
     public boolean isCollection() {
         return false;
     }
@@ -90,21 +94,25 @@ public class BeanPointer extends PropertyOwnerPointer {
      * {@inheritDoc}
      * @return 1
      */
+    @Override
     public int getLength() {
         return 1;
     }
 
+    @Override
     public boolean isLeaf() {
-        Object value = getNode();
+        final Object value = getNode();
         return value == null
             || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 
+    @Override
     public int hashCode() {
         return name == null ? 0 : name.hashCode();
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         if (object == this) {
             return true;
         }
@@ -113,18 +121,18 @@ public class BeanPointer extends PropertyOwnerPointer {
             return false;
         }
 
-        BeanPointer other = (BeanPointer) object;
+        final BeanPointer other = (BeanPointer) object;
         if (parent != other.parent && (parent == null || !parent.equals(other.parent))) {
             return false;
         }
 
-        if ((name == null && other.name != null)
-                || (name != null && !name.equals(other.name))) {
+        if (name == null && other.name != null
+                || name != null && !name.equals(other.name)) {
             return false;
         }
 
-        int iThis = (index == WHOLE_COLLECTION ? 0 : index);
-        int iOther = (other.index == WHOLE_COLLECTION ? 0 : other.index);
+        final int iThis = index == WHOLE_COLLECTION ? 0 : index;
+        final int iOther = other.index == WHOLE_COLLECTION ? 0 : other.index;
         if (iThis != iOther) {
             return false;
         }
@@ -144,6 +152,7 @@ public class BeanPointer extends PropertyOwnerPointer {
      * If the bean is a primitive value, the value itself.
      * Otherwise - an empty string.
      */
+    @Override
     public String asPath() {
         if (parent != null) {
             return super.asPath();

@@ -49,8 +49,8 @@ public abstract class AbstractFactory {
      *
      * @return true if the object was successfully created
      */
-    public boolean createObject(JXPathContext context, Pointer pointer,
-                                Object parent, String name, int index) {
+    public boolean createObject(final JXPathContext context, final Pointer pointer,
+                                final Object parent, final String name, final int index) {
         return false;
     }
 
@@ -60,10 +60,9 @@ public abstract class AbstractFactory {
      * @param context hosts variable pools. See
      * {@link JXPathContext#getVariables() JXPathContext.getVariables()}
      * @param name is the name of the variable without the "$" sign
-     *
      * @return true if the variable was successfully defined
      */
-    public boolean declareVariable(JXPathContext context, String name) {
+    public boolean declareVariable(final JXPathContext context, final String name) {
         return false;
     }
 }

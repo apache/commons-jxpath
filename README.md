@@ -43,8 +43,8 @@
 Apache Commons JXPath
 ===================
 
-[![Build Status](https://travis-ci.org/apache/commons-jxpath.svg?branch=trunk)](https://travis-ci.org/apache/commons-jxpath)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/commons-jxpath/commons-jxpath/badge.svg)](https://maven-badges.herokuapp.com/maven-central/commons-jxpath/commons-jxpath/)
+[![Java CI](https://github.com/apache/commons-jxpath/actions/workflows/maven.yml/badge.svg)](https://github.com/apache/commons-jxpath/actions/workflows/maven.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/commons-jxpath/commons-jxpath?label=Maven%20Central)](https://search.maven.org/artifact/commons-jxpath/commons-jxpath)
 
 A Java-based implementation of XPath 1.0 that, in addition to XML processing, can inspect/modify Java object graphs (the library's explicit purpose) and even mixed Java/XML structures.
 
@@ -53,13 +53,13 @@ Documentation
 
 More information can be found on the [Apache Commons JXPath homepage](https://commons.apache.org/proper/commons-jxpath).
 The [Javadoc](https://commons.apache.org/proper/commons-jxpath/javadocs/api-release) can be browsed.
-Questions related to the usage of Apache Commons JXPath should be posted to the [user mailing list][ml].
+Questions related to the usage of Apache Commons JXPath should be posted to the [user mailing list](https://commons.apache.org/mail-lists.html).
 
 Where can I get the latest release?
 -----------------------------------
 You can download source and binaries from our [download page](https://commons.apache.org/proper/commons-jxpath/download_jxpath.cgi).
 
-Alternatively you can pull it from the central Maven repositories:
+Alternatively, you can pull it from the central Maven repositories:
 
 ```xml
 <dependency>

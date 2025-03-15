@@ -17,56 +17,56 @@
 package org.apache.commons.jxpath.issues;
 
 import java.io.StringReader;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class JXPath113Test extends JXPathTestCase
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class JXPath113Test extends AbstractJXPathTest
 {
 
+    @Test
     public void testIssue113() throws Exception
     {
-        Document doc = JAXP.getDocument("<xml/>");
-        JXPathContext context = JXPathContext.newContext(doc);
-        context.selectNodes("//following-sibling::node()");
+        final Document doc = JAXP.getDocument("<xml/>");
+        final JXPathContext context = JXPathContext.newContext(doc);
+
+        List result = context.selectNodes("//following-sibling::node()");
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
 
     static class JAXP
     {
 
-        public static Document getDocument(String xml) throws Exception
+        public static Document getDocument(final String xml) throws Exception
         {
             return getDocument(new InputSource(new StringReader(xml)));
         }
 
-        public static Document getDocument(InputSource is) throws Exception
+        public static Document getDocument(final InputSource is) throws Exception
         {
 
             final DocumentBuilder builder = getDocumentBuilder();
             return builder.parse(is);
         }
 
-        private static DocumentBuilder getDocumentBuilder()
-        {
-            try
-            {
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                factory.setValidating(false);
-                factory.setNamespaceAware(true);
-                factory.setExpandEntityReferences(false);
-                return factory.newDocumentBuilder();
-            }
-            catch (ParserConfigurationException e)
-            {
-                throw new Error("JAXP config error:" + e.getMessage(), e);
-            }
-
+        private static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(false);
+            factory.setNamespaceAware(true);
+            factory.setExpandEntityReferences(false);
+            return factory.newDocumentBuilder();
         }
     }
 

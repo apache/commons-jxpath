@@ -17,22 +17,26 @@
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test for the protection mechanism that stops infinite recursion
- * in descent down a recursive graph. 
+ * in descent down a recursive graph.
  */
-public class RecursiveAxesTest extends JXPathTestCase {
+public class RecursiveAxesTest extends AbstractJXPathTest {
 
     private RecursiveBean bean;
     private JXPathContext context;
 
+    @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         bean = new RecursiveBean("zero");
-        RecursiveBean bean1 = new RecursiveBean("one");
-        RecursiveBean bean2 = new RecursiveBean("two");
-        RecursiveBean bean3 = new RecursiveBean("three");
+        final RecursiveBean bean1 = new RecursiveBean("one");
+        final RecursiveBean bean2 = new RecursiveBean("two");
+        final RecursiveBean bean3 = new RecursiveBean("three");
         bean.setFirst(bean1);
         bean1.setFirst(bean2);
         bean2.setFirst(bean1);
@@ -41,6 +45,7 @@ public class RecursiveAxesTest extends JXPathTestCase {
         context = JXPathContext.newContext(null, bean);
     }
 
+    @Test
     public void testInfiniteDescent() {
         // Existing scalar property
         assertXPathPointer(

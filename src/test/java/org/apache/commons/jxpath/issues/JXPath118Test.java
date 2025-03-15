@@ -17,25 +17,29 @@
 package org.apache.commons.jxpath.issues;
 
 import java.util.Iterator;
-import junit.framework.Assert;
-import junit.framework.TestCase;
+
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Testcase proving JXPATH-118 issue with asPath() returning wrong names.
  */
-public class JXPath118Test extends TestCase
+public class JXPath118Test
 {
 
+    @Test
     public void testJXPATH118IssueWithAsPath() throws Exception
     {
-        Object contextBean = new SomeChildClass();
-        JXPathContext context = JXPathContext.newContext(contextBean);
-        Iterator iteratePointers = context.iteratePointers("//*");
-        Assert.assertEquals("/bar", ((Pointer) iteratePointers.next()).asPath());
-        Assert.assertEquals("/baz", ((Pointer) iteratePointers.next()).asPath());
-        Assert.assertEquals("/foo", ((Pointer) iteratePointers.next()).asPath());
+        final Object contextBean = new SomeChildClass();
+        final JXPathContext context = JXPathContext.newContext(contextBean);
+        final Iterator<Pointer> iteratePointers = context.iteratePointers("//*");
+        assertEquals("/bar", iteratePointers.next().asPath());
+        assertEquals("/baz", iteratePointers.next().asPath());
+        assertEquals("/foo", iteratePointers.next().asPath());
     }
 
     public static class SomeChildClass
@@ -50,7 +54,7 @@ public class JXPath118Test extends TestCase
             return foo;
         }
 
-        public void setFoo(int foo)
+        public void setFoo(final int foo)
         {
             this.foo = foo;
         }
@@ -60,7 +64,7 @@ public class JXPath118Test extends TestCase
             return bar;
         }
 
-        public void setBar(int bar)
+        public void setBar(final int bar)
         {
             this.bar = bar;
         }
@@ -70,7 +74,7 @@ public class JXPath118Test extends TestCase
             return baz;
         }
 
-        public void setBaz(int baz)
+        public void setBaz(final int baz)
         {
             this.baz = baz;
         }

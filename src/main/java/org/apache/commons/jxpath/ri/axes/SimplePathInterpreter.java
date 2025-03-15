@@ -42,8 +42,8 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * An evaluation mechanism for simple XPaths, which
  * is much faster than the usual process. It is only used for
  * xpaths which have no context-dependent parts, consist entirely of
- * <code>child::name</code> and <code>self::node()</code> steps with
- * predicates that either integer or have the form <code>[@name = ...]</code>.
+ * {@code child::name} and {@code self::node()} steps with
+ * predicates that either integer or have the form {@code [@name = ...]}.
  */
 public class SimplePathInterpreter {
 
@@ -73,9 +73,9 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     public static NodePointer interpretSimpleLocationPath(
-            EvalContext context, NodePointer root, Step[] steps) {
+            final EvalContext context, final NodePointer root, final Step[] steps) {
 //        PATH = createNullPointer(context, root, steps, 0).toString();  // Dbg
-        NodePointer pointer = doStep(context, root, steps, 0);
+        final NodePointer pointer = doStep(context, root, steps, 0);
 //        return valuePointer(pointer);
         return pointer;
     }
@@ -90,16 +90,16 @@ public class SimplePathInterpreter {
      * of type [@name=...] or simply [...] interpreted as an index.
      * @param context evaluation context
      * @param root root pointer
-     * @param predicates predicates corresponding to <code>steps</code>
+     * @param predicates predicates corresponding to {@code steps}
      * @param steps path steps
      * @return NodePointer
      */
     public static NodePointer interpretSimpleExpressionPath(
-                EvalContext context, NodePointer root,
-                Expression[] predicates, Step[] steps) {
+                final EvalContext context, final NodePointer root,
+                final Expression[] predicates, final Step[] steps) {
 //        PATH = createNullPointerForPredicates(context, root,
 //                    steps, -1, predicates, 0).toString();  // Debugging
-        NodePointer pointer =
+        final NodePointer pointer =
             doPredicate(context, root, steps, -1, predicates, 0);
 //        return valuePointer(pointer);
         return pointer;
@@ -118,8 +118,8 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer doStep(
-            EvalContext context, NodePointer parent,
-            Step[] steps, int currentStep) {
+            final EvalContext context, NodePointer parent,
+            final Step[] steps, final int currentStep) {
         if (parent == null) {
             return null;
         }
@@ -132,8 +132,8 @@ public class SimplePathInterpreter {
         // Open all containers
         parent = valuePointer(parent);
 
-        Step step = steps[currentStep];
-        Expression[] predicates = step.getPredicates();
+        final Step step = steps[currentStep];
+        final Expression[] predicates = step.getPredicates();
 
         // Divide and conquer: the process is broken out into
         // four major use cases.
@@ -189,9 +189,9 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer doStepNoPredicatesPropertyOwner(
-                EvalContext context, PropertyOwnerPointer parentPointer,
-                Step[] steps, int currentStep) {
-        Step step = steps[currentStep];
+                final EvalContext context, final PropertyOwnerPointer parentPointer,
+                final Step[] steps, final int currentStep) {
+        final Step step = steps[currentStep];
         NodePointer childPointer =
             createChildPointerForStep(parentPointer, step);
 
@@ -217,12 +217,12 @@ public class SimplePathInterpreter {
             int bestQuality = 0;
             childPointer = (NodePointer) childPointer.clone();
             NodePointer bestMatch = null;
-            int count = childPointer.getLength();
+            final int count = childPointer.getLength();
             for (int i = 0; i < count; i++) {
                 childPointer.setIndex(i);
-                NodePointer pointer =
+                final NodePointer pointer =
                     doStep(context, childPointer, steps, currentStep + 1);
-                int quality = computeQuality(pointer);
+                final int quality = computeQuality(pointer);
                 if (quality == PERFECT_MATCH) {
                     return pointer;
                 }
@@ -255,9 +255,9 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer doStepNoPredicatesStandard(
-                EvalContext context, NodePointer parentPointer,
-                Step[] steps, int currentStep) {
-        Step step = steps[currentStep];
+                final EvalContext context, final NodePointer parentPointer,
+                final Step[] steps, final int currentStep) {
+        final Step step = steps[currentStep];
 
         if (step.getAxis() == Compiler.AXIS_SELF) {
             return doStep(context, parentPointer, steps, currentStep + 1);
@@ -265,17 +265,17 @@ public class SimplePathInterpreter {
 
         int bestQuality = 0;
         NodePointer bestMatch = null;
-        NodeIterator it = getNodeIterator(context, parentPointer, step);
+        final NodeIterator it = getNodeIterator(context, parentPointer, step);
         if (it != null) {
             for (int i = 1; it.setPosition(i); i++) {
-                NodePointer childPointer = it.getNodePointer();
+                final NodePointer childPointer = it.getNodePointer();
                 if (steps.length == currentStep + 1) {
                     // If this is the last step - we are done, we found it
                     return childPointer;
                 }
-                NodePointer pointer = doStep(
+                final NodePointer pointer = doStep(
                         context, childPointer, steps, currentStep + 1);
-                int quality = computeQuality(pointer);
+                final int quality = computeQuality(pointer);
                 if (quality == PERFECT_MATCH) {
                     return pointer;
                 }
@@ -300,12 +300,12 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer doStepPredicatesPropertyOwner(
-            EvalContext context, PropertyOwnerPointer parentPointer,
-            Step[] steps, int currentStep) {
-        Step step = steps[currentStep];
-        Expression[] predicates = step.getPredicates();
+            final EvalContext context, final PropertyOwnerPointer parentPointer,
+            final Step[] steps, final int currentStep) {
+        final Step step = steps[currentStep];
+        final Expression[] predicates = step.getPredicates();
 
-        NodePointer childPointer =
+        final NodePointer childPointer =
             createChildPointerForStep(parentPointer, step);
         if (!childPointer.isActual()) {
             // Property does not exist - return a null pointer
@@ -333,15 +333,15 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer createChildPointerForStep(
-                PropertyOwnerPointer parentPointer, Step step) {
-        int axis = step.getAxis();
+                final PropertyOwnerPointer parentPointer, final Step step) {
+        final int axis = step.getAxis();
         if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE) {
-            QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
+            final QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
             if (axis == Compiler.AXIS_ATTRIBUTE && isLangAttribute(name)) {
                 return new LangAttributePointer(parentPointer);
             }
             if (parentPointer.isValidProperty(name)) {
-                NodePointer childPointer = parentPointer.getPropertyPointer();
+                final NodePointer childPointer = parentPointer.getPropertyPointer();
                 ((PropertyPointer) childPointer).setPropertyName(
                         name.toString());
                 childPointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
@@ -364,12 +364,12 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer doStepPredicatesStandard(
-            EvalContext context, NodePointer parent,
-            Step[] steps, int currentStep) {
-        Step step = steps[currentStep];
-        Expression[] predicates = step.getPredicates();
+            final EvalContext context, final NodePointer parent,
+            final Step[] steps, final int currentStep) {
+        final Step step = steps[currentStep];
+        final Expression[] predicates = step.getPredicates();
 
-        int axis = step.getAxis();
+        final int axis = step.getAxis();
         if (axis == Compiler.AXIS_SELF) {
             return doPredicate(
                 context,
@@ -380,7 +380,7 @@ public class SimplePathInterpreter {
                 0);
         }
 
-        Expression predicate = predicates[0];
+        final Expression predicate = predicates[0];
 
         // Optimize for a single predicate to avoid building a list
         // and to allow the direct access to the index'th element
@@ -388,13 +388,13 @@ public class SimplePathInterpreter {
         // It is a very common use case, so it deserves individual
         // attention
         if (predicates.length == 1) {
-            NodeIterator it = getNodeIterator(context, parent, step);
+            final NodeIterator it = getNodeIterator(context, parent, step);
             NodePointer pointer = null;
             if (it != null) {
                 if (predicate instanceof NameAttributeTest) { // [@name = key]
-                    String key = keyFromPredicate(context, predicate);
+                    final String key = keyFromPredicate(context, predicate);
                     for (int i = 1; it.setPosition(i); i++) {
-                        NodePointer ptr = it.getNodePointer();
+                        final NodePointer ptr = it.getNodePointer();
                         if (isNameAttributeEqual(ptr, key)) {
                             pointer = ptr;
                             break;
@@ -402,7 +402,7 @@ public class SimplePathInterpreter {
                     }
                 }
                 else {
-                    int index = indexFromPredicate(context, predicate);
+                    final int index = indexFromPredicate(context, predicate);
                     if (it.setPosition(index + 1)) {
                         pointer = it.getNodePointer();
                     }
@@ -413,13 +413,13 @@ public class SimplePathInterpreter {
             }
         }
         else {
-            NodeIterator it = getNodeIterator(context, parent, step);
+            final NodeIterator it = getNodeIterator(context, parent, step);
             if (it != null) {
-                List list = new ArrayList();
+                final List list = new ArrayList();
                 for (int i = 1; it.setPosition(i); i++) {
                     list.add(it.getNodePointer());
                 }
-                NodePointer pointer =
+                final NodePointer pointer =
                     doPredicatesStandard(
                         context,
                         list,
@@ -447,14 +447,14 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer doPredicate(
-                EvalContext context, NodePointer parent,
-                Step[] steps, int currentStep,
-                Expression[] predicates, int currentPredicate) {
+                final EvalContext context, final NodePointer parent,
+                final Step[] steps, final int currentStep,
+                final Expression[] predicates, final int currentPredicate) {
         if (currentPredicate == predicates.length) {
             return doStep(context, parent, steps, currentStep + 1);
         }
 
-        Expression predicate = predicates[currentPredicate];
+        final Expression predicate = predicates[currentPredicate];
         if (predicate instanceof NameAttributeTest) { // [@name = key1]
             return doPredicateName(
                 context,
@@ -485,14 +485,14 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer doPredicateName(
-            EvalContext context, NodePointer parent,
-            Step[] steps, int currentStep,
-            Expression[] predicates, int currentPredicate) {
-        Expression predicate = predicates[currentPredicate];
-        String key = keyFromPredicate(context, predicate);
+            final EvalContext context, final NodePointer parent,
+            final Step[] steps, final int currentStep,
+            final Expression[] predicates, final int currentPredicate) {
+        final Expression predicate = predicates[currentPredicate];
+        final String key = keyFromPredicate(context, predicate);
         NodePointer child = valuePointer(parent);
         if (child instanceof PropertyOwnerPointer) {
-            PropertyPointer pointer =
+            final PropertyPointer pointer =
                 ((PropertyOwnerPointer) child).getPropertyPointer();
             pointer.setPropertyName(key);
             if (pointer.isActual()) {
@@ -515,12 +515,12 @@ public class SimplePathInterpreter {
             NodePointer bestMatch = null;
             int bestQuality = 0;
             child = (NodePointer) child.clone();
-            int count = child.getLength();
+            final int count = child.getLength();
             for (int i = 0; i < count; i++) {
                 child.setIndex(i);
-                NodePointer valuePointer = valuePointer(child);
+                final NodePointer valuePointer = valuePointer(child);
                 NodePointer pointer;
-                if ((valuePointer instanceof PropertyOwnerPointer)
+                if (valuePointer instanceof PropertyOwnerPointer
                     || valuePointer.isCollection()) {
                     pointer =
                         doPredicateName(
@@ -545,7 +545,7 @@ public class SimplePathInterpreter {
                     pointer = null;
                 }
                 if (pointer != null) {
-                    int quality = computeQuality(pointer);
+                    final int quality = computeQuality(pointer);
                     if (quality == PERFECT_MATCH) {
                         return pointer;
                     }
@@ -563,7 +563,7 @@ public class SimplePathInterpreter {
             // If the node is a standard InfoSet node (e.g. DOM Node),
             // employ doPredicates_standard, which will iterate through
             // the node's children and apply all predicates
-            NodePointer found =
+            final NodePointer found =
                 doPredicatesStandard(
                     context,
                     Collections.singletonList(child),
@@ -597,10 +597,10 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer doPredicatesStandard(
-                EvalContext context, List parents,
-                Step[] steps, int currentStep,
-                Expression[] predicates, int currentPredicate) {
-        if (parents.size() == 0) {
+                final EvalContext context, final List parents,
+                final Step[] steps, final int currentStep,
+                final Expression[] predicates, final int currentPredicate) {
+        if (parents.isEmpty()) {
             return null;
         }
 
@@ -608,21 +608,21 @@ public class SimplePathInterpreter {
         // element from the list of results and proceed to the
         // remaining steps with that element.
         if (currentPredicate == predicates.length) {
-            NodePointer pointer = (NodePointer) parents.get(0);
+            final NodePointer pointer = (NodePointer) parents.get(0);
             return doStep(context, pointer, steps, currentStep + 1);
         }
 
-        Expression predicate = predicates[currentPredicate];
+        final Expression predicate = predicates[currentPredicate];
         if (predicate instanceof NameAttributeTest) {
-            String key = keyFromPredicate(context, predicate);
-            List newList = new ArrayList();
+            final String key = keyFromPredicate(context, predicate);
+            final List newList = new ArrayList();
             for (int i = 0; i < parents.size(); i++) {
-                NodePointer pointer = (NodePointer) parents.get(i);
+                final NodePointer pointer = (NodePointer) parents.get(i);
                 if (isNameAttributeEqual(pointer, key)) {
                     newList.add(pointer);
                 }
             }
-            if (newList.size() == 0) {
+            if (newList.isEmpty()) {
                 return null;
             }
             return doPredicatesStandard(
@@ -633,23 +633,21 @@ public class SimplePathInterpreter {
                 predicates,
                 currentPredicate + 1);
         }
-        else {
-            // For a subscript, simply take the corresponding
-            // element from the list of results and
-            // proceed to the remaining predicates with that element
-            int index = indexFromPredicate(context, predicate);
-            if (index < 0 || index >= parents.size()) {
-                return null;
-            }
-            NodePointer ptr = (NodePointer) parents.get(index);
-            return doPredicate(
-                context,
-                ptr,
-                steps,
-                currentStep,
-                predicates,
-                currentPredicate + 1);
+        // For a subscript, simply take the corresponding
+        // element from the list of results and
+        // proceed to the remaining predicates with that element
+        final int index = indexFromPredicate(context, predicate);
+        if (index < 0 || index >= parents.size()) {
+            return null;
         }
+        final NodePointer ptr = (NodePointer) parents.get(index);
+        return doPredicate(
+            context,
+            ptr,
+            steps,
+            currentStep,
+            predicates,
+            currentPredicate + 1);
     }
 
     /**
@@ -664,11 +662,11 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer doPredicateIndex(
-            EvalContext context, NodePointer parent,
-            Step[] steps, int currentStep,
-            Expression[] predicates, int currentPredicate) {
-        Expression predicate = predicates[currentPredicate];
-        int index = indexFromPredicate(context, predicate);
+            final EvalContext context, final NodePointer parent,
+            final Step[] steps, final int currentStep,
+            final Expression[] predicates, final int currentPredicate) {
+        final Expression predicate = predicates[currentPredicate];
+        final int index = indexFromPredicate(context, predicate);
         NodePointer pointer = parent;
         if (isCollectionElement(pointer, index)) {
             pointer = (NodePointer) pointer.clone();
@@ -698,8 +696,8 @@ public class SimplePathInterpreter {
      * @return calculated index
      */
     private static int indexFromPredicate(
-        EvalContext context,
-        Expression predicate) {
+        final EvalContext context,
+        final Expression predicate) {
         Object value = predicate.computeValue(context);
         if (value instanceof EvalContext) {
             value = ((EvalContext) value).getSingleNodePointer();
@@ -725,9 +723,9 @@ public class SimplePathInterpreter {
      * @param predicate predicate to evaluate
      * @return String key extracted
      */
-    private static String keyFromPredicate(EvalContext context,
-                Expression predicate) {
-        Expression expr =
+    private static String keyFromPredicate(final EvalContext context,
+                final Expression predicate) {
+        final Expression expr =
             ((NameAttributeTest) predicate).getNameTestExpression();
         return InfoSetUtil.stringValue(expr.computeValue(context));
     }
@@ -756,9 +754,9 @@ public class SimplePathInterpreter {
      * @return boolean
      */
     private static boolean isNameAttributeEqual(
-        NodePointer pointer,
-        String name) {
-        NodeIterator it = pointer.attributeIterator(QNAME_NAME);
+        final NodePointer pointer,
+        final String name) {
+        final NodeIterator it = pointer.attributeIterator(QNAME_NAME);
         return it != null
             && it.setPosition(1)
             && name.equals(it.getNodePointer().getValue());
@@ -772,13 +770,13 @@ public class SimplePathInterpreter {
      * @return boolean
      */
     private static boolean isCollectionElement(
-        NodePointer pointer,
-        int index) {
+        final NodePointer pointer,
+        final int index) {
         return pointer.isActual()
             && (index == 0
-                || (pointer.isCollection()
+                || pointer.isCollection()
                     && index >= 0
-                    && index < pointer.getLength()));
+                    && index < pointer.getLength());
     }
 
     /**
@@ -787,7 +785,7 @@ public class SimplePathInterpreter {
      * @param pointer input pointer
      * @return NodePointer
      */
-    private static NodePointer valuePointer(NodePointer pointer) {
+    private static NodePointer valuePointer(final NodePointer pointer) {
         return pointer == null ? null : pointer.getValuePointer();
     }
 
@@ -802,27 +800,27 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     public static NodePointer createNullPointer(
-            EvalContext context, NodePointer parent, Step[] steps,
-            int currentStep) {
+            final EvalContext context, NodePointer parent, final Step[] steps,
+            final int currentStep) {
         if (currentStep == steps.length) {
             return parent;
         }
 
         parent = valuePointer(parent);
 
-        Step step = steps[currentStep];
+        final Step step = steps[currentStep];
 
-        int axis = step.getAxis();
+        final int axis = step.getAxis();
         if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE) {
-            NullPropertyPointer pointer = new NullPropertyPointer(parent);
-            QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
+            final NullPropertyPointer pointer = new NullPropertyPointer(parent);
+            final QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
             pointer.setPropertyName(name.toString());
             pointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
             parent = pointer;
         }
         // else { it is self::node() }
 
-        Expression[] predicates = step.getPredicates();
+        final Expression[] predicates = step.getPredicates();
         return createNullPointerForPredicates(
             context,
             parent,
@@ -843,20 +841,20 @@ public class SimplePathInterpreter {
      * @return NodePointer
      */
     private static NodePointer createNullPointerForPredicates(
-            EvalContext context, NodePointer parent,
-            Step[] steps, int currentStep,
-            Expression[] predicates, int currentPredicate) {
+            final EvalContext context, NodePointer parent,
+            final Step[] steps, final int currentStep,
+            final Expression[] predicates, final int currentPredicate) {
         for (int i = currentPredicate; i < predicates.length; i++) {
-            Expression predicate = predicates[i];
+            final Expression predicate = predicates[i];
             if (predicate instanceof NameAttributeTest) {
-                String key = keyFromPredicate(context, predicate);
+                final String key = keyFromPredicate(context, predicate);
                 parent = valuePointer(parent);
-                NullPropertyPointer pointer = new NullPropertyPointer(parent);
+                final NullPropertyPointer pointer = new NullPropertyPointer(parent);
                 pointer.setNameAttributeValue(key);
                 parent = pointer;
             }
             else {
-                int index = indexFromPredicate(context, predicate);
+                final int index = indexFromPredicate(context, predicate);
                 if (parent instanceof NullPropertyPointer) {
                     parent.setIndex(index);
                 }
@@ -871,22 +869,22 @@ public class SimplePathInterpreter {
     }
 
     /**
-     * Get a NodeIterator.
+     * Gets a NodeIterator.
      * @param context evaluation context
      * @param pointer owning pointer
      * @param step triggering step
      * @return NodeIterator
      */
     private static NodeIterator getNodeIterator(
-        EvalContext context,
-        NodePointer pointer,
-        Step step) {
+        final EvalContext context,
+        final NodePointer pointer,
+        final Step step) {
         if (step.getAxis() == Compiler.AXIS_CHILD) {
             NodeTest nodeTest = step.getNodeTest();
-            QName qname = ((NodeNameTest) nodeTest).getNodeName();
-            String prefix = qname.getPrefix();
+            final QName qname = ((NodeNameTest) nodeTest).getNodeName();
+            final String prefix = qname.getPrefix();
             if (prefix != null) {
-                String namespaceURI = context.getJXPathContext()
+                final String namespaceURI = context.getJXPathContext()
                         .getNamespaceURI(prefix);
                 nodeTest = new NodeNameTest(qname, namespaceURI);
             }
@@ -903,11 +901,11 @@ public class SimplePathInterpreter {
     }
 
     /**
-     * Learn whether <code>name</code> is a lang attribute.
+     * Learn whether {@code name} is a lang attribute.
      * @param name to compare
      * @return boolean
      */
-    private static boolean isLangAttribute(QName name) {
+    private static boolean isLangAttribute(final QName name) {
         return name.getPrefix() != null
             && name.getPrefix().equals("xml")
             && name.getName().equals("lang");

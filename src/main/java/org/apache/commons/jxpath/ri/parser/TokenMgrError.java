@@ -28,6 +28,11 @@ public class TokenMgrError extends Error
     */
 
    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+/**
     * Lexical error occurred.
     */
    static final int LEXICAL_ERROR = 0;
@@ -54,11 +59,13 @@ public class TokenMgrError extends Error
    int errorCode;
 
    /**
-    * Replaces unprintable characters by their espaced (or unicode escaped)
-    * equivalents in the given string
+    * Replaces unprintable characters by their escaped (or Unicode escaped) equivalents in the given string
+    *
+    * @param str TODO
+    * @return TODO
     */
-   public static final String addEscapes(String str) {
-      StringBuffer retval = new StringBuffer();
+   public static final String addEscapes(final String str) {
+      final StringBuilder retval = new StringBuilder();
       char ch;
       for (int i = 0; i < str.length(); i++) {
         switch (str.charAt(i))
@@ -91,8 +98,8 @@ public class TokenMgrError extends Error
               continue;
            default:
               if ((ch = str.charAt(i)) < 0x20 || ch > 0x7e) {
-                 String s = "0000" + Integer.toString(ch, 16);
-                 retval.append("\\u" + s.substring(s.length() - 4, s.length()));
+                 final String s = "0000" + Integer.toString(ch, 16);
+                 retval.append("\\u" + s.substring(s.length() - 4));
               } else {
                  retval.append(ch);
               }
@@ -103,23 +110,24 @@ public class TokenMgrError extends Error
    }
 
    /**
-    * Returns a detailed message for the Error when it is thrown by the
-    * token manager to indicate a lexical error.
-    * Parameters :
-    *    EOFSeen     : indicates if EOF caused the lexicl error
-    *    curLexState : lexical state in which this error occurred
-    *    errorLine   : line number when the error occurred
-    *    errorColumn : column number when the error occurred
-    *    errorAfter  : prefix that was seen before this error occurred
-    *    curchar     : the offending character
+    * Returns a detailed message for the Error when it is thrown by the token manager to indicate a lexical error.
+    *
     * Note: You can customize the lexical error message by modifying this method.
+    *
+    * @param EOFSeen     indicates if EOF caused the lexicl error
+    * @param lexState    lexical state in which this error occurred
+    * @param errorLine   line number when the error occurred
+    * @param errorColumn column number when the error occurred
+    * @param errorAfter  prefix that was seen before this error occurred
+    * @param curChar     the offending character
+    * @return TODO
     */
-   protected static String LexicalError(boolean EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar) {
-      return("Lexical error at line " +
-           errorLine + ", column " +
-           errorColumn + ".  Encountered: " +
-           (EOFSeen ? "<EOF> " : ("\"" + addEscapes(String.valueOf(curChar)) + "\"") + " (" + (int)curChar + "), ") +
-           "after : \"" + addEscapes(errorAfter) + "\"");
+   protected static String LexicalError(final boolean EOFSeen, final int lexState, final int errorLine, final int errorColumn, final String errorAfter, final char curChar) {
+      return "Lexical error at line " +
+       errorLine + ", column " +
+       errorColumn + ".  Encountered: " +
+       (EOFSeen ? "<EOF> " : "\"" + addEscapes(String.valueOf(curChar)) + "\"" + " (" + (int)curChar + "), ") +
+       "after : \"" + addEscapes(errorAfter) + "\"";
    }
 
    /**
@@ -131,7 +139,8 @@ public class TokenMgrError extends Error
     *
     * from this method for such cases in the release version of your parser.
     */
-   public String getMessage() {
+   @Override
+public String getMessage() {
       return super.getMessage();
    }
 
@@ -142,12 +151,12 @@ public class TokenMgrError extends Error
    public TokenMgrError() {
    }
 
-   public TokenMgrError(String message, int reason) {
+   public TokenMgrError(final String message, final int reason) {
       super(message);
       errorCode = reason;
    }
 
-   public TokenMgrError(boolean EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar, int reason) {
+   public TokenMgrError(final boolean EOFSeen, final int lexState, final int errorLine, final int errorColumn, final String errorAfter, final char curChar, final int reason) {
       this(LexicalError(EOFSeen, lexState, errorLine, errorColumn, errorAfter, curChar), reason);
 
       // ADDED BY ME FROM THIS POINT TO THE EOF - DMITRI PLOTNIKOV
@@ -155,10 +164,8 @@ public class TokenMgrError extends Error
       character = curChar;
    }
 
-
    private int position;
    private char character;
-
 
    public int getPosition(){
     return position;

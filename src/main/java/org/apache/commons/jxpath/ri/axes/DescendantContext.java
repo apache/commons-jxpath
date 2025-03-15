@@ -31,11 +31,11 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * axes.
  */
 public class DescendantContext extends EvalContext {
-    private NodeTest nodeTest;
+    private final NodeTest nodeTest;
     private boolean setStarted = false;
     private Stack stack = null;
     private NodePointer currentNodePointer = null;
-    private boolean includeSelf;
+    private final boolean includeSelf;
     private static final NodeTest ELEMENT_NODE_TEST =
             new NodeTypeTest(Compiler.NODE_TYPE_NODE);
 
@@ -45,17 +45,19 @@ public class DescendantContext extends EvalContext {
      * @param includeSelf whether to include this node
      * @param nodeTest test
      */
-    public DescendantContext(EvalContext parentContext, boolean includeSelf,
-            NodeTest nodeTest) {
+    public DescendantContext(final EvalContext parentContext, final boolean includeSelf,
+            final NodeTest nodeTest) {
         super(parentContext);
         this.includeSelf = includeSelf;
         this.nodeTest = nodeTest;
     }
 
+    @Override
     public boolean isChildOrderingRequired() {
         return true;
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         if (position == 0 && !setPosition(1)) {
             return null;
@@ -63,12 +65,14 @@ public class DescendantContext extends EvalContext {
         return currentNodePointer;
     }
 
+    @Override
     public void reset() {
         super.reset();
         setStarted = false;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         if (position < this.position) {
             reset();
         }
@@ -81,6 +85,7 @@ public class DescendantContext extends EvalContext {
         return true;
     }
 
+    @Override
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;
@@ -107,7 +112,7 @@ public class DescendantContext extends EvalContext {
         }
 
         while (!stack.isEmpty()) {
-            NodeIterator it = (NodeIterator) stack.peek();
+            final NodeIterator it = (NodeIterator) stack.peek();
             if (it.setPosition(it.getPosition() + 1)) {
                 currentNodePointer = it.getNodePointer();
                 if (!isRecursive()) {
@@ -139,10 +144,10 @@ public class DescendantContext extends EvalContext {
      * @return boolean
      */
     private boolean isRecursive() {
-        Object node = currentNodePointer.getNode();
+        final Object node = currentNodePointer.getNode();
         for (int i = stack.size() - 1; --i >= 0;) {
-            NodeIterator it = (NodeIterator) stack.get(i);
-            Pointer pointer = it.getNodePointer();
+            final NodeIterator it = (NodeIterator) stack.get(i);
+            final Pointer pointer = it.getNodePointer();
             if (pointer != null && pointer.getNode() == node) {
                 return true;
             }

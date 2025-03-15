@@ -17,16 +17,24 @@
 
 package org.apache.commons.jxpath.ri;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
 
-public class JXPathContextReferenceImplTestCase extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class JXPathContextReferenceImplTestCase {
 
     /**
      * https://issues.apache.org/jira/browse/JXPATH-166
      */
+    @Test
     public void testInit() {
-        JXPathContextReferenceImpl.addNodePointerFactory(new ContainerPointerFactory());
+        final ContainerPointerFactory factory = new ContainerPointerFactory();
+        try {
+            JXPathContextReferenceImpl.addNodePointerFactory(factory);
+        } finally {
+            while (JXPathContextReferenceImpl.removeNodePointerFactory(factory)) {
+                // NOP
+            }
+        }
     }
 }

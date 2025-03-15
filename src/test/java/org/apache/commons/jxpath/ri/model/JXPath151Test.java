@@ -20,16 +20,20 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.TestBean;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class JXPath151Test extends JXPathTestCase {
+public class JXPath151Test extends AbstractJXPathTest {
 
     private JXPathContext context;
 
+    @Override
+    @BeforeEach
     public void setUp() {
-        TestBean testBean = new TestBean();
-        HashMap m = new HashMap();
+        final TestBean testBean = new TestBean();
+        final HashMap m = new HashMap();
         m.put("a", Integer.valueOf(1));
         m.put("b", null);
         m.put("c", Integer.valueOf(1));
@@ -39,6 +43,7 @@ public class JXPath151Test extends JXPathTestCase {
         context.setLocale(Locale.US);
     }
 
+    @Test
     public void testMapValueEquality() {
         assertXPathValue(context, "map/b != map/a", Boolean.TRUE);
         assertXPathValue(context, "map/a != map/b", Boolean.TRUE);
@@ -49,6 +54,7 @@ public class JXPath151Test extends JXPathTestCase {
         assertXPathValue(context, "not(map/a = map/c)", Boolean.FALSE);
     }
 
+    @Test
     public void testMapValueEqualityUsingNameAttribute() {
         assertXPathValue(context, "map[@name = 'b'] != map[@name = 'c']", Boolean.TRUE);
         assertXPathValue(context, "map[@name = 'a'] != map[@name = 'b']", Boolean.TRUE);

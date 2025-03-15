@@ -28,23 +28,27 @@ public class CoreOperationNegate extends CoreOperation {
      * Create a new CoreOperationNegate.
      * @param arg the Expression to negate
      */
-    public CoreOperationNegate(Expression arg) {
+    public CoreOperationNegate(final Expression arg) {
         super(new Expression[] { arg });
     }
 
-    public Object computeValue(EvalContext context) {
-        double a = InfoSetUtil.doubleValue(args[0].computeValue(context));
-        return new Double(-a);
+    @Override
+    public Object computeValue(final EvalContext context) {
+        final double a = InfoSetUtil.doubleValue(args[0].computeValue(context));
+        return Double.valueOf(-a);
     }
 
+    @Override
     protected int getPrecedence() {
         return NEGATE_PRECEDENCE;
     }
 
+    @Override
     protected boolean isSymmetric() {
         return false;
     }
 
+    @Override
     public String getSymbol() {
         return "-";
     }

@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class CollectionChildNodeIterator extends CollectionNodeIterator {
 
-    private NodeTest test;
+    private final NodeTest test;
 
     /**
      * Create a new CollectionChildNodeIterator.
@@ -36,15 +36,16 @@ public class CollectionChildNodeIterator extends CollectionNodeIterator {
      * @param startWith starting pointer
      */
     public CollectionChildNodeIterator(
-        CollectionPointer pointer,
-        NodeTest test,
-        boolean reverse,
-        NodePointer startWith) {
+        final CollectionPointer pointer,
+        final NodeTest test,
+        final boolean reverse,
+        final NodePointer startWith) {
         super(pointer, reverse, startWith);
         this.test = test;
     }
 
-    protected NodeIterator getElementNodeIterator(NodePointer elementPointer) {
+    @Override
+    protected NodeIterator getElementNodeIterator(final NodePointer elementPointer) {
         return elementPointer.childIterator(test, false, null);
     }
 }

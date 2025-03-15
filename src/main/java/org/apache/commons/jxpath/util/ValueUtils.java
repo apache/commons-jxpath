@@ -64,7 +64,7 @@ public class ValueUtils {
      * @param clazz to test
      * @return int
      */
-    public static int getCollectionHint(Class clazz) {
+    public static int getCollectionHint(final Class clazz) {
         if (clazz.isArray()) {
             return 1;
         }
@@ -99,13 +99,13 @@ public class ValueUtils {
      * @param pd IndexedPropertyDescriptor
      * @return int
      */
-    public static int getIndexedPropertyLength(Object object,
-            IndexedPropertyDescriptor pd) {
+    public static int getIndexedPropertyLength(final Object object,
+            final IndexedPropertyDescriptor pd) {
         if (pd.getReadMethod() != null) {
             return getLength(getValue(object, pd));
         }
 
-        Method readMethod = pd.getIndexedReadMethod();
+        final Method readMethod = pd.getIndexedReadMethod();
         if (readMethod == null) {
             throw new JXPathException(
                 "No indexed read method for property " + pd.getName());
@@ -113,9 +113,9 @@ public class ValueUtils {
 
         for (int i = 0; i < UNKNOWN_LENGTH_MAX_COUNT; i++) {
             try {
-                readMethod.invoke(object, new Integer(i));
+                readMethod.invoke(object, Integer.valueOf(i));
             }
-            catch (Throwable t) {
+            catch (final Throwable t) {
                 return i;
             }
         }
@@ -152,16 +152,16 @@ public class ValueUtils {
      * @param collection to iterate
      * @return Iterator
      */
-    public static Iterator iterate(Object collection) {
+    public static Iterator iterate(final Object collection) {
         if (collection == null) {
             return Collections.EMPTY_LIST.iterator();
         }
         if (collection.getClass().isArray()) {
-            int length = Array.getLength(collection);
+            final int length = Array.getLength(collection);
             if (length == 0) {
                 return Collections.EMPTY_LIST.iterator();
             }
-            ArrayList list = new ArrayList();
+            final ArrayList list = new ArrayList();
             for (int i = 0; i < length; i++) {
                 list.add(Array.get(collection, i));
             }
@@ -180,7 +180,7 @@ public class ValueUtils {
      * @param size desired size
      * @return collection or array
      */
-    public static Object expandCollection(Object collection, int size) {
+    public static Object expandCollection(final Object collection, final int size) {
         if (collection == null) {
             return null;
         }
@@ -189,7 +189,7 @@ public class ValueUtils {
                     + " to size " + size + " is not an expansion");
         }
         if (collection.getClass().isArray()) {
-            Object bigger =
+            final Object bigger =
                 Array.newInstance(
                     collection.getClass().getComponentType(),
                     size);
@@ -220,7 +220,7 @@ public class ValueUtils {
      * @param index int
      * @return the resulting collection
      */
-    public static Object remove(Object collection, int index) {
+    public static Object remove(Object collection, final int index) {
         collection = getValue(collection);
         if (collection == null) {
             return null;
@@ -229,8 +229,8 @@ public class ValueUtils {
             throw new JXPathException("No such element at index " + index);
         }
         if (collection.getClass().isArray()) {
-            int length = Array.getLength(collection);
-            Object smaller =
+            final int length = Array.getLength(collection);
+            final Object smaller =
                 Array.newInstance(
                     collection.getClass().getComponentType(),
                     length - 1);
@@ -248,14 +248,14 @@ public class ValueUtils {
             return smaller;
         }
         if (collection instanceof List) {
-            int size = ((List) collection).size();
+            final int size = ((List) collection).size();
             if (index < size) {
                 ((List) collection).remove(index);
             }
             return collection;
         }
         if (collection instanceof Collection) {
-            Iterator it = ((Collection) collection).iterator();
+            final Iterator it = ((Collection) collection).iterator();
             for (int i = 0; i < index; i++) {
                 if (!it.hasNext()) {
                     break;
@@ -282,7 +282,7 @@ public class ValueUtils {
      * @param index int
      * @return collection[index]
      */
-    public static Object getValue(Object collection, int index) {
+    public static Object getValue(Object collection, final int index) {
         collection = getValue(collection);
         Object value = collection;
         if (collection != null) {
@@ -304,7 +304,7 @@ public class ValueUtils {
                 }
 
                 int i = 0;
-                Iterator it = ((Collection) collection).iterator();
+                final Iterator it = ((Collection) collection).iterator();
                 for (; i < index; i++) {
                     it.next();
                 }
@@ -326,7 +326,7 @@ public class ValueUtils {
      * @param index to replace
      * @param value new value
      */
-    public static void setValue(Object collection, int index, Object value) {
+    public static void setValue(Object collection, final int index, final Object value) {
         collection = getValue(collection);
         if (collection != null) {
             if (collection.getClass().isArray()) {
@@ -353,18 +353,18 @@ public class ValueUtils {
      * @param propertyDescriptor indicating what to read
      * @return Object value
      */
-    public static Object getValue(Object bean,
-            PropertyDescriptor propertyDescriptor) {
+    public static Object getValue(final Object bean,
+            final PropertyDescriptor propertyDescriptor) {
         Object value;
         try {
-            Method method =
+            final Method method =
                 getAccessibleMethod(propertyDescriptor.getReadMethod());
             if (method == null) {
                 throw new JXPathException("No read method");
             }
             value = method.invoke(bean);
         }
-        catch (Exception ex) {
+        catch (final Exception ex) {
             throw new JXPathException(
                 "Cannot access property: "
                     + (bean == null ? "null" : bean.getClass().getName())
@@ -382,10 +382,10 @@ public class ValueUtils {
      * @param propertyDescriptor indicating what to read
      * @param value to set
      */
-    public static void setValue(Object bean,
-            PropertyDescriptor propertyDescriptor, Object value) {
+    public static void setValue(final Object bean,
+            final PropertyDescriptor propertyDescriptor, Object value) {
         try {
-            Method method =
+            final Method method =
                 getAccessibleMethod(propertyDescriptor.getWriteMethod());
             if (method == null) {
                 throw new JXPathException("No write method");
@@ -393,7 +393,7 @@ public class ValueUtils {
             value = convert(value, propertyDescriptor.getPropertyType());
             method.invoke(bean, value);
         }
-        catch (Exception ex) {
+        catch (final Exception ex) {
             throw new JXPathException(
                 "Cannot modify property: "
                     + (bean == null ? "null" : bean.getClass().getName())
@@ -409,11 +409,11 @@ public class ValueUtils {
      * @param type destination
      * @return conversion result
      */
-    private static Object convert(Object value, Class type) {
+    private static Object convert(final Object value, final Class type) {
         try {
             return TypeUtils.convert(value, type);
         }
-        catch (Exception ex) {
+        catch (final Exception ex) {
             throw new JXPathException(
                 "Cannot convert value of class "
                     + (value == null ? "null" : value.getClass().getName())
@@ -431,21 +431,21 @@ public class ValueUtils {
      * @param index int
      * @return Object
      */
-    public static Object getValue(Object bean,
-            PropertyDescriptor propertyDescriptor, int index) {
+    public static Object getValue(final Object bean,
+            final PropertyDescriptor propertyDescriptor, final int index) {
         if (propertyDescriptor instanceof IndexedPropertyDescriptor) {
             try {
-                IndexedPropertyDescriptor ipd =
+                final IndexedPropertyDescriptor ipd =
                     (IndexedPropertyDescriptor) propertyDescriptor;
-                Method method = ipd.getIndexedReadMethod();
+                final Method method = ipd.getIndexedReadMethod();
                 if (method != null) {
                     return method.invoke(
                         bean,
-                            new Integer(index));
+                            Integer.valueOf(index));
                 }
             }
-            catch (InvocationTargetException ex) {
-                Throwable t = ex.getTargetException();
+            catch (final InvocationTargetException ex) {
+                final Throwable t = ex.getTargetException();
                 if (t instanceof IndexOutOfBoundsException) {
                     return null;
                 }
@@ -453,7 +453,7 @@ public class ValueUtils {
                     "Cannot access property: " + propertyDescriptor.getName(),
                     t);
             }
-            catch (Throwable ex) {
+            catch (final Throwable ex) {
                 throw new JXPathException(
                     "Cannot access property: " + propertyDescriptor.getName(),
                     ex);
@@ -474,31 +474,23 @@ public class ValueUtils {
      * @param index int
      * @param value to set
      */
-    public static void setValue(Object bean,
-            PropertyDescriptor propertyDescriptor, int index, Object value) {
+    public static void setValue(final Object bean,
+            final PropertyDescriptor propertyDescriptor, final int index, final Object value) {
         if (propertyDescriptor instanceof IndexedPropertyDescriptor) {
             try {
-                IndexedPropertyDescriptor ipd =
-                    (IndexedPropertyDescriptor) propertyDescriptor;
-                Method method = ipd.getIndexedWriteMethod();
+                final IndexedPropertyDescriptor ipd = (IndexedPropertyDescriptor) propertyDescriptor;
+                final Method method = ipd.getIndexedWriteMethod();
                 if (method != null) {
-                    method.invoke(
-                        bean,
-                            new Integer(index),
-                            convert(value, ipd.getIndexedPropertyType()));
+                    method.invoke(bean, Integer.valueOf(index), convert(value, ipd.getIndexedPropertyType()));
                     return;
                 }
             }
-            catch (Exception ex) {
-                throw new RuntimeException(
-                    "Cannot access property: "
-                        + propertyDescriptor.getName()
-                        + ", "
-                        + ex.getMessage());
+            catch (final Exception ex) {
+                throw new IllegalArgumentException("Cannot access property: " + propertyDescriptor.getName() + ", " + ex.getMessage());
             }
         }
         // We will fall through if there is no indexed read
-        Object collection = getValue(bean, propertyDescriptor);
+        final Object collection = getValue(bean, propertyDescriptor);
         if (isCollection(collection)) {
             setValue(collection, index, value);
         }
@@ -506,8 +498,7 @@ public class ValueUtils {
             setValue(bean, propertyDescriptor, value);
         }
         else {
-            throw new RuntimeException(
-                "Not a collection: " + propertyDescriptor.getName());
+            throw new IllegalArgumentException("Not a collection: " + propertyDescriptor.getName());
         }
     }
 
@@ -526,29 +517,21 @@ public class ValueUtils {
 
     /**
      * Returns a shared instance of the dynamic property handler class
-     * returned by <code>getDynamicPropertyHandlerClass()</code>.
+     * returned by {@code getDynamicPropertyHandlerClass()}.
      * @param clazz to handle
      * @return DynamicPropertyHandler
      */
-    public static DynamicPropertyHandler getDynamicPropertyHandler(Class clazz) {
-        DynamicPropertyHandler handler =
-            (DynamicPropertyHandler) dynamicPropertyHandlerMap.get(clazz);
-        if (handler == null) {
+    public static DynamicPropertyHandler getDynamicPropertyHandler(final Class clazz) {
+        return (DynamicPropertyHandler) dynamicPropertyHandlerMap.computeIfAbsent(clazz, k -> {
             try {
-                handler = (DynamicPropertyHandler) clazz.newInstance();
+                return (DynamicPropertyHandler) clazz.getConstructor().newInstance();
             }
-            catch (Exception ex) {
-                throw new JXPathException(
-                    "Cannot allocate dynamic property handler of class "
-                        + clazz.getName(),
-                    ex);
+            catch (final Exception ex) {
+                throw new JXPathException("Cannot allocate dynamic property handler of class " + clazz.getName(), ex);
             }
-            dynamicPropertyHandlerMap.put(clazz, handler);
-        }
-        return handler;
+        });
     }
 
-    // -------------------------------------------------------- Private Methods
     //
     //  The rest of the code in this file was copied FROM
     //  org.apache.commons.beanutils.PropertyUtil. We don't want to introduce
@@ -556,36 +539,36 @@ public class ValueUtils {
     //
 
     /**
-     * Return an accessible method (that is, one that can be invoked via
+     * Gets an accessible method (that is, one that can be invoked via
      * reflection) that implements the specified Method.  If no such method
-     * can be found, return <code>null</code>.
+     * can be found, return {@code null}.
      *
      * @param method The method that we wish to call
      * @return Method
      */
-    public static Method getAccessibleMethod(Method method) {
+    public static Method getAccessibleMethod(final Method method) {
 
         // Make sure we have a method to check
         if (method == null) {
-            return (null);
+            return null;
         }
 
         // If the requested method is not public we cannot call it
         if (!Modifier.isPublic(method.getModifiers())) {
-            return (null);
+            return null;
         }
 
         // If the declaring class is public, we are done
         Class clazz = method.getDeclaringClass();
         if (Modifier.isPublic(clazz.getModifiers())) {
-            return (method);
+            return method;
         }
 
-        String name = method.getName();
-        Class[] parameterTypes = method.getParameterTypes();
+        final String name = method.getName();
+        final Class[] parameterTypes = method.getParameterTypes();
         while (clazz != null) {
             // Check the implemented interfaces and subinterfaces
-            Method aMethod = getAccessibleMethodFromInterfaceNest(clazz,
+            final Method aMethod = getAccessibleMethodFromInterfaceNest(clazz,
                     name, parameterTypes);
             if (aMethod != null) {
                 return aMethod;
@@ -596,7 +579,7 @@ public class ValueUtils {
                 try {
                     return clazz.getDeclaredMethod(name, parameterTypes);
                 }
-                catch (NoSuchMethodException e) { //NOPMD
+                catch (final NoSuchMethodException ignore) { // NOPMD
                     //ignore
                 }
             }
@@ -605,37 +588,37 @@ public class ValueUtils {
     }
 
     /**
-     * Return an accessible method (that is, one that can be invoked via
+     * Gets an accessible method (that is, one that can be invoked via
      * reflection) that implements the specified method, by scanning through
      * all implemented interfaces and subinterfaces.  If no such Method
-     * can be found, return <code>null</code>.
+     * can be found, return {@code null}.
      *
      * @param clazz Parent class for the interfaces to be checked
      * @param methodName Method name of the method we wish to call
      * @param parameterTypes The parameter type signatures
      * @return Method
      */
-    private static Method getAccessibleMethodFromInterfaceNest(Class clazz,
-            String methodName, Class[] parameterTypes) {
+    private static Method getAccessibleMethodFromInterfaceNest(final Class clazz,
+            final String methodName, final Class[] parameterTypes) {
 
         Method method = null;
 
         // Check the implemented interfaces of the parent class
-        Class[] interfaces = clazz.getInterfaces();
-        for (int i = 0; i < interfaces.length; i++) {
+        final Class[] interfaces = clazz.getInterfaces();
+        for (final Class element : interfaces) {
 
             // Is this interface public?
-            if (!Modifier.isPublic(interfaces[i].getModifiers())) {
+            if (!Modifier.isPublic(element.getModifiers())) {
                 continue;
             }
 
             // Does the method exist on this interface?
             try {
                 method =
-                    interfaces[i].getDeclaredMethod(methodName, parameterTypes);
+                    element.getDeclaredMethod(methodName, parameterTypes);
             }
-            catch (NoSuchMethodException e) { //NOPMD
-                //ignore
+            catch (final NoSuchMethodException ignore) { // NOPMD
+                // ignore
             }
             if (method != null) {
                 break;
@@ -644,7 +627,7 @@ public class ValueUtils {
             // Recursively check our parent interfaces
             method =
                 getAccessibleMethodFromInterfaceNest(
-                    interfaces[i],
+                    element,
                     methodName,
                     parameterTypes);
             if (method != null) {
@@ -653,6 +636,6 @@ public class ValueUtils {
         }
 
         // Return whatever we have found
-        return (method);
+        return method;
     }
 }

@@ -16,21 +16,20 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-
 /**
  * This bean is used to test infinite recursion protection in
  * descendant search contexts.
  */
 public class RecursiveBean  {
 
-    private String name;
+    private final String name;
     private RecursiveBean first;
     private RecursiveBean second;
 
-    public RecursiveBean(String name) {
+    public RecursiveBean(final String name) {
         this.name = name;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -39,7 +38,7 @@ public class RecursiveBean  {
         return first;
     }
 
-    public void setFirst(RecursiveBean bean) {
+    public void setFirst(final RecursiveBean bean) {
         this.first = bean;
     }
 
@@ -47,10 +46,11 @@ public class RecursiveBean  {
         return second;
     }
 
-    public void setSecond(RecursiveBean bean) {
+    public void setSecond(final RecursiveBean bean) {
         second = bean;
     }
-    
+
+    @Override
     public String toString() {
         return name;
     }

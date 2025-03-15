@@ -28,14 +28,15 @@ public class CoreOperationUnion extends CoreOperation {
      * Create a new CoreOperationUnion.
      * @param args Expression[]
      */
-    public CoreOperationUnion(Expression[] args) {
+    public CoreOperationUnion(final Expression[] args) {
         super(args);
     }
 
-    public Object computeValue(EvalContext context) {
-        EvalContext[] argCtxs = new EvalContext[args.length];
+    @Override
+    public Object computeValue(final EvalContext context) {
+        final EvalContext[] argCtxs = new EvalContext[args.length];
         for (int i = 0; i < args.length; i++) {
-            Object value = args[i].compute(context);
+            final Object value = args[i].compute(context);
             if (value instanceof EvalContext) {
                 argCtxs[i] = (EvalContext) value;
             }
@@ -46,14 +47,17 @@ public class CoreOperationUnion extends CoreOperation {
         return new UnionContext(context.getRootContext(), argCtxs);
     }
 
+    @Override
     protected int getPrecedence() {
         return UNION_PRECEDENCE;
     }
 
+    @Override
     protected boolean isSymmetric() {
         return true;
     }
 
+    @Override
     public String getSymbol() {
         return "|";
     }

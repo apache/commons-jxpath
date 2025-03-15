@@ -26,11 +26,11 @@ public class NestedTestBean {
     public NestedTestBean() {
     }
 
-    public NestedTestBean(String name) {
+    public NestedTestBean(final String name) {
         this.name = name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -48,7 +48,7 @@ public class NestedTestBean {
         return integer;
     }
 
-    public void setInt(int value) {
+    public void setInt(final int value) {
         this.integer = value;
     }
 
@@ -60,16 +60,17 @@ public class NestedTestBean {
     }
 
     private String[] strings =
-        new String[] { "String 1", "String 2", "String 3" };
+        { "String 1", "String 2", "String 3" };
 
     public String[] getStrings() {
         return strings;
     }
 
-    public void setStrings(String[] array) {
+    public void setStrings(final String[] array) {
         strings = array;
     }
 
+    @Override
     public String toString() {
         return "Nested: " + name;
     }

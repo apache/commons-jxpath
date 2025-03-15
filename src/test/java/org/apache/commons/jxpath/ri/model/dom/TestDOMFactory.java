@@ -28,14 +28,15 @@ import org.w3c.dom.Node;
 public class TestDOMFactory extends AbstractFactory {
 
     /**
-     * Return <b>false</b> if this factory cannot create the requested object.
+     * Return <strong>false</strong> if this factory cannot create the requested object.
      */
+    @Override
     public boolean createObject(
-        JXPathContext context,
-        Pointer pointer,
-        Object parent,
-        String name,
-        int index) 
+        final JXPathContext context,
+        final Pointer pointer,
+        final Object parent,
+        final String name,
+        final int index)
     {
         if (name.equals("location")
             || name.equals("address")
@@ -44,14 +45,14 @@ public class TestDOMFactory extends AbstractFactory {
             return true;
         }
         if (name.startsWith("price:")) {
-            String namespaceURI = context.getNamespaceURI("price");
+            final String namespaceURI = context.getNamespaceURI("price");
             addDOMElement((Node) parent, index, name, namespaceURI);
             return true;
         }
         return false;
     }
 
-    private void addDOMElement(Node parent, int index, String tag, String namespaceURI) {
+    private void addDOMElement(final Node parent, final int index, final String tag, final String namespaceURI) {
         Node child = parent.getFirstChild();
         int count = 0;
         while (child != null) {
@@ -63,21 +64,22 @@ public class TestDOMFactory extends AbstractFactory {
 
         // Keep inserting new elements until we have index + 1 of them
         while (count <= index) {
-            Document doc = parent.getOwnerDocument();
+            final Document doc = parent.getOwnerDocument();
             Node newElement;
             if (namespaceURI == null) {
                 newElement = doc.createElement(tag);
-            } 
+            }
             else {
                 newElement = doc.createElementNS(namespaceURI, tag);
             }
-       
+
             parent.appendChild(newElement);
             count++;
         }
     }
 
-    public boolean declareVariable(JXPathContext context, String name) {
+    @Override
+    public boolean declareVariable(final JXPathContext context, final String name) {
         return false;
     }
 }

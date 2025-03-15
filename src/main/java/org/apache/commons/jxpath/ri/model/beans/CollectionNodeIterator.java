@@ -28,9 +28,9 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * aggregate node iterator.
  */
 public abstract class CollectionNodeIterator implements NodeIterator {
-    private CollectionPointer pointer;
-    private boolean reverse;
-    private NodePointer startWith;
+    private final CollectionPointer pointer;
+    private final boolean reverse;
+    private final NodePointer startWith;
     private int position;
     private List collection;
 
@@ -41,9 +41,9 @@ public abstract class CollectionNodeIterator implements NodeIterator {
      * @param startWith starting pointer
      */
     protected CollectionNodeIterator(
-        CollectionPointer pointer,
-        boolean reverse,
-        NodePointer startWith) {
+        final CollectionPointer pointer,
+        final boolean reverse,
+        final NodePointer startWith) {
         this.pointer = pointer;
         this.reverse = reverse;
         this.startWith = startWith;
@@ -57,11 +57,13 @@ public abstract class CollectionNodeIterator implements NodeIterator {
     protected abstract NodeIterator
             getElementNodeIterator(NodePointer elementPointer);
 
+    @Override
     public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         if (collection == null) {
             prepare();
         }
@@ -73,6 +75,7 @@ public abstract class CollectionNodeIterator implements NodeIterator {
         return true;
     }
 
+    @Override
     public NodePointer getNodePointer() {
         if (position == 0) {
             return null;
@@ -85,15 +88,15 @@ public abstract class CollectionNodeIterator implements NodeIterator {
      */
     private void prepare() {
         collection = new ArrayList();
-        NodePointer ptr = (NodePointer) pointer.clone();
-        int length = ptr.getLength();
+        final NodePointer ptr = (NodePointer) pointer.clone();
+        final int length = ptr.getLength();
         for (int i = 0; i < length; i++) {
             ptr.setIndex(i);
-            NodePointer elementPointer = ptr.getValuePointer();
-            NodeIterator iter = getElementNodeIterator(elementPointer);
+            final NodePointer elementPointer = ptr.getValuePointer();
+            final NodeIterator iter = getElementNodeIterator(elementPointer);
 
             for (int j = 1; iter.setPosition(j); j++) {
-                NodePointer childPointer = iter.getNodePointer();
+                final NodePointer childPointer = iter.getNodePointer();
                 if (reverse) {
                     collection.add(0, childPointer);
                 }
@@ -103,7 +106,7 @@ public abstract class CollectionNodeIterator implements NodeIterator {
             }
         }
         if (startWith != null) {
-            int index = collection.indexOf(startWith);
+            final int index = collection.indexOf(startWith);
             if (index == -1) {
                 throw new JXPathException(
                     "Invalid starting pointer for iterator: " + startWith);

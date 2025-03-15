@@ -31,18 +31,19 @@ import org.apache.commons.jxpath.util.ValueUtils;
  */
 public class MethodFunction implements Function {
 
-    private Method method;
-    private static final Object[] EMPTY_ARRAY = new Object[0];
+    private final Method method;
+    private static final Object[] EMPTY_ARRAY = {};
 
     /**
      * Create a new MethodFunction.
      * @param method implementing Method
      */
-    public MethodFunction(Method method) {
+    public MethodFunction(final Method method) {
         this.method = ValueUtils.getAccessibleMethod(method);
     }
 
-    public Object invoke(ExpressionContext context, Object[] parameters) {
+    @Override
+    public Object invoke(final ExpressionContext context, Object[] parameters) {
         try {
             Object target;
             Object[] args;
@@ -52,7 +53,7 @@ public class MethodFunction implements Function {
                     parameters = EMPTY_ARRAY;
                 }
                 int pi = 0;
-                Class[] types = method.getParameterTypes();
+                final Class[] types = method.getParameterTypes();
                 if (types.length >= 1
                     && ExpressionContext.class.isAssignableFrom(types[0])) {
                     pi = 1;
@@ -68,7 +69,7 @@ public class MethodFunction implements Function {
             }
             else {
                 int pi = 0;
-                Class[] types = method.getParameterTypes();
+                final Class[] types = method.getParameterTypes();
                 if (types.length >= 1
                     && ExpressionContext.class.isAssignableFrom(types[0])) {
                     pi = 1;
@@ -98,6 +99,7 @@ public class MethodFunction implements Function {
         }
     }
 
+    @Override
     public String toString() {
         return method.toString();
     }

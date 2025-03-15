@@ -23,7 +23,7 @@ import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * Pointer whose value is <code>null</code>.
+ * Pointer whose value is {@code null}.
  */
 public class NullPointer extends PropertyOwnerPointer {
     private QName name;
@@ -36,7 +36,7 @@ public class NullPointer extends PropertyOwnerPointer {
      * @param name node name
      * @param locale Locale
      */
-    public NullPointer(QName name, Locale locale) {
+    public NullPointer(final QName name, final Locale locale) {
         super(null, locale);
         this.name = name;
     }
@@ -46,7 +46,7 @@ public class NullPointer extends PropertyOwnerPointer {
      * @param parent parent pointer
      * @param name node name
      */
-    public NullPointer(NodePointer parent, QName name) {
+    public NullPointer(final NodePointer parent, final QName name) {
         super(parent);
         this.name = name;
     }
@@ -56,36 +56,43 @@ public class NullPointer extends PropertyOwnerPointer {
      * @param locale Locale
      * @param id String
      */
-    public NullPointer(Locale locale, String id) {
+    public NullPointer(final Locale locale, final String id) {
         super(null, locale);
         this.id = id;
     }
 
+    @Override
     public QName getName() {
         return name;
     }
 
+    @Override
     public Object getBaseValue() {
         return null;
     }
 
+    @Override
     public boolean isCollection() {
         return false;
     }
 
+    @Override
     public boolean isLeaf() {
         return true;
     }
 
+    @Override
     public boolean isActual() {
         return false;
     }
 
+    @Override
     public PropertyPointer getPropertyPointer() {
         return new NullPropertyPointer(this);
     }
 
-    public NodePointer createPath(JXPathContext context, Object value) {
+    @Override
+    public NodePointer createPath(final JXPathContext context, final Object value) {
         if (parent != null) {
             return parent.createPath(context, value).getValuePointer();
         }
@@ -93,7 +100,8 @@ public class NullPointer extends PropertyOwnerPointer {
             "Cannot create the root object: " + asPath());
     }
 
-    public NodePointer createPath(JXPathContext context) {
+    @Override
+    public NodePointer createPath(final JXPathContext context) {
         if (parent != null) {
             return parent.createPath(context).getValuePointer();
         }
@@ -101,26 +109,30 @@ public class NullPointer extends PropertyOwnerPointer {
             "Cannot create the root object: " + asPath());
     }
 
+    @Override
     public NodePointer createChild(
-        JXPathContext context,
-        QName name,
-        int index) {
+        final JXPathContext context,
+        final QName name,
+        final int index) {
         return createPath(context).createChild(context, name, index);
     }
 
+    @Override
     public NodePointer createChild(
-        JXPathContext context,
-        QName name,
-        int index,
-        Object value) {
+        final JXPathContext context,
+        final QName name,
+        final int index,
+        final Object value) {
         return createPath(context).createChild(context, name, index, value);
     }
 
+    @Override
     public int hashCode() {
         return name == null ? 0 : name.hashCode();
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         if (object == this) {
             return true;
         }
@@ -129,10 +141,11 @@ public class NullPointer extends PropertyOwnerPointer {
             return false;
         }
 
-        NullPointer other = (NullPointer) object;
+        final NullPointer other = (NullPointer) object;
         return name == other.name || name != null && name.equals(other.name);
     }
 
+    @Override
     public String asPath() {
         if (id != null) {
             return "id(" + id + ")";
@@ -140,6 +153,7 @@ public class NullPointer extends PropertyOwnerPointer {
         return parent == null ? "null()" : super.asPath();
     }
 
+    @Override
     public int getLength() {
         return 0;
     }

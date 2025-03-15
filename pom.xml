@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with
@@ -15,11 +15,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>54</version>
+    <version>79</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-jxpath</groupId>
@@ -59,7 +59,7 @@
       <email>ggregory at apache.org</email>
       <url>https://www.garygregory.com</url>
       <organization>The Apache Software Foundation</organization>
-      <organizationUrl>https://www.apache.org/</organizationUrl>      
+      <organizationUrl>https://www.apache.org/</organizationUrl>
       <roles>
         <role>PMC Member</role>
       </roles>
@@ -86,23 +86,29 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-
+    <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
+    <project.build.outputTimestamp>2024-02-01T03:27:02Z</project.build.outputTimestamp>
     <commons.componentid>jxpath</commons.componentid>
     <commons.module.name>org.apache.commons.jxpath</commons.module.name>
     <commons.release.version>1.4</commons.release.version>
     <commons.release.isDistModule>true</commons.release.isDistModule>
     <commons.rc.version>RC1</commons.rc.version>
     <commons.bc.version>1.3</commons.bc.version>
-    <commons.release.desc>(Java 8)</commons.release.desc>
-
+    <commons.release.desc>(Java 8 or above)</commons.release.desc>
     <commons.jira.id>JXPATH</commons.jira.id>
     <commons.jira.pid>12310480</commons.jira.pid>
-
     <commons.osgi.import>*;resolution:=optional</commons.osgi.import>
-  </properties> 
-
+    <!-- JaCoCo: Don't make code coverage worse than: -->
+    <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
+    <commons.jacoco.classRatio>0.92</commons.jacoco.classRatio>
+    <commons.jacoco.instructionRatio>0.74</commons.jacoco.instructionRatio>
+    <commons.jacoco.methodRatio>0.82</commons.jacoco.methodRatio>
+    <commons.jacoco.branchRatio>0.68</commons.jacoco.branchRatio>
+    <commons.jacoco.lineRatio>0.77</commons.jacoco.lineRatio>
+    <commons.jacoco.complexityRatio>0.64</commons.jacoco.complexityRatio>
+  </properties>
   <build>
-    <defaultGoal>clean apache-rat:check package japicmp:cmp</defaultGoal>
+    <defaultGoal>clean apache-rat:check verify japicmp:cmp checkstyle:check pmd:check javadoc:javadoc</defaultGoal>
     <plugins>
       <plugin>
         <groupId>org.apache.rat</groupId>
@@ -142,6 +148,46 @@
           </ignorePathsToDelete>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <linksource>true</linksource>
+          <links>
+            <link>${commons.javadoc.javaee.link}</link>
+            <link>https://commons.apache.org/proper/commons-beanutils/apidocs</link>
+            <link>https://commons.apache.org/proper/commons-lang/apidocs</link>
+            <!-- http://www.jdom.org/docs/apidocs/ is not a secure link -->
+            <link>https://javadoc.io/doc/org.jdom/jdom/1.1</link>
+          </links>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>${basedir}/checkstyle.xml</configLocation>
+          <excludes>org/apache/commons/jxpath/ri/parser/*</excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <configuration>
+          <targetJdk>1.8</targetJdk>
+          <excludes>
+            <exclude>org/apache/commons/jxpath/ri/parser/*</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <configuration>
+          <excludeFilterFile>${basedir}/src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
+          <xmlOutput>true</xmlOutput>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <dependencyManagement>
@@ -149,7 +195,7 @@
       <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
-        <version>1.1.1</version>
+        <version>1.3.5</version>
         <scope>runtime</scope>
       </dependency>
     </dependencies>
@@ -158,7 +204,7 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-      <version>2.4</version>
+      <version>2.5</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -170,9 +216,8 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -184,7 +229,7 @@
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <version>1.8.2</version>
+      <version>1.10.1</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -233,11 +278,10 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
-        <version>2.2</version>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.1</version>
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <excludes>org/apache/commons/jxpath/ri/parser/*</excludes>
@@ -246,9 +290,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>2.3</version>
         <configuration>
-          <targetJdk>1.3</targetJdk>
+          <targetJdk>1.8</targetJdk>
           <excludes>
             <exclude>org/apache/commons/jxpath/ri/parser/*</exclude>
           </excludes>
@@ -258,7 +301,7 @@
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <configuration>
-          <excludeFilterFile>${basedir}/conf/findbugs-exclude-filter.xml</excludeFilterFile>
+          <excludeFilterFile>${basedir}/src/conf/findbugs-exclude-filter.xml</excludeFilterFile>
           <xmlOutput>true</xmlOutput>
         </configuration>
       </plugin>
@@ -271,14 +314,13 @@
             <link>http://java.sun.com/j2se/1.3/docs/api/</link>
             <link>http://java.sun.com/javaee/5/docs/api/</link>
             <link>http://commons.apache.org/beanutils/apidocs/</link>
-            <link>http://www.jdom.org/docs/apidocs/</link> 
+            <link>http://www.jdom.org/docs/apidocs/</link>
           </links>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
-        <version>${commons.rat.version}</version>
         <configuration>
           <excludes>
             <exclude>src/java/org/apache/commons/jxpath/ri/parser/*</exclude>

@@ -29,21 +29,22 @@ public class TestDynaBeanFactory extends AbstractFactory {
 
     /**
      */
+    @Override
     public boolean createObject(
-        JXPathContext context,
-        Pointer pointer,
-        Object parent,
-        String name,
-        int index) 
+        final JXPathContext context,
+        final Pointer pointer,
+        final Object parent,
+        final String name,
+        final int index)
     {
-        if (name.equals("nestedBean")) {
+        switch (name) {
+        case "nestedBean":
             ((DynaBean) parent).set(
                 "nestedBean",
                 new NestedTestBean("newName"));
             return true;
-        }
-        else if (name.equals("beans")) {
-            DynaBean bean = (DynaBean) parent;
+        case "beans": {
+            final DynaBean bean = (DynaBean) parent;
             Object beans[] = (Object[]) bean.get("beans");
             if (beans == null || index >= beans.length) {
                 beans = new NestedTestBean[index + 1];
@@ -52,17 +53,21 @@ public class TestDynaBeanFactory extends AbstractFactory {
             beans[index] = new NestedTestBean("newName");
             return true;
         }
-        else if (name.equals("integers")) {
-            DynaBean bean = (DynaBean) parent;
-            bean.set("integers", index, new Integer(0));
+        case "integers": {
+            final DynaBean bean = (DynaBean) parent;
+            bean.set("integers", index, Integer.valueOf(0));
             return true;
+        }
+        default:
+            break;
         }
         return false;
     }
 
     /**
      */
-    public boolean declareVariable(JXPathContext context, String name) {
+    @Override
+    public boolean declareVariable(final JXPathContext context, final String name) {
         context.getVariables().declareVariable(name, null);
         return true;
     }

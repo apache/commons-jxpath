@@ -18,26 +18,31 @@
 package org.apache.commons.jxpath.ri.model;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.junit.jupiter.api.Test;
 
-public class JXPath154Test extends JXPathTestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class JXPath154Test extends AbstractJXPathTest {
 
     protected JXPathContext context;
 
-    protected DocumentContainer createDocumentContainer(String model) {
-        return new DocumentContainer(JXPathTestCase.class.getResource("InnerEmptyNamespace.xml"), model);
+    protected DocumentContainer createDocumentContainer(final String model) {
+        return new DocumentContainer(AbstractJXPathTest.class.getResource("InnerEmptyNamespace.xml"), model);
     }
 
-    protected void doTest(String path, String model, String expectedValue) {
-        JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
+    protected void doTest(final String path, final String model, final String expectedValue) {
+        final JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
         assertEquals(expectedValue, context.getPointer(path).asPath());
     }
 
+    @Test
     public void testInnerEmptyNamespaceDOM() {
         doTest("b:foo/test", DocumentContainer.MODEL_DOM, "/b:foo[1]/test[1]");
     }
 
+    @Test
     public void testInnerEmptyNamespaceJDOM() {
         doTest("b:foo/test", DocumentContainer.MODEL_JDOM, "/b:foo[1]/test[1]");
     }

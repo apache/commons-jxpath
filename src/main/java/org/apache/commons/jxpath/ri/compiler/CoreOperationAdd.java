@@ -28,26 +28,30 @@ public class CoreOperationAdd extends CoreOperation {
      * Create a new CoreOperationAdd.
      * @param args Expression arguments to add together.
      */
-    public CoreOperationAdd(Expression[] args) {
+    public CoreOperationAdd(final Expression[] args) {
         super(args);
     }
 
-    public Object computeValue(EvalContext context) {
+    @Override
+    public Object computeValue(final EvalContext context) {
         double s = 0.0;
-        for (int i = 0; i < args.length; i++) {
-            s += InfoSetUtil.doubleValue(args[i].computeValue(context));
+        for (final Expression arg : args) {
+            s += InfoSetUtil.doubleValue(arg.computeValue(context));
         }
-        return new Double(s);
+        return Double.valueOf(s);
     }
 
+    @Override
     protected int getPrecedence() {
         return ADD_PRECEDENCE;
     }
 
+    @Override
     protected boolean isSymmetric() {
         return true;
     }
 
+    @Override
     public String getSymbol() {
         return "+";
     }

@@ -24,28 +24,34 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * Tests BasicTypeConverter
- * 
  */
-public class BasicTypeConverterTest extends TestCase {
+public class BasicTypeConverterTest {
 
+    @Test
     public void testPrimitiveToString() {
-        assertConversion(new Integer(1), String.class, "1");
+        assertConversion(Integer.valueOf(1), String.class, "1");
     }
 
+    @Test
     public void testArrayToList() {
         assertConversion(
             new int[] { 1, 2 },
             List.class,
-            Arrays.asList(new Object[] { new Integer(1), new Integer(2)}));
+            Arrays.asList(new Object[] { Integer.valueOf(1), Integer.valueOf(2)}));
     }
 
+    @Test
     public void testArrayToArray() {
         assertConversion(
             new int[] { 1, 2 },
@@ -53,89 +59,100 @@ public class BasicTypeConverterTest extends TestCase {
             Arrays.asList(new String[] { "1", "2" }));
     }
 
+    @Test
     public void testListToArray() {
         assertConversion(
-            Arrays.asList(new Integer[] { new Integer(1), new Integer(2)}),
+            Arrays.asList(new Integer[] { Integer.valueOf(1), Integer.valueOf(2)}),
             String[].class,
             Arrays.asList(new String[] { "1", "2" }));
 
         assertConversion(
             Arrays.asList(new String[] { "1", "2" }),
             int[].class,
-            Arrays.asList(new Integer[] { new Integer(1), new Integer(2)}));
+            Arrays.asList(new Integer[] { Integer.valueOf(1), Integer.valueOf(2)}));
     }
 
+    @Test
     public void testInvalidConversion() {
-        boolean exception = false;
-        try {
-            TypeUtils.convert("'foo'", Date.class);
-        }
-        catch (Throwable ex) {
-            exception = true;
-        }
-        assertTrue("Type conversion exception", exception);
+        assertThrows(Exception.class, () -> TypeUtils.convert("'foo'", Date.class),
+            "Type conversion exception");
     }
 
-    public void assertConversion(Object from, Class toType, Object expected) {
-        boolean can = TypeUtils.canConvert(from, toType);
-        assertTrue("Can convert: " + from.getClass() + " to " + toType, can);
+    public void assertConversion(final Object from, final Class toType, final Object expected) {
+        final boolean can = TypeUtils.canConvert(from, toType);
+        assertTrue(can, "Can convert: " + from.getClass() + " to " + toType);
         Object result = TypeUtils.convert(from, toType);
         if (result.getClass().isArray()) {
-            ArrayList list = new ArrayList();
+            final ArrayList list = new ArrayList();
             for (int j = 0; j < Array.getLength(result); j++) {
                 list.add(Array.get(result, j));
             }
             result = list;
         }
         assertEquals(
-            "Convert: " + from.getClass() + " to " + toType,
             expected,
-            result);
+            result,
+            "Convert: " + from.getClass() + " to " + toType);
     }
-    
+
+    @Test
     public void testSingletonCollectionToString() {
         assertConversion(Collections.singleton("Earth"), String.class, "Earth");
     }
 
+    @Test
     public void testSingletonArrayToString() {
         assertConversion(new String[] { "Earth" }, String.class, "Earth");
     }
 
+    @Test
     public void testPointerToString() {
         assertConversion(new Pointer() {
+            private static final long serialVersionUID = 1L;
+            @Override
             public Object getValue() {
                 return "value";
             }
+            @Override
             public Object getNode() {
                 return null;
             }
-            public void setValue(Object value) {
+            @Override
+            public void setValue(final Object value) {
             }
+            @Override
             public Object getRootNode() {
                 return null;
             }
+            @Override
             public String asPath() {
                 return null;
             }
+            @Override
             public Object clone() {
                 return null;
             }
-            public int compareTo(Object o) {
+            @Override
+            public int compareTo(final Object o) {
                 return 0;
             }
         }, String.class, "value");
     }
 
+    @Test
     public void testNodeSetToString() {
         assertConversion(new NodeSet() {
+            @Override
             public List getNodes() {
                 return null;
             }
+            @Override
             public List getPointers() {
                 return null;
             }
+            @Override
             public List getValues() {
-                List list = new ArrayList();
+                final List list = new ArrayList();
                 list.add("hello");
                 list.add("goodbye");
                 return Collections.singletonList(list);
@@ -144,20 +161,25 @@ public class BasicTypeConverterTest extends TestCase {
     }
 
     // succeeds in current version
+    @Test
     public void testNodeSetToInteger() {
         assertConversion(new NodeSet() {
+            @Override
             public List getNodes() {
                 return null;
             }
+            @Override
             public List getPointers() {
                 return null;
             }
+            @Override
             public List getValues() {
                 return Collections.singletonList("9");
             }
-        }, Integer.class, new Integer(9));
-    }    
-    
+        }, Integer.class, Integer.valueOf(9));
+    }
+
+    @Test
     public void testBeanUtilsConverter() {
         assertConversion("12", BigDecimal.class, new BigDecimal(12));
     }

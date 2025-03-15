@@ -30,15 +30,15 @@ import org.w3c.dom.Node;
  * An iterator of namespaces of a DOM Node.
  */
 public class DOMNamespaceIterator implements NodeIterator {
-    private NodePointer parent;
-    private List attributes;
+    private final NodePointer parent;
+    private final List attributes;
     private int position = 0;
 
     /**
      * Create a new DOMNamespaceIterator.
      * @param parent parent pointer
      */
-    public DOMNamespaceIterator(NodePointer parent) {
+    public DOMNamespaceIterator(final NodePointer parent) {
         this.parent = parent;
         attributes = new ArrayList();
         collectNamespaces(attributes, (Node) parent.getNode());
@@ -49,8 +49,8 @@ public class DOMNamespaceIterator implements NodeIterator {
      * @param attributes attribute list
      * @param node target node
      */
-    private void collectNamespaces(List attributes, Node node) {
-        Node parent = node.getParentNode();
+    private void collectNamespaces(final List attributes, Node node) {
+        final Node parent = node.getParentNode();
         if (parent != null) {
             collectNamespaces(attributes, parent);
         }
@@ -58,20 +58,21 @@ public class DOMNamespaceIterator implements NodeIterator {
             node = ((Document) node).getDocumentElement();
         }
         if (node.getNodeType() == Node.ELEMENT_NODE) {
-            NamedNodeMap map = node.getAttributes();
-            int count = map.getLength();
+            final NamedNodeMap map = node.getAttributes();
+            final int count = map.getLength();
             for (int i = 0; i < count; i++) {
-                Attr attr = (Attr) map.item(i);
-                String prefix = DOMNodePointer.getPrefix(attr);
-                String name = DOMNodePointer.getLocalName(attr);
-                if ((prefix != null && prefix.equals("xmlns"))
-                    || (prefix == null && name.equals("xmlns"))) {
+                final Attr attr = (Attr) map.item(i);
+                final String prefix = DOMNodePointer.getPrefix(attr);
+                final String name = DOMNodePointer.getLocalName(attr);
+                if (prefix != null && prefix.equals("xmlns")
+                    || prefix == null && name.equals("xmlns")) {
                     attributes.add(attr);
                 }
             }
         }
     }
 
+    @Override
     public NodePointer getNodePointer() {
         if (position == 0) {
             if (!setPosition(1)) {
@@ -84,19 +85,21 @@ public class DOMNamespaceIterator implements NodeIterator {
             index = 0;
         }
         String prefix = "";
-        Attr attr = (Attr) attributes.get(index);
-        String name = attr.getPrefix();
+        final Attr attr = (Attr) attributes.get(index);
+        final String name = attr.getPrefix();
         if (name != null && name.equals("xmlns")) {
             prefix = DOMNodePointer.getLocalName(attr);
         }
         return new NamespacePointer(parent, prefix, attr.getValue());
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         this.position = position;
         return position >= 1 && position <= attributes.size();
     }

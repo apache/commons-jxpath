@@ -21,14 +21,14 @@ import org.apache.commons.jxpath.ri.QName;
 /**
  */
 public class NodeNameTest extends NodeTest {
-    private QName qname;
+    private final QName qname;
     private String namespaceURI;
 
     /**
      * Create a new NodeNameTest.
      * @param qname name to match
      */
-    public NodeNameTest(QName qname) {
+    public NodeNameTest(final QName qname) {
         this.qname = qname;
     }
 
@@ -37,13 +37,13 @@ public class NodeNameTest extends NodeTest {
      * @param qname name to match
      * @param namespaceURI uri to match
      */
-    public NodeNameTest(QName qname, String namespaceURI) {
+    public NodeNameTest(final QName qname, final String namespaceURI) {
         this.qname = qname;
         this.namespaceURI = namespaceURI;
     }
 
     /**
-     * Get the node name.
+     * Gets the node name.
      * @return QName
      */
     public QName getNodeName() {
@@ -51,7 +51,7 @@ public class NodeNameTest extends NodeTest {
     }
 
     /**
-     * Get the ns URI.
+     * Gets the ns URI.
      * @return String
      */
     public String getNamespaceURI() {
@@ -60,12 +60,13 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Learn whether this is a wildcard test.
-     * @return <code>true</code> if the node name is "*".
+     * @return {@code true} if the node name is "*".
      */
     public boolean isWildcard() {
         return qname.getName().equals("*");
     }
 
+    @Override
     public String toString() {
         return qname.toString();
     }

@@ -16,12 +16,11 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-
 /**
  */
 public class TestFunctions2 {
 
-    public static int increment(int i) {
+    public static int increment(final int i) {
         return i + 1;
     }
 }

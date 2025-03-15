@@ -27,22 +27,23 @@ public abstract class Operation extends Expression {
      * Create a new Operation.
      * @param args Expression[]
      */
-    public Operation(Expression[] args) {
+    public Operation(final Expression[] args) {
         this.args = args;
     }
 
     /**
-     * Get the arguments.
+     * Gets the arguments.
      * @return Expression[]
      */
     public Expression[] getArguments() {
         return args;
     }
 
+    @Override
     public boolean computeContextDependent() {
         if (args != null) {
-            for (int i = 0; i < args.length; i++) {
-                if (args[i].isContextDependent()) {
+            for (final Expression arg : args) {
+                if (arg.isContextDependent()) {
                     return true;
                 }
             }

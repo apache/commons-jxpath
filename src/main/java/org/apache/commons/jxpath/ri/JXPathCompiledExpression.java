@@ -18,31 +18,31 @@ package org.apache.commons.jxpath.ri;
 
 import java.util.Iterator;
 
-import org.apache.commons.jxpath.ri.compiler.Expression;
 import org.apache.commons.jxpath.CompiledExpression;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.compiler.Expression;
 
 /**
  * RI of CompiledExpression.
  */
 public class JXPathCompiledExpression implements CompiledExpression {
 
-    private String xpath;
-    private Expression expression;
+    private final String xpath;
+    private final Expression expression;
 
     /**
      * Create a new JXPathCompiledExpression.
      * @param xpath source
      * @param expression compiled
      */
-    public JXPathCompiledExpression(String xpath, Expression expression) {
+    public JXPathCompiledExpression(final String xpath, final Expression expression) {
         this.xpath = xpath;
         this.expression = expression;
     }
 
     /**
-     * Get the source expression.
+     * Gets the source expression.
      * @return String
      */
     protected String getXPath() {
@@ -50,62 +50,73 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     /**
-     * Get the compiled expression.
+     * Gets the compiled expression.
      * @return Expression
      */
     protected Expression getExpression() {
         return expression;
     }
 
+    @Override
     public String toString() {
         return xpath;
     }
 
-    public Object getValue(JXPathContext context) {
+    @Override
+    public Object getValue(final JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
                     getValue(xpath, expression);
     }
 
-    public Object getValue(JXPathContext context, Class requiredType) {
+    @Override
+    public Object getValue(final JXPathContext context, final Class requiredType) {
         return ((JXPathContextReferenceImpl) context).
                     getValue(xpath, expression, requiredType);
     }
 
-    public void setValue(JXPathContext context, Object value) {
+    @Override
+    public void setValue(final JXPathContext context, final Object value) {
         ((JXPathContextReferenceImpl) context).
                     setValue(xpath, expression, value);
     }
 
-    public Pointer createPath(JXPathContext context) {
+    @Override
+    public Pointer createPath(final JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
                     createPath(xpath, expression);
     }
 
-    public Pointer createPathAndSetValue(JXPathContext context, Object value) {
+    @Override
+    public Pointer createPathAndSetValue(final JXPathContext context, final Object value) {
         return ((JXPathContextReferenceImpl) context).
                     createPathAndSetValue(xpath, expression, value);
     }
 
-    public Iterator iterate(JXPathContext context) {
+    @Override
+    public Iterator iterate(final JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
                     iterate(xpath, expression);
     }
 
-    public Pointer getPointer(JXPathContext context, String xpath) {
+    @Override
+    public Pointer getPointer(final JXPathContext context, final String xpath) {
         return ((JXPathContextReferenceImpl) context).
                     getPointer(xpath, expression);
     }
 
-    public Iterator iteratePointers(JXPathContext context) {
+    @Override
+    public Iterator iteratePointers(final JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).
                     iteratePointers(xpath, expression);
     }
 
-    public void removePath(JXPathContext context) {
+    @Override
+    public void removePath(final JXPathContext context) {
         ((JXPathContextReferenceImpl) context).removePath(xpath, expression);
     }
 
-    public void removeAll(JXPathContext context) {
+    @Override
+    public void removeAll(final JXPathContext context) {
         ((JXPathContextReferenceImpl) context).removeAll(xpath, expression);
     }
 }

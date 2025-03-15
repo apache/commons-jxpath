@@ -19,27 +19,31 @@ package org.apache.commons.jxpath.ri.model.dynabeans;
 import org.apache.commons.beanutils.LazyDynaBean;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * 
  */
-public class LazyDynaBeanTest extends JXPathTestCase {
+public class LazyDynaBeanTest extends AbstractJXPathTest {
 
+    @Test
     public void testLazyProperty() throws JXPathNotFoundException {
-        LazyDynaBean bean = new LazyDynaBean();
-        JXPathContext context = JXPathContext.newContext(bean);
+        final LazyDynaBean bean = new LazyDynaBean();
+        final JXPathContext context = JXPathContext.newContext(bean);
         context.getValue("nosuch");
     }
 
+    @Test
     public void testStrictLazyDynaBeanPropertyFactory() {
-        JXPathContextReferenceImpl.addNodePointerFactory(new StrictLazyDynaBeanPointerFactory());
-        try {
-            testLazyProperty();
-            fail();
-        } catch (JXPathNotFoundException e) {
-            //okay
+        final StrictLazyDynaBeanPointerFactory factory = new StrictLazyDynaBeanPointerFactory();
+        JXPathContextReferenceImpl.addNodePointerFactory(factory);
+        assertThrows(JXPathNotFoundException.class, this::testLazyProperty);
+
+        while (JXPathContextReferenceImpl.removeNodePointerFactory(factory)) {
+            // NOP
         }
     }
 }

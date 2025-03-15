@@ -18,30 +18,27 @@ package org.apache.commons.jxpath.issues;
 
 import java.util.HashMap;
 
-import junit.framework.TestSuite;
-
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
 
-public class JXPath172DynamicTest extends JXPathTestCase
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+public class JXPath172DynamicTest extends AbstractJXPathTest
 {
 
-    /**
-     * Return the tests included in this test suite.
-     */
-    public static TestSuite suite()
-    {
-        return (new TestSuite(JXPath172DynamicTest.class));
-    }
-
+    @Test
     public void testIssue172_propertyExistAndIsNotNull()
     {
         final JXPathContext context = getContext("ciao", false);
         final Object bRet = context.selectSingleNode("value");
-        assertNotNull("null!!", bRet);
-        assertEquals("Is " + bRet.getClass(), "ciao", bRet);
+        assertNotNull(bRet, "null!!");
+        assertEquals("ciao", bRet, "Is " + bRet.getClass());
 
         final Pointer pointer = context.getPointer("value");
         assertNotNull(pointer);
@@ -49,11 +46,12 @@ public class JXPath172DynamicTest extends JXPathTestCase
         assertEquals("ciao", pointer.getValue());
     }
 
+    @Test
     public void testIssue172_propertyExistAndIsNull()
     {
         final JXPathContext context = getContext(null, false);
         final Object bRet = context.selectSingleNode("value");
-        assertNull("not null!!", bRet);
+        assertNull(bRet,"not null!!");
 
         final Pointer pointer = context.getPointer("value");
         assertNotNull(pointer);
@@ -61,6 +59,7 @@ public class JXPath172DynamicTest extends JXPathTestCase
         assertNull(pointer.getValue());
     }
 
+    @Test
     public void testIssue172_propertyDoesNotExist()
     {
         final JXPathContext context = getContext(null, false);
@@ -73,6 +72,7 @@ public class JXPath172DynamicTest extends JXPathTestCase
 
     }
 
+    @Test
     public void testIssue172_propertyDoesNotExist_Lenient()
     {
         final JXPathContext context = getContext(null, true);
@@ -85,6 +85,7 @@ public class JXPath172DynamicTest extends JXPathTestCase
 
     }
 
+    @Test
     public void testIssue172_nestedpropertyDoesNotExist_Lenient()
     {
         final JXPathContext context = getContext(null, true);
@@ -97,6 +98,7 @@ public class JXPath172DynamicTest extends JXPathTestCase
 
     }
 
+    @Test
     public void testIssue172_nestedpropertyDoesNotExist_NotLenient()
     {
         final JXPathContext context = getContext(null, false);
@@ -111,12 +113,12 @@ public class JXPath172DynamicTest extends JXPathTestCase
 
     /**
      * Helper, returns a {@link JXPathContext} filled with a Map whose "value"
-     * key is associated to the passed <code>val</code> value.
-     * 
+     * key is associated to the passed {@code val} value.
+     *
      * @param val
-     * @return A {@link JXPathContext}, never <code>null</code>.
+     * @return A {@link JXPathContext}, never {@code null}.
      */
-    private JXPathContext getContext(final String val, boolean lenient)
+    private JXPathContext getContext(final String val, final boolean lenient)
     {
         final HashMap map = new HashMap();
         // if (val!=null) // no diffs

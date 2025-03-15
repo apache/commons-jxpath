@@ -28,24 +28,27 @@ import org.w3c.dom.Node;
  */
 public class DOMPointerFactory implements NodePointerFactory {
 
-    /** factory order */
+    /** Factory order */
     public static final int DOM_POINTER_FACTORY_ORDER = 100;
 
+    @Override
     public int getOrder() {
         return DOM_POINTER_FACTORY_ORDER;
     }
 
+    @Override
     public NodePointer createNodePointer(
-        QName name,
-        Object bean,
-        Locale locale) {
+        final QName name,
+        final Object bean,
+        final Locale locale) {
         return bean instanceof Node ? new DOMNodePointer((Node) bean, locale) : null;
     }
 
+    @Override
     public NodePointer createNodePointer(
-        NodePointer parent,
-        QName name,
-        Object bean) {
+        final NodePointer parent,
+        final QName name,
+        final Object bean) {
         return bean instanceof Node ? new DOMNodePointer(parent, (Node) bean) : null;
     }
 }

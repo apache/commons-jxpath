@@ -18,9 +18,8 @@
 <document>
    <properties>
       <title>Contributors</title>
-      <author email="dev@commons.apache.org">Commons Documentation Team</author>
+      <author email="dev@commons.apache.org">Apache Commons Team</author>
       <author email="dmitri@apache.org">Dmitri Plotnikov</author>
-      <revision>$Id$</revision>
    </properties>
 
    <body>

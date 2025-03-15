@@ -26,21 +26,22 @@ import org.jdom2.input.SAXBuilder;
  */
 public class JDOMParser extends XMLParser2 {
 
-    public Object parseXML(InputStream stream) {
+    @Override
+    public Object parseXML(final InputStream stream) {
         if (!isNamespaceAware()) {
             throw new JXPathException("JDOM parser configuration error. JDOM "
                     + "does not support the namespaceAware=false setting.");
         }
 
         try {
-            SAXBuilder builder = new SAXBuilder();
+            final SAXBuilder builder = new SAXBuilder();
             builder.setExpandEntities(isExpandEntityReferences());
             builder.setIgnoringElementContentWhitespace(
                     isIgnoringElementContentWhitespace());
             builder.setValidation(isValidating());
             return builder.build(stream);
         }
-        catch (Exception ex) {
+        catch (final Exception ex) {
             throw new JXPathException("JDOM parser error", ex);
         }
     }

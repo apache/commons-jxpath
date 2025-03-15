@@ -26,11 +26,13 @@ import org.apache.commons.jxpath.NodeSet;
  */
 public class JXPath11CompatibleTypeConverter extends BasicTypeConverter {
 
-    public boolean canConvert(Object object, Class toType) {
+    @Override
+    public boolean canConvert(final Object object, final Class toType) {
         return object instanceof NodeSet ? toType.isInstance(object) : super.canConvert(object, toType);
     }
 
-    public Object convert(Object object, Class toType) {
+    @Override
+    public Object convert(final Object object, final Class toType) {
         return object instanceof NodeSet && toType.isInstance(object) ? object : super.convert(object, toType);
     }
 }

@@ -16,7 +16,7 @@
  */
 package org.apache.commons.jxpath.ri.axes;
 
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.TestBean;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 import org.w3c.dom.Document;
@@ -36,24 +36,25 @@ public class TestBeanWithNode extends TestBean {
         return new Object[] { node };
     }
 
-    public void setVendor(Object node) {
+    public void setVendor(final Object node) {
         this.node = node;
     }
 
+    @Override
     public Object getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(final Object object) {
         this.object = object;
     }
 
     public static TestBeanWithNode createTestBeanWithDOM() {
-        DocumentContainer docCtr =
+        final DocumentContainer docCtr =
             new DocumentContainer(
-                JXPathTestCase.class.getResource("Vendor.xml"));
-        Document doc = (Document) docCtr.getValue();
-        TestBeanWithNode tbwdom = new TestBeanWithNode();
+                AbstractJXPathTest.class.getResource("Vendor.xml"));
+        final Document doc = (Document) docCtr.getValue();
+        final TestBeanWithNode tbwdom = new TestBeanWithNode();
         tbwdom.setVendor(doc.getDocumentElement());
         tbwdom.setObject(docCtr);
         return tbwdom;

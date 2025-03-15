@@ -29,25 +29,28 @@ import org.apache.commons.jxpath.ri.model.NodePointerFactory;
  */
 public class BeanPointerFactory implements NodePointerFactory {
 
-    /** factory order constant */
+    /** Factory order constant */
     public static final int BEAN_POINTER_FACTORY_ORDER = 900;
 
+    @Override
     public int getOrder() {
         return BEAN_POINTER_FACTORY_ORDER;
     }
 
-    public NodePointer createNodePointer(QName name, Object bean, Locale locale) {
-        JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
+    @Override
+    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
+        final JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         return new BeanPointer(name, bean, bi, locale);
     }
 
-    public NodePointer createNodePointer(NodePointer parent, QName name,
-            Object bean) {
+    @Override
+    public NodePointer createNodePointer(final NodePointer parent, final QName name,
+            final Object bean) {
         if (bean == null) {
             return new NullPointer(parent, name);
         }
 
-        JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
+        final JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         return new BeanPointer(parent, name, bean, bi);
     }
 }

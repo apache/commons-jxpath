@@ -17,12 +17,14 @@
 package org.apache.commons.jxpath.issues;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.junit.jupiter.api.Test;
 
-public class JXPath149Test extends JXPathTestCase {
+public class JXPath149Test extends AbstractJXPathTest {
 
+    @Test
     public void testComplexOperationWithVariables() {
-        JXPathContext context = JXPathContext.newContext(null);
+        final JXPathContext context = JXPathContext.newContext(null);
         context.getVariables().declareVariable("a", Integer.valueOf(0));
         context.getVariables().declareVariable("b", Integer.valueOf(0));
         context.getVariables().declareVariable("c", Integer.valueOf(1));

@@ -22,8 +22,7 @@ import java.util.List;
  * NodeSet interface can be used as the type of an argument of an extension
  * function.  Alternatively, the function can declare the argument as
  * a Collection (or List or Set), in which case it will be given a collection
- * of <i>values</i> matching the path.
- * @version $Id$
+ * of <em>values</em> matching the path.
  */
 public interface NodeSet {
 

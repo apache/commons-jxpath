@@ -24,78 +24,76 @@ public class JXPathException extends RuntimeException {
     private static final long serialVersionUID = 4306409701468017766L;
 
     /** @serial */
-    private Throwable exception;
+    private final Throwable exception;
 
     /**
-     * Create a new <code>JXPathException</code> with no
+     * Create a new {@code JXPathException} with no
      * detail mesage.
      */
 
      public JXPathException() {
-         super();
          this.exception = null;
      }
 
     /**
-     * Create a new <code>JXPathException</code> with
-     * the <code>String </code> specified as an error message.
+     * Create a new {@code JXPathException} with
+     * the {@code String } specified as an error message.
      *
      * @param msg The error message for the exception.
      */
-    public JXPathException(String msg) {
+    public JXPathException(final String msg) {
         super(msg);
         this.exception = null;
     }
 
-
     /**
-     * Create a new <code>JXPathException</code> with a
-     * given <code>Throwable</code> base cause of the error.
+     * Create a new {@code JXPathException} with a
+     * given {@code Throwable} base cause of the error.
      *
      * @param e The exception to be encapsulated in a
      * JXPathException.
      */
-    public JXPathException(Throwable e) {
+    public JXPathException(final Throwable e) {
         super(e.toString());
         this.exception = e;
     }
 
     /**
-     * Create a new <code>JXPathException</code> with the
-     * given <code>Exception</code> base cause and detail message.
+     * Create a new {@code JXPathException} with the
+     * given {@code Exception} base cause and detail message.
      *
      * @param msg The detail message.
      * @param e The exception to be encapsulated in a JXPathException
      */
-    public JXPathException(String msg, Throwable e) {
+    public JXPathException(final String msg, final Throwable e) {
         super(msg);
         this.exception = e;
     }
 
-
     /**
-     * Return the message (if any) for this error . If there is no
+     * Gets the message (if any) for this error . If there is no
      * message for the exception and there is an encapsulated
      * exception then the message of that exception will be returned.
      *
      * @return The error message.
      */
+    @Override
     public String getMessage() {
-        String message = super.getMessage();
+        final String message = super.getMessage();
         if (exception == null) {
             return message;
         }
-        StringBuffer buf = new StringBuffer();
+        final StringBuilder buf = new StringBuilder();
         if (message != null) {
             buf.append(message).append("; ");
         }
-        String eMsg = exception.getMessage();
+        final String eMsg = exception.getMessage();
         buf.append(eMsg == null ? exception.getClass().getName() : eMsg);
         return buf.toString();
     }
 
     /**
-     * Return the actual exception (if any) that caused this exception to
+     * Gets the actual exception (if any) that caused this exception to
      * be raised.
      *
      * @return The encapsulated exception, or null if there is none.
@@ -108,6 +106,7 @@ public class JXPathException extends RuntimeException {
      * Same as {@link #getException() getException()}
      * @return The encapsulated exception, or null if there is none.
      */
+    @Override
     public Throwable getCause() {
         return exception;
     }

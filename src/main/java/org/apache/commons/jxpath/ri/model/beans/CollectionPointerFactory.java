@@ -28,19 +28,22 @@ import org.apache.commons.jxpath.util.ValueUtils;
  */
 public class CollectionPointerFactory implements NodePointerFactory {
 
-    /** factory order constant */
+    /** Factory order constant */
     public static final int COLLECTION_POINTER_FACTORY_ORDER = 10;
 
+    @Override
     public int getOrder() {
         return COLLECTION_POINTER_FACTORY_ORDER;
     }
 
-    public NodePointer createNodePointer(QName name, Object bean, Locale locale) {
+    @Override
+    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
         return ValueUtils.isCollection(bean) ? new CollectionPointer(bean, locale) : null;
     }
 
-    public NodePointer createNodePointer(NodePointer parent, QName name,
-            Object bean) {
+    @Override
+    public NodePointer createNodePointer(final NodePointer parent, final QName name,
+            final Object bean) {
         return ValueUtils.isCollection(bean) ? new CollectionPointer(parent, bean) : null;
     }
 }

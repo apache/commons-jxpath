@@ -31,20 +31,20 @@ import org.apache.commons.jxpath.ri.axes.NodeSetContext;
  */
 public class ExtensionFunction extends Operation {
 
-    private QName functionName;
+    private final QName functionName;
 
     /**
      * Create a new ExtensionFunction.
      * @param functionName name of the function
      * @param args Expression[] of function args
      */
-    public ExtensionFunction(QName functionName, Expression[] args) {
+    public ExtensionFunction(final QName functionName, final Expression[] args) {
         super(args);
         this.functionName = functionName;
     }
 
     /**
-     * Get the function name
+     * Gets the function name
      * @return QName
      */
     public QName getFunctionName() {
@@ -56,15 +56,17 @@ public class ExtensionFunction extends Operation {
      * context dependent.
      * @return true
      */
+    @Override
     public boolean computeContextDependent() {
         return true;
     }
 
+    @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append(functionName);
         buffer.append('(');
-        Expression[] args = getArguments();
+        final Expression[] args = getArguments();
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
                 if (i > 0) {
@@ -77,11 +79,13 @@ public class ExtensionFunction extends Operation {
         return buffer.toString();
     }
 
-    public Object compute(EvalContext context) {
+    @Override
+    public Object compute(final EvalContext context) {
         return computeValue(context);
     }
 
-    public Object computeValue(EvalContext context) {
+    @Override
+    public Object computeValue(final EvalContext context) {
         Object[] parameters = null;
         if (args != null) {
             parameters = new Object[args.length];
@@ -90,13 +94,13 @@ public class ExtensionFunction extends Operation {
             }
         }
 
-        Function function =
+        final Function function =
             context.getRootContext().getFunction(functionName, parameters);
         if (function == null) {
             throw new JXPathFunctionNotFoundException("No such function: "
                     + functionName + Arrays.asList(parameters));
         }
-        Object result = function.invoke(context, parameters);
+        final Object result = function.invoke(context, parameters);
         return result instanceof NodeSet ? new NodeSetContext(context,
                 (NodeSet) result) : result;
     }
@@ -104,9 +108,9 @@ public class ExtensionFunction extends Operation {
     /**
      * Convert any incoming context to a value.
      * @param object Object to convert
-     * @return context value or <code>object</code> unscathed.
+     * @return context value or {@code object} unscathed.
      */
-    private Object convert(Object object) {
+    private Object convert(final Object object) {
         return object instanceof EvalContext ? ((EvalContext) object).getValue() : object;
     }
 }

@@ -33,18 +33,21 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * a collection.
  */
 public abstract class PropertyOwnerPointer extends NodePointer {
+    private static final long serialVersionUID = 1L;
+
     private static final Object UNINITIALIZED = new Object();
 
     private Object value = UNINITIALIZED;
 
-    public NodeIterator childIterator(NodeTest test, boolean reverse,
-            NodePointer startWith) {
+    @Override
+    public NodeIterator childIterator(final NodeTest test, final boolean reverse,
+            final NodePointer startWith) {
         if (test == null) {
             return createNodeIterator(null, reverse, startWith);
         }
         if (test instanceof NodeNameTest) {
-            NodeNameTest nodeNameTest = (NodeNameTest) test;
-            QName testName = nodeNameTest.getNodeName();
+            final NodeNameTest nodeNameTest = (NodeNameTest) test;
+            final QName testName = nodeNameTest.getNodeName();
             if (isValidProperty(testName)) {
                 return createNodeIterator(nodeNameTest.isWildcard() ? null
                         : testName.toString(), reverse, startWith);
@@ -62,12 +65,13 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      * @param startWith first pointer to return
      * @return NodeIterator
      */
-    public NodeIterator createNodeIterator(String property, boolean reverse,
-            NodePointer startWith) {
+    public NodeIterator createNodeIterator(final String property, final boolean reverse,
+            final NodePointer startWith) {
         return new PropertyIterator(this, property, reverse, startWith);
     }
 
-    public NodeIterator attributeIterator(QName name) {
+    @Override
+    public NodeIterator attributeIterator(final QName name) {
         return new BeanAttributeIterator(this, name);
     }
 
@@ -76,7 +80,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      * @param parent parent pointer
      * @param locale Locale
      */
-    protected PropertyOwnerPointer(NodePointer parent, Locale locale) {
+    protected PropertyOwnerPointer(final NodePointer parent, final Locale locale) {
         super(parent, locale);
     }
 
@@ -84,17 +88,19 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      * Create a new PropertyOwnerPointer.
      * @param parent pointer
      */
-    protected PropertyOwnerPointer(NodePointer parent) {
+    protected PropertyOwnerPointer(final NodePointer parent) {
         super(parent);
     }
 
-    public void setIndex(int index) {
+    @Override
+    public void setIndex(final int index) {
         if (this.index != index) {
             super.setIndex(index);
             value = UNINITIALIZED;
         }
     }
 
+    @Override
     public Object getImmediateNode() {
         if (value == UNINITIALIZED) {
             value = index == WHOLE_COLLECTION ? ValueUtils.getValue(getBaseValue())
@@ -103,15 +109,16 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         return value;
     }
 
+    @Override
     public abstract QName getName();
 
     /**
-     * Learn whether <code>name</code> is a valid child name for this PropertyOwnerPointer.
+     * Learn whether {@code name} is a valid child name for this PropertyOwnerPointer.
      * @param name the QName to test
-     * @return <code>true</code> if <code>QName</code> is a valid property name.
+     * @return {@code true} if {@code QName} is a valid property name.
      * @since JXPath 1.3
      */
-    public boolean isValidProperty(QName name) {
+    public boolean isValidProperty(final QName name) {
         return isDefaultNamespace(name.getPrefix());
     }
 
@@ -120,7 +127,8 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      * forwards the call to the parent pointer.
      * @param value to set
      */
-    public void setValue(Object value) {
+    @Override
+    public void setValue(final Object value) {
         this.value = value;
         if (parent != null) {
             if (parent.isContainer()) {
@@ -146,6 +154,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      * If this is a root node pointer, throws an exception; otherwise
      * forwards the call to the parent node.
      */
+    @Override
     public void remove() {
         this.value = null;
         if (parent != null) {
@@ -159,7 +168,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     /**
-     * Get a PropertyPointer for this PropertyOwnerPointer.
+     * Gets a PropertyPointer for this PropertyOwnerPointer.
      * @return PropertyPointer
      */
     public abstract PropertyPointer getPropertyPointer();
@@ -174,9 +183,10 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         return false;
     }
 
-    public int compareChildNodePointers(NodePointer pointer1,
-            NodePointer pointer2) {
-        int r = pointer1.getName().toString().compareTo(pointer2.getName().toString());
+    @Override
+    public int compareChildNodePointers(final NodePointer pointer1,
+            final NodePointer pointer2) {
+        final int r = pointer1.getName().toString().compareTo(pointer2.getName().toString());
         return r == 0 ? pointer1.getIndex() - pointer2.getIndex() : r;
     }
 }

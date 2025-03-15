@@ -31,7 +31,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class AttributeContext extends EvalContext {
     private static final QName WILDCARD = new QName(null, "*");
 
-    private NodeTest nodeTest;
+    private final NodeTest nodeTest;
     private boolean setStarted = false;
     private NodeIterator iterator;
     private NodePointer currentNodePointer;
@@ -41,22 +41,25 @@ public class AttributeContext extends EvalContext {
      * @param parentContext represents the previous step on the path
      * @param nodeTest is the name of the attribute we are looking for
      */
-    public AttributeContext(EvalContext parentContext, NodeTest nodeTest) {
+    public AttributeContext(final EvalContext parentContext, final NodeTest nodeTest) {
         super(parentContext);
         this.nodeTest = nodeTest;
     }
 
+    @Override
     public NodePointer getCurrentNodePointer() {
         return currentNodePointer;
     }
 
+    @Override
     public void reset() {
         setStarted = false;
         iterator = null;
         super.reset();
     }
 
-    public boolean setPosition(int position) {
+    @Override
+    public boolean setPosition(final int position) {
         if (position < getCurrentPosition()) {
             reset();
         }
@@ -69,6 +72,7 @@ public class AttributeContext extends EvalContext {
         return true;
     }
 
+    @Override
     public boolean nextNode() {
         super.setPosition(getCurrentPosition() + 1);
         if (!setStarted) {
@@ -77,18 +81,14 @@ public class AttributeContext extends EvalContext {
             if (nodeTest instanceof NodeNameTest) {
                 name = ((NodeNameTest) nodeTest).getNodeName();
             }
-            else {
-                if (nodeTest instanceof NodeTypeTest
-                        && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE) {
-                    name = WILDCARD;
-                }
-                else {
-                    iterator = null;
-                    return false;
-                }
+            else if (nodeTest instanceof NodeTypeTest && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE) {
+                name = WILDCARD;
             }
-            iterator = parentContext.getCurrentNodePointer().attributeIterator(
-                    name);
+            else {
+                iterator = null;
+                return false;
+            }
+            iterator = parentContext.getCurrentNodePointer().attributeIterator(name);
         }
         if (iterator == null) {
             return false;

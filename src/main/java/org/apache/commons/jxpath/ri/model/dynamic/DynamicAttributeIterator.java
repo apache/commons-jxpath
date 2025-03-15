@@ -21,10 +21,9 @@ import org.apache.commons.jxpath.ri.model.beans.BeanAttributeIterator;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 
 /**
- * <code>DynamicAttributeIterator</code> is different from a regular
- * <code>BeanAttributeIterator</code> in that given a property name it
+ * {@code DynamicAttributeIterator} is different from a regular
+ * {@code BeanAttributeIterator} in that given a property name it
  * will always find that property (albeit with a null value).
- * @version $Id$
  */
 public class DynamicAttributeIterator extends BeanAttributeIterator {
 
@@ -33,11 +32,12 @@ public class DynamicAttributeIterator extends BeanAttributeIterator {
      * @param parent pointer
      * @param name to match properties
      */
-    public DynamicAttributeIterator(PropertyOwnerPointer parent, QName name) {
+    public DynamicAttributeIterator(final PropertyOwnerPointer parent, final QName name) {
         super(parent, name);
     }
 
-    protected void prepareForIndividualProperty(String name) {
+    @Override
+    protected void prepareForIndividualProperty(final String name) {
          ((DynamicPropertyPointer) getPropertyPointer()).setPropertyName(name);
          super.prepareForIndividualProperty(name);
     }

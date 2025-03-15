@@ -29,21 +29,24 @@ package org.apache.commons.jxpath.ri.parser;
  */
 public class ParseException extends Exception {
 
-  /**
-   * This constructor is used by the method "generateParseException"
-   * in the generated parser.  Calling this constructor generates
-   * a new object of this type with the fields "currentToken",
-   * "expectedTokenSequences", and "tokenImage" set.  The boolean
-   * flag "specialConstructor" is also set to true to indicate that
-   * this constructor was used to create this object.
-   * This constructor calls its super class with the empty string
-   * to force the "toString" method of parent class "Throwable" to
-   * print the error message in the form:
-   *     ParseException: <result of getMessage>
-   */
-  public ParseException(Token currentTokenVal,
-                        int[][] expectedTokenSequencesVal,
-                        String[] tokenImageVal
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * This constructor is used by the method "generateParseException" in the generated parser. Calling this constructor generates a new object of this type
+     * with the fields "currentToken", "expectedTokenSequences", and "tokenImage" set. The boolean flag "specialConstructor" is also set to true to indicate
+     * that this constructor was used to create this object. This constructor calls its super class with the empty string to force the "toString" method of
+     * parent class "Throwable" to print the error message in the form: ParseException: "result of getMessage"
+     *
+     * @param currentTokenVal TODO
+     * @param expectedTokenSequencesVal TODO
+     * @param tokenImageVal TODO
+     */
+    public ParseException(final Token currentTokenVal,
+                        final int[][] expectedTokenSequencesVal,
+                        final String[] tokenImageVal
                        )
   {
     super("");
@@ -64,11 +67,10 @@ public class ParseException extends Exception {
    */
 
   public ParseException() {
-    super();
     specialConstructor = false;
   }
 
-  public ParseException(String message) {
+  public ParseException(final String message) {
     super(message);
     specialConstructor = false;
   }
@@ -111,20 +113,21 @@ public class ParseException extends Exception {
    * of the final stack trace, and hence the correct error message
    * gets displayed.
    */
-  public String getMessage() {
+  @Override
+public String getMessage() {
     if (!specialConstructor) {
       return super.getMessage();
     }
     String expected = "";
     int maxSize = 0;
-    for (int i = 0; i < expectedTokenSequences.length; i++) {
-      if (maxSize < expectedTokenSequences[i].length) {
-        maxSize = expectedTokenSequences[i].length;
+    for (final int[] element : expectedTokenSequences) {
+      if (maxSize < element.length) {
+        maxSize = element.length;
       }
-      for (int j = 0; j < expectedTokenSequences[i].length; j++) {
-        expected += tokenImage[expectedTokenSequences[i][j]] + " ";
+      for (final int element2 : element) {
+        expected += tokenImage[element2] + " ";
       }
-      if (expectedTokenSequences[i][expectedTokenSequences[i].length - 1] != 0) {
+      if (element[element.length - 1] != 0) {
         expected += "...";
       }
       expected += eol + "    ";
@@ -132,7 +135,9 @@ public class ParseException extends Exception {
     String retval = "Encountered \"";
     Token tok = currentToken.next;
     for (int i = 0; i < maxSize; i++) {
-      if (i != 0) retval += " ";
+      if (i != 0) {
+        retval += " ";
+    }
       if (tok.kind == 0) {
         retval += tokenImage[0];
         break;
@@ -160,9 +165,12 @@ public class ParseException extends Exception {
    * Used to convert raw characters to their escaped version
    * when these raw version cannot be used as part of an ASCII
    * string literal.
+   *
+   * @param str raw characters.
+   * @return escaped version of the input.
    */
-  protected String add_escapes(String str) {
-      StringBuffer retval = new StringBuffer();
+  protected String add_escapes(final String str) {
+      final StringBuilder retval = new StringBuilder();
       char ch;
       for (int i = 0; i < str.length(); i++) {
         switch (str.charAt(i))
@@ -195,8 +203,8 @@ public class ParseException extends Exception {
               continue;
            default:
               if ((ch = str.charAt(i)) < 0x20 || ch > 0x7e) {
-                 String s = "0000" + Integer.toString(ch, 16);
-                 retval.append("\\u" + s.substring(s.length() - 4, s.length()));
+                 final String s = "0000" + Integer.toString(ch, 16);
+                 retval.append("\\u" + s.substring(s.length() - 4));
               } else {
                  retval.append(ch);
               }

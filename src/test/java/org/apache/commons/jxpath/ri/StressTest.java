@@ -16,61 +16,66 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.jxpath.JXPathContext;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test thread safety.
  */
-public class StressTest extends TestCase {
-    
+public class StressTest {
+
     private static final int THREAD_COUNT = 50;
     private static final int THREAD_DURATION = 1000;
     private static JXPathContext context;
     private static int count;
     private static Throwable exception;
 
+    @Test
     public void testThreads() throws Throwable {
-        context = JXPathContext.newContext(null, new Double(100));
-        Thread[] threadArray = new Thread[THREAD_COUNT];
+        context = JXPathContext.newContext(null, Double.valueOf(100));
+        final Thread[] threadArray = new Thread[THREAD_COUNT];
         for (int i = 0; i < THREAD_COUNT; i++) {
             threadArray[i] = new Thread(new StressRunnable());
         }
-        
-        for (int i = 0; i < threadArray.length; i++) {
-            threadArray[i].start();
+
+        for (final Thread element : threadArray) {
+            element.start();
         }
 
-        for (int i = 0; i < threadArray.length; i++) {
+        for (final Thread element : threadArray) {
             try {
-                threadArray[i].join();
+                element.join();
             }
-            catch (InterruptedException e) {
-                assertTrue("Interrupted", false);
+            catch (final InterruptedException e) {
+                fail("Interrupted");
             }
         }
 
         if (exception != null) {
             throw exception;
         }
-        assertEquals("Test count", THREAD_COUNT * THREAD_DURATION, count);
-    }    
+        assertEquals(THREAD_COUNT * THREAD_DURATION, count, "Test count");
+    }
 
-    private final class StressRunnable implements Runnable {
+    private static final class StressRunnable implements Runnable {
+        @Override
         public void run() {
             for (int j = 0; j < THREAD_DURATION && exception == null; j++) {
-                try { 
-                    double random = 1 + Math.random();
-                    double sum =
+                try {
+                    final double random = 1 + Math.random();
+                    final double sum =
                         ((Double) context.getValue("/ + " + random))
                             .doubleValue();
-                    assertEquals(100 + random, sum, 0.0001);
+                    assertEquals(0.0001, sum, 100 + random);
                     synchronized (context) {
                         count++;
                     }
-                }                    
-                catch (Throwable t) {
+                }
+                catch (final Throwable t) {
                     exception = t;
                 }
             }

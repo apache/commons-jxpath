@@ -24,6 +24,8 @@ import java.util.HashMap;
 public class TypeUtils {
     private static TypeConverter typeConverter = new BasicTypeConverter();
     private static final HashMap PRIMITIVE_TYPE_MAP = new HashMap() {
+        private static final long serialVersionUID = 1L;
+
         {
             put(int.class, Integer.class);
             put(byte.class, Byte.class);
@@ -40,7 +42,7 @@ public class TypeUtils {
      * Install an alternative type converter.
      * @param converter new TypeConverter
      */
-    public static synchronized void setTypeConverter(TypeConverter converter) {
+    public static synchronized void setTypeConverter(final TypeConverter converter) {
         typeConverter = converter;
     }
 
@@ -59,7 +61,7 @@ public class TypeUtils {
      * @param toType target class
      * @return boolean
      */
-    public static boolean canConvert(Object object, Class toType) {
+    public static boolean canConvert(final Object object, final Class toType) {
         return typeConverter.canConvert(object, toType);
     }
 
@@ -70,17 +72,17 @@ public class TypeUtils {
      * @param toType target class
      * @return resulting Object
      */
-    public static Object convert(Object object, Class toType) {
+    public static Object convert(final Object object, final Class toType) {
         return typeConverter.convert(object, toType);
     }
 
     /**
      * Return the appropriate wrapper type for the specified class.
      * @param p Class for which to retrieve a wrapper class.
-     * @return the wrapper if <code>p</code> is primitive, else <code>p</code>.
+     * @return the wrapper if {@code p} is primitive, else {@code p}.
      * @since JXPath 1.3
      */
-    public static Class wrapPrimitive(Class p) {
+    public static Class wrapPrimitive(final Class p) {
         return p.isPrimitive() ? (Class) PRIMITIVE_TYPE_MAP.get(p) : p;
     }
 }

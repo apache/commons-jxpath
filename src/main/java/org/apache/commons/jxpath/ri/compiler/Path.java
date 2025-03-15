@@ -38,7 +38,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public abstract class Path extends Expression {
 
-    private Step[] steps;
+    private final Step[] steps;
     private boolean basicKnown = false;
     private boolean basic;
 
@@ -46,22 +46,23 @@ public abstract class Path extends Expression {
      * Create a new Path.
      * @param steps that compose the Path
      */
-    public Path(Step[] steps) {
+    public Path(final Step[] steps) {
         this.steps = steps;
     }
 
     /**
-     * Get the steps.
+     * Gets the steps.
      * @return Step[]
      */
     public Step[] getSteps() {
         return steps;
     }
 
+    @Override
     public boolean computeContextDependent() {
         if (steps != null) {
-            for (int i = 0; i < steps.length; i++) {
-                if (steps[i].isContextDependent()) {
+            for (final Step step : steps) {
+                if (step.isContextDependent()) {
                     return true;
                 }
             }
@@ -70,18 +71,18 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * Recognizes paths formatted as <code>foo/bar[3]/baz[@name = 'biz']</code>.
+     * Recognizes paths formatted as {@code foo/bar[3]/baz[@name = 'biz']}.
      * The evaluation of such "simple" paths is optimized and
      * streamlined.
-     * @return <code>true</code> if this path is simple
+     * @return {@code true} if this path is simple
      */
     public synchronized boolean isSimplePath() {
         if (!basicKnown) {
             basicKnown = true;
             basic = true;
-            Step[] steps = getSteps();
-            for (int i = 0; i < steps.length; i++) {
-                if (!isSimpleStep(steps[i])) {
+            final Step[] steps = getSteps();
+            for (final Step step : steps) {
+                if (!isSimpleStep(step)) {
                     basic = false;
                     break;
                 }
@@ -97,13 +98,13 @@ public abstract class Path extends Expression {
      * @param step the step to check
      * @return boolean
      */
-    protected boolean isSimpleStep(Step step) {
+    protected boolean isSimpleStep(final Step step) {
         if (step.getAxis() == Compiler.AXIS_SELF) {
-            NodeTest nodeTest = step.getNodeTest();
+            final NodeTest nodeTest = step.getNodeTest();
             if (!(nodeTest instanceof NodeTypeTest)) {
                 return false;
             }
-            int nodeType = ((NodeTypeTest) nodeTest).getNodeType();
+            final int nodeType = ((NodeTypeTest) nodeTest).getNodeType();
             if (nodeType != Compiler.NODE_TYPE_NODE) {
                 return false;
             }
@@ -111,7 +112,7 @@ public abstract class Path extends Expression {
         }
         if (step.getAxis() == Compiler.AXIS_CHILD
                 || step.getAxis() == Compiler.AXIS_ATTRIBUTE) {
-            NodeTest nodeTest = step.getNodeTest();
+            final NodeTest nodeTest = step.getNodeTest();
             if (!(nodeTest instanceof NodeNameTest)) {
                 return false;
             }
@@ -128,18 +129,18 @@ public abstract class Path extends Expression {
      * @param predicates the Expression[] to check
      * @return boolean
      */
-    protected boolean areBasicPredicates(Expression[] predicates) {
+    protected boolean areBasicPredicates(final Expression[] predicates) {
         if (predicates != null && predicates.length != 0) {
             boolean firstIndex = true;
-            for (int i = 0; i < predicates.length; i++) {
-                if (predicates[i] instanceof NameAttributeTest) {
-                    if (((NameAttributeTest) predicates[i])
+            for (final Expression predicate : predicates) {
+                if (predicate instanceof NameAttributeTest) {
+                    if (((NameAttributeTest) predicate)
                         .getNameTestExpression()
                         .isContextDependent()) {
                         return false;
                     }
                 }
-                else if (predicates[i].isContextDependent()) {
+                else if (predicate.isContextDependent()) {
                     return false;
                 }
                 else {
@@ -159,13 +160,13 @@ public abstract class Path extends Expression {
      * @param context evaluation context
      * @return Pointer
      */
-    protected Pointer getSingleNodePointerForSteps(EvalContext context) {
+    protected Pointer getSingleNodePointerForSteps(final EvalContext context) {
         if (steps.length == 0) {
             return context.getSingleNodePointer();
         }
 
         if (isSimplePath()) {
-            NodePointer ptr = (NodePointer) context.getSingleNodePointer();
+            final NodePointer ptr = (NodePointer) context.getSingleNodePointer();
             return SimplePathInterpreter.interpretSimpleLocationPath(
                 context,
                 ptr,
@@ -194,9 +195,9 @@ public abstract class Path extends Expression {
      * @param context evaluation context
      * @return Pointer
      */
-    protected Pointer searchForPath(EvalContext context) {
+    protected Pointer searchForPath(final EvalContext context) {
         EvalContext ctx = buildContextChain(context, steps.length, true);
-        Pointer pointer = ctx.getSingleNodePointer();
+        final Pointer pointer = ctx.getSingleNodePointer();
 
         if (pointer != null) {
             return pointer;
@@ -208,7 +209,7 @@ public abstract class Path extends Expression {
             }
             ctx = buildContextChain(context, i, true);
             if (ctx.hasNext()) {
-                Pointer partial = (Pointer) ctx.next();
+                final Pointer partial = (Pointer) ctx.next();
                 if (ctx.hasNext()) {
                     // If we find another location - the search is
                     // ambiguous, so we report failure
@@ -232,7 +233,7 @@ public abstract class Path extends Expression {
      * @param context evaluation context
      * @return EvaluationContext
      */
-    protected EvalContext evalSteps(EvalContext context) {
+    protected EvalContext evalSteps(final EvalContext context) {
         return buildContextChain(context, steps.length, false);
     }
 
@@ -245,8 +246,8 @@ public abstract class Path extends Expression {
      */
     protected EvalContext buildContextChain(
             EvalContext context,
-            int stepCount,
-            boolean createInitialContext) {
+            final int stepCount,
+            final boolean createInitialContext) {
         if (createInitialContext) {
             context = new InitialContext(context);
         }
@@ -259,7 +260,7 @@ public abstract class Path extends Expression {
                     context,
                     steps[i].getAxis(),
                     steps[i].getNodeTest());
-            Expression[] predicates = steps[i].getPredicates();
+            final Expression[] predicates = steps[i].getPredicates();
             if (predicates != null) {
                 for (int j = 0; j < predicates.length; j++) {
                     if (j != 0) {
@@ -281,14 +282,14 @@ public abstract class Path extends Expression {
      * @return EvalContext
      */
     protected EvalContext createContextForStep(
-        EvalContext context,
-        int axis,
+        final EvalContext context,
+        final int axis,
         NodeTest nodeTest) {
         if (nodeTest instanceof NodeNameTest) {
-            QName qname = ((NodeNameTest) nodeTest).getNodeName();
-            String prefix = qname.getPrefix();
+            final QName qname = ((NodeNameTest) nodeTest).getNodeName();
+            final String prefix = qname.getPrefix();
             if (prefix != null) {
-                String namespaceURI = context.getJXPathContext()
+                final String namespaceURI = context.getJXPathContext()
                         .getNamespaceURI(prefix);
                 nodeTest = new NodeNameTest(qname, namespaceURI);
             }

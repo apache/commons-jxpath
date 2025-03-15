@@ -24,22 +24,22 @@ import javax.servlet.http.HttpSession;
  */
 public class HttpSessionAndServletContext {
 
-    private HttpSession session;
-    private ServletContext context;
+    private final HttpSession session;
+    private final ServletContext context;
 
     /**
      * Create a new HttpSessionAndServletContext.
      * @param session HttpSession
      * @param context ServletContext
      */
-    public HttpSessionAndServletContext(HttpSession session,
-            ServletContext context) {
+    public HttpSessionAndServletContext(final HttpSession session,
+            final ServletContext context) {
         this.session = session;
         this.context = context;
     }
 
     /**
-     * Get the session.
+     * Gets the session.
      * @return HttpSession
      */
     public HttpSession getSession() {
@@ -47,7 +47,7 @@ public class HttpSessionAndServletContext {
     }
 
     /**
-     * Get the ServletContext.
+     * Gets the ServletContext.
      * @return ServletContext
      */
     public ServletContext getServletContext() {

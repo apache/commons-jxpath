@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
+
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
 
 /**
@@ -32,7 +33,7 @@ import org.apache.commons.jxpath.util.ClassLoaderUtil;
  * This method returns a concrete JXPathContextFactory.
  * Then call {@link #newContext} on that instance.  You will rarely
  * need to perform these steps explicitly: usually you can call one of the
- * <code>JXPathContex.newContext</code> methods, which will perform these steps
+ * {@code JXPathContex.newContext} methods, which will perform these steps
  * for you.
  *
  * @see JXPathContext#newContext(Object)
@@ -52,7 +53,7 @@ public abstract class JXPathContextFactory {
         method is called the second time ( cache the result of
         finding the default impl )
     */
-    private static final String FACTORY_IMPL_NAME = findFactory( FACTORY_NAME_PROPERTY, DEFAULT_FACTORY_CLASS );
+    private static final String FACTORY_IMPL_NAME = findFactory(FACTORY_NAME_PROPERTY, DEFAULT_FACTORY_CLASS);
 
     /**
      * Create a new JXPathContextFactory.
@@ -62,35 +63,35 @@ public abstract class JXPathContextFactory {
     }
 
     /**
-     * Obtain a new instance of a <code>JXPathContextFactory</code>.
+     * Obtain a new instance of a {@code JXPathContextFactory}.
      * This static method creates a new factory instance.
      * This method uses the following ordered lookup procedure to determine
-     * the <code>JXPathContextFactory</code> implementation class to load:
+     * the {@code JXPathContextFactory} implementation class to load:
      * <ul>
      * <li>
-     * Use  the <code>org.apache.commons.jxpath.JXPathContextFactory</code>
+     * Use  the {@code org.apache.commons.jxpath.JXPathContextFactory}
      * system property.
      * </li>
      * <li>
      * Alternatively, use the JAVA_HOME (the parent directory where jdk is
      * installed)/lib/jxpath.properties for a property file that contains the
      * name of the implementation class keyed on
-     * <code>org.apache.commons.jxpath.JXPathContextFactory</code>.
+     * {@code org.apache.commons.jxpath.JXPathContextFactory}.
      * </li>
      * <li>
      * Use the Services API (as detailed in the JAR specification), if
-     * available, to determine the classname. The Services API will look
-     * for a classname in the file
-     * <code>META- INF/services/<i>org.apache.commons.jxpath.
-     * JXPathContextFactory</i></code> in jars available to the runtime.
+     * available, to determine the class name. The Services API will look
+     * for a class name in the file
+     * {@code META- INF/services/<i>org.apache.commons.jxpath.
+     * JXPathContextFactory</i>} in jars available to the runtime.
      * </li>
      * <li>
-     * Platform default <code>JXPathContextFactory</code> instance.
+     * Platform default {@code JXPathContextFactory} instance.
      * </li>
      * </ul>
      *
      * Once an application has obtained a reference to a
-     * <code>JXPathContextFactory</code> it can use the factory to
+     * {@code JXPathContextFactory} it can use the factory to
      * obtain JXPathContext instances.
      *
      * @return JXPathContextFactory
@@ -100,16 +101,10 @@ public abstract class JXPathContextFactory {
     public static JXPathContextFactory newInstance() {
         JXPathContextFactory factoryImpl;
         try {
-            Class clazz = ClassLoaderUtil.getClass( FACTORY_IMPL_NAME, true );
-            factoryImpl = (JXPathContextFactory) clazz.newInstance();
+            final Class clazz = ClassLoaderUtil.getClass(FACTORY_IMPL_NAME, true);
+            factoryImpl = (JXPathContextFactory) clazz.getConstructor().newInstance();
         }
-        catch (ClassNotFoundException cnfe) {
-            throw new JXPathContextFactoryConfigurationError(cnfe);
-        }
-        catch (IllegalAccessException iae) {
-            throw new JXPathContextFactoryConfigurationError(iae);
-        }
-        catch (InstantiationException ie) {
+        catch (final ReflectiveOperationException ie) {
             throw new JXPathContextFactoryConfigurationError(ie);
         }
         return factoryImpl;
@@ -129,7 +124,6 @@ public abstract class JXPathContextFactory {
         JXPathContext parentContext,
         Object contextBean);
 
-    // -------------------- private methods --------------------
     // This code is duplicated in all factories.
     // Keep it in sync or move it to a common place
     // Because it's small probably it's easier to keep it here
@@ -141,7 +135,7 @@ public abstract class JXPathContextFactory {
         try {
             debug = System.getProperty("jxpath.debug") != null;
         }
-        catch (SecurityException se) { //NOPMD
+        catch (final SecurityException ignore) { // NOPMD
             // This is ok
         }
     }
@@ -151,13 +145,12 @@ public abstract class JXPathContextFactory {
      * class in the specified order.
      * @param property    Property name
      * @param defaultFactory Default implementation, if nothing else is found
-     *
      * @return class name of the JXPathContextFactory
      */
-    private static String findFactory(String property, String defaultFactory) {
+    private static String findFactory(final String property, final String defaultFactory) {
         // Use the factory ID system property first
         try {
-            String systemProp = System.getProperty(property);
+            final String systemProp = System.getProperty(property);
             if (systemProp != null) {
                 if (debug) {
                     System.err.println(
@@ -167,23 +160,23 @@ public abstract class JXPathContextFactory {
             }
 
         }
-        catch (SecurityException se) { //NOPMD
+        catch (final SecurityException ignore) { // NOPMD
             // Ignore
        }
 
         // try to read from $java.home/lib/xml.properties
         try {
-            String javah = System.getProperty("java.home");
-            String configFile =
+            final String javah = System.getProperty("java.home");
+            final String configFile =
                 javah
                     + File.separator
                     + "lib"
                     + File.separator
                     + "jxpath.properties";
-            File f = new File(configFile);
+            final File f = new File(configFile);
             if (f.exists()) {
-                Properties props = new Properties();
-                FileInputStream fis = new FileInputStream(f);
+                final Properties props = new Properties();
+                final FileInputStream fis = new FileInputStream(f);
                 try {
                     props.load(fis);
                 }
@@ -192,12 +185,12 @@ public abstract class JXPathContextFactory {
                         try {
                             fis.close();
                         }
-                        catch (IOException e) { //NOPMD
+                        catch (final IOException ignore) { // NOPMD
                             //swallow
                         }
                     }
                 }
-                String factory = props.getProperty(property);
+                final String factory = props.getProperty(property);
                 if (factory != null) {
                     if (debug) {
                         System.err.println(
@@ -207,16 +200,16 @@ public abstract class JXPathContextFactory {
                 }
             }
         }
-        catch (IOException ex) {
+        catch (final IOException ex) {
             if (debug) {
                 ex.printStackTrace();
             }
         }
 
-        String serviceId = "META-INF/services/" + property;
+        final String serviceId = "META-INF/services/" + property;
         // try to find services in CLASSPATH
         try {
-            ClassLoader cl = JXPathContextFactory.class.getClassLoader();
+            final ClassLoader cl = JXPathContextFactory.class.getClassLoader();
             InputStream is;
             if (cl == null) {
                 is = ClassLoader.getSystemResourceAsStream(serviceId);
@@ -229,7 +222,7 @@ public abstract class JXPathContextFactory {
                 if (debug) {
                     System.err.println("JXPath: found  " + serviceId);
                 }
-                BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                final BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 
                 String factory = null;
                 try {
@@ -239,8 +232,8 @@ public abstract class JXPathContextFactory {
                     try {
                         rd.close();
                     }
-                    catch (IOException e) { //NOPMD
-                        //swallow
+                    catch (final IOException ignore) { // NOPMD
+                        // Ignore
                     }
                 }
 
@@ -253,7 +246,7 @@ public abstract class JXPathContextFactory {
                 }
             }
         }
-        catch (Exception ex) {
+        catch (final Exception ex) {
             if (debug) {
                 ex.printStackTrace();
             }

@@ -26,14 +26,16 @@ public class CoreOperationLessThan extends CoreOperationRelationalExpression {
      * @param arg1 left Expression
      * @param arg2 right Expression
      */
-    public CoreOperationLessThan(Expression arg1, Expression arg2) {
+    public CoreOperationLessThan(final Expression arg1, final Expression arg2) {
         super(new Expression[] { arg1, arg2 });
     }
 
-    protected boolean evaluateCompare(int compare) {
+    @Override
+    protected boolean evaluateCompare(final int compare) {
         return compare < 0;
     }
 
+    @Override
     public String getSymbol() {
         return "<";
     }

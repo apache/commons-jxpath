@@ -18,15 +18,14 @@ package org.apache.commons.jxpath.ri.compiler;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.jxpath.BasicNodeSet;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.NestedTestBean;
-import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.NodeSet;
+import org.apache.commons.jxpath.Pointer;
 
 /**
  */
@@ -38,18 +37,18 @@ public class TestFunctions {
     public TestFunctions() {
     }
 
-    public TestFunctions(int foo, String bar) {
+    public TestFunctions(final int foo, final String bar) {
         this.foo = foo;
         this.bar = bar;
     }
 
-    public TestFunctions(ExpressionContext context, String bar) {
+    public TestFunctions(final ExpressionContext context, final String bar) {
         this.foo =
             ((Number) context.getContextNodePointer().getValue()).intValue();
         this.bar = bar;
     }
-    
-    public TestFunctions(int foo, Object object, boolean another) {
+
+    public TestFunctions(final int foo, final Object object, final boolean another) {
         this.foo = foo;
         bar = String.valueOf(object);
     }
@@ -65,35 +64,36 @@ public class TestFunctions {
     public void doit() {
     }
 
-    public TestFunctions setFooAndBar(int foo, String bar) {
+    public TestFunctions setFooAndBar(final int foo, final String bar) {
         this.foo = foo;
         this.bar = bar;
         return this;
     }
 
-    public static TestFunctions build(int foo, String bar) {
+    public static TestFunctions build(final int foo, final String bar) {
         return new TestFunctions(foo, bar);
     }
 
+    @Override
     public String toString() {
         return "foo=" + foo + "; bar=" + bar;
     }
 
-    public static String path(ExpressionContext context) {
+    public static String path(final ExpressionContext context) {
         return context.getContextNodePointer().asPath();
     }
 
-    public String instancePath(ExpressionContext context) {
+    public String instancePath(final ExpressionContext context) {
         return context.getContextNodePointer().asPath();
     }
 
-    public String pathWithSuffix(ExpressionContext context, String suffix) {
+    public String pathWithSuffix(final ExpressionContext context, final String suffix) {
         return context.getContextNodePointer().asPath() + suffix;
     }
 
     public String className(
-        ExpressionContext context,
-        ExpressionContext child) 
+        final ExpressionContext context,
+        final ExpressionContext child)
     {
         return context.getContextNodePointer().asPath();
     }
@@ -101,54 +101,53 @@ public class TestFunctions {
     /**
      * Returns true if the current node in the current context is a map
      */
-    public static boolean isMap(ExpressionContext context) {
-        Pointer ptr = context.getContextNodePointer();
-        return ptr == null ? false : (ptr.getValue() instanceof Map);
+    public static boolean isMap(final ExpressionContext context) {
+        final Pointer ptr = context.getContextNodePointer();
+        return ptr == null ? false : ptr.getValue() instanceof Map;
     }
 
     /**
      * Returns the number of nodes in the context that is passed as
      * the first argument.
      */
-    public static int count(ExpressionContext context, Collection col) {
-        for (Iterator iter = col.iterator(); iter.hasNext();) {
-            Object element = iter.next();
+    public static int count(final ExpressionContext context, final Collection col) {
+        for (final Object element : col) {
             if (!(element instanceof String)) {
-                throw new RuntimeException("Invalid argument");
+                throw new IllegalArgumentException("Invalid argument");
             }
         }
         return col.size();
     }
-    
-    public static int countPointers(NodeSet nodeSet) {
+
+    public static int countPointers(final NodeSet nodeSet) {
         return nodeSet.getPointers().size();
     }
-    
-    public static String string(String string) {
+
+    public static String string(final String string) {
         return string;
     }
-    
+
     public static Collection collection() {
-        ArrayList list = new ArrayList();
+        final ArrayList list = new ArrayList();
         list.add(new NestedTestBean("foo"));
         list.add(new NestedTestBean("bar"));
         return list;
     }
-    
-    public static NodeSet nodeSet(ExpressionContext context) {
-        JXPathContext jxpathCtx = context.getJXPathContext();
-        BasicNodeSet set = new BasicNodeSet();
+
+    public static NodeSet nodeSet(final ExpressionContext context) {
+        final JXPathContext jxpathCtx = context.getJXPathContext();
+        final BasicNodeSet set = new BasicNodeSet();
         set.add(jxpathCtx.getPointer("/beans[1]"));
         set.add(jxpathCtx.getPointer("/beans[2]"));
-        
+
         return set;
     }
-    
-    public static Collection items(Collection arg) {
+
+    public static Collection items(final Collection arg) {
         return arg;
     }
 
-    public static Boolean isInstance(Object o, Class c) {
+    public static Boolean isInstance(final Object o, final Class c) {
         return c.isInstance(o) ? Boolean.TRUE : Boolean.FALSE;
     }
 

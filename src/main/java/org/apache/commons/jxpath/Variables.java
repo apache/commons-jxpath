@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 /**
  * Variables provide access to a global set of values accessible via XPath.
- * XPath can reference variables using the <code>"$varname"</code> syntax.
+ * XPath can reference variables using the {@code "$varname"} syntax.
  * To use a custom implementation of this interface, pass it to
  * {@link JXPathContext#setVariables JXPathContext.setVariables()}
  */

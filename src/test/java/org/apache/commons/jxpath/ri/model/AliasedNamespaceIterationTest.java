@@ -19,40 +19,42 @@ package org.apache.commons.jxpath.ri.model;
 import java.util.Collection;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test aliased/doubled XML namespace iteration; JXPATH-125.
- *
  */
-public class AliasedNamespaceIterationTest extends JXPathTestCase {
+public class AliasedNamespaceIterationTest extends AbstractJXPathTest {
     protected JXPathContext context;
 
-    protected DocumentContainer createDocumentContainer(String model) {
-        DocumentContainer result = new DocumentContainer(JXPathTestCase.class
+    protected DocumentContainer createDocumentContainer(final String model) {
+        final DocumentContainer result = new DocumentContainer(AbstractJXPathTest.class
                 .getResource("IterateAliasedNS.xml"), model);
         return result;
     }
 
-    protected JXPathContext createContext(String model) {
-        JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
+    protected JXPathContext createContext(final String model) {
+        final JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
         context.registerNamespace("a", "ns");
         return context;
     }
 
-    protected void doTestIterate(String xpath, String model, Collection expected) {
+    protected void doTestIterate(final String xpath, final String model, final Collection expected) {
         assertXPathPointerIterator(createContext(model), xpath, expected);
     }
 
-    protected void doTestIterate(String model) {
+    protected void doTestIterate(final String model) {
         assertXPathPointerIterator(createContext(model), "/a:doc/a:elem", list("/a:doc[1]/a:elem[1]", "/a:doc[1]/a:elem[2]"));
     }
 
+    @Test
     public void testIterateDOM() {
         doTestIterate(DocumentContainer.MODEL_DOM);
     }
 
+    @Test
     public void testIterateJDOM() {
         doTestIterate(DocumentContainer.MODEL_JDOM);
     }

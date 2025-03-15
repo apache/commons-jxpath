@@ -18,9 +18,8 @@
 <document>
    <properties>
       <title>JXPath Home</title>
-      <author email="dev@commons.apache.org">Commons Documentation Team</author>
+      <author email="dev@commons.apache.org">Apache Commons Team</author>
       <author email="dmitri@apache.org">Dmitri Plotnikov</author>
-      <revision>$Id$</revision>
    </properties>
 
    <body>
@@ -71,6 +70,11 @@ while (it.hasNext()){
             an alternative to other expression languages as well. JXPath is a must-have tool
             for those who work with mixtures of Java objects and XML and need to frequently
             traverse through graphs of those.
+          </p>
+          <p>
+            Some XPath expressions may cause Java code execution, so you should not allow arbitrary expressions from untrusted input, 
+            which could in turn lead to security issues in your environment. Future enhancements may include the addition of an allow 
+            list to let developers provide a stricter execution environment for expressions.
           </p>
           <p>
             JXPath documentation currently contains:

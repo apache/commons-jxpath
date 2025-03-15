@@ -25,22 +25,25 @@ import java.util.Set;
  */
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
-    public String[] getPropertyNames(Object object) {
-        Map map = (Map) object;
-        Set set = map.keySet();
-        String[] names = new String[set.size()];
-        Iterator it = set.iterator();
+    @Override
+    public String[] getPropertyNames(final Object object) {
+        final Map map = (Map) object;
+        final Set set = map.keySet();
+        final String[] names = new String[set.size()];
+        final Iterator it = set.iterator();
         for (int i = 0; i < names.length; i++) {
             names[i] = String.valueOf(it.next());
         }
         return names;
     }
 
-    public Object getProperty(Object object, String propertyName) {
+    @Override
+    public Object getProperty(final Object object, final String propertyName) {
         return ((Map) object).get(propertyName);
     }
 
-    public void setProperty(Object object, String propertyName, Object value) {
+    @Override
+    public void setProperty(final Object object, final String propertyName, final Object value) {
         ((Map) object).put(propertyName, value);
     }
 }

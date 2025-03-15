@@ -22,16 +22,23 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.TestBean;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * TODO more iterator testing with maps
  */
 
-public class DynamicPropertiesModelTest extends JXPathTestCase {
+public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     private JXPathContext context;
 
+    @Override
+    @BeforeEach
     public void setUp() {
         if (context == null) {
             context = JXPathContext.newContext(new TestBean());
@@ -39,6 +46,7 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
         }
     }
 
+    @Test
     public void testAxisChild() {
         assertXPathValue(context, "map/Key1", "Value 1");
 
@@ -49,6 +57,7 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
         assertXPathPointer(context, "map/Key2/name", "/map[@name='Key2']/name");
     }
 
+    @Test
     public void testAxisDescendant() {
         assertXPathValue(context, "//Key1", "Value 1");
     }
@@ -57,6 +66,7 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
      * Testing the pseudo-attribute "name" that dynamic property
      * objects appear to have.
      */
+    @Test
     public void testAttributeName() {
         assertXPathValue(context, "map[@name = 'Key1']", "Value 1");
 
@@ -95,9 +105,9 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
             context,
             "/.[@name='map'][@name='Key2'][@name='name']",
             "/map[@name='Key2']/name");
-                        
+
         ((Map)context.getValue("map")).put("Key:3", "value3");
-        
+
         assertXPathValueAndPointer(
             context,
             "/map[@name='Key:3']",
@@ -111,36 +121,40 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
             "/map[@name='Key:4:5']");
     }
 
+    @Test
     public void testSetPrimitiveValue() {
-        assertXPathSetValue(context, "map/Key1", new Integer(6));
+        assertXPathSetValue(context, "map/Key1", Integer.valueOf(6));
     }
 
+    @Test
     public void testSetCollection() {
-        // See if we can assign a whole collection        
+        // See if we can assign a whole collection
         context.setValue(
             "map/Key1",
-            new Integer[] { new Integer(7), new Integer(8)});
+            new Integer[] { Integer.valueOf(7), Integer.valueOf(8)});
 
         // And then an element in that collection
-        assertXPathSetValue(context, "map/Key1[1]", new Integer(9));
+        assertXPathSetValue(context, "map/Key1[1]", Integer.valueOf(9));
     }
 
     /**
      * The key does not exist, but the assignment should succeed anyway,
      * because you should always be able to store anything in a Map.
      */
+    @Test
     public void testSetNewKey() {
         // Using a "simple" path
-        assertXPathSetValue(context, "map/Key4", new Integer(7));
-        
+        assertXPathSetValue(context, "map/Key4", Integer.valueOf(7));
+
         // Using a "non-simple" path
         assertXPathPointerLenient(context, "//map/Key5", "/map/Key5");
-        
-        assertXPathSetValue(context, "//map/Key5", new Integer(8));
+
+        assertXPathSetValue(context, "//map/Key5", Integer.valueOf(8));
     }
 
+    @Test
     public void testCreatePath() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
 
         // Calls factory.createObject(..., testBean, "map"), then
@@ -152,8 +166,9 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
             "/map[@name='TestKey1']");
     }
 
+    @Test
     public void testCreatePathAndSetValue() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
 
         // Calls factory.createObject(..., testBean, "map"), then
@@ -165,8 +180,9 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
             "/map[@name='TestKey1']");
     }
 
+    @Test
     public void testCreatePathCreateBean() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
 
         // Calls factory.createObject(..., testBean, "map"), then
@@ -175,12 +191,13 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
         assertXPathCreatePath(
             context,
             "/map[@name='TestKey2']/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/map[@name='TestKey2']/int");
     }
 
+    @Test
     public void testCreatePathAndSetValueCreateBean() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
 
         // Calls factory.createObject(..., testBean, "map"), then
@@ -189,12 +206,13 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
         assertXPathCreatePathAndSetValue(
             context,
             "/map[@name='TestKey2']/int",
-            new Integer(4),
+            Integer.valueOf(4),
             "/map[@name='TestKey2']/int");
     }
 
+    @Test
     public void testCreatePathCollectionElement() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
 
         assertXPathCreatePath(
@@ -211,8 +229,9 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
             "/map[@name='TestKey3'][3]");
     }
 
+    @Test
     public void testCreatePathAndSetValueCollectionElement() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
 
         assertXPathCreatePathAndSetValue(
@@ -229,15 +248,16 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
             "/map[@name='TestKey3'][3]");
     }
 
+    @Test
     public void testCreatePathNewCollectionElement() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
 
         // Create an element of a dynamic map element, which is a collection
         assertXPathCreatePath(
             context,
             "/map/TestKey4[1]/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/map[@name='TestKey4'][1]/int");
 
         bean.getMap().remove("TestKey4");
@@ -246,19 +266,20 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
         assertXPathCreatePath(
             context,
             "/map/TestKey4[1]/int",
-            new Integer(1),
+            Integer.valueOf(1),
             "/map[@name='TestKey4'][1]/int");
     }
 
+    @Test
     public void testCreatePathAndSetValueNewCollectionElement() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
 
         // Create an element of a dynamic map element, which is a collection
         assertXPathCreatePathAndSetValue(
             context,
             "/map/TestKey4[1]/int",
-            new Integer(2),
+            Integer.valueOf(2),
             "/map[@name='TestKey4'][1]/int");
 
         bean.getMap().remove("TestKey4");
@@ -267,38 +288,40 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
         assertXPathCreatePathAndSetValue(
             context,
             "/map/TestKey4[1]/int",
-            new Integer(3),
+            Integer.valueOf(3),
             "/map[@name='TestKey4'][1]/int");
     }
 
+    @Test
     public void testRemovePath() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
         bean.getMap().put("TestKey1", "test");
 
         // Remove dynamic property
         context.removePath("map[@name = 'TestKey1']");
-        assertEquals(
-            "Remove dynamic property value",
-            null,
-            context.getValue("map[@name = 'TestKey1']"));
+        assertNull(
+            context.getValue("map[@name = 'TestKey1']"),
+            "Remove dynamic property value");
     }
 
+    @Test
     public void testRemovePathArrayElement() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
 
         bean.getMap().put("TestKey2", new String[] { "temp1", "temp2" });
         context.removePath("map[@name = 'TestKey2'][1]");
         assertEquals(
-            "Remove dynamic property collection element",
             "temp2",
-            context.getValue("map[@name = 'TestKey2'][1]"));
+            context.getValue("map[@name = 'TestKey2'][1]"),
+            "Remove dynamic property collection element");
     }
-    
-    public void testCollectionOfMaps() {
-        TestBean bean = (TestBean) context.getContextBean();
-        List list = new ArrayList();
 
-        bean.getMap().put("stuff", list);        
+    @Test
+    public void testCollectionOfMaps() {
+        final TestBean bean = (TestBean) context.getContextBean();
+        final List list = new ArrayList();
+
+        bean.getMap().put("stuff", list);
 
         Map m = new HashMap();
         m.put("fruit", "apple");
@@ -320,28 +343,29 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
         assertXPathValueIterator(
             context,
             "/map/stuff[@name='fruit']",
-            list("apple", "banana"));        
+            list("apple", "banana"));
     }
 
+    @Test
     public void testMapOfMaps() {
-        TestBean bean = (TestBean) context.getContextBean();
+        final TestBean bean = (TestBean) context.getContextBean();
 
-        Map fruit = new HashMap();
+        final Map fruit = new HashMap();
         fruit.put("apple", "green");
         fruit.put("orange", "red");
-        
-        Map meat = new HashMap();
+
+        final Map meat = new HashMap();
         meat.put("pork", "pig");
         meat.put("beef", "cow");
-        
-        bean.getMap().put("fruit", fruit);        
-        bean.getMap().put("meat", meat);        
-                
+
+        bean.getMap().put("fruit", fruit);
+        bean.getMap().put("meat", meat);
+
         assertXPathPointer(
             context,
             "//beef",
             "/map[@name='meat'][@name='beef']");
-        
+
         assertXPathPointer(
             context,
             "map//apple",
@@ -349,8 +373,8 @@ public class DynamicPropertiesModelTest extends JXPathTestCase {
 
         // Ambiguous search - will return nothing
         assertXPathPointerLenient(context, "map//banana", "null()");
-        
-        // Unambiguous, even though the particular key is missing 
+
+        // Unambiguous, even though the particular key is missing
         assertXPathPointerLenient(
             context,
             "//fruit/pear",

@@ -37,69 +37,82 @@ public class NullElementPointer extends CollectionPointer {
      * @param parent parent pointer
      * @param index int
      */
-    public NullElementPointer(NodePointer parent, int index) {
+    public NullElementPointer(final NodePointer parent, final int index) {
         super(parent, (Object) null);
         this.index = index;
     }
 
+    @Override
     public QName getName() {
         return null;
     }
 
+    @Override
     public Object getBaseValue() {
         return null;
     }
 
+    @Override
     public Object getImmediateNode() {
         return null;
     }
 
+    @Override
     public boolean isLeaf() {
         return true;
     }
 
+    @Override
     public boolean isCollection() {
         return false;
     }
 
     /**
-     * Get the property pointer for this.
+     * Gets the property pointer for this.
      * @return PropertyPointer
      */
     public PropertyPointer getPropertyPointer() {
         return new NullPropertyPointer(this);
     }
 
+    @Override
     public NodePointer getValuePointer() {
         return new NullPointer(this, getName());
     }
 
-    public void setValue(Object value) {
+    @Override
+    public void setValue(final Object value) {
         throw new UnsupportedOperationException(
             "Collection element does not exist: " + this);
     }
 
+    @Override
     public boolean isActual() {
         return false;
     }
 
+    @Override
     public boolean isContainer() {
         return true;
     }
 
-    public NodePointer createPath(JXPathContext context) {
+    @Override
+    public NodePointer createPath(final JXPathContext context) {
         return parent.createChild(context, null, index);
     }
 
-    public NodePointer createPath(JXPathContext context, Object value) {
+    @Override
+    public NodePointer createPath(final JXPathContext context, final Object value) {
         return parent.createChild(context, null, index, value);
     }
 
+    @Override
     public int hashCode() {
         return getImmediateParentPointer().hashCode() + index;
     }
 
-    public boolean equals(Object object) {
+    @Override
+    public boolean equals(final Object object) {
         if (object == this) {
             return true;
         }
@@ -108,18 +121,20 @@ public class NullElementPointer extends CollectionPointer {
             return false;
         }
 
-        NullElementPointer other = (NullElementPointer) object;
+        final NullElementPointer other = (NullElementPointer) object;
         return getImmediateParentPointer() == other.getImmediateParentPointer()
                 && index == other.index;
     }
 
+    @Override
     public int getLength() {
         return 0;
     }
 
+    @Override
     public String asPath() {
-        StringBuffer buffer = new StringBuffer();
-        NodePointer parent = getImmediateParentPointer();
+        final StringBuilder buffer = new StringBuilder();
+        final NodePointer parent = getImmediateParentPointer();
         if (parent != null) {
             buffer.append(parent.asPath());
         }

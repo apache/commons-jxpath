@@ -28,27 +28,31 @@ public class CoreOperationOr extends CoreOperation {
      * Create a new CoreOperationOr.
      * @param args or'd Expression components
      */
-    public CoreOperationOr(Expression[] args) {
+    public CoreOperationOr(final Expression[] args) {
         super(args);
     }
 
-    public Object computeValue(EvalContext context) {
-        for (int i = 0; i < args.length; i++) {
-            if (InfoSetUtil.booleanValue(args[i].computeValue(context))) {
+    @Override
+    public Object computeValue(final EvalContext context) {
+        for (final Expression arg : args) {
+            if (InfoSetUtil.booleanValue(arg.computeValue(context))) {
                 return Boolean.TRUE;
             }
         }
         return Boolean.FALSE;
     }
 
+    @Override
     protected int getPrecedence() {
         return OR_PRECEDENCE;
     }
 
+    @Override
     protected boolean isSymmetric() {
         return true;
     }
 
+    @Override
     public String getSymbol() {
         return "or";
     }

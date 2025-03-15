@@ -18,29 +18,34 @@ package org.apache.commons.jxpath.ri.model.dom;
 
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.ri.model.XMLModelTestCase;
+import org.apache.commons.jxpath.ri.model.AbstractXMLModelTest;
 import org.apache.commons.jxpath.xml.DocumentContainer;
-
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
 /**
  * Tests JXPath with DOM
  */
 
-public class DOMModelTest extends XMLModelTestCase {
+public class DOMModelTest extends AbstractXMLModelTest {
 
+    @Override
     protected String getModel() {
         return DocumentContainer.MODEL_DOM;
     }
 
+    @Override
     protected AbstractFactory getAbstractFactory() {
         return new TestDOMFactory();
     }
-    
+
+    @Test
     public void testGetNode() {
         assertXPathNodeType(context, "/", Document.class);
         assertXPathNodeType(context, "/vendor/location", Element.class);
@@ -48,34 +53,36 @@ public class DOMModelTest extends XMLModelTestCase {
         assertXPathNodeType(context, "//vendor", Element.class);
     }
 
+    @Test
     public void testGetElementDescendantOrSelf() {
-        JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
-        assertTrue(childContext.getContextBean() instanceof Element);
+        final JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
+        assertInstanceOf(Element.class, childContext.getContextBean());
         assertXPathNodeType(childContext, "//vendor", Element.class);
     }
 
+    @Override
     protected String getXMLSignature(
-        Object node,
-        boolean elements,
-        boolean attributes,
-        boolean text,
-        boolean pi) 
+        final Object node,
+        final boolean elements,
+        final boolean attributes,
+        final boolean text,
+        final boolean pi)
     {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         appendXMLSignature(buffer, node, elements, attributes, text, pi);
         return buffer.toString();
     }
 
     private void appendXMLSignature(
-        StringBuffer buffer,
-        Object object,
-        boolean elements,
-        boolean attributes,
-        boolean text,
-        boolean pi) 
+        final StringBuilder buffer,
+        final Object object,
+        final boolean elements,
+        final boolean attributes,
+        final boolean text,
+        final boolean pi)
     {
-        Node node = (Node) object;
-        int type = node.getNodeType();
+        final Node node = (Node) object;
+        final int type = node.getNodeType();
         switch (type) {
             case Node.DOCUMENT_NODE :
                 buffer.append("<D>");
@@ -90,7 +97,7 @@ public class DOMModelTest extends XMLModelTestCase {
                 break;
 
             case Node.ELEMENT_NODE :
-                String tag = elements ? ((Element) node).getTagName() : "E";
+                final String tag = elements ? ((Element) node).getTagName() : "E";
                 buffer.append("<");
                 buffer.append(tag);
                 buffer.append(">");
@@ -118,12 +125,12 @@ public class DOMModelTest extends XMLModelTestCase {
     }
 
     private void appendXMLSignature(
-        StringBuffer buffer,
-        NodeList children,
-        boolean elements,
-        boolean attributes,
-        boolean text,
-        boolean pi) 
+        final StringBuilder buffer,
+        final NodeList children,
+        final boolean elements,
+        final boolean attributes,
+        final boolean text,
+        final boolean pi)
     {
         for (int i = 0; i < children.getLength(); i++) {
             appendXMLSignature(

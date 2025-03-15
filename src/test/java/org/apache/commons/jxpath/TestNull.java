@@ -16,7 +16,6 @@
  */
 package org.apache.commons.jxpath;
 
-
 /**
  * General purpose test bean for JUnit tests for the "jxpath" component.
  */
@@ -27,7 +26,7 @@ public class TestNull {
         return nothing;
     }
 
-    public void setNothing(Object something) {
+    public void setNothing(final Object something) {
         this.nothing = something;
     }
 

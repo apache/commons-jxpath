@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.QName;
  * @since JXPath 1.3
  */
 public class VariablePointerFactory implements NodePointerFactory {
-    /** factory order constant */
+    /** Factory order constant */
     public static final int VARIABLE_POINTER_FACTORY_ORDER = 890;
 
     /**
@@ -40,12 +40,12 @@ public class VariablePointerFactory implements NodePointerFactory {
          * Create a new VariableContextWrapper.
          * @param context to wrap
          */
-        private VariableContextWrapper(JXPathContext context) {
+        private VariableContextWrapper(final JXPathContext context) {
             this.context = context;
         }
 
         /**
-         * Get the original (unwrapped) context.
+         * Gets the original (unwrapped) context.
          *
          * @return JXPathContext.
          */
@@ -59,16 +59,17 @@ public class VariablePointerFactory implements NodePointerFactory {
      * @param context the JXPathContext to wrap.
      * @return VariableContextWrapper.
      */
-    public static VariableContextWrapper contextWrapper(JXPathContext context) {
+    public static VariableContextWrapper contextWrapper(final JXPathContext context) {
         return new VariableContextWrapper(context);
     }
 
-    public NodePointer createNodePointer(QName name, Object object,
-            Locale locale) {
+    @Override
+    public NodePointer createNodePointer(final QName name, final Object object,
+            final Locale locale) {
         if (object instanceof VariableContextWrapper) {
             JXPathContext varCtx = ((VariableContextWrapper) object).getContext();
             while (varCtx != null) {
-                Variables vars = varCtx.getVariables();
+                final Variables vars = varCtx.getVariables();
                 if (vars.isDeclaredVariable(name.toString())) {
                     return new VariablePointer(vars, name);
                 }
@@ -82,11 +83,13 @@ public class VariablePointerFactory implements NodePointerFactory {
         return null;
     }
 
-    public NodePointer createNodePointer(NodePointer parent, QName name,
-            Object object) {
+    @Override
+    public NodePointer createNodePointer(final NodePointer parent, final QName name,
+            final Object object) {
         return createNodePointer(name, object, null);
     }
 
+    @Override
     public int getOrder() {
         return VARIABLE_POINTER_FACTORY_ORDER;
     }

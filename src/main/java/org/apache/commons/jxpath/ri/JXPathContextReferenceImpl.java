@@ -20,12 +20,11 @@ import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Vector;
 import java.util.Map.Entry;
+import java.util.Vector;
 
 import org.apache.commons.jxpath.CompiledExpression;
 import org.apache.commons.jxpath.ExceptionHandler;
@@ -51,8 +50,8 @@ import org.apache.commons.jxpath.ri.model.beans.BeanPointerFactory;
 import org.apache.commons.jxpath.ri.model.beans.CollectionPointerFactory;
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPointerFactory;
-import org.apache.commons.jxpath.util.ReverseComparator;
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
+import org.apache.commons.jxpath.util.ReverseComparator;
 import org.apache.commons.jxpath.util.TypeUtils;
 
 /**
@@ -61,7 +60,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
-     * Change this to <code>false</code> to disable soft caching of
+     * Change this to {@code false} to disable soft caching of
      * CompiledExpressions.
      */
     public static final boolean USE_SOFT_CACHE = true;
@@ -82,7 +81,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         nodeFactories.add(new VariablePointerFactory());
 
         // DOM  factory is only registered if DOM support is on the classpath
-        Object domFactory = allocateConditionally(
+        final Object domFactory = allocateConditionally(
                 "org.apache.commons.jxpath.ri.model.dom.DOMPointerFactory",
                 "org.w3c.dom.Node");
         if (domFactory != null) {
@@ -90,7 +89,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
 
         // JDOM  factory is only registered if JDOM is on the classpath
-        Object jdomFactory = allocateConditionally(
+        final Object jdomFactory = allocateConditionally(
                 "org.apache.commons.jxpath.ri.model.jdom.JDOMPointerFactory",
                 "org.jdom2.Document");
         if (jdomFactory != null) {
@@ -98,7 +97,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
 
         // DynaBean factory is only registered if BeanUtils are on the classpath
-        Object dynaBeanFactory =
+        final Object dynaBeanFactory =
             allocateConditionally(
                 "org.apache.commons.jxpath.ri.model.dynabeans."
                     + "DynaBeanPointerFactory",
@@ -119,12 +118,10 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             nodeFactoryArray =
                 (NodePointerFactory[]) nodeFactories.
                     toArray(new NodePointerFactory[nodeFactories.size()]);
-            Arrays.sort(nodeFactoryArray, new Comparator() {
-                public int compare(Object a, Object b) {
-                    int orderA = ((NodePointerFactory) a).getOrder();
-                    int orderB = ((NodePointerFactory) b).getOrder();
-                    return orderA - orderB;
-                }
+            Arrays.sort(nodeFactoryArray, (a, b) -> {
+                final int orderA = ((NodePointerFactory) a).getOrder();
+                final int orderB = ((NodePointerFactory) b).getOrder();
+                return orderA - orderB;
             });
         }
     }
@@ -135,7 +132,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * a name that puts it in the right position on the list of factories.
      * @param factory NodePointerFactory to add
      */
-    public static void addNodePointerFactory(NodePointerFactory factory) {
+    public static void addNodePointerFactory(final NodePointerFactory factory) {
         synchronized (nodeFactories) {
             nodeFactories.add(factory);
             nodeFactoryArray = null;
@@ -143,7 +140,22 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get the registered NodePointerFactories.
+     * Removes support for additional types of objects.
+     *
+     * @param factory NodePointerFactory to remove
+     * @return true if this implementation contained the specified element
+     * @since 1.4.0
+     */
+    public static boolean removeNodePointerFactory(final NodePointerFactory factory) {
+        synchronized (nodeFactories) {
+            final boolean remove = nodeFactories.remove(factory);
+            nodeFactoryArray = null;
+            return remove;
+        }
+    }
+
+    /**
+     * Gets the registered NodePointerFactories.
      * @return NodePointerFactory[]
      */
     public static NodePointerFactory[] getNodePointerFactories() {
@@ -161,8 +173,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param parentContext parent context
      * @param contextBean Object
      */
-    protected JXPathContextReferenceImpl(JXPathContext parentContext,
-            Object contextBean) {
+    protected JXPathContextReferenceImpl(final JXPathContext parentContext,
+            final Object contextBean) {
         this(parentContext, contextBean, null);
     }
 
@@ -172,8 +184,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param contextBean Object
      * @param contextPointer context pointer
      */
-    public JXPathContextReferenceImpl(JXPathContext parentContext,
-            Object contextBean, Pointer contextPointer) {
+    public JXPathContextReferenceImpl(final JXPathContext parentContext,
+            final Object contextBean, final Pointer contextPointer) {
         super(parentContext, contextBean);
 
         synchronized (nodeFactories) {
@@ -216,7 +228,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         return COMPILER;
     }
 
-    protected CompiledExpression compilePath(String xpath) {
+    @Override
+    protected CompiledExpression compilePath(final String xpath) {
         return new JXPathCompiledExpression(xpath, compileExpression(xpath));
     }
 
@@ -225,13 +238,13 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param xpath to compile
      * @return Expression
      */
-    private Expression compileExpression(String xpath) {
+    private Expression compileExpression(final String xpath) {
         Expression expr;
 
         synchronized (compiled) {
             if (USE_SOFT_CACHE) {
                 expr = null;
-                SoftReference ref = (SoftReference) compiled.get(xpath);
+                final SoftReference ref = (SoftReference) compiled.get(xpath);
                 if (ref != null) {
                     expr = (Expression) ref.get();
                 }
@@ -250,9 +263,9 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         synchronized (compiled) {
             if (USE_SOFT_CACHE) {
                 if (cleanupCount++ >= CLEANUP_THRESHOLD) {
-                    Iterator it = compiled.entrySet().iterator();
+                    final Iterator it = compiled.entrySet().iterator();
                     while (it.hasNext()) {
-                        Entry me = (Entry) it.next();
+                        final Entry me = (Entry) it.next();
                         if (((SoftReference) me.getValue()).get() == null) {
                             it.remove();
                         }
@@ -275,8 +288,9 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param xpath expression
      * @return Object found
      */
-    public Object getValue(String xpath) {
-        Expression expression = compileExpression(xpath);
+    @Override
+    public Object getValue(final String xpath) {
+        final Expression expression = compileExpression(xpath);
 // TODO: (work in progress) - trying to integrate with Xalan
 //        Object ctxNode = getNativeContextNode(expression);
 //        if (ctxNode != null) {
@@ -343,12 +357,12 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 //    }
 
     /**
-     * Get the value indicated.
+     * Gets the value indicated.
      * @param xpath String
      * @param expr Expression
      * @return Object
      */
-    public Object getValue(String xpath, Expression expr) {
+    public Object getValue(final String xpath, final Expression expr) {
         Object result = expr.computeValue(getEvalContext());
         if (result == null) {
             if (expr instanceof Path && !isLenient()) {
@@ -358,7 +372,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             return null;
         }
         if (result instanceof EvalContext) {
-            EvalContext ctx = (EvalContext) result;
+            final EvalContext ctx = (EvalContext) result;
             result = ctx.getSingleNodePointer();
             if (!isLenient() && result == null) {
                 throw new JXPathNotFoundException("No value for xpath: "
@@ -382,19 +396,20 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param requiredType Class
      * @return Object
      */
-    public Object getValue(String xpath, Class requiredType) {
-        Expression expr = compileExpression(xpath);
+    @Override
+    public Object getValue(final String xpath, final Class requiredType) {
+        final Expression expr = compileExpression(xpath);
         return getValue(xpath, expr, requiredType);
     }
 
     /**
-     * Get the value indicated.
+     * Gets the value indicated.
      * @param xpath expression
      * @param expr compiled Expression
      * @param requiredType Class
      * @return Object
      */
-    public Object getValue(String xpath, Expression expr, Class requiredType) {
+    public Object getValue(final String xpath, final Expression expr, final Class requiredType) {
         Object value = getValue(xpath, expr);
         if (value != null && requiredType != null) {
             if (!TypeUtils.canConvert(value, requiredType)) {
@@ -418,7 +433,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param xpath expression
      * @return Iterator
      */
-    public Iterator iterate(String xpath) {
+    @Override
+    public Iterator iterate(final String xpath) {
         return iterate(xpath, compileExpression(xpath));
     }
 
@@ -430,21 +446,22 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param expr compiled Expression
      * @return Iterator
      */
-    public Iterator iterate(String xpath, Expression expr) {
+    public Iterator iterate(final String xpath, final Expression expr) {
         return expr.iterate(getEvalContext());
     }
 
-    public Pointer getPointer(String xpath) {
+    @Override
+    public Pointer getPointer(final String xpath) {
         return getPointer(xpath, compileExpression(xpath));
     }
 
     /**
-     * Get a pointer to the specified path/expression.
+     * Gets a pointer to the specified path/expression.
      * @param xpath String
      * @param expr compiled Expression
      * @return Pointer
      */
-    public Pointer getPointer(String xpath, Expression expr) {
+    public Pointer getPointer(final String xpath, final Expression expr) {
         Object result = expr.computeValue(getEvalContext());
         if (result instanceof EvalContext) {
             result = ((EvalContext) result).getSingleNodePointer();
@@ -459,27 +476,29 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         return NodePointer.newNodePointer(null, result, getLocale());
     }
 
-    public void setValue(String xpath, Object value) {
+    @Override
+    public void setValue(final String xpath, final Object value) {
         setValue(xpath, compileExpression(xpath), value);
     }
 
     /**
-     * Set the value of xpath to value.
+     * Sets the value of xpath to value.
      * @param xpath path
      * @param expr compiled Expression
      * @param value Object
      */
-    public void setValue(String xpath, Expression expr, Object value) {
+    public void setValue(final String xpath, final Expression expr, final Object value) {
         try {
             setValue(xpath, expr, value, false);
         }
-        catch (Throwable ex) {
+        catch (final Throwable ex) {
             throw new JXPathException(
                 "Exception trying to set value with xpath " + xpath, ex);
         }
     }
 
-    public Pointer createPath(String xpath) {
+    @Override
+    public Pointer createPath(final String xpath) {
         return createPath(xpath, compileExpression(xpath));
     }
 
@@ -489,16 +508,16 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param expr compiled Expression
      * @return resulting Pointer
      */
-    public Pointer createPath(String xpath, Expression expr) {
+    public Pointer createPath(final String xpath, final Expression expr) {
         try {
-            Object result = expr.computeValue(getEvalContext());
+            final Object result = expr.computeValue(getEvalContext());
             Pointer pointer;
 
             if (result instanceof Pointer) {
                 pointer = (Pointer) result;
             }
             else if (result instanceof EvalContext) {
-                EvalContext ctx = (EvalContext) result;
+                final EvalContext ctx = (EvalContext) result;
                 pointer = ctx.getSingleNodePointer();
             }
             else {
@@ -508,14 +527,15 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             }
             return ((NodePointer) pointer).createPath(this);
         }
-        catch (Throwable ex) {
+        catch (final Throwable ex) {
             throw new JXPathException(
                 "Exception trying to create xpath " + xpath,
                 ex);
         }
     }
 
-    public Pointer createPathAndSetValue(String xpath, Object value) {
+    @Override
+    public Pointer createPathAndSetValue(final String xpath, final Object value) {
         return createPathAndSetValue(xpath, compileExpression(xpath), value);
     }
 
@@ -526,12 +546,12 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param value Object
      * @return resulting Pointer
      */
-    public Pointer createPathAndSetValue(String xpath, Expression expr,
-            Object value) {
+    public Pointer createPathAndSetValue(final String xpath, final Expression expr,
+            final Object value) {
         try {
             return setValue(xpath, expr, value, true);
         }
-        catch (Throwable ex) {
+        catch (final Throwable ex) {
             throw new JXPathException(
                 "Exception trying to create xpath " + xpath,
                 ex);
@@ -539,23 +559,23 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Set the specified value.
+     * Sets the specified value.
      * @param xpath path
      * @param expr compiled Expression
      * @param value destination value
      * @param create whether to create missing node(s)
      * @return Pointer created
      */
-    private Pointer setValue(String xpath, Expression expr, Object value,
-            boolean create) {
-        Object result = expr.computeValue(getEvalContext());
+    private Pointer setValue(final String xpath, final Expression expr, final Object value,
+            final boolean create) {
+        final Object result = expr.computeValue(getEvalContext());
         Pointer pointer;
 
         if (result instanceof Pointer) {
             pointer = (Pointer) result;
         }
         else if (result instanceof EvalContext) {
-            EvalContext ctx = (EvalContext) result;
+            final EvalContext ctx = (EvalContext) result;
             pointer = ctx.getSingleNodePointer();
         }
         else {
@@ -580,7 +600,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * of path that can be passed to create... methods.
      * @param expr Expression to check
      */
-    private void checkSimplePath(Expression expr) {
+    private void checkSimplePath(final Expression expr) {
         if (!(expr instanceof LocationPath)
             || !((LocationPath) expr).isSimplePath()) {
             throw new JXPathInvalidSyntaxException(
@@ -598,7 +618,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param xpath expression
      * @return Iterator
      */
-    public Iterator iteratePointers(String xpath) {
+    @Override
+    public Iterator iteratePointers(final String xpath) {
         return iteratePointers(xpath, compileExpression(xpath));
     }
 
@@ -611,11 +632,12 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param expr compiled Expression
      * @return Iterator
      */
-    public Iterator iteratePointers(String xpath, Expression expr) {
+    public Iterator iteratePointers(final String xpath, final Expression expr) {
         return expr.iteratePointers(getEvalContext());
     }
 
-    public void removePath(String xpath) {
+    @Override
+    public void removePath(final String xpath) {
         removePath(xpath, compileExpression(xpath));
     }
 
@@ -624,21 +646,22 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param xpath expression
      * @param expr compiled Expression
      */
-    public void removePath(String xpath, Expression expr) {
+    public void removePath(final String xpath, final Expression expr) {
         try {
-            NodePointer pointer = (NodePointer) getPointer(xpath, expr);
+            final NodePointer pointer = (NodePointer) getPointer(xpath, expr);
             if (pointer != null) {
                 pointer.remove();
             }
         }
-        catch (Throwable ex) {
+        catch (final Throwable ex) {
             throw new JXPathException(
                 "Exception trying to remove xpath " + xpath,
                 ex);
         }
     }
 
-    public void removeAll(String xpath) {
+    @Override
+    public void removeAll(final String xpath) {
         removeAll(xpath, compileExpression(xpath));
     }
 
@@ -647,9 +670,9 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param xpath expression
      * @param expr compiled Expression
      */
-    public void removeAll(String xpath, Expression expr) {
+    public void removeAll(final String xpath, final Expression expr) {
         try {
-            ArrayList list = new ArrayList();
+            final ArrayList list = new ArrayList();
             Iterator it = expr.iteratePointers(getEvalContext());
             while (it.hasNext()) {
                 list.add(it.next());
@@ -657,22 +680,23 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             Collections.sort(list, ReverseComparator.INSTANCE);
             it = list.iterator();
             if (it.hasNext()) {
-                NodePointer pointer = (NodePointer) it.next();
+                final NodePointer pointer = (NodePointer) it.next();
                 pointer.remove();
                 while (it.hasNext()) {
                     removePath(((NodePointer) it.next()).asPath());
                 }
             }
         }
-        catch (Throwable ex) {
+        catch (final Throwable ex) {
             throw new JXPathException(
                 "Exception trying to remove all for xpath " + xpath,
                 ex);
         }
     }
 
-    public JXPathContext getRelativeContext(Pointer pointer) {
-        Object contextBean = pointer.getNode();
+    @Override
+    public JXPathContext getRelativeContext(final Pointer pointer) {
+        final Object contextBean = pointer.getNode();
         if (contextBean == null) {
             throw new JXPathException(
                 "Cannot create a relative context for a non-existent node: "
@@ -681,12 +705,13 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         return new JXPathContextReferenceImpl(this, contextBean, pointer);
     }
 
+    @Override
     public Pointer getContextPointer() {
         return contextPointer;
     }
 
     /**
-     * Get absolute root pointer.
+     * Gets absolute root pointer.
      * @return NodePointer
      */
     private NodePointer getAbsoluteRootPointer() {
@@ -694,7 +719,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get the evaluation context.
+     * Gets the evaluation context.
      * @return EvalContext
      */
     private EvalContext getEvalContext() {
@@ -703,7 +728,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get the absolute root context.
+     * Gets the absolute root context.
      * @return EvalContext
      */
     public EvalContext getAbsoluteRootContext() {
@@ -712,24 +737,24 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Get a VariablePointer for the given variable name.
+     * Gets a VariablePointer for the given variable name.
      * @param name variable name
      * @return NodePointer
      */
-    public NodePointer getVariablePointer(QName name) {
+    public NodePointer getVariablePointer(final QName name) {
         return NodePointer.newNodePointer(name, VariablePointerFactory
                 .contextWrapper(this), getLocale());
     }
 
     /**
-     * Get the named Function.
+     * Gets the named Function.
      * @param functionName name
      * @param parameters function args
      * @return Function
      */
-    public Function getFunction(QName functionName, Object[] parameters) {
-        String namespace = functionName.getPrefix();
-        String name = functionName.getName();
+    public Function getFunction(final QName functionName, final Object[] parameters) {
+        final String namespace = functionName.getPrefix();
+        final String name = functionName.getName();
         JXPathContext funcCtx = this;
         Function func;
         Functions funcs;
@@ -747,14 +772,16 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             "Undefined function: " + functionName.toString());
     }
 
-    public void registerNamespace(String prefix, String namespaceURI) {
+    @Override
+    public void registerNamespace(final String prefix, final String namespaceURI) {
         if (namespaceResolver.isSealed()) {
             namespaceResolver = (NamespaceResolver) namespaceResolver.clone();
         }
         namespaceResolver.registerNamespace(prefix, namespaceURI);
     }
 
-    public String getNamespaceURI(String prefix) {
+    @Override
+    public String getNamespaceURI(final String prefix) {
         return namespaceResolver.getNamespaceURI(prefix);
     }
 
@@ -762,23 +789,26 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * {@inheritDoc}
      * @see org.apache.commons.jxpath.JXPathContext#getPrefix(java.lang.String)
      */
-    public String getPrefix(String namespaceURI) {
+    @Override
+    public String getPrefix(final String namespaceURI) {
         return namespaceResolver.getPrefix(namespaceURI);
     }
 
-    public void setNamespaceContextPointer(Pointer pointer) {
+    @Override
+    public void setNamespaceContextPointer(final Pointer pointer) {
         if (namespaceResolver.isSealed()) {
             namespaceResolver = (NamespaceResolver) namespaceResolver.clone();
         }
         namespaceResolver.setNamespaceContextPointer((NodePointer) pointer);
     }
 
+    @Override
     public Pointer getNamespaceContextPointer() {
         return namespaceResolver.getNamespaceContextPointer();
     }
 
     /**
-     * Get the namespace resolver.
+     * Gets the namespace resolver.
      * @return NamespaceResolver
      */
     public NamespaceResolver getNamespaceResolver() {
@@ -789,7 +819,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     /**
      * {@inheritDoc}
      */
-    public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+    @Override
+    public void setExceptionHandler(final ExceptionHandler exceptionHandler) {
         if (rootPointer instanceof NodePointer) {
             ((NodePointer) rootPointer).setExceptionHandler(exceptionHandler);
         }
@@ -802,19 +833,19 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param existenceCheckClassName guard class
      * @return className instance
      */
-    public static Object allocateConditionally(String className,
-            String existenceCheckClassName) {
+    public static Object allocateConditionally(final String className,
+            final String existenceCheckClassName) {
         try {
             try {
                 ClassLoaderUtil.getClass(existenceCheckClassName, true);
             }
-            catch (ClassNotFoundException ex) {
+            catch (final ClassNotFoundException ex) {
                 return null;
             }
-            Class cls = ClassLoaderUtil.getClass(className, true);
-            return cls.newInstance();
+            final Class cls = ClassLoaderUtil.getClass(className, true);
+            return cls.getConstructor().newInstance();
         }
-        catch (Exception ex) {
+        catch (final Exception ex) {
             throw new JXPathException("Cannot allocate " + className, ex);
         }
     }

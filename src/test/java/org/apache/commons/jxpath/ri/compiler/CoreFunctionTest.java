@@ -21,32 +21,35 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.jxpath.ExtendedKeyManager;
-import org.apache.commons.jxpath.IdentityManager;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathTestCase;
-import org.apache.commons.jxpath.KeyManager;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.TestMixedModelBean;
 import org.apache.commons.jxpath.Variables;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test basic functionality of JXPath - core functions.
  */
-public class CoreFunctionTest extends JXPathTestCase {
+public class CoreFunctionTest extends AbstractJXPathTest {
     private JXPathContext context;
 
+    @Override
+    @BeforeEach
     public void setUp() {
         if (context == null) {
             context = JXPathContext.newContext(new TestMixedModelBean());
-            Variables vars = context.getVariables();
+            final Variables vars = context.getVariables();
             vars.declareVariable("nan", Double.NaN);
             vars.declareVariable("bool_true", Boolean.TRUE);
             vars.declareVariable("bool_false", Boolean.FALSE);
         }
     }
 
+    @Test
     public void testCoreFunctions() {
         assertXPathValue(context, "string(2)", "2");
         assertXPathValue(context, "string($nan)", "NaN");
@@ -60,14 +63,8 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValue(context, "ends-with('xabc', 'ab')", Boolean.FALSE);
         assertXPathValue(context, "contains('xabc', 'ab')", Boolean.TRUE);
         assertXPathValue(context, "contains('xabc', 'ba')", Boolean.FALSE);
-        assertXPathValue(
-            context,
-            "substring-before('1999/04/01', '/')",
-            "1999");
-        assertXPathValue(
-            context,
-            "substring-after('1999/04/01', '/')",
-            "04/01");
+        assertXPathValue(context,"substring-before('1999/04/01', '/')","1999");
+        assertXPathValue(context,"substring-after('1999/04/01', '/')","04/01");
         assertXPathValue(context, "substring('12345', 2, 3)", "234");
         assertXPathValue(context, "substring('12345', 2)", "2345");
         assertXPathValue(context, "substring('12345', 1.5, 2.6)", "234");
@@ -79,7 +76,7 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValue(context, "substring('12345', 6, 6)", "");
         assertXPathValue(context, "substring('12345', 7, 8)", "");
         assertXPathValue(context, "substring('12345', 7)", "");
-        assertXPathValue(context, "string-length('12345')", new Double(5));
+        assertXPathValue(context, "string-length('12345')", Double.valueOf(5));
         assertXPathValue(context, "normalize-space(' abc  def  ')", "abc def");
         assertXPathValue(context, "normalize-space('abc def')", "abc def");
         assertXPathValue(context, "normalize-space('   ')", "");
@@ -95,35 +92,34 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValue(context, "false()", Boolean.FALSE);
         assertXPathValue(context, "not(false())", Boolean.TRUE);
         assertXPathValue(context, "not(true())", Boolean.FALSE);
-        assertXPathValue(context, "null()", null);        
-        assertXPathValue(context, "number('1')", new Double(1));
-        assertXPathValue(context, "number($bool_true)", new Double(1));
-        assertXPathValue(context, "number($bool_false)", new Double(0));
-        assertXPathValue(context, "floor(1.5)", new Double(1));
-        assertXPathValue(context, "floor(-1.5)", new Double(-2));
-        assertXPathValue(context, "ceiling(1.5)", new Double(2));
-        assertXPathValue(context, "ceiling(-1.5)", new Double(-1));
-        assertXPathValue(context, "round(1.5)", new Double(2));
-        assertXPathValue(context, "round(-1.5)", new Double(-1));
+        assertXPathValue(context, "null()", null);
+        assertXPathValue(context, "number('1')", Double.valueOf(1));
+        assertXPathValue(context, "number($bool_true)", Double.valueOf(1));
+        assertXPathValue(context, "number($bool_false)", Double.valueOf(0));
+        assertXPathValue(context, "floor(1.5)", Double.valueOf(1));
+        assertXPathValue(context, "floor(-1.5)", Double.valueOf(-2));
+        assertXPathValue(context, "ceiling(1.5)", Double.valueOf(2));
+        assertXPathValue(context, "ceiling(-1.5)", Double.valueOf(-1));
+        assertXPathValue(context, "round(1.5)", Double.valueOf(2));
+        assertXPathValue(context, "round(-1.5)", Double.valueOf(-1));
 
-        assertXPathValue(context, "floor('NaN')", new Double(Double.NaN));
-        assertXPathValue(context, "floor(-2 div 0)", new Double(Double.NEGATIVE_INFINITY));
-        assertXPathValue(context, "floor(2 div 0)", new Double(Double.POSITIVE_INFINITY));
-        assertXPathValue(context, "ceiling('NaN')", new Double(Double.NaN));
-        assertXPathValue(context, "ceiling(-2 div 0)", new Double(Double.NEGATIVE_INFINITY));
-        assertXPathValue(context, "ceiling(2 div 0)", new Double(Double.POSITIVE_INFINITY));
-        assertXPathValue(context, "round('NaN')", new Double(Double.NaN));
-        assertXPathValue(context, "round(-2 div 0)", new Double(Double.NEGATIVE_INFINITY));
-        assertXPathValue(context, "round(2 div 0)", new Double(Double.POSITIVE_INFINITY));
+        assertXPathValue(context, "floor('NaN')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "floor(-2 div 0)", Double.valueOf(Double.NEGATIVE_INFINITY));
+        assertXPathValue(context, "floor(2 div 0)", Double.valueOf(Double.POSITIVE_INFINITY));
+        assertXPathValue(context, "ceiling('NaN')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "ceiling(-2 div 0)", Double.valueOf(Double.NEGATIVE_INFINITY));
+        assertXPathValue(context, "ceiling(2 div 0)", Double.valueOf(Double.POSITIVE_INFINITY));
+        assertXPathValue(context, "round('NaN')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "round(-2 div 0)", Double.valueOf(Double.NEGATIVE_INFINITY));
+        assertXPathValue(context, "round(2 div 0)", Double.valueOf(Double.POSITIVE_INFINITY));
     }
 
+    @Test
     public void testIDFunction() {
-        context.setIdentityManager(new IdentityManager() {
-            public Pointer getPointerByID(JXPathContext context, String id) {
-                NodePointer ptr = (NodePointer) context.getPointer("/document");
-                ptr = ptr.getValuePointer();
-                return ptr.getPointerByID(context, id);
-            }
+        context.setIdentityManager((context, id) -> {
+            NodePointer ptr = (NodePointer) context.getPointer("/document");
+            ptr = ptr.getValuePointer();
+            return ptr.getPointerByID(context, id);
         });
 
         assertXPathValueAndPointer(
@@ -138,40 +134,39 @@ public class CoreFunctionTest extends JXPathTestCase {
             "id(105)/address/street");
     }
 
+    @Test
     public void testKeyFunction() {
-        context.setKeyManager(new KeyManager() {
-            public Pointer getPointerByKey(
-                JXPathContext context,
-                String key,
-                String value) 
-            {
-                return NodePointer.newNodePointer(null, "42", null);
-            }
-        });
+        context.setKeyManager((context, key, value) -> NodePointer.newNodePointer(null, "42", null));
 
         assertXPathValue(context, "key('a', 'b')", "42");
     }
 
+    @Test
     public void testExtendedKeyFunction() {
         context.setKeyManager(new ExtendedKeyManager() {
-            public Pointer getPointerByKey(JXPathContext context, String key,
-                    String value) {
+            @Override
+            public Pointer getPointerByKey(final JXPathContext context, final String key,
+                    final String value) {
                 return NodePointer.newNodePointer(null, "incorrect", null);
             }
 
-            public NodeSet getNodeSetByKey(JXPathContext context,
-                    String keyName, Object keyValue) {
+            @Override
+            public NodeSet getNodeSetByKey(final JXPathContext context,
+                    final String keyName, final Object keyValue) {
                 return new NodeSet() {
 
+                    @Override
                     public List getNodes() {
                         return Arrays.asList("53", "64");
                     }
 
+                    @Override
                     public List getPointers() {
                         return Arrays.asList(NodePointer.newNodePointer(null, "53", null),
                                 NodePointer.newNodePointer(null, "64", null));
                     }
 
+                    @Override
                     public List getValues() {
                         return Arrays.asList("53", "64");
                     }
@@ -190,13 +185,14 @@ public class CoreFunctionTest extends JXPathTestCase {
         assertXPathValueIterator(context, "key('a', $ints)", list("53", "64", "53", "64"));
     }
 
+    @Test
     public void testFormatNumberFunction() {
-        
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+
+        final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDigit('D');
-        
+
         context.setDecimalFormatSymbols("test", symbols);
-        
+
         assertXPathValue(
             context,
             "format-number(123456789, '#.000000000')",
@@ -208,8 +204,8 @@ public class CoreFunctionTest extends JXPathTestCase {
             "123456789.0");
 
         assertXPathValue(
-            context, 
-            "format-number(0.123456789, '##%')", 
+            context,
+            "format-number(0.123456789, '##%')",
             "12%");
 
         assertXPathValue(

@@ -27,13 +27,13 @@ import javax.servlet.jsp.PageContext;
  * "$page/foo" would only look in the "page" scope.
  */
 public class PageScopeContext {
-    private PageContext pageContext;
+    private final PageContext pageContext;
 
     /**
      * Create a new PageScopeContext.
      * @param pageContext base
      */
-    public PageScopeContext(PageContext pageContext) {
+    public PageScopeContext(final PageContext pageContext) {
         this.pageContext = pageContext;
     }
 
@@ -46,20 +46,20 @@ public class PageScopeContext {
     }
 
     /**
-     * Get the value of the specified attribute.
+     * Gets the value of the specified attribute.
      * @param attribute name
      * @return Object
      */
-    public Object getAttribute(String attribute) {
+    public Object getAttribute(final String attribute) {
         return pageContext.getAttribute(attribute, PageContext.PAGE_SCOPE);
     }
 
     /**
-     * Set the specified attribute.
+     * Sets the specified attribute.
      * @param attribute to set
      * @param value to set
      */
-    public void setAttribute(String attribute, Object value) {
+    public void setAttribute(final String attribute, final Object value) {
         pageContext.setAttribute(attribute, value, PageContext.PAGE_SCOPE);
     }
 }

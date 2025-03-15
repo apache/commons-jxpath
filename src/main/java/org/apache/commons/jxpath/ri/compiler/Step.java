@@ -21,9 +21,9 @@ import org.apache.commons.jxpath.ri.Compiler;
 /**
  */
 public class Step {
-    private int axis;
-    private NodeTest nodeTest;
-    private Expression[] predicates;
+    private final int axis;
+    private final NodeTest nodeTest;
+    private final Expression[] predicates;
 
     /**
      * Create a new Step.
@@ -31,14 +31,14 @@ public class Step {
      * @param nodeTest step test
      * @param predicates predicate expressions
      */
-    protected Step(int axis, NodeTest nodeTest, Expression[] predicates) {
+    protected Step(final int axis, final NodeTest nodeTest, final Expression[] predicates) {
         this.axis = axis;
         this.nodeTest = nodeTest;
         this.predicates = predicates;
     }
 
     /**
-     * Get the axis code.
+     * Gets the axis code.
      * @return int
      */
     public int getAxis() {
@@ -46,7 +46,7 @@ public class Step {
     }
 
     /**
-     * Get the step test.
+     * Gets the step test.
      * @return NodeTest
      */
     public NodeTest getNodeTest() {
@@ -54,7 +54,7 @@ public class Step {
     }
 
     /**
-     * Get the predicates.
+     * Gets the predicates.
      * @return Expression[]
      */
     public Expression[] getPredicates() {
@@ -67,8 +67,8 @@ public class Step {
      */
     public boolean isContextDependent() {
         if (predicates != null) {
-            for (int i = 0; i < predicates.length; i++) {
-                if (predicates[i].isContextDependent()) {
+            for (final Expression predicate : predicates) {
+                if (predicate.isContextDependent()) {
                     return true;
                 }
             }
@@ -76,9 +76,10 @@ public class Step {
         return false;
     }
 
+    @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
-        int axis = getAxis();
+        final StringBuilder buffer = new StringBuilder();
+        final int axis = getAxis();
         if (axis == Compiler.AXIS_CHILD) {
             buffer.append(nodeTest);
         }
@@ -110,11 +111,11 @@ public class Step {
             buffer.append("::");
             buffer.append(nodeTest);
         }
-        Expression[] predicates = getPredicates();
+        final Expression[] predicates = getPredicates();
         if (predicates != null) {
-            for (int i = 0; i < predicates.length; i++) {
+            for (final Expression predicate : predicates) {
                 buffer.append('[');
-                buffer.append(predicates[i]);
+                buffer.append(predicate);
                 buffer.append(']');
             }
         }
@@ -128,7 +129,7 @@ public class Step {
      * @see Compiler
      * @see "http://www.w3.org/TR/xpath#axes"
      */
-    public static String axisToString(int axis) {
+    public static String axisToString(final int axis) {
         switch (axis) {
             case Compiler.AXIS_SELF :
                 return "self";

@@ -29,24 +29,28 @@ public class CoreOperationMod extends CoreOperation {
      * @param arg1 dividend
      * @param arg2 divisor
      */
-    public CoreOperationMod(Expression arg1, Expression arg2) {
+    public CoreOperationMod(final Expression arg1, final Expression arg2) {
         super(new Expression[] { arg1, arg2 });
     }
 
-    public Object computeValue(EvalContext context) {
-        long l = (long) InfoSetUtil.doubleValue(args[0].computeValue(context));
-        long r = (long) InfoSetUtil.doubleValue(args[1].computeValue(context));
-        return new Double(l % r);
+    @Override
+    public Object computeValue(final EvalContext context) {
+        final long l = (long) InfoSetUtil.doubleValue(args[0].computeValue(context));
+        final long r = (long) InfoSetUtil.doubleValue(args[1].computeValue(context));
+        return Double.valueOf(l % r);
     }
 
+    @Override
     protected int getPrecedence() {
         return MULTIPLY_PRECEDENCE;
     }
 
+    @Override
     protected boolean isSymmetric() {
         return false;
     }
 
+    @Override
     public String getSymbol() {
         return "mod";
     }

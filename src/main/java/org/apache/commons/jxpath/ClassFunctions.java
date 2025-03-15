@@ -35,12 +35,12 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  *
  * We can now use XPaths like:
  * <dl>
- *  <dt><code>"int:new(3)"</code></dt>
- *  <dd>Equivalent to <code>new Integer(3)</code></dd>
- *  <dt><code>"int:getInteger('foo')"</code></dt>
- *  <dd>Equivalent to <code>Integer.getInteger("foo")</code></dd>
- *  <dt><code>"int:floatValue(int:new(4))"</code></dt>
- *  <dd>Equivalent to <code>new Integer(4).floatValue()</code></dd>
+ *  <dt>{@code "int:new(3)"}</dt>
+ *  <dd>Equivalent to {@code Integer.valueOf(3)}</dd>
+ *  <dt>{@code "int:getInteger('foo')"}</dt>
+ *  <dd>Equivalent to {@code Integer.getInteger("foo")}</dd>
+ *  <dt>{@code "int:floatValue(int:new(4))"}</dt>
+ *  <dd>Equivalent to {@code Integer.valueOf(4).floatValue()}</dd>
  * </dl>
  *
  * <p>
@@ -49,17 +49,17 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * the method.
  */
 public class ClassFunctions implements Functions {
-    private static final Object[] EMPTY_ARRAY = new Object[0];
+    private static final Object[] EMPTY_ARRAY = {};
 
-    private Class functionClass;
-    private String namespace;
+    private final Class functionClass;
+    private final String namespace;
 
     /**
      * Create a new ClassFunctions.
      * @param functionClass Class providing the functions
      * @param namespace assigned ns
      */
-    public ClassFunctions(Class functionClass, String namespace) {
+    public ClassFunctions(final Class functionClass, final String namespace) {
         this.functionClass = functionClass;
         this.namespace = namespace;
     }
@@ -69,6 +69,7 @@ public class ClassFunctions implements Functions {
      *
      * @return a singleton
      */
+    @Override
     public Set getUsedNamespaces() {
         return Collections.singleton(namespace);
     }
@@ -81,13 +82,13 @@ public class ClassFunctions implements Functions {
      *     the method returns null
      * @param name is a function name or "new" for a constructor.
      * @param parameters Object[] of parameters
-     *
      * @return a MethodFunction, a ConstructorFunction or null if there is no
      *      such function.
      */
+    @Override
     public Function getFunction(
-        String namespace,
-        String name,
+        final String namespace,
+        final String name,
         Object[] parameters) {
         if (namespace == null) {
             if (this.namespace != null) {
@@ -103,7 +104,7 @@ public class ClassFunctions implements Functions {
         }
 
         if (name.equals("new")) {
-            Constructor constructor =
+            final Constructor constructor =
                 MethodLookupUtils.lookupConstructor(functionClass, parameters);
             if (constructor != null) {
                 return new ConstructorFunction(constructor);

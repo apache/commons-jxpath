@@ -24,65 +24,64 @@ package org.apache.commons.jxpath;
  */
 public class JXPathContextFactoryConfigurationError extends Error {
 
+    private static final long serialVersionUID = 1L;
     /** @serial */
-    private Exception exception;
+    private final Exception exception;
 
     /**
-     * Create a new <code>JXPathContextFactoryConfigurationError</code> with no
+     * Create a new {@code JXPathContextFactoryConfigurationError} with no
      * detail mesage.
      */
      public JXPathContextFactoryConfigurationError() {
-         super();
          this.exception = null;
      }
 
     /**
-     * Create a new <code>JXPathContextFactoryConfigurationError</code> with
-     * the <code>String </code> specified as an error message.
+     * Create a new {@code JXPathContextFactoryConfigurationError} with
+     * the {@code String } specified as an error message.
      *
      * @param msg The error message for the exception.
      */
-    public JXPathContextFactoryConfigurationError(String msg) {
+    public JXPathContextFactoryConfigurationError(final String msg) {
         super(msg);
         this.exception = null;
     }
 
-
     /**
-     * Create a new <code>JXPathContextFactoryConfigurationError</code> with a
-     * given <code>Exception</code> base cause of the error.
+     * Create a new {@code JXPathContextFactoryConfigurationError} with a
+     * given {@code Exception} base cause of the error.
      *
      * @param e The exception to be encapsulated in a
      * JXPathContextFactoryConfigurationError.
      */
-    public JXPathContextFactoryConfigurationError(Exception e) {
+    public JXPathContextFactoryConfigurationError(final Exception e) {
         super(e.toString());
         this.exception = e;
     }
 
     /**
-     * Create a new <code>JXPathContextFactoryConfigurationError</code> with the
-     * given <code>Exception</code> base cause and detail message.
+     * Create a new {@code JXPathContextFactoryConfigurationError} with the
+     * given {@code Exception} base cause and detail message.
      *
      * @param e The exception to be encapsulated in a
      * JXPathContextFactoryConfigurationError
      * @param msg The detail message.
      */
-    public JXPathContextFactoryConfigurationError(Exception e, String msg) {
+    public JXPathContextFactoryConfigurationError(final Exception e, final String msg) {
         super(msg);
         this.exception = e;
     }
 
-
     /**
-     * Return the message (if any) for this error . If there is no
+     * Gets the message (if any) for this error . If there is no
      * message for the exception and there is an encapsulated
      * exception then the message of that exception will be returned.
      *
      * @return The error message.
      */
+    @Override
     public String getMessage () {
-        String message = super.getMessage();
+        final String message = super.getMessage();
         if (message == null && exception != null) {
             return exception.getMessage();
         }
@@ -90,7 +89,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
     }
 
     /**
-     * Return the actual exception (if any) that caused this exception to
+     * Gets the actual exception (if any) that caused this exception to
      * be raised.
      *
      * @return The encapsulated exception, or null if there is none.

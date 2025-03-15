@@ -30,14 +30,15 @@ public class TestJDOMFactory extends AbstractFactory {
 
     /**
      * Create a new instance and put it in the collection on the parent object.
-     * Return <b>false</b> if this factory cannot create the requested object.
+     * Return <strong>false</strong> if this factory cannot create the requested object.
      */
+    @Override
     public boolean createObject(
-        JXPathContext context,
-        Pointer pointer,
-        Object parent,
-        String name,
-        int index) 
+        final JXPathContext context,
+        final Pointer pointer,
+        final Object parent,
+        final String name,
+        final int index)
     {
         if (name.equals("location")
             || name.equals("address")
@@ -46,7 +47,7 @@ public class TestJDOMFactory extends AbstractFactory {
             return true;
         }
         if (name.startsWith("price:")) {
-            String namespaceURI = context.getNamespaceURI("price");
+            final String namespaceURI = context.getNamespaceURI("price");
             addJDOMElement((Element) parent, index, name, namespaceURI);
             return true;
         }
@@ -54,11 +55,10 @@ public class TestJDOMFactory extends AbstractFactory {
         return false;
     }
 
-    private void addJDOMElement(Element parent, int index, String tag, String namespaceURI) {
-        List children = parent.getContent();
+    private void addJDOMElement(final Element parent, final int index, String tag, final String namespaceURI) {
+        final List children = parent.getContent();
         int count = 0;
-        for (int i = 0; i < children.size(); i++) {
-            Object child = children.get(i);
+        for (final Object child : children) {
             if (child instanceof Element
                 && ((Element) child).getQualifiedName().equals(tag)) {
                 count++;
@@ -71,7 +71,7 @@ public class TestJDOMFactory extends AbstractFactory {
             // the namespace prefix.
             Element newElement;
             if (namespaceURI != null) {
-                String prefix = tag.substring(0, tag.indexOf(':'));
+                final String prefix = tag.substring(0, tag.indexOf(':'));
                 tag = tag.substring(tag.indexOf(':') + 1);
                 newElement = new Element(tag, prefix, namespaceURI);
             }
@@ -83,7 +83,8 @@ public class TestJDOMFactory extends AbstractFactory {
         }
     }
 
-    public boolean declareVariable(JXPathContext context, String name) {
+    @Override
+    public boolean declareVariable(final JXPathContext context, final String name) {
         return false;
     }
 }

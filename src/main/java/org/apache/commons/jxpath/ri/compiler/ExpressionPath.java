@@ -26,13 +26,13 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
  * An  element of the parse tree that represents an expression path, which is a
- * path that starts with an expression like a function call: <code>getFoo(.)
- * /bar</code>.
+ * path that starts with an expression like a function call: {@code getFoo(.)
+ * /bar}.
  */
 public class ExpressionPath extends Path {
 
-    private Expression expression;
-    private Expression[] predicates;
+    private final Expression expression;
+    private final Expression[] predicates;
 
     private boolean basicKnown = false;
     private boolean basic;
@@ -43,15 +43,15 @@ public class ExpressionPath extends Path {
      * @param predicates to execute
      * @param steps navigation
      */
-    public ExpressionPath(Expression expression, Expression[] predicates,
-            Step[] steps) {
+    public ExpressionPath(final Expression expression, final Expression[] predicates,
+            final Step[] steps) {
         super(steps);
         this.expression = expression;
         this.predicates = predicates;
     }
 
     /**
-     * Get the expression.
+     * Gets the expression.
      * @return Expression
      */
     public Expression getExpression() {
@@ -72,13 +72,14 @@ public class ExpressionPath extends Path {
      * predicates or the path steps are context dependent.
      * @return boolean
      */
+    @Override
     public boolean computeContextDependent() {
         if (expression.isContextDependent()) {
             return true;
         }
         if (predicates != null) {
-            for (int i = 0; i < predicates.length; i++) {
-                if (predicates[i].isContextDependent()) {
+            for (final Expression predicate : predicates) {
+                if (predicate.isContextDependent()) {
                     return true;
                 }
             }
@@ -87,7 +88,7 @@ public class ExpressionPath extends Path {
     }
 
     /**
-     * Recognized paths formatted as <code>$x[3]/foo[2]</code>.  The
+     * Recognized paths formatted as {@code $x[3]/foo[2]}.  The
      * evaluation of such "simple" paths is optimized and streamlined.
      * @return boolean
      */
@@ -99,8 +100,9 @@ public class ExpressionPath extends Path {
         return basic;
     }
 
+    @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         if (expression instanceof CoreOperation
             || expression instanceof ExpressionPath
             || expression instanceof LocationPath) {
@@ -112,28 +114,30 @@ public class ExpressionPath extends Path {
             buffer.append(expression);
         }
         if (predicates != null) {
-            for (int i = 0; i < predicates.length; i++) {
+            for (final Expression predicate : predicates) {
                 buffer.append('[');
-                buffer.append(predicates[i]);
+                buffer.append(predicate);
                 buffer.append(']');
             }
         }
 
-        Step[] steps = getSteps();
+        final Step[] steps = getSteps();
         if (steps != null) {
-            for (int i = 0; i < steps.length; i++) {
+            for (final Step step : steps) {
                 buffer.append("/");
-                buffer.append(steps[i]);
+                buffer.append(step);
             }
         }
         return buffer.toString();
     }
 
-    public Object compute(EvalContext context) {
+    @Override
+    public Object compute(final EvalContext context) {
         return expressionPath(context, false);
     }
 
-    public Object computeValue(EvalContext context) {
+    @Override
+    public Object computeValue(final EvalContext context) {
         return expressionPath(context, true);
     }
 
@@ -143,8 +147,8 @@ public class ExpressionPath extends Path {
      * @param firstMatch whether to return the first match found
      * @return Object found
      */
-    protected Object expressionPath(EvalContext evalContext, boolean firstMatch) {
-        Object value = expression.compute(evalContext);
+    protected Object expressionPath(final EvalContext evalContext, final boolean firstMatch) {
+        final Object value = expression.compute(evalContext);
         EvalContext context;
         if (value instanceof InitialContext) {
             // This is an optimization. We can avoid iterating through a
@@ -166,8 +170,8 @@ public class ExpressionPath extends Path {
         if (firstMatch
             && isSimpleExpressionPath()
             && !(context instanceof NodeSetContext)) {
-            EvalContext ctx = context;
-            NodePointer ptr = (NodePointer) ctx.getSingleNodePointer();
+            final EvalContext ctx = context;
+            final NodePointer ptr = (NodePointer) ctx.getSingleNodePointer();
             if (ptr != null
                 && (ptr.getIndex() == NodePointer.WHOLE_COLLECTION
                     || predicates == null

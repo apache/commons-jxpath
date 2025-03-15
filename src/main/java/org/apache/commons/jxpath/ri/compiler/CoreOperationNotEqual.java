@@ -26,10 +26,11 @@ public class CoreOperationNotEqual extends CoreOperationCompare {
      * @param arg1 left operand
      * @param arg2 right operand
      */
-    public CoreOperationNotEqual(Expression arg1, Expression arg2) {
+    public CoreOperationNotEqual(final Expression arg1, final Expression arg2) {
         super(arg1, arg2, true);
     }
 
+    @Override
     public String getSymbol() {
         return "!=";
     }
