@@ -91,7 +91,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         // JDOM  factory is only registered if JDOM is on the classpath
         final Object jdomFactory = allocateConditionally(
                 "org.apache.commons.jxpath.ri.model.jdom.JDOMPointerFactory",
-                "org.jdom.Document");
+                "org.jdom2.Document");
         if (jdomFactory != null) {
             nodeFactories.add(jdomFactory);
         }
