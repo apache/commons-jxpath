@@ -18,7 +18,7 @@ package org.apache.commons.jxpath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -155,10 +155,10 @@ public class TestBean {
     /**
      * A heterogeneous set: String, Integer, NestedTestBean
      */
-    private HashSet set;
+    private LinkedHashSet set;
     public Set getSet() {
         if (set == null) {
-            set = new HashSet();
+            set = new LinkedHashSet();
             set.add("String 4");
             set.add(Integer.valueOf(4));
             set.add(new NestedTestBean("Name 4"));
