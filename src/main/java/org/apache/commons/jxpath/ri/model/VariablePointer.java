@@ -251,11 +251,7 @@ public class VariablePointer extends NodePointer {
     public NodePointer getImmediateValuePointer() {
         if (valuePointer == null) {
             Object value;
-            if (actual) {
-                value = getImmediateNode();
-                valuePointer = newChildNodePointer(this, null, value);
-            }
-            else {
+            if (!actual) {
                 return new NullPointer(this, getName()) {
                     private static final long serialVersionUID = 1L;
 
@@ -266,6 +262,8 @@ public class VariablePointer extends NodePointer {
                     }
                 };
             }
+            value = getImmediateNode();
+            valuePointer = newChildNodePointer(this, null, value);
         }
         return valuePointer;
     }
