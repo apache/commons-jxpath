@@ -107,6 +107,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="strangelookingnerd">Migrate tests to JUnit5 #214.</action>
       <action dev="ggregory" type="fix" due-to="strangelookingnerd, Gary Gregory">Replace try-catch constructs in tests with assertThrows #215.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Use generics internally.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">NodeSet.getPointers() is now typed with generics.</action>
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).
