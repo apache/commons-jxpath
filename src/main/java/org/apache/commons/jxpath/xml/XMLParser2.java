@@ -31,57 +31,12 @@ public abstract class XMLParser2 implements XMLParser {
     private boolean coalescing = false;
 
     /**
-     * Sets whether the underlying parser should be validating.
-     * @param validating flag
-     * @see javax.xml.parsers.DocumentBuilderFactory#setValidating(boolean)
-     */
-    public void setValidating(final boolean validating) {
-        this.validating = validating;
-    }
-
-    /**
-     * Learn whether the underlying parser is validating.
+     * Learn whether the underlying parser is coalescing.
      * @return boolean
-     * @see javax.xml.parsers.DocumentBuilderFactory#isValidating()
+     * @see javax.xml.parsers.DocumentBuilderFactory#isCoalescing()
      */
-    public boolean isValidating() {
-        return validating;
-    }
-
-    /**
-     * Learn whether the underlying parser is ns-aware.
-     * @return boolean
-     * @see javax.xml.parsers.DocumentBuilderFactory#isNamespaceAware()
-     */
-    public boolean isNamespaceAware() {
-        return namespaceAware;
-    }
-
-    /**
-     * Sets whether the underlying parser is ns-aware.
-     * @param namespaceAware flag
-     * @see javax.xml.parsers.DocumentBuilderFactory#setNamespaceAware(boolean)
-     */
-    public void setNamespaceAware(final boolean namespaceAware) {
-        this.namespaceAware = namespaceAware;
-    }
-
-    /**
-     * Sets whether the underlying parser is ignoring whitespace.
-     * @param whitespace flag
-     * @see javax.xml.parsers.DocumentBuilderFactory#setIgnoringElementContentWhitespace(boolean)
-     */
-    public void setIgnoringElementContentWhitespace(final boolean whitespace) {
-        this.whitespace = whitespace;
-    }
-
-    /**
-     * Learn whether the underlying parser is ignoring whitespace.
-     * @return boolean
-     * @see javax.xml.parsers.DocumentBuilderFactory#isIgnoringElementContentWhitespace()
-     */
-    public boolean isIgnoringElementContentWhitespace() {
-        return whitespace;
+    public boolean isCoalescing() {
+        return coalescing;
     }
 
     /**
@@ -94,21 +49,60 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Sets whether the underlying parser expands entity references.
-     * @param expandEntityRef flag
-     * @see javax.xml.parsers.DocumentBuilderFactory#setExpandEntityReferences(boolean)
-     */
-    public void setExpandEntityReferences(final boolean expandEntityRef) {
-        this.expandEntityRef = expandEntityRef;
-    }
-
-    /**
      * Learn whether the underlying parser ignores comments.
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isIgnoringComments()
      */
     public boolean isIgnoringComments() {
         return ignoreComments;
+    }
+
+    /**
+     * Learn whether the underlying parser is ignoring whitespace.
+     * @return boolean
+     * @see javax.xml.parsers.DocumentBuilderFactory#isIgnoringElementContentWhitespace()
+     */
+    public boolean isIgnoringElementContentWhitespace() {
+        return whitespace;
+    }
+
+    /**
+     * Learn whether the underlying parser is ns-aware.
+     * @return boolean
+     * @see javax.xml.parsers.DocumentBuilderFactory#isNamespaceAware()
+     */
+    public boolean isNamespaceAware() {
+        return namespaceAware;
+    }
+
+    /**
+     * Learn whether the underlying parser is validating.
+     * @return boolean
+     * @see javax.xml.parsers.DocumentBuilderFactory#isValidating()
+     */
+    public boolean isValidating() {
+        return validating;
+    }
+
+    @Override
+    public abstract Object parseXML(InputStream stream);
+
+    /**
+     * Sets whether the underlying parser is coalescing.
+     * @param coalescing flag
+     * @see javax.xml.parsers.DocumentBuilderFactory#setCoalescing(boolean)
+     */
+    public void setCoalescing(final boolean coalescing) {
+        this.coalescing = coalescing;
+    }
+
+    /**
+     * Sets whether the underlying parser expands entity references.
+     * @param expandEntityRef flag
+     * @see javax.xml.parsers.DocumentBuilderFactory#setExpandEntityReferences(boolean)
+     */
+    public void setExpandEntityReferences(final boolean expandEntityRef) {
+        this.expandEntityRef = expandEntityRef;
     }
 
     /**
@@ -121,23 +115,29 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser is coalescing.
-     * @return boolean
-     * @see javax.xml.parsers.DocumentBuilderFactory#isCoalescing()
+     * Sets whether the underlying parser is ignoring whitespace.
+     * @param whitespace flag
+     * @see javax.xml.parsers.DocumentBuilderFactory#setIgnoringElementContentWhitespace(boolean)
      */
-    public boolean isCoalescing() {
-        return coalescing;
+    public void setIgnoringElementContentWhitespace(final boolean whitespace) {
+        this.whitespace = whitespace;
     }
 
     /**
-     * Sets whether the underlying parser is coalescing.
-     * @param coalescing flag
-     * @see javax.xml.parsers.DocumentBuilderFactory#setCoalescing(boolean)
+     * Sets whether the underlying parser is ns-aware.
+     * @param namespaceAware flag
+     * @see javax.xml.parsers.DocumentBuilderFactory#setNamespaceAware(boolean)
      */
-    public void setCoalescing(final boolean coalescing) {
-        this.coalescing = coalescing;
+    public void setNamespaceAware(final boolean namespaceAware) {
+        this.namespaceAware = namespaceAware;
     }
 
-    @Override
-    public abstract Object parseXML(InputStream stream);
+    /**
+     * Sets whether the underlying parser should be validating.
+     * @param validating flag
+     * @see javax.xml.parsers.DocumentBuilderFactory#setValidating(boolean)
+     */
+    public void setValidating(final boolean validating) {
+        this.validating = validating;
+    }
 }

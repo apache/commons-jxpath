@@ -39,6 +39,28 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     private Object value = UNINITIALIZED;
 
+    /**
+     * Create a new PropertyOwnerPointer.
+     * @param parent pointer
+     */
+    protected PropertyOwnerPointer(final NodePointer parent) {
+        super(parent);
+    }
+
+    /**
+     * Create a new PropertyOwnerPointer.
+     * @param parent parent pointer
+     * @param locale Locale
+     */
+    protected PropertyOwnerPointer(final NodePointer parent, final Locale locale) {
+        super(parent, locale);
+    }
+
+    @Override
+    public NodeIterator attributeIterator(final QName name) {
+        return new BeanAttributeIterator(this, name);
+    }
+
     @Override
     public NodeIterator childIterator(final NodeTest test, final boolean reverse,
             final NodePointer startWith) {
@@ -58,6 +80,13 @@ public abstract class PropertyOwnerPointer extends NodePointer {
                 ? createNodeIterator(null, reverse, startWith) : null;
     }
 
+    @Override
+    public int compareChildNodePointers(final NodePointer pointer1,
+            final NodePointer pointer2) {
+        final int r = pointer1.getName().toString().compareTo(pointer2.getName().toString());
+        return r == 0 ? pointer1.getIndex() - pointer2.getIndex() : r;
+    }
+
     /**
      * Create a NodeIterator.
      * @param property property name
@@ -68,36 +97,6 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     public NodeIterator createNodeIterator(final String property, final boolean reverse,
             final NodePointer startWith) {
         return new PropertyIterator(this, property, reverse, startWith);
-    }
-
-    @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return new BeanAttributeIterator(this, name);
-    }
-
-    /**
-     * Create a new PropertyOwnerPointer.
-     * @param parent parent pointer
-     * @param locale Locale
-     */
-    protected PropertyOwnerPointer(final NodePointer parent, final Locale locale) {
-        super(parent, locale);
-    }
-
-    /**
-     * Create a new PropertyOwnerPointer.
-     * @param parent pointer
-     */
-    protected PropertyOwnerPointer(final NodePointer parent) {
-        super(parent);
-    }
-
-    @Override
-    public void setIndex(final int index) {
-        if (this.index != index) {
-            super.setIndex(index);
-            value = UNINITIALIZED;
-        }
     }
 
     @Override
@@ -113,6 +112,22 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     public abstract QName getName();
 
     /**
+     * Gets a PropertyPointer for this PropertyOwnerPointer.
+     * @return PropertyPointer
+     */
+    public abstract PropertyPointer getPropertyPointer();
+
+    /**
+     * Learn whether dynamic property declaration is supported.
+     * @return true if the property owner can set a property "does not exist".
+     *         A good example is a Map. You can always assign a value to any
+     *         key even if it has never been "declared".
+     */
+    public boolean isDynamicPropertyDeclarationSupported() {
+        return false;
+    }
+
+    /**
      * Learn whether {@code name} is a valid child name for this PropertyOwnerPointer.
      * @param name the QName to test
      * @return {@code true} if {@code QName} is a valid property name.
@@ -120,6 +135,31 @@ public abstract class PropertyOwnerPointer extends NodePointer {
      */
     public boolean isValidProperty(final QName name) {
         return isDefaultNamespace(name.getPrefix());
+    }
+
+    /**
+     * If this is a root node pointer, throws an exception; otherwise
+     * forwards the call to the parent node.
+     */
+    @Override
+    public void remove() {
+        this.value = null;
+        if (parent != null) {
+            parent.remove();
+        }
+        else {
+            throw new UnsupportedOperationException(
+                "Cannot remove an object that is not "
+                    + "some other object's property or a collection element");
+        }
+    }
+
+    @Override
+    public void setIndex(final int index) {
+        if (this.index != index) {
+            super.setIndex(index);
+            value = UNINITIALIZED;
+        }
     }
 
     /**
@@ -148,45 +188,5 @@ public abstract class PropertyOwnerPointer extends NodePointer {
             throw new UnsupportedOperationException(
                 "Cannot replace the root object");
         }
-    }
-
-    /**
-     * If this is a root node pointer, throws an exception; otherwise
-     * forwards the call to the parent node.
-     */
-    @Override
-    public void remove() {
-        this.value = null;
-        if (parent != null) {
-            parent.remove();
-        }
-        else {
-            throw new UnsupportedOperationException(
-                "Cannot remove an object that is not "
-                    + "some other object's property or a collection element");
-        }
-    }
-
-    /**
-     * Gets a PropertyPointer for this PropertyOwnerPointer.
-     * @return PropertyPointer
-     */
-    public abstract PropertyPointer getPropertyPointer();
-
-    /**
-     * Learn whether dynamic property declaration is supported.
-     * @return true if the property owner can set a property "does not exist".
-     *         A good example is a Map. You can always assign a value to any
-     *         key even if it has never been "declared".
-     */
-    public boolean isDynamicPropertyDeclarationSupported() {
-        return false;
-    }
-
-    @Override
-    public int compareChildNodePointers(final NodePointer pointer1,
-            final NodePointer pointer2) {
-        final int r = pointer1.getName().toString().compareTo(pointer2.getName().toString());
-        return r == 0 ? pointer1.getIndex() - pointer2.getIndex() : r;
     }
 }

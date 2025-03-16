@@ -42,8 +42,9 @@ public class KeywordVariables implements Variables {
     }
 
     @Override
-    public boolean isDeclaredVariable(final String variable) {
-        return variable.equals(keyword);
+    public void declareVariable(final String variable, final Object value) {
+        throw new UnsupportedOperationException(
+            "Cannot declare new keyword variables.");
     }
 
     @Override
@@ -52,9 +53,8 @@ public class KeywordVariables implements Variables {
     }
 
     @Override
-    public void declareVariable(final String variable, final Object value) {
-        throw new UnsupportedOperationException(
-            "Cannot declare new keyword variables.");
+    public boolean isDeclaredVariable(final String variable) {
+        return variable.equals(keyword);
     }
 
     @Override

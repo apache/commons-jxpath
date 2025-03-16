@@ -28,12 +28,12 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that is used to hold the root node for the path traversal.
  */
 public class RootContext extends EvalContext {
+    public static final Object UNKNOWN_VALUE = new Object();
+    private static final int MAX_REGISTER = 4;
     private final JXPathContextReferenceImpl jxpathContext;
     private final NodePointer pointer;
     private Object[] registers;
     private int availableRegister = 0;
-    public static final Object UNKNOWN_VALUE = new Object();
-    private static final int MAX_REGISTER = 4;
 
     /**
      * Create a new RootContext.
@@ -50,52 +50,12 @@ public class RootContext extends EvalContext {
         }
     }
 
-    @Override
-    public JXPathContext getJXPathContext() {
-        return jxpathContext;
-    }
-
-    @Override
-    public RootContext getRootContext() {
-        return this;
-    }
-
     /**
      * Gets absolute root context
      * @return EvalContext
      */
     public EvalContext getAbsoluteRootContext() {
         return jxpathContext.getAbsoluteRootContext();
-    }
-
-    @Override
-    public NodePointer getCurrentNodePointer() {
-        return pointer;
-    }
-
-    @Override
-    public Object getValue() {
-        return pointer;
-    }
-
-    @Override
-    public int getCurrentPosition() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean nextNode() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean nextSet() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean setPosition(final int position) {
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -123,16 +83,14 @@ public class RootContext extends EvalContext {
         return new InitialContext(new RootContext(jxpathContext, pointer));
     }
 
-    /**
-     * Gets variable context.
-     * @param variableName variable name
-     * @return EvalContext
-     */
-    public EvalContext getVariableContext(final QName variableName) {
-        return new InitialContext(
-            new RootContext(
-                jxpathContext,
-                jxpathContext.getVariablePointer(variableName)));
+    @Override
+    public NodePointer getCurrentNodePointer() {
+        return pointer;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -145,6 +103,11 @@ public class RootContext extends EvalContext {
         return jxpathContext.getFunction(functionName, parameters);
     }
 
+    @Override
+    public JXPathContext getJXPathContext() {
+        return jxpathContext;
+    }
+
     /**
      * Gets a registered value.
      * @param id int
@@ -155,6 +118,43 @@ public class RootContext extends EvalContext {
             return UNKNOWN_VALUE;
         }
         return registers[id];
+    }
+
+    @Override
+    public RootContext getRootContext() {
+        return this;
+    }
+
+    @Override
+    public Object getValue() {
+        return pointer;
+    }
+
+    /**
+     * Gets variable context.
+     * @param variableName variable name
+     * @return EvalContext
+     */
+    public EvalContext getVariableContext(final QName variableName) {
+        return new InitialContext(
+            new RootContext(
+                jxpathContext,
+                jxpathContext.getVariablePointer(variableName)));
+    }
+
+    @Override
+    public boolean nextNode() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean nextSet() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean setPosition(final int position) {
+        throw new UnsupportedOperationException();
     }
 
     /**

@@ -41,16 +41,16 @@ public class SelfContext extends EvalContext {
     }
 
     @Override
-    public Pointer getSingleNodePointer() {
-        return parentContext.getSingleNodePointer();
-    }
-
-    @Override
     public NodePointer getCurrentNodePointer() {
         if (position == 0 && !setPosition(1)) {
             return null;
         }
         return nodePointer;
+    }
+
+    @Override
+    public Pointer getSingleNodePointer() {
+        return parentContext.getSingleNodePointer();
     }
 
     @Override

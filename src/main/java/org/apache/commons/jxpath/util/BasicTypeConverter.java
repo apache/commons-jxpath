@@ -42,6 +42,195 @@ import org.apache.commons.jxpath.Pointer;
 public class BasicTypeConverter implements TypeConverter {
 
     /**
+     * NodeSet implementation
+     */
+    static final class ValueNodeSet implements NodeSet {
+        private final List values;
+        private List pointers;
+
+        /**
+         * Create a new ValueNodeSet.
+         * @param values to return
+         */
+        public ValueNodeSet(final List values) {
+           this.values = values;
+        }
+
+        @Override
+        public List getNodes() {
+            return Collections.unmodifiableList(values);
+        }
+
+        @Override
+        public List getPointers() {
+            if (pointers == null) {
+                pointers = new ArrayList();
+                for (int i = 0; i < values.size(); i++) {
+                    pointers.add(new ValuePointer(values.get(i)));
+                }
+                pointers = Collections.unmodifiableList(pointers);
+            }
+            return pointers;
+        }
+
+        @Override
+        public List getValues() {
+            return Collections.unmodifiableList(values);
+        }
+    }
+
+    /**
+     * Value pointer
+     */
+    static final class ValuePointer implements Pointer {
+        private static final long serialVersionUID = -4817239482392206188L;
+
+        private final Object bean;
+
+        /**
+         * Create a new ValuePointer.
+         * @param object value
+         */
+        public ValuePointer(final Object object) {
+            this.bean = object;
+        }
+
+        @Override
+        public String asPath() {
+            if (bean == null) {
+                return "null()";
+            }
+            if (bean instanceof Number) {
+                String string = bean.toString();
+                if (string.endsWith(".0")) {
+                    string = string.substring(0, string.length() - 2);
+                }
+                return string;
+            }
+            if (bean instanceof Boolean) {
+                return ((Boolean) bean).booleanValue() ? "true()" : "false()";
+            }
+            if (bean instanceof String) {
+                return "'" + bean + "'";
+            }
+            return "{object of type " + bean.getClass().getName() + "}";
+        }
+
+        @Override
+        public Object clone() {
+            return this;
+        }
+
+        @Override
+        public int compareTo(final Object object) {
+            return 0;
+        }
+
+        @Override
+        public Object getNode() {
+            return bean;
+        }
+
+        @Override
+        public Object getRootNode() {
+            return bean;
+        }
+
+        @Override
+        public Object getValue() {
+            return bean;
+        }
+
+        @Override
+        public void setValue(final Object value) {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    /**
+     * Create a collection of a given type.
+     * @param type destination class
+     * @return Collection
+     */
+    protected Collection allocateCollection(final Class type) {
+        if (!type.isInterface()
+                && (type.getModifiers() & Modifier.ABSTRACT) == 0) {
+            try {
+                return (Collection) type.getConstructor().newInstance();
+            }
+            catch (final Exception ex) {
+                throw new JXPathInvalidAccessException(
+                        "Cannot create collection of type: " + type, ex);
+            }
+        }
+
+        if (type == List.class || type == Collection.class) {
+            return new ArrayList();
+        }
+        if (type == Set.class) {
+            return new HashSet();
+        }
+        throw new JXPathInvalidAccessException(
+                "Cannot create collection of type: " + type);
+    }
+
+    /**
+     * Allocate a number of a given type and value.
+     * @param type destination class
+     * @param value double
+     * @return Number
+     */
+    protected Number allocateNumber(Class type, final double value) {
+        type = TypeUtils.wrapPrimitive(type);
+        if (type == Byte.class) {
+            return Byte.valueOf((byte) value);
+        }
+        if (type == Short.class) {
+            return Short.valueOf((short) value);
+        }
+        if (type == Integer.class) {
+            return Integer.valueOf((int) value);
+        }
+        if (type == Long.class) {
+            return Long.valueOf((long) value);
+        }
+        if (type == Float.class) {
+            return Float.valueOf((float) value);
+        }
+        if (type == Double.class) {
+            return Double.valueOf(value);
+        }
+        if (type == BigInteger.class) {
+            return BigInteger.valueOf((long) value);
+        }
+        if (type == BigDecimal.class) {
+            // TODO ? https://pmd.sourceforge.io/pmd-6.50.0/pmd_rules_java_errorprone.html#avoiddecimalliteralsinbigdecimalconstructor
+            return new BigDecimal(value); // NOPMD
+        }
+        final String className = type.getName();
+        Class initialValueType = null;
+        if ("java.util.concurrent.atomic.AtomicInteger".equals(className)) {
+            initialValueType = int.class;
+        }
+        if ("java.util.concurrent.atomic.AtomicLong".equals(className)) {
+            initialValueType = long.class;
+        }
+        if (initialValueType != null) {
+            try {
+                return (Number) type.getConstructor(
+                        new Class[] { initialValueType })
+                        .newInstance(
+                                allocateNumber(initialValueType,
+                                        value));
+            }
+            catch (final Exception e) {
+                throw new JXPathTypeConversionException(className, e);
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns true if it can convert the supplied
      * object to the specified class.
      * @param object to check
@@ -142,6 +331,25 @@ public class BasicTypeConverter implements TypeConverter {
             return canConvert(((Pointer) object).getValue(), useType);
         }
         return ConvertUtils.lookup(useType) != null;
+    }
+
+    /**
+     * Learn whether this BasicTypeConverter can create a collection of the specified type.
+     * @param type prospective destination class
+     * @return boolean
+     */
+    protected boolean canCreateCollection(final Class type) {
+        if (!type.isInterface()
+                && (type.getModifiers() & Modifier.ABSTRACT) == 0) {
+            try {
+                type.getConstructor();
+                return true;
+            }
+            catch (final Exception e) {
+                return false;
+            }
+        }
+        return type == List.class || type == Collection.class || type == Set.class;
     }
 
     /**
@@ -346,108 +554,6 @@ public class BasicTypeConverter implements TypeConverter {
     }
 
     /**
-     * Allocate a number of a given type and value.
-     * @param type destination class
-     * @param value double
-     * @return Number
-     */
-    protected Number allocateNumber(Class type, final double value) {
-        type = TypeUtils.wrapPrimitive(type);
-        if (type == Byte.class) {
-            return Byte.valueOf((byte) value);
-        }
-        if (type == Short.class) {
-            return Short.valueOf((short) value);
-        }
-        if (type == Integer.class) {
-            return Integer.valueOf((int) value);
-        }
-        if (type == Long.class) {
-            return Long.valueOf((long) value);
-        }
-        if (type == Float.class) {
-            return Float.valueOf((float) value);
-        }
-        if (type == Double.class) {
-            return Double.valueOf(value);
-        }
-        if (type == BigInteger.class) {
-            return BigInteger.valueOf((long) value);
-        }
-        if (type == BigDecimal.class) {
-            // TODO ? https://pmd.sourceforge.io/pmd-6.50.0/pmd_rules_java_errorprone.html#avoiddecimalliteralsinbigdecimalconstructor
-            return new BigDecimal(value); // NOPMD
-        }
-        final String className = type.getName();
-        Class initialValueType = null;
-        if ("java.util.concurrent.atomic.AtomicInteger".equals(className)) {
-            initialValueType = int.class;
-        }
-        if ("java.util.concurrent.atomic.AtomicLong".equals(className)) {
-            initialValueType = long.class;
-        }
-        if (initialValueType != null) {
-            try {
-                return (Number) type.getConstructor(
-                        new Class[] { initialValueType })
-                        .newInstance(
-                                allocateNumber(initialValueType,
-                                        value));
-            }
-            catch (final Exception e) {
-                throw new JXPathTypeConversionException(className, e);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Learn whether this BasicTypeConverter can create a collection of the specified type.
-     * @param type prospective destination class
-     * @return boolean
-     */
-    protected boolean canCreateCollection(final Class type) {
-        if (!type.isInterface()
-                && (type.getModifiers() & Modifier.ABSTRACT) == 0) {
-            try {
-                type.getConstructor();
-                return true;
-            }
-            catch (final Exception e) {
-                return false;
-            }
-        }
-        return type == List.class || type == Collection.class || type == Set.class;
-    }
-
-    /**
-     * Create a collection of a given type.
-     * @param type destination class
-     * @return Collection
-     */
-    protected Collection allocateCollection(final Class type) {
-        if (!type.isInterface()
-                && (type.getModifiers() & Modifier.ABSTRACT) == 0) {
-            try {
-                return (Collection) type.getConstructor().newInstance();
-            }
-            catch (final Exception ex) {
-                throw new JXPathInvalidAccessException(
-                        "Cannot create collection of type: " + type, ex);
-            }
-        }
-
-        if (type == List.class || type == Collection.class) {
-            return new ArrayList();
-        }
-        if (type == Set.class) {
-            return new HashSet();
-        }
-        throw new JXPathInvalidAccessException(
-                "Cannot create collection of type: " + type);
-    }
-
-    /**
      * Gets an unmodifiable version of a collection.
      * @param collection to wrap
      * @return Collection
@@ -463,111 +569,5 @@ public class BasicTypeConverter implements TypeConverter {
             return Collections.unmodifiableSet((Set) collection);
         }
         return Collections.unmodifiableCollection(collection);
-    }
-
-    /**
-     * NodeSet implementation
-     */
-    static final class ValueNodeSet implements NodeSet {
-        private final List values;
-        private List pointers;
-
-        /**
-         * Create a new ValueNodeSet.
-         * @param values to return
-         */
-        public ValueNodeSet(final List values) {
-           this.values = values;
-        }
-
-        @Override
-        public List getValues() {
-            return Collections.unmodifiableList(values);
-        }
-
-        @Override
-        public List getNodes() {
-            return Collections.unmodifiableList(values);
-        }
-
-        @Override
-        public List getPointers() {
-            if (pointers == null) {
-                pointers = new ArrayList();
-                for (int i = 0; i < values.size(); i++) {
-                    pointers.add(new ValuePointer(values.get(i)));
-                }
-                pointers = Collections.unmodifiableList(pointers);
-            }
-            return pointers;
-        }
-    }
-
-    /**
-     * Value pointer
-     */
-    static final class ValuePointer implements Pointer {
-        private static final long serialVersionUID = -4817239482392206188L;
-
-        private final Object bean;
-
-        /**
-         * Create a new ValuePointer.
-         * @param object value
-         */
-        public ValuePointer(final Object object) {
-            this.bean = object;
-        }
-
-        @Override
-        public Object getValue() {
-            return bean;
-        }
-
-        @Override
-        public Object getNode() {
-            return bean;
-        }
-
-        @Override
-        public Object getRootNode() {
-            return bean;
-        }
-
-        @Override
-        public void setValue(final Object value) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Object clone() {
-            return this;
-        }
-
-        @Override
-        public int compareTo(final Object object) {
-            return 0;
-        }
-
-        @Override
-        public String asPath() {
-            if (bean == null) {
-                return "null()";
-            }
-            if (bean instanceof Number) {
-                String string = bean.toString();
-                if (string.endsWith(".0")) {
-                    string = string.substring(0, string.length() - 2);
-                }
-                return string;
-            }
-            if (bean instanceof Boolean) {
-                return ((Boolean) bean).booleanValue() ? "true()" : "false()";
-            }
-            if (bean instanceof String) {
-                return "'" + bean + "'";
-            }
-            return "{object of type " + bean.getClass().getName() + "}";
-        }
     }
 }

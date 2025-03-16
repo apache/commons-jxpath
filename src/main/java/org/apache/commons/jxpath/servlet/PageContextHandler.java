@@ -29,6 +29,17 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
  */
 public class PageContextHandler implements DynamicPropertyHandler {
 
+    /**
+     * Returns {@code pageContext.findAttribute(property)}.
+     * @param pageContext to search
+     * @param property name
+     * @return Object value
+     */
+    @Override
+    public Object getProperty(final Object pageContext, final String property) {
+        return ((PageContext) pageContext).findAttribute(property);
+    }
+
     @Override
     public String[] getPropertyNames(final Object pageContext) {
         final HashSet list = new HashSet();
@@ -57,17 +68,6 @@ public class PageContextHandler implements DynamicPropertyHandler {
             list.add(e.nextElement());
         }
         return (String[]) list.toArray(new String[list.size()]);
-    }
-
-    /**
-     * Returns {@code pageContext.findAttribute(property)}.
-     * @param pageContext to search
-     * @param property name
-     * @return Object value
-     */
-    @Override
-    public Object getProperty(final Object pageContext, final String property) {
-        return ((PageContext) pageContext).findAttribute(property);
     }
 
     @Override

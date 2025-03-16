@@ -22,6 +22,12 @@ package org.apache.commons.jxpath.ri.model;
 public interface NodeIterator {
 
     /**
+     * Gets the NodePointer at the current position.
+     * @return NodePointer
+     */
+    NodePointer getNodePointer();
+
+    /**
      * Gets the current iterator position.
      * @return int position
      */
@@ -33,10 +39,4 @@ public interface NodeIterator {
      * @return {@code true} if there is a node at {@code position}.
      */
     boolean setPosition(int position);
-
-    /**
-     * Gets the NodePointer at the current position.
-     * @return NodePointer
-     */
-    NodePointer getNodePointer();
 }

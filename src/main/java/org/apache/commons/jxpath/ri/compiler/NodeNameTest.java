@@ -43,19 +43,19 @@ public class NodeNameTest extends NodeTest {
     }
 
     /**
-     * Gets the node name.
-     * @return QName
-     */
-    public QName getNodeName() {
-        return qname;
-    }
-
-    /**
      * Gets the ns URI.
      * @return String
      */
     public String getNamespaceURI() {
         return namespaceURI;
+    }
+
+    /**
+     * Gets the node name.
+     * @return QName
+     */
+    public QName getNodeName() {
+        return qname;
     }
 
     /**

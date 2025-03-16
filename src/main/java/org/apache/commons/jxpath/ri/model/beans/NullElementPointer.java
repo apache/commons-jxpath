@@ -43,95 +43,6 @@ public class NullElementPointer extends CollectionPointer {
     }
 
     @Override
-    public QName getName() {
-        return null;
-    }
-
-    @Override
-    public Object getBaseValue() {
-        return null;
-    }
-
-    @Override
-    public Object getImmediateNode() {
-        return null;
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return true;
-    }
-
-    @Override
-    public boolean isCollection() {
-        return false;
-    }
-
-    /**
-     * Gets the property pointer for this.
-     * @return PropertyPointer
-     */
-    public PropertyPointer getPropertyPointer() {
-        return new NullPropertyPointer(this);
-    }
-
-    @Override
-    public NodePointer getValuePointer() {
-        return new NullPointer(this, getName());
-    }
-
-    @Override
-    public void setValue(final Object value) {
-        throw new UnsupportedOperationException(
-            "Collection element does not exist: " + this);
-    }
-
-    @Override
-    public boolean isActual() {
-        return false;
-    }
-
-    @Override
-    public boolean isContainer() {
-        return true;
-    }
-
-    @Override
-    public NodePointer createPath(final JXPathContext context) {
-        return parent.createChild(context, null, index);
-    }
-
-    @Override
-    public NodePointer createPath(final JXPathContext context, final Object value) {
-        return parent.createChild(context, null, index, value);
-    }
-
-    @Override
-    public int hashCode() {
-        return getImmediateParentPointer().hashCode() + index;
-    }
-
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            return true;
-        }
-
-        if (!(object instanceof NullElementPointer)) {
-            return false;
-        }
-
-        final NullElementPointer other = (NullElementPointer) object;
-        return getImmediateParentPointer() == other.getImmediateParentPointer()
-                && index == other.index;
-    }
-
-    @Override
-    public int getLength() {
-        return 0;
-    }
-
-    @Override
     public String asPath() {
         final StringBuilder buffer = new StringBuilder();
         final NodePointer parent = getImmediateParentPointer();
@@ -152,5 +63,94 @@ public class NullElementPointer extends CollectionPointer {
         }
 
         return buffer.toString();
+    }
+
+    @Override
+    public NodePointer createPath(final JXPathContext context) {
+        return parent.createChild(context, null, index);
+    }
+
+    @Override
+    public NodePointer createPath(final JXPathContext context, final Object value) {
+        return parent.createChild(context, null, index, value);
+    }
+
+    @Override
+    public boolean equals(final Object object) {
+        if (object == this) {
+            return true;
+        }
+
+        if (!(object instanceof NullElementPointer)) {
+            return false;
+        }
+
+        final NullElementPointer other = (NullElementPointer) object;
+        return getImmediateParentPointer() == other.getImmediateParentPointer()
+                && index == other.index;
+    }
+
+    @Override
+    public Object getBaseValue() {
+        return null;
+    }
+
+    @Override
+    public Object getImmediateNode() {
+        return null;
+    }
+
+    @Override
+    public int getLength() {
+        return 0;
+    }
+
+    @Override
+    public QName getName() {
+        return null;
+    }
+
+    /**
+     * Gets the property pointer for this.
+     * @return PropertyPointer
+     */
+    public PropertyPointer getPropertyPointer() {
+        return new NullPropertyPointer(this);
+    }
+
+    @Override
+    public NodePointer getValuePointer() {
+        return new NullPointer(this, getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getImmediateParentPointer().hashCode() + index;
+    }
+
+    @Override
+    public boolean isActual() {
+        return false;
+    }
+
+    @Override
+    public boolean isCollection() {
+        return false;
+    }
+
+    @Override
+    public boolean isContainer() {
+        return true;
+    }
+
+    @Override
+    public boolean isLeaf() {
+        return true;
+    }
+
+    @Override
+    public void setValue(final Object value) {
+        throw new UnsupportedOperationException(
+            "Collection element does not exist: " + this);
     }
 }

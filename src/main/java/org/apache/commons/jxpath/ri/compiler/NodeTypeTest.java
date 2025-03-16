@@ -21,6 +21,26 @@ import org.apache.commons.jxpath.ri.Compiler;
 /**
  */
 public class NodeTypeTest extends NodeTest {
+    /**
+     * Render the given node type as a String.
+     * @param code int
+     * @return String
+     */
+    public static String nodeTypeToString(final int code) {
+        switch (code) {
+            case Compiler.NODE_TYPE_NODE :
+                return "node";
+            case Compiler.NODE_TYPE_TEXT :
+                return "text";
+            case Compiler.NODE_TYPE_COMMENT :
+                return "comment";
+            case Compiler.NODE_TYPE_PI :
+                return "processing-instruction";
+            default:
+                return "UNKNOWN";
+        }
+    }
+
     private final int nodeType;
 
     /**
@@ -42,25 +62,5 @@ public class NodeTypeTest extends NodeTest {
     @Override
     public String toString() {
         return nodeTypeToString(nodeType) + "()";
-    }
-
-    /**
-     * Render the given node type as a String.
-     * @param code int
-     * @return String
-     */
-    public static String nodeTypeToString(final int code) {
-        switch (code) {
-            case Compiler.NODE_TYPE_NODE :
-                return "node";
-            case Compiler.NODE_TYPE_TEXT :
-                return "text";
-            case Compiler.NODE_TYPE_COMMENT :
-                return "comment";
-            case Compiler.NODE_TYPE_PI :
-                return "processing-instruction";
-            default:
-                return "UNKNOWN";
-        }
     }
 }

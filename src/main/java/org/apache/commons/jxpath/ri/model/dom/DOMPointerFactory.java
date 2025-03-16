@@ -32,8 +32,11 @@ public class DOMPointerFactory implements NodePointerFactory {
     public static final int DOM_POINTER_FACTORY_ORDER = 100;
 
     @Override
-    public int getOrder() {
-        return DOM_POINTER_FACTORY_ORDER;
+    public NodePointer createNodePointer(
+        final NodePointer parent,
+        final QName name,
+        final Object bean) {
+        return bean instanceof Node ? new DOMNodePointer(parent, (Node) bean) : null;
     }
 
     @Override
@@ -45,10 +48,7 @@ public class DOMPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(
-        final NodePointer parent,
-        final QName name,
-        final Object bean) {
-        return bean instanceof Node ? new DOMNodePointer(parent, (Node) bean) : null;
+    public int getOrder() {
+        return DOM_POINTER_FACTORY_ORDER;
     }
 }

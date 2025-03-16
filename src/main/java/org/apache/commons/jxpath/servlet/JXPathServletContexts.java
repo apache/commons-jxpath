@@ -87,6 +87,28 @@ public final class JXPathServletContexts {
     }
 
     /**
+     * Returns  a JXPathContext bound to the "application" scope. Caches that
+     * context within the servlet context itself.
+     * @param servletContext operative
+     * @return JXPathContext
+     */
+    public static JXPathContext getApplicationContext(
+            final ServletContext servletContext) {
+        JXPathContext context =
+            (JXPathContext) servletContext.getAttribute(
+                Constants.JXPATH_CONTEXT);
+        if (context == null) {
+            context = factory.newContext(null, servletContext);
+            context.setVariables(
+                new KeywordVariables(
+                    Constants.APPLICATION_SCOPE,
+                    servletContext));
+            servletContext.setAttribute(Constants.JXPATH_CONTEXT, context);
+        }
+        return context;
+    }
+
+    /**
      * Returns a JXPathContext bound to the "page" scope. Caches that context
      * within the PageContext itself.
      * @param pageContext as described
@@ -171,28 +193,6 @@ public final class JXPathServletContexts {
             context.setVariables(
                 new KeywordVariables(Constants.SESSION_SCOPE, handle));
             session.setAttribute(Constants.JXPATH_CONTEXT, context);
-        }
-        return context;
-    }
-
-    /**
-     * Returns  a JXPathContext bound to the "application" scope. Caches that
-     * context within the servlet context itself.
-     * @param servletContext operative
-     * @return JXPathContext
-     */
-    public static JXPathContext getApplicationContext(
-            final ServletContext servletContext) {
-        JXPathContext context =
-            (JXPathContext) servletContext.getAttribute(
-                Constants.JXPATH_CONTEXT);
-        if (context == null) {
-            context = factory.newContext(null, servletContext);
-            context.setVariables(
-                new KeywordVariables(
-                    Constants.APPLICATION_SCOPE,
-                    servletContext));
-            servletContext.setAttribute(Constants.JXPATH_CONTEXT, context);
         }
         return context;
     }

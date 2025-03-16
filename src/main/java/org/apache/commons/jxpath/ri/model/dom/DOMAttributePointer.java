@@ -44,6 +44,49 @@ public class DOMAttributePointer extends NodePointer {
     }
 
     @Override
+    public String asPath() {
+        final StringBuilder buffer = new StringBuilder();
+        if (parent != null) {
+            buffer.append(parent.asPath());
+            if (buffer.length() == 0
+                || buffer.charAt(buffer.length() - 1) != '/') {
+                buffer.append('/');
+            }
+        }
+        buffer.append('@');
+        buffer.append(getName());
+        return buffer.toString();
+    }
+
+    @Override
+    public int compareChildNodePointers(final NodePointer pointer1,
+            final NodePointer pointer2) {
+        // Won't happen - attributes don't have children
+        return 0;
+    }
+
+    @Override
+    public boolean equals(final Object object) {
+        return object == this || object instanceof DOMAttributePointer
+                && attr == ((DOMAttributePointer) object).attr;
+    }
+
+    @Override
+    public Object getBaseValue() {
+        return attr;
+    }
+
+    @Override
+    public Object getImmediateNode() {
+        return attr;
+    }
+
+    @Override
+    public int getLength() {
+        return 1;
+    }
+
+    @Override
     public QName getName() {
         return new QName(
             DOMNodePointer.getPrefix(attr),
@@ -66,23 +109,8 @@ public class DOMAttributePointer extends NodePointer {
     }
 
     @Override
-    public Object getBaseValue() {
-        return attr;
-    }
-
-    @Override
-    public boolean isCollection() {
-        return false;
-    }
-
-    @Override
-    public int getLength() {
-        return 1;
-    }
-
-    @Override
-    public Object getImmediateNode() {
-        return attr;
+    public int hashCode() {
+        return System.identityHashCode(attr);
     }
 
     @Override
@@ -91,15 +119,18 @@ public class DOMAttributePointer extends NodePointer {
     }
 
     @Override
+    public boolean isCollection() {
+        return false;
+    }
+
+    @Override
     public boolean isLeaf() {
         return true;
     }
 
     @Override
-    public boolean testNode(final NodeTest nodeTest) {
-        return nodeTest == null
-            || nodeTest instanceof NodeTypeTest
-                && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE;
+    public void remove() {
+        attr.getOwnerElement().removeAttributeNode(attr);
     }
 
     /**
@@ -112,40 +143,9 @@ public class DOMAttributePointer extends NodePointer {
     }
 
     @Override
-    public void remove() {
-        attr.getOwnerElement().removeAttributeNode(attr);
-    }
-
-    @Override
-    public String asPath() {
-        final StringBuilder buffer = new StringBuilder();
-        if (parent != null) {
-            buffer.append(parent.asPath());
-            if (buffer.length() == 0
-                || buffer.charAt(buffer.length() - 1) != '/') {
-                buffer.append('/');
-            }
-        }
-        buffer.append('@');
-        buffer.append(getName());
-        return buffer.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return System.identityHashCode(attr);
-    }
-
-    @Override
-    public boolean equals(final Object object) {
-        return object == this || object instanceof DOMAttributePointer
-                && attr == ((DOMAttributePointer) object).attr;
-    }
-
-    @Override
-    public int compareChildNodePointers(final NodePointer pointer1,
-            final NodePointer pointer2) {
-        // Won't happen - attributes don't have children
-        return 0;
+    public boolean testNode(final NodeTest nodeTest) {
+        return nodeTest == null
+            || nodeTest instanceof NodeTypeTest
+                && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE;
     }
 }

@@ -50,21 +50,9 @@ public class ExpressionPath extends Path {
         this.predicates = predicates;
     }
 
-    /**
-     * Gets the expression.
-     * @return Expression
-     */
-    public Expression getExpression() {
-        return expression;
-    }
-
-    /**
-     * Predicates are the expressions in brackets that may follow
-     * the root expression of the path.
-     * @return Expression[]
-     */
-    public Expression[] getPredicates() {
-        return predicates;
+    @Override
+    public Object compute(final EvalContext context) {
+        return expressionPath(context, false);
     }
 
     /**
@@ -85,55 +73,6 @@ public class ExpressionPath extends Path {
             }
         }
         return super.computeContextDependent();
-    }
-
-    /**
-     * Recognized paths formatted as {@code $x[3]/foo[2]}.  The
-     * evaluation of such "simple" paths is optimized and streamlined.
-     * @return boolean
-     */
-    public synchronized boolean isSimpleExpressionPath() {
-        if (!basicKnown) {
-            basicKnown = true;
-            basic = isSimplePath() && areBasicPredicates(getPredicates());
-        }
-        return basic;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder buffer = new StringBuilder();
-        if (expression instanceof CoreOperation
-            || expression instanceof ExpressionPath
-            || expression instanceof LocationPath) {
-            buffer.append('(');
-            buffer.append(expression);
-            buffer.append(')');
-        }
-        else {
-            buffer.append(expression);
-        }
-        if (predicates != null) {
-            for (final Expression predicate : predicates) {
-                buffer.append('[');
-                buffer.append(predicate);
-                buffer.append(']');
-            }
-        }
-
-        final Step[] steps = getSteps();
-        if (steps != null) {
-            for (final Step step : steps) {
-                buffer.append("/");
-                buffer.append(step);
-            }
-        }
-        return buffer.toString();
-    }
-
-    @Override
-    public Object compute(final EvalContext context) {
-        return expressionPath(context, false);
     }
 
     @Override
@@ -193,5 +132,66 @@ public class ExpressionPath extends Path {
         }
         return firstMatch ? (Object) getSingleNodePointerForSteps(context)
                 : evalSteps(context);
+    }
+
+    /**
+     * Gets the expression.
+     * @return Expression
+     */
+    public Expression getExpression() {
+        return expression;
+    }
+
+    /**
+     * Predicates are the expressions in brackets that may follow
+     * the root expression of the path.
+     * @return Expression[]
+     */
+    public Expression[] getPredicates() {
+        return predicates;
+    }
+
+    /**
+     * Recognized paths formatted as {@code $x[3]/foo[2]}.  The
+     * evaluation of such "simple" paths is optimized and streamlined.
+     * @return boolean
+     */
+    public synchronized boolean isSimpleExpressionPath() {
+        if (!basicKnown) {
+            basicKnown = true;
+            basic = isSimplePath() && areBasicPredicates(getPredicates());
+        }
+        return basic;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder buffer = new StringBuilder();
+        if (expression instanceof CoreOperation
+            || expression instanceof ExpressionPath
+            || expression instanceof LocationPath) {
+            buffer.append('(');
+            buffer.append(expression);
+            buffer.append(')');
+        }
+        else {
+            buffer.append(expression);
+        }
+        if (predicates != null) {
+            for (final Expression predicate : predicates) {
+                buffer.append('[');
+                buffer.append(predicate);
+                buffer.append(']');
+            }
+        }
+
+        final Step[] steps = getSteps();
+        if (steps != null) {
+            for (final Step step : steps) {
+                buffer.append("/");
+                buffer.append(step);
+            }
+        }
+        return buffer.toString();
     }
 }

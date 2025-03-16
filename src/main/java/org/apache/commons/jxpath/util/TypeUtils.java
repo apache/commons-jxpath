@@ -39,22 +39,6 @@ public class TypeUtils {
     };
 
     /**
-     * Install an alternative type converter.
-     * @param converter new TypeConverter
-     */
-    public static synchronized void setTypeConverter(final TypeConverter converter) {
-        typeConverter = converter;
-    }
-
-    /**
-     * Returns the current type converter.
-     * @return TypeConverter
-     */
-    public static TypeConverter getTypeConverter() {
-        return typeConverter;
-    }
-
-    /**
      * Returns true if the global converter can convert the supplied
      * object to the specified type.
      * @param object object to test
@@ -74,6 +58,22 @@ public class TypeUtils {
      */
     public static Object convert(final Object object, final Class toType) {
         return typeConverter.convert(object, toType);
+    }
+
+    /**
+     * Returns the current type converter.
+     * @return TypeConverter
+     */
+    public static TypeConverter getTypeConverter() {
+        return typeConverter;
+    }
+
+    /**
+     * Install an alternative type converter.
+     * @param converter new TypeConverter
+     */
+    public static synchronized void setTypeConverter(final TypeConverter converter) {
+        typeConverter = converter;
     }
 
     /**

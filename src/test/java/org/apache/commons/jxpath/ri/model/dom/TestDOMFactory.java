@@ -27,31 +27,6 @@ import org.w3c.dom.Node;
  */
 public class TestDOMFactory extends AbstractFactory {
 
-    /**
-     * Return <strong>false</strong> if this factory cannot create the requested object.
-     */
-    @Override
-    public boolean createObject(
-        final JXPathContext context,
-        final Pointer pointer,
-        final Object parent,
-        final String name,
-        final int index)
-    {
-        if (name.equals("location")
-            || name.equals("address")
-            || name.equals("street")) {
-            addDOMElement((Node) parent, index, name, null);
-            return true;
-        }
-        if (name.startsWith("price:")) {
-            final String namespaceURI = context.getNamespaceURI("price");
-            addDOMElement((Node) parent, index, name, namespaceURI);
-            return true;
-        }
-        return false;
-    }
-
     private void addDOMElement(final Node parent, final int index, final String tag, final String namespaceURI) {
         Node child = parent.getFirstChild();
         int count = 0;
@@ -76,6 +51,31 @@ public class TestDOMFactory extends AbstractFactory {
             parent.appendChild(newElement);
             count++;
         }
+    }
+
+    /**
+     * Return <strong>false</strong> if this factory cannot create the requested object.
+     */
+    @Override
+    public boolean createObject(
+        final JXPathContext context,
+        final Pointer pointer,
+        final Object parent,
+        final String name,
+        final int index)
+    {
+        if (name.equals("location")
+            || name.equals("address")
+            || name.equals("street")) {
+            addDOMElement((Node) parent, index, name, null);
+            return true;
+        }
+        if (name.startsWith("price:")) {
+            final String namespaceURI = context.getNamespaceURI("price");
+            addDOMElement((Node) parent, index, name, namespaceURI);
+            return true;
+        }
+        return false;
     }
 
     @Override

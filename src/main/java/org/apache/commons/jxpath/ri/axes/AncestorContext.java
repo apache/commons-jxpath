@@ -56,26 +56,6 @@ public class AncestorContext extends EvalContext {
     }
 
     @Override
-    public void reset() {
-        super.reset();
-        setStarted = false;
-    }
-
-    @Override
-    public boolean setPosition(final int position) {
-        if (position < getCurrentPosition()) {
-            reset();
-        }
-
-        while (getCurrentPosition() < position) {
-            if (!nextNode()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;
@@ -98,5 +78,25 @@ public class AncestorContext extends EvalContext {
                 return true;
             }
         }
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        setStarted = false;
+    }
+
+    @Override
+    public boolean setPosition(final int position) {
+        if (position < getCurrentPosition()) {
+            reset();
+        }
+
+        while (getCurrentPosition() < position) {
+            if (!nextNode()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

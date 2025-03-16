@@ -69,39 +69,6 @@ public class DOMAttributeIterator implements NodeIterator {
     }
 
     /**
-     * Test an attribute.
-     * @param attr to test
-     * @return whether test succeeded
-     */
-    private boolean testAttr(final Attr attr) {
-        final String nodePrefix = DOMNodePointer.getPrefix(attr);
-        final String nodeLocalName = DOMNodePointer.getLocalName(attr);
-
-        if (nodePrefix != null && nodePrefix.equals("xmlns")) {
-            return false;
-        }
-
-        if (nodePrefix == null && nodeLocalName.equals("xmlns")) {
-            return false;
-        }
-
-        final String testLocalName = name.getName();
-        if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)) {
-            final String testPrefix = name.getPrefix();
-
-            if (testPrefix == null || Objects.equals(testPrefix, nodePrefix)) {
-                return true;
-            }
-            if (nodePrefix == null) {
-                return false;
-            }
-            return Objects.equals(parent.getNamespaceURI(testPrefix), parent
-                        .getNamespaceURI(nodePrefix));
-        }
-        return false;
-    }
-
-    /**
      * Gets the named attribute.
      * @param element to search
      * @param name to match
@@ -160,5 +127,38 @@ public class DOMAttributeIterator implements NodeIterator {
     public boolean setPosition(final int position) {
         this.position = position;
         return position >= 1 && position <= attributes.size();
+    }
+
+    /**
+     * Test an attribute.
+     * @param attr to test
+     * @return whether test succeeded
+     */
+    private boolean testAttr(final Attr attr) {
+        final String nodePrefix = DOMNodePointer.getPrefix(attr);
+        final String nodeLocalName = DOMNodePointer.getLocalName(attr);
+
+        if (nodePrefix != null && nodePrefix.equals("xmlns")) {
+            return false;
+        }
+
+        if (nodePrefix == null && nodeLocalName.equals("xmlns")) {
+            return false;
+        }
+
+        final String testLocalName = name.getName();
+        if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)) {
+            final String testPrefix = name.getPrefix();
+
+            if (testPrefix == null || Objects.equals(testPrefix, nodePrefix)) {
+                return true;
+            }
+            if (nodePrefix == null) {
+                return false;
+            }
+            return Objects.equals(parent.getNamespaceURI(testPrefix), parent
+                        .getNamespaceURI(nodePrefix));
+        }
+        return false;
     }
 }

@@ -62,47 +62,378 @@ public class SimplePathInterpreter {
 //    private static String PATH;       // Debugging
 
     /**
-     * Interpret a simple path that starts with the given root and
-     * follows the given steps. All steps must have the axis "child::"
-     * and a name test.  They can also optionally have predicates
-     * of type [@name=expression] or simply [expression] interpreted
-     * as an index.
-     * @param context evaluation context
-     * @param root root pointer
-     * @param steps path steps
-     * @return NodePointer
+     * For a pointer that matches an actual node, returns 0.
+     * For a pointer that does not match an actual node, but whose
+     * parent pointer does returns -1, etc.
+     * @param pointer input pointer
+     * @return int match quality code
      */
-    public static NodePointer interpretSimpleLocationPath(
-            final EvalContext context, final NodePointer root, final Step[] steps) {
-//        PATH = createNullPointer(context, root, steps, 0).toString();  // Dbg
-        final NodePointer pointer = doStep(context, root, steps, 0);
-//        return valuePointer(pointer);
-        return pointer;
+    private static int computeQuality(NodePointer pointer) {
+        int quality = PERFECT_MATCH;
+        while (pointer != null && !pointer.isActual()) {
+            quality--;
+            pointer = pointer.getImmediateParentPointer();
+        }
+        return quality;
     }
 
     /**
-     * Interpret the steps of a simple expression path that
-     * starts with the given root, which is the result of evaluation
-     * of the root expression of the expression path, applies the
-     * given predicates to it and then follows the given steps.
-     * All steps must have the axis "child::" or "attribute::"
-     * and a name test.  They can also optionally have predicates
-     * of type [@name=...] or simply [...] interpreted as an index.
-     * @param context evaluation context
-     * @param root root pointer
-     * @param predicates predicates corresponding to {@code steps}
-     * @param steps path steps
+     * Create the child pointer for a given step.
+     * @param parentPointer parent pointer
+     * @param step associated step
      * @return NodePointer
      */
-    public static NodePointer interpretSimpleExpressionPath(
-                final EvalContext context, final NodePointer root,
-                final Expression[] predicates, final Step[] steps) {
-//        PATH = createNullPointerForPredicates(context, root,
-//                    steps, -1, predicates, 0).toString();  // Debugging
-        final NodePointer pointer =
-            doPredicate(context, root, steps, -1, predicates, 0);
-//        return valuePointer(pointer);
-        return pointer;
+    private static NodePointer createChildPointerForStep(
+                final PropertyOwnerPointer parentPointer, final Step step) {
+        final int axis = step.getAxis();
+        if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE) {
+            final QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
+            if (axis == Compiler.AXIS_ATTRIBUTE && isLangAttribute(name)) {
+                return new LangAttributePointer(parentPointer);
+            }
+            if (parentPointer.isValidProperty(name)) {
+                final NodePointer childPointer = parentPointer.getPropertyPointer();
+                ((PropertyPointer) childPointer).setPropertyName(
+                        name.toString());
+                childPointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
+                return childPointer;
+            }
+            //invalid property gets nothing, not even a NullPointer
+            return null;
+        }
+        return parentPointer;
+    }
+
+    /**
+     * Creates a "null pointer" that
+     * a) represents the requested path and
+     * b) can be used for creation of missing nodes in the path.
+     * @param context evaluation context
+     * @param parent parent pointer
+     * @param steps path steps
+     * @param currentStep step number
+     * @return NodePointer
+     */
+    public static NodePointer createNullPointer(
+            final EvalContext context, NodePointer parent, final Step[] steps,
+            final int currentStep) {
+        if (currentStep == steps.length) {
+            return parent;
+        }
+
+        parent = valuePointer(parent);
+
+        final Step step = steps[currentStep];
+
+        final int axis = step.getAxis();
+        if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE) {
+            final NullPropertyPointer pointer = new NullPropertyPointer(parent);
+            final QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
+            pointer.setPropertyName(name.toString());
+            pointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
+            parent = pointer;
+        }
+        // else { it is self::node() }
+
+        final Expression[] predicates = step.getPredicates();
+        return createNullPointerForPredicates(
+            context,
+            parent,
+            steps,
+            currentStep,
+            predicates,
+            0);
+    }
+
+    /**
+     * Creates a "null pointer" that starts with predicates.
+     * @param context evaluation context
+     * @param parent parent pointer
+     * @param steps path steps
+     * @param currentStep step number
+     * @param predicates predicates
+     * @param currentPredicate int predicate number
+     * @return NodePointer
+     */
+    private static NodePointer createNullPointerForPredicates(
+            final EvalContext context, NodePointer parent,
+            final Step[] steps, final int currentStep,
+            final Expression[] predicates, final int currentPredicate) {
+        for (int i = currentPredicate; i < predicates.length; i++) {
+            final Expression predicate = predicates[i];
+            if (predicate instanceof NameAttributeTest) {
+                final String key = keyFromPredicate(context, predicate);
+                parent = valuePointer(parent);
+                final NullPropertyPointer pointer = new NullPropertyPointer(parent);
+                pointer.setNameAttributeValue(key);
+                parent = pointer;
+            }
+            else {
+                final int index = indexFromPredicate(context, predicate);
+                if (parent instanceof NullPropertyPointer) {
+                    parent.setIndex(index);
+                }
+                else {
+                    parent = new NullElementPointer(parent, index);
+                }
+            }
+        }
+        // Proceed with the remaining steps
+        return createNullPointer(
+                    context, parent, steps, currentStep + 1);
+    }
+
+    /**
+     * Evaluates predicates and proceeds with the subsequent steps
+     * of the path.
+     * @param context evaluation context
+     * @param parent parent pointer
+     * @param steps path steps
+     * @param currentStep step number
+     * @param predicates predicate expressions
+     * @param currentPredicate int predicate number
+     * @return NodePointer
+     */
+    private static NodePointer doPredicate(
+                final EvalContext context, final NodePointer parent,
+                final Step[] steps, final int currentStep,
+                final Expression[] predicates, final int currentPredicate) {
+        if (currentPredicate == predicates.length) {
+            return doStep(context, parent, steps, currentStep + 1);
+        }
+
+        final Expression predicate = predicates[currentPredicate];
+        if (predicate instanceof NameAttributeTest) { // [@name = key1]
+            return doPredicateName(
+                context,
+                parent,
+                steps,
+                currentStep,
+                predicates,
+                currentPredicate);
+        }
+        // else [index]
+        return doPredicateIndex(
+            context,
+            parent,
+            steps,
+            currentStep,
+            predicates,
+            currentPredicate);
+    }
+
+    /**
+     * Evaluate a subscript predicate: see if the node is a collection and
+     * if the index is inside the collection.
+     * @param context evaluation context
+     * @param parent parent pointer
+     * @param steps path steps
+     * @param currentStep step number
+     * @param predicates predicates
+     * @param currentPredicate int predicate number
+     * @return NodePointer
+     */
+    private static NodePointer doPredicateIndex(
+            final EvalContext context, final NodePointer parent,
+            final Step[] steps, final int currentStep,
+            final Expression[] predicates, final int currentPredicate) {
+        final Expression predicate = predicates[currentPredicate];
+        final int index = indexFromPredicate(context, predicate);
+        NodePointer pointer = parent;
+        if (isCollectionElement(pointer, index)) {
+            pointer = (NodePointer) pointer.clone();
+            pointer.setIndex(index);
+            return doPredicate(
+                context,
+                pointer,
+                steps,
+                currentStep,
+                predicates,
+                currentPredicate + 1);
+        }
+        return createNullPointerForPredicates(
+            context,
+            parent,
+            steps,
+            currentStep,
+            predicates,
+            currentPredicate);
+    }
+
+    /**
+     * Execute a NameAttributeTest predicate
+     * @param context evaluation context
+     * @param parent parent pointer
+     * @param steps path steps
+     * @param currentStep int step number
+     * @param predicates predicates
+     * @param currentPredicate int predicate number
+     * @return NodePointer
+     */
+    private static NodePointer doPredicateName(
+            final EvalContext context, final NodePointer parent,
+            final Step[] steps, final int currentStep,
+            final Expression[] predicates, final int currentPredicate) {
+        final Expression predicate = predicates[currentPredicate];
+        final String key = keyFromPredicate(context, predicate);
+        NodePointer child = valuePointer(parent);
+        if (child instanceof PropertyOwnerPointer) {
+            final PropertyPointer pointer =
+                ((PropertyOwnerPointer) child).getPropertyPointer();
+            pointer.setPropertyName(key);
+            if (pointer.isActual()) {
+                return doPredicate(
+                    context,
+                    pointer,
+                    steps,
+                    currentStep,
+                    predicates,
+                    currentPredicate + 1);
+            }
+        }
+        else if (child.isCollection()) {
+            // For each node in the collection, perform the following:
+            // if the node is a property owner, apply this predicate to it;
+            // if the node is a collection, apply this predicate to each elem.;
+            // if the node is not a prop owner or a collection,
+            //  see if it has the attribute "name" with the right value,
+            //  if so - proceed to the next predicate
+            NodePointer bestMatch = null;
+            int bestQuality = 0;
+            child = (NodePointer) child.clone();
+            final int count = child.getLength();
+            for (int i = 0; i < count; i++) {
+                child.setIndex(i);
+                final NodePointer valuePointer = valuePointer(child);
+                NodePointer pointer;
+                if (valuePointer instanceof PropertyOwnerPointer
+                    || valuePointer.isCollection()) {
+                    pointer =
+                        doPredicateName(
+                            context,
+                            valuePointer,
+                            steps,
+                            currentStep,
+                            predicates,
+                            currentPredicate);
+                }
+                else if (isNameAttributeEqual(valuePointer, key)) {
+                    pointer =
+                        doPredicate(
+                            context,
+                            valuePointer,
+                            steps,
+                            currentStep,
+                            predicates,
+                            currentPredicate + 1);
+                }
+                else {
+                    pointer = null;
+                }
+                if (pointer != null) {
+                    final int quality = computeQuality(pointer);
+                    if (quality == PERFECT_MATCH) {
+                        return pointer;
+                    }
+                    if (quality > bestQuality) {
+                        bestMatch = (NodePointer) pointer.clone();
+                        bestQuality = quality;
+                    }
+                }
+            }
+            if (bestMatch != null) {
+                return bestMatch;
+            }
+        }
+        else {
+            // If the node is a standard InfoSet node (e.g. DOM Node),
+            // employ doPredicates_standard, which will iterate through
+            // the node's children and apply all predicates
+            final NodePointer found =
+                doPredicatesStandard(
+                    context,
+                    Collections.singletonList(child),
+                    steps,
+                    currentStep,
+                    predicates,
+                    currentPredicate);
+            if (found != null) {
+                return found;
+            }
+        }
+        // If nothing worked - return a null pointer
+        return createNullPointerForPredicates(
+            context,
+            child,
+            steps,
+            currentStep,
+            predicates,
+            currentPredicate);
+    }
+
+    /**
+     * Called exclusively for standard InfoSet nodes, e.g. DOM nodes
+     * to evaluate predicate sequences like [@name=...][@name=...][index].
+     * @param context evaluation context
+     * @param parents List of parent pointers
+     * @param steps path steps
+     * @param currentStep step number
+     * @param predicates predicates
+     * @param currentPredicate int predicate number
+     * @return NodePointer
+     */
+    private static NodePointer doPredicatesStandard(
+                final EvalContext context, final List parents,
+                final Step[] steps, final int currentStep,
+                final Expression[] predicates, final int currentPredicate) {
+        if (parents.isEmpty()) {
+            return null;
+        }
+
+        // If all predicates have been processed, take the first
+        // element from the list of results and proceed to the
+        // remaining steps with that element.
+        if (currentPredicate == predicates.length) {
+            final NodePointer pointer = (NodePointer) parents.get(0);
+            return doStep(context, pointer, steps, currentStep + 1);
+        }
+
+        final Expression predicate = predicates[currentPredicate];
+        if (predicate instanceof NameAttributeTest) {
+            final String key = keyFromPredicate(context, predicate);
+            final List newList = new ArrayList();
+            for (int i = 0; i < parents.size(); i++) {
+                final NodePointer pointer = (NodePointer) parents.get(i);
+                if (isNameAttributeEqual(pointer, key)) {
+                    newList.add(pointer);
+                }
+            }
+            if (newList.isEmpty()) {
+                return null;
+            }
+            return doPredicatesStandard(
+                context,
+                newList,
+                steps,
+                currentStep,
+                predicates,
+                currentPredicate + 1);
+        }
+        // For a subscript, simply take the corresponding
+        // element from the list of results and
+        // proceed to the remaining predicates with that element
+        final int index = indexFromPredicate(context, predicate);
+        if (index < 0 || index >= parents.size()) {
+            return null;
+        }
+        final NodePointer ptr = (NodePointer) parents.get(index);
+        return doPredicate(
+            context,
+            ptr,
+            steps,
+            currentStep,
+            predicates,
+            currentPredicate + 1);
     }
 
     /**
@@ -327,33 +658,6 @@ public class SimplePathInterpreter {
     }
 
     /**
-     * Create the child pointer for a given step.
-     * @param parentPointer parent pointer
-     * @param step associated step
-     * @return NodePointer
-     */
-    private static NodePointer createChildPointerForStep(
-                final PropertyOwnerPointer parentPointer, final Step step) {
-        final int axis = step.getAxis();
-        if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE) {
-            final QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
-            if (axis == Compiler.AXIS_ATTRIBUTE && isLangAttribute(name)) {
-                return new LangAttributePointer(parentPointer);
-            }
-            if (parentPointer.isValidProperty(name)) {
-                final NodePointer childPointer = parentPointer.getPropertyPointer();
-                ((PropertyPointer) childPointer).setPropertyName(
-                        name.toString());
-                childPointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
-                return childPointer;
-            }
-            //invalid property gets nothing, not even a NullPointer
-            return null;
-        }
-        return parentPointer;
-    }
-
-    /**
      * A path that starts with a standard InfoSet node, e.g. a DOM Node.
      * The method evaluates the first predicate in a special way and
      * then forwards to a general predicate processing method.
@@ -436,439 +740,6 @@ public class SimplePathInterpreter {
     }
 
     /**
-     * Evaluates predicates and proceeds with the subsequent steps
-     * of the path.
-     * @param context evaluation context
-     * @param parent parent pointer
-     * @param steps path steps
-     * @param currentStep step number
-     * @param predicates predicate expressions
-     * @param currentPredicate int predicate number
-     * @return NodePointer
-     */
-    private static NodePointer doPredicate(
-                final EvalContext context, final NodePointer parent,
-                final Step[] steps, final int currentStep,
-                final Expression[] predicates, final int currentPredicate) {
-        if (currentPredicate == predicates.length) {
-            return doStep(context, parent, steps, currentStep + 1);
-        }
-
-        final Expression predicate = predicates[currentPredicate];
-        if (predicate instanceof NameAttributeTest) { // [@name = key1]
-            return doPredicateName(
-                context,
-                parent,
-                steps,
-                currentStep,
-                predicates,
-                currentPredicate);
-        }
-        // else [index]
-        return doPredicateIndex(
-            context,
-            parent,
-            steps,
-            currentStep,
-            predicates,
-            currentPredicate);
-    }
-
-    /**
-     * Execute a NameAttributeTest predicate
-     * @param context evaluation context
-     * @param parent parent pointer
-     * @param steps path steps
-     * @param currentStep int step number
-     * @param predicates predicates
-     * @param currentPredicate int predicate number
-     * @return NodePointer
-     */
-    private static NodePointer doPredicateName(
-            final EvalContext context, final NodePointer parent,
-            final Step[] steps, final int currentStep,
-            final Expression[] predicates, final int currentPredicate) {
-        final Expression predicate = predicates[currentPredicate];
-        final String key = keyFromPredicate(context, predicate);
-        NodePointer child = valuePointer(parent);
-        if (child instanceof PropertyOwnerPointer) {
-            final PropertyPointer pointer =
-                ((PropertyOwnerPointer) child).getPropertyPointer();
-            pointer.setPropertyName(key);
-            if (pointer.isActual()) {
-                return doPredicate(
-                    context,
-                    pointer,
-                    steps,
-                    currentStep,
-                    predicates,
-                    currentPredicate + 1);
-            }
-        }
-        else if (child.isCollection()) {
-            // For each node in the collection, perform the following:
-            // if the node is a property owner, apply this predicate to it;
-            // if the node is a collection, apply this predicate to each elem.;
-            // if the node is not a prop owner or a collection,
-            //  see if it has the attribute "name" with the right value,
-            //  if so - proceed to the next predicate
-            NodePointer bestMatch = null;
-            int bestQuality = 0;
-            child = (NodePointer) child.clone();
-            final int count = child.getLength();
-            for (int i = 0; i < count; i++) {
-                child.setIndex(i);
-                final NodePointer valuePointer = valuePointer(child);
-                NodePointer pointer;
-                if (valuePointer instanceof PropertyOwnerPointer
-                    || valuePointer.isCollection()) {
-                    pointer =
-                        doPredicateName(
-                            context,
-                            valuePointer,
-                            steps,
-                            currentStep,
-                            predicates,
-                            currentPredicate);
-                }
-                else if (isNameAttributeEqual(valuePointer, key)) {
-                    pointer =
-                        doPredicate(
-                            context,
-                            valuePointer,
-                            steps,
-                            currentStep,
-                            predicates,
-                            currentPredicate + 1);
-                }
-                else {
-                    pointer = null;
-                }
-                if (pointer != null) {
-                    final int quality = computeQuality(pointer);
-                    if (quality == PERFECT_MATCH) {
-                        return pointer;
-                    }
-                    if (quality > bestQuality) {
-                        bestMatch = (NodePointer) pointer.clone();
-                        bestQuality = quality;
-                    }
-                }
-            }
-            if (bestMatch != null) {
-                return bestMatch;
-            }
-        }
-        else {
-            // If the node is a standard InfoSet node (e.g. DOM Node),
-            // employ doPredicates_standard, which will iterate through
-            // the node's children and apply all predicates
-            final NodePointer found =
-                doPredicatesStandard(
-                    context,
-                    Collections.singletonList(child),
-                    steps,
-                    currentStep,
-                    predicates,
-                    currentPredicate);
-            if (found != null) {
-                return found;
-            }
-        }
-        // If nothing worked - return a null pointer
-        return createNullPointerForPredicates(
-            context,
-            child,
-            steps,
-            currentStep,
-            predicates,
-            currentPredicate);
-    }
-
-    /**
-     * Called exclusively for standard InfoSet nodes, e.g. DOM nodes
-     * to evaluate predicate sequences like [@name=...][@name=...][index].
-     * @param context evaluation context
-     * @param parents List of parent pointers
-     * @param steps path steps
-     * @param currentStep step number
-     * @param predicates predicates
-     * @param currentPredicate int predicate number
-     * @return NodePointer
-     */
-    private static NodePointer doPredicatesStandard(
-                final EvalContext context, final List parents,
-                final Step[] steps, final int currentStep,
-                final Expression[] predicates, final int currentPredicate) {
-        if (parents.isEmpty()) {
-            return null;
-        }
-
-        // If all predicates have been processed, take the first
-        // element from the list of results and proceed to the
-        // remaining steps with that element.
-        if (currentPredicate == predicates.length) {
-            final NodePointer pointer = (NodePointer) parents.get(0);
-            return doStep(context, pointer, steps, currentStep + 1);
-        }
-
-        final Expression predicate = predicates[currentPredicate];
-        if (predicate instanceof NameAttributeTest) {
-            final String key = keyFromPredicate(context, predicate);
-            final List newList = new ArrayList();
-            for (int i = 0; i < parents.size(); i++) {
-                final NodePointer pointer = (NodePointer) parents.get(i);
-                if (isNameAttributeEqual(pointer, key)) {
-                    newList.add(pointer);
-                }
-            }
-            if (newList.isEmpty()) {
-                return null;
-            }
-            return doPredicatesStandard(
-                context,
-                newList,
-                steps,
-                currentStep,
-                predicates,
-                currentPredicate + 1);
-        }
-        // For a subscript, simply take the corresponding
-        // element from the list of results and
-        // proceed to the remaining predicates with that element
-        final int index = indexFromPredicate(context, predicate);
-        if (index < 0 || index >= parents.size()) {
-            return null;
-        }
-        final NodePointer ptr = (NodePointer) parents.get(index);
-        return doPredicate(
-            context,
-            ptr,
-            steps,
-            currentStep,
-            predicates,
-            currentPredicate + 1);
-    }
-
-    /**
-     * Evaluate a subscript predicate: see if the node is a collection and
-     * if the index is inside the collection.
-     * @param context evaluation context
-     * @param parent parent pointer
-     * @param steps path steps
-     * @param currentStep step number
-     * @param predicates predicates
-     * @param currentPredicate int predicate number
-     * @return NodePointer
-     */
-    private static NodePointer doPredicateIndex(
-            final EvalContext context, final NodePointer parent,
-            final Step[] steps, final int currentStep,
-            final Expression[] predicates, final int currentPredicate) {
-        final Expression predicate = predicates[currentPredicate];
-        final int index = indexFromPredicate(context, predicate);
-        NodePointer pointer = parent;
-        if (isCollectionElement(pointer, index)) {
-            pointer = (NodePointer) pointer.clone();
-            pointer.setIndex(index);
-            return doPredicate(
-                context,
-                pointer,
-                steps,
-                currentStep,
-                predicates,
-                currentPredicate + 1);
-        }
-        return createNullPointerForPredicates(
-            context,
-            parent,
-            steps,
-            currentStep,
-            predicates,
-            currentPredicate);
-    }
-
-    /**
-     * Extract an integer from a subscript predicate. The returned index
-     * starts with 0, even though the subscript starts with 1.
-     * @param context evaluation context
-     * @param predicate to evaluate
-     * @return calculated index
-     */
-    private static int indexFromPredicate(
-        final EvalContext context,
-        final Expression predicate) {
-        Object value = predicate.computeValue(context);
-        if (value instanceof EvalContext) {
-            value = ((EvalContext) value).getSingleNodePointer();
-        }
-        if (value instanceof NodePointer) {
-            value = ((NodePointer) value).getValue();
-        }
-        if (value == null) {
-            throw new JXPathException("Predicate value is null: " + predicate);
-        }
-
-        if (value instanceof Number) {
-            final double round = 0.5;
-            return (int) (InfoSetUtil.doubleValue(value) + round) - 1;
-        }
-        return InfoSetUtil.booleanValue(value) ? 0 : -1;
-    }
-
-    /**
-     * Extracts the string value of the expression from a predicate like
-     * [@name=expression].
-     * @param context evaluation context
-     * @param predicate predicate to evaluate
-     * @return String key extracted
-     */
-    private static String keyFromPredicate(final EvalContext context,
-                final Expression predicate) {
-        final Expression expr =
-            ((NameAttributeTest) predicate).getNameTestExpression();
-        return InfoSetUtil.stringValue(expr.computeValue(context));
-    }
-
-    /**
-     * For a pointer that matches an actual node, returns 0.
-     * For a pointer that does not match an actual node, but whose
-     * parent pointer does returns -1, etc.
-     * @param pointer input pointer
-     * @return int match quality code
-     */
-    private static int computeQuality(NodePointer pointer) {
-        int quality = PERFECT_MATCH;
-        while (pointer != null && !pointer.isActual()) {
-            quality--;
-            pointer = pointer.getImmediateParentPointer();
-        }
-        return quality;
-    }
-
-    /**
-     * Returns true if the pointer has an attribute called "name" and
-     * its value is equal to the supplied string.
-     * @param pointer input pointer
-     * @param name name to check
-     * @return boolean
-     */
-    private static boolean isNameAttributeEqual(
-        final NodePointer pointer,
-        final String name) {
-        final NodeIterator it = pointer.attributeIterator(QNAME_NAME);
-        return it != null
-            && it.setPosition(1)
-            && name.equals(it.getNodePointer().getValue());
-    }
-
-    /**
-     * Returns true if the pointer is a collection and the index is
-     * withing the bounds of the collection.
-     * @param pointer input pointer
-     * @param index to check
-     * @return boolean
-     */
-    private static boolean isCollectionElement(
-        final NodePointer pointer,
-        final int index) {
-        return pointer.isActual()
-            && (index == 0
-                || pointer.isCollection()
-                    && index >= 0
-                    && index < pointer.getLength());
-    }
-
-    /**
-     * For an intermediate pointer (e.g. PropertyPointer, ContainerPointer)
-     * returns a pointer for the contained value.
-     * @param pointer input pointer
-     * @return NodePointer
-     */
-    private static NodePointer valuePointer(final NodePointer pointer) {
-        return pointer == null ? null : pointer.getValuePointer();
-    }
-
-    /**
-     * Creates a "null pointer" that
-     * a) represents the requested path and
-     * b) can be used for creation of missing nodes in the path.
-     * @param context evaluation context
-     * @param parent parent pointer
-     * @param steps path steps
-     * @param currentStep step number
-     * @return NodePointer
-     */
-    public static NodePointer createNullPointer(
-            final EvalContext context, NodePointer parent, final Step[] steps,
-            final int currentStep) {
-        if (currentStep == steps.length) {
-            return parent;
-        }
-
-        parent = valuePointer(parent);
-
-        final Step step = steps[currentStep];
-
-        final int axis = step.getAxis();
-        if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE) {
-            final NullPropertyPointer pointer = new NullPropertyPointer(parent);
-            final QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
-            pointer.setPropertyName(name.toString());
-            pointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
-            parent = pointer;
-        }
-        // else { it is self::node() }
-
-        final Expression[] predicates = step.getPredicates();
-        return createNullPointerForPredicates(
-            context,
-            parent,
-            steps,
-            currentStep,
-            predicates,
-            0);
-    }
-
-    /**
-     * Creates a "null pointer" that starts with predicates.
-     * @param context evaluation context
-     * @param parent parent pointer
-     * @param steps path steps
-     * @param currentStep step number
-     * @param predicates predicates
-     * @param currentPredicate int predicate number
-     * @return NodePointer
-     */
-    private static NodePointer createNullPointerForPredicates(
-            final EvalContext context, NodePointer parent,
-            final Step[] steps, final int currentStep,
-            final Expression[] predicates, final int currentPredicate) {
-        for (int i = currentPredicate; i < predicates.length; i++) {
-            final Expression predicate = predicates[i];
-            if (predicate instanceof NameAttributeTest) {
-                final String key = keyFromPredicate(context, predicate);
-                parent = valuePointer(parent);
-                final NullPropertyPointer pointer = new NullPropertyPointer(parent);
-                pointer.setNameAttributeValue(key);
-                parent = pointer;
-            }
-            else {
-                final int index = indexFromPredicate(context, predicate);
-                if (parent instanceof NullPropertyPointer) {
-                    parent.setIndex(index);
-                }
-                else {
-                    parent = new NullElementPointer(parent, index);
-                }
-            }
-        }
-        // Proceed with the remaining steps
-        return createNullPointer(
-                    context, parent, steps, currentStep + 1);
-    }
-
-    /**
      * Gets a NodeIterator.
      * @param context evaluation context
      * @param pointer owning pointer
@@ -901,6 +772,95 @@ public class SimplePathInterpreter {
     }
 
     /**
+     * Extract an integer from a subscript predicate. The returned index
+     * starts with 0, even though the subscript starts with 1.
+     * @param context evaluation context
+     * @param predicate to evaluate
+     * @return calculated index
+     */
+    private static int indexFromPredicate(
+        final EvalContext context,
+        final Expression predicate) {
+        Object value = predicate.computeValue(context);
+        if (value instanceof EvalContext) {
+            value = ((EvalContext) value).getSingleNodePointer();
+        }
+        if (value instanceof NodePointer) {
+            value = ((NodePointer) value).getValue();
+        }
+        if (value == null) {
+            throw new JXPathException("Predicate value is null: " + predicate);
+        }
+
+        if (value instanceof Number) {
+            final double round = 0.5;
+            return (int) (InfoSetUtil.doubleValue(value) + round) - 1;
+        }
+        return InfoSetUtil.booleanValue(value) ? 0 : -1;
+    }
+
+    /**
+     * Interpret the steps of a simple expression path that
+     * starts with the given root, which is the result of evaluation
+     * of the root expression of the expression path, applies the
+     * given predicates to it and then follows the given steps.
+     * All steps must have the axis "child::" or "attribute::"
+     * and a name test.  They can also optionally have predicates
+     * of type [@name=...] or simply [...] interpreted as an index.
+     * @param context evaluation context
+     * @param root root pointer
+     * @param predicates predicates corresponding to {@code steps}
+     * @param steps path steps
+     * @return NodePointer
+     */
+    public static NodePointer interpretSimpleExpressionPath(
+                final EvalContext context, final NodePointer root,
+                final Expression[] predicates, final Step[] steps) {
+//        PATH = createNullPointerForPredicates(context, root,
+//                    steps, -1, predicates, 0).toString();  // Debugging
+        final NodePointer pointer =
+            doPredicate(context, root, steps, -1, predicates, 0);
+//        return valuePointer(pointer);
+        return pointer;
+    }
+
+    /**
+     * Interpret a simple path that starts with the given root and
+     * follows the given steps. All steps must have the axis "child::"
+     * and a name test.  They can also optionally have predicates
+     * of type [@name=expression] or simply [expression] interpreted
+     * as an index.
+     * @param context evaluation context
+     * @param root root pointer
+     * @param steps path steps
+     * @return NodePointer
+     */
+    public static NodePointer interpretSimpleLocationPath(
+            final EvalContext context, final NodePointer root, final Step[] steps) {
+//        PATH = createNullPointer(context, root, steps, 0).toString();  // Dbg
+        final NodePointer pointer = doStep(context, root, steps, 0);
+//        return valuePointer(pointer);
+        return pointer;
+    }
+
+    /**
+     * Returns true if the pointer is a collection and the index is
+     * withing the bounds of the collection.
+     * @param pointer input pointer
+     * @param index to check
+     * @return boolean
+     */
+    private static boolean isCollectionElement(
+        final NodePointer pointer,
+        final int index) {
+        return pointer.isActual()
+            && (index == 0
+                || pointer.isCollection()
+                    && index >= 0
+                    && index < pointer.getLength());
+    }
+
+    /**
      * Learn whether {@code name} is a lang attribute.
      * @param name to compare
      * @return boolean
@@ -909,5 +869,45 @@ public class SimplePathInterpreter {
         return name.getPrefix() != null
             && name.getPrefix().equals("xml")
             && name.getName().equals("lang");
+    }
+
+    /**
+     * Returns true if the pointer has an attribute called "name" and
+     * its value is equal to the supplied string.
+     * @param pointer input pointer
+     * @param name name to check
+     * @return boolean
+     */
+    private static boolean isNameAttributeEqual(
+        final NodePointer pointer,
+        final String name) {
+        final NodeIterator it = pointer.attributeIterator(QNAME_NAME);
+        return it != null
+            && it.setPosition(1)
+            && name.equals(it.getNodePointer().getValue());
+    }
+
+    /**
+     * Extracts the string value of the expression from a predicate like
+     * [@name=expression].
+     * @param context evaluation context
+     * @param predicate predicate to evaluate
+     * @return String key extracted
+     */
+    private static String keyFromPredicate(final EvalContext context,
+                final Expression predicate) {
+        final Expression expr =
+            ((NameAttributeTest) predicate).getNameTestExpression();
+        return InfoSetUtil.stringValue(expr.computeValue(context));
+    }
+
+    /**
+     * For an intermediate pointer (e.g. PropertyPointer, ContainerPointer)
+     * returns a pointer for the contained value.
+     * @param pointer input pointer
+     * @return NodePointer
+     */
+    private static NodePointer valuePointer(final NodePointer pointer) {
+        return pointer == null ? null : pointer.getValuePointer();
     }
 }

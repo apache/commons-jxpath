@@ -65,16 +65,6 @@ public class ClassFunctions implements Functions {
     }
 
     /**
-     * Returns a set of one namespace - the one specified in the constructor.
-     *
-     * @return a singleton
-     */
-    @Override
-    public Set getUsedNamespaces() {
-        return Collections.singleton(namespace);
-    }
-
-    /**
      * Returns a {@link Function}, if any, for the specified namespace,
      * name and parameter types.
      *
@@ -125,5 +115,15 @@ public class ClassFunctions implements Functions {
         }
 
         return null;
+    }
+
+    /**
+     * Returns a set of one namespace - the one specified in the constructor.
+     *
+     * @return a singleton
+     */
+    @Override
+    public Set getUsedNamespaces() {
+        return Collections.singleton(namespace);
     }
 }

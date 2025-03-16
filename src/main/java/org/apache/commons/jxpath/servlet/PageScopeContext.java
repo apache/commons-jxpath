@@ -38,20 +38,20 @@ public class PageScopeContext {
     }
 
     /**
-     * Returns attributes of the pageContext declared in the "page" scope.
-     * @return Enumeration of attribute names
-     */
-    public Enumeration getAttributeNames() {
-        return pageContext.getAttributeNamesInScope(PageContext.PAGE_SCOPE);
-    }
-
-    /**
      * Gets the value of the specified attribute.
      * @param attribute name
      * @return Object
      */
     public Object getAttribute(final String attribute) {
         return pageContext.getAttribute(attribute, PageContext.PAGE_SCOPE);
+    }
+
+    /**
+     * Returns attributes of the pageContext declared in the "page" scope.
+     * @return Enumeration of attribute names
+     */
+    public Enumeration getAttributeNames() {
+        return pageContext.getAttributeNamesInScope(PageContext.PAGE_SCOPE);
     }
 
     /**

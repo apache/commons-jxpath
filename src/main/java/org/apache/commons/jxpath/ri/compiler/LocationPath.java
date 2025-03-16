@@ -35,17 +35,43 @@ public class LocationPath extends Path {
         this.absolute = absolute;
     }
 
+    @Override
+    public Object compute(final EvalContext context) {
+        // Create a chain of contexts
+        EvalContext rootContext;
+        if (isAbsolute()) {
+            rootContext = context.getRootContext().getAbsoluteRootContext();
+        }
+        else {
+            rootContext = new InitialContext(context);
+        }
+        return evalSteps(rootContext);
+    }
+
+    @Override
+    public boolean computeContextDependent() {
+        return !absolute || super.computeContextDependent();
+    }
+
+    @Override
+    public Object computeValue(final EvalContext context) {
+        // Create a chain of contexts
+        EvalContext rootContext;
+        if (isAbsolute()) {
+            rootContext = context.getRootContext().getAbsoluteRootContext();
+        }
+        else {
+            rootContext = new InitialContext(context);
+        }
+        return getSingleNodePointerForSteps(rootContext);
+    }
+
     /**
      * Learn whether this LocationPath is absolute.
      * @return boolean
      */
     public boolean isAbsolute() {
         return absolute;
-    }
-
-    @Override
-    public boolean computeContextDependent() {
-        return !absolute || super.computeContextDependent();
     }
 
     @Override
@@ -61,31 +87,5 @@ public class LocationPath extends Path {
             }
         }
         return buffer.toString();
-    }
-
-    @Override
-    public Object compute(final EvalContext context) {
-        // Create a chain of contexts
-        EvalContext rootContext;
-        if (isAbsolute()) {
-            rootContext = context.getRootContext().getAbsoluteRootContext();
-        }
-        else {
-            rootContext = new InitialContext(context);
-        }
-        return evalSteps(rootContext);
-    }
-
-    @Override
-    public Object computeValue(final EvalContext context) {
-        // Create a chain of contexts
-        EvalContext rootContext;
-        if (isAbsolute()) {
-            rootContext = context.getRootContext().getAbsoluteRootContext();
-        }
-        else {
-            rootContext = new InitialContext(context);
-        }
-        return getSingleNodePointerForSteps(rootContext);
     }
 }

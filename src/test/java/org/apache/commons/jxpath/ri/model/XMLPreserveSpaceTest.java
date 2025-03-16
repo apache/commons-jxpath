@@ -29,15 +29,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class XMLPreserveSpaceTest extends AbstractJXPathTest {
     protected JXPathContext context;
 
-    protected DocumentContainer createDocumentContainer(final String model) {
-        return new DocumentContainer(AbstractJXPathTest.class
-                .getResource("XmlPreserveSpace.xml"), model);
-    }
-
     protected JXPathContext createContext(final String model) {
         final JXPathContext context = JXPathContext
                 .newContext(createDocumentContainer(model));
         return context;
+    }
+
+    protected DocumentContainer createDocumentContainer(final String model) {
+        return new DocumentContainer(AbstractJXPathTest.class
+                .getResource("XmlPreserveSpace.xml"), model);
     }
 
     protected void doTest(final String id, final String model, final String expectedValue) {
@@ -47,33 +47,8 @@ public class XMLPreserveSpaceTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testUnspecifiedDOM() {
-        doTest("unspecified", DocumentContainer.MODEL_DOM, " foo ");
-    }
-
-    @Test
     public void testDefaultDOM() {
         doTest("default", DocumentContainer.MODEL_DOM, "foo");
-    }
-
-    @Test
-    public void testPreserveDOM() {
-        doTest("preserve", DocumentContainer.MODEL_DOM, " foo ");
-    }
-
-    @Test
-    public void testNestedDOM() {
-        doTest("nested", DocumentContainer.MODEL_DOM, " foo ;bar; baz ");
-    }
-
-    @Test
-    public void testNestedWithCommentsDOM() {
-        doTest("nested-with-comments", DocumentContainer.MODEL_DOM, " foo ;bar; baz ");
-    }
-
-    @Test
-    public void testUnspecifiedJDOM() {
-        doTest("unspecified", DocumentContainer.MODEL_JDOM, " foo ");
     }
 
     @Test
@@ -82,8 +57,8 @@ public class XMLPreserveSpaceTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testPreserveJDOM() {
-        doTest("preserve", DocumentContainer.MODEL_JDOM, " foo ");
+    public void testNestedDOM() {
+        doTest("nested", DocumentContainer.MODEL_DOM, " foo ;bar; baz ");
     }
 
     @Test
@@ -92,7 +67,32 @@ public class XMLPreserveSpaceTest extends AbstractJXPathTest {
     }
 
     @Test
+    public void testNestedWithCommentsDOM() {
+        doTest("nested-with-comments", DocumentContainer.MODEL_DOM, " foo ;bar; baz ");
+    }
+
+    @Test
     public void testNestedWithCommentsJDOM() {
         doTest("nested-with-comments", DocumentContainer.MODEL_JDOM, " foo ;bar; baz ");
+    }
+
+    @Test
+    public void testPreserveDOM() {
+        doTest("preserve", DocumentContainer.MODEL_DOM, " foo ");
+    }
+
+    @Test
+    public void testPreserveJDOM() {
+        doTest("preserve", DocumentContainer.MODEL_JDOM, " foo ");
+    }
+
+    @Test
+    public void testUnspecifiedDOM() {
+        doTest("unspecified", DocumentContainer.MODEL_DOM, " foo ");
+    }
+
+    @Test
+    public void testUnspecifiedJDOM() {
+        doTest("unspecified", DocumentContainer.MODEL_JDOM, " foo ");
     }
 }

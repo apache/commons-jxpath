@@ -37,17 +37,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
      }
 
     /**
-     * Create a new {@code JXPathContextFactoryConfigurationError} with
-     * the {@code String } specified as an error message.
-     *
-     * @param msg The error message for the exception.
-     */
-    public JXPathContextFactoryConfigurationError(final String msg) {
-        super(msg);
-        this.exception = null;
-    }
-
-    /**
      * Create a new {@code JXPathContextFactoryConfigurationError} with a
      * given {@code Exception} base cause of the error.
      *
@@ -73,6 +62,27 @@ public class JXPathContextFactoryConfigurationError extends Error {
     }
 
     /**
+     * Create a new {@code JXPathContextFactoryConfigurationError} with
+     * the {@code String } specified as an error message.
+     *
+     * @param msg The error message for the exception.
+     */
+    public JXPathContextFactoryConfigurationError(final String msg) {
+        super(msg);
+        this.exception = null;
+    }
+
+    /**
+     * Gets the actual exception (if any) that caused this exception to
+     * be raised.
+     *
+     * @return The encapsulated exception, or null if there is none.
+     */
+    public Exception getException () {
+        return exception;
+    }
+
+    /**
      * Gets the message (if any) for this error . If there is no
      * message for the exception and there is an encapsulated
      * exception then the message of that exception will be returned.
@@ -86,15 +96,5 @@ public class JXPathContextFactoryConfigurationError extends Error {
             return exception.getMessage();
         }
         return message;
-    }
-
-    /**
-     * Gets the actual exception (if any) that caused this exception to
-     * be raised.
-     *
-     * @return The encapsulated exception, or null if there is none.
-     */
-    public Exception getException () {
-        return exception;
     }
 }

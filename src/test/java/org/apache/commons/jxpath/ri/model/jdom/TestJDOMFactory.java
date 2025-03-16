@@ -28,33 +28,6 @@ import org.jdom.Element;
  */
 public class TestJDOMFactory extends AbstractFactory {
 
-    /**
-     * Create a new instance and put it in the collection on the parent object.
-     * Return <strong>false</strong> if this factory cannot create the requested object.
-     */
-    @Override
-    public boolean createObject(
-        final JXPathContext context,
-        final Pointer pointer,
-        final Object parent,
-        final String name,
-        final int index)
-    {
-        if (name.equals("location")
-            || name.equals("address")
-            || name.equals("street")) {
-            addJDOMElement((Element) parent, index, name, null);
-            return true;
-        }
-        if (name.startsWith("price:")) {
-            final String namespaceURI = context.getNamespaceURI("price");
-            addJDOMElement((Element) parent, index, name, namespaceURI);
-            return true;
-        }
-
-        return false;
-    }
-
     private void addJDOMElement(final Element parent, final int index, String tag, final String namespaceURI) {
         final List children = parent.getContent();
         int count = 0;
@@ -81,6 +54,33 @@ public class TestJDOMFactory extends AbstractFactory {
             parent.addContent(newElement);
             count++;
         }
+    }
+
+    /**
+     * Create a new instance and put it in the collection on the parent object.
+     * Return <strong>false</strong> if this factory cannot create the requested object.
+     */
+    @Override
+    public boolean createObject(
+        final JXPathContext context,
+        final Pointer pointer,
+        final Object parent,
+        final String name,
+        final int index)
+    {
+        if (name.equals("location")
+            || name.equals("address")
+            || name.equals("street")) {
+            addJDOMElement((Element) parent, index, name, null);
+            return true;
+        }
+        if (name.startsWith("price:")) {
+            final String namespaceURI = context.getNamespaceURI("price");
+            addJDOMElement((Element) parent, index, name, namespaceURI);
+            return true;
+        }
+
+        return false;
     }
 
     @Override

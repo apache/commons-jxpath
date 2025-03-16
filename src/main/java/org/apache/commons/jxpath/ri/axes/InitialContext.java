@@ -45,12 +45,12 @@ public class InitialContext extends EvalContext {
     }
 
     @Override
-    public Pointer getSingleNodePointer() {
+    public NodePointer getCurrentNodePointer() {
         return nodePointer;
     }
 
     @Override
-    public NodePointer getCurrentNodePointer() {
+    public Pointer getSingleNodePointer() {
         return nodePointer;
     }
 
@@ -65,6 +65,15 @@ public class InitialContext extends EvalContext {
     }
 
     @Override
+    public boolean nextSet() {
+        if (started) {
+            return false;
+        }
+        started = true;
+        return true;
+    }
+
+    @Override
     public boolean setPosition(final int position) {
         this.position = position;
         if (collection) {
@@ -75,14 +84,5 @@ public class InitialContext extends EvalContext {
             return false;
         }
         return position == 1;
-    }
-
-    @Override
-    public boolean nextSet() {
-        if (started) {
-            return false;
-        }
-        started = true;
-        return true;
     }
 }

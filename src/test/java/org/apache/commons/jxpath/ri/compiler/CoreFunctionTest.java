@@ -115,41 +115,8 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIDFunction() {
-        context.setIdentityManager((context, id) -> {
-            NodePointer ptr = (NodePointer) context.getPointer("/document");
-            ptr = ptr.getValuePointer();
-            return ptr.getPointerByID(context, id);
-        });
-
-        assertXPathValueAndPointer(
-            context,
-            "id(101)//street",
-            "Tangerine Drive",
-            "id('101')/address[1]/street[1]");
-
-        assertXPathPointerLenient(
-            context,
-            "id(105)/address/street",
-            "id(105)/address/street");
-    }
-
-    @Test
-    public void testKeyFunction() {
-        context.setKeyManager((context, key, value) -> NodePointer.newNodePointer(null, "42", null));
-
-        assertXPathValue(context, "key('a', 'b')", "42");
-    }
-
-    @Test
     public void testExtendedKeyFunction() {
         context.setKeyManager(new ExtendedKeyManager() {
-            @Override
-            public Pointer getPointerByKey(final JXPathContext context, final String key,
-                    final String value) {
-                return NodePointer.newNodePointer(null, "incorrect", null);
-            }
-
             @Override
             public NodeSet getNodeSetByKey(final JXPathContext context,
                     final String keyName, final Object keyValue) {
@@ -172,6 +139,12 @@ public class CoreFunctionTest extends AbstractJXPathTest {
                     }
 
                 };
+            }
+
+            @Override
+            public Pointer getPointerByKey(final JXPathContext context, final String key,
+                    final String value) {
+                return NodePointer.newNodePointer(null, "incorrect", null);
             }
         });
         assertXPathValue(context, "key('a', 'b')", "53");
@@ -222,5 +195,32 @@ public class CoreFunctionTest extends AbstractJXPathTest {
             context,
             "format-number(123456789, '$DDD,DDD,DDD.DD', 'test')",
             "$123,456,789");
+    }
+
+    @Test
+    public void testIDFunction() {
+        context.setIdentityManager((context, id) -> {
+            NodePointer ptr = (NodePointer) context.getPointer("/document");
+            ptr = ptr.getValuePointer();
+            return ptr.getPointerByID(context, id);
+        });
+
+        assertXPathValueAndPointer(
+            context,
+            "id(101)//street",
+            "Tangerine Drive",
+            "id('101')/address[1]/street[1]");
+
+        assertXPathPointerLenient(
+            context,
+            "id(105)/address/street",
+            "id(105)/address/street");
+    }
+
+    @Test
+    public void testKeyFunction() {
+        context.setKeyManager((context, key, value) -> NodePointer.newNodePointer(null, "42", null));
+
+        assertXPathValue(context, "key('a', 'b')", "42");
     }
 }

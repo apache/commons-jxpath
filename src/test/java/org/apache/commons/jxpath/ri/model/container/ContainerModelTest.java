@@ -49,6 +49,15 @@ public class ContainerModelTest extends AbstractJXPathTest {
         }
     }
 
+    public class Bean
+    {
+        private final ListContainer container = new ListContainer();
+
+        public ListContainer getContainer() {
+            return container;
+        }
+    }
+
     public class ListContainer implements Container
     {
         private static final long serialVersionUID = 1L;
@@ -69,49 +78,6 @@ public class ContainerModelTest extends AbstractJXPathTest {
         public void setValue(final Object value) {
             throw new UnsupportedOperationException();
         }
-    }
-
-    public class Bean
-    {
-        private final ListContainer container = new ListContainer();
-
-        public ListContainer getContainer() {
-            return container;
-        }
-    }
-
-    @Test
-    public void testContainerVariableWithCollection() {
-        final ArrayContainer container = new ArrayContainer();
-        final String[] array = (String[]) container.getValue();
-
-        final JXPathContext context = JXPathContext.newContext(null);
-        context.getVariables().declareVariable("list", container);
-
-        assertXPathValueAndPointer(context, "$list", array, "$list");
-        assertXPathValueAndPointer(context, "$list[1]", "foo", "$list[1]");
-        assertXPathValueAndPointer(context, "$list[2]", "bar", "$list[2]");
-
-        assertXPathSetValue(context, "$list[1]", "baz");
-        assertEquals("baz", array[0], "Checking setValue(index)");
-    }
-
-    @Test
-    public void testContainerPropertyWithCollection() {
-        final Bean bean = new Bean();
-        final List list = (List) bean.getContainer().getValue();
-
-        final JXPathContext context = JXPathContext.newContext(bean);
-
-        assertXPathValueAndPointer(context, "/container",
-                list, "/container");
-        assertXPathValueAndPointer(context, "/container[1]",
-                list.get(0), "/container[1]");
-        assertXPathValueAndPointer(context, "/container[2]",
-                list.get(1), "/container[2]");
-
-        assertXPathSetValue(context, "/container[1]", "baz");
-        assertEquals("baz", list.get(0), "Checking setValue(index)");
     }
 
     @Test
@@ -136,6 +102,24 @@ public class ContainerModelTest extends AbstractJXPathTest {
     }
 
     @Test
+    public void testContainerPropertyWithCollection() {
+        final Bean bean = new Bean();
+        final List list = (List) bean.getContainer().getValue();
+
+        final JXPathContext context = JXPathContext.newContext(bean);
+
+        assertXPathValueAndPointer(context, "/container",
+                list, "/container");
+        assertXPathValueAndPointer(context, "/container[1]",
+                list.get(0), "/container[1]");
+        assertXPathValueAndPointer(context, "/container[2]",
+                list.get(1), "/container[2]");
+
+        assertXPathSetValue(context, "/container[1]", "baz");
+        assertEquals("baz", list.get(0), "Checking setValue(index)");
+    }
+
+    @Test
     public void testContainerRootWithCollection() {
         final ArrayContainer container = new ArrayContainer();
         final String[] array = (String[]) container.getValue();
@@ -149,5 +133,21 @@ public class ContainerModelTest extends AbstractJXPathTest {
 
         assertXPathSetValue(context, "/.[1]", "baz");
         assertEquals("baz", array[0], "Checking setValue(index)");    }
+
+    @Test
+    public void testContainerVariableWithCollection() {
+        final ArrayContainer container = new ArrayContainer();
+        final String[] array = (String[]) container.getValue();
+
+        final JXPathContext context = JXPathContext.newContext(null);
+        context.getVariables().declareVariable("list", container);
+
+        assertXPathValueAndPointer(context, "$list", array, "$list");
+        assertXPathValueAndPointer(context, "$list[1]", "foo", "$list[1]");
+        assertXPathValueAndPointer(context, "$list[2]", "bar", "$list[2]");
+
+        assertXPathSetValue(context, "$list[1]", "baz");
+        assertEquals("baz", array[0], "Checking setValue(index)");
+    }
 
 }

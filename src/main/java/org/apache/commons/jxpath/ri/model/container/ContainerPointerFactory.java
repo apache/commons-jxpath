@@ -31,8 +31,10 @@ public class ContainerPointerFactory implements NodePointerFactory {
     public static final int CONTAINER_POINTER_FACTORY_ORDER = 200;
 
     @Override
-    public int getOrder() {
-        return CONTAINER_POINTER_FACTORY_ORDER;
+    public NodePointer createNodePointer(final NodePointer parent, final QName name,
+            final Object bean) {
+        return bean instanceof Container ? new ContainerPointer(parent,
+                (Container) bean) : null;
     }
 
     @Override
@@ -42,9 +44,7 @@ public class ContainerPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name,
-            final Object bean) {
-        return bean instanceof Container ? new ContainerPointer(parent,
-                (Container) bean) : null;
+    public int getOrder() {
+        return CONTAINER_POINTER_FACTORY_ORDER;
     }
 }

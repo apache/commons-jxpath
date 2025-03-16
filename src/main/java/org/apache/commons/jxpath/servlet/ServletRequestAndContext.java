@@ -40,12 +40,6 @@ public class ServletRequestAndContext extends HttpSessionAndServletContext {
         this.request = request;
     }
 
-    @Override
-    public HttpSession getSession() {
-        return request instanceof HttpServletRequest
-                ? ((HttpServletRequest) request).getSession(false) : null;
-    }
-
     /**
      * Gets the request.
      *
@@ -53,5 +47,11 @@ public class ServletRequestAndContext extends HttpSessionAndServletContext {
      */
     public ServletRequest getServletRequest() {
         return request;
+    }
+
+    @Override
+    public HttpSession getSession() {
+        return request instanceof HttpServletRequest
+                ? ((HttpServletRequest) request).getSession(false) : null;
     }
 }

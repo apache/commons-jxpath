@@ -87,8 +87,9 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
      * {@inheritDoc}
      */
     @Override
-    public int getOrder() {
-        return DynaBeanPointerFactory.DYNA_BEAN_POINTER_FACTORY_ORDER - 1;
+    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object object) {
+        return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(parent, name,
+                (LazyDynaBean) object) : null;
     }
 
     /**
@@ -104,9 +105,8 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
      * {@inheritDoc}
      */
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object object) {
-        return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(parent, name,
-                (LazyDynaBean) object) : null;
+    public int getOrder() {
+        return DynaBeanPointerFactory.DYNA_BEAN_POINTER_FACTORY_ORDER - 1;
     }
 
 }

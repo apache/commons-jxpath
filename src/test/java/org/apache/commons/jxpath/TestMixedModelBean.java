@@ -72,20 +72,12 @@ public class TestMixedModelBean {
         matrix[0][0] = 3;
     }
 
-    public String getString() {
-        return string;
-    }
-
     public TestBean getBean() {
         return bean;
     }
 
-    public Map getMap() {
-        return map;
-    }
-
-    public List getList() {
-        return list;
+    public Container getContainer() {
+        return container;
     }
 
     public Document getDocument() {
@@ -96,12 +88,20 @@ public class TestMixedModelBean {
         return element;
     }
 
-    public Container getContainer() {
-        return container;
+    public List getList() {
+        return list;
+    }
+
+    public Map getMap() {
+        return map;
     }
 
     public int[][] getMatrix() {
         return matrix;
+    }
+
+    public String getString() {
+        return string;
     }
 
     public void setMatrix(final int[][] matrix) {

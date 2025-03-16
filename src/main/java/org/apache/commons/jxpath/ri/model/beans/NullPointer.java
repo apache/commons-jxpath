@@ -26,19 +26,19 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Pointer whose value is {@code null}.
  */
 public class NullPointer extends PropertyOwnerPointer {
-    private QName name;
-    private String id;
-
     private static final long serialVersionUID = 2193425983220679887L;
+    private QName name;
+
+    private String id;
 
     /**
      * Create a new NullPointer.
-     * @param name node name
      * @param locale Locale
+     * @param id String
      */
-    public NullPointer(final QName name, final Locale locale) {
+    public NullPointer(final Locale locale, final String id) {
         super(null, locale);
-        this.name = name;
+        this.id = id;
     }
 
     /**
@@ -53,60 +53,20 @@ public class NullPointer extends PropertyOwnerPointer {
 
     /**
      * Create a new NullPointer.
+     * @param name node name
      * @param locale Locale
-     * @param id String
      */
-    public NullPointer(final Locale locale, final String id) {
+    public NullPointer(final QName name, final Locale locale) {
         super(null, locale);
-        this.id = id;
+        this.name = name;
     }
 
     @Override
-    public QName getName() {
-        return name;
-    }
-
-    @Override
-    public Object getBaseValue() {
-        return null;
-    }
-
-    @Override
-    public boolean isCollection() {
-        return false;
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return true;
-    }
-
-    @Override
-    public boolean isActual() {
-        return false;
-    }
-
-    @Override
-    public PropertyPointer getPropertyPointer() {
-        return new NullPropertyPointer(this);
-    }
-
-    @Override
-    public NodePointer createPath(final JXPathContext context, final Object value) {
-        if (parent != null) {
-            return parent.createPath(context, value).getValuePointer();
+    public String asPath() {
+        if (id != null) {
+            return "id(" + id + ")";
         }
-        throw new UnsupportedOperationException(
-            "Cannot create the root object: " + asPath());
-    }
-
-    @Override
-    public NodePointer createPath(final JXPathContext context) {
-        if (parent != null) {
-            return parent.createPath(context).getValuePointer();
-        }
-        throw new UnsupportedOperationException(
-            "Cannot create the root object: " + asPath());
+        return parent == null ? "null()" : super.asPath();
     }
 
     @Override
@@ -127,8 +87,21 @@ public class NullPointer extends PropertyOwnerPointer {
     }
 
     @Override
-    public int hashCode() {
-        return name == null ? 0 : name.hashCode();
+    public NodePointer createPath(final JXPathContext context) {
+        if (parent != null) {
+            return parent.createPath(context).getValuePointer();
+        }
+        throw new UnsupportedOperationException(
+            "Cannot create the root object: " + asPath());
+    }
+
+    @Override
+    public NodePointer createPath(final JXPathContext context, final Object value) {
+        if (parent != null) {
+            return parent.createPath(context, value).getValuePointer();
+        }
+        throw new UnsupportedOperationException(
+            "Cannot create the root object: " + asPath());
     }
 
     @Override
@@ -146,15 +119,42 @@ public class NullPointer extends PropertyOwnerPointer {
     }
 
     @Override
-    public String asPath() {
-        if (id != null) {
-            return "id(" + id + ")";
-        }
-        return parent == null ? "null()" : super.asPath();
+    public Object getBaseValue() {
+        return null;
     }
 
     @Override
     public int getLength() {
         return 0;
+    }
+
+    @Override
+    public QName getName() {
+        return name;
+    }
+
+    @Override
+    public PropertyPointer getPropertyPointer() {
+        return new NullPropertyPointer(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return name == null ? 0 : name.hashCode();
+    }
+
+    @Override
+    public boolean isActual() {
+        return false;
+    }
+
+    @Override
+    public boolean isCollection() {
+        return false;
+    }
+
+    @Override
+    public boolean isLeaf() {
+        return true;
     }
 }

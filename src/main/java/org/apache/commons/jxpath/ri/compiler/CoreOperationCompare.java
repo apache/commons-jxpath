@@ -58,14 +58,20 @@ public abstract class CoreOperationCompare extends CoreOperation {
         return equal(context, args[0], args[1]) ? Boolean.TRUE : Boolean.FALSE;
     }
 
-    @Override
-    protected int getPrecedence() {
-        return COMPARE_PRECEDENCE;
-    }
-
-    @Override
-    protected boolean isSymmetric() {
-        return true;
+    /**
+     * Learn whether it contains value.
+     * @param it Iterator to check
+     * @param value for which to look
+     * @return whether value was found
+     */
+    protected boolean contains(final Iterator it, final Object value) {
+        while (it.hasNext()) {
+            final Object element = it.next();
+            if (equal(element, value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -117,41 +123,6 @@ public abstract class CoreOperationCompare extends CoreOperation {
     }
 
     /**
-     * Learn whether it contains value.
-     * @param it Iterator to check
-     * @param value for which to look
-     * @return whether value was found
-     */
-    protected boolean contains(final Iterator it, final Object value) {
-        while (it.hasNext()) {
-            final Object element = it.next();
-            if (equal(element, value)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Learn whether lit intersects rit.
-     * @param lit left Iterator
-     * @param rit right Iterator
-     * @return boolean
-     */
-    protected boolean findMatch(final Iterator lit, final Iterator rit) {
-        final HashSet left = new HashSet();
-        while (lit.hasNext()) {
-            left.add(lit.next());
-        }
-        while (rit.hasNext()) {
-            if (contains(left.iterator(), rit.next())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Learn whether l equals r in XPath terms.
      * @param l left operand
      * @param r right operand
@@ -190,6 +161,35 @@ public abstract class CoreOperationCompare extends CoreOperation {
             result = l == r || l != null && l.equals(r);
         }
         return result ^ invert;
+    }
+
+    /**
+     * Learn whether lit intersects rit.
+     * @param lit left Iterator
+     * @param rit right Iterator
+     * @return boolean
+     */
+    protected boolean findMatch(final Iterator lit, final Iterator rit) {
+        final HashSet left = new HashSet();
+        while (lit.hasNext()) {
+            left.add(lit.next());
+        }
+        while (rit.hasNext()) {
+            if (contains(left.iterator(), rit.next())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected int getPrecedence() {
+        return COMPARE_PRECEDENCE;
+    }
+
+    @Override
+    protected boolean isSymmetric() {
+        return true;
     }
 
 }

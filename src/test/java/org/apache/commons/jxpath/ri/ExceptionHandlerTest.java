@@ -37,6 +37,14 @@ public class ExceptionHandlerTest extends AbstractJXPathTest {
     private JXPathContext context;
     private final Bar bar = new Bar();
 
+    public Bar getBar() {
+        return bar;
+    }
+
+    public Object getFoo() {
+        throw new IllegalStateException("foo unavailable");
+    }
+
     @Override
     @BeforeEach
     public void setUp() throws Exception {
@@ -50,24 +58,6 @@ public class ExceptionHandlerTest extends AbstractJXPathTest {
             }
             throw new RuntimeException(t);
         });
-    }
-
-    public Object getFoo() {
-        throw new IllegalStateException("foo unavailable");
-    }
-
-    @Test
-    public void testHandleFoo() throws Exception {
-        Throwable t = assertThrows(Throwable.class, () -> context.getValue("foo"),
-            "expected Throwable");
-
-        while (t != null) {
-            if ("foo unavailable".equals(t.getMessage())) {
-                return;
-            }
-            t = t.getCause();
-        }
-        fail("expected \"foo unavailable\" in throwable chain");
     }
 
     @Test
@@ -84,7 +74,17 @@ public class ExceptionHandlerTest extends AbstractJXPathTest {
         fail("expected \"baz unavailable\" in throwable chain");
     }
 
-    public Bar getBar() {
-        return bar;
+    @Test
+    public void testHandleFoo() throws Exception {
+        Throwable t = assertThrows(Throwable.class, () -> context.getValue("foo"),
+            "expected Throwable");
+
+        while (t != null) {
+            if ("foo unavailable".equals(t.getMessage())) {
+                return;
+            }
+            t = t.getCause();
+        }
+        fail("expected \"foo unavailable\" in throwable chain");
     }
 }

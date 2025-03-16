@@ -46,12 +46,12 @@ public class CoreOperationDivide extends CoreOperation {
     }
 
     @Override
-    protected boolean isSymmetric() {
-        return false;
+    public String getSymbol() {
+        return "div";
     }
 
     @Override
-    public String getSymbol() {
-        return "div";
+    protected boolean isSymmetric() {
+        return false;
     }
 }

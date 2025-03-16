@@ -31,8 +31,8 @@ import org.apache.commons.jxpath.util.ValueUtils;
  */
 public class MethodFunction implements Function {
 
-    private final Method method;
     private static final Object[] EMPTY_ARRAY = {};
+    private final Method method;
 
     /**
      * Create a new MethodFunction.

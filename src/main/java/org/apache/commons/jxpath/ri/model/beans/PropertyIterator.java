@@ -81,19 +81,19 @@ public class PropertyIterator implements NodeIterator {
     }
 
     /**
-     * Gets the property pointer.
-     * @return NodePointer
+     * Computes length for the current pointer - ignores any exceptions.
+     * @return length
      */
-    protected NodePointer getPropertyPointer() {
-        return propertyNodePointer;
-    }
-
-    /**
-     * Reset property iteration.
-     */
-    public void reset() {
-        position = 0;
-        targetReady = false;
+    private int getLength() {
+        int length;
+        try {
+            length = propertyNodePointer.getLength(); // TBD: cache length
+        }
+        catch (final Throwable t) {
+            propertyNodePointer.handle(t);
+            length = 0;
+        }
+        return length;
     }
 
     @Override
@@ -134,56 +134,74 @@ public class PropertyIterator implements NodeIterator {
         return position;
     }
 
-    @Override
-    public boolean setPosition(final int position) {
-        return name == null ? setPositionAllProperties(position) : setPositionIndividualProperty(position);
+    /**
+     * Gets the property pointer.
+     * @return NodePointer
+     */
+    protected NodePointer getPropertyPointer() {
+        return propertyNodePointer;
     }
 
     /**
-     * Sets position for an individual property.
-     * @param position int position
-     * @return whether this was a valid position
+     * Prepare for an individual property.
+     * @param name property name
      */
-    private boolean setPositionIndividualProperty(final int position) {
-        this.position = position;
-        if (position < 1) {
-            return false;
-        }
+    protected void prepareForIndividualProperty(final String name) {
+        targetReady = true;
+        empty = true;
 
-        if (!targetReady) {
-            prepareForIndividualProperty(name);
-        }
-
-        if (empty) {
-            return false;
-        }
-
-        final int length = getLength();
-        int index;
+        final String[] names = propertyNodePointer.getPropertyNames();
         if (!reverse) {
-            index = position + startIndex;
-            if (!includeStart) {
-                index++;
+            if (startPropertyIndex == PropertyPointer.UNSPECIFIED_PROPERTY) {
+                startPropertyIndex = 0;
             }
-            if (index > length) {
-                return false;
+            if (startIndex == NodePointer.WHOLE_COLLECTION) {
+                startIndex = 0;
+            }
+            for (int i = startPropertyIndex; i < names.length; i++) {
+                if (names[i].equals(name)) {
+                    propertyNodePointer.setPropertyIndex(i);
+                    if (i != startPropertyIndex) {
+                        startIndex = 0;
+                        includeStart = true;
+                    }
+                    empty = false;
+                    break;
+                }
             }
         }
         else {
-            int end = startIndex;
-            if (end == -1) {
-                end = length - 1;
+            if (startPropertyIndex == PropertyPointer.UNSPECIFIED_PROPERTY) {
+                startPropertyIndex = names.length - 1;
             }
-            index = end - position + 2;
-            if (!includeStart) {
-                index--;
+            if (startIndex == NodePointer.WHOLE_COLLECTION) {
+                startIndex = -1;
             }
-            if (index < 1) {
-                return false;
+            for (int i = startPropertyIndex; i >= 0; i--) {
+                if (names[i].equals(name)) {
+                    propertyNodePointer.setPropertyIndex(i);
+                    if (i != startPropertyIndex) {
+                        startIndex = -1;
+                        includeStart = true;
+                    }
+                    empty = false;
+                    break;
+                }
             }
         }
-        propertyNodePointer.setIndex(index - 1);
-        return true;
+    }
+
+    /**
+     * Reset property iteration.
+     */
+    public void reset() {
+        position = 0;
+        targetReady = false;
+    }
+
+    @Override
+    public boolean setPosition(final int position) {
+        return name == null ? setPositionAllProperties(position) : setPositionIndividualProperty(position);
     }
 
     /**
@@ -260,67 +278,49 @@ public class PropertyIterator implements NodeIterator {
     }
 
     /**
-     * Prepare for an individual property.
-     * @param name property name
+     * Sets position for an individual property.
+     * @param position int position
+     * @return whether this was a valid position
      */
-    protected void prepareForIndividualProperty(final String name) {
-        targetReady = true;
-        empty = true;
+    private boolean setPositionIndividualProperty(final int position) {
+        this.position = position;
+        if (position < 1) {
+            return false;
+        }
 
-        final String[] names = propertyNodePointer.getPropertyNames();
+        if (!targetReady) {
+            prepareForIndividualProperty(name);
+        }
+
+        if (empty) {
+            return false;
+        }
+
+        final int length = getLength();
+        int index;
         if (!reverse) {
-            if (startPropertyIndex == PropertyPointer.UNSPECIFIED_PROPERTY) {
-                startPropertyIndex = 0;
+            index = position + startIndex;
+            if (!includeStart) {
+                index++;
             }
-            if (startIndex == NodePointer.WHOLE_COLLECTION) {
-                startIndex = 0;
-            }
-            for (int i = startPropertyIndex; i < names.length; i++) {
-                if (names[i].equals(name)) {
-                    propertyNodePointer.setPropertyIndex(i);
-                    if (i != startPropertyIndex) {
-                        startIndex = 0;
-                        includeStart = true;
-                    }
-                    empty = false;
-                    break;
-                }
+            if (index > length) {
+                return false;
             }
         }
         else {
-            if (startPropertyIndex == PropertyPointer.UNSPECIFIED_PROPERTY) {
-                startPropertyIndex = names.length - 1;
+            int end = startIndex;
+            if (end == -1) {
+                end = length - 1;
             }
-            if (startIndex == NodePointer.WHOLE_COLLECTION) {
-                startIndex = -1;
+            index = end - position + 2;
+            if (!includeStart) {
+                index--;
             }
-            for (int i = startPropertyIndex; i >= 0; i--) {
-                if (names[i].equals(name)) {
-                    propertyNodePointer.setPropertyIndex(i);
-                    if (i != startPropertyIndex) {
-                        startIndex = -1;
-                        includeStart = true;
-                    }
-                    empty = false;
-                    break;
-                }
+            if (index < 1) {
+                return false;
             }
         }
-    }
-
-    /**
-     * Computes length for the current pointer - ignores any exceptions.
-     * @return length
-     */
-    private int getLength() {
-        int length;
-        try {
-            length = propertyNodePointer.getLength(); // TBD: cache length
-        }
-        catch (final Throwable t) {
-            propertyNodePointer.handle(t);
-            length = 0;
-        }
-        return length;
+        propertyNodePointer.setIndex(index - 1);
+        return true;
     }
 }

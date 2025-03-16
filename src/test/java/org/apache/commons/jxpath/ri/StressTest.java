@@ -28,10 +28,31 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class StressTest {
 
+    private static final class StressRunnable implements Runnable {
+        @Override
+        public void run() {
+            for (int j = 0; j < THREAD_DURATION && exception == null; j++) {
+                try {
+                    final double random = 1 + Math.random();
+                    final double sum =
+                        ((Double) context.getValue("/ + " + random))
+                            .doubleValue();
+                    assertEquals(0.0001, sum, 100 + random);
+                    synchronized (context) {
+                        count++;
+                    }
+                }
+                catch (final Throwable t) {
+                    exception = t;
+                }
+            }
+        }
+    }
     private static final int THREAD_COUNT = 50;
     private static final int THREAD_DURATION = 1000;
     private static JXPathContext context;
     private static int count;
+
     private static Throwable exception;
 
     @Test
@@ -59,26 +80,5 @@ public class StressTest {
             throw exception;
         }
         assertEquals(THREAD_COUNT * THREAD_DURATION, count, "Test count");
-    }
-
-    private static final class StressRunnable implements Runnable {
-        @Override
-        public void run() {
-            for (int j = 0; j < THREAD_DURATION && exception == null; j++) {
-                try {
-                    final double random = 1 + Math.random();
-                    final double sum =
-                        ((Double) context.getValue("/ + " + random))
-                            .doubleValue();
-                    assertEquals(0.0001, sum, 100 + random);
-                    synchronized (context) {
-                        count++;
-                    }
-                }
-                catch (final Throwable t) {
-                    exception = t;
-                }
-            }
-        }
     }
 }

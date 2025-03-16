@@ -55,82 +55,10 @@ public abstract class JXPathContextFactory {
     */
     private static final String FACTORY_IMPL_NAME = findFactory(FACTORY_NAME_PROPERTY, DEFAULT_FACTORY_CLASS);
 
-    /**
-     * Create a new JXPathContextFactory.
-     */
-    protected JXPathContextFactory () {
-
-    }
-
-    /**
-     * Obtain a new instance of a {@code JXPathContextFactory}.
-     * This static method creates a new factory instance.
-     * This method uses the following ordered lookup procedure to determine
-     * the {@code JXPathContextFactory} implementation class to load:
-     * <ul>
-     * <li>
-     * Use  the {@code org.apache.commons.jxpath.JXPathContextFactory}
-     * system property.
-     * </li>
-     * <li>
-     * Alternatively, use the JAVA_HOME (the parent directory where jdk is
-     * installed)/lib/jxpath.properties for a property file that contains the
-     * name of the implementation class keyed on
-     * {@code org.apache.commons.jxpath.JXPathContextFactory}.
-     * </li>
-     * <li>
-     * Use the Services API (as detailed in the JAR specification), if
-     * available, to determine the class name. The Services API will look
-     * for a class name in the file
-     * {@code META- INF/services/<i>org.apache.commons.jxpath.
-     * JXPathContextFactory</i>} in jars available to the runtime.
-     * </li>
-     * <li>
-     * Platform default {@code JXPathContextFactory} instance.
-     * </li>
-     * </ul>
-     *
-     * Once an application has obtained a reference to a
-     * {@code JXPathContextFactory} it can use the factory to
-     * obtain JXPathContext instances.
-     *
-     * @return JXPathContextFactory
-     * @throws JXPathContextFactoryConfigurationError if the implementation
-     *            is not available or cannot be instantiated.
-     */
-    public static JXPathContextFactory newInstance() {
-        JXPathContextFactory factoryImpl;
-        try {
-            final Class clazz = ClassLoaderUtil.getClass(FACTORY_IMPL_NAME, true);
-            factoryImpl = (JXPathContextFactory) clazz.getConstructor().newInstance();
-        }
-        catch (final ReflectiveOperationException ie) {
-            throw new JXPathContextFactoryConfigurationError(ie);
-        }
-        return factoryImpl;
-    }
-
-    /**
-     * Creates a new instance of a JXPathContext using the
-     * currently configured parameters.
-     * @param parentContext parent context
-     * @param contextBean Object bean
-     * @return JXPathContext
-     * @throws JXPathContextFactoryConfigurationError if a JXPathContext
-     *            cannot be created which satisfies the configuration requested
-     */
-
-    public abstract JXPathContext newContext(
-        JXPathContext parentContext,
-        Object contextBean);
-
-    // This code is duplicated in all factories.
-    // Keep it in sync or move it to a common place
-    // Because it's small probably it's easier to keep it here
-
     /** Temp debug code - this will be removed after we test everything
      */
     private static boolean debug = false;
+
     static {
         try {
             debug = System.getProperty("jxpath.debug") != null;
@@ -253,4 +181,76 @@ public abstract class JXPathContextFactory {
         }
         return defaultFactory;
     }
+
+    // This code is duplicated in all factories.
+    // Keep it in sync or move it to a common place
+    // Because it's small probably it's easier to keep it here
+
+    /**
+     * Obtain a new instance of a {@code JXPathContextFactory}.
+     * This static method creates a new factory instance.
+     * This method uses the following ordered lookup procedure to determine
+     * the {@code JXPathContextFactory} implementation class to load:
+     * <ul>
+     * <li>
+     * Use  the {@code org.apache.commons.jxpath.JXPathContextFactory}
+     * system property.
+     * </li>
+     * <li>
+     * Alternatively, use the JAVA_HOME (the parent directory where jdk is
+     * installed)/lib/jxpath.properties for a property file that contains the
+     * name of the implementation class keyed on
+     * {@code org.apache.commons.jxpath.JXPathContextFactory}.
+     * </li>
+     * <li>
+     * Use the Services API (as detailed in the JAR specification), if
+     * available, to determine the class name. The Services API will look
+     * for a class name in the file
+     * {@code META- INF/services/<i>org.apache.commons.jxpath.
+     * JXPathContextFactory</i>} in jars available to the runtime.
+     * </li>
+     * <li>
+     * Platform default {@code JXPathContextFactory} instance.
+     * </li>
+     * </ul>
+     *
+     * Once an application has obtained a reference to a
+     * {@code JXPathContextFactory} it can use the factory to
+     * obtain JXPathContext instances.
+     *
+     * @return JXPathContextFactory
+     * @throws JXPathContextFactoryConfigurationError if the implementation
+     *            is not available or cannot be instantiated.
+     */
+    public static JXPathContextFactory newInstance() {
+        JXPathContextFactory factoryImpl;
+        try {
+            final Class clazz = ClassLoaderUtil.getClass(FACTORY_IMPL_NAME, true);
+            factoryImpl = (JXPathContextFactory) clazz.getConstructor().newInstance();
+        }
+        catch (final ReflectiveOperationException ie) {
+            throw new JXPathContextFactoryConfigurationError(ie);
+        }
+        return factoryImpl;
+    }
+    /**
+     * Create a new JXPathContextFactory.
+     */
+    protected JXPathContextFactory () {
+
+    }
+
+    /**
+     * Creates a new instance of a JXPathContext using the
+     * currently configured parameters.
+     * @param parentContext parent context
+     * @param contextBean Object bean
+     * @return JXPathContext
+     * @throws JXPathContextFactoryConfigurationError if a JXPathContext
+     *            cannot be created which satisfies the configuration requested
+     */
+
+    public abstract JXPathContext newContext(
+        JXPathContext parentContext,
+        Object contextBean);
 }

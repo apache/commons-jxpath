@@ -44,11 +44,75 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class JXPathServletContextTest {
 
+    private void checkPointerIterator(final JXPathContext context) {
+        final Iterator<Pointer> it = context.iteratePointers("/*");
+        assertTrue(it.hasNext(), "Empty context");
+        while (it.hasNext())
+        {
+            final Pointer pointer = it.next();
+            assertNotNull(pointer, "null pointer");
+            assertNotNull(pointer.asPath(), "null path");
+        }
+    }
+
     private ServletContext getServletContext() {
         final MockServletContext context = new MockServletContext();
         context.setAttribute("app", "OK");
 
         return context;
+    }
+
+    @Test
+    public void testPageContext() {
+        final MockServletContext servletContext = new MockServletContext();
+        servletContext.setAttribute("app", "app");
+
+        final MockServletConfig servletConfig = new MockServletConfig();
+        servletConfig.setServletContext(servletContext);
+
+        final MockHttpSession session = new MockHttpSession();
+        session.setupServletContext(servletContext);
+        session.setAttribute("session", "session");
+
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setAttribute("request", "request");
+        request.setSession(session);
+
+        final MockPageContext pageContext = new MockPageContext();
+        pageContext.setServletConfig(servletConfig);
+        pageContext.setServletRequest(request);
+        pageContext.setAttribute("page", "page");
+
+        assertSame(session, request.getSession(), "Request session");
+
+        final JXPathContext context = JXPathServletContexts.getPageContext(pageContext);
+        context.setLenient(true);
+
+        checkPointerIterator(context);
+
+        assertEquals("page", context.getValue("page"), "Page Scope");
+        assertEquals("request", context.getValue("request"), "Request Scope");
+        assertEquals("session", context.getValue("session"), "Session Scope");
+        assertEquals("app", context.getValue("app"), "Application Scope");
+
+        assertEquals("page", context.getValue("$page/page"), "Explicit Page Scope");
+        assertEquals("request", context.getValue("$request/request"), "Explicit Request Scope");
+        assertEquals("session", context.getValue("$session/session"), "Explicit Session Scope");
+        assertEquals("app", context.getValue("$application/app"), "Explicit Application Scope");
+
+        // iterate through the elements of page context only (two elements expected, 'page' and the context)
+        final Iterator<Pointer> it = context.iteratePointers("$page/*");
+        assertTrue(it.hasNext(), "element not found");
+        it.next();
+        it.next();
+        assertFalse(it.hasNext(), "too many elements");
+
+        // test setting a value in the context
+        context.setValue("/foo1", "bar1");
+        assertEquals("bar1", context.getValue("/foo1"), "Context property");
+
+        context.setValue("$page/foo2", "bar2");
+        assertEquals("bar2", context.getValue("$page/foo2"), "Context property");
     }
 
     @Test
@@ -130,69 +194,5 @@ public class JXPathServletContextTest {
         final JXPathContext reqContext = JXPathServletContexts.getRequestContext(request, context);
 
         assertEquals("OK", reqContext.getValue("app"), "Application Context via Request Context");
-    }
-
-    private void checkPointerIterator(final JXPathContext context) {
-        final Iterator<Pointer> it = context.iteratePointers("/*");
-        assertTrue(it.hasNext(), "Empty context");
-        while (it.hasNext())
-        {
-            final Pointer pointer = it.next();
-            assertNotNull(pointer, "null pointer");
-            assertNotNull(pointer.asPath(), "null path");
-        }
-    }
-
-    @Test
-    public void testPageContext() {
-        final MockServletContext servletContext = new MockServletContext();
-        servletContext.setAttribute("app", "app");
-
-        final MockServletConfig servletConfig = new MockServletConfig();
-        servletConfig.setServletContext(servletContext);
-
-        final MockHttpSession session = new MockHttpSession();
-        session.setupServletContext(servletContext);
-        session.setAttribute("session", "session");
-
-        final MockHttpServletRequest request = new MockHttpServletRequest();
-        request.setAttribute("request", "request");
-        request.setSession(session);
-
-        final MockPageContext pageContext = new MockPageContext();
-        pageContext.setServletConfig(servletConfig);
-        pageContext.setServletRequest(request);
-        pageContext.setAttribute("page", "page");
-
-        assertSame(session, request.getSession(), "Request session");
-
-        final JXPathContext context = JXPathServletContexts.getPageContext(pageContext);
-        context.setLenient(true);
-
-        checkPointerIterator(context);
-
-        assertEquals("page", context.getValue("page"), "Page Scope");
-        assertEquals("request", context.getValue("request"), "Request Scope");
-        assertEquals("session", context.getValue("session"), "Session Scope");
-        assertEquals("app", context.getValue("app"), "Application Scope");
-
-        assertEquals("page", context.getValue("$page/page"), "Explicit Page Scope");
-        assertEquals("request", context.getValue("$request/request"), "Explicit Request Scope");
-        assertEquals("session", context.getValue("$session/session"), "Explicit Session Scope");
-        assertEquals("app", context.getValue("$application/app"), "Explicit Application Scope");
-
-        // iterate through the elements of page context only (two elements expected, 'page' and the context)
-        final Iterator<Pointer> it = context.iteratePointers("$page/*");
-        assertTrue(it.hasNext(), "element not found");
-        it.next();
-        it.next();
-        assertFalse(it.hasNext(), "too many elements");
-
-        // test setting a value in the context
-        context.setValue("/foo1", "bar1");
-        assertEquals("bar1", context.getValue("/foo1"), "Context property");
-
-        context.setValue("$page/foo2", "bar2");
-        assertEquals("bar2", context.getValue("$page/foo2"), "Context property");
     }
 }

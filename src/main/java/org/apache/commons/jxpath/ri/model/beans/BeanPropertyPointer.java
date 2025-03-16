@@ -51,62 +51,14 @@ public class BeanPropertyPointer extends PropertyPointer {
         this.beanInfo = beanInfo;
     }
 
-    /**
-     * This type of node is auxiliary.
-     * @return true
-     */
     @Override
-    public boolean isContainer() {
-        return true;
-    }
-
-    @Override
-    public int getPropertyCount() {
-        if (beanInfo.isAtomic()) {
-            return 0;
-        }
-        return getPropertyDescriptors().length;
-    }
-
-    /**
-     * Gets the names of all properties, sorted alphabetically
-     * @return String[]
-     */
-    @Override
-    public String[] getPropertyNames() {
-        if (names == null) {
-            final PropertyDescriptor[] pds = getPropertyDescriptors();
-            names = new String[pds.length];
-            for (int i = 0; i < names.length; i++) {
-                names[i] = pds[i].getName();
-            }
-        }
-        return names;
-    }
-
-    /**
-     * Select a property by name.
-     * @param propertyName String name
-     */
-    @Override
-    public void setPropertyName(final String propertyName) {
-        setPropertyIndex(UNSPECIFIED_PROPERTY);
-        this.propertyName = propertyName;
-    }
-
-    /**
-     * Selects a property by its offset in the alphabetically sorted list.
-     * @param index property index
-     */
-    @Override
-    public void setPropertyIndex(final int index) {
-        if (propertyIndex != index) {
-            super.setPropertyIndex(index);
-            propertyName = null;
-            propertyDescriptor = null;
+    public NodePointer createPath(final JXPathContext context) {
+        if (getImmediateNode() == null) {
+            super.createPath(context);
             baseValue = UNINITIALIZED;
             value = UNINITIALIZED;
         }
+        return this;
     }
 
     /**
@@ -123,21 +75,6 @@ public class BeanPropertyPointer extends PropertyPointer {
             baseValue = ValueUtils.getValue(getBean(), pd);
         }
         return baseValue;
-    }
-
-    @Override
-    public void setIndex(final int index) {
-        if (this.index == index) {
-            return;
-        }
-        // When dealing with a scalar, index == 0 is equivalent to
-        // WHOLE_COLLECTION, so do not change it.
-        if (this.index != WHOLE_COLLECTION
-                || index != 0
-                || isCollection()) {
-            super.setIndex(index);
-            value = UNINITIALIZED;
-        }
     }
 
     /**
@@ -166,34 +103,6 @@ public class BeanPropertyPointer extends PropertyPointer {
         return value;
     }
 
-    @Override
-    protected boolean isActualProperty() {
-        return getPropertyDescriptor() != null;
-    }
-
-    @Override
-    public boolean isCollection() {
-        final PropertyDescriptor pd = getPropertyDescriptor();
-        if (pd == null) {
-            return false;
-        }
-
-        if (pd instanceof IndexedPropertyDescriptor) {
-            return true;
-        }
-
-        final int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
-        if (hint == -1) {
-            return false;
-        }
-        if (hint == 1) {
-            return true;
-        }
-
-        final Object value = getBaseValue();
-        return value != null && ValueUtils.isCollection(value);
-    }
-
     /**
      * If the property contains a collection, then the length of that
      * collection, otherwise - 1.
@@ -219,70 +128,12 @@ public class BeanPropertyPointer extends PropertyPointer {
         return super.getLength();
     }
 
-    /**
-     * If index == WHOLE_COLLECTION, change the value of the property, otherwise
-     * change the value of the index'th element of the collection
-     * represented by the property.
-     * @param value value to set
-     */
     @Override
-    public void setValue(final Object value) {
-        final PropertyDescriptor pd = getPropertyDescriptor();
-        if (pd == null) {
-            throw new JXPathInvalidAccessException(
-                "Cannot set property: " + asPath() + " - no such property");
+    public int getPropertyCount() {
+        if (beanInfo.isAtomic()) {
+            return 0;
         }
-
-        if (index == WHOLE_COLLECTION) {
-            ValueUtils.setValue(getBean(), pd, value);
-        }
-        else {
-            ValueUtils.setValue(getBean(), pd, index, value);
-        }
-        this.value = value;
-    }
-
-    @Override
-    public NodePointer createPath(final JXPathContext context) {
-        if (getImmediateNode() == null) {
-            super.createPath(context);
-            baseValue = UNINITIALIZED;
-            value = UNINITIALIZED;
-        }
-        return this;
-    }
-
-    @Override
-    public void remove() {
-        if (index == WHOLE_COLLECTION) {
-            setValue(null);
-        }
-        else if (isCollection()) {
-            final Object o = getBaseValue();
-            final Object collection = ValueUtils.remove(getBaseValue(), index);
-            if (collection != o) {
-                ValueUtils.setValue(getBean(), getPropertyDescriptor(), collection);
-            }
-        }
-        else if (index == 0) {
-            index = WHOLE_COLLECTION;
-            setValue(null);
-        }
-    }
-
-    /**
-     * Gets the name of the currently selected property.
-     * @return String property name
-     */
-    @Override
-    public String getPropertyName() {
-        if (propertyName == null) {
-            final PropertyDescriptor pd = getPropertyDescriptor();
-            if (pd != null) {
-                propertyName = pd.getName();
-            }
-        }
-        return propertyName != null ? propertyName : "*";
+        return getPropertyDescriptors().length;
     }
 
     /**
@@ -320,5 +171,154 @@ public class BeanPropertyPointer extends PropertyPointer {
             propertyDescriptors = beanInfo.getPropertyDescriptors();
         }
         return propertyDescriptors;
+    }
+
+    /**
+     * Gets the name of the currently selected property.
+     * @return String property name
+     */
+    @Override
+    public String getPropertyName() {
+        if (propertyName == null) {
+            final PropertyDescriptor pd = getPropertyDescriptor();
+            if (pd != null) {
+                propertyName = pd.getName();
+            }
+        }
+        return propertyName != null ? propertyName : "*";
+    }
+
+    /**
+     * Gets the names of all properties, sorted alphabetically
+     * @return String[]
+     */
+    @Override
+    public String[] getPropertyNames() {
+        if (names == null) {
+            final PropertyDescriptor[] pds = getPropertyDescriptors();
+            names = new String[pds.length];
+            for (int i = 0; i < names.length; i++) {
+                names[i] = pds[i].getName();
+            }
+        }
+        return names;
+    }
+
+    @Override
+    protected boolean isActualProperty() {
+        return getPropertyDescriptor() != null;
+    }
+
+    @Override
+    public boolean isCollection() {
+        final PropertyDescriptor pd = getPropertyDescriptor();
+        if (pd == null) {
+            return false;
+        }
+
+        if (pd instanceof IndexedPropertyDescriptor) {
+            return true;
+        }
+
+        final int hint = ValueUtils.getCollectionHint(pd.getPropertyType());
+        if (hint == -1) {
+            return false;
+        }
+        if (hint == 1) {
+            return true;
+        }
+
+        final Object value = getBaseValue();
+        return value != null && ValueUtils.isCollection(value);
+    }
+
+    /**
+     * This type of node is auxiliary.
+     * @return true
+     */
+    @Override
+    public boolean isContainer() {
+        return true;
+    }
+
+    @Override
+    public void remove() {
+        if (index == WHOLE_COLLECTION) {
+            setValue(null);
+        }
+        else if (isCollection()) {
+            final Object o = getBaseValue();
+            final Object collection = ValueUtils.remove(getBaseValue(), index);
+            if (collection != o) {
+                ValueUtils.setValue(getBean(), getPropertyDescriptor(), collection);
+            }
+        }
+        else if (index == 0) {
+            index = WHOLE_COLLECTION;
+            setValue(null);
+        }
+    }
+
+    @Override
+    public void setIndex(final int index) {
+        if (this.index == index) {
+            return;
+        }
+        // When dealing with a scalar, index == 0 is equivalent to
+        // WHOLE_COLLECTION, so do not change it.
+        if (this.index != WHOLE_COLLECTION
+                || index != 0
+                || isCollection()) {
+            super.setIndex(index);
+            value = UNINITIALIZED;
+        }
+    }
+
+    /**
+     * Selects a property by its offset in the alphabetically sorted list.
+     * @param index property index
+     */
+    @Override
+    public void setPropertyIndex(final int index) {
+        if (propertyIndex != index) {
+            super.setPropertyIndex(index);
+            propertyName = null;
+            propertyDescriptor = null;
+            baseValue = UNINITIALIZED;
+            value = UNINITIALIZED;
+        }
+    }
+
+    /**
+     * Select a property by name.
+     * @param propertyName String name
+     */
+    @Override
+    public void setPropertyName(final String propertyName) {
+        setPropertyIndex(UNSPECIFIED_PROPERTY);
+        this.propertyName = propertyName;
+    }
+
+    /**
+     * If index == WHOLE_COLLECTION, change the value of the property, otherwise
+     * change the value of the index'th element of the collection
+     * represented by the property.
+     * @param value value to set
+     */
+    @Override
+    public void setValue(final Object value) {
+        final PropertyDescriptor pd = getPropertyDescriptor();
+        if (pd == null) {
+            throw new JXPathInvalidAccessException(
+                "Cannot set property: " + asPath() + " - no such property");
+        }
+
+        if (index == WHOLE_COLLECTION) {
+            ValueUtils.setValue(getBean(), pd, value);
+        }
+        else {
+            ValueUtils.setValue(getBean(), pd, index, value);
+        }
+        this.value = value;
     }
 }

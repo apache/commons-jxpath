@@ -21,28 +21,28 @@ package org.apache.commons.jxpath;
  */
 public class TestNull {
 
+    /**
+     */
+    private static String[] array = { "a", null, "b" };
     private Object nothing = null;
+
+    private TestNull child;
+
+    public String[] getArray() {
+        return array;
+    }
+    public TestNull getChild() {
+        if (child == null) {
+            child = new TestNull();
+        }
+        return child;
+    }
+
     public Object getNothing() {
         return nothing;
     }
 
     public void setNothing(final Object something) {
         this.nothing = something;
-    }
-
-    /**
-     */
-    private static String[] array = { "a", null, "b" };
-    public String[] getArray() {
-        return array;
-    }
-
-    private TestNull child;
-
-    public TestNull getChild() {
-        if (child == null) {
-            child = new TestNull();
-        }
-        return child;
     }
 }

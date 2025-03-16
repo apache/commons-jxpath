@@ -28,10 +28,18 @@ import org.apache.commons.jxpath.ri.QName;
 public interface NodePointerFactory {
 
     /**
-     * The factory order number determines its position between other factories.
-     * @return int order
+     * Create a NodePointer for the supplied child object.
+     *
+     * @param parent parent node
+     * @param name String node name
+     * @param object child object
+     * @return null if this factory does not recognize objects of the supplied
+     * type.
      */
-    int getOrder();
+    NodePointer createNodePointer(
+        NodePointer parent,
+        QName name,
+        Object object);
 
     /**
      * Create a NodePointer for the supplied object.  The node will represent
@@ -46,16 +54,8 @@ public interface NodePointerFactory {
     NodePointer createNodePointer(QName name, Object object, Locale locale);
 
     /**
-     * Create a NodePointer for the supplied child object.
-     *
-     * @param parent parent node
-     * @param name String node name
-     * @param object child object
-     * @return null if this factory does not recognize objects of the supplied
-     * type.
+     * The factory order number determines its position between other factories.
+     * @return int order
      */
-    NodePointer createNodePointer(
-        NodePointer parent,
-        QName name,
-        Object object);
+    int getOrder();
 }

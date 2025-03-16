@@ -42,135 +42,23 @@ public class ValueUtils {
     private static final int UNKNOWN_LENGTH_MAX_COUNT = 16000;
 
     /**
-     * Returns true if the object is an array or a Collection.
-     * @param value to test
-     * @return boolean
+     * Convert value to type.
+     * @param value Object
+     * @param type destination
+     * @return conversion result
      */
-    public static boolean isCollection(Object value) {
-        value = getValue(value);
-        if (value == null) {
-            return false;
+    private static Object convert(final Object value, final Class type) {
+        try {
+            return TypeUtils.convert(value, type);
         }
-        if (value.getClass().isArray()) {
-            return true;
-        }
-        return value instanceof Collection;
-    }
-
-    /**
-     * Returns 1 if the type is a collection,
-     * -1 if it is definitely not
-     * and 0 if it may be a collection in some cases.
-     * @param clazz to test
-     * @return int
-     */
-    public static int getCollectionHint(final Class clazz) {
-        if (clazz.isArray()) {
-            return 1;
-        }
-
-        if (Collection.class.isAssignableFrom(clazz)) {
-            return 1;
-        }
-
-        if (clazz.isPrimitive()) {
-            return -1;
-        }
-
-        if (clazz.isInterface()) {
-            return 0;
-        }
-
-        if (Modifier.isFinal(clazz.getModifiers())) {
-            return -1;
-        }
-
-        return 0;
-    }
-
-    /**
-     * If there is a regular non-indexed read method for this property,
-     * uses this method to obtain the collection and then returns its
-     * length.
-     * Otherwise, attempts to guess the length of the collection by
-     * calling the indexed get method repeatedly.  The method is supposed
-     * to throw an exception if the index is out of bounds.
-     * @param object collection
-     * @param pd IndexedPropertyDescriptor
-     * @return int
-     */
-    public static int getIndexedPropertyLength(final Object object,
-            final IndexedPropertyDescriptor pd) {
-        if (pd.getReadMethod() != null) {
-            return getLength(getValue(object, pd));
-        }
-
-        final Method readMethod = pd.getIndexedReadMethod();
-        if (readMethod == null) {
+        catch (final Exception ex) {
             throw new JXPathException(
-                "No indexed read method for property " + pd.getName());
+                "Cannot convert value of class "
+                    + (value == null ? "null" : value.getClass().getName())
+                    + " to type "
+                    + type,
+                ex);
         }
-
-        for (int i = 0; i < UNKNOWN_LENGTH_MAX_COUNT; i++) {
-            try {
-                readMethod.invoke(object, Integer.valueOf(i));
-            }
-            catch (final Throwable t) {
-                return i;
-            }
-        }
-
-        throw new JXPathException(
-            "Cannot determine the length of the indexed property "
-                + pd.getName());
-    }
-
-    /**
-     * Returns the length of the supplied collection. If the supplied object
-     * is not a collection, returns 1. If collection is null, returns 0.
-     * @param collection to check
-     * @return int
-     */
-    public static int getLength(Object collection) {
-        if (collection == null) {
-            return 0;
-        }
-        collection = getValue(collection);
-        if (collection.getClass().isArray()) {
-            return Array.getLength(collection);
-        }
-        if (collection instanceof Collection) {
-            return ((Collection) collection).size();
-        }
-        return 1;
-    }
-
-    /**
-     * Returns an iterator for the supplied collection. If the argument
-     * is null, returns an empty iterator. If the argument is not
-     * a collection, returns an iterator that produces just that one object.
-     * @param collection to iterate
-     * @return Iterator
-     */
-    public static Iterator iterate(final Object collection) {
-        if (collection == null) {
-            return Collections.EMPTY_LIST.iterator();
-        }
-        if (collection.getClass().isArray()) {
-            final int length = Array.getLength(collection);
-            if (length == 0) {
-                return Collections.EMPTY_LIST.iterator();
-            }
-            final ArrayList list = new ArrayList();
-            for (int i = 0; i < length; i++) {
-                list.add(Array.get(collection, i));
-            }
-            return list.iterator();
-        }
-        if (collection instanceof Collection) {
-            return ((Collection) collection).iterator();
-        }
-        return Collections.singletonList(collection).iterator();
     }
 
     /**
@@ -213,330 +101,6 @@ public class ValueUtils {
                 + " into a collection of size "
                 + size);
     }
-
-    /**
-     * Remove the index'th element from the supplied collection.
-     * @param collection to edit
-     * @param index int
-     * @return the resulting collection
-     */
-    public static Object remove(Object collection, final int index) {
-        collection = getValue(collection);
-        if (collection == null) {
-            return null;
-        }
-        if (index >= getLength(collection)) {
-            throw new JXPathException("No such element at index " + index);
-        }
-        if (collection.getClass().isArray()) {
-            final int length = Array.getLength(collection);
-            final Object smaller =
-                Array.newInstance(
-                    collection.getClass().getComponentType(),
-                    length - 1);
-            if (index > 0) {
-                System.arraycopy(collection, 0, smaller, 0, index);
-            }
-            if (index < length - 1) {
-                System.arraycopy(
-                    collection,
-                    index + 1,
-                    smaller,
-                    index,
-                    length - index - 1);
-            }
-            return smaller;
-        }
-        if (collection instanceof List) {
-            final int size = ((List) collection).size();
-            if (index < size) {
-                ((List) collection).remove(index);
-            }
-            return collection;
-        }
-        if (collection instanceof Collection) {
-            final Iterator it = ((Collection) collection).iterator();
-            for (int i = 0; i < index; i++) {
-                if (!it.hasNext()) {
-                    break;
-                }
-                it.next();
-            }
-            if (it.hasNext()) {
-                it.next();
-                it.remove();
-            }
-            return collection;
-        }
-        throw new JXPathException(
-            "Cannot remove "
-                + collection.getClass().getName()
-                + "["
-                + index
-                + "]");
-    }
-
-    /**
-     * Returns the index'th element of the supplied collection.
-     * @param collection to read
-     * @param index int
-     * @return collection[index]
-     */
-    public static Object getValue(Object collection, final int index) {
-        collection = getValue(collection);
-        Object value = collection;
-        if (collection != null) {
-            if (collection.getClass().isArray()) {
-                if (index < 0 || index >= Array.getLength(collection)) {
-                    return null;
-                }
-                value = Array.get(collection, index);
-            }
-            else if (collection instanceof List) {
-                if (index < 0 || index >= ((List) collection).size()) {
-                    return null;
-                }
-                value = ((List) collection).get(index);
-            }
-            else if (collection instanceof Collection) {
-                if (index < 0 || index >= ((Collection) collection).size()) {
-                    return null;
-                }
-
-                int i = 0;
-                final Iterator it = ((Collection) collection).iterator();
-                for (; i < index; i++) {
-                    it.next();
-                }
-                if (it.hasNext()) {
-                    value = it.next();
-                }
-                else {
-                    value = null;
-                }
-            }
-        }
-        return value;
-    }
-
-    /**
-     * Modifies the index'th element of the supplied collection.
-     * Converts the value to the required type if necessary.
-     * @param collection to edit
-     * @param index to replace
-     * @param value new value
-     */
-    public static void setValue(Object collection, final int index, final Object value) {
-        collection = getValue(collection);
-        if (collection != null) {
-            if (collection.getClass().isArray()) {
-                Array.set(
-                    collection,
-                    index,
-                    convert(value, collection.getClass().getComponentType()));
-            }
-            else if (collection instanceof List) {
-                ((List) collection).set(index, value);
-            }
-            else if (collection instanceof Collection) {
-                throw new UnsupportedOperationException(
-                        "Cannot set value of an element of a "
-                                + collection.getClass().getName());
-            }
-        }
-    }
-
-    /**
-     * Returns the value of the bean's property represented by
-     * the supplied property descriptor.
-     * @param bean to read
-     * @param propertyDescriptor indicating what to read
-     * @return Object value
-     */
-    public static Object getValue(final Object bean,
-            final PropertyDescriptor propertyDescriptor) {
-        Object value;
-        try {
-            final Method method =
-                getAccessibleMethod(propertyDescriptor.getReadMethod());
-            if (method == null) {
-                throw new JXPathException("No read method");
-            }
-            value = method.invoke(bean);
-        }
-        catch (final Exception ex) {
-            throw new JXPathException(
-                "Cannot access property: "
-                    + (bean == null ? "null" : bean.getClass().getName())
-                    + "."
-                    + propertyDescriptor.getName(),
-                ex);
-        }
-        return value;
-    }
-
-    /**
-     * Modifies the value of the bean's property represented by
-     * the supplied property descriptor.
-     * @param bean to read
-     * @param propertyDescriptor indicating what to read
-     * @param value to set
-     */
-    public static void setValue(final Object bean,
-            final PropertyDescriptor propertyDescriptor, Object value) {
-        try {
-            final Method method =
-                getAccessibleMethod(propertyDescriptor.getWriteMethod());
-            if (method == null) {
-                throw new JXPathException("No write method");
-            }
-            value = convert(value, propertyDescriptor.getPropertyType());
-            method.invoke(bean, value);
-        }
-        catch (final Exception ex) {
-            throw new JXPathException(
-                "Cannot modify property: "
-                    + (bean == null ? "null" : bean.getClass().getName())
-                    + "."
-                    + propertyDescriptor.getName(),
-                ex);
-        }
-    }
-
-    /**
-     * Convert value to type.
-     * @param value Object
-     * @param type destination
-     * @return conversion result
-     */
-    private static Object convert(final Object value, final Class type) {
-        try {
-            return TypeUtils.convert(value, type);
-        }
-        catch (final Exception ex) {
-            throw new JXPathException(
-                "Cannot convert value of class "
-                    + (value == null ? "null" : value.getClass().getName())
-                    + " to type "
-                    + type,
-                ex);
-        }
-    }
-
-    /**
-     * Returns the index'th element of the bean's property represented by
-     * the supplied property descriptor.
-     * @param bean to read
-     * @param propertyDescriptor indicating what to read
-     * @param index int
-     * @return Object
-     */
-    public static Object getValue(final Object bean,
-            final PropertyDescriptor propertyDescriptor, final int index) {
-        if (propertyDescriptor instanceof IndexedPropertyDescriptor) {
-            try {
-                final IndexedPropertyDescriptor ipd =
-                    (IndexedPropertyDescriptor) propertyDescriptor;
-                final Method method = ipd.getIndexedReadMethod();
-                if (method != null) {
-                    return method.invoke(
-                        bean,
-                            Integer.valueOf(index));
-                }
-            }
-            catch (final InvocationTargetException ex) {
-                final Throwable t = ex.getTargetException();
-                if (t instanceof IndexOutOfBoundsException) {
-                    return null;
-                }
-                throw new JXPathException(
-                    "Cannot access property: " + propertyDescriptor.getName(),
-                    t);
-            }
-            catch (final Throwable ex) {
-                throw new JXPathException(
-                    "Cannot access property: " + propertyDescriptor.getName(),
-                    ex);
-            }
-        }
-
-        // We will fall through if there is no indexed read
-
-        return getValue(getValue(bean, propertyDescriptor), index);
-    }
-
-    /**
-     * Modifies the index'th element of the bean's property represented by
-     * the supplied property descriptor. Converts the value to the required
-     * type if necessary.
-     * @param bean to edit
-     * @param propertyDescriptor indicating what to set
-     * @param index int
-     * @param value to set
-     */
-    public static void setValue(final Object bean,
-            final PropertyDescriptor propertyDescriptor, final int index, final Object value) {
-        if (propertyDescriptor instanceof IndexedPropertyDescriptor) {
-            try {
-                final IndexedPropertyDescriptor ipd = (IndexedPropertyDescriptor) propertyDescriptor;
-                final Method method = ipd.getIndexedWriteMethod();
-                if (method != null) {
-                    method.invoke(bean, Integer.valueOf(index), convert(value, ipd.getIndexedPropertyType()));
-                    return;
-                }
-            }
-            catch (final Exception ex) {
-                throw new IllegalArgumentException("Cannot access property: " + propertyDescriptor.getName() + ", " + ex.getMessage());
-            }
-        }
-        // We will fall through if there is no indexed read
-        final Object collection = getValue(bean, propertyDescriptor);
-        if (isCollection(collection)) {
-            setValue(collection, index, value);
-        }
-        else if (index == 0) {
-            setValue(bean, propertyDescriptor, value);
-        }
-        else {
-            throw new IllegalArgumentException("Not a collection: " + propertyDescriptor.getName());
-        }
-    }
-
-    /**
-     * If the parameter is a container, opens the container and
-     * return the contents.  The method is recursive.
-     * @param object to read
-     * @return Object
-     */
-    public static Object getValue(Object object) {
-        while (object instanceof Container) {
-            object = ((Container) object).getValue();
-        }
-        return object;
-    }
-
-    /**
-     * Returns a shared instance of the dynamic property handler class
-     * returned by {@code getDynamicPropertyHandlerClass()}.
-     * @param clazz to handle
-     * @return DynamicPropertyHandler
-     */
-    public static DynamicPropertyHandler getDynamicPropertyHandler(final Class clazz) {
-        return (DynamicPropertyHandler) dynamicPropertyHandlerMap.computeIfAbsent(clazz, k -> {
-            try {
-                return (DynamicPropertyHandler) clazz.getConstructor().newInstance();
-            }
-            catch (final Exception ex) {
-                throw new JXPathException("Cannot allocate dynamic property handler of class " + clazz.getName(), ex);
-            }
-        });
-    }
-
-    //
-    //  The rest of the code in this file was copied FROM
-    //  org.apache.commons.beanutils.PropertyUtil. We don't want to introduce
-    //  a dependency on BeanUtils yet - DP.
-    //
 
     /**
      * Gets an accessible method (that is, one that can be invoked via
@@ -637,5 +201,441 @@ public class ValueUtils {
 
         // Return whatever we have found
         return method;
+    }
+
+    /**
+     * Returns 1 if the type is a collection,
+     * -1 if it is definitely not
+     * and 0 if it may be a collection in some cases.
+     * @param clazz to test
+     * @return int
+     */
+    public static int getCollectionHint(final Class clazz) {
+        if (clazz.isArray()) {
+            return 1;
+        }
+
+        if (Collection.class.isAssignableFrom(clazz)) {
+            return 1;
+        }
+
+        if (clazz.isPrimitive()) {
+            return -1;
+        }
+
+        if (clazz.isInterface()) {
+            return 0;
+        }
+
+        if (Modifier.isFinal(clazz.getModifiers())) {
+            return -1;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Returns a shared instance of the dynamic property handler class
+     * returned by {@code getDynamicPropertyHandlerClass()}.
+     * @param clazz to handle
+     * @return DynamicPropertyHandler
+     */
+    public static DynamicPropertyHandler getDynamicPropertyHandler(final Class clazz) {
+        return (DynamicPropertyHandler) dynamicPropertyHandlerMap.computeIfAbsent(clazz, k -> {
+            try {
+                return (DynamicPropertyHandler) clazz.getConstructor().newInstance();
+            }
+            catch (final Exception ex) {
+                throw new JXPathException("Cannot allocate dynamic property handler of class " + clazz.getName(), ex);
+            }
+        });
+    }
+
+    /**
+     * If there is a regular non-indexed read method for this property,
+     * uses this method to obtain the collection and then returns its
+     * length.
+     * Otherwise, attempts to guess the length of the collection by
+     * calling the indexed get method repeatedly.  The method is supposed
+     * to throw an exception if the index is out of bounds.
+     * @param object collection
+     * @param pd IndexedPropertyDescriptor
+     * @return int
+     */
+    public static int getIndexedPropertyLength(final Object object,
+            final IndexedPropertyDescriptor pd) {
+        if (pd.getReadMethod() != null) {
+            return getLength(getValue(object, pd));
+        }
+
+        final Method readMethod = pd.getIndexedReadMethod();
+        if (readMethod == null) {
+            throw new JXPathException(
+                "No indexed read method for property " + pd.getName());
+        }
+
+        for (int i = 0; i < UNKNOWN_LENGTH_MAX_COUNT; i++) {
+            try {
+                readMethod.invoke(object, Integer.valueOf(i));
+            }
+            catch (final Throwable t) {
+                return i;
+            }
+        }
+
+        throw new JXPathException(
+            "Cannot determine the length of the indexed property "
+                + pd.getName());
+    }
+
+    /**
+     * Returns the length of the supplied collection. If the supplied object
+     * is not a collection, returns 1. If collection is null, returns 0.
+     * @param collection to check
+     * @return int
+     */
+    public static int getLength(Object collection) {
+        if (collection == null) {
+            return 0;
+        }
+        collection = getValue(collection);
+        if (collection.getClass().isArray()) {
+            return Array.getLength(collection);
+        }
+        if (collection instanceof Collection) {
+            return ((Collection) collection).size();
+        }
+        return 1;
+    }
+
+    /**
+     * If the parameter is a container, opens the container and
+     * return the contents.  The method is recursive.
+     * @param object to read
+     * @return Object
+     */
+    public static Object getValue(Object object) {
+        while (object instanceof Container) {
+            object = ((Container) object).getValue();
+        }
+        return object;
+    }
+
+    /**
+     * Returns the index'th element of the supplied collection.
+     * @param collection to read
+     * @param index int
+     * @return collection[index]
+     */
+    public static Object getValue(Object collection, final int index) {
+        collection = getValue(collection);
+        Object value = collection;
+        if (collection != null) {
+            if (collection.getClass().isArray()) {
+                if (index < 0 || index >= Array.getLength(collection)) {
+                    return null;
+                }
+                value = Array.get(collection, index);
+            }
+            else if (collection instanceof List) {
+                if (index < 0 || index >= ((List) collection).size()) {
+                    return null;
+                }
+                value = ((List) collection).get(index);
+            }
+            else if (collection instanceof Collection) {
+                if (index < 0 || index >= ((Collection) collection).size()) {
+                    return null;
+                }
+
+                int i = 0;
+                final Iterator it = ((Collection) collection).iterator();
+                for (; i < index; i++) {
+                    it.next();
+                }
+                if (it.hasNext()) {
+                    value = it.next();
+                }
+                else {
+                    value = null;
+                }
+            }
+        }
+        return value;
+    }
+
+    /**
+     * Returns the value of the bean's property represented by
+     * the supplied property descriptor.
+     * @param bean to read
+     * @param propertyDescriptor indicating what to read
+     * @return Object value
+     */
+    public static Object getValue(final Object bean,
+            final PropertyDescriptor propertyDescriptor) {
+        Object value;
+        try {
+            final Method method =
+                getAccessibleMethod(propertyDescriptor.getReadMethod());
+            if (method == null) {
+                throw new JXPathException("No read method");
+            }
+            value = method.invoke(bean);
+        }
+        catch (final Exception ex) {
+            throw new JXPathException(
+                "Cannot access property: "
+                    + (bean == null ? "null" : bean.getClass().getName())
+                    + "."
+                    + propertyDescriptor.getName(),
+                ex);
+        }
+        return value;
+    }
+
+    /**
+     * Returns the index'th element of the bean's property represented by
+     * the supplied property descriptor.
+     * @param bean to read
+     * @param propertyDescriptor indicating what to read
+     * @param index int
+     * @return Object
+     */
+    public static Object getValue(final Object bean,
+            final PropertyDescriptor propertyDescriptor, final int index) {
+        if (propertyDescriptor instanceof IndexedPropertyDescriptor) {
+            try {
+                final IndexedPropertyDescriptor ipd =
+                    (IndexedPropertyDescriptor) propertyDescriptor;
+                final Method method = ipd.getIndexedReadMethod();
+                if (method != null) {
+                    return method.invoke(
+                        bean,
+                            Integer.valueOf(index));
+                }
+            }
+            catch (final InvocationTargetException ex) {
+                final Throwable t = ex.getTargetException();
+                if (t instanceof IndexOutOfBoundsException) {
+                    return null;
+                }
+                throw new JXPathException(
+                    "Cannot access property: " + propertyDescriptor.getName(),
+                    t);
+            }
+            catch (final Throwable ex) {
+                throw new JXPathException(
+                    "Cannot access property: " + propertyDescriptor.getName(),
+                    ex);
+            }
+        }
+
+        // We will fall through if there is no indexed read
+
+        return getValue(getValue(bean, propertyDescriptor), index);
+    }
+
+    /**
+     * Returns true if the object is an array or a Collection.
+     * @param value to test
+     * @return boolean
+     */
+    public static boolean isCollection(Object value) {
+        value = getValue(value);
+        if (value == null) {
+            return false;
+        }
+        if (value.getClass().isArray()) {
+            return true;
+        }
+        return value instanceof Collection;
+    }
+
+    /**
+     * Returns an iterator for the supplied collection. If the argument
+     * is null, returns an empty iterator. If the argument is not
+     * a collection, returns an iterator that produces just that one object.
+     * @param collection to iterate
+     * @return Iterator
+     */
+    public static Iterator iterate(final Object collection) {
+        if (collection == null) {
+            return Collections.EMPTY_LIST.iterator();
+        }
+        if (collection.getClass().isArray()) {
+            final int length = Array.getLength(collection);
+            if (length == 0) {
+                return Collections.EMPTY_LIST.iterator();
+            }
+            final ArrayList list = new ArrayList();
+            for (int i = 0; i < length; i++) {
+                list.add(Array.get(collection, i));
+            }
+            return list.iterator();
+        }
+        if (collection instanceof Collection) {
+            return ((Collection) collection).iterator();
+        }
+        return Collections.singletonList(collection).iterator();
+    }
+
+    /**
+     * Remove the index'th element from the supplied collection.
+     * @param collection to edit
+     * @param index int
+     * @return the resulting collection
+     */
+    public static Object remove(Object collection, final int index) {
+        collection = getValue(collection);
+        if (collection == null) {
+            return null;
+        }
+        if (index >= getLength(collection)) {
+            throw new JXPathException("No such element at index " + index);
+        }
+        if (collection.getClass().isArray()) {
+            final int length = Array.getLength(collection);
+            final Object smaller =
+                Array.newInstance(
+                    collection.getClass().getComponentType(),
+                    length - 1);
+            if (index > 0) {
+                System.arraycopy(collection, 0, smaller, 0, index);
+            }
+            if (index < length - 1) {
+                System.arraycopy(
+                    collection,
+                    index + 1,
+                    smaller,
+                    index,
+                    length - index - 1);
+            }
+            return smaller;
+        }
+        if (collection instanceof List) {
+            final int size = ((List) collection).size();
+            if (index < size) {
+                ((List) collection).remove(index);
+            }
+            return collection;
+        }
+        if (collection instanceof Collection) {
+            final Iterator it = ((Collection) collection).iterator();
+            for (int i = 0; i < index; i++) {
+                if (!it.hasNext()) {
+                    break;
+                }
+                it.next();
+            }
+            if (it.hasNext()) {
+                it.next();
+                it.remove();
+            }
+            return collection;
+        }
+        throw new JXPathException(
+            "Cannot remove "
+                + collection.getClass().getName()
+                + "["
+                + index
+                + "]");
+    }
+
+    /**
+     * Modifies the index'th element of the supplied collection.
+     * Converts the value to the required type if necessary.
+     * @param collection to edit
+     * @param index to replace
+     * @param value new value
+     */
+    public static void setValue(Object collection, final int index, final Object value) {
+        collection = getValue(collection);
+        if (collection != null) {
+            if (collection.getClass().isArray()) {
+                Array.set(
+                    collection,
+                    index,
+                    convert(value, collection.getClass().getComponentType()));
+            }
+            else if (collection instanceof List) {
+                ((List) collection).set(index, value);
+            }
+            else if (collection instanceof Collection) {
+                throw new UnsupportedOperationException(
+                        "Cannot set value of an element of a "
+                                + collection.getClass().getName());
+            }
+        }
+    }
+
+    //
+    //  The rest of the code in this file was copied FROM
+    //  org.apache.commons.beanutils.PropertyUtil. We don't want to introduce
+    //  a dependency on BeanUtils yet - DP.
+    //
+
+    /**
+     * Modifies the index'th element of the bean's property represented by
+     * the supplied property descriptor. Converts the value to the required
+     * type if necessary.
+     * @param bean to edit
+     * @param propertyDescriptor indicating what to set
+     * @param index int
+     * @param value to set
+     */
+    public static void setValue(final Object bean,
+            final PropertyDescriptor propertyDescriptor, final int index, final Object value) {
+        if (propertyDescriptor instanceof IndexedPropertyDescriptor) {
+            try {
+                final IndexedPropertyDescriptor ipd = (IndexedPropertyDescriptor) propertyDescriptor;
+                final Method method = ipd.getIndexedWriteMethod();
+                if (method != null) {
+                    method.invoke(bean, Integer.valueOf(index), convert(value, ipd.getIndexedPropertyType()));
+                    return;
+                }
+            }
+            catch (final Exception ex) {
+                throw new IllegalArgumentException("Cannot access property: " + propertyDescriptor.getName() + ", " + ex.getMessage());
+            }
+        }
+        // We will fall through if there is no indexed read
+        final Object collection = getValue(bean, propertyDescriptor);
+        if (isCollection(collection)) {
+            setValue(collection, index, value);
+        }
+        else if (index == 0) {
+            setValue(bean, propertyDescriptor, value);
+        }
+        else {
+            throw new IllegalArgumentException("Not a collection: " + propertyDescriptor.getName());
+        }
+    }
+
+    /**
+     * Modifies the value of the bean's property represented by
+     * the supplied property descriptor.
+     * @param bean to read
+     * @param propertyDescriptor indicating what to read
+     * @param value to set
+     */
+    public static void setValue(final Object bean,
+            final PropertyDescriptor propertyDescriptor, Object value) {
+        try {
+            final Method method =
+                getAccessibleMethod(propertyDescriptor.getWriteMethod());
+            if (method == null) {
+                throw new JXPathException("No write method");
+            }
+            value = convert(value, propertyDescriptor.getPropertyType());
+            method.invoke(bean, value);
+        }
+        catch (final Exception ex) {
+            throw new JXPathException(
+                "Cannot modify property: "
+                    + (bean == null ? "null" : bean.getClass().getName())
+                    + "."
+                    + propertyDescriptor.getName(),
+                ex);
+        }
     }
 }

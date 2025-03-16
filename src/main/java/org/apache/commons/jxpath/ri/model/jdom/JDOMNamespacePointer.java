@@ -23,10 +23,10 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  */
 public class JDOMNamespacePointer extends NodePointer {
-    private final String prefix;
-    private String namespaceURI;
-
     private static final long serialVersionUID = 7935311686545862379L;
+    private final String prefix;
+
+    private String namespaceURI;
 
     /**
      * Create a new JDOMNamespacePointer.
@@ -54,53 +54,6 @@ public class JDOMNamespacePointer extends NodePointer {
     }
 
     @Override
-    public QName getName() {
-        return new QName(prefix);
-    }
-
-    @Override
-    public Object getBaseValue() {
-        return null;
-    }
-
-    @Override
-    public boolean isCollection() {
-        return false;
-    }
-
-    @Override
-    public int getLength() {
-        return 1;
-    }
-
-    @Override
-    public Object getImmediateNode() {
-        return getNamespaceURI();
-    }
-
-    @Override
-    public String getNamespaceURI() {
-        if (namespaceURI == null) {
-            namespaceURI = parent.getNamespaceURI(prefix);
-        }
-        return namespaceURI;
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return true;
-    }
-
-    /**
-     * Throws UnsupportedOperationException.
-     * @param value Object value to set
-     */
-    @Override
-    public void setValue(final Object value) {
-        throw new UnsupportedOperationException("Cannot modify a namespace");
-    }
-
-    @Override
     public String asPath() {
         final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
@@ -116,8 +69,11 @@ public class JDOMNamespacePointer extends NodePointer {
     }
 
     @Override
-    public int hashCode() {
-        return prefix.hashCode();
+    public int compareChildNodePointers(
+        final NodePointer pointer1,
+        final NodePointer pointer2) {
+        // Won't happen - namespaces don't have children
+        return 0;
     }
 
     @Override
@@ -126,10 +82,54 @@ public class JDOMNamespacePointer extends NodePointer {
     }
 
     @Override
-    public int compareChildNodePointers(
-        final NodePointer pointer1,
-        final NodePointer pointer2) {
-        // Won't happen - namespaces don't have children
-        return 0;
+    public Object getBaseValue() {
+        return null;
+    }
+
+    @Override
+    public Object getImmediateNode() {
+        return getNamespaceURI();
+    }
+
+    @Override
+    public int getLength() {
+        return 1;
+    }
+
+    @Override
+    public QName getName() {
+        return new QName(prefix);
+    }
+
+    @Override
+    public String getNamespaceURI() {
+        if (namespaceURI == null) {
+            namespaceURI = parent.getNamespaceURI(prefix);
+        }
+        return namespaceURI;
+    }
+
+    @Override
+    public int hashCode() {
+        return prefix.hashCode();
+    }
+
+    @Override
+    public boolean isCollection() {
+        return false;
+    }
+
+    @Override
+    public boolean isLeaf() {
+        return true;
+    }
+
+    /**
+     * Throws UnsupportedOperationException.
+     * @param value Object value to set
+     */
+    @Override
+    public void setValue(final Object value) {
+        throw new UnsupportedOperationException("Cannot modify a namespace");
     }
 }

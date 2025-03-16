@@ -25,30 +25,6 @@ import org.w3c.dom.Document;
  * Test bean for mixed model JUnit tests.
  */
 public class TestBeanWithNode extends TestBean {
-    private Object node;
-    private Object object;
-
-    public Object getVendor() {
-        return node;
-    }
-
-    public Object[] getVendors() {
-        return new Object[] { node };
-    }
-
-    public void setVendor(final Object node) {
-        this.node = node;
-    }
-
-    @Override
-    public Object getObject() {
-        return object;
-    }
-
-    public void setObject(final Object object) {
-        this.object = object;
-    }
-
     public static TestBeanWithNode createTestBeanWithDOM() {
         final DocumentContainer docCtr =
             new DocumentContainer(
@@ -58,6 +34,30 @@ public class TestBeanWithNode extends TestBean {
         tbwdom.setVendor(doc.getDocumentElement());
         tbwdom.setObject(docCtr);
         return tbwdom;
+    }
+    private Object node;
+
+    private Object object;
+
+    @Override
+    public Object getObject() {
+        return object;
+    }
+
+    public Object getVendor() {
+        return node;
+    }
+
+    public Object[] getVendors() {
+        return new Object[] { node };
+    }
+
+    public void setObject(final Object object) {
+        this.object = object;
+    }
+
+    public void setVendor(final Object node) {
+        this.node = node;
     }
 
 }

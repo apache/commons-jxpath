@@ -58,6 +58,12 @@ public abstract class CoreOperation extends Operation {
     public abstract Object computeValue(EvalContext context);
 
     /**
+     * Computes the precedence of the operation.
+     * @return int precedence
+     */
+    protected abstract int getPrecedence();
+
+    /**
      * Returns the XPath symbol for this operation, e.g. "+", "div", etc.
      * @return String symbol
      */
@@ -69,29 +75,6 @@ public abstract class CoreOperation extends Operation {
      * @return boolean
      */
     protected abstract boolean isSymmetric();
-
-    /**
-     * Computes the precedence of the operation.
-     * @return int precedence
-     */
-    protected abstract int getPrecedence();
-
-    @Override
-    public String toString() {
-        if (args.length == 1) {
-            return getSymbol() + parenthesize(args[0], false);
-        }
-        final StringBuilder buffer = new StringBuilder();
-        for (int i = 0; i < args.length; i++) {
-            if (i > 0) {
-                buffer.append(' ');
-                buffer.append(getSymbol());
-                buffer.append(' ');
-            }
-            buffer.append(parenthesize(args[i], i == 0));
-        }
-        return buffer.toString();
-    }
 
     /**
      * Wrap an expression in parens if necessary.
@@ -113,5 +96,22 @@ public abstract class CoreOperation extends Operation {
             return s;
         }
         return '(' + s + ')';
+    }
+
+    @Override
+    public String toString() {
+        if (args.length == 1) {
+            return getSymbol() + parenthesize(args[0], false);
+        }
+        final StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < args.length; i++) {
+            if (i > 0) {
+                buffer.append(' ');
+                buffer.append(getSymbol());
+                buffer.append(' ');
+            }
+            buffer.append(parenthesize(args[i], i == 0));
+        }
+        return buffer.toString();
     }
 }

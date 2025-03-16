@@ -44,12 +44,12 @@ public class CoreOperationNegate extends CoreOperation {
     }
 
     @Override
-    protected boolean isSymmetric() {
-        return false;
+    public String getSymbol() {
+        return "-";
     }
 
     @Override
-    public String getSymbol() {
-        return "-";
+    protected boolean isSymmetric() {
+        return false;
     }
 }

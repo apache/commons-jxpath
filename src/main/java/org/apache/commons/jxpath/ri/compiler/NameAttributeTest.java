@@ -32,16 +32,16 @@ public class NameAttributeTest extends CoreOperationEqual {
         super(namePath, nameValue);
     }
 
+    @Override
+    public boolean computeContextDependent() {
+        return true;
+    }
+
     /**
      * Gets the name test expression.
      * @return Expression
      */
     public Expression getNameTestExpression() {
         return args[1];
-    }
-
-    @Override
-    public boolean computeContextDependent() {
-        return true;
     }
 }

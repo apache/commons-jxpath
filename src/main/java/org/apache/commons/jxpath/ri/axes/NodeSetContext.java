@@ -38,11 +38,6 @@ public class NodeSetContext extends EvalContext {
     }
 
     @Override
-    public NodeSet getNodeSet() {
-        return nodeSet;
-    }
-
-    @Override
     public NodePointer getCurrentNodePointer() {
         if (position == 0 && !setPosition(1)) {
             return null;
@@ -51,9 +46,13 @@ public class NodeSetContext extends EvalContext {
     }
 
     @Override
-    public boolean setPosition(final int position) {
-        super.setPosition(position);
-        return position >= 1 && position <= nodeSet.getPointers().size();
+    public NodeSet getNodeSet() {
+        return nodeSet;
+    }
+
+    @Override
+    public boolean nextNode() {
+        return setPosition(position + 1);
     }
 
     @Override
@@ -66,7 +65,8 @@ public class NodeSetContext extends EvalContext {
     }
 
     @Override
-    public boolean nextNode() {
-        return setPosition(position + 1);
+    public boolean setPosition(final int position) {
+        super.setPosition(position);
+        return position >= 1 && position <= nodeSet.getPointers().size();
     }
 }

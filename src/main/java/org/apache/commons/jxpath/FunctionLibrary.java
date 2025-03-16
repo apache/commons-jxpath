@@ -45,24 +45,35 @@ public class FunctionLibrary implements Functions {
     }
 
     /**
-     * Remove functions from the library.
-     * @param functions to remove
+     * Prepare the cache.
+     * @return cache map keyed by namespace
      */
-    public void removeFunctions(final Functions functions) {
-        allFunctions.remove(functions);
-        synchronized (this) {
-            byNamespace = null;
+    private synchronized Map functionCache() {
+        if (byNamespace == null) {
+            byNamespace = new HashMap();
+            final int count = allFunctions.size();
+            for (int i = 0; i < count; i++) {
+                final Functions funcs = (Functions) allFunctions.get(i);
+                final Set namespaces = funcs.getUsedNamespaces();
+                for (final Iterator it = namespaces.iterator(); it.hasNext();) {
+                    final String ns = (String) it.next();
+                    final Object candidates = byNamespace.get(ns);
+                    if (candidates == null) {
+                        byNamespace.put(ns, funcs);
+                    }
+                    else if (candidates instanceof Functions) {
+                        final List lst = new ArrayList();
+                        lst.add(candidates);
+                        lst.add(funcs);
+                        byNamespace.put(ns, lst);
+                    }
+                    else {
+                        ((List) candidates).add(funcs);
+                    }
+                }
+            }
         }
-    }
-
-    /**
-     * Returns a set containing all namespaces used by the aggregated
-     * Functions.
-     * @return Set
-     */
-    @Override
-    public Set getUsedNamespaces() {
-        return functionCache().keySet();
+        return byNamespace;
     }
 
     /**
@@ -101,34 +112,23 @@ public class FunctionLibrary implements Functions {
     }
 
     /**
-     * Prepare the cache.
-     * @return cache map keyed by namespace
+     * Returns a set containing all namespaces used by the aggregated
+     * Functions.
+     * @return Set
      */
-    private synchronized Map functionCache() {
-        if (byNamespace == null) {
-            byNamespace = new HashMap();
-            final int count = allFunctions.size();
-            for (int i = 0; i < count; i++) {
-                final Functions funcs = (Functions) allFunctions.get(i);
-                final Set namespaces = funcs.getUsedNamespaces();
-                for (final Iterator it = namespaces.iterator(); it.hasNext();) {
-                    final String ns = (String) it.next();
-                    final Object candidates = byNamespace.get(ns);
-                    if (candidates == null) {
-                        byNamespace.put(ns, funcs);
-                    }
-                    else if (candidates instanceof Functions) {
-                        final List lst = new ArrayList();
-                        lst.add(candidates);
-                        lst.add(funcs);
-                        byNamespace.put(ns, lst);
-                    }
-                    else {
-                        ((List) candidates).add(funcs);
-                    }
-                }
-            }
+    @Override
+    public Set getUsedNamespaces() {
+        return functionCache().keySet();
+    }
+
+    /**
+     * Remove functions from the library.
+     * @param functions to remove
+     */
+    public void removeFunctions(final Functions functions) {
+        allFunctions.remove(functions);
+        synchronized (this) {
+            byNamespace = null;
         }
-        return byNamespace;
     }
 }

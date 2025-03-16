@@ -27,11 +27,13 @@ import java.io.Serializable;
 public interface Variables extends Serializable {
 
     /**
-     * Returns true if the specified variable is declared.
+     * Defines a new variable with the specified value or modifies
+     * the value of an existing variable.
+     * May throw UnsupportedOperationException.
      * @param varName variable name
-     * @return boolean
+     * @param value to declare
      */
-    boolean isDeclaredVariable(String varName);
+    void declareVariable(String varName, Object value);
 
     /**
      * Returns the value of the specified variable.
@@ -42,13 +44,11 @@ public interface Variables extends Serializable {
     Object getVariable(String varName);
 
     /**
-     * Defines a new variable with the specified value or modifies
-     * the value of an existing variable.
-     * May throw UnsupportedOperationException.
+     * Returns true if the specified variable is declared.
      * @param varName variable name
-     * @param value to declare
+     * @return boolean
      */
-    void declareVariable(String varName, Object value);
+    boolean isDeclaredVariable(String varName);
 
     /**
      * Removes an existing variable. May throw UnsupportedOperationException.

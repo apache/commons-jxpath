@@ -22,15 +22,15 @@ import org.apache.commons.jxpath.TestBean;
  */
 public class ExceptionPropertyTestBean {
 
+    public TestBean getErrorBean() {
+        throw new IllegalStateException("errorBean");
+    }
+
     public String getErrorString() {
         throw new IllegalStateException("errorString");
     }
 
     public String[] getErrorStringArray() {
         throw new IllegalStateException("errorStringArray");
-    }
-
-    public TestBean getErrorBean() {
-        throw new IllegalStateException("errorBean");
     }
 }

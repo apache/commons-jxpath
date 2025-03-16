@@ -33,8 +33,15 @@ public class JDOMPointerFactory implements NodePointerFactory {
     public static final int JDOM_POINTER_FACTORY_ORDER = 110;
 
     @Override
-    public int getOrder() {
-        return JDOM_POINTER_FACTORY_ORDER;
+    public NodePointer createNodePointer(
+            final NodePointer parent, final QName name, final Object bean) {
+        if (bean instanceof Document) {
+            return new JDOMNodePointer(parent, bean);
+        }
+        if (bean instanceof Element) {
+            return new JDOMNodePointer(parent, bean);
+        }
+        return null;
     }
 
     @Override
@@ -50,14 +57,7 @@ public class JDOMPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(
-            final NodePointer parent, final QName name, final Object bean) {
-        if (bean instanceof Document) {
-            return new JDOMNodePointer(parent, bean);
-        }
-        if (bean instanceof Element) {
-            return new JDOMNodePointer(parent, bean);
-        }
-        return null;
+    public int getOrder() {
+        return JDOM_POINTER_FACTORY_ORDER;
     }
 }

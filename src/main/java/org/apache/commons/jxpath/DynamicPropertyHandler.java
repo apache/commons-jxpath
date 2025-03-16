@@ -37,19 +37,19 @@ package org.apache.commons.jxpath;
 public interface DynamicPropertyHandler {
 
     /**
-     * Returns a list of dynamic property names for the supplied object.
-     * @param object to inspect
-     * @return String[]
-     */
-    String[] getPropertyNames(Object object);
-
-    /**
      * Returns the value of the specified dynamic property.
      * @param object to search
      * @param propertyName to retrieve
      * @return Object
      */
     Object getProperty(Object object, String propertyName);
+
+    /**
+     * Returns a list of dynamic property names for the supplied object.
+     * @param object to inspect
+     * @return String[]
+     */
+    String[] getPropertyNames(Object object);
 
     /**
      * Modifies the value of the specified dynamic property.

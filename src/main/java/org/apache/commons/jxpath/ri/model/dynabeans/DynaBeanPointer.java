@@ -31,20 +31,18 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 public class DynaBeanPointer extends PropertyOwnerPointer {
     private static final long serialVersionUID = -9135052498044877965L;
 
-    private final QName name;
-    private final DynaBean dynaBean;
-
     /**
-     * Create a new DynaBeanPointer.
-     * @param name is the name given to the first node
-     * @param dynaBean pointed
-     * @param locale Locale
+     * Learn whether two objects are == || .equals().
+     * @param o1 first object
+     * @param o2 second object
+     * @return boolean
      */
-    public DynaBeanPointer(final QName name, final DynaBean dynaBean, final Locale locale) {
-        super(null, locale);
-        this.name = name;
-        this.dynaBean = dynaBean;
+    private static boolean equalObjects(final Object o1, final Object o2) {
+        return o1 == o2 || o1 != null && o1.equals(o2);
     }
+    private final QName name;
+
+    private final DynaBean dynaBean;
 
     /**
      * Create a new DynaBeanPointer.
@@ -58,44 +56,21 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
         this.dynaBean = dynaBean;
     }
 
-    @Override
-    public PropertyPointer getPropertyPointer() {
-        return new DynaBeanPropertyPointer(this, dynaBean);
+    /**
+     * Create a new DynaBeanPointer.
+     * @param name is the name given to the first node
+     * @param dynaBean pointed
+     * @param locale Locale
+     */
+    public DynaBeanPointer(final QName name, final DynaBean dynaBean, final Locale locale) {
+        super(null, locale);
+        this.name = name;
+        this.dynaBean = dynaBean;
     }
 
     @Override
-    public QName getName() {
-        return name;
-    }
-
-    @Override
-    public Object getBaseValue() {
-        return dynaBean;
-    }
-
-    @Override
-    public Object getImmediateNode() {
-        return dynaBean;
-    }
-
-    @Override
-    public boolean isCollection() {
-        return false;
-    }
-
-    @Override
-    public int getLength() {
-        return 1;
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return name == null ? 0 : name.hashCode();
+    public String asPath() {
+        return parent == null ? "/" : super.asPath();
     }
 
     @Override
@@ -119,17 +94,42 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
     }
 
     @Override
-    public String asPath() {
-        return parent == null ? "/" : super.asPath();
+    public Object getBaseValue() {
+        return dynaBean;
     }
 
-    /**
-     * Learn whether two objects are == || .equals().
-     * @param o1 first object
-     * @param o2 second object
-     * @return boolean
-     */
-    private static boolean equalObjects(final Object o1, final Object o2) {
-        return o1 == o2 || o1 != null && o1.equals(o2);
+    @Override
+    public Object getImmediateNode() {
+        return dynaBean;
+    }
+
+    @Override
+    public int getLength() {
+        return 1;
+    }
+
+    @Override
+    public QName getName() {
+        return name;
+    }
+
+    @Override
+    public PropertyPointer getPropertyPointer() {
+        return new DynaBeanPropertyPointer(this, dynaBean);
+    }
+
+    @Override
+    public int hashCode() {
+        return name == null ? 0 : name.hashCode();
+    }
+
+    @Override
+    public boolean isCollection() {
+        return false;
+    }
+
+    @Override
+    public boolean isLeaf() {
+        return false;
     }
 }

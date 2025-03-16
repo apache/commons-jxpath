@@ -101,77 +101,6 @@ public class MethodLookupUtils {
     }
 
     /**
-     * Look up a static method.
-     * @param targetClass the owning class
-     * @param name method name
-     * @param parameters method parameters
-     * @return Method found if any
-     */
-    public static Method lookupStaticMethod(
-        final Class targetClass,
-        final String name,
-        final Object[] parameters) {
-        boolean tryExact = true;
-        final int count = parameters == null ? 0 : parameters.length;
-        final Class[] types = new Class[count];
-        for (int i = 0; i < count; i++) {
-            final Object param = parameters[i];
-            if (param != null) {
-                types[i] = param.getClass();
-            }
-            else {
-                types[i] = null;
-                tryExact = false;
-            }
-        }
-
-        Method method = null;
-
-        if (tryExact) {
-            // First - without type conversion
-            try {
-                method = targetClass.getMethod(name, types);
-                if (method != null
-                    && Modifier.isStatic(method.getModifiers())) {
-                    return method;
-                }
-            }
-            catch (final NoSuchMethodException ignore) { // NOPMD
-                // Ignore
-            }
-        }
-
-        int currentMatch = 0;
-        boolean ambiguous = false;
-
-        // Then - with type conversion
-        final Method[] methods = targetClass.getMethods();
-        for (final Method method2 : methods) {
-            if (Modifier.isStatic(method2.getModifiers())
-                && method2.getName().equals(name)) {
-                final int match =
-                    matchParameterTypes(
-                        method2.getParameterTypes(),
-                        parameters);
-                if (match != NO_MATCH) {
-                    if (match > currentMatch) {
-                        method = method2;
-                        currentMatch = match;
-                        ambiguous = false;
-                    }
-                    else if (match == currentMatch) {
-                        ambiguous = true;
-                    }
-                }
-            }
-        }
-        if (ambiguous) {
-            throw new JXPathException("Ambiguous method call: " + name);
-        }
-        return method;
-    }
-
-    /**
      * Look up a method.
      * @param targetClass owning class
      * @param name method name
@@ -238,6 +167,77 @@ public class MethodLookupUtils {
                     matchParameterTypes(
                         method2.getParameterTypes(),
                         arguments);
+                if (match != NO_MATCH) {
+                    if (match > currentMatch) {
+                        method = method2;
+                        currentMatch = match;
+                        ambiguous = false;
+                    }
+                    else if (match == currentMatch) {
+                        ambiguous = true;
+                    }
+                }
+            }
+        }
+        if (ambiguous) {
+            throw new JXPathException("Ambiguous method call: " + name);
+        }
+        return method;
+    }
+
+    /**
+     * Look up a static method.
+     * @param targetClass the owning class
+     * @param name method name
+     * @param parameters method parameters
+     * @return Method found if any
+     */
+    public static Method lookupStaticMethod(
+        final Class targetClass,
+        final String name,
+        final Object[] parameters) {
+        boolean tryExact = true;
+        final int count = parameters == null ? 0 : parameters.length;
+        final Class[] types = new Class[count];
+        for (int i = 0; i < count; i++) {
+            final Object param = parameters[i];
+            if (param != null) {
+                types[i] = param.getClass();
+            }
+            else {
+                types[i] = null;
+                tryExact = false;
+            }
+        }
+
+        Method method = null;
+
+        if (tryExact) {
+            // First - without type conversion
+            try {
+                method = targetClass.getMethod(name, types);
+                if (method != null
+                    && Modifier.isStatic(method.getModifiers())) {
+                    return method;
+                }
+            }
+            catch (final NoSuchMethodException ignore) { // NOPMD
+                // Ignore
+            }
+        }
+
+        int currentMatch = 0;
+        boolean ambiguous = false;
+
+        // Then - with type conversion
+        final Method[] methods = targetClass.getMethods();
+        for (final Method method2 : methods) {
+            if (Modifier.isStatic(method2.getModifiers())
+                && method2.getName().equals(name)) {
+                final int match =
+                    matchParameterTypes(
+                        method2.getParameterTypes(),
+                        parameters);
                 if (match != NO_MATCH) {
                     if (match > currentMatch) {
                         method = method2;

@@ -29,13 +29,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class XMLUpperCaseElementsTest extends AbstractJXPathTest {
     protected JXPathContext context;
 
-    protected DocumentContainer createDocumentContainer(final String model) {
-        return new DocumentContainer(AbstractJXPathTest.class.getResource("VendorUpper.xml"), model);
-    }
-
     protected JXPathContext createContext(final String model) {
         final JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
         return context;
+    }
+
+    protected DocumentContainer createDocumentContainer(final String model) {
+        return new DocumentContainer(AbstractJXPathTest.class.getResource("VendorUpper.xml"), model);
     }
 
     protected void doTest(final String id, final String model, final String expectedValue) {

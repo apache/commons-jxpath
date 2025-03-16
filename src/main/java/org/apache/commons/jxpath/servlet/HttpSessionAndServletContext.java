@@ -39,18 +39,18 @@ public class HttpSessionAndServletContext {
     }
 
     /**
-     * Gets the session.
-     * @return HttpSession
-     */
-    public HttpSession getSession() {
-        return session;
-    }
-
-    /**
      * Gets the ServletContext.
      * @return ServletContext
      */
     public ServletContext getServletContext() {
         return context;
+    }
+
+    /**
+     * Gets the session.
+     * @return HttpSession
+     */
+    public HttpSession getSession() {
+        return session;
     }
 }

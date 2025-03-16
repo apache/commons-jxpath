@@ -55,10 +55,35 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     private static HashMap parsers = new HashMap();
 
-    private Object document;
-    private final URL xmlURL;
-    private final String model;
-
+    /**
+     * Maps a model type to a parser.
+     * @param model input model type
+     * @return XMLParser
+     */
+    private static XMLParser getParser(final String model) {
+        return (XMLParser) parsers.computeIfAbsent(model, k -> {
+            final String className = (String) parserClasses.get(model);
+            if (className == null) {
+                throw new JXPathException("Unsupported XML model: " + model);
+            }
+            try {
+                final Class clazz = ClassLoaderUtil.getClass(className, true);
+                return (XMLParser) clazz.getConstructor().newInstance();
+            }
+            catch (final Exception ex) {
+                throw new JXPathException("Cannot allocate XMLParser: " + className, ex);
+            }
+        });
+    }
+    /**
+     * Add a class of a custom XML parser.
+     * Parsers for the models "DOM" and "JDOM" are pre-registered.
+     * @param model model name
+     * @param parserClassName parser class name
+     */
+    public static void registerXMLParser(final String model, final String parserClassName) {
+        parserClasses.put(model, parserClassName);
+    }
     /**
      * Add an XML parser.  Parsers for the models "DOM" and "JDOM" are
      * pre-registered.
@@ -69,15 +94,11 @@ public class DocumentContainer extends XMLParser2 implements Container {
         parsers.put(model, parser);
     }
 
-    /**
-     * Add a class of a custom XML parser.
-     * Parsers for the models "DOM" and "JDOM" are pre-registered.
-     * @param model model name
-     * @param parserClassName parser class name
-     */
-    public static void registerXMLParser(final String model, final String parserClassName) {
-        parserClasses.put(model, parserClassName);
-    }
+    private Object document;
+
+    private final URL xmlURL;
+
+    private final String model;
 
     /**
      * Use this constructor if the desired model is DOM.
@@ -164,26 +185,5 @@ public class DocumentContainer extends XMLParser2 implements Container {
     @Override
     public void setValue(final Object value) {
         throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Maps a model type to a parser.
-     * @param model input model type
-     * @return XMLParser
-     */
-    private static XMLParser getParser(final String model) {
-        return (XMLParser) parsers.computeIfAbsent(model, k -> {
-            final String className = (String) parserClasses.get(model);
-            if (className == null) {
-                throw new JXPathException("Unsupported XML model: " + model);
-            }
-            try {
-                final Class clazz = ClassLoaderUtil.getClass(className, true);
-                return (XMLParser) clazz.getConstructor().newInstance();
-            }
-            catch (final Exception ex) {
-                throw new JXPathException("Cannot allocate XMLParser: " + className, ex);
-            }
-        });
     }
 }

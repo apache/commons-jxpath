@@ -43,12 +43,9 @@ public class ExtensionFunction extends Operation {
         this.functionName = functionName;
     }
 
-    /**
-     * Gets the function name
-     * @return QName
-     */
-    public QName getFunctionName() {
-        return functionName;
+    @Override
+    public Object compute(final EvalContext context) {
+        return computeValue(context);
     }
 
     /**
@@ -59,29 +56,6 @@ public class ExtensionFunction extends Operation {
     @Override
     public boolean computeContextDependent() {
         return true;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder buffer = new StringBuilder();
-        buffer.append(functionName);
-        buffer.append('(');
-        final Expression[] args = getArguments();
-        if (args != null) {
-            for (int i = 0; i < args.length; i++) {
-                if (i > 0) {
-                    buffer.append(", ");
-                }
-                buffer.append(args[i]);
-            }
-        }
-        buffer.append(')');
-        return buffer.toString();
-    }
-
-    @Override
-    public Object compute(final EvalContext context) {
-        return computeValue(context);
     }
 
     @Override
@@ -112,5 +86,31 @@ public class ExtensionFunction extends Operation {
      */
     private Object convert(final Object object) {
         return object instanceof EvalContext ? ((EvalContext) object).getValue() : object;
+    }
+
+    /**
+     * Gets the function name
+     * @return QName
+     */
+    public QName getFunctionName() {
+        return functionName;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append(functionName);
+        buffer.append('(');
+        final Expression[] args = getArguments();
+        if (args != null) {
+            for (int i = 0; i < args.length; i++) {
+                if (i > 0) {
+                    buffer.append(", ");
+                }
+                buffer.append(args[i]);
+            }
+        }
+        buffer.append(')');
+        return buffer.toString();
     }
 }

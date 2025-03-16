@@ -63,18 +63,73 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         this.parentContext = parentContext;
     }
 
+    /**
+     * Constructs an iterator.
+     * @return whether the Iterator was constructed
+     */
+    private boolean constructIterator() {
+        final HashSet<Pointer> set = new HashSet<>();
+        final ArrayList<Pointer> list = new ArrayList<>();
+        while (nextSet()) {
+            while (nextNode()) {
+                final NodePointer pointer = getCurrentNodePointer();
+                if (!set.contains(pointer)) {
+                    set.add(pointer);
+                    list.add(pointer);
+                }
+            }
+        }
+        if (list.isEmpty()) {
+            return false;
+        }
+
+        sortPointers(list);
+
+        pointerIterator = list.iterator();
+        return true;
+    }
+
+    /**
+     * Returns the list of all Pointers in this context for the current
+     * position of the parent context.
+     * @return List
+     */
+    @Override
+    public List getContextNodeList() {
+        final int pos = position;
+        if (pos != 0) {
+            reset();
+        }
+        final List<Pointer> list = new ArrayList<>();
+        while (nextNode()) {
+            list.add(getCurrentNodePointer());
+        }
+        if (pos != 0) {
+            setPosition(pos);
+        }
+        else {
+            reset();
+        }
+        return list;
+    }
+
     @Override
     public Pointer getContextNodePointer() {
         return getCurrentNodePointer();
     }
 
-    @Override
-    public JXPathContext getJXPathContext() {
-        return getRootContext().getJXPathContext();
-    }
+    /**
+     * Returns the current context node. Undefined before the beginning
+     * of the iteration.
+     * @return NodePoiner
+     */
+    public abstract NodePointer getCurrentNodePointer();
 
-    @Override
-    public int getPosition() {
+    /**
+     * Gets the current position.
+     * @return int position.
+     */
+    public int getCurrentPosition() {
         return position;
     }
 
@@ -88,16 +143,74 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
         return parentContext != null && parentContext.isChildOrderingRequired() ? 1 : 0;
     }
 
+    @Override
+    public JXPathContext getJXPathContext() {
+        return getRootContext().getJXPathContext();
+    }
+
     /**
-     * Even if this context has the natural ordering and therefore does
-     * not require collecting and sorting all nodes prior to returning them,
-     * such operation may be required for any child context.
-     * @return boolean
+     * Returns the list of all Pointers in this context for all positions
+     * of the parent contexts.  If there was an ongoing iteration over
+     * this context, the method should not be called.
+     * @return NodeSet
      */
-    public boolean isChildOrderingRequired() {
-        // Default behavior: if this context needs to be ordered,
-        // the children need to be ordered too
-        return getDocumentOrder() != 0;
+    public NodeSet getNodeSet() {
+        if (position != 0) {
+            throw new JXPathException(
+                "Simultaneous operations: "
+                    + "should not request pointer list while "
+                    + "iterating over an EvalContext");
+        }
+        final BasicNodeSet set = new BasicNodeSet();
+        while (nextSet()) {
+            while (nextNode()) {
+                set.add((Pointer) getCurrentNodePointer().clone());
+            }
+        }
+
+        return set;
+    }
+
+    @Override
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * Returns the root context of the path, which provides easy
+     * access to variables and functions.
+     * @return RootContext
+     */
+    public RootContext getRootContext() {
+        if (rootContext == null) {
+            rootContext = parentContext.getRootContext();
+        }
+        return rootContext;
+    }
+
+    /**
+     * Returns the first encountered Pointer that matches the current
+     * context's criteria.
+     * @return Pointer
+     */
+    public Pointer getSingleNodePointer() {
+        reset();
+        while (nextSet()) {
+            if (nextNode()) {
+                return getCurrentNodePointer();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Typically returns the NodeSet by calling getNodeSet(),
+     * but will be overridden for contexts that more naturally produce
+     * individual values, e.g. VariableContext
+     * @return Object
+     */
+    public Object getValue() {
+        return getNodeSet();
     }
 
     /**
@@ -116,6 +229,18 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
             performIteratorStep();
         }
         return !done;
+    }
+
+    /**
+     * Even if this context has the natural ordering and therefore does
+     * not require collecting and sorting all nodes prior to returning them,
+     * such operation may be required for any child context.
+     * @return boolean
+     */
+    public boolean isChildOrderingRequired() {
+        // Default behavior: if this context needs to be ordered,
+        // the children need to be ordered too
+        return getDocumentOrder() != 0;
     }
 
     /**
@@ -145,189 +270,11 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     }
 
     /**
-     * Moves the iterator forward by one position
+     * Returns true if there is another object in the current set.
+     * Switches the current position and node to the next object.
+     * @return boolean
      */
-    private void performIteratorStep() {
-        done = true;
-        if (position != 0 && nextNode()) {
-            done = false;
-        }
-        else {
-            while (nextSet()) {
-                if (nextNode()) {
-                    done = false;
-                    break;
-                }
-            }
-        }
-        hasPerformedIteratorStep = true;
-    }
-
-    /**
-     * Operation is not supported
-     * @throws UnsupportedOperationException Always thrown.
-     */
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException(
-            "JXPath iterators cannot remove nodes");
-    }
-
-    /**
-     * Constructs an iterator.
-     * @return whether the Iterator was constructed
-     */
-    private boolean constructIterator() {
-        final HashSet<Pointer> set = new HashSet<>();
-        final ArrayList<Pointer> list = new ArrayList<>();
-        while (nextSet()) {
-            while (nextNode()) {
-                final NodePointer pointer = getCurrentNodePointer();
-                if (!set.contains(pointer)) {
-                    set.add(pointer);
-                    list.add(pointer);
-                }
-            }
-        }
-        if (list.isEmpty()) {
-            return false;
-        }
-
-        sortPointers(list);
-
-        pointerIterator = list.iterator();
-        return true;
-    }
-
-    /**
-     * Sort a list of pointers based on document order.
-     * @param l the list to sort.
-     */
-    protected void sortPointers(final List l) {
-        switch (getDocumentOrder()) {
-        case 1:
-            Collections.sort(l);
-            break;
-        case -1:
-            Collections.sort(l, ReverseComparator.INSTANCE);
-            break;
-        default:
-            break;
-        }
-    }
-
-    /**
-     * Returns the list of all Pointers in this context for the current
-     * position of the parent context.
-     * @return List
-     */
-    @Override
-    public List getContextNodeList() {
-        final int pos = position;
-        if (pos != 0) {
-            reset();
-        }
-        final List<Pointer> list = new ArrayList<>();
-        while (nextNode()) {
-            list.add(getCurrentNodePointer());
-        }
-        if (pos != 0) {
-            setPosition(pos);
-        }
-        else {
-            reset();
-        }
-        return list;
-    }
-
-    /**
-     * Returns the list of all Pointers in this context for all positions
-     * of the parent contexts.  If there was an ongoing iteration over
-     * this context, the method should not be called.
-     * @return NodeSet
-     */
-    public NodeSet getNodeSet() {
-        if (position != 0) {
-            throw new JXPathException(
-                "Simultaneous operations: "
-                    + "should not request pointer list while "
-                    + "iterating over an EvalContext");
-        }
-        final BasicNodeSet set = new BasicNodeSet();
-        while (nextSet()) {
-            while (nextNode()) {
-                set.add((Pointer) getCurrentNodePointer().clone());
-            }
-        }
-
-        return set;
-    }
-
-    /**
-     * Typically returns the NodeSet by calling getNodeSet(),
-     * but will be overridden for contexts that more naturally produce
-     * individual values, e.g. VariableContext
-     * @return Object
-     */
-    public Object getValue() {
-        return getNodeSet();
-    }
-
-    @Override
-    public String toString() {
-        final Pointer ptr = getContextNodePointer();
-        return ptr == null ? "Empty expression context" : "Expression context [" + getPosition()
-                + "] " + ptr.asPath();
-    }
-
-    /**
-     * Returns the root context of the path, which provides easy
-     * access to variables and functions.
-     * @return RootContext
-     */
-    public RootContext getRootContext() {
-        if (rootContext == null) {
-            rootContext = parentContext.getRootContext();
-        }
-        return rootContext;
-    }
-
-    /**
-     * Sets current position = 0, which is the pre-iteration state.
-     */
-    public void reset() {
-        position = 0;
-    }
-
-    /**
-     * Gets the current position.
-     * @return int position.
-     */
-    public int getCurrentPosition() {
-        return position;
-    }
-
-    /**
-     * Returns the first encountered Pointer that matches the current
-     * context's criteria.
-     * @return Pointer
-     */
-    public Pointer getSingleNodePointer() {
-        reset();
-        while (nextSet()) {
-            if (nextNode()) {
-                return getCurrentNodePointer();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns the current context node. Undefined before the beginning
-     * of the iteration.
-     * @return NodePoiner
-     */
-    public abstract NodePointer getCurrentNodePointer();
+    public abstract boolean nextNode();
 
     /**
      * Returns true if there is another sets of objects to interate over.
@@ -367,11 +314,40 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     }
 
     /**
-     * Returns true if there is another object in the current set.
-     * Switches the current position and node to the next object.
-     * @return boolean
+     * Moves the iterator forward by one position
      */
-    public abstract boolean nextNode();
+    private void performIteratorStep() {
+        done = true;
+        if (position != 0 && nextNode()) {
+            done = false;
+        }
+        else {
+            while (nextSet()) {
+                if (nextNode()) {
+                    done = false;
+                    break;
+                }
+            }
+        }
+        hasPerformedIteratorStep = true;
+    }
+
+    /**
+     * Operation is not supported
+     * @throws UnsupportedOperationException Always thrown.
+     */
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException(
+            "JXPath iterators cannot remove nodes");
+    }
+
+    /**
+     * Sets current position = 0, which is the pre-iteration state.
+     */
+    public void reset() {
+        position = 0;
+    }
 
     /**
      * Moves the current position to the specified index. Used with integer
@@ -384,5 +360,29 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     public boolean setPosition(final int position) {
         this.position = position;
         return true;
+    }
+
+    /**
+     * Sort a list of pointers based on document order.
+     * @param l the list to sort.
+     */
+    protected void sortPointers(final List l) {
+        switch (getDocumentOrder()) {
+        case 1:
+            Collections.sort(l);
+            break;
+        case -1:
+            Collections.sort(l, ReverseComparator.INSTANCE);
+            break;
+        default:
+            break;
+        }
+    }
+
+    @Override
+    public String toString() {
+        final Pointer ptr = getContextNodePointer();
+        return ptr == null ? "Empty expression context" : "Expression context [" + getPosition()
+                + "] " + ptr.asPath();
     }
 }

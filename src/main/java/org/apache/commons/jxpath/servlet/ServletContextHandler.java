@@ -31,13 +31,6 @@ public class ServletContextHandler implements DynamicPropertyHandler {
 
     private static final int DEFAULT_PROPERTY_COUNT = 16;
 
-    @Override
-    public String[] getPropertyNames(final Object context) {
-        final HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
-        collectPropertyNames(list, context);
-        return (String[]) list.toArray(new String[list.size()]);
-    }
-
     /**
      * Collect the property names from bean, storing in set.
      * @param set destination
@@ -56,6 +49,13 @@ public class ServletContextHandler implements DynamicPropertyHandler {
     @Override
     public Object getProperty(final Object context, final String property) {
         return ((ServletContext) context).getAttribute(property);
+    }
+
+    @Override
+    public String[] getPropertyNames(final Object context) {
+        final HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
+        collectPropertyNames(list, context);
+        return (String[]) list.toArray(new String[list.size()]);
     }
 
     @Override

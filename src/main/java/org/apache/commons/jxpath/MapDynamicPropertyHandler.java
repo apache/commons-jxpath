@@ -26,6 +26,11 @@ import java.util.Set;
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
     @Override
+    public Object getProperty(final Object object, final String propertyName) {
+        return ((Map) object).get(propertyName);
+    }
+
+    @Override
     public String[] getPropertyNames(final Object object) {
         final Map map = (Map) object;
         final Set set = map.keySet();
@@ -35,11 +40,6 @@ public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
             names[i] = String.valueOf(it.next());
         }
         return names;
-    }
-
-    @Override
-    public Object getProperty(final Object object, final String propertyName) {
-        return ((Map) object).get(propertyName);
     }
 
     @Override

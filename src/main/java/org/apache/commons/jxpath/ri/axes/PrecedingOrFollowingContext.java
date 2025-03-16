@@ -60,26 +60,6 @@ public class PrecedingOrFollowingContext extends EvalContext {
     }
 
     @Override
-    public void reset() {
-        super.reset();
-        setStarted = false;
-    }
-
-    @Override
-    public boolean setPosition(final int position) {
-        if (position < this.position) {
-            reset();
-        }
-
-        while (this.position < position) {
-            if (!nextNode()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
     public boolean nextNode() {
         if (!setStarted) {
             setStarted = true;
@@ -171,5 +151,25 @@ public class PrecedingOrFollowingContext extends EvalContext {
             }
         }
         return false;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        setStarted = false;
+    }
+
+    @Override
+    public boolean setPosition(final int position) {
+        if (position < this.position) {
+            reset();
+        }
+
+        while (this.position < position) {
+            if (!nextNode()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

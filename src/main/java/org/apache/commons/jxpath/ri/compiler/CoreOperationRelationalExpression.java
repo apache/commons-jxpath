@@ -39,29 +39,6 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
         super(args);
     }
 
-    @Override
-    public final Object computeValue(final EvalContext context) {
-        return compute(args[0].compute(context), args[1].compute(context))
-                ? Boolean.TRUE : Boolean.FALSE;
-    }
-
-    @Override
-    protected final int getPrecedence() {
-        return RELATIONAL_EXPR_PRECEDENCE;
-    }
-
-    @Override
-    protected final boolean isSymmetric() {
-        return false;
-    }
-
-    /**
-     * Template method for subclasses to evaluate the result of a comparison.
-     * @param compare result of comparison to evaluate
-     * @return ultimate operation success/failure
-     */
-    protected abstract boolean evaluateCompare(int compare);
-
     /**
      * Compare left to right.
      * @param left left operand
@@ -98,19 +75,10 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
         return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
     }
 
-    /**
-     * Reduce an operand for comparison.
-     * @param o Object to reduce
-     * @return reduced operand
-     */
-    private Object reduce(Object o) {
-        if (o instanceof SelfContext) {
-            o = ((EvalContext) o).getSingleNodePointer();
-        }
-        if (o instanceof Collection) {
-            o = ((Collection) o).iterator();
-        }
-        return o;
+    @Override
+    public final Object computeValue(final EvalContext context) {
+        return compute(args[0].compute(context), args[1].compute(context))
+                ? Boolean.TRUE : Boolean.FALSE;
     }
 
     /**
@@ -146,6 +114,13 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
     }
 
     /**
+     * Template method for subclasses to evaluate the result of a comparison.
+     * @param compare result of comparison to evaluate
+     * @return ultimate operation success/failure
+     */
+    protected abstract boolean evaluateCompare(int compare);
+
+    /**
      * Learn whether there is an intersection between two Iterators.
      * @param lit left Iterator
      * @param rit right Iterator
@@ -162,6 +137,31 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
             }
         }
         return false;
+    }
+
+    @Override
+    protected final int getPrecedence() {
+        return RELATIONAL_EXPR_PRECEDENCE;
+    }
+
+    @Override
+    protected final boolean isSymmetric() {
+        return false;
+    }
+
+    /**
+     * Reduce an operand for comparison.
+     * @param o Object to reduce
+     * @return reduced operand
+     */
+    private Object reduce(Object o) {
+        if (o instanceof SelfContext) {
+            o = ((EvalContext) o).getSingleNodePointer();
+        }
+        if (o instanceof Collection) {
+            o = ((Collection) o).iterator();
+        }
+        return o;
     }
 
 }

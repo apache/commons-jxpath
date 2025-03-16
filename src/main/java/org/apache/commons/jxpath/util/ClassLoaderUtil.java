@@ -36,16 +36,6 @@ public class ClassLoaderUtil {
     private static Map abbreviationMap = new HashMap();
 
     /**
-     * Add primitive type abbreviation to maps of abbreviations.
-     *
-     * @param primitive Canonical name of primitive type
-     * @param abbreviation Corresponding abbreviation of primitive type
-     */
-    private static void addAbbreviation(final String primitive, final String abbreviation) {
-        abbreviationMap.put(primitive, abbreviation);
-    }
-
-    /**
      * Feed abbreviation maps
      */
     static {
@@ -57,6 +47,31 @@ public class ClassLoaderUtil {
         addAbbreviation("byte", "B");
         addAbbreviation("double", "D");
         addAbbreviation("char", "C");
+    }
+
+    /**
+     * Add primitive type abbreviation to maps of abbreviations.
+     *
+     * @param primitive Canonical name of primitive type
+     * @param abbreviation Corresponding abbreviation of primitive type
+     */
+    private static void addAbbreviation(final String primitive, final String abbreviation) {
+        abbreviationMap.put(primitive, abbreviation);
+    }
+
+    /**
+     * Returns the (initialized) class represented by {@code className}
+     * using the {@code classLoader}.  This implementation supports names
+     * like "{@code java.lang.String[]}" as well as
+     * "{@code [Ljava.lang.String;}".
+     *
+     * @param classLoader  the class loader to use to load the class
+     * @param className  the class name
+     * @return the class represented by {@code className} using the {@code classLoader}
+     * @throws ClassNotFoundException if the class is not found
+     */
+    public static Class getClass(final ClassLoader classLoader, final String className) throws ClassNotFoundException {
+        return getClass(classLoader, className, true);
     }
 
     // Class loading
@@ -82,21 +97,6 @@ public class ClassLoaderUtil {
             clazz = Class.forName(toCanonicalName(className), initialize, classLoader);
         }
         return clazz;
-    }
-
-    /**
-     * Returns the (initialized) class represented by {@code className}
-     * using the {@code classLoader}.  This implementation supports names
-     * like "{@code java.lang.String[]}" as well as
-     * "{@code [Ljava.lang.String;}".
-     *
-     * @param classLoader  the class loader to use to load the class
-     * @param className  the class name
-     * @return the class represented by {@code className} using the {@code classLoader}
-     * @throws ClassNotFoundException if the class is not found
-     */
-    public static Class getClass(final ClassLoader classLoader, final String className) throws ClassNotFoundException {
-        return getClass(classLoader, className, true);
     }
 
     /**

@@ -27,9 +27,6 @@ import org.apache.commons.jxpath.ri.QName;
  * @since JXPath 1.3
  */
 public class VariablePointerFactory implements NodePointerFactory {
-    /** Factory order constant */
-    public static final int VARIABLE_POINTER_FACTORY_ORDER = 890;
-
     /**
      * Node value wrapper to trigger a VariablePointerFactory.
      */
@@ -54,6 +51,9 @@ public class VariablePointerFactory implements NodePointerFactory {
         }
     }
 
+    /** Factory order constant */
+    public static final int VARIABLE_POINTER_FACTORY_ORDER = 890;
+
     /**
      * VariableContextWrapper factory method.
      * @param context the JXPathContext to wrap.
@@ -61,6 +61,12 @@ public class VariablePointerFactory implements NodePointerFactory {
      */
     public static VariableContextWrapper contextWrapper(final JXPathContext context) {
         return new VariableContextWrapper(context);
+    }
+
+    @Override
+    public NodePointer createNodePointer(final NodePointer parent, final QName name,
+            final Object object) {
+        return createNodePointer(name, object, null);
     }
 
     @Override
@@ -81,12 +87,6 @@ public class VariablePointerFactory implements NodePointerFactory {
             return new VariablePointer(name);
         }
         return null;
-    }
-
-    @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name,
-            final Object object) {
-        return createNodePointer(name, object, null);
     }
 
     @Override

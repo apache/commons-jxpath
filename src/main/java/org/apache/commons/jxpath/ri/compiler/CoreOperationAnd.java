@@ -48,12 +48,12 @@ public class CoreOperationAnd extends CoreOperation {
     }
 
     @Override
-    protected boolean isSymmetric() {
-        return true;
+    public String getSymbol() {
+        return "and";
     }
 
     @Override
-    public String getSymbol() {
-        return "and";
+    protected boolean isSymmetric() {
+        return true;
     }
 }

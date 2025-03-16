@@ -47,6 +47,18 @@ public class JXPathException extends RuntimeException {
     }
 
     /**
+     * Create a new {@code JXPathException} with the
+     * given {@code Exception} base cause and detail message.
+     *
+     * @param msg The detail message.
+     * @param e The exception to be encapsulated in a JXPathException
+     */
+    public JXPathException(final String msg, final Throwable e) {
+        super(msg);
+        this.exception = e;
+    }
+
+    /**
      * Create a new {@code JXPathException} with a
      * given {@code Throwable} base cause of the error.
      *
@@ -59,15 +71,22 @@ public class JXPathException extends RuntimeException {
     }
 
     /**
-     * Create a new {@code JXPathException} with the
-     * given {@code Exception} base cause and detail message.
-     *
-     * @param msg The detail message.
-     * @param e The exception to be encapsulated in a JXPathException
+     * Same as {@link #getException() getException()}
+     * @return The encapsulated exception, or null if there is none.
      */
-    public JXPathException(final String msg, final Throwable e) {
-        super(msg);
-        this.exception = e;
+    @Override
+    public Throwable getCause() {
+        return exception;
+    }
+
+    /**
+     * Gets the actual exception (if any) that caused this exception to
+     * be raised.
+     *
+     * @return The encapsulated exception, or null if there is none.
+     */
+    public Throwable getException() {
+        return exception;
     }
 
     /**
@@ -90,25 +109,6 @@ public class JXPathException extends RuntimeException {
         final String eMsg = exception.getMessage();
         buf.append(eMsg == null ? exception.getClass().getName() : eMsg);
         return buf.toString();
-    }
-
-    /**
-     * Gets the actual exception (if any) that caused this exception to
-     * be raised.
-     *
-     * @return The encapsulated exception, or null if there is none.
-     */
-    public Throwable getException() {
-        return exception;
-    }
-
-    /**
-     * Same as {@link #getException() getException()}
-     * @return The encapsulated exception, or null if there is none.
-     */
-    @Override
-    public Throwable getCause() {
-        return exception;
     }
 
 }

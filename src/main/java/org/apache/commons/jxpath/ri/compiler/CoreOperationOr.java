@@ -48,12 +48,12 @@ public class CoreOperationOr extends CoreOperation {
     }
 
     @Override
-    protected boolean isSymmetric() {
-        return true;
+    public String getSymbol() {
+        return "or";
     }
 
     @Override
-    public String getSymbol() {
-        return "or";
+    protected boolean isSymmetric() {
+        return true;
     }
 }

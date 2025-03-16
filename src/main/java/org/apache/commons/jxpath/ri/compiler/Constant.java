@@ -47,6 +47,15 @@ public class Constant extends Expression {
         return value;
     }
 
+    /**
+     * Returns false
+     * @return false
+     */
+    @Override
+    public boolean computeContextDependent() {
+        return false;
+    }
+
     @Override
     public Object computeValue(final EvalContext context) {
         return value;
@@ -58,15 +67,6 @@ public class Constant extends Expression {
      */
     @Override
     public boolean isContextDependent() {
-        return false;
-    }
-
-    /**
-     * Returns false
-     * @return false
-     */
-    @Override
-    public boolean computeContextDependent() {
         return false;
     }
 

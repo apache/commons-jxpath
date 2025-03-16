@@ -46,12 +46,12 @@ public class CoreOperationMod extends CoreOperation {
     }
 
     @Override
-    protected boolean isSymmetric() {
-        return false;
+    public String getSymbol() {
+        return "mod";
     }
 
     @Override
-    public String getSymbol() {
-        return "mod";
+    protected boolean isSymmetric() {
+        return false;
     }
 }

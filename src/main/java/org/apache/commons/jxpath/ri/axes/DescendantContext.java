@@ -31,13 +31,13 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * axes.
  */
 public class DescendantContext extends EvalContext {
+    private static final NodeTest ELEMENT_NODE_TEST =
+            new NodeTypeTest(Compiler.NODE_TYPE_NODE);
     private final NodeTest nodeTest;
     private boolean setStarted = false;
     private Stack stack = null;
     private NodePointer currentNodePointer = null;
     private final boolean includeSelf;
-    private static final NodeTest ELEMENT_NODE_TEST =
-            new NodeTypeTest(Compiler.NODE_TYPE_NODE);
 
     /**
      * Create a new DescendantContext.
@@ -53,11 +53,6 @@ public class DescendantContext extends EvalContext {
     }
 
     @Override
-    public boolean isChildOrderingRequired() {
-        return true;
-    }
-
-    @Override
     public NodePointer getCurrentNodePointer() {
         if (position == 0 && !setPosition(1)) {
             return null;
@@ -66,23 +61,25 @@ public class DescendantContext extends EvalContext {
     }
 
     @Override
-    public void reset() {
-        super.reset();
-        setStarted = false;
+    public boolean isChildOrderingRequired() {
+        return true;
     }
 
-    @Override
-    public boolean setPosition(final int position) {
-        if (position < this.position) {
-            reset();
-        }
-
-        while (this.position < position) {
-            if (!nextNode()) {
-                return false;
+    /**
+     * Checks if we are reentering a bean we have already seen and if so
+     * returns true to prevent infinite recursion.
+     * @return boolean
+     */
+    private boolean isRecursive() {
+        final Object node = currentNodePointer.getNode();
+        for (int i = stack.size() - 1; --i >= 0;) {
+            final NodeIterator it = (NodeIterator) stack.get(i);
+            final Pointer pointer = it.getNodePointer();
+            if (pointer != null && pointer.getNode() == node) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -138,20 +135,23 @@ public class DescendantContext extends EvalContext {
         return false;
     }
 
-    /**
-     * Checks if we are reentering a bean we have already seen and if so
-     * returns true to prevent infinite recursion.
-     * @return boolean
-     */
-    private boolean isRecursive() {
-        final Object node = currentNodePointer.getNode();
-        for (int i = stack.size() - 1; --i >= 0;) {
-            final NodeIterator it = (NodeIterator) stack.get(i);
-            final Pointer pointer = it.getNodePointer();
-            if (pointer != null && pointer.getNode() == node) {
-                return true;
+    @Override
+    public void reset() {
+        super.reset();
+        setStarted = false;
+    }
+
+    @Override
+    public boolean setPosition(final int position) {
+        if (position < this.position) {
+            reset();
+        }
+
+        while (this.position < position) {
+            if (!nextNode()) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }

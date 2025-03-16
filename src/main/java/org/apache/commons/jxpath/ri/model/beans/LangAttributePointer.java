@@ -37,23 +37,30 @@ public class LangAttributePointer extends NodePointer {
     }
 
     @Override
-    public QName getName() {
-        return new QName("xml", "lang");
+    public String asPath() {
+        final StringBuilder buffer = new StringBuilder();
+        if (parent != null) {
+            buffer.append(parent.asPath());
+            if (buffer.length() == 0
+                || buffer.charAt(buffer.length() - 1) != '/') {
+                buffer.append('/');
+            }
+        }
+        buffer.append("@xml:lang");
+        return buffer.toString();
     }
 
     @Override
-    public String getNamespaceURI() {
-        return null;
+    public int compareChildNodePointers(
+        final NodePointer pointer1,
+        final NodePointer pointer2) {
+        // Won't happen - lang attributes don't have children
+        return 0;
     }
 
     @Override
-    public boolean isCollection() {
-        return false;
-    }
-
-    @Override
-    public int getLength() {
-        return 1;
+    public boolean equals(final Object object) {
+        return object instanceof LangAttributePointer;
     }
 
     @Override
@@ -64,6 +71,31 @@ public class LangAttributePointer extends NodePointer {
     @Override
     public Object getImmediateNode() {
         return getBaseValue();
+    }
+
+    @Override
+    public int getLength() {
+        return 1;
+    }
+
+    @Override
+    public QName getName() {
+        return new QName("xml", "lang");
+    }
+
+    @Override
+    public String getNamespaceURI() {
+        return null;
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    @Override
+    public boolean isCollection() {
+        return false;
     }
 
     @Override
@@ -84,39 +116,7 @@ public class LangAttributePointer extends NodePointer {
     }
 
     @Override
-    public String asPath() {
-        final StringBuilder buffer = new StringBuilder();
-        if (parent != null) {
-            buffer.append(parent.asPath());
-            if (buffer.length() == 0
-                || buffer.charAt(buffer.length() - 1) != '/') {
-                buffer.append('/');
-            }
-        }
-        buffer.append("@xml:lang");
-        return buffer.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return 0;
-    }
-
-    @Override
-    public boolean equals(final Object object) {
-        return object instanceof LangAttributePointer;
-    }
-
-    @Override
     public boolean testNode(final NodeTest test) {
         return false;
-    }
-
-    @Override
-    public int compareChildNodePointers(
-        final NodePointer pointer1,
-        final NodePointer pointer2) {
-        // Won't happen - lang attributes don't have children
-        return 0;
     }
 }

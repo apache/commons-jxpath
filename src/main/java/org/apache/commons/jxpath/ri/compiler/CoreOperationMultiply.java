@@ -46,12 +46,12 @@ public class CoreOperationMultiply extends CoreOperation {
     }
 
     @Override
-    protected boolean isSymmetric() {
-        return true;
+    public String getSymbol() {
+        return "*";
     }
 
     @Override
-    public String getSymbol() {
-        return "*";
+    protected boolean isSymmetric() {
+        return true;
     }
 }

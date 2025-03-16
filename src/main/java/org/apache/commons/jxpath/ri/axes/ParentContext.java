@@ -54,18 +54,6 @@ public class ParentContext extends EvalContext {
     }
 
     @Override
-    public void reset() {
-        super.reset();
-        setStarted = false;
-    }
-
-    @Override
-    public boolean setPosition(final int position) {
-        super.setPosition(position);
-        return position == 1;
-    }
-
-    @Override
     public boolean nextNode() {
         // Each set contains exactly one node: the parent
         if (setStarted) {
@@ -84,5 +72,17 @@ public class ParentContext extends EvalContext {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        setStarted = false;
+    }
+
+    @Override
+    public boolean setPosition(final int position) {
+        super.setPosition(position);
+        return position == 1;
     }
 }

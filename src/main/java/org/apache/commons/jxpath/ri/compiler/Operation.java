@@ -31,14 +31,6 @@ public abstract class Operation extends Expression {
         this.args = args;
     }
 
-    /**
-     * Gets the arguments.
-     * @return Expression[]
-     */
-    public Expression[] getArguments() {
-        return args;
-    }
-
     @Override
     public boolean computeContextDependent() {
         if (args != null) {
@@ -49,5 +41,13 @@ public abstract class Operation extends Expression {
             }
         }
         return false;
+    }
+
+    /**
+     * Gets the arguments.
+     * @return Expression[]
+     */
+    public Expression[] getArguments() {
+        return args;
     }
 }

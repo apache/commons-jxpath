@@ -49,20 +49,20 @@ public class XMLDocumentContainer implements Container {
 
     /**
      * Create a new XMLDocumentContainer.
+     * @param source XML source
+     */
+    public XMLDocumentContainer(final Source source) {
+        this.source = Objects.requireNonNull(source);
+    }
+
+    /**
+     * Create a new XMLDocumentContainer.
      * @param xmlURL a URL for an XML file. Use getClass().getResource(resourceName)
      *               to load XML from a resource file.
      */
     public XMLDocumentContainer(final URL xmlURL) {
         this.xmlURL = xmlURL;
         delegate = new DocumentContainer(xmlURL);
-    }
-
-    /**
-     * Create a new XMLDocumentContainer.
-     * @param source XML source
-     */
-    public XMLDocumentContainer(final Source source) {
-        this.source = Objects.requireNonNull(source);
     }
 
     /**

@@ -51,11 +51,69 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * Gets the steps.
-     * @return Step[]
+     * Learn whether the elements of the specified array are "basic" predicates.
+     * @param predicates the Expression[] to check
+     * @return boolean
      */
-    public Step[] getSteps() {
-        return steps;
+    protected boolean areBasicPredicates(final Expression[] predicates) {
+        if (predicates != null && predicates.length != 0) {
+            boolean firstIndex = true;
+            for (final Expression predicate : predicates) {
+                if (predicate instanceof NameAttributeTest) {
+                    if (((NameAttributeTest) predicate)
+                        .getNameTestExpression()
+                        .isContextDependent()) {
+                        return false;
+                    }
+                }
+                else if (predicate.isContextDependent()) {
+                    return false;
+                }
+                else {
+                    if (!firstIndex) {
+                        return false;
+                    }
+                    firstIndex = false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Build a context from a chain of contexts.
+     * @param context evaluation context
+     * @param stepCount number of steps to descend
+     * @param createInitialContext whether to create the initial context
+     * @return created context
+     */
+    protected EvalContext buildContextChain(
+            EvalContext context,
+            final int stepCount,
+            final boolean createInitialContext) {
+        if (createInitialContext) {
+            context = new InitialContext(context);
+        }
+        if (steps.length == 0) {
+            return context;
+        }
+        for (int i = 0; i < stepCount; i++) {
+            context =
+                createContextForStep(
+                    context,
+                    steps[i].getAxis(),
+                    steps[i].getNodeTest());
+            final Expression[] predicates = steps[i].getPredicates();
+            if (predicates != null) {
+                for (int j = 0; j < predicates.length; j++) {
+                    if (j != 0) {
+                        context = new UnionContext(context, new EvalContext[]{context});
+                    }
+                    context = new PredicateContext(context, predicates[j]);
+                }
+            }
+        }
+        return context;
     }
 
     @Override
@@ -68,6 +126,99 @@ public abstract class Path extends Expression {
             }
         }
         return false;
+    }
+
+    /**
+     * Different axes are serviced by different contexts. This method
+     * allocates the right context for the supplied step.
+     * @param context evaluation context
+     * @param axis code
+     * @param nodeTest node test
+     * @return EvalContext
+     */
+    protected EvalContext createContextForStep(
+        final EvalContext context,
+        final int axis,
+        NodeTest nodeTest) {
+        if (nodeTest instanceof NodeNameTest) {
+            final QName qname = ((NodeNameTest) nodeTest).getNodeName();
+            final String prefix = qname.getPrefix();
+            if (prefix != null) {
+                final String namespaceURI = context.getJXPathContext()
+                        .getNamespaceURI(prefix);
+                nodeTest = new NodeNameTest(qname, namespaceURI);
+            }
+        }
+
+        switch (axis) {
+        case Compiler.AXIS_ANCESTOR :
+            return new AncestorContext(context, false, nodeTest);
+        case Compiler.AXIS_ANCESTOR_OR_SELF :
+            return new AncestorContext(context, true, nodeTest);
+        case Compiler.AXIS_ATTRIBUTE :
+            return new AttributeContext(context, nodeTest);
+        case Compiler.AXIS_CHILD :
+            return new ChildContext(context, nodeTest, false, false);
+        case Compiler.AXIS_DESCENDANT :
+            return new DescendantContext(context, false, nodeTest);
+        case Compiler.AXIS_DESCENDANT_OR_SELF :
+            return new DescendantContext(context, true, nodeTest);
+        case Compiler.AXIS_FOLLOWING :
+            return new PrecedingOrFollowingContext(context, nodeTest, false);
+        case Compiler.AXIS_FOLLOWING_SIBLING :
+            return new ChildContext(context, nodeTest, true, false);
+        case Compiler.AXIS_NAMESPACE :
+            return new NamespaceContext(context, nodeTest);
+        case Compiler.AXIS_PARENT :
+            return new ParentContext(context, nodeTest);
+        case Compiler.AXIS_PRECEDING :
+            return new PrecedingOrFollowingContext(context, nodeTest, true);
+        case Compiler.AXIS_PRECEDING_SIBLING :
+            return new ChildContext(context, nodeTest, true, true);
+        case Compiler.AXIS_SELF :
+            return new SelfContext(context, nodeTest);
+        default:
+            return null; // Never happens
+        }
+    }
+
+    /**
+     * Given a root context, walks a path therefrom and builds a context
+     * that contains all nodes matching the path.
+     * @param context evaluation context
+     * @return EvaluationContext
+     */
+    protected EvalContext evalSteps(final EvalContext context) {
+        return buildContextChain(context, steps.length, false);
+    }
+
+    /**
+     * Given a root context, walks a path therefrom and finds the
+     * pointer to the first element matching the path.
+     * @param context evaluation context
+     * @return Pointer
+     */
+    protected Pointer getSingleNodePointerForSteps(final EvalContext context) {
+        if (steps.length == 0) {
+            return context.getSingleNodePointer();
+        }
+
+        if (isSimplePath()) {
+            final NodePointer ptr = (NodePointer) context.getSingleNodePointer();
+            return SimplePathInterpreter.interpretSimpleLocationPath(
+                context,
+                ptr,
+                steps);
+        }
+        return searchForPath(context);
+    }
+
+    /**
+     * Gets the steps.
+     * @return Step[]
+     */
+    public Step[] getSteps() {
+        return steps;
     }
 
     /**
@@ -125,57 +276,6 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * Learn whether the elements of the specified array are "basic" predicates.
-     * @param predicates the Expression[] to check
-     * @return boolean
-     */
-    protected boolean areBasicPredicates(final Expression[] predicates) {
-        if (predicates != null && predicates.length != 0) {
-            boolean firstIndex = true;
-            for (final Expression predicate : predicates) {
-                if (predicate instanceof NameAttributeTest) {
-                    if (((NameAttributeTest) predicate)
-                        .getNameTestExpression()
-                        .isContextDependent()) {
-                        return false;
-                    }
-                }
-                else if (predicate.isContextDependent()) {
-                    return false;
-                }
-                else {
-                    if (!firstIndex) {
-                        return false;
-                    }
-                    firstIndex = false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Given a root context, walks a path therefrom and finds the
-     * pointer to the first element matching the path.
-     * @param context evaluation context
-     * @return Pointer
-     */
-    protected Pointer getSingleNodePointerForSteps(final EvalContext context) {
-        if (steps.length == 0) {
-            return context.getSingleNodePointer();
-        }
-
-        if (isSimplePath()) {
-            final NodePointer ptr = (NodePointer) context.getSingleNodePointer();
-            return SimplePathInterpreter.interpretSimpleLocationPath(
-                context,
-                ptr,
-                steps);
-        }
-        return searchForPath(context);
-    }
-
-    /**
      * The idea here is to return a NullPointer rather than null if that's at
      * all possible. Take for example this path: "//map/key". Let's say, "map"
      * is an existing node, but "key" is not there. We will create a
@@ -225,105 +325,5 @@ public abstract class Path extends Expression {
             }
         }
         return null;
-    }
-
-    /**
-     * Given a root context, walks a path therefrom and builds a context
-     * that contains all nodes matching the path.
-     * @param context evaluation context
-     * @return EvaluationContext
-     */
-    protected EvalContext evalSteps(final EvalContext context) {
-        return buildContextChain(context, steps.length, false);
-    }
-
-    /**
-     * Build a context from a chain of contexts.
-     * @param context evaluation context
-     * @param stepCount number of steps to descend
-     * @param createInitialContext whether to create the initial context
-     * @return created context
-     */
-    protected EvalContext buildContextChain(
-            EvalContext context,
-            final int stepCount,
-            final boolean createInitialContext) {
-        if (createInitialContext) {
-            context = new InitialContext(context);
-        }
-        if (steps.length == 0) {
-            return context;
-        }
-        for (int i = 0; i < stepCount; i++) {
-            context =
-                createContextForStep(
-                    context,
-                    steps[i].getAxis(),
-                    steps[i].getNodeTest());
-            final Expression[] predicates = steps[i].getPredicates();
-            if (predicates != null) {
-                for (int j = 0; j < predicates.length; j++) {
-                    if (j != 0) {
-                        context = new UnionContext(context, new EvalContext[]{context});
-                    }
-                    context = new PredicateContext(context, predicates[j]);
-                }
-            }
-        }
-        return context;
-    }
-
-    /**
-     * Different axes are serviced by different contexts. This method
-     * allocates the right context for the supplied step.
-     * @param context evaluation context
-     * @param axis code
-     * @param nodeTest node test
-     * @return EvalContext
-     */
-    protected EvalContext createContextForStep(
-        final EvalContext context,
-        final int axis,
-        NodeTest nodeTest) {
-        if (nodeTest instanceof NodeNameTest) {
-            final QName qname = ((NodeNameTest) nodeTest).getNodeName();
-            final String prefix = qname.getPrefix();
-            if (prefix != null) {
-                final String namespaceURI = context.getJXPathContext()
-                        .getNamespaceURI(prefix);
-                nodeTest = new NodeNameTest(qname, namespaceURI);
-            }
-        }
-
-        switch (axis) {
-        case Compiler.AXIS_ANCESTOR :
-            return new AncestorContext(context, false, nodeTest);
-        case Compiler.AXIS_ANCESTOR_OR_SELF :
-            return new AncestorContext(context, true, nodeTest);
-        case Compiler.AXIS_ATTRIBUTE :
-            return new AttributeContext(context, nodeTest);
-        case Compiler.AXIS_CHILD :
-            return new ChildContext(context, nodeTest, false, false);
-        case Compiler.AXIS_DESCENDANT :
-            return new DescendantContext(context, false, nodeTest);
-        case Compiler.AXIS_DESCENDANT_OR_SELF :
-            return new DescendantContext(context, true, nodeTest);
-        case Compiler.AXIS_FOLLOWING :
-            return new PrecedingOrFollowingContext(context, nodeTest, false);
-        case Compiler.AXIS_FOLLOWING_SIBLING :
-            return new ChildContext(context, nodeTest, true, false);
-        case Compiler.AXIS_NAMESPACE :
-            return new NamespaceContext(context, nodeTest);
-        case Compiler.AXIS_PARENT :
-            return new ParentContext(context, nodeTest);
-        case Compiler.AXIS_PRECEDING :
-            return new PrecedingOrFollowingContext(context, nodeTest, true);
-        case Compiler.AXIS_PRECEDING_SIBLING :
-            return new ChildContext(context, nodeTest, true, true);
-        case Compiler.AXIS_SELF :
-            return new SelfContext(context, nodeTest);
-        default:
-            return null; // Never happens
-        }
     }
 }

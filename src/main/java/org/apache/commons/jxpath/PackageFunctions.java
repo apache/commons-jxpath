@@ -67,9 +67,9 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * </p>
  */
 public class PackageFunctions implements Functions {
+    private static final Object[] EMPTY_ARRAY = {};
     private final String classPrefix;
     private final String namespace;
-    private static final Object[] EMPTY_ARRAY = {};
 
     /**
      * Create a new PackageFunctions.
@@ -79,15 +79,6 @@ public class PackageFunctions implements Functions {
     public PackageFunctions(final String classPrefix, final String namespace) {
         this.classPrefix = classPrefix;
         this.namespace = namespace;
-    }
-
-    /**
-     * Returns the namespace specified in the constructor
-     * @return (singleton) namespace Set
-     */
-    @Override
-    public Set getUsedNamespaces() {
-        return Collections.singleton(namespace);
     }
 
     /**
@@ -212,5 +203,14 @@ public class PackageFunctions implements Functions {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the namespace specified in the constructor
+     * @return (singleton) namespace Set
+     */
+    @Override
+    public Set getUsedNamespaces() {
+        return Collections.singleton(namespace);
     }
 }

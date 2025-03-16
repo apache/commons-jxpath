@@ -30,13 +30,77 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JXPath177Test
 {
+    private static final class JXPathVariablesResolver implements Variables
+    {
+
+        private static final long serialVersionUID = -1106360826446119597L;
+
+        public static final String ROOT_VAR = "__root";
+
+        private final Object root;
+
+        public JXPathVariablesResolver(final Object root)
+        {
+            this.root = root;
+        }
+
+        @Override
+        public void declareVariable(final String varName, final Object value)
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Object getVariable(final String varName)
+        {
+            if (varName == null)
+            {
+                throw new IllegalArgumentException("varName");
+            }
+            if (!varName.equals(ROOT_VAR))
+            {
+                throw new IllegalArgumentException("Variable is not declared: " + varName);
+            }
+
+            return root;
+        }
+
+        @Override
+        public boolean isDeclaredVariable(final String varName)
+        {
+            if (varName == null)
+            {
+                throw new IllegalArgumentException("varName");
+            }
+            return varName.equals(ROOT_VAR);
+        }
+
+        @Override
+        public void undeclareVariable(final String varName)
+        {
+            throw new UnsupportedOperationException();
+        }
+
+    }
     Map model = new HashMap();
+
     {
 
         model.put("name", "ROOT name");
         final HashMap x = new HashMap();
         model.put("x", x);
         x.put("name", "X name");
+    }
+
+    private void doTest(final String xp, final String expected)
+    {
+        final JXPathContext xpathContext = JXPathContext.newContext(model);
+        xpathContext.setVariables(new JXPathVariablesResolver(model));
+        final Pointer p = xpathContext.getPointer(xp);
+        final Object result = p.getNode();
+        assertNotNull(result);
+        assertEquals(expected, result);
+
     }
 
     @Test
@@ -58,70 +122,6 @@ public class JXPath177Test
     public void testJx177_Union2()
     {
         doTest("$__root/x/unexisting|name", "ROOT name");
-
-    }
-
-    private void doTest(final String xp, final String expected)
-    {
-        final JXPathContext xpathContext = JXPathContext.newContext(model);
-        xpathContext.setVariables(new JXPathVariablesResolver(model));
-        final Pointer p = xpathContext.getPointer(xp);
-        final Object result = p.getNode();
-        assertNotNull(result);
-        assertEquals(expected, result);
-
-    }
-
-    private static final class JXPathVariablesResolver implements Variables
-    {
-
-        private static final long serialVersionUID = -1106360826446119597L;
-
-        public static final String ROOT_VAR = "__root";
-
-        private final Object root;
-
-        public JXPathVariablesResolver(final Object root)
-        {
-            this.root = root;
-        }
-
-        @Override
-        public boolean isDeclaredVariable(final String varName)
-        {
-            if (varName == null)
-            {
-                throw new IllegalArgumentException("varName");
-            }
-            return varName.equals(ROOT_VAR);
-        }
-
-        @Override
-        public Object getVariable(final String varName)
-        {
-            if (varName == null)
-            {
-                throw new IllegalArgumentException("varName");
-            }
-            if (!varName.equals(ROOT_VAR))
-            {
-                throw new IllegalArgumentException("Variable is not declared: " + varName);
-            }
-
-            return root;
-        }
-
-        @Override
-        public void declareVariable(final String varName, final Object value)
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void undeclareVariable(final String varName)
-        {
-            throw new UnsupportedOperationException();
-        }
 
     }
 }

@@ -28,13 +28,6 @@ import java.util.Set;
 public interface Functions {
 
     /**
-     * Returns all namespaces in which this function collection defines
-     * functions.
-     * @return Set
-     */
-    Set getUsedNamespaces();
-
-    /**
      * Returns a Function, if any, for the specified namespace,
      * name and parameter types.
      * @param namespace ns
@@ -43,4 +36,11 @@ public interface Functions {
      * @return Function
      */
     Function getFunction(String namespace, String name, Object[] parameters);
+
+    /**
+     * Returns all namespaces in which this function collection defines
+     * functions.
+     * @return Set
+     */
+    Set getUsedNamespaces();
 }

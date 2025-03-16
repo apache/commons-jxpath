@@ -31,6 +31,45 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class JXPath118Test
 {
 
+    public static class SomeChildClass
+    {
+
+        private int foo = 1;
+        private int bar = 2;
+        private int baz = 3;
+
+        public int getBar()
+        {
+            return bar;
+        }
+
+        public int getBaz()
+        {
+            return baz;
+        }
+
+        public int getFoo()
+        {
+            return foo;
+        }
+
+        public void setBar(final int bar)
+        {
+            this.bar = bar;
+        }
+
+        public void setBaz(final int baz)
+        {
+            this.baz = baz;
+        }
+
+        public void setFoo(final int foo)
+        {
+            this.foo = foo;
+        }
+
+    }
+
     @Test
     public void testJXPATH118IssueWithAsPath() throws Exception
     {
@@ -40,45 +79,6 @@ public class JXPath118Test
         assertEquals("/bar", iteratePointers.next().asPath());
         assertEquals("/baz", iteratePointers.next().asPath());
         assertEquals("/foo", iteratePointers.next().asPath());
-    }
-
-    public static class SomeChildClass
-    {
-
-        private int foo = 1;
-        private int bar = 2;
-        private int baz = 3;
-
-        public int getFoo()
-        {
-            return foo;
-        }
-
-        public void setFoo(final int foo)
-        {
-            this.foo = foo;
-        }
-
-        public int getBar()
-        {
-            return bar;
-        }
-
-        public void setBar(final int bar)
-        {
-            this.bar = bar;
-        }
-
-        public int getBaz()
-        {
-            return baz;
-        }
-
-        public void setBaz(final int baz)
-        {
-            this.baz = baz;
-        }
-
     }
 
 }

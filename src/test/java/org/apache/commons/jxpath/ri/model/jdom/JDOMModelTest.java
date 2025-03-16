@@ -37,49 +37,23 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
  */
 public class JDOMModelTest extends AbstractXMLModelTest {
 
-    @Override
-    protected String getModel() {
-        return DocumentContainer.MODEL_JDOM;
-    }
-
-    @Test
-    public void testGetNode() {
-        assertXPathNodeType(context, "/", Document.class);
-        assertXPathNodeType(context, "/vendor/location", Element.class);
-        assertXPathNodeType(context, "//location/@name", Attribute.class);
-        assertXPathNodeType(context, "//vendor", Element.class); //bugzilla #38586
-    }
-
-    @Test
-    public void testGetElementDescendantOrSelf() {
-        final JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
-        assertInstanceOf(Element.class, childContext.getContextBean());
-        assertXPathNodeType(childContext, "//vendor", Element.class);
-    }
-
-    @Override
-    @Test
-    @Disabled("id() is not supported by JDOM")
-    public void testID() {
-        // id() is not supported by JDOM
-    }
-
-    @Override
-    protected AbstractFactory getAbstractFactory() {
-        return new TestJDOMFactory();
-    }
-
-    @Override
-    protected String getXMLSignature(
-        final Object node,
+    private void appendXMLSignature(
+        final StringBuilder buffer,
+        final List children,
         final boolean elements,
         final boolean attributes,
         final boolean text,
         final boolean pi)
     {
-        final StringBuilder buffer = new StringBuilder();
-        appendXMLSignature(buffer, node, elements, attributes, text, pi);
-        return buffer.toString();
+        for (final Object child : children) {
+            appendXMLSignature(
+                buffer,
+                child,
+                elements,
+                attributes,
+                text,
+                pi);
+        }
     }
 
     private void appendXMLSignature(
@@ -123,22 +97,48 @@ public class JDOMModelTest extends AbstractXMLModelTest {
         }
     }
 
-    private void appendXMLSignature(
-        final StringBuilder buffer,
-        final List children,
+    @Override
+    protected AbstractFactory getAbstractFactory() {
+        return new TestJDOMFactory();
+    }
+
+    @Override
+    protected String getModel() {
+        return DocumentContainer.MODEL_JDOM;
+    }
+
+    @Override
+    protected String getXMLSignature(
+        final Object node,
         final boolean elements,
         final boolean attributes,
         final boolean text,
         final boolean pi)
     {
-        for (final Object child : children) {
-            appendXMLSignature(
-                buffer,
-                child,
-                elements,
-                attributes,
-                text,
-                pi);
-        }
+        final StringBuilder buffer = new StringBuilder();
+        appendXMLSignature(buffer, node, elements, attributes, text, pi);
+        return buffer.toString();
+    }
+
+    @Test
+    public void testGetElementDescendantOrSelf() {
+        final JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
+        assertInstanceOf(Element.class, childContext.getContextBean());
+        assertXPathNodeType(childContext, "//vendor", Element.class);
+    }
+
+    @Test
+    public void testGetNode() {
+        assertXPathNodeType(context, "/", Document.class);
+        assertXPathNodeType(context, "/vendor/location", Element.class);
+        assertXPathNodeType(context, "//location/@name", Attribute.class);
+        assertXPathNodeType(context, "//vendor", Element.class); //bugzilla #38586
+    }
+
+    @Override
+    @Test
+    @Disabled("id() is not supported by JDOM")
+    public void testID() {
+        // id() is not supported by JDOM
     }
 }

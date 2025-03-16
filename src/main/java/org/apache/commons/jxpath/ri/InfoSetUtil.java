@@ -30,65 +30,36 @@ public class InfoSetUtil {
     private static final Double NOT_A_NUMBER = Double.valueOf(Double.NaN);
 
     /**
-     * Converts the supplied object to String.
+     * Converts the supplied object to boolean.
      * @param object to convert
-     * @return String value
+     * @return boolean
      */
-    public static String stringValue(final Object object) {
-        if (object instanceof String) {
-            return (String) object;
-        }
+    public static boolean booleanValue(final Object object) {
         if (object instanceof Number) {
-            final double d = ((Number) object).doubleValue();
-            final long l = ((Number) object).longValue();
-            return d == l ? String.valueOf(l) : String.valueOf(d);
+            final double value = ((Number) object).doubleValue();
+            final int negZero = -0;
+            return value != 0 && value != negZero && !Double.isNaN(value);
         }
         if (object instanceof Boolean) {
-            return ((Boolean) object).booleanValue() ? "true" : "false";
-        }
-        if (object == null) {
-            return "";
-        }
-        if (object instanceof NodePointer) {
-            return stringValue(((NodePointer) object).getValue());
+            return ((Boolean) object).booleanValue();
         }
         if (object instanceof EvalContext) {
             final EvalContext ctx = (EvalContext) object;
             final Pointer ptr = ctx.getSingleNodePointer();
-            return ptr == null ? "" : stringValue(ptr);
-        }
-        return String.valueOf(object);
-    }
-
-    /**
-     * Converts the supplied object to Number.
-     * @param object to convert
-     * @return Number result
-     */
-    public static Number number(final Object object) {
-        if (object instanceof Number) {
-            return (Number) object;
-        }
-        if (object instanceof Boolean) {
-            return ((Boolean) object).booleanValue() ? ONE : ZERO;
+            return ptr != null && booleanValue(ptr);
         }
         if (object instanceof String) {
-            try {
-                return Double.valueOf((String) object);
-            }
-            catch (final NumberFormatException ex) {
-                return NOT_A_NUMBER;
-            }
-        }
-        if (object instanceof EvalContext) {
-            final EvalContext ctx = (EvalContext) object;
-            final Pointer ptr = ctx.getSingleNodePointer();
-            return ptr == null ? NOT_A_NUMBER : number(ptr);
+            return ((String) object).length() != 0;
         }
         if (object instanceof NodePointer) {
-            return number(((NodePointer) object).getValue());
+            NodePointer pointer = (NodePointer) object;
+            if (pointer instanceof VariablePointer) {
+                return booleanValue(pointer.getNode());
+            }
+            pointer = pointer.getValuePointer();
+            return pointer.isActual();
         }
-        return number(stringValue(object));
+        return object != null;
     }
 
     /**
@@ -126,35 +97,64 @@ public class InfoSetUtil {
     }
 
     /**
-     * Converts the supplied object to boolean.
+     * Converts the supplied object to Number.
      * @param object to convert
-     * @return boolean
+     * @return Number result
      */
-    public static boolean booleanValue(final Object object) {
+    public static Number number(final Object object) {
         if (object instanceof Number) {
-            final double value = ((Number) object).doubleValue();
-            final int negZero = -0;
-            return value != 0 && value != negZero && !Double.isNaN(value);
+            return (Number) object;
         }
         if (object instanceof Boolean) {
-            return ((Boolean) object).booleanValue();
+            return ((Boolean) object).booleanValue() ? ONE : ZERO;
+        }
+        if (object instanceof String) {
+            try {
+                return Double.valueOf((String) object);
+            }
+            catch (final NumberFormatException ex) {
+                return NOT_A_NUMBER;
+            }
         }
         if (object instanceof EvalContext) {
             final EvalContext ctx = (EvalContext) object;
             final Pointer ptr = ctx.getSingleNodePointer();
-            return ptr != null && booleanValue(ptr);
-        }
-        if (object instanceof String) {
-            return ((String) object).length() != 0;
+            return ptr == null ? NOT_A_NUMBER : number(ptr);
         }
         if (object instanceof NodePointer) {
-            NodePointer pointer = (NodePointer) object;
-            if (pointer instanceof VariablePointer) {
-                return booleanValue(pointer.getNode());
-            }
-            pointer = pointer.getValuePointer();
-            return pointer.isActual();
+            return number(((NodePointer) object).getValue());
         }
-        return object != null;
+        return number(stringValue(object));
+    }
+
+    /**
+     * Converts the supplied object to String.
+     * @param object to convert
+     * @return String value
+     */
+    public static String stringValue(final Object object) {
+        if (object instanceof String) {
+            return (String) object;
+        }
+        if (object instanceof Number) {
+            final double d = ((Number) object).doubleValue();
+            final long l = ((Number) object).longValue();
+            return d == l ? String.valueOf(l) : String.valueOf(d);
+        }
+        if (object instanceof Boolean) {
+            return ((Boolean) object).booleanValue() ? "true" : "false";
+        }
+        if (object == null) {
+            return "";
+        }
+        if (object instanceof NodePointer) {
+            return stringValue(((NodePointer) object).getValue());
+        }
+        if (object instanceof EvalContext) {
+            final EvalContext ctx = (EvalContext) object;
+            final Pointer ptr = ctx.getSingleNodePointer();
+            return ptr == null ? "" : stringValue(ptr);
+        }
+        return String.valueOf(object);
     }
 }

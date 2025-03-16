@@ -75,22 +75,25 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     }
 
     /**
-     * Returns true if objects of this class are treated as atomic
-     * objects which have no properties of their own.
-     * @return boolean
+     * For a dynamic class, returns the corresponding DynamicPropertyHandler
+     * class.
+     * @return Class
      */
     @Override
-    public boolean isAtomic() {
-        return atomic;
+    public Class getDynamicPropertyHandlerClass() {
+        return dynamicPropertyHandlerClass;
     }
 
-    /**
-     * Return true if the corresponding objects have dynamic properties.
-     * @return boolean
-     */
     @Override
-    public boolean isDynamic() {
-        return dynamicPropertyHandlerClass != null;
+    public synchronized PropertyDescriptor getPropertyDescriptor(final String propertyName) {
+        if (propertyDescriptorMap == null) {
+            propertyDescriptorMap = new HashMap();
+            final PropertyDescriptor[] pds = getPropertyDescriptors();
+            for (final PropertyDescriptor pd : pds) {
+                propertyDescriptorMap.put(pd.getName(), pd);
+            }
+        }
+        return (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
     }
 
     @Override
@@ -128,26 +131,23 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
         return result;
     }
 
+    /**
+     * Returns true if objects of this class are treated as atomic
+     * objects which have no properties of their own.
+     * @return boolean
+     */
     @Override
-    public synchronized PropertyDescriptor getPropertyDescriptor(final String propertyName) {
-        if (propertyDescriptorMap == null) {
-            propertyDescriptorMap = new HashMap();
-            final PropertyDescriptor[] pds = getPropertyDescriptors();
-            for (final PropertyDescriptor pd : pds) {
-                propertyDescriptorMap.put(pd.getName(), pd);
-            }
-        }
-        return (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
+    public boolean isAtomic() {
+        return atomic;
     }
 
     /**
-     * For a dynamic class, returns the corresponding DynamicPropertyHandler
-     * class.
-     * @return Class
+     * Return true if the corresponding objects have dynamic properties.
+     * @return boolean
      */
     @Override
-    public Class getDynamicPropertyHandlerClass() {
-        return dynamicPropertyHandlerClass;
+    public boolean isDynamic() {
+        return dynamicPropertyHandlerClass != null;
     }
 
     @Override

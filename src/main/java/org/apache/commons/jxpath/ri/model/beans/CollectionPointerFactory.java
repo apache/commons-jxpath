@@ -32,8 +32,9 @@ public class CollectionPointerFactory implements NodePointerFactory {
     public static final int COLLECTION_POINTER_FACTORY_ORDER = 10;
 
     @Override
-    public int getOrder() {
-        return COLLECTION_POINTER_FACTORY_ORDER;
+    public NodePointer createNodePointer(final NodePointer parent, final QName name,
+            final Object bean) {
+        return ValueUtils.isCollection(bean) ? new CollectionPointer(parent, bean) : null;
     }
 
     @Override
@@ -42,8 +43,7 @@ public class CollectionPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name,
-            final Object bean) {
-        return ValueUtils.isCollection(bean) ? new CollectionPointer(parent, bean) : null;
+    public int getOrder() {
+        return COLLECTION_POINTER_FACTORY_ORDER;
     }
 }

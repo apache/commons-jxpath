@@ -84,49 +84,6 @@ public class JDOMNodeIterator implements NodeIterator {
         return position;
     }
 
-    @Override
-    public boolean setPosition(final int position) {
-        while (this.position < position) {
-            if (!next()) {
-                return false;
-            }
-        }
-        while (this.position > position) {
-            if (!previous()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * This is actually never invoked during the normal evaluation
-     * of xpaths - an iterator is always going forward, never backwards.
-     * So, this is implemented only for completeness and perhaps for
-     * those who use these iterators outside of XPath evaluation.
-     * @return boolean
-     */
-    private boolean previous() {
-        position--;
-        if (!reverse) {
-            while (--index >= 0) {
-                child = children.get(index);
-                if (testChild()) {
-                    return true;
-                }
-            }
-        }
-        else {
-            for (; index < children.size(); index++) {
-                child = children.get(index);
-                if (testChild()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     /**
      * Iterate to next pointer.
      * @return whether valid
@@ -167,6 +124,49 @@ public class JDOMNodeIterator implements NodeIterator {
             }
         }
         return false;
+    }
+
+    /**
+     * This is actually never invoked during the normal evaluation
+     * of xpaths - an iterator is always going forward, never backwards.
+     * So, this is implemented only for completeness and perhaps for
+     * those who use these iterators outside of XPath evaluation.
+     * @return boolean
+     */
+    private boolean previous() {
+        position--;
+        if (!reverse) {
+            while (--index >= 0) {
+                child = children.get(index);
+                if (testChild()) {
+                    return true;
+                }
+            }
+        }
+        else {
+            for (; index < children.size(); index++) {
+                child = children.get(index);
+                if (testChild()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean setPosition(final int position) {
+        while (this.position < position) {
+            if (!next()) {
+                return false;
+            }
+        }
+        while (this.position > position) {
+            if (!previous()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

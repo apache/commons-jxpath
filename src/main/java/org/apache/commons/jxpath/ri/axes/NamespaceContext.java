@@ -47,27 +47,6 @@ public class NamespaceContext extends EvalContext {
     }
 
     @Override
-    public void reset() {
-        setStarted = false;
-        iterator = null;
-        super.reset();
-    }
-
-    @Override
-    public boolean setPosition(final int position) {
-        if (position < getCurrentPosition()) {
-            reset();
-        }
-
-        while (getCurrentPosition() < position) {
-            if (!nextNode()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
     public boolean nextNode() {
         super.setPosition(getCurrentPosition() + 1);
         if (!setStarted) {
@@ -100,6 +79,27 @@ public class NamespaceContext extends EvalContext {
             return false;
         }
         currentNodePointer = iterator.getNodePointer();
+        return true;
+    }
+
+    @Override
+    public void reset() {
+        setStarted = false;
+        iterator = null;
+        super.reset();
+    }
+
+    @Override
+    public boolean setPosition(final int position) {
+        if (position < getCurrentPosition()) {
+            reset();
+        }
+
+        while (getCurrentPosition() < position) {
+            if (!nextNode()) {
+                return false;
+            }
+        }
         return true;
     }
 }

@@ -29,24 +29,24 @@ import org.junit.jupiter.api.Test;
 public class AliasedNamespaceIterationTest extends AbstractJXPathTest {
     protected JXPathContext context;
 
-    protected DocumentContainer createDocumentContainer(final String model) {
-        final DocumentContainer result = new DocumentContainer(AbstractJXPathTest.class
-                .getResource("IterateAliasedNS.xml"), model);
-        return result;
-    }
-
     protected JXPathContext createContext(final String model) {
         final JXPathContext context = JXPathContext.newContext(createDocumentContainer(model));
         context.registerNamespace("a", "ns");
         return context;
     }
 
-    protected void doTestIterate(final String xpath, final String model, final Collection expected) {
-        assertXPathPointerIterator(createContext(model), xpath, expected);
+    protected DocumentContainer createDocumentContainer(final String model) {
+        final DocumentContainer result = new DocumentContainer(AbstractJXPathTest.class
+                .getResource("IterateAliasedNS.xml"), model);
+        return result;
     }
 
     protected void doTestIterate(final String model) {
         assertXPathPointerIterator(createContext(model), "/a:doc/a:elem", list("/a:doc[1]/a:elem[1]", "/a:doc[1]/a:elem[2]"));
+    }
+
+    protected void doTestIterate(final String xpath, final String model, final Collection expected) {
+        assertXPathPointerIterator(createContext(model), xpath, expected);
     }
 
     @Test

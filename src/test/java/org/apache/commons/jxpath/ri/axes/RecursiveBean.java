@@ -30,20 +30,20 @@ public class RecursiveBean  {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public RecursiveBean getFirst() {
         return first;
     }
 
-    public void setFirst(final RecursiveBean bean) {
-        this.first = bean;
+    public String getName() {
+        return name;
     }
 
     public RecursiveBean getSecond() {
         return second;
+    }
+
+    public void setFirst(final RecursiveBean bean) {
+        this.first = bean;
     }
 
     public void setSecond(final RecursiveBean bean) {

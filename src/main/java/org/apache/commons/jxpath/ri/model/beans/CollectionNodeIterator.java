@@ -58,29 +58,16 @@ public abstract class CollectionNodeIterator implements NodeIterator {
             getElementNodeIterator(NodePointer elementPointer);
 
     @Override
-    public int getPosition() {
-        return position;
-    }
-
-    @Override
-    public boolean setPosition(final int position) {
-        if (collection == null) {
-            prepare();
-        }
-
-        if (position < 1 || position > collection.size()) {
-            return false;
-        }
-        this.position = position;
-        return true;
-    }
-
-    @Override
     public NodePointer getNodePointer() {
         if (position == 0) {
             return null;
         }
         return (NodePointer) collection.get(position - 1);
+    }
+
+    @Override
+    public int getPosition() {
+        return position;
     }
 
     /**
@@ -120,5 +107,18 @@ public abstract class CollectionNodeIterator implements NodeIterator {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean setPosition(final int position) {
+        if (collection == null) {
+            prepare();
+        }
+
+        if (position < 1 || position > collection.size()) {
+            return false;
+        }
+        this.position = position;
+        return true;
     }
 }

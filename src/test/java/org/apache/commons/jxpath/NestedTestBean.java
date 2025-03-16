@@ -23,22 +23,14 @@ public class NestedTestBean {
     private String name = "Name 0";
     private int integer = 1;
 
+    private String[] strings =
+        { "String 1", "String 2", "String 3" };
+
     public NestedTestBean() {
     }
 
     public NestedTestBean(final String name) {
         this.name = name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * A read-only boolean property
-     */
-    public boolean isBoolean() {
-        return false;
     }
 
     /**
@@ -48,10 +40,6 @@ public class NestedTestBean {
         return integer;
     }
 
-    public void setInt(final int value) {
-        this.integer = value;
-    }
-
     /**
      * A read-only String property
      */
@@ -59,11 +47,23 @@ public class NestedTestBean {
         return name;
     }
 
-    private String[] strings =
-        { "String 1", "String 2", "String 3" };
-
     public String[] getStrings() {
         return strings;
+    }
+
+    /**
+     * A read-only boolean property
+     */
+    public boolean isBoolean() {
+        return false;
+    }
+
+    public void setInt(final int value) {
+        this.integer = value;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public void setStrings(final String[] array) {

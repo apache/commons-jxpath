@@ -51,12 +51,15 @@ public class QName implements Serializable {
         this.qualifiedName = prefix == null ? localName : prefix + ':' + localName;
     }
 
-    /**
-     * Gets the prefix of this QName.
-     * @return String
-     */
-    public String getPrefix() {
-        return prefix;
+    @Override
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof QName)) {
+            return false;
+        }
+        return qualifiedName.equals(((QName) object).qualifiedName);
     }
 
     /**
@@ -67,9 +70,12 @@ public class QName implements Serializable {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return qualifiedName;
+    /**
+     * Gets the prefix of this QName.
+     * @return String
+     */
+    public String getPrefix() {
+        return prefix;
     }
 
     @Override
@@ -78,13 +84,7 @@ public class QName implements Serializable {
     }
 
     @Override
-    public boolean equals(final Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof QName)) {
-            return false;
-        }
-        return qualifiedName.equals(((QName) object).qualifiedName);
+    public String toString() {
+        return qualifiedName;
     }
 }

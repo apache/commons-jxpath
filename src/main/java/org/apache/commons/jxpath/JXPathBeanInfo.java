@@ -34,6 +34,29 @@ import java.io.Serializable;
 public interface JXPathBeanInfo extends Serializable {
 
     /**
+     * For dynamic objects, returns the class implementing
+     * the {@link DynamicPropertyHandler} interface. That class can
+     * be used to access dynamic properties.
+     * @return Class
+     */
+    Class getDynamicPropertyHandlerClass();
+
+    /**
+     * Returns a PropertyDescriptor for the specified name or null if there
+     * is no such property.
+     * @param propertyName property name
+     * @return PropertyDescriptor
+     */
+    PropertyDescriptor getPropertyDescriptor(String propertyName);
+
+    /**
+     * Returns a list of property descriptors for the beans described by this
+     * bean info object.  Returns null for atomic beans.
+     * @return PropertyDescriptor[]
+     */
+    PropertyDescriptor[] getPropertyDescriptors();
+
+    /**
      * Returns true if objects of this class are treated as atomic
      * objects which have no properties of their own.
      * For example, {@link String} and {@link Number} are atomic.
@@ -50,27 +73,4 @@ public interface JXPathBeanInfo extends Serializable {
      * @return boolean
      */
     boolean isDynamic();
-
-    /**
-     * Returns a list of property descriptors for the beans described by this
-     * bean info object.  Returns null for atomic beans.
-     * @return PropertyDescriptor[]
-     */
-    PropertyDescriptor[] getPropertyDescriptors();
-
-    /**
-     * Returns a PropertyDescriptor for the specified name or null if there
-     * is no such property.
-     * @param propertyName property name
-     * @return PropertyDescriptor
-     */
-    PropertyDescriptor getPropertyDescriptor(String propertyName);
-
-    /**
-     * For dynamic objects, returns the class implementing
-     * the {@link DynamicPropertyHandler} interface. That class can
-     * be used to access dynamic properties.
-     * @return Class
-     */
-    Class getDynamicPropertyHandlerClass();
 }

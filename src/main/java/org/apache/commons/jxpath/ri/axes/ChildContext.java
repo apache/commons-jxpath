@@ -87,6 +87,19 @@ public class ChildContext extends EvalContext {
         return setPosition(getCurrentPosition() + 1);
     }
 
+    /**
+     * Allocates a PropertyIterator.
+     */
+    private void prepare() {
+        final NodePointer parent = parentContext.getCurrentNodePointer();
+        if (parent == null) {
+            return;
+        }
+        final NodePointer useParent = startFromParentLocation ? parent.getParent() : parent;
+        iterator = useParent == null ? null : useParent.childIterator(nodeTest, reverse,
+                startFromParentLocation ? parent : null);
+    }
+
     @Override
     public void reset() {
         super.reset();
@@ -101,18 +114,5 @@ public class ChildContext extends EvalContext {
             prepare();
         }
         return iterator != null && iterator.setPosition(position);
-    }
-
-    /**
-     * Allocates a PropertyIterator.
-     */
-    private void prepare() {
-        final NodePointer parent = parentContext.getCurrentNodePointer();
-        if (parent == null) {
-            return;
-        }
-        final NodePointer useParent = startFromParentLocation ? parent.getParent() : parent;
-        iterator = useParent == null ? null : useParent.childIterator(nodeTest, reverse,
-                startFromParentLocation ? parent : null);
     }
 }

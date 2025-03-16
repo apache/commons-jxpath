@@ -30,11 +30,26 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * in the chain.
  */
 public class BeanPointer extends PropertyOwnerPointer {
+    private static final long serialVersionUID = -8227317938284982440L;
     private final QName name;
     private final Object bean;
+
     private final JXPathBeanInfo beanInfo;
 
-    private static final long serialVersionUID = -8227317938284982440L;
+    /**
+     * Create a new BeanPointer.
+     * @param parent pointer
+     * @param name is the name given to the first node
+     * @param bean pointed
+     * @param beanInfo JXPathBeanInfo
+     */
+    public BeanPointer(final NodePointer parent, final QName name, final Object bean,
+            final JXPathBeanInfo beanInfo) {
+        super(parent);
+        this.name = name;
+        this.bean = bean;
+        this.beanInfo = beanInfo;
+    }
 
     /**
      * Create a new BeanPointer.
@@ -52,63 +67,34 @@ public class BeanPointer extends PropertyOwnerPointer {
     }
 
     /**
-     * Create a new BeanPointer.
-     * @param parent pointer
-     * @param name is the name given to the first node
-     * @param bean pointed
-     * @param beanInfo JXPathBeanInfo
-     */
-    public BeanPointer(final NodePointer parent, final QName name, final Object bean,
-            final JXPathBeanInfo beanInfo) {
-        super(parent);
-        this.name = name;
-        this.bean = bean;
-        this.beanInfo = beanInfo;
-    }
-
-    @Override
-    public PropertyPointer getPropertyPointer() {
-        return new BeanPropertyPointer(this, beanInfo);
-    }
-
-    @Override
-    public QName getName() {
-        return name;
-    }
-
-    @Override
-    public Object getBaseValue() {
-        return bean;
-    }
-
-    /**
      * {@inheritDoc}
-     * @return false
+     * If the pointer has a parent, then parent's path.
+     * If the bean is null, "null()".
+     * If the bean is a primitive value, the value itself.
+     * Otherwise - an empty string.
      */
     @Override
-    public boolean isCollection() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @return 1
-     */
-    @Override
-    public int getLength() {
-        return 1;
-    }
-
-    @Override
-    public boolean isLeaf() {
-        final Object value = getNode();
-        return value == null
-            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
-    }
-
-    @Override
-    public int hashCode() {
-        return name == null ? 0 : name.hashCode();
+    public String asPath() {
+        if (parent != null) {
+            return super.asPath();
+        }
+        if (bean == null) {
+            return "null()";
+        }
+        if (bean instanceof Number) {
+            String string = bean.toString();
+            if (string.endsWith(".0")) {
+                string = string.substring(0, string.length() - 2);
+            }
+            return string;
+        }
+        if (bean instanceof Boolean) {
+            return ((Boolean) bean).booleanValue() ? "true()" : "false()";
+        }
+        if (bean instanceof String) {
+            return "'" + bean + "'";
+        }
+        return "/";
     }
 
     @Override
@@ -145,34 +131,48 @@ public class BeanPointer extends PropertyOwnerPointer {
         return bean == other.bean;
     }
 
+    @Override
+    public Object getBaseValue() {
+        return bean;
+    }
+
     /**
      * {@inheritDoc}
-     * If the pointer has a parent, then parent's path.
-     * If the bean is null, "null()".
-     * If the bean is a primitive value, the value itself.
-     * Otherwise - an empty string.
+     * @return 1
      */
     @Override
-    public String asPath() {
-        if (parent != null) {
-            return super.asPath();
-        }
-        if (bean == null) {
-            return "null()";
-        }
-        if (bean instanceof Number) {
-            String string = bean.toString();
-            if (string.endsWith(".0")) {
-                string = string.substring(0, string.length() - 2);
-            }
-            return string;
-        }
-        if (bean instanceof Boolean) {
-            return ((Boolean) bean).booleanValue() ? "true()" : "false()";
-        }
-        if (bean instanceof String) {
-            return "'" + bean + "'";
-        }
-        return "/";
+    public int getLength() {
+        return 1;
+    }
+
+    @Override
+    public QName getName() {
+        return name;
+    }
+
+    @Override
+    public PropertyPointer getPropertyPointer() {
+        return new BeanPropertyPointer(this, beanInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return name == null ? 0 : name.hashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return false
+     */
+    @Override
+    public boolean isCollection() {
+        return false;
+    }
+
+    @Override
+    public boolean isLeaf() {
+        final Object value = getNode();
+        return value == null
+            || JXPathIntrospector.getBeanInfo(value.getClass()).isAtomic();
     }
 }

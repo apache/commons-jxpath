@@ -33,8 +33,14 @@ public class BeanPointerFactory implements NodePointerFactory {
     public static final int BEAN_POINTER_FACTORY_ORDER = 900;
 
     @Override
-    public int getOrder() {
-        return BEAN_POINTER_FACTORY_ORDER;
+    public NodePointer createNodePointer(final NodePointer parent, final QName name,
+            final Object bean) {
+        if (bean == null) {
+            return new NullPointer(parent, name);
+        }
+
+        final JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
+        return new BeanPointer(parent, name, bean, bi);
     }
 
     @Override
@@ -44,13 +50,7 @@ public class BeanPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name,
-            final Object bean) {
-        if (bean == null) {
-            return new NullPointer(parent, name);
-        }
-
-        final JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
-        return new BeanPointer(parent, name, bean, bi);
+    public int getOrder() {
+        return BEAN_POINTER_FACTORY_ORDER;
     }
 }

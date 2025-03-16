@@ -66,19 +66,35 @@ public class DOMNodeIterator implements NodeIterator {
         return position;
     }
 
-    @Override
-    public boolean setPosition(final int position) {
-        while (this.position < position) {
-            if (!next()) {
-                return false;
+    /**
+     * Sets the next position.
+     * @return whether valid
+     */
+    private boolean next() {
+        position++;
+        if (!reverse) {
+            if (position == 1 && child == null) {
+                child = node.getFirstChild();
+            }
+            else {
+                child = child.getNextSibling();
+            }
+            while (child != null && !testChild()) {
+                child = child.getNextSibling();
             }
         }
-        while (this.position > position) {
-            if (!previous()) {
-                return false;
+        else {
+            if (position == 1 && child == null) {
+                child = node.getLastChild();
+            }
+            else {
+                child = child.getPreviousSibling();
+            }
+            while (child != null && !testChild()) {
+                child = child.getPreviousSibling();
             }
         }
-        return true;
+        return child != null;
     }
 
     /**
@@ -110,35 +126,19 @@ public class DOMNodeIterator implements NodeIterator {
         return child != null;
     }
 
-    /**
-     * Sets the next position.
-     * @return whether valid
-     */
-    private boolean next() {
-        position++;
-        if (!reverse) {
-            if (position == 1 && child == null) {
-                child = node.getFirstChild();
-            }
-            else {
-                child = child.getNextSibling();
-            }
-            while (child != null && !testChild()) {
-                child = child.getNextSibling();
+    @Override
+    public boolean setPosition(final int position) {
+        while (this.position < position) {
+            if (!next()) {
+                return false;
             }
         }
-        else {
-            if (position == 1 && child == null) {
-                child = node.getLastChild();
-            }
-            else {
-                child = child.getPreviousSibling();
-            }
-            while (child != null && !testChild()) {
-                child = child.getPreviousSibling();
+        while (this.position > position) {
+            if (!previous()) {
+                return false;
             }
         }
-        return child != null;
+        return true;
     }
 
     /**

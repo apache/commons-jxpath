@@ -31,16 +31,6 @@ public class BasicNodeSet implements NodeSet {
     private List values;
 
     /**
-     * Add a pointer to this NodeSet.
-     * @param pointer to add
-     */
-    public void add(final Pointer pointer) {
-        if (pointers.add(pointer)) {
-            clearCacheLists();
-        }
-    }
-
-    /**
      * Add the specified NodeSet to this NodeSet.
      * @param nodeSet to add
      */
@@ -51,21 +41,22 @@ public class BasicNodeSet implements NodeSet {
     }
 
     /**
-     * Remove a pointer from this NodeSet.
-     * @param pointer to remove
+     * Add a pointer to this NodeSet.
+     * @param pointer to add
      */
-    public void remove(final Pointer pointer) {
-        if (pointers.remove(pointer)) {
+    public void add(final Pointer pointer) {
+        if (pointers.add(pointer)) {
             clearCacheLists();
         }
     }
 
-    @Override
-    public synchronized List getPointers() {
-        if (readOnlyPointers == null) {
-            readOnlyPointers = Collections.unmodifiableList(pointers);
-        }
-        return readOnlyPointers;
+    /**
+     * Clear cache list members.
+     */
+    private synchronized void clearCacheLists() {
+        readOnlyPointers = null;
+        nodes = null;
+        values = null;
     }
 
     @Override
@@ -82,6 +73,14 @@ public class BasicNodeSet implements NodeSet {
     }
 
     @Override
+    public synchronized List getPointers() {
+        if (readOnlyPointers == null) {
+            readOnlyPointers = Collections.unmodifiableList(pointers);
+        }
+        return readOnlyPointers;
+    }
+
+    @Override
     public synchronized List getValues() {
         if (values == null) {
             values = new ArrayList();
@@ -94,18 +93,19 @@ public class BasicNodeSet implements NodeSet {
         return values;
     }
 
+    /**
+     * Remove a pointer from this NodeSet.
+     * @param pointer to remove
+     */
+    public void remove(final Pointer pointer) {
+        if (pointers.remove(pointer)) {
+            clearCacheLists();
+        }
+    }
+
     @Override
     public String toString() {
         return pointers.toString();
-    }
-
-    /**
-     * Clear cache list members.
-     */
-    private synchronized void clearCacheLists() {
-        readOnlyPointers = null;
-        nodes = null;
-        values = null;
     }
 
 }

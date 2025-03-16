@@ -41,27 +41,47 @@ public class TestBean {
         beans[1].setInt(3);
     }
 
-    public NestedTestBean[] getBeans() {
-        return beans;
-    }
-
-    public void setBeans(final NestedTestBean[] beans) {
-        this.beans = beans;
-    }
-
     /**
      * A boolean property.
      */
     private boolean bool = false;
-    public boolean isBoolean() {
-        return bool;
-    }
-
-    public void setBoolean(final boolean bool) {
-        this.bool = bool;
-    }
 
     private int integer = 1;
+
+    /**
+     * A read-only array of integers
+     */
+    private int[] array = { 1, 2, 3, 4 };
+    /**
+     * A heterogeneous list: String, Integer, NestedTestBean
+     */
+    private ArrayList list;
+
+    /**
+     * A Map
+     */
+    private HashMap map;
+
+    {
+        map = new HashMap();
+        map.put("Key1", "Value 1");
+        map.put("Key2", new NestedTestBean("Name 6"));
+    }
+    /**
+     * A nested read-only java bean
+     */
+    private NestedTestBean nestedBean = new NestedTestBean("Name 0");
+
+    private final NestedTestBean object = new NestedTestBean("Name 5");
+
+    /**
+     * A heterogeneous set: String, Integer, NestedTestBean
+     */
+    private HashSet set;
+    public NestedTestBean[] getBeans() {
+        return beans;
+    }
+
     /**
      * A read-only integer property
      */
@@ -69,14 +89,6 @@ public class TestBean {
         return integer;
     }
 
-    public void setInt(final int integer) {
-        this.integer = integer;
-    }
-
-    /**
-     * A read-only array of integers
-     */
-    private int[] array = { 1, 2, 3, 4 };
     public int[] getIntegers() {
         return array;
     }
@@ -84,18 +96,6 @@ public class TestBean {
     public int getIntegers(final int index) {
         return array[index];
     }
-
-    public void setIntegers(final int index, final int value) {
-        if (index >= array.length) {
-            array = (int[]) ValueUtils.expandCollection(array, index + 1);
-        }
-        array[index] = value;
-    }
-
-    /**
-     * A heterogeneous list: String, Integer, NestedTestBean
-     */
-    private ArrayList list;
     public List getList() {
         if (list == null) {
             list = new ArrayList();
@@ -106,37 +106,12 @@ public class TestBean {
         return list;
     }
 
-    /**
-     * A Map
-     */
-    private HashMap map;
-    {
-        map = new HashMap();
-        map.put("Key1", "Value 1");
-        map.put("Key2", new NestedTestBean("Name 6"));
-    }
-
     public Map getMap() {
         return map;
     }
-
-    public void setMap(final Map map) {
-        this.map = (HashMap) map;
-    }
-
-    /**
-     * A nested read-only java bean
-     */
-    private NestedTestBean nestedBean = new NestedTestBean("Name 0");
     public NestedTestBean getNestedBean() {
         return nestedBean;
     }
-
-    public void setNestedBean(final NestedTestBean bean) {
-        this.nestedBean = bean;
-    }
-
-    private final NestedTestBean object = new NestedTestBean("Name 5");
 
     /**
      * Returns a NestedTestBean: testing recognition of generic objects
@@ -152,10 +127,6 @@ public class TestBean {
         return getIntegers();
     }
 
-    /**
-     * A heterogeneous set: String, Integer, NestedTestBean
-     */
-    private HashSet set;
     public Set getSet() {
         if (set == null) {
             set = new HashSet();
@@ -164,6 +135,35 @@ public class TestBean {
             set.add(new NestedTestBean("Name 4"));
         }
         return set;
+    }
+    public boolean isBoolean() {
+        return bool;
+    }
+
+    public void setBeans(final NestedTestBean[] beans) {
+        this.beans = beans;
+    }
+
+    public void setBoolean(final boolean bool) {
+        this.bool = bool;
+    }
+
+    public void setInt(final int integer) {
+        this.integer = integer;
+    }
+
+    public void setIntegers(final int index, final int value) {
+        if (index >= array.length) {
+            array = (int[]) ValueUtils.expandCollection(array, index + 1);
+        }
+        array[index] = value;
+    }
+
+    public void setMap(final Map map) {
+        this.map = (HashMap) map;
+    }
+    public void setNestedBean(final NestedTestBean bean) {
+        this.nestedBean = bean;
     }
 
     @Override

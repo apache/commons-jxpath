@@ -31,79 +31,14 @@ import org.apache.commons.jxpath.Pointer;
  */
 public class TestFunctions {
 
-    private int foo;
-    private String bar;
-
-    public TestFunctions() {
-    }
-
-    public TestFunctions(final int foo, final String bar) {
-        this.foo = foo;
-        this.bar = bar;
-    }
-
-    public TestFunctions(final ExpressionContext context, final String bar) {
-        this.foo =
-            ((Number) context.getContextNodePointer().getValue()).intValue();
-        this.bar = bar;
-    }
-
-    public TestFunctions(final int foo, final Object object, final boolean another) {
-        this.foo = foo;
-        bar = String.valueOf(object);
-    }
-
-    public int getFoo() {
-        return foo;
-    }
-
-    public String getBar() {
-        return bar;
-    }
-
-    public void doit() {
-    }
-
-    public TestFunctions setFooAndBar(final int foo, final String bar) {
-        this.foo = foo;
-        this.bar = bar;
-        return this;
-    }
-
     public static TestFunctions build(final int foo, final String bar) {
         return new TestFunctions(foo, bar);
     }
-
-    @Override
-    public String toString() {
-        return "foo=" + foo + "; bar=" + bar;
-    }
-
-    public static String path(final ExpressionContext context) {
-        return context.getContextNodePointer().asPath();
-    }
-
-    public String instancePath(final ExpressionContext context) {
-        return context.getContextNodePointer().asPath();
-    }
-
-    public String pathWithSuffix(final ExpressionContext context, final String suffix) {
-        return context.getContextNodePointer().asPath() + suffix;
-    }
-
-    public String className(
-        final ExpressionContext context,
-        final ExpressionContext child)
-    {
-        return context.getContextNodePointer().asPath();
-    }
-
-    /**
-     * Returns true if the current node in the current context is a map
-     */
-    public static boolean isMap(final ExpressionContext context) {
-        final Pointer ptr = context.getContextNodePointer();
-        return ptr == null ? false : ptr.getValue() instanceof Map;
+    public static Collection collection() {
+        final ArrayList list = new ArrayList();
+        list.add(new NestedTestBean("foo"));
+        list.add(new NestedTestBean("bar"));
+        return list;
     }
 
     /**
@@ -123,15 +58,20 @@ public class TestFunctions {
         return nodeSet.getPointers().size();
     }
 
-    public static String string(final String string) {
-        return string;
+    public static Boolean isInstance(final Object o, final Class c) {
+        return c.isInstance(o) ? Boolean.TRUE : Boolean.FALSE;
     }
 
-    public static Collection collection() {
-        final ArrayList list = new ArrayList();
-        list.add(new NestedTestBean("foo"));
-        list.add(new NestedTestBean("bar"));
-        return list;
+    /**
+     * Returns true if the current node in the current context is a map
+     */
+    public static boolean isMap(final ExpressionContext context) {
+        final Pointer ptr = context.getContextNodePointer();
+        return ptr == null ? false : ptr.getValue() instanceof Map;
+    }
+
+    public static Collection items(final Collection arg) {
+        return arg;
     }
 
     public static NodeSet nodeSet(final ExpressionContext context) {
@@ -143,12 +83,72 @@ public class TestFunctions {
         return set;
     }
 
-    public static Collection items(final Collection arg) {
-        return arg;
+    public static String path(final ExpressionContext context) {
+        return context.getContextNodePointer().asPath();
     }
 
-    public static Boolean isInstance(final Object o, final Class c) {
-        return c.isInstance(o) ? Boolean.TRUE : Boolean.FALSE;
+    public static String string(final String string) {
+        return string;
+    }
+
+    private int foo;
+
+    private String bar;
+
+    public TestFunctions() {
+    }
+
+    public TestFunctions(final ExpressionContext context, final String bar) {
+        this.foo =
+            ((Number) context.getContextNodePointer().getValue()).intValue();
+        this.bar = bar;
+    }
+
+    public TestFunctions(final int foo, final Object object, final boolean another) {
+        this.foo = foo;
+        bar = String.valueOf(object);
+    }
+
+    public TestFunctions(final int foo, final String bar) {
+        this.foo = foo;
+        this.bar = bar;
+    }
+
+    public String className(
+        final ExpressionContext context,
+        final ExpressionContext child)
+    {
+        return context.getContextNodePointer().asPath();
+    }
+
+    public void doit() {
+    }
+
+    public String getBar() {
+        return bar;
+    }
+
+    public int getFoo() {
+        return foo;
+    }
+
+    public String instancePath(final ExpressionContext context) {
+        return context.getContextNodePointer().asPath();
+    }
+
+    public String pathWithSuffix(final ExpressionContext context, final String suffix) {
+        return context.getContextNodePointer().asPath() + suffix;
+    }
+
+    public TestFunctions setFooAndBar(final int foo, final String bar) {
+        this.foo = foo;
+        this.bar = bar;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "foo=" + foo + "; bar=" + bar;
     }
 
 }

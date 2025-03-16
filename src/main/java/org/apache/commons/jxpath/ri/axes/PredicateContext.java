@@ -50,6 +50,17 @@ public class PredicateContext extends EvalContext {
     }
 
     @Override
+    public NodePointer getCurrentNodePointer() {
+        if (position == 0 && !setPosition(1)) {
+            return null;
+        }
+        if (dynamicPropertyPointer != null) {
+            return dynamicPropertyPointer.getValuePointer();
+        }
+        return parentContext.getCurrentNodePointer();
+    }
+
+    @Override
     public boolean nextNode() {
         if (done) {
             return false;
@@ -109,6 +120,53 @@ public class PredicateContext extends EvalContext {
         return false;
     }
 
+    @Override
+    public boolean nextSet() {
+        reset();
+        return parentContext.nextSet();
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        parentContext.reset();
+        done = false;
+    }
+
+    @Override
+    public boolean setPosition(final int position) {
+        if (nameTestExpression == null) {
+            return setPositionStandard(position);
+        }
+        if (dynamicPropertyPointer == null && !setupDynamicPropertyPointer()) {
+            return setPositionStandard(position);
+        }
+        if (position < 1
+            || position > dynamicPropertyPointer.getLength()) {
+            return false;
+        }
+        dynamicPropertyPointer.setIndex(position - 1);
+        return true;
+    }
+
+    /**
+     * Basic setPosition
+     * @param position to set
+     * @return whether valid
+     */
+    private boolean setPositionStandard(final int position) {
+        if (this.position > position) {
+            reset();
+        }
+
+        while (this.position < position) {
+            if (!nextNode()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Used for an optimized access to dynamic properties using the
      * "map[@name = 'name']" syntax
@@ -131,64 +189,6 @@ public class PredicateContext extends EvalContext {
             (PropertyPointer) ((PropertyOwnerPointer) parent)
                 .getPropertyPointer()
                 .clone();
-        return true;
-    }
-
-    @Override
-    public boolean setPosition(final int position) {
-        if (nameTestExpression == null) {
-            return setPositionStandard(position);
-        }
-        if (dynamicPropertyPointer == null && !setupDynamicPropertyPointer()) {
-            return setPositionStandard(position);
-        }
-        if (position < 1
-            || position > dynamicPropertyPointer.getLength()) {
-            return false;
-        }
-        dynamicPropertyPointer.setIndex(position - 1);
-        return true;
-    }
-
-    @Override
-    public NodePointer getCurrentNodePointer() {
-        if (position == 0 && !setPosition(1)) {
-            return null;
-        }
-        if (dynamicPropertyPointer != null) {
-            return dynamicPropertyPointer.getValuePointer();
-        }
-        return parentContext.getCurrentNodePointer();
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        parentContext.reset();
-        done = false;
-    }
-
-    @Override
-    public boolean nextSet() {
-        reset();
-        return parentContext.nextSet();
-    }
-
-    /**
-     * Basic setPosition
-     * @param position to set
-     * @return whether valid
-     */
-    private boolean setPositionStandard(final int position) {
-        if (this.position > position) {
-            reset();
-        }
-
-        while (this.position < position) {
-            if (!nextNode()) {
-                return false;
-            }
-        }
         return true;
     }
 }
