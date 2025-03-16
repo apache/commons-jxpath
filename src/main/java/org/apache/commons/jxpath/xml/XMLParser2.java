@@ -31,6 +31,14 @@ public abstract class XMLParser2 implements XMLParser {
     private boolean ignoreComments = false;
     private boolean coalescing = false;
 
+    
+    /**
+     * Constructs a new instance for subclasses.
+     */
+    public XMLParser2() {
+        // empty
+    }
+
     /**
      * Learn whether the underlying parser is coalescing.
      * 

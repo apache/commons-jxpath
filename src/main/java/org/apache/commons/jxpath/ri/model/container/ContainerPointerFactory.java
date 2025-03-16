@@ -32,6 +32,13 @@ public class ContainerPointerFactory implements NodePointerFactory {
     /** Factory order for this factory */
     public static final int CONTAINER_POINTER_FACTORY_ORDER = 200;
 
+    /**
+     * Constructs a new instance.
+     */
+    public ContainerPointerFactory() {
+        // empty
+    }
+
     @Override
     public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
         return bean instanceof Container ? new ContainerPointer(parent, (Container) bean) : null;

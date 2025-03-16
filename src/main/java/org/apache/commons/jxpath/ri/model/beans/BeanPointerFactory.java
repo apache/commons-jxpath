@@ -37,7 +37,7 @@ public class BeanPointerFactory implements NodePointerFactory {
      * Constructs a new instance.
      */
     public BeanPointerFactory() {
-        // TODO Auto-generated constructor stub
+        // empty
     }
 
     @Override

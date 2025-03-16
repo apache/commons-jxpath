@@ -28,6 +28,13 @@ import org.apache.commons.jxpath.JXPathException;
  */
 public class DOMParser extends XMLParser2 {
 
+    /**
+     * Constructs a new instance.
+     */
+    public DOMParser() {
+        // empty
+    }
+
     @Override
     public Object parseXML(final InputStream stream) {
         try {

@@ -33,6 +33,13 @@ public class JDOMPointerFactory implements NodePointerFactory {
     /** Factory order constant */
     public static final int JDOM_POINTER_FACTORY_ORDER = 110;
 
+    /**
+     * Constructs a new instance.
+     */
+    public JDOMPointerFactory() {
+        // empty
+    }
+
     @Override
     public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
         if (bean instanceof Document) {

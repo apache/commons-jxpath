@@ -27,6 +27,13 @@ import org.jdom.input.SAXBuilder;
  */
 public class JDOMParser extends XMLParser2 {
 
+    /**
+     * Constructs a new instance.
+     */
+    public JDOMParser() {
+        // empty
+    }
+
     @Override
     public Object parseXML(final InputStream stream) {
         if (!isNamespaceAware()) {

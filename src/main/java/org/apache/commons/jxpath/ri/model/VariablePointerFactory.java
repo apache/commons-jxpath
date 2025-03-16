@@ -60,6 +60,13 @@ public class VariablePointerFactory implements NodePointerFactory {
     public static final int VARIABLE_POINTER_FACTORY_ORDER = 890;
 
     /**
+     * Constructs a new instance.
+     */
+    public VariablePointerFactory() {
+        // empty
+    }
+
+    /**
      * VariableContextWrapper factory method.
      * 
      * @param context the JXPathContext to wrap.

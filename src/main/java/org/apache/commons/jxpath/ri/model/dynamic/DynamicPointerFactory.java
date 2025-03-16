@@ -38,6 +38,13 @@ public class DynamicPointerFactory implements NodePointerFactory {
      */
     public static final int DYNAMIC_POINTER_FACTORY_ORDER = 800;
 
+    /**
+     * Constructs a new instance.
+     */
+    public DynamicPointerFactory() {
+        // empty
+    }
+
     @Override
     public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
         if (bean == null) {

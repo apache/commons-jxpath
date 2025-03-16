@@ -32,6 +32,13 @@ public class CollectionPointerFactory implements NodePointerFactory {
     /** Factory order constant */
     public static final int COLLECTION_POINTER_FACTORY_ORDER = 10;
 
+    /**
+     * Constructs a new instance.
+     */
+    public CollectionPointerFactory() {
+        // empty
+    }
+
     @Override
     public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
         return ValueUtils.isCollection(bean) ? new CollectionPointer(parent, bean) : null;

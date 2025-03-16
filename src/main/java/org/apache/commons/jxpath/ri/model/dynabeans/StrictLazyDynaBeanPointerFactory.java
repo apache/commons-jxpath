@@ -83,6 +83,13 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
     }
 
     /**
+     * Constructs a new instance.
+     */
+    public StrictLazyDynaBeanPointerFactory() {
+        // empty
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

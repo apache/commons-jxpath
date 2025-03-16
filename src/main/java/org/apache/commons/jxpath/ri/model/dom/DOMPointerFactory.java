@@ -32,6 +32,13 @@ public class DOMPointerFactory implements NodePointerFactory {
     /** Factory order */
     public static final int DOM_POINTER_FACTORY_ORDER = 100;
 
+    /**
+     * Constructs a new instance.
+     */
+    public DOMPointerFactory() {
+        // empty
+    }
+
     @Override
     public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
         return bean instanceof Node ? new DOMNodePointer(parent, (Node) bean) : null;
