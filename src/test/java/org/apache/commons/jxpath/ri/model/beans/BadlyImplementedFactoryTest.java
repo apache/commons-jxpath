@@ -51,7 +51,7 @@ public class BadlyImplementedFactoryTest {
 
     @Test
     public void testBadFactoryImplementation() {
-        JXPathException e = assertThrows(JXPathException.class, () -> context.createPath("foo/bar"),
+        final JXPathException e = assertThrows(JXPathException.class, () -> context.createPath("foo/bar"),
             "should fail with JXPathException caused by JXPathAbstractFactoryException");
         assertInstanceOf(JXPathAbstractFactoryException.class, e.getCause());
     }
