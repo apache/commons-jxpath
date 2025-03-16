@@ -38,7 +38,7 @@ public class BasicNodeSet implements NodeSet {
      */
     public void add(final NodeSet nodeSet) {
         if (pointers.addAll(nodeSet.getPointers())) {
-            clearCacheLists();
+            clear();
         }
     }
 
@@ -49,14 +49,14 @@ public class BasicNodeSet implements NodeSet {
      */
     public void add(final Pointer pointer) {
         if (pointers.add(pointer)) {
-            clearCacheLists();
+            clear();
         }
     }
 
     /**
      * Clear cache list members.
      */
-    private synchronized void clearCacheLists() {
+    private synchronized void clear() {
         readOnlyPointers = null;
         nodes = null;
         values = null;
@@ -103,7 +103,7 @@ public class BasicNodeSet implements NodeSet {
      */
     public void remove(final Pointer pointer) {
         if (pointers.remove(pointer)) {
-            clearCacheLists();
+            clear();
         }
     }
 
