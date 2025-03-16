@@ -390,12 +390,10 @@ public class CoreFunction extends Operation {
         EvalContext ec = null;
         if (value instanceof EvalContext) {
             ec = (EvalContext) value;
-            if (ec.hasNext()) {
-                value = ((NodePointer) ec.next()).getValue();
-            }
-            else { // empty context -> empty results
+            if (!ec.hasNext()) { // empty context -> empty results
                 return new NodeSetContext(context, new BasicNodeSet());
             }
+            value = ((NodePointer) ec.next()).getValue();
         }
         final JXPathContext jxpathContext = context.getJXPathContext();
         NodeSet nodeSet = jxpathContext.getNodeSetByKey(key, value);
