@@ -73,7 +73,7 @@ public class DescendantContext extends EvalContext {
     private boolean isRecursive() {
         final Object node = currentNodePointer.getNode();
         for (int i = stack.size() - 1; --i >= 0;) {
-            final NodeIterator it = (NodeIterator) stack.get(i);
+            final NodeIterator it = stack.get(i);
             final Pointer pointer = it.getNodePointer();
             if (pointer != null && pointer.getNode() == node) {
                 return true;
@@ -103,7 +103,7 @@ public class DescendantContext extends EvalContext {
             }
         }
         while (!stack.isEmpty()) {
-            final NodeIterator it = (NodeIterator) stack.peek();
+            final NodeIterator it = stack.peek();
             if (it.setPosition(it.getPosition() + 1)) {
                 currentNodePointer = it.getNodePointer();
                 if (!isRecursive()) {
