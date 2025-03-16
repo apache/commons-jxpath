@@ -60,7 +60,7 @@ public class ClassLoaderUtilTest {
       if ( EXAMPLE_CLASS_NAME.equals(name) ) {
         throw new ClassNotFoundException();
       }
-      else if ( TEST_CASE_CLASS_NAME.equals(name) ) {
+      if ( TEST_CASE_CLASS_NAME.equals(name) ) {
         if ( testCaseClass == null ) {
           final URL clazzUrl = getParent().getResource("org/apache/commons/jxpath/util/ClassLoaderUtilTest.class");
 
