@@ -216,21 +216,18 @@ public class NullPropertyPointer extends PropertyPointer {
                     + asPath()
                     + ", the target object is null");
         }
-        if (parent instanceof PropertyOwnerPointer
-                && ((PropertyOwnerPointer) parent)
-                        .isDynamicPropertyDeclarationSupported()) {
-            // If the parent property owner can create
-            // a property automatically - let it do so
-            final PropertyPointer propertyPointer =
-                ((PropertyOwnerPointer) parent).getPropertyPointer();
-            propertyPointer.setPropertyName(propertyName);
-            propertyPointer.setValue(value);
-        }
-        else {
+        if (!(parent instanceof PropertyOwnerPointer) || !((PropertyOwnerPointer) parent)
+                .isDynamicPropertyDeclarationSupported()) {
             throw new JXPathInvalidAccessException(
                 "Cannot set property "
                     + asPath()
                     + ", path does not match a changeable location");
         }
+        // If the parent property owner can create
+        // a property automatically - let it do so
+        final PropertyPointer propertyPointer =
+            ((PropertyOwnerPointer) parent).getPropertyPointer();
+        propertyPointer.setPropertyName(propertyName);
+        propertyPointer.setValue(value);
     }
 }
