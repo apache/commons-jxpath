@@ -263,4 +263,14 @@ public class MethodLookupUtils {
         }
         return NO_MATCH;
     }
+    
+    /**
+     * Constructs a new instance.
+     *
+     * @deprecated Will be private in the next major version.
+     */
+    @Deprecated
+    public MethodLookupUtils() {
+        // empty
+    }
 }
