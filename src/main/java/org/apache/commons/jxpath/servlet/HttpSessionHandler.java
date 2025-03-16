@@ -30,12 +30,12 @@ import org.apache.commons.jxpath.JXPathException;
 public class HttpSessionHandler extends ServletContextHandler {
 
     @Override
-    protected void collectPropertyNames(final HashSet set, final Object bean) {
+    protected void collectPropertyNames(final HashSet<String> set, final Object bean) {
         final HttpSessionAndServletContext handle = (HttpSessionAndServletContext) bean;
         super.collectPropertyNames(set, handle.getServletContext());
         final HttpSession session = handle.getSession();
         if (session != null) {
-            final Enumeration e = session.getAttributeNames();
+            final Enumeration<String> e = session.getAttributeNames();
             while (e.hasMoreElements()) {
                 set.add(e.nextElement());
             }

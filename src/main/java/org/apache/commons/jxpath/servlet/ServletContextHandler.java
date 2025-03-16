@@ -37,11 +37,11 @@ public class ServletContextHandler implements DynamicPropertyHandler {
      * @param set  destination
      * @param bean to read
      */
-    protected void collectPropertyNames(final HashSet set, Object bean) {
+    protected void collectPropertyNames(final HashSet<String> set, Object bean) {
         if (bean instanceof HttpSessionAndServletContext) {
             bean = ((HttpSessionAndServletContext) bean).getServletContext();
         }
-        final Enumeration e = ((ServletContext) bean).getAttributeNames();
+        final Enumeration<String> e = ((ServletContext) bean).getAttributeNames();
         while (e.hasMoreElements()) {
             set.add(e.nextElement());
         }
@@ -54,9 +54,9 @@ public class ServletContextHandler implements DynamicPropertyHandler {
 
     @Override
     public String[] getPropertyNames(final Object context) {
-        final HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
-        collectPropertyNames(list, context);
-        return (String[]) list.toArray(new String[list.size()]);
+        final HashSet<String> set = new HashSet<>(DEFAULT_PROPERTY_COUNT);
+        collectPropertyNames(set, context);
+        return (String[]) set.toArray(new String[set.size()]);
     }
 
     @Override

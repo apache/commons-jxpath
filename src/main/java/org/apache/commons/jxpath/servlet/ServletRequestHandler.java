@@ -29,11 +29,11 @@ import javax.servlet.ServletRequest;
 public class ServletRequestHandler extends HttpSessionHandler {
 
     @Override
-    protected void collectPropertyNames(final HashSet set, final Object bean) {
+    protected void collectPropertyNames(final HashSet<String> set, final Object bean) {
         super.collectPropertyNames(set, bean);
         final ServletRequestAndContext handle = (ServletRequestAndContext) bean;
         final ServletRequest servletRequest = handle.getServletRequest();
-        Enumeration e = servletRequest.getAttributeNames();
+        Enumeration<String> e = servletRequest.getAttributeNames();
         while (e.hasMoreElements()) {
             set.add(e.nextElement());
         }
