@@ -35,7 +35,7 @@ public class DescendantContext extends EvalContext {
     private static final NodeTest ELEMENT_NODE_TEST = new NodeTypeTest(Compiler.NODE_TYPE_NODE);
     private final NodeTest nodeTest;
     private boolean setStarted = false;
-    private Stack stack = null;
+    private Stack<NodeIterator> stack = null;
     private NodePointer currentNodePointer = null;
     private final boolean includeSelf;
 
@@ -87,7 +87,7 @@ public class DescendantContext extends EvalContext {
         if (!setStarted) {
             setStarted = true;
             if (stack == null) {
-                stack = new Stack();
+                stack = new Stack<>();
             } else {
                 stack.clear();
             }
