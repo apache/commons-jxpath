@@ -62,12 +62,10 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
         final DynaProperty property = dynaClass.getDynaProperty(getPropertyName());
         Class type = property.getType();
         if (element) {
-            if (type.isArray()) {
-                type = type.getComponentType();
-            }
-            else {
+            if (!type.isArray()) {
                 return value; // No need to convert
             }
+            type = type.getComponentType();
         }
 
         try {
