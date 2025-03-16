@@ -33,7 +33,7 @@ public class ClassLoaderUtil {
     /**
      * Maps a primitive class name to its corresponding abbreviation used in array class names.
      */
-    private static Map abbreviationMap = new HashMap();
+    private static Map<String, String> abbreviationMap = new HashMap<>();
     /**
      * Feed abbreviation maps
      */

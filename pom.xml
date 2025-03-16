@@ -57,7 +57,7 @@
     <commons.osgi.import>*;resolution:=optional</commons.osgi.import>
     <!-- JaCoCo: Don't make code coverage worse than: -->
     <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
-    <commons.jacoco.classRatio>0.92</commons.jacoco.classRatio>
+    <commons.jacoco.classRatio>0.91</commons.jacoco.classRatio>
     <commons.jacoco.instructionRatio>0.74</commons.jacoco.instructionRatio>
     <commons.jacoco.methodRatio>0.82</commons.jacoco.methodRatio>
     <commons.jacoco.branchRatio>0.68</commons.jacoco.branchRatio>

@@ -40,7 +40,7 @@ import org.apache.commons.jxpath.JXPathException;
  */
 public class ValueUtils {
 
-    private static Map dynamicPropertyHandlerMap = new HashMap();
+    private static Map<Class, DynamicPropertyHandler> dynamicPropertyHandlerMap = new HashMap<>();
     private static final int UNKNOWN_LENGTH_MAX_COUNT = 16000;
 
     /**

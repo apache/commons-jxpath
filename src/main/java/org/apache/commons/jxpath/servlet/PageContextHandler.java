@@ -43,24 +43,24 @@ public class PageContextHandler implements DynamicPropertyHandler {
 
     @Override
     public String[] getPropertyNames(final Object pageContext) {
-        final HashSet list = new HashSet();
-        Enumeration e = ((PageContext) pageContext).getAttributeNamesInScope(PageContext.PAGE_SCOPE);
+        final HashSet<String> set = new HashSet<>();
+        Enumeration<String> e = ((PageContext) pageContext).getAttributeNamesInScope(PageContext.PAGE_SCOPE);
         while (e.hasMoreElements()) {
-            list.add(e.nextElement());
+            set.add(e.nextElement());
         }
         e = ((PageContext) pageContext).getAttributeNamesInScope(PageContext.REQUEST_SCOPE);
         while (e.hasMoreElements()) {
-            list.add(e.nextElement());
+            set.add(e.nextElement());
         }
         e = ((PageContext) pageContext).getAttributeNamesInScope(PageContext.SESSION_SCOPE);
         while (e.hasMoreElements()) {
-            list.add(e.nextElement());
+            set.add(e.nextElement());
         }
         e = ((PageContext) pageContext).getAttributeNamesInScope(PageContext.APPLICATION_SCOPE);
         while (e.hasMoreElements()) {
-            list.add(e.nextElement());
+            set.add(e.nextElement());
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return set.toArray(new String[set.size()]);
     }
 
     @Override

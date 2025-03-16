@@ -25,20 +25,17 @@ import java.util.HashMap;
 public class TypeUtils {
 
     private static TypeConverter typeConverter = new BasicTypeConverter();
-    private static final HashMap PRIMITIVE_TYPE_MAP = new HashMap() {
-
-        private static final long serialVersionUID = 1L;
-        {
-            put(int.class, Integer.class);
-            put(byte.class, Byte.class);
-            put(short.class, Short.class);
-            put(char.class, Character.class);
-            put(long.class, Long.class);
-            put(float.class, Float.class);
-            put(double.class, Double.class);
-            put(boolean.class, Boolean.class);
-        }
-    };
+    private static final HashMap<Class, Class> PRIMITIVE_TYPE_MAP = new HashMap<>();
+    static {
+        PRIMITIVE_TYPE_MAP.put(int.class, Integer.class);
+        PRIMITIVE_TYPE_MAP.put(byte.class, Byte.class);
+        PRIMITIVE_TYPE_MAP.put(short.class, Short.class);
+        PRIMITIVE_TYPE_MAP.put(char.class, Character.class);
+        PRIMITIVE_TYPE_MAP.put(long.class, Long.class);
+        PRIMITIVE_TYPE_MAP.put(float.class, Float.class);
+        PRIMITIVE_TYPE_MAP.put(double.class, Double.class);
+        PRIMITIVE_TYPE_MAP.put(boolean.class, Boolean.class);
+    }
 
     /**
      * Returns true if the global converter can convert the supplied object to the specified type.
