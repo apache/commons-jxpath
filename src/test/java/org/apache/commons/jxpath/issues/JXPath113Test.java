@@ -65,7 +65,7 @@ public class JXPath113Test extends AbstractJXPathTest
         final Document doc = JAXP.getDocument("<xml/>");
         final JXPathContext context = JXPathContext.newContext(doc);
 
-        List result = context.selectNodes("//following-sibling::node()");
+        final List result = context.selectNodes("//following-sibling::node()");
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
