@@ -31,7 +31,7 @@ import org.apache.commons.jxpath.ri.Compiler;
           }
 
         static private final class LookaheadSuccess extends Error {
-        
+
             /**
              *
              */
