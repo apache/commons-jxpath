@@ -34,8 +34,8 @@ import org.jdom.Namespace;
 public class JDOMNamespaceIterator implements NodeIterator {
 
     private final NodePointer parent;
-    private List namespaces;
-    private Set prefixes;
+    private List<Namespace> namespaces;
+    private Set<String> prefixes;
     private int position = 0;
 
     /**
@@ -50,8 +50,8 @@ public class JDOMNamespaceIterator implements NodeIterator {
             node = ((Document) node).getRootElement();
         }
         if (node instanceof Element) {
-            namespaces = new ArrayList();
-            prefixes = new HashSet();
+            namespaces = new ArrayList<>();
+            prefixes = new HashSet<>();
             collectNamespaces((Element) node);
         }
     }
@@ -93,7 +93,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
         if (index < 0) {
             index = 0;
         }
-        final Namespace ns = (Namespace) namespaces.get(index);
+        final Namespace ns = namespaces.get(index);
         return new JDOMNamespacePointer(parent, ns.getPrefix(), ns.getURI());
     }
 
