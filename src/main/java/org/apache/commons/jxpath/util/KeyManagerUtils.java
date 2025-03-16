@@ -71,4 +71,14 @@ public class KeyManagerUtils {
     public static ExtendedKeyManager getExtendedKeyManager(final KeyManager keyManager) {
         return keyManager instanceof ExtendedKeyManager ? (ExtendedKeyManager) keyManager : new SingleNodeExtendedKeyManager(keyManager);
     }
+    
+    /**
+     * Constructs a new instance.
+     *
+     * @deprecated Will be private in the next major version.
+     */
+    @Deprecated
+    public KeyManagerUtils() {
+        // empty
+    }
 }
