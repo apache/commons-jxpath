@@ -48,7 +48,7 @@ public class BasicTypeConverter implements TypeConverter {
     static final class ValueNodeSet implements NodeSet {
 
         private final List values;
-        private List pointers;
+        private List<Pointer> pointers;
 
         /**
          * Create a new ValueNodeSet.
@@ -65,7 +65,7 @@ public class BasicTypeConverter implements TypeConverter {
         }
 
         @Override
-        public List getPointers() {
+        public List<Pointer> getPointers() {
             if (pointers == null) {
                 pointers = new ArrayList();
                 for (int i = 0; i < values.size(); i++) {
