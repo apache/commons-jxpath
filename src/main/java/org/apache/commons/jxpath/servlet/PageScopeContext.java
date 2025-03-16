@@ -53,7 +53,7 @@ public class PageScopeContext {
      * 
      * @return Enumeration of attribute names
      */
-    public Enumeration getAttributeNames() {
+    public Enumeration<String> getAttributeNames() {
         return pageContext.getAttributeNamesInScope(PageContext.PAGE_SCOPE);
     }
 

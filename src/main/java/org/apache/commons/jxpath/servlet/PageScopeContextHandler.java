@@ -36,12 +36,12 @@ public class PageScopeContextHandler implements DynamicPropertyHandler {
 
     @Override
     public String[] getPropertyNames(final Object pageScope) {
-        final Enumeration e = ((PageScopeContext) pageScope).getAttributeNames();
-        final ArrayList list = new ArrayList(DEFAULT_LIST_SIZE);
+        final Enumeration<String> e = ((PageScopeContext) pageScope).getAttributeNames();
+        final ArrayList<String> list = new ArrayList<>(DEFAULT_LIST_SIZE);
         while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     @Override
