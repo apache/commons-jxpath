@@ -156,8 +156,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 (NodePointerFactory[]) nodeFactories.
                     toArray(new NodePointerFactory[nodeFactories.size()]);
             Arrays.sort(nodeFactoryArray, (a, b) -> {
-                final int orderA = ((NodePointerFactory) a).getOrder();
-                final int orderB = ((NodePointerFactory) b).getOrder();
+                final int orderA = a.getOrder();
+                final int orderB = b.getOrder();
                 return orderA - orderB;
             });
         }
