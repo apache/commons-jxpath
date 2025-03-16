@@ -151,6 +151,14 @@ public class BasicTypeConverter implements TypeConverter {
         }
     }
 
+    
+    /**
+     * Constructs a new instance.
+     */
+    public BasicTypeConverter() {
+        // empty
+    }
+
     /**
      * Create a collection of a given type.
      * 

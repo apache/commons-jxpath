@@ -25,10 +25,18 @@ import java.util.HashMap;
 public class BasicVariables implements Variables {
 
     private static final long serialVersionUID = 2708263960832062725L;
+
     /**
      * Contains the values of declared variables
      */
     private final HashMap vars = new HashMap();
+    
+    /**
+     * Constructs a new instance.
+     */
+    public BasicVariables() {
+        // empty
+    }
 
     /**
      * Defines a new variable with the specified value or modifies the value of an existing variable.

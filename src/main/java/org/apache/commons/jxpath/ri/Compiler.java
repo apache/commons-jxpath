@@ -45,53 +45,148 @@ package org.apache.commons.jxpath.ri;
  */
 public interface Compiler {
 
+    /** Constant {@value} */
     int NODE_TYPE_NODE = 1;
+
+    /** Constant {@value} */
     int NODE_TYPE_TEXT = 2;
+
+    /** Constant {@value} */
     int NODE_TYPE_COMMENT = 3;
+
+    /** Constant {@value} */
     int NODE_TYPE_PI = 4;
+
+    /** Constant {@value} */
     int AXIS_SELF = 1;
+
+    /** Constant {@value} */
     int AXIS_CHILD = 2;
+
+    /** Constant {@value} */
     int AXIS_PARENT = 3;
+
+    /** Constant {@value} */
     int AXIS_ANCESTOR = 4;
+
+    /** Constant {@value} */
     int AXIS_ATTRIBUTE = 5;
+
+    /** Constant {@value} */
     int AXIS_NAMESPACE = 6;
+
+    /** Constant {@value} */
     int AXIS_PRECEDING = 7;
+
+    /** Constant {@value} */
     int AXIS_FOLLOWING = 8;
+
+    /** Constant {@value} */
     int AXIS_DESCENDANT = 9;
+
+    /** Constant {@value} */
     int AXIS_ANCESTOR_OR_SELF = 10;
+
+    /** Constant {@value} */
     int AXIS_FOLLOWING_SIBLING = 11;
+
+    /** Constant {@value} */
     int AXIS_PRECEDING_SIBLING = 12;
+
+    /** Constant {@value} */
     int AXIS_DESCENDANT_OR_SELF = 13;
+
+    /** Constant {@value} */
     int FUNCTION_LAST = 1;
+
+    /** Constant {@value} */
     int FUNCTION_POSITION = 2;
+
+    /** Constant {@value} */
     int FUNCTION_COUNT = 3;
+
+    /** Constant {@value} */
     int FUNCTION_ID = 4;
+
+    /** Constant {@value} */
     int FUNCTION_LOCAL_NAME = 5;
+
+    /** Constant {@value} */
     int FUNCTION_NAMESPACE_URI = 6;
+
+    /** Constant {@value} */
     int FUNCTION_NAME = 7;
+
+    /** Constant {@value} */
     int FUNCTION_STRING = 8;
+
+    /** Constant {@value} */
     int FUNCTION_CONCAT = 9;
+
+    /** Constant {@value} */
     int FUNCTION_STARTS_WITH = 10;
+
+    /** Constant {@value} */
     int FUNCTION_CONTAINS = 11;
+
+    /** Constant {@value} */
     int FUNCTION_SUBSTRING_BEFORE = 12;
+
+    /** Constant {@value} */
     int FUNCTION_SUBSTRING_AFTER = 13;
+
+    /** Constant {@value} */
     int FUNCTION_SUBSTRING = 14;
+
+    /** Constant {@value} */
     int FUNCTION_STRING_LENGTH = 15;
+
+    /** Constant {@value} */
     int FUNCTION_NORMALIZE_SPACE = 16;
+
+    /** Constant {@value} */
     int FUNCTION_TRANSLATE = 17;
+
+    /** Constant {@value} */
     int FUNCTION_BOOLEAN = 18;
+
+    /** Constant {@value} */
     int FUNCTION_NOT = 19;
+
+    /** Constant {@value} */
     int FUNCTION_TRUE = 20;
+
+    /** Constant {@value} */
     int FUNCTION_FALSE = 21;
+
+    /** Constant {@value} */
     int FUNCTION_LANG = 22;
+
+    /** Constant {@value} */
     int FUNCTION_NUMBER = 23;
+
+    /** Constant {@value} */
     int FUNCTION_SUM = 24;
+
+    /** Constant {@value} */
     int FUNCTION_FLOOR = 25;
+
+    /** Constant {@value} */
     int FUNCTION_CEILING = 26;
+
+    /** Constant {@value} */
     int FUNCTION_ROUND = 27;
+
+    /** Constant {@value} */
     int FUNCTION_NULL = 28;
+
+    /** Constant {@value} */
     int FUNCTION_KEY = 29;
+
+    /** Constant {@value} */
     int FUNCTION_FORMAT_NUMBER = 30;
+
+    /** Constant {@value} */
     int FUNCTION_ENDS_WITH = 31;
 
     /**

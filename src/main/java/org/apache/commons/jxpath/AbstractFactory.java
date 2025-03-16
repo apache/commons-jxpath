@@ -22,14 +22,22 @@ package org.apache.commons.jxpath;
  * AbstractFactory for that purpose. Install a factory on JXPathContext by calling {@link JXPathContext#setFactory JXPathContext. setFactory()}.
  * <p>
  * All methods of this class return false. Override any of them to return true to indicate that the factory has successfully created the described object.
+ * </p>
  */
 public abstract class AbstractFactory {
+
+    
+    /**
+     * Constructs a new instance for subclasses.
+     */
+    public AbstractFactory() {
+        // empty
+    }
 
     /**
      * The parameters may describe a collection element or an individual object. It is up to the factory to infer which one it is. If it is a collection, the
      * factory should check if the collection exists. If not, it should create the collection. Then it should create the index'th element of the collection and
      * return true.
-     * <p>
      *
      * @param context can be used to evaluate other XPaths, get to variables etc.
      * @param pointer describes the location of the node to be created

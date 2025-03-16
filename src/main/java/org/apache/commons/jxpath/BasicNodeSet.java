@@ -31,6 +31,13 @@ public class BasicNodeSet implements NodeSet {
     private List<Pointer> readOnlyPointers;
     private List nodes;
     private List values;
+    
+    /**
+     * Constructs a new instance.
+     */
+    public BasicNodeSet() {
+        // empty
+    }
 
     /**
      * Add the specified NodeSet to this NodeSet.
