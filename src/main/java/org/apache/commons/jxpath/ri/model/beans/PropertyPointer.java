@@ -31,6 +31,9 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public abstract class PropertyPointer extends NodePointer {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Marks a property as unspecified.
+     */
     public static final int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
 
     private static final Object UNINITIALIZED = new Object();
@@ -44,7 +47,7 @@ public abstract class PropertyPointer extends NodePointer {
     private Object value = UNINITIALIZED;
 
     /**
-     * Takes a javabean, a descriptor of a property of that object and
+     * Takes a JavaBean, a descriptor of a property of that object and
      * an offset within that property (starting with 0).
      * @param parent parent pointer
      */
@@ -108,7 +111,7 @@ public abstract class PropertyPointer extends NodePointer {
 
     @Override
     public NodePointer createPath(final JXPathContext context, final Object value) {
-        // If neccessary, expand collection
+        // If necessary, expand collection
         if (index != WHOLE_COLLECTION && index >= getLength()) {
             createPath(context);
         }
