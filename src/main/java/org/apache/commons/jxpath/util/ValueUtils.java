@@ -530,4 +530,14 @@ public class ValueUtils {
                     ex);
         }
     }
+    
+    /**
+     * Constructs a new instance.
+     *
+     * @deprecated Will be private in the next major version.
+     */
+    @Deprecated
+    public ValueUtils() {
+        // empty
+    }
 }
