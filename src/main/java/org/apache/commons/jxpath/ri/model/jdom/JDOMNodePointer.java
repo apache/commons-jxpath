@@ -376,7 +376,7 @@ public class JDOMNodePointer extends NodePointer {
             return 0; // Should not happen
         }
         if (!(node instanceof Element)) {
-            throw new IllegalStateException("JXPath internal error: " + "compareChildNodes called for " + node);
+            throw new IllegalStateException("JXPath internal error: compareChildNodes called for " + node);
         }
         final List children = ((Element) node).getContent();
         final int length = children.size();
@@ -436,7 +436,7 @@ public class JDOMNodePointer extends NodePointer {
                 return it.getNodePointer();
             }
         }
-        throw new JXPathAbstractFactoryException("Factory could not create " + "a child node for path: " + asPath() + "/" + name + "[" + (index + 1) + "]");
+        throw new JXPathAbstractFactoryException("Factory could not create a child node for path: " + asPath() + "/" + name + "[" + (index + 1) + "]");
     }
 
     @Override

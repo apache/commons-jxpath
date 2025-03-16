@@ -33,7 +33,7 @@ import org.w3c.dom.Node;
 public class DOMNamespaceIterator implements NodeIterator {
 
     private final NodePointer parent;
-    private final List attributes;
+    private final List<Attr> attributes;
     private int position = 0;
 
     /**
@@ -43,7 +43,7 @@ public class DOMNamespaceIterator implements NodeIterator {
      */
     public DOMNamespaceIterator(final NodePointer parent) {
         this.parent = parent;
-        attributes = new ArrayList();
+        attributes = new ArrayList<>();
         collectNamespaces(attributes, (Node) parent.getNode());
     }
 
@@ -53,7 +53,7 @@ public class DOMNamespaceIterator implements NodeIterator {
      * @param attributes attribute list
      * @param node       target node
      */
-    private void collectNamespaces(final List attributes, Node node) {
+    private void collectNamespaces(final List<Attr> attributes, Node node) {
         final Node parent = node.getParentNode();
         if (parent != null) {
             collectNamespaces(attributes, parent);

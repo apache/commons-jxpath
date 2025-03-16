@@ -165,7 +165,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
         if (names == null) {
             final DynaClass dynaClass = dynaBean.getDynaClass();
             final DynaProperty[] dynaProperties = dynaClass.getDynaProperties();
-            final ArrayList properties = new ArrayList(dynaProperties.length);
+            final ArrayList<String> properties = new ArrayList<>(dynaProperties.length);
             for (final DynaProperty element : dynaProperties) {
                 final String name = element.getName();
                 if (!CLASS.equals(name)) {

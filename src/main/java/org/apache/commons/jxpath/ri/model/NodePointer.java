@@ -292,7 +292,7 @@ public abstract class NodePointer implements Pointer {
         // Task 1: find the common parent
         int depth1 = 0;
         NodePointer p1 = this;
-        final HashSet parents1 = new HashSet();
+        final HashSet<NodePointer> parents1 = new HashSet<>();
         while (p1 != null) {
             depth1++;
             p1 = p1.parent;

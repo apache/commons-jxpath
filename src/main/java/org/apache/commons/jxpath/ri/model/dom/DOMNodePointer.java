@@ -208,7 +208,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     private final Node node;
-    private Map namespaces;
+    private Map<String, String> namespaces;
     private String defaultNamespace;
     private String id;
     private NamespaceResolver localNamespaceResolver;
@@ -508,9 +508,9 @@ public class DOMNodePointer extends NodePointer {
         }
         String namespace = null;
         if (namespaces == null) {
-            namespaces = new HashMap();
+            namespaces = new HashMap<>();
         } else {
-            namespace = (String) namespaces.get(prefix);
+            namespace = namespaces.get(prefix);
         }
         if (namespace == null) {
             final String qname = "xmlns:" + prefix;

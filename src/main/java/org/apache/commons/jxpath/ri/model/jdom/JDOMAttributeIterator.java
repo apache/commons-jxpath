@@ -34,7 +34,7 @@ import org.jdom.Namespace;
 public class JDOMAttributeIterator implements NodeIterator {
 
     private NodePointer parent;
-    private List attributes;
+    private List<Attribute> attributes;
     private int position = 0;
 
     /**
@@ -68,16 +68,16 @@ public class JDOMAttributeIterator implements NodeIterator {
             }
             final String lname = name.getName();
             if (!lname.equals("*")) {
-                attributes = new ArrayList();
+                attributes = new ArrayList<>();
                 final Attribute attr = element.getAttribute(lname, ns);
                 if (attr != null) {
                     attributes.add(attr);
                 }
             } else {
-                attributes = new ArrayList();
-                final List allAttributes = element.getAttributes();
+                attributes = new ArrayList<>();
+                final List<Attribute> allAttributes = element.getAttributes();
                 for (int i = 0; i < allAttributes.size(); i++) {
-                    final Attribute attr = (Attribute) allAttributes.get(i);
+                    final Attribute attr = allAttributes.get(i);
                     if (ns == Namespace.NO_NAMESPACE || attr.getNamespace().equals(ns)) {
                         attributes.add(attr);
                     }
