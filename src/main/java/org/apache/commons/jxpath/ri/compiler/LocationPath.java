@@ -20,6 +20,7 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.axes.InitialContext;
 
 /**
+ * A location path expression.
  */
 public class LocationPath extends Path {
 

@@ -24,6 +24,7 @@ import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
+ * Pointer to a null property.
  */
 public class NullPropertyPointer extends PropertyPointer {
 

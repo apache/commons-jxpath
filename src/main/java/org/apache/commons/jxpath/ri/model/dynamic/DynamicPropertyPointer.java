@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
- * Pointer pointing to a property of an object with dynamic properties.
+ * Pointer to a property of an object with dynamic properties.
  */
 public class DynamicPropertyPointer extends PropertyPointer {
 

@@ -17,6 +17,7 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 /**
+ * Abstract operation expressions.
  */
 public abstract class Operation extends Expression {
 

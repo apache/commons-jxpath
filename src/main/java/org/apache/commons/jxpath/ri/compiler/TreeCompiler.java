@@ -20,6 +20,7 @@ import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
 
 /**
+ * A tree {@link Compiler}.
  */
 public class TreeCompiler implements Compiler {
 

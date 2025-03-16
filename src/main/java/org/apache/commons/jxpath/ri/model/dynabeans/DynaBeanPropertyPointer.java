@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.util.TypeUtils;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
- * Pointer pointing to a property of a {@link DynaBean}. If the target DynaBean is
+ * Pointer to a property of a {@link DynaBean}. If the target DynaBean is
  * Serializable, so should this instance be.
  */
 public class DynaBeanPropertyPointer extends PropertyPointer {

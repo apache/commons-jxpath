@@ -19,6 +19,7 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.ri.Compiler;
 
 /**
+ * A step.
  */
 public class Step {
     /**

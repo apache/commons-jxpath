@@ -35,6 +35,7 @@ import org.apache.commons.jxpath.ri.axes.UnionContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
+ * Abstracts path expressions.
  */
 public abstract class Path extends Expression {
 
