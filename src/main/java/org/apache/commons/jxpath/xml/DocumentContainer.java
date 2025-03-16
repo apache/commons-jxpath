@@ -38,12 +38,14 @@ public class DocumentContainer extends XMLParser2 implements Container {
     /** JDOM constant */
     public static final String MODEL_JDOM = "JDOM";
     private static final long serialVersionUID = -8713290334113427066L;
-    private static HashMap parserClasses = new HashMap();
+    private static HashMap<String, String> parserClasses = new HashMap<>();
+
     static {
         parserClasses.put(MODEL_DOM, "org.apache.commons.jxpath.xml.DOMParser");
         parserClasses.put(MODEL_JDOM, "org.apache.commons.jxpath.xml.JDOMParser");
     }
-    private static HashMap parsers = new HashMap();
+
+    private static HashMap<String, XMLParser> parsers = new HashMap<>();
 
     /**
      * Maps a model type to a parser.
@@ -58,7 +60,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
                 throw new JXPathException("Unsupported XML model: " + model);
             }
             try {
-                final Class clazz = ClassLoaderUtil.getClass(className, true);
+                final Class<XMLParser> clazz = ClassLoaderUtil.getClass(className, true);
                 return (XMLParser) clazz.getConstructor().newInstance();
             } catch (final Exception ex) {
                 throw new JXPathException("Cannot allocate XMLParser: " + className, ex);
