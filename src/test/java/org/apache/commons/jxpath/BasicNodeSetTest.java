@@ -16,14 +16,14 @@
  */
 package org.apache.commons.jxpath;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Iterator;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test BasicNodeSet

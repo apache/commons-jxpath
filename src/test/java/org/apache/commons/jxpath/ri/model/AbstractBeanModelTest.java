@@ -16,6 +16,10 @@
  */
 package org.apache.commons.jxpath.ri.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -23,9 +27,9 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.NestedTestBean;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.QName;
@@ -36,10 +40,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 import org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanModelTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Abstract superclass for Bean access with JXPath.

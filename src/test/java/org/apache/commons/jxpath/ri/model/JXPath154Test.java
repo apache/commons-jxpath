@@ -17,12 +17,12 @@
 
 package org.apache.commons.jxpath.ri.model;
 
-import org.apache.commons.jxpath.JXPathContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JXPath154Test extends AbstractJXPathTest {
 

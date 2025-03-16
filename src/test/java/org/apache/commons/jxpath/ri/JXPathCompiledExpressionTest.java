@@ -16,8 +16,10 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import org.apache.commons.jxpath.JXPathContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.ri.compiler.Constant;
 import org.apache.commons.jxpath.ri.compiler.CoreFunction;
 import org.apache.commons.jxpath.ri.compiler.CoreOperationAdd;
@@ -41,8 +43,6 @@ import org.apache.commons.jxpath.ri.compiler.LocationPath;
 import org.apache.commons.jxpath.ri.compiler.NameAttributeTest;
 import org.apache.commons.jxpath.ri.compiler.VariableReference;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test compiler.

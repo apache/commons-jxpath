@@ -16,16 +16,16 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-import org.apache.commons.jxpath.JXPathContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.TestMixedModelBean;
 import org.apache.commons.jxpath.Variables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test basic functionality of JXPath - infoset types,

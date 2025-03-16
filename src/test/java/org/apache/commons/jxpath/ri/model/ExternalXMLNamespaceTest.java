@@ -16,8 +16,8 @@
  */
 package org.apache.commons.jxpath.ri.model;
 
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 import org.junit.jupiter.api.Test;
 

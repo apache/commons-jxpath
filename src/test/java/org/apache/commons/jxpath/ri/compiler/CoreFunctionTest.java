@@ -20,9 +20,9 @@ import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ExtendedKeyManager;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.TestMixedModelBean;

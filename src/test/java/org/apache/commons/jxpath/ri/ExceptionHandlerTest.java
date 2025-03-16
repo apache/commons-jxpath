@@ -16,13 +16,13 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.AbstractJXPathTest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.apache.commons.jxpath.JXPathContext;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test simple ExceptionHandler.

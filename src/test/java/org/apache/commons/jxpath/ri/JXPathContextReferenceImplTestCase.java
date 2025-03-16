@@ -18,7 +18,6 @@
 package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.ri.model.container.ContainerPointerFactory;
-
 import org.junit.jupiter.api.Test;
 
 public class JXPathContextReferenceImplTestCase {

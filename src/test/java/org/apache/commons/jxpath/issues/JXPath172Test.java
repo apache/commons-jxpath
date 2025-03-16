@@ -16,19 +16,18 @@
  */
 package org.apache.commons.jxpath.issues;
 
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathNotFoundException;
-import org.apache.commons.jxpath.AbstractJXPathTest;
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.model.beans.BeanPropertyPointer;
-import org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer;
-
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathNotFoundException;
+import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.model.beans.BeanPropertyPointer;
+import org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer;
+import org.junit.jupiter.api.Test;
 
 public class JXPath172Test extends AbstractJXPathTest
 {

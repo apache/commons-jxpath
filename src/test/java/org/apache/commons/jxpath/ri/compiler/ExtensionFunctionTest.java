@@ -16,18 +16,21 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.PackageFunctions;
 import org.apache.commons.jxpath.Pointer;
@@ -40,9 +43,6 @@ import org.apache.commons.jxpath.util.TypeUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /**
  * Test extension functions.

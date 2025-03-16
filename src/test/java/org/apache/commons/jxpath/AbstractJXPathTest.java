@@ -16,6 +16,9 @@
  */
 package org.apache.commons.jxpath;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,9 +30,6 @@ import java.util.Set;
 
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.junit.jupiter.api.BeforeEach;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Abstract superclass for various JXPath tests.

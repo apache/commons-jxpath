@@ -16,14 +16,13 @@
  */
 package org.apache.commons.jxpath.issues;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Iterator;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
-
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Testcase proving JXPATH-118 issue with asPath() returning wrong names.

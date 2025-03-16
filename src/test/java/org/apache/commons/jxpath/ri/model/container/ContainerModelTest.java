@@ -16,17 +16,17 @@
  */
 package org.apache.commons.jxpath.ri.model.container;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests JXPath with containers as root or value of a variable, property, etc.

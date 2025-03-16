@@ -16,6 +16,9 @@
  */
 package org.apache.commons.jxpath.ri.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,8 +28,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.TestBean;
 import org.apache.commons.jxpath.TestMixedModelBean;
@@ -34,9 +37,6 @@ import org.apache.commons.jxpath.TestNull;
 import org.apache.commons.jxpath.Variables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests JXPath with mixed model: beans, maps, DOM etc.

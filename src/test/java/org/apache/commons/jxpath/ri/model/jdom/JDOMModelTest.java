@@ -16,6 +16,8 @@
  */
 package org.apache.commons.jxpath.ri.model.jdom;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
 import java.util.List;
 
 import org.apache.commons.jxpath.AbstractFactory;
@@ -29,8 +31,6 @@ import org.jdom.Element;
 import org.jdom.Text;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /**
  * Tests JXPath with JDOM

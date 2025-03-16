@@ -16,12 +16,11 @@
  */
 package org.apache.commons.jxpath.ri;
 
-import org.apache.commons.jxpath.JXPathContext;
-
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import org.apache.commons.jxpath.JXPathContext;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test thread safety.

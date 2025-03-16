@@ -16,18 +16,17 @@
  */
 package org.apache.commons.jxpath.issues;
 
-import java.util.HashMap;
-
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.AbstractJXPathTest;
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
-
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.util.HashMap;
+
+import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
+import org.junit.jupiter.api.Test;
 
 public class JXPath172DynamicTest extends AbstractJXPathTest
 {

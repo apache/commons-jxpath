@@ -16,6 +16,9 @@
  */
 package org.apache.commons.jxpath.ri.model.beans;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,12 +27,8 @@ import org.apache.commons.jxpath.JXPathAbstractFactoryException;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Badly-implemented Factory test.  From JIRA JXPATH-68.

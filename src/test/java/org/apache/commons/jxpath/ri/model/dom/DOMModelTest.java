@@ -16,6 +16,8 @@
  */
 package org.apache.commons.jxpath.ri.model.dom;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.ri.model.AbstractXMLModelTest;
@@ -26,8 +28,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /**
  * Tests JXPath with DOM

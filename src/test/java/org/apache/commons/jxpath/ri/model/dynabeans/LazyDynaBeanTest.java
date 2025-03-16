@@ -16,14 +16,14 @@
  */
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.apache.commons.beanutils.LazyDynaBean;
+import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
-import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  */

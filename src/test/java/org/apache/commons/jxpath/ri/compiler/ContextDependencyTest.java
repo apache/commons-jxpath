@@ -16,11 +16,11 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.ri.Parser;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests the determination of whether an expression is context dependent.

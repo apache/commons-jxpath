@@ -18,8 +18,8 @@ package org.apache.commons.jxpath.ri.model;
 
 import java.util.HashMap;
 
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.AbstractJXPathTest;
+import org.apache.commons.jxpath.JXPathContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
