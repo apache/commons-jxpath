@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dynamic;
 
 import java.util.Arrays;
@@ -34,7 +35,6 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public class DynamicPropertyPointer extends PropertyPointer {
 
     private static final long serialVersionUID = -5720585681149150822L;
-
     private final DynamicPropertyHandler handler;
     private String name;
     private String[] names;
@@ -42,11 +42,11 @@ public class DynamicPropertyPointer extends PropertyPointer {
 
     /**
      * Create a new DynamicPropertyPointer.
-     * @param parent pointer
+     * 
+     * @param parent  pointer
      * @param handler DynamicPropertyHandler
      */
-    public DynamicPropertyPointer(final NodePointer parent,
-            final DynamicPropertyHandler handler) {
+    public DynamicPropertyPointer(final NodePointer parent, final DynamicPropertyHandler handler) {
         super(parent);
         this.handler = handler;
     }
@@ -57,8 +57,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
         buffer.append(getImmediateParentPointer().asPath());
         if (buffer.length() == 0) {
             buffer.append("/.");
-        }
-        else if (buffer.charAt(buffer.length() - 1) == '/') {
+        } else if (buffer.charAt(buffer.length() - 1) == '/') {
             buffer.append('.');
         }
         buffer.append("[@name='");
@@ -76,32 +75,21 @@ public class DynamicPropertyPointer extends PropertyPointer {
         Object collection = getBaseValue();
         if (collection == null) {
             final AbstractFactory factory = getAbstractFactory(context);
-            final boolean success =
-                factory.createObject(
-                    context,
-                    this,
-                    getBean(),
-                    getPropertyName(),
-                    0);
+            final boolean success = factory.createObject(context, this, getBean(), getPropertyName(), 0);
             if (!success) {
-                throw new JXPathAbstractFactoryException(
-                    "Factory could not create an object for path: " + asPath());
+                throw new JXPathAbstractFactoryException("Factory could not create an object for path: " + asPath());
             }
             collection = getBaseValue();
         }
-
         if (index != WHOLE_COLLECTION) {
             if (index < 0) {
-                throw new JXPathInvalidAccessException("Index is less than 1: "
-                        + asPath());
+                throw new JXPathInvalidAccessException("Index is less than 1: " + asPath());
             }
-
             if (index >= getLength()) {
                 collection = ValueUtils.expandCollection(collection, index + 1);
                 handler.setProperty(getBean(), getPropertyName(), collection);
             }
         }
-
         return this;
     }
 
@@ -109,8 +97,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     public NodePointer createPath(final JXPathContext context, final Object value) {
         if (index == WHOLE_COLLECTION) {
             handler.setProperty(getBean(), getPropertyName(), value);
-        }
-        else {
+        } else {
             createPath(context);
             ValueUtils.setValue(getBaseValue(), index, value);
         }
@@ -118,8 +105,8 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Returns the value of the property, not an element of the collection
-     * represented by the property, if any.
+     * Returns the value of the property, not an element of the collection represented by the property, if any.
+     * 
      * @return Object
      */
     @Override
@@ -128,30 +115,25 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * If index == WHOLE_COLLECTION, the value of the property, otherwise
-     * the value of the index'th element of the collection represented by the
-     * property. If the property is not a collection, index should be zero
-     * and the value will be the property itself.
+     * If index == WHOLE_COLLECTION, the value of the property, otherwise the value of the index'th element of the collection represented by the property. If
+     * the property is not a collection, index should be zero and the value will be the property itself.
+     * 
      * @return Object
      */
     @Override
     public Object getImmediateNode() {
         Object value;
         if (index == WHOLE_COLLECTION) {
-            value = ValueUtils.getValue(handler.getProperty(
-                    getBean(),
-                    getPropertyName()));
-        }
-        else {
-            value = ValueUtils.getValue(handler.getProperty(
-                    getBean(),
-                    getPropertyName()), index);
+            value = ValueUtils.getValue(handler.getProperty(getBean(), getPropertyName()));
+        } else {
+            value = ValueUtils.getValue(handler.getProperty(getBean(), getPropertyName()), index);
         }
         return value;
     }
 
     /**
      * Number of the DP object's properties.
+     * 
      * @return int
      */
     @Override
@@ -160,8 +142,8 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Index of the currently selected property in the list of all
-     * properties sorted alphabetically.
+     * Index of the currently selected property in the list of all properties sorted alphabetically.
+     * 
      * @return int
      */
     @Override
@@ -179,8 +161,8 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Returns the name of the currently selected property or "*"
-     * if none has been selected.
+     * Returns the name of the currently selected property or "*" if none has been selected.
+     * 
      * @return String
      */
     @Override
@@ -194,6 +176,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
 
     /**
      * Names of all properties, sorted alphabetically.
+     * 
      * @return String[]
      */
     @Override
@@ -218,8 +201,8 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * A dynamic property is always considered actual - all keys are apparently
-     * existing with possibly the value of null.
+     * A dynamic property is always considered actual - all keys are apparently existing with possibly the value of null.
+     * 
      * @return boolean
      */
     @Override
@@ -229,6 +212,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
 
     /**
      * This type of node is auxiliary.
+     * 
      * @return true
      */
     @Override
@@ -240,12 +224,10 @@ public class DynamicPropertyPointer extends PropertyPointer {
     public void remove() {
         if (index == WHOLE_COLLECTION) {
             removeKey();
-        }
-        else if (isCollection()) {
+        } else if (isCollection()) {
             final Object collection = ValueUtils.remove(getBaseValue(), index);
             handler.setProperty(getBean(), getPropertyName(), collection);
-        }
-        else if (index == 0) {
+        } else if (index == 0) {
             removeKey();
         }
     }
@@ -257,15 +239,14 @@ public class DynamicPropertyPointer extends PropertyPointer {
         final Object bean = getBean();
         if (bean instanceof Map) {
             ((Map) bean).remove(getPropertyName());
-        }
-        else {
+        } else {
             handler.setProperty(bean, getPropertyName(), null);
         }
     }
 
     /**
-     * Index a property by its index in the list of all
-     * properties sorted alphabetically.
+     * Index a property by its index in the list of all properties sorted alphabetically.
+     * 
      * @param index to set
      */
     @Override
@@ -277,11 +258,9 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Select a property by name.  If the supplied name is
-     * not one of the object's existing properties, it implicitly
-     * adds this name to the object's property name list. It does not
-     * set the property value though. In order to set the property
-     * value, call setValue().
+     * Select a property by name. If the supplied name is not one of the object's existing properties, it implicitly adds this name to the object's property
+     * name list. It does not set the property value though. In order to set the property value, call setValue().
+     * 
      * @param propertyName to set
      */
     @Override
@@ -295,22 +274,17 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * If index == WHOLE_COLLECTION, change the value of the property, otherwise
-     * change the value of the index'th element of the collection
-     * represented by the property.
+     * If index == WHOLE_COLLECTION, change the value of the property, otherwise change the value of the index'th element of the collection represented by the
+     * property.
+     * 
      * @param value to set
      */
     @Override
     public void setValue(final Object value) {
         if (index == WHOLE_COLLECTION) {
             handler.setProperty(getBean(), getPropertyName(), value);
-        }
-        else {
-            ValueUtils.setValue(
-                handler.getProperty(getBean(), getPropertyName()),
-                index,
-                value);
+        } else {
+            ValueUtils.setValue(handler.getProperty(getBean(), getPropertyName()), index, value);
         }
     }
-
 }

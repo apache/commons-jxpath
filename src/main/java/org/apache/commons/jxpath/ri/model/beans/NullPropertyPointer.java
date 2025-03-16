@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.AbstractFactory;
@@ -30,11 +31,11 @@ public class NullPropertyPointer extends PropertyPointer {
 
     private static final long serialVersionUID = 5296593071854982754L;
     private String propertyName = "*";
-
     private boolean byNameAttribute = false;
 
     /**
      * Create a new NullPropertyPointer.
+     * 
      * @param parent pointer
      */
     public NullPropertyPointer(final NodePointer parent) {
@@ -59,12 +60,12 @@ public class NullPropertyPointer extends PropertyPointer {
 
     /**
      * Create a "bad factory" JXPathAbstractFactoryException for the specified AbstractFactory.
+     * 
      * @param factory AbstractFactory
      * @return JXPathAbstractFactoryException
      */
     private JXPathAbstractFactoryException createBadFactoryException(final AbstractFactory factory) {
-        return new JXPathAbstractFactoryException("Factory " + factory
-                + " reported success creating object for path: " + asPath()
+        return new JXPathAbstractFactoryException("Factory " + factory + " reported success creating object for path: " + asPath()
                 + " but object was null.  Terminating to avoid stack recursion.");
     }
 
@@ -74,8 +75,7 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name,
-            final int index, final Object value) {
+    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
         return createPath(context).createChild(context, name, index, value);
     }
 
@@ -90,17 +90,17 @@ public class NullPropertyPointer extends PropertyPointer {
         }
         // Consider these two use cases:
         // 1. The parent pointer of NullPropertyPointer is
-        //    a PropertyOwnerPointer other than NullPointer. When we call
-        //    createPath on it, it most likely returns itself. We then
-        //    take a PropertyPointer from it and get the PropertyPointer
-        //    to expand the collection for the corresponding property.
+        // a PropertyOwnerPointer other than NullPointer. When we call
+        // createPath on it, it most likely returns itself. We then
+        // take a PropertyPointer from it and get the PropertyPointer
+        // to expand the collection for the corresponding property.
         //
         // 2. The parent pointer of NullPropertyPointer is a NullPointer.
-        //    When we call createPath, it may return a PropertyOwnerPointer
-        //    or it may return anything else, like a DOMNodePointer.
-        //    In the former case we need to do exactly what we did in use
-        //    case 1.  In the latter case, we simply request that the
-        //    non-property pointer expand the collection by itself.
+        // When we call createPath, it may return a PropertyOwnerPointer
+        // or it may return anything else, like a DOMNodePointer.
+        // In the former case we need to do exactly what we did in use
+        // case 1. In the latter case, we simply request that the
+        // non-property pointer expand the collection by itself.
         if (newParent instanceof PropertyOwnerPointer) {
             final PropertyOwnerPointer pop = (PropertyOwnerPointer) newParent;
             newParent = pop.getPropertyPointer();
@@ -163,7 +163,7 @@ public class NullPropertyPointer extends PropertyPointer {
 
     @Override
     public NodePointer getValuePointer() {
-        return new NullPointer(this,  new QName(getPropertyName()));
+        return new NullPointer(this, new QName(getPropertyName()));
     }
 
     @Override
@@ -193,6 +193,7 @@ public class NullPropertyPointer extends PropertyPointer {
 
     /**
      * Sets the name attribute.
+     * 
      * @param attributeValue value to set
      */
     public void setNameAttributeValue(final String attributeValue) {
@@ -212,22 +213,14 @@ public class NullPropertyPointer extends PropertyPointer {
     @Override
     public void setValue(final Object value) {
         if (parent == null || parent.isContainer()) {
-            throw new JXPathInvalidAccessException(
-                "Cannot set property "
-                    + asPath()
-                    + ", the target object is null");
+            throw new JXPathInvalidAccessException("Cannot set property " + asPath() + ", the target object is null");
         }
-        if (!(parent instanceof PropertyOwnerPointer) || !((PropertyOwnerPointer) parent)
-                .isDynamicPropertyDeclarationSupported()) {
-            throw new JXPathInvalidAccessException(
-                "Cannot set property "
-                    + asPath()
-                    + ", path does not match a changeable location");
+        if (!(parent instanceof PropertyOwnerPointer) || !((PropertyOwnerPointer) parent).isDynamicPropertyDeclarationSupported()) {
+            throw new JXPathInvalidAccessException("Cannot set property " + asPath() + ", path does not match a changeable location");
         }
         // If the parent property owner can create
         // a property automatically - let it do so
-        final PropertyPointer propertyPointer =
-            ((PropertyOwnerPointer) parent).getPropertyPointer();
+        final PropertyPointer propertyPointer = ((PropertyOwnerPointer) parent).getPropertyPointer();
         propertyPointer.setPropertyName(propertyName);
         propertyPointer.setValue(value);
     }

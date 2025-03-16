@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.util;
 
 /**
@@ -21,5 +22,8 @@ package org.apache.commons.jxpath.util;
  * } test case.
  */
 public class ClassLoadingExampleClass {
-  public static String getMessage() { return "an example class"; }
+
+    public static String getMessage() {
+        return "an example class";
+    }
 }

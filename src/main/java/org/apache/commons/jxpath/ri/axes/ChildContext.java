@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.Pointer;
@@ -23,10 +24,10 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * EvalContext that can walk the "child::", "following-sibling::" and
- * "preceding-sibling::" axes.
+ * EvalContext that can walk the "child::", "following-sibling::" and "preceding-sibling::" axes.
  */
 public class ChildContext extends EvalContext {
+
     private final NodeTest nodeTest;
     private final boolean startFromParentLocation;
     private final boolean reverse;
@@ -34,13 +35,13 @@ public class ChildContext extends EvalContext {
 
     /**
      * Create a new ChildContext.
-     * @param parentContext parent EvalContext
-     * @param nodeTest NodeTest
+     * 
+     * @param parentContext           parent EvalContext
+     * @param nodeTest                NodeTest
      * @param startFromParentLocation whether to start from parent location
-     * @param reverse whether to iterate in reverse
+     * @param reverse                 whether to iterate in reverse
      */
-    public ChildContext(final EvalContext parentContext, final NodeTest nodeTest,
-            final boolean startFromParentLocation, final boolean reverse) {
+    public ChildContext(final EvalContext parentContext, final NodeTest nodeTest, final boolean startFromParentLocation, final boolean reverse) {
         super(parentContext);
         this.nodeTest = nodeTest;
         this.startFromParentLocation = startFromParentLocation;
@@ -56,11 +57,10 @@ public class ChildContext extends EvalContext {
     }
 
     /**
-     * This method is called on the last context on the path when only
-     * one value is needed.  Note that this will return the whole property,
-     * even if it is a collection. It will not extract the first element
-     * of the collection.  For example, "books" will return the collection
-     * of books rather than the first book from that collection.
+     * This method is called on the last context on the path when only one value is needed. Note that this will return the whole property, even if it is a
+     * collection. It will not extract the first element of the collection. For example, "books" will return the collection of books rather than the first book
+     * from that collection.
+     * 
      * @return Pointer
      */
     @Override
@@ -96,8 +96,7 @@ public class ChildContext extends EvalContext {
             return;
         }
         final NodePointer useParent = startFromParentLocation ? parent.getParent() : parent;
-        iterator = useParent == null ? null : useParent.childIterator(nodeTest, reverse,
-                startFromParentLocation ? parent : null);
+        iterator = useParent == null ? null : useParent.childIterator(nodeTest, reverse, startFromParentLocation ? parent : null);
     }
 
     @Override

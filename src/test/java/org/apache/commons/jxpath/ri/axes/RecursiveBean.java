@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.axes;
 
 /**
- * This bean is used to test infinite recursion protection in
- * descendant search contexts.
+ * This bean is used to test infinite recursion protection in descendant search contexts.
  */
-public class RecursiveBean  {
+public class RecursiveBean {
 
     private final String name;
     private RecursiveBean first;

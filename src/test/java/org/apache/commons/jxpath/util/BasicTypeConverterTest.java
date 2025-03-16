@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,26 +49,17 @@ public class BasicTypeConverterTest {
             }
             result = list;
         }
-        assertEquals(
-            expected,
-            result,
-            "Convert: " + from.getClass() + " to " + toType);
+        assertEquals(expected, result, "Convert: " + from.getClass() + " to " + toType);
     }
 
     @Test
     public void testArrayToArray() {
-        assertConversion(
-            new int[] { 1, 2 },
-            String[].class,
-            Arrays.asList(new String[] { "1", "2" }));
+        assertConversion(new int[] { 1, 2 }, String[].class, Arrays.asList(new String[] { "1", "2" }));
     }
 
     @Test
     public void testArrayToList() {
-        assertConversion(
-            new int[] { 1, 2 },
-            List.class,
-            Arrays.asList(new Object[] { Integer.valueOf(1), Integer.valueOf(2)}));
+        assertConversion(new int[] { 1, 2 }, List.class, Arrays.asList(new Object[] { Integer.valueOf(1), Integer.valueOf(2) }));
     }
 
     @Test
@@ -77,35 +69,30 @@ public class BasicTypeConverterTest {
 
     @Test
     public void testInvalidConversion() {
-        assertThrows(Exception.class, () -> TypeUtils.convert("'foo'", Date.class),
-            "Type conversion exception");
+        assertThrows(Exception.class, () -> TypeUtils.convert("'foo'", Date.class), "Type conversion exception");
     }
 
     @Test
     public void testListToArray() {
-        assertConversion(
-            Arrays.asList(new Integer[] { Integer.valueOf(1), Integer.valueOf(2)}),
-            String[].class,
-            Arrays.asList(new String[] { "1", "2" }));
-
-        assertConversion(
-            Arrays.asList(new String[] { "1", "2" }),
-            int[].class,
-            Arrays.asList(new Integer[] { Integer.valueOf(1), Integer.valueOf(2)}));
+        assertConversion(Arrays.asList(new Integer[] { Integer.valueOf(1), Integer.valueOf(2) }), String[].class, Arrays.asList(new String[] { "1", "2" }));
+        assertConversion(Arrays.asList(new String[] { "1", "2" }), int[].class, Arrays.asList(new Integer[] { Integer.valueOf(1), Integer.valueOf(2) }));
     }
 
     // succeeds in current version
     @Test
     public void testNodeSetToInteger() {
         assertConversion(new NodeSet() {
+
             @Override
             public List getNodes() {
                 return null;
             }
+
             @Override
             public List getPointers() {
                 return null;
             }
+
             @Override
             public List getValues() {
                 return Collections.singletonList("9");
@@ -116,14 +103,17 @@ public class BasicTypeConverterTest {
     @Test
     public void testNodeSetToString() {
         assertConversion(new NodeSet() {
+
             @Override
             public List getNodes() {
                 return null;
             }
+
             @Override
             public List getPointers() {
                 return null;
             }
+
             @Override
             public List getValues() {
                 final List list = new ArrayList();
@@ -137,31 +127,39 @@ public class BasicTypeConverterTest {
     @Test
     public void testPointerToString() {
         assertConversion(new Pointer() {
+
             private static final long serialVersionUID = 1L;
+
             @Override
             public String asPath() {
                 return null;
             }
+
             @Override
             public Object clone() {
                 return null;
             }
+
             @Override
             public int compareTo(final Object o) {
                 return 0;
             }
+
             @Override
             public Object getNode() {
                 return null;
             }
+
             @Override
             public Object getRootNode() {
                 return null;
             }
+
             @Override
             public Object getValue() {
                 return "value";
             }
+
             @Override
             public void setValue(final Object value) {
             }

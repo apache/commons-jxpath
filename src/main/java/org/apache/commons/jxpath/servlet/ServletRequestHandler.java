@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
@@ -22,9 +23,8 @@ import java.util.HashSet;
 import javax.servlet.ServletRequest;
 
 /**
- * Implementation of the {@link org.apache.commons.jxpath.DynamicPropertyHandler}
- * interface that provides access to attributes and parameters
- * of a {@link ServletRequest}.
+ * Implementation of the {@link org.apache.commons.jxpath.DynamicPropertyHandler} interface that provides access to attributes and parameters of a
+ * {@link ServletRequest}.
  */
 public class ServletRequestHandler extends HttpSessionHandler {
 
@@ -48,7 +48,6 @@ public class ServletRequestHandler extends HttpSessionHandler {
         final ServletRequestAndContext handle = (ServletRequestAndContext) bean;
         final ServletRequest servletRequest = handle.getServletRequest();
         final String[] strings = servletRequest.getParameterValues(property);
-
         if (strings != null) {
             if (strings.length == 0) {
                 return null;
@@ -58,12 +57,10 @@ public class ServletRequestHandler extends HttpSessionHandler {
             }
             return strings;
         }
-
         final Object object = servletRequest.getAttribute(property);
         if (object != null) {
             return object;
         }
-
         return super.getProperty(bean, property);
     }
 

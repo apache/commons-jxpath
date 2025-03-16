@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.ri.QName;
@@ -21,8 +22,7 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * Combines attribute node iterators of all elements of a collection into one
- * aggregate attribute node iterator.
+ * Combines attribute node iterators of all elements of a collection into one aggregate attribute node iterator.
  */
 public class CollectionAttributeNodeIterator extends CollectionNodeIterator {
 
@@ -30,12 +30,11 @@ public class CollectionAttributeNodeIterator extends CollectionNodeIterator {
 
     /**
      * Create a new CollectionAttributeNodeIterator.
+     * 
      * @param pointer collection pointer
-     * @param name attribute name
+     * @param name    attribute name
      */
-    public CollectionAttributeNodeIterator(
-        final CollectionPointer pointer,
-        final QName name) {
+    public CollectionAttributeNodeIterator(final CollectionPointer pointer, final QName name) {
         super(pointer, false, null);
         this.name = name;
     }

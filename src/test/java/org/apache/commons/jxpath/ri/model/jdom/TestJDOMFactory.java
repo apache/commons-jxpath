@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.jdom;
 
 import java.util.List;
@@ -32,12 +33,10 @@ public class TestJDOMFactory extends AbstractFactory {
         final List children = parent.getContent();
         int count = 0;
         for (final Object child : children) {
-            if (child instanceof Element
-                && ((Element) child).getQualifiedName().equals(tag)) {
+            if (child instanceof Element && ((Element) child).getQualifiedName().equals(tag)) {
                 count++;
             }
         }
-
         // Keep inserting new elements until we have index + 1 of them
         while (count <= index) {
             // In a real factory we would need to do the right thing with
@@ -47,8 +46,7 @@ public class TestJDOMFactory extends AbstractFactory {
                 final String prefix = tag.substring(0, tag.indexOf(':'));
                 tag = tag.substring(tag.indexOf(':') + 1);
                 newElement = new Element(tag, prefix, namespaceURI);
-            }
-            else {
+            } else {
                 newElement = new Element(tag);
             }
             parent.addContent(newElement);
@@ -57,20 +55,12 @@ public class TestJDOMFactory extends AbstractFactory {
     }
 
     /**
-     * Create a new instance and put it in the collection on the parent object.
-     * Return <strong>false</strong> if this factory cannot create the requested object.
+     * Create a new instance and put it in the collection on the parent object. Return <strong>false</strong> if this factory cannot create the requested
+     * object.
      */
     @Override
-    public boolean createObject(
-        final JXPathContext context,
-        final Pointer pointer,
-        final Object parent,
-        final String name,
-        final int index)
-    {
-        if (name.equals("location")
-            || name.equals("address")
-            || name.equals("street")) {
+    public boolean createObject(final JXPathContext context, final Pointer pointer, final Object parent, final String name, final int index) {
+        if (name.equals("location") || name.equals("address") || name.equals("street")) {
             addJDOMElement((Element) parent, index, name, null);
             return true;
         }
@@ -79,7 +69,6 @@ public class TestJDOMFactory extends AbstractFactory {
             addJDOMElement((Element) parent, index, name, namespaceURI);
             return true;
         }
-
         return false;
     }
 

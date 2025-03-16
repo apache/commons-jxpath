@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.Compiler;
@@ -21,23 +22,25 @@ import org.apache.commons.jxpath.ri.Compiler;
 /**
  */
 public class NodeTypeTest extends NodeTest {
+
     /**
      * Render the given node type as a String.
+     * 
      * @param code int
      * @return String
      */
     public static String nodeTypeToString(final int code) {
         switch (code) {
-            case Compiler.NODE_TYPE_NODE :
-                return "node";
-            case Compiler.NODE_TYPE_TEXT :
-                return "text";
-            case Compiler.NODE_TYPE_COMMENT :
-                return "comment";
-            case Compiler.NODE_TYPE_PI :
-                return "processing-instruction";
-            default:
-                return "UNKNOWN";
+        case Compiler.NODE_TYPE_NODE:
+            return "node";
+        case Compiler.NODE_TYPE_TEXT:
+            return "text";
+        case Compiler.NODE_TYPE_COMMENT:
+            return "comment";
+        case Compiler.NODE_TYPE_PI:
+            return "processing-instruction";
+        default:
+            return "UNKNOWN";
         }
     }
 
@@ -45,6 +48,7 @@ public class NodeTypeTest extends NodeTest {
 
     /**
      * Create a new NodeTypeTest.
+     * 
      * @param nodeType to match
      */
     public NodeTypeTest(final int nodeType) {
@@ -53,6 +57,7 @@ public class NodeTypeTest extends NodeTest {
 
     /**
      * Gets the nodeType.
+     * 
      * @return int
      */
     public int getNodeType() {

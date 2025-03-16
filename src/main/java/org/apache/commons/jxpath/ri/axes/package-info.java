@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * Implementations of EvalContext used for different XPath axes (child::, parent:: etc). In order to evaluate a path, RI creates a chain of EvalContexts, one
  * for each step in the path.
  */
+
 package org.apache.commons.jxpath.ri.axes;

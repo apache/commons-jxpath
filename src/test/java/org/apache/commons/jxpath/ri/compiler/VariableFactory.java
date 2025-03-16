@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.AbstractFactory;
@@ -29,13 +30,7 @@ public class VariableFactory extends AbstractFactory {
     /**
      */
     @Override
-    public boolean createObject(
-        final JXPathContext context,
-        final Pointer pointer,
-        final Object parent,
-        final String name,
-        final int index)
-    {
+    public boolean createObject(final JXPathContext context, final Pointer pointer, final Object parent, final String name, final int index) {
         switch (name) {
         case "testArray":
             ((TestBean[]) parent)[index] = new TestBean();
@@ -65,9 +60,7 @@ public class VariableFactory extends AbstractFactory {
             context.getVariables().declareVariable(name, new TestBean[0]);
             return true;
         case "stringArray":
-            context.getVariables().declareVariable(
-                name,
-                new String[] { "Value1" });
+            context.getVariables().declareVariable(name, new String[] { "Value1" });
             return true;
         default:
             break;

@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
- * Thrown when an {@link AbstractFactory} cannot generate an object for
- * the requested path.
+ * Thrown when an {@link AbstractFactory} cannot generate an object for the requested path.
  */
-
 public class JXPathAbstractFactoryException extends JXPathException {
 
     private static final long serialVersionUID = -4403564377958943239L;
 
     /**
      * Create a new JXPathAbstractFactoryException.
+     * 
      * @param message exception message
      */
     public JXPathAbstractFactoryException(final String message) {

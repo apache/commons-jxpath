@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dom;
 
 import org.apache.commons.jxpath.ri.Compiler;
@@ -26,13 +27,14 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  */
 public class NamespacePointer extends NodePointer {
+
     private static final long serialVersionUID = -7622456151550131709L;
     private final String prefix;
-
     private String namespaceURI;
 
     /**
      * Create a new NamespacePointer.
+     * 
      * @param parent parent pointer
      * @param prefix associated ns prefix.
      */
@@ -43,14 +45,12 @@ public class NamespacePointer extends NodePointer {
 
     /**
      * Create a new NamespacePointer.
-     * @param parent parent pointer
-     * @param prefix associated ns prefix.
+     * 
+     * @param parent       parent pointer
+     * @param prefix       associated ns prefix.
      * @param namespaceURI associated ns URI.
      */
-    public NamespacePointer(
-        final NodePointer parent,
-        final String prefix,
-        final String namespaceURI) {
+    public NamespacePointer(final NodePointer parent, final String prefix, final String namespaceURI) {
         super(parent);
         this.prefix = prefix;
         this.namespaceURI = namespaceURI;
@@ -61,8 +61,7 @@ public class NamespacePointer extends NodePointer {
         final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
             buffer.append(parent.asPath());
-            if (buffer.length() == 0
-                || buffer.charAt(buffer.length() - 1) != '/') {
+            if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
                 buffer.append('/');
             }
         }
@@ -72,9 +71,7 @@ public class NamespacePointer extends NodePointer {
     }
 
     @Override
-    public int compareChildNodePointers(
-        final NodePointer pointer1,
-        final NodePointer pointer2) {
+    public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2) {
         // Won't happen - namespaces don't have children
         return 0;
     }
@@ -84,11 +81,9 @@ public class NamespacePointer extends NodePointer {
         if (object == this) {
             return true;
         }
-
         if (!(object instanceof NamespacePointer)) {
             return false;
         }
-
         final NamespacePointer other = (NamespacePointer) object;
         return prefix.equals(other.prefix);
     }
@@ -138,6 +133,7 @@ public class NamespacePointer extends NodePointer {
 
     /**
      * Throws UnsupportedOperationException.
+     * 
      * @param value Object
      */
     @Override
@@ -147,9 +143,6 @@ public class NamespacePointer extends NodePointer {
 
     @Override
     public boolean testNode(final NodeTest nodeTest) {
-        return nodeTest == null
-            || nodeTest instanceof NodeTypeTest
-                && ((NodeTypeTest) nodeTest).getNodeType()
-                    == Compiler.NODE_TYPE_NODE;
+        return nodeTest == null || nodeTest instanceof NodeTypeTest && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE;
     }
 }

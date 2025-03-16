@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.servlet;
 
 import java.util.ArrayList;
@@ -22,8 +23,7 @@ import java.util.Enumeration;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
- * Implementation of the {@link DynamicPropertyHandler} interface that provides
- * access to attributes of a {@link PageScopeContext}.
+ * Implementation of the {@link DynamicPropertyHandler} interface that provides access to attributes of a {@link PageScopeContext}.
  */
 public class PageScopeContextHandler implements DynamicPropertyHandler {
 

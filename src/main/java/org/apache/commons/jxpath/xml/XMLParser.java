@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.xml;
 
 import java.io.InputStream;
 
 /**
- * Common interface for XML parsers.  We are not using JAXP because
- * some of the parsers we want to support may not be JAXP compliant.
+ * Common interface for XML parsers. We are not using JAXP because some of the parsers we want to support may not be JAXP compliant.
  */
 public interface XMLParser {
 
     /**
-     * Reads the supplied XML file and returns the resulting model,
-     * which is not necessarily DOM.
+     * Reads the supplied XML file and returns the resulting model, which is not necessarily DOM.
+     * 
      * @param stream InputStream
      * @return Object
      */

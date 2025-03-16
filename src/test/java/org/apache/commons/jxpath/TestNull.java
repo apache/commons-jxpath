@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
@@ -25,12 +26,12 @@ public class TestNull {
      */
     private static String[] array = { "a", null, "b" };
     private Object nothing = null;
-
     private TestNull child;
 
     public String[] getArray() {
         return array;
     }
+
     public TestNull getChild() {
         if (child == null) {
             child = new TestNull();

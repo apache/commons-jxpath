@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.Pointer;
@@ -22,18 +23,19 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * EvalContext that returns the current node from the parent context if the
- * test succeeds.
+ * EvalContext that returns the current node from the parent context if the test succeeds.
  */
 public class SelfContext extends EvalContext {
+
     private final NodeTest nodeTest;
     private boolean startedSet = false;
     private NodePointer nodePointer;
 
     /**
      * Create a new SelfContext.
+     * 
      * @param parentContext EvalContext
-     * @param nodeTest guard
+     * @param nodeTest      guard
      */
     public SelfContext(final EvalContext parentContext, final NodeTest nodeTest) {
         super(parentContext);
@@ -74,11 +76,9 @@ public class SelfContext extends EvalContext {
             startedSet = true;
             nodePointer = parentContext.getCurrentNodePointer();
         }
-
         if (nodePointer == null) {
             return false;
         }
-
         return nodeTest == null || nodePointer.testNode(nodeTest);
     }
 }

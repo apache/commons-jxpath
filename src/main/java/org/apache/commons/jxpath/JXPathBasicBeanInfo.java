@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 import java.beans.BeanInfo;
@@ -25,19 +26,17 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 /**
- * An implementation of JXPathBeanInfo based on JavaBeans' BeanInfo. Properties
- * advertised by JXPathBasicBeanInfo are the same as those advertised by
- * BeanInfo for the corresponding class.
+ * An implementation of JXPathBeanInfo based on JavaBeans' BeanInfo. Properties advertised by JXPathBasicBeanInfo are the same as those advertised by BeanInfo
+ * for the corresponding class.
  *
  * @see java.beans.BeanInfo
  * @see java.beans.Introspector
  */
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
+
     private static final long serialVersionUID = -3863803443111484155L;
-
-    private static final Comparator PROPERTY_DESCRIPTOR_COMPARATOR = (left, right) -> ((PropertyDescriptor) left).getName().compareTo(
-        ((PropertyDescriptor) right).getName());
-
+    private static final Comparator PROPERTY_DESCRIPTOR_COMPARATOR = (left, right) -> ((PropertyDescriptor) left).getName()
+            .compareTo(((PropertyDescriptor) right).getName());
     private boolean atomic = false;
     private final Class clazz;
     private Class dynamicPropertyHandlerClass;
@@ -46,6 +45,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     /**
      * Create a new JXPathBasicBeanInfo.
+     * 
      * @param clazz bean class
      */
     public JXPathBasicBeanInfo(final Class clazz) {
@@ -54,9 +54,9 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     /**
      * Create a new JXPathBasicBeanInfo.
-     * @param clazz bean class
-     * @param atomic whether objects of this class are treated as atomic
-     *               objects which have no properties of their own.
+     * 
+     * @param clazz  bean class
+     * @param atomic whether objects of this class are treated as atomic objects which have no properties of their own.
      */
     public JXPathBasicBeanInfo(final Class clazz, final boolean atomic) {
         this.clazz = clazz;
@@ -65,7 +65,8 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     /**
      * Create a new JXPathBasicBeanInfo.
-     * @param clazz bean class
+     * 
+     * @param clazz                       bean class
      * @param dynamicPropertyHandlerClass dynamic property handler class
      */
     public JXPathBasicBeanInfo(final Class clazz, final Class dynamicPropertyHandlerClass) {
@@ -75,8 +76,8 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     }
 
     /**
-     * For a dynamic class, returns the corresponding DynamicPropertyHandler
-     * class.
+     * For a dynamic class, returns the corresponding DynamicPropertyHandler class.
+     * 
      * @return Class
      */
     @Override
@@ -101,14 +102,12 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
         if (propertyDescriptors == null) {
             if (clazz == Object.class) {
                 propertyDescriptors = new PropertyDescriptor[0];
-            }
-            else {
+            } else {
                 try {
                     BeanInfo bi;
                     if (clazz.isInterface()) {
                         bi = Introspector.getBeanInfo(clazz);
-                    }
-                    else {
+                    } else {
                         bi = Introspector.getBeanInfo(clazz, Object.class);
                     }
                     final PropertyDescriptor[] pds = bi.getPropertyDescriptors();
@@ -116,8 +115,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
                     System.arraycopy(pds, 0, descriptors, 0, pds.length);
                     Arrays.sort(descriptors, PROPERTY_DESCRIPTOR_COMPARATOR);
                     propertyDescriptors = descriptors;
-                }
-                catch (final IntrospectionException ex) {
+                } catch (final IntrospectionException ex) {
                     ex.printStackTrace();
                     return new PropertyDescriptor[0];
                 }
@@ -132,8 +130,8 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     }
 
     /**
-     * Returns true if objects of this class are treated as atomic
-     * objects which have no properties of their own.
+     * Returns true if objects of this class are treated as atomic objects which have no properties of their own.
+     * 
      * @return boolean
      */
     @Override
@@ -143,6 +141,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     /**
      * Return true if the corresponding objects have dynamic properties.
+     * 
      * @return boolean
      */
     @Override

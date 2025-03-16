@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
- * Similary to {@link java.lang.reflect.InvocationTargetException} in that
- * it is thrown when JXPath cannot access properties, collection etc on the
- * target object model.
+ * Similary to {@link java.lang.reflect.InvocationTargetException} in that it is thrown when JXPath cannot access properties, collection etc on the target
+ * object model.
  */
 public class JXPathInvalidAccessException extends JXPathException {
 
@@ -27,6 +27,7 @@ public class JXPathInvalidAccessException extends JXPathException {
 
     /**
      * Create a new JXPathInvalidAccessException.
+     * 
      * @param message exception message
      */
     public JXPathInvalidAccessException(final String message) {
@@ -35,8 +36,9 @@ public class JXPathInvalidAccessException extends JXPathException {
 
     /**
      * Create a new JXPathInvalidAccessException.
+     * 
      * @param message exception message
-     * @param ex precipitating exception
+     * @param ex      precipitating exception
      */
     public JXPathInvalidAccessException(final String message, final Throwable ex) {
         super(message, ex);

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.EvalContext;
@@ -26,6 +27,7 @@ public class CoreOperationNegate extends CoreOperation {
 
     /**
      * Create a new CoreOperationNegate.
+     * 
      * @param arg the Expression to negate
      */
     public CoreOperationNegate(final Expression arg) {

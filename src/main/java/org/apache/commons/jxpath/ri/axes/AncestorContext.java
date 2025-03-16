@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.ri.EvalContext;
@@ -24,6 +25,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
  */
 public class AncestorContext extends EvalContext {
+
     private final NodeTest nodeTest;
     private boolean setStarted = false;
     private NodePointer currentNodePointer;
@@ -31,15 +33,12 @@ public class AncestorContext extends EvalContext {
 
     /**
      * Create a new AncestorContext.
+     * 
      * @param parentContext represents the previous step on the path
-     * @param  includeSelf differentiates between "ancestor::" and
-     *                     "ancestor-or-self::" axes
-     * @param nodeTest is the name of the element(s) we are looking for
+     * @param includeSelf   differentiates between "ancestor::" and "ancestor-or-self::" axes
+     * @param nodeTest      is the name of the element(s) we are looking for
      */
-    public AncestorContext(
-        final EvalContext parentContext,
-        final boolean includeSelf,
-        final NodeTest nodeTest) {
+    public AncestorContext(final EvalContext parentContext, final boolean includeSelf, final NodeTest nodeTest) {
         super(parentContext);
         this.includeSelf = includeSelf;
         this.nodeTest = nodeTest;
@@ -65,14 +64,11 @@ public class AncestorContext extends EvalContext {
                 return true;
             }
         }
-
         while (true) {
             currentNodePointer = currentNodePointer.getImmediateParentPointer();
-
             if (currentNodePointer == null) {
                 return false;
             }
-
             if (currentNodePointer.testNode(nodeTest)) {
                 position++;
                 return true;
@@ -91,7 +87,6 @@ public class AncestorContext extends EvalContext {
         if (position < getCurrentPosition()) {
             reset();
         }
-
         while (getCurrentPosition() < position) {
             if (!nextNode()) {
                 return false;

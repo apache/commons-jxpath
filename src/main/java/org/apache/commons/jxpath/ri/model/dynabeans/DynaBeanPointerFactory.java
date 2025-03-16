@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
 import java.util.Locale;
@@ -24,10 +25,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
 
 /**
- * Implements NodePointerFactory for DynaBeans.
- * See <a href="https://commons.apache.org/beanutils/">
- * Apache Commons BeanUtils
- * </a>
+ * Implements NodePointerFactory for DynaBeans. See <a href="https://commons.apache.org/beanutils/"> Apache Commons BeanUtils </a>
  */
 public class DynaBeanPointerFactory implements NodePointerFactory {
 
@@ -35,8 +33,7 @@ public class DynaBeanPointerFactory implements NodePointerFactory {
     public static final int DYNA_BEAN_POINTER_FACTORY_ORDER = 700;
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name,
-            final Object bean) {
+    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
         return bean instanceof DynaBean ? new DynaBeanPointer(parent, name, (DynaBean) bean) : null;
     }
 

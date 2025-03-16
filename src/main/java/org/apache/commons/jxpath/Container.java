@@ -14,28 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 import java.io.Serializable;
 
 /**
- * A Container is an object implementing an indirection
- * mechanism transparent to JXPath.  For example, if property
- * "foo" of the context node has a Container as its value,
- * the XPath "foo" will produce the contents of that Container,
- * rather than the container itself.
+ * A Container is an object implementing an indirection mechanism transparent to JXPath. For example, if property "foo" of the context node has a Container as
+ * its value, the XPath "foo" will produce the contents of that Container, rather than the container itself.
  */
 public interface Container extends Serializable {
 
     /**
      * Returns the contained value.
+     * 
      * @return Object value
      */
     Object getValue();
 
     /**
-     * Modifies the value contained by this container.  May throw
-     * UnsupportedOperationException.
+     * Modifies the value contained by this container. May throw UnsupportedOperationException.
+     * 
      * @param value Object value to set.
      */
     void setValue(Object value);

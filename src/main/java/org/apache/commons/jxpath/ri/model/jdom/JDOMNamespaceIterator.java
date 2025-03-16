@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.jdom;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import org.jdom.Namespace;
  * An iterator of namespaces of a DOM Node.
  */
 public class JDOMNamespaceIterator implements NodeIterator {
+
     private final NodePointer parent;
     private List namespaces;
     private Set prefixes;
@@ -38,6 +40,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
 
     /**
      * Create a new JDOMNamespaceIterator.
+     * 
      * @param parent the parent NodePointer.
      */
     public JDOMNamespaceIterator(final NodePointer parent) {
@@ -55,6 +58,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
 
     /**
      * Collect the namespaces from a JDOM Element.
+     * 
      * @param element the source Element
      */
     private void collectNamespaces(final Element element) {

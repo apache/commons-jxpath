@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
 import org.apache.commons.beanutils.WrapDynaBean;
@@ -24,7 +25,6 @@ import org.apache.commons.jxpath.ri.model.AbstractBeanModelTest;
 /**
  * Test for support of DynaBeans (see BeanUtils)
  */
-
 public class DynaBeanModelTest extends AbstractBeanModelTest {
 
     @Override

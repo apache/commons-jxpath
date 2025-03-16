@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dom;
 
 import org.apache.commons.jxpath.ri.Compiler;
@@ -25,18 +26,18 @@ import org.apache.commons.jxpath.util.TypeUtils;
 import org.w3c.dom.Attr;
 
 /**
- * A Pointer that points to a DOM node. Because the underlying DOM Attr is not Serializable,
- * neither is this pointer class truly so.
+ * A Pointer that points to a DOM node. Because the underlying DOM Attr is not Serializable, neither is this pointer class truly so.
  */
 public class DOMAttributePointer extends NodePointer {
-    private static final long serialVersionUID = 1115085175427555951L;
 
+    private static final long serialVersionUID = 1115085175427555951L;
     private final Attr attr;
 
     /**
      * Create a new DOMAttributePointer.
+     * 
      * @param parent pointer
-     * @param attr pointed
+     * @param attr   pointed
      */
     public DOMAttributePointer(final NodePointer parent, final Attr attr) {
         super(parent);
@@ -48,8 +49,7 @@ public class DOMAttributePointer extends NodePointer {
         final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
             buffer.append(parent.asPath());
-            if (buffer.length() == 0
-                || buffer.charAt(buffer.length() - 1) != '/') {
+            if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
                 buffer.append('/');
             }
         }
@@ -59,16 +59,14 @@ public class DOMAttributePointer extends NodePointer {
     }
 
     @Override
-    public int compareChildNodePointers(final NodePointer pointer1,
-            final NodePointer pointer2) {
+    public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2) {
         // Won't happen - attributes don't have children
         return 0;
     }
 
     @Override
     public boolean equals(final Object object) {
-        return object == this || object instanceof DOMAttributePointer
-                && attr == ((DOMAttributePointer) object).attr;
+        return object == this || object instanceof DOMAttributePointer && attr == ((DOMAttributePointer) object).attr;
     }
 
     @Override
@@ -88,9 +86,7 @@ public class DOMAttributePointer extends NodePointer {
 
     @Override
     public QName getName() {
-        return new QName(
-            DOMNodePointer.getPrefix(attr),
-            DOMNodePointer.getLocalName(attr));
+        return new QName(DOMNodePointer.getPrefix(attr), DOMNodePointer.getLocalName(attr));
     }
 
     @Override
@@ -135,6 +131,7 @@ public class DOMAttributePointer extends NodePointer {
 
     /**
      * Sets the value of this attribute.
+     * 
      * @param value to set
      */
     @Override
@@ -144,8 +141,6 @@ public class DOMAttributePointer extends NodePointer {
 
     @Override
     public boolean testNode(final NodeTest nodeTest) {
-        return nodeTest == null
-            || nodeTest instanceof NodeTypeTest
-                && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE;
+        return nodeTest == null || nodeTest instanceof NodeTypeTest && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE;
     }
 }

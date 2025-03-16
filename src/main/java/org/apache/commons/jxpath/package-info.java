@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * Public, abstract part of JXPath: interfaces and configuration. If you are a user of JXPath and don't plan to modify its implementation, this is the only
  * package you'll need to use. Start with the {@link org.apache.commons.jxpath.JXPathContext} class.
  */
+
 package org.apache.commons.jxpath;

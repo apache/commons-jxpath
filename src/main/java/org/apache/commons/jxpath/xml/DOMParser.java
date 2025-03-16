@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.xml;
 
 import java.io.InputStream;
@@ -30,19 +31,15 @@ public class DOMParser extends XMLParser2 {
     @Override
     public Object parseXML(final InputStream stream) {
         try {
-            final DocumentBuilderFactory factory =
-                    DocumentBuilderFactory.newInstance();
-
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(isValidating());
             factory.setNamespaceAware(isNamespaceAware());
-            factory.setIgnoringElementContentWhitespace(
-                    isIgnoringElementContentWhitespace());
+            factory.setIgnoringElementContentWhitespace(isIgnoringElementContentWhitespace());
             factory.setExpandEntityReferences(isExpandEntityReferences());
             factory.setIgnoringComments(isIgnoringComments());
             factory.setCoalescing(isCoalescing());
             return factory.newDocumentBuilder().parse(stream);
-        }
-        catch (final Exception ex) {
+        } catch (final Exception ex) {
             throw new JXPathException("DOM parser error", ex);
         }
     }

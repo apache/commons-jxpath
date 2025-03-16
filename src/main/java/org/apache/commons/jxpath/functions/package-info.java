@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * Implementations of Java class-based extension functions.
  */
+
 package org.apache.commons.jxpath.functions;

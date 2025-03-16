@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.EvalContext;
@@ -28,6 +29,7 @@ public class VariableReference extends Expression {
 
     /**
      * Create a new VariableReference.
+     * 
      * @param varName variable name
      */
     public VariableReference(final QName varName) {
@@ -46,6 +48,7 @@ public class VariableReference extends Expression {
 
     /**
      * Returns the value of the variable.
+     * 
      * @param context EvalContext against which to compute the variable's value.
      * @return Object
      */
@@ -56,6 +59,7 @@ public class VariableReference extends Expression {
 
     /**
      * Gets the variable name.
+     * 
      * @return QName
      */
     public QName getVariableName() {

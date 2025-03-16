@@ -14,34 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 import java.util.List;
 
 /**
- * NodeSet interface can be used as the type of an argument of an extension
- * function.  Alternatively, the function can declare the argument as
- * a Collection (or List or Set), in which case it will be given a collection
- * of <em>values</em> matching the path.
+ * NodeSet interface can be used as the type of an argument of an extension function. Alternatively, the function can declare the argument as a Collection (or
+ * List or Set), in which case it will be given a collection of <em>values</em> matching the path.
  */
 public interface NodeSet {
 
     /**
      * Returns a list of nodes.
+     * 
      * @return List
      */
     List getNodes();
 
     /**
      * Returns a list of pointers for all nodes in the set.
+     * 
      * @return List
      */
     List getPointers();
 
     /**
      * Returns a list of values of all contained pointers.
+     * 
      * @return List
      */
     List getValues();
-
 }

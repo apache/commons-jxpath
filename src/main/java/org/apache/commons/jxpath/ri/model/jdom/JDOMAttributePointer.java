@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.jdom;
 
 import org.apache.commons.jxpath.ri.QName;
@@ -25,14 +26,15 @@ import org.jdom.Attribute;
  * A Pointer that points to a DOM node.
  */
 public class JDOMAttributePointer extends NodePointer {
-    private static final long serialVersionUID = 8896050354479644028L;
 
+    private static final long serialVersionUID = 8896050354479644028L;
     private final Attribute attr;
 
     /**
      * Create a JDOMAttributePointer.
+     * 
      * @param parent NodePointer parent
-     * @param attr JDOM Attribute
+     * @param attr   JDOM Attribute
      */
     public JDOMAttributePointer(final NodePointer parent, final Attribute attr) {
         super(parent);
@@ -44,8 +46,7 @@ public class JDOMAttributePointer extends NodePointer {
         final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
             buffer.append(parent.asPath());
-            if (buffer.length() == 0
-                || buffer.charAt(buffer.length() - 1) != '/') {
+            if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
                 buffer.append('/');
             }
         }
@@ -55,17 +56,14 @@ public class JDOMAttributePointer extends NodePointer {
     }
 
     @Override
-    public int compareChildNodePointers(
-            final NodePointer pointer1,
-            final NodePointer pointer2) {
+    public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2) {
         // Won't happen - attributes don't have children
         return 0;
     }
 
     @Override
     public boolean equals(final Object object) {
-        return object == this || object instanceof JDOMAttributePointer
-                && ((JDOMAttributePointer) object).attr == attr;
+        return object == this || object instanceof JDOMAttributePointer && ((JDOMAttributePointer) object).attr == attr;
     }
 
     @Override
@@ -85,9 +83,7 @@ public class JDOMAttributePointer extends NodePointer {
 
     @Override
     public QName getName() {
-        return new QName(
-            JDOMNodePointer.getPrefix(attr),
-            JDOMNodePointer.getLocalName(attr));
+        return new QName(JDOMNodePointer.getPrefix(attr), JDOMNodePointer.getLocalName(attr));
     }
 
     @Override

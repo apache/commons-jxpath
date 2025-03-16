@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class TestFunctions {
     public static TestFunctions build(final int foo, final String bar) {
         return new TestFunctions(foo, bar);
     }
+
     public static Collection collection() {
         final ArrayList list = new ArrayList();
         list.add(new NestedTestBean("foo"));
@@ -42,8 +44,7 @@ public class TestFunctions {
     }
 
     /**
-     * Returns the number of nodes in the context that is passed as
-     * the first argument.
+     * Returns the number of nodes in the context that is passed as the first argument.
      */
     public static int count(final ExpressionContext context, final Collection col) {
         for (final Object element : col) {
@@ -79,7 +80,6 @@ public class TestFunctions {
         final BasicNodeSet set = new BasicNodeSet();
         set.add(jxpathCtx.getPointer("/beans[1]"));
         set.add(jxpathCtx.getPointer("/beans[2]"));
-
         return set;
     }
 
@@ -92,15 +92,13 @@ public class TestFunctions {
     }
 
     private int foo;
-
     private String bar;
 
     public TestFunctions() {
     }
 
     public TestFunctions(final ExpressionContext context, final String bar) {
-        this.foo =
-            ((Number) context.getContextNodePointer().getValue()).intValue();
+        this.foo = ((Number) context.getContextNodePointer().getValue()).intValue();
         this.bar = bar;
     }
 
@@ -114,10 +112,7 @@ public class TestFunctions {
         this.bar = bar;
     }
 
-    public String className(
-        final ExpressionContext context,
-        final ExpressionContext child)
-    {
+    public String className(final ExpressionContext context, final ExpressionContext child) {
         return context.getContextNodePointer().asPath();
     }
 
@@ -150,5 +145,4 @@ public class TestFunctions {
     public String toString() {
         return "foo=" + foo + "; bar=" + bar;
     }
-
 }

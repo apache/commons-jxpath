@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model;
 
 import java.util.Collections;
@@ -26,7 +27,9 @@ import org.junit.jupiter.api.Test;
  * Be sure empty lists/sets/arrays work.
  */
 public class EmptyCollectionTest extends AbstractJXPathTest {
+
     public static class HasChild {
+
         private final Object child;
 
         /**
@@ -48,31 +51,26 @@ public class EmptyCollectionTest extends AbstractJXPathTest {
 
     @Test
     public void testEmptyChildArray() {
-        assertXPathPointerIterator(JXPathContext.newContext(new HasChild(new Object[0])),
-                "/child/*", list());
+        assertXPathPointerIterator(JXPathContext.newContext(new HasChild(new Object[0])), "/child/*", list());
     }
 
     @Test
     public void testEmptyChildList() {
-        assertXPathPointerIterator(JXPathContext.newContext(new HasChild(Collections.EMPTY_LIST)),
-                "/child/*", Collections.EMPTY_LIST);
+        assertXPathPointerIterator(JXPathContext.newContext(new HasChild(Collections.EMPTY_LIST)), "/child/*", Collections.EMPTY_LIST);
     }
 
     @Test
     public void testEmptyChildSet() {
-        assertXPathPointerIterator(JXPathContext.newContext(new HasChild(Collections.EMPTY_SET)),
-                "/child/*", Collections.EMPTY_SET);
+        assertXPathPointerIterator(JXPathContext.newContext(new HasChild(Collections.EMPTY_SET)), "/child/*", Collections.EMPTY_SET);
     }
 
     @Test
     public void testEmptyList() {
-        assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_LIST), "/*",
-                Collections.EMPTY_LIST);
+        assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_LIST), "/*", Collections.EMPTY_LIST);
     }
 
     @Test
     public void testEmptySet() {
-        assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_SET), "/*",
-                Collections.EMPTY_SET);
+        assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_SET), "/*", Collections.EMPTY_SET);
     }
 }

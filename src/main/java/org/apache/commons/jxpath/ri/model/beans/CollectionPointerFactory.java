@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.beans;
 
 import java.util.Locale;
@@ -32,8 +33,7 @@ public class CollectionPointerFactory implements NodePointerFactory {
     public static final int COLLECTION_POINTER_FACTORY_ORDER = 10;
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name,
-            final Object bean) {
+    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
         return ValueUtils.isCollection(bean) ? new CollectionPointer(parent, bean) : null;
     }
 

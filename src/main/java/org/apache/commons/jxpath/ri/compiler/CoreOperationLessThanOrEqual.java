@@ -14,16 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 /**
  * Implementation of {@link Expression} for the operation "&lt;=".
  */
-public class CoreOperationLessThanOrEqual extends
-        CoreOperationRelationalExpression {
+public class CoreOperationLessThanOrEqual extends CoreOperationRelationalExpression {
 
     /**
      * Create a new CoreOperationLessThanOrEqual.
+     * 
      * @param arg1 left Expression
      * @param arg2 right Expression
      */

@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * Implementations of JXPathContexts bound to various servlet scopes: PageContext, ServletRequest, HttpSession and ServletContext. Start with the
  * {@link org.apache.commons.jxpath.servlet.JXPathServletContexts} class.
  */
+
 package org.apache.commons.jxpath.servlet;

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +33,6 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
 
     /** JXPathContext */
     protected JXPathContext context;
-
     /** BasicNodeSet */
     protected BasicNodeSet nodeSet;
 
@@ -50,7 +50,8 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
 
     /**
      * Do assertions on DOM element names.
-     * @param names List of expected names
+     * 
+     * @param names    List of expected names
      * @param elements List of DOM elements
      */
     protected void assertElementNames(final List names, final List elements) {
@@ -64,7 +65,8 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
 
     /**
      * Do assertions on DOM element values.
-     * @param values List of expected values
+     * 
+     * @param values   List of expected values
      * @param elements List of DOM elements
      */
     protected void assertElementValues(final List values, final List elements) {
@@ -74,7 +76,6 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
         while (elementIter.hasNext()) {
             assertEquals(valueIter.next(), ((Element) elementIter.next()).getFirstChild().getNodeValue());
         }
-
     }
 
     /**
@@ -112,28 +113,22 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
     @Test
     public void testAdd() {
         addPointers("/bean/integers");
-        assertEquals(list("/bean/integers[1]",
-                "/bean/integers[2]", "/bean/integers[3]", "/bean/integers[4]").toString(),
-                nodeSet.getPointers().toString());
-        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3),
-                Integer.valueOf(4)), nodeSet.getValues());
-        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3),
-                Integer.valueOf(4)), nodeSet.getNodes());
+        assertEquals(list("/bean/integers[1]", "/bean/integers[2]", "/bean/integers[3]", "/bean/integers[4]").toString(), nodeSet.getPointers().toString());
+        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(4)), nodeSet.getValues());
+        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(4)), nodeSet.getNodes());
     }
 
     /**
-     * Demonstrate when nodes != values:  in XML models.
+     * Demonstrate when nodes != values: in XML models.
      */
     @Test
     public void testNodes() {
         addPointers("/document/vendor/contact");
-        assertEquals(list("/document/vendor[1]/contact[1]",
-                "/document/vendor[1]/contact[2]",
-                "/document/vendor[1]/contact[3]",
-                "/document/vendor[1]/contact[4]").toString(),
+        assertEquals(
+                list("/document/vendor[1]/contact[1]", "/document/vendor[1]/contact[2]", "/document/vendor[1]/contact[3]", "/document/vendor[1]/contact[4]")
+                        .toString(),
                 nodeSet.getPointers().toString());
-        assertEquals(list("John", "Jack", "Jim", "Jack Black"),
-                nodeSet.getValues());
+        assertEquals(list("John", "Jack", "Jim", "Jack Black"), nodeSet.getValues());
         assertElementNames(list("contact", "contact", "contact", "contact"), nodeSet.getNodes());
         assertElementValues(list("John", "Jack", "Jim", "Jack Black"), nodeSet.getNodes());
     }
@@ -145,11 +140,8 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
     public void testRemove() {
         addPointers("/bean/integers");
         removePointers("/bean/integers[4]");
-        assertEquals(list("/bean/integers[1]", "/bean/integers[2]", "/bean/integers[3]")
-                .toString(), nodeSet.getPointers().toString());
-        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3)),
-                nodeSet.getValues());
-        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3)),
-                nodeSet.getNodes());
+        assertEquals(list("/bean/integers[1]", "/bean/integers[2]", "/bean/integers[3]").toString(), nodeSet.getPointers().toString());
+        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3)), nodeSet.getValues());
+        assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3)), nodeSet.getNodes());
     }
 }

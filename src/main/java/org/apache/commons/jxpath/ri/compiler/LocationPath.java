@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.EvalContext;
@@ -28,8 +29,9 @@ public class LocationPath extends Path {
 
     /**
      * Create a new LocationPath.
+     * 
      * @param absolute whether this is an absolute path
-     * @param steps to evaluate
+     * @param steps    to evaluate
      */
     public LocationPath(final boolean absolute, final Step[] steps) {
         super(steps);
@@ -42,8 +44,7 @@ public class LocationPath extends Path {
         EvalContext rootContext;
         if (isAbsolute()) {
             rootContext = context.getRootContext().getAbsoluteRootContext();
-        }
-        else {
+        } else {
             rootContext = new InitialContext(context);
         }
         return evalSteps(rootContext);
@@ -60,8 +61,7 @@ public class LocationPath extends Path {
         EvalContext rootContext;
         if (isAbsolute()) {
             rootContext = context.getRootContext().getAbsoluteRootContext();
-        }
-        else {
+        } else {
             rootContext = new InitialContext(context);
         }
         return getSingleNodePointerForSteps(rootContext);
@@ -69,6 +69,7 @@ public class LocationPath extends Path {
 
     /**
      * Learn whether this LocationPath is absolute.
+     * 
      * @return boolean
      */
     public boolean isAbsolute() {

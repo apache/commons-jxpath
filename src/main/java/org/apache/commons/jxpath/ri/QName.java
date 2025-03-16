@@ -14,23 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri;
 
 import java.io.Serializable;
 
 /**
- * A qualified name: a combination of an optional namespace prefix
- * and an local name.
+ * A qualified name: a combination of an optional namespace prefix and an local name.
  */
 public class QName implements Serializable {
-    private static final long serialVersionUID = 7616199282015091496L;
 
+    private static final long serialVersionUID = 7616199282015091496L;
     private final String prefix;
     private final String name;
     private final String qualifiedName;
 
     /**
      * Create a new QName.
+     * 
      * @param qualifiedName value
      */
     public QName(final String qualifiedName) {
@@ -42,7 +43,8 @@ public class QName implements Serializable {
 
     /**
      * Create a new QName.
-     * @param prefix ns
+     * 
+     * @param prefix    ns
      * @param localName String
      */
     public QName(final String prefix, final String localName) {
@@ -64,6 +66,7 @@ public class QName implements Serializable {
 
     /**
      * Gets the local name.
+     * 
      * @return String
      */
     public String getName() {
@@ -72,6 +75,7 @@ public class QName implements Serializable {
 
     /**
      * Gets the prefix of this QName.
+     * 
      * @return String
      */
     public String getPrefix() {

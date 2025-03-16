@@ -14,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
- * Thrown when a problem with configuration with the {@link JXPathContextFactory JXPathContextFactories}
- * exists. This error will typically be thrown when the class of a
- * factory specified in the system properties cannot be found
- * or instantiated.
+ * Thrown when a problem with configuration with the {@link JXPathContextFactory JXPathContextFactories} exists. This error will typically be thrown when the
+ * class of a factory specified in the system properties cannot be found or instantiated.
  */
 public class JXPathContextFactoryConfigurationError extends Error {
 
@@ -29,19 +28,16 @@ public class JXPathContextFactoryConfigurationError extends Error {
     private final Exception exception;
 
     /**
-     * Create a new {@code JXPathContextFactoryConfigurationError} with no
-     * detail mesage.
+     * Create a new {@code JXPathContextFactoryConfigurationError} with no detail mesage.
      */
-     public JXPathContextFactoryConfigurationError() {
-         this.exception = null;
-     }
+    public JXPathContextFactoryConfigurationError() {
+        this.exception = null;
+    }
 
     /**
-     * Create a new {@code JXPathContextFactoryConfigurationError} with a
-     * given {@code Exception} base cause of the error.
+     * Create a new {@code JXPathContextFactoryConfigurationError} with a given {@code Exception} base cause of the error.
      *
-     * @param e The exception to be encapsulated in a
-     * JXPathContextFactoryConfigurationError.
+     * @param e The exception to be encapsulated in a JXPathContextFactoryConfigurationError.
      */
     public JXPathContextFactoryConfigurationError(final Exception e) {
         super(e.toString());
@@ -49,11 +45,9 @@ public class JXPathContextFactoryConfigurationError extends Error {
     }
 
     /**
-     * Create a new {@code JXPathContextFactoryConfigurationError} with the
-     * given {@code Exception} base cause and detail message.
+     * Create a new {@code JXPathContextFactoryConfigurationError} with the given {@code Exception} base cause and detail message.
      *
-     * @param e The exception to be encapsulated in a
-     * JXPathContextFactoryConfigurationError
+     * @param e   The exception to be encapsulated in a JXPathContextFactoryConfigurationError
      * @param msg The detail message.
      */
     public JXPathContextFactoryConfigurationError(final Exception e, final String msg) {
@@ -62,8 +56,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
     }
 
     /**
-     * Create a new {@code JXPathContextFactoryConfigurationError} with
-     * the {@code String } specified as an error message.
+     * Create a new {@code JXPathContextFactoryConfigurationError} with the {@code String } specified as an error message.
      *
      * @param msg The error message for the exception.
      */
@@ -73,24 +66,22 @@ public class JXPathContextFactoryConfigurationError extends Error {
     }
 
     /**
-     * Gets the actual exception (if any) that caused this exception to
-     * be raised.
+     * Gets the actual exception (if any) that caused this exception to be raised.
      *
      * @return The encapsulated exception, or null if there is none.
      */
-    public Exception getException () {
+    public Exception getException() {
         return exception;
     }
 
     /**
-     * Gets the message (if any) for this error . If there is no
-     * message for the exception and there is an encapsulated
-     * exception then the message of that exception will be returned.
+     * Gets the message (if any) for this error . If there is no message for the exception and there is an encapsulated exception then the message of that
+     * exception will be returned.
      *
      * @return The error message.
      */
     @Override
-    public String getMessage () {
+    public String getMessage() {
         final String message = super.getMessage();
         if (message == null && exception != null) {
             return exception.getMessage();

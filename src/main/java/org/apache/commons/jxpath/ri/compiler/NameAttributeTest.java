@@ -14,18 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 /**
- * Captures the {@code foo[@name=<em>expr</em>]} expression. These
- * expressions are handled in a special way when applied to beans
- * or maps.
+ * Captures the {@code foo[@name=<em>expr</em>]} expression. These expressions are handled in a special way when applied to beans or maps.
  */
 public class NameAttributeTest extends CoreOperationEqual {
 
     /**
      * Create a new NameAttributeTest.
-     * @param namePath Expression
+     * 
+     * @param namePath  Expression
      * @param nameValue Expression
      */
     public NameAttributeTest(final Expression namePath, final Expression nameValue) {
@@ -39,6 +39,7 @@ public class NameAttributeTest extends CoreOperationEqual {
 
     /**
      * Gets the name test expression.
+     * 
      * @return Expression
      */
     public Expression getNameTestExpression() {

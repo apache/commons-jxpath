@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.EvalContext;
@@ -26,6 +27,7 @@ public class CoreOperationUnion extends CoreOperation {
 
     /**
      * Create a new CoreOperationUnion.
+     * 
      * @param args Expression[]
      */
     public CoreOperationUnion(final Expression[] args) {
@@ -39,8 +41,7 @@ public class CoreOperationUnion extends CoreOperation {
             final Object value = args[i].compute(context);
             if (value instanceof EvalContext) {
                 argCtxs[i] = (EvalContext) value;
-            }
-            else {
+            } else {
                 argCtxs[i] = context.getRootContext().getConstantContext(value);
             }
         }

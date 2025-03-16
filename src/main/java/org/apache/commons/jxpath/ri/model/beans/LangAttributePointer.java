@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.ri.QName;
@@ -21,8 +22,7 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * A Pointer that points to the "lang" attribute of a JavaBean. The value
- * of the attribute is based on the locale supplied to it in the constructor.
+ * A Pointer that points to the "lang" attribute of a JavaBean. The value of the attribute is based on the locale supplied to it in the constructor.
  */
 public class LangAttributePointer extends NodePointer {
 
@@ -30,6 +30,7 @@ public class LangAttributePointer extends NodePointer {
 
     /**
      * Create a new LangAttributePointer.
+     * 
      * @param parent parent pointer.
      */
     public LangAttributePointer(final NodePointer parent) {
@@ -41,8 +42,7 @@ public class LangAttributePointer extends NodePointer {
         final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
             buffer.append(parent.asPath());
-            if (buffer.length() == 0
-                || buffer.charAt(buffer.length() - 1) != '/') {
+            if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
                 buffer.append('/');
             }
         }
@@ -51,9 +51,7 @@ public class LangAttributePointer extends NodePointer {
     }
 
     @Override
-    public int compareChildNodePointers(
-        final NodePointer pointer1,
-        final NodePointer pointer2) {
+    public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2) {
         // Won't happen - lang attributes don't have children
         return 0;
     }
@@ -107,12 +105,12 @@ public class LangAttributePointer extends NodePointer {
      * {@inheritDoc}
      *
      * Throws UnsupportedOperationException.
+     * 
      * @param value Object
      */
     @Override
     public void setValue(final Object value) {
-        throw new UnsupportedOperationException(
-                "Cannot change locale using the 'lang' attribute");
+        throw new UnsupportedOperationException("Cannot change locale using the 'lang' attribute");
     }
 
     @Override

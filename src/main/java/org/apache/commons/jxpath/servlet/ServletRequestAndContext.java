@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.servlet;
 
 import javax.servlet.ServletContext;
@@ -22,10 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * Just a structure to hold a {@link ServletRequest} and {@link ServletContext}
- * together.
+ * Just a structure to hold a {@link ServletRequest} and {@link ServletContext} together.
  */
 public class ServletRequestAndContext extends HttpSessionAndServletContext {
+
     private final ServletRequest request;
 
     /**
@@ -34,8 +35,7 @@ public class ServletRequestAndContext extends HttpSessionAndServletContext {
      * @param request ServletRequest
      * @param context ServletContext
      */
-    public ServletRequestAndContext(final ServletRequest request,
-            final ServletContext context) {
+    public ServletRequestAndContext(final ServletRequest request, final ServletContext context) {
         super(null, context);
         this.request = request;
     }
@@ -51,7 +51,6 @@ public class ServletRequestAndContext extends HttpSessionAndServletContext {
 
     @Override
     public HttpSession getSession() {
-        return request instanceof HttpServletRequest
-                ? ((HttpServletRequest) request).getSession(false) : null;
+        return request instanceof HttpServletRequest ? ((HttpServletRequest) request).getSession(false) : null;
     }
 }

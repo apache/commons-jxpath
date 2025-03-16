@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.beans;
 
 import java.util.Locale;
@@ -26,15 +27,16 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Pointer whose value is {@code null}.
  */
 public class NullPointer extends PropertyOwnerPointer {
+
     private static final long serialVersionUID = 2193425983220679887L;
     private QName name;
-
     private String id;
 
     /**
      * Create a new NullPointer.
+     * 
      * @param locale Locale
-     * @param id String
+     * @param id     String
      */
     public NullPointer(final Locale locale, final String id) {
         super(null, locale);
@@ -43,8 +45,9 @@ public class NullPointer extends PropertyOwnerPointer {
 
     /**
      * Used for the root node.
+     * 
      * @param parent parent pointer
-     * @param name node name
+     * @param name   node name
      */
     public NullPointer(final NodePointer parent, final QName name) {
         super(parent);
@@ -53,7 +56,8 @@ public class NullPointer extends PropertyOwnerPointer {
 
     /**
      * Create a new NullPointer.
-     * @param name node name
+     * 
+     * @param name   node name
      * @param locale Locale
      */
     public NullPointer(final QName name, final Locale locale) {
@@ -70,19 +74,12 @@ public class NullPointer extends PropertyOwnerPointer {
     }
 
     @Override
-    public NodePointer createChild(
-        final JXPathContext context,
-        final QName name,
-        final int index) {
+    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
         return createPath(context).createChild(context, name, index);
     }
 
     @Override
-    public NodePointer createChild(
-        final JXPathContext context,
-        final QName name,
-        final int index,
-        final Object value) {
+    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
         return createPath(context).createChild(context, name, index, value);
     }
 
@@ -91,8 +88,7 @@ public class NullPointer extends PropertyOwnerPointer {
         if (parent != null) {
             return parent.createPath(context).getValuePointer();
         }
-        throw new UnsupportedOperationException(
-            "Cannot create the root object: " + asPath());
+        throw new UnsupportedOperationException("Cannot create the root object: " + asPath());
     }
 
     @Override
@@ -100,8 +96,7 @@ public class NullPointer extends PropertyOwnerPointer {
         if (parent != null) {
             return parent.createPath(context, value).getValuePointer();
         }
-        throw new UnsupportedOperationException(
-            "Cannot create the root object: " + asPath());
+        throw new UnsupportedOperationException("Cannot create the root object: " + asPath());
     }
 
     @Override
@@ -109,11 +104,9 @@ public class NullPointer extends PropertyOwnerPointer {
         if (object == this) {
             return true;
         }
-
         if (!(object instanceof NullPointer)) {
             return false;
         }
-
         final NullPointer other = (NullPointer) object;
         return name == other.name || name != null && name.equals(other.name);
     }

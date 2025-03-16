@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import java.text.DecimalFormatSymbols;
@@ -35,6 +36,7 @@ import org.junit.jupiter.api.Test;
  * Test basic functionality of JXPath - core functions.
  */
 public class CoreFunctionTest extends AbstractJXPathTest {
+
     private JXPathContext context;
 
     @Override
@@ -63,8 +65,8 @@ public class CoreFunctionTest extends AbstractJXPathTest {
         assertXPathValue(context, "ends-with('xabc', 'ab')", Boolean.FALSE);
         assertXPathValue(context, "contains('xabc', 'ab')", Boolean.TRUE);
         assertXPathValue(context, "contains('xabc', 'ba')", Boolean.FALSE);
-        assertXPathValue(context,"substring-before('1999/04/01', '/')","1999");
-        assertXPathValue(context,"substring-after('1999/04/01', '/')","04/01");
+        assertXPathValue(context, "substring-before('1999/04/01', '/')", "1999");
+        assertXPathValue(context, "substring-after('1999/04/01', '/')", "04/01");
         assertXPathValue(context, "substring('12345', 2, 3)", "234");
         assertXPathValue(context, "substring('12345', 2)", "2345");
         assertXPathValue(context, "substring('12345', 1.5, 2.6)", "234");
@@ -87,7 +89,6 @@ public class CoreFunctionTest extends AbstractJXPathTest {
         assertXPathValue(context, "boolean('')", Boolean.FALSE);
         assertXPathValue(context, "boolean(/list)", Boolean.TRUE);
         assertXPathValue(context, "boolean(/list[position() < 1])", Boolean.FALSE);
-
         assertXPathValue(context, "true()", Boolean.TRUE);
         assertXPathValue(context, "false()", Boolean.FALSE);
         assertXPathValue(context, "not(false())", Boolean.TRUE);
@@ -102,7 +103,6 @@ public class CoreFunctionTest extends AbstractJXPathTest {
         assertXPathValue(context, "ceiling(-1.5)", Double.valueOf(-1));
         assertXPathValue(context, "round(1.5)", Double.valueOf(2));
         assertXPathValue(context, "round(-1.5)", Double.valueOf(-1));
-
         assertXPathValue(context, "floor('NaN')", Double.valueOf(Double.NaN));
         assertXPathValue(context, "floor(-2 div 0)", Double.valueOf(Double.NEGATIVE_INFINITY));
         assertXPathValue(context, "floor(2 div 0)", Double.valueOf(Double.POSITIVE_INFINITY));
@@ -117,9 +117,9 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     @Test
     public void testExtendedKeyFunction() {
         context.setKeyManager(new ExtendedKeyManager() {
+
             @Override
-            public NodeSet getNodeSetByKey(final JXPathContext context,
-                    final String keyName, final Object keyValue) {
+            public NodeSet getNodeSetByKey(final JXPathContext context, final String keyName, final Object keyValue) {
                 return new NodeSet() {
 
                     @Override
@@ -129,21 +129,18 @@ public class CoreFunctionTest extends AbstractJXPathTest {
 
                     @Override
                     public List getPointers() {
-                        return Arrays.asList(NodePointer.newNodePointer(null, "53", null),
-                                NodePointer.newNodePointer(null, "64", null));
+                        return Arrays.asList(NodePointer.newNodePointer(null, "53", null), NodePointer.newNodePointer(null, "64", null));
                     }
 
                     @Override
                     public List getValues() {
                         return Arrays.asList("53", "64");
                     }
-
                 };
             }
 
             @Override
-            public Pointer getPointerByKey(final JXPathContext context, final String key,
-                    final String value) {
+            public Pointer getPointerByKey(final JXPathContext context, final String key, final String value) {
                 return NodePointer.newNodePointer(null, "incorrect", null);
             }
         });
@@ -160,41 +157,15 @@ public class CoreFunctionTest extends AbstractJXPathTest {
 
     @Test
     public void testFormatNumberFunction() {
-
         final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDigit('D');
-
         context.setDecimalFormatSymbols("test", symbols);
-
-        assertXPathValue(
-            context,
-            "format-number(123456789, '#.000000000')",
-            "123456789.000000000");
-
-        assertXPathValue(
-            context,
-            "format-number(123456789, '#.0')",
-            "123456789.0");
-
-        assertXPathValue(
-            context,
-            "format-number(0.123456789, '##%')",
-            "12%");
-
-        assertXPathValue(
-            context,
-            "format-number(123456789, '################')",
-            "123456789");
-
-        assertXPathValue(
-            context,
-            "format-number(123456789, 'D.0', 'test')",
-            "123456789.0");
-
-        assertXPathValue(
-            context,
-            "format-number(123456789, '$DDD,DDD,DDD.DD', 'test')",
-            "$123,456,789");
+        assertXPathValue(context, "format-number(123456789, '#.000000000')", "123456789.000000000");
+        assertXPathValue(context, "format-number(123456789, '#.0')", "123456789.0");
+        assertXPathValue(context, "format-number(0.123456789, '##%')", "12%");
+        assertXPathValue(context, "format-number(123456789, '################')", "123456789");
+        assertXPathValue(context, "format-number(123456789, 'D.0', 'test')", "123456789.0");
+        assertXPathValue(context, "format-number(123456789, '$DDD,DDD,DDD.DD', 'test')", "$123,456,789");
     }
 
     @Test
@@ -204,23 +175,13 @@ public class CoreFunctionTest extends AbstractJXPathTest {
             ptr = ptr.getValuePointer();
             return ptr.getPointerByID(context, id);
         });
-
-        assertXPathValueAndPointer(
-            context,
-            "id(101)//street",
-            "Tangerine Drive",
-            "id('101')/address[1]/street[1]");
-
-        assertXPathPointerLenient(
-            context,
-            "id(105)/address/street",
-            "id(105)/address/street");
+        assertXPathValueAndPointer(context, "id(101)//street", "Tangerine Drive", "id('101')/address[1]/street[1]");
+        assertXPathPointerLenient(context, "id(105)/address/street", "id(105)/address/street");
     }
 
     @Test
     public void testKeyFunction() {
         context.setKeyManager((context, key, value) -> NodePointer.newNodePointer(null, "42", null));
-
         assertXPathValue(context, "key('a', 'b')", "42");
     }
 }

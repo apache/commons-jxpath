@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.JXPathException;
@@ -21,10 +22,11 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * Iterates property values of an object pointed at with a {@link PropertyOwnerPointer}.
- * Examples of such objects are JavaBeans and objects with Dynamic Properties.
+ * Iterates property values of an object pointed at with a {@link PropertyOwnerPointer}. Examples of such objects are JavaBeans and objects with Dynamic
+ * Properties.
  */
 public class PropertyIterator implements NodeIterator {
+
     private boolean empty = false;
     private final boolean reverse;
     private final String name;
@@ -33,23 +35,18 @@ public class PropertyIterator implements NodeIterator {
     private int position = 0;
     private final PropertyPointer propertyNodePointer;
     private int startPropertyIndex;
-
     private boolean includeStart = false;
 
     /**
      * Create a new PropertyIterator.
-     * @param pointer owning pointer
-     * @param name property name
-     * @param reverse iteration order
+     * 
+     * @param pointer   owning pointer
+     * @param name      property name
+     * @param reverse   iteration order
      * @param startWith beginning pointer
      */
-    public PropertyIterator(
-        final PropertyOwnerPointer pointer,
-        final String name,
-        final boolean reverse,
-        NodePointer startWith) {
-        propertyNodePointer =
-            (PropertyPointer) pointer.getPropertyPointer().clone();
+    public PropertyIterator(final PropertyOwnerPointer pointer, final String name, final boolean reverse, NodePointer startWith) {
+        propertyNodePointer = (PropertyPointer) pointer.getPropertyPointer().clone();
         this.name = name;
         this.reverse = reverse;
         this.includeStart = true;
@@ -58,17 +55,13 @@ public class PropertyIterator implements NodeIterator {
             this.startIndex = -1;
         }
         if (startWith != null) {
-            while (startWith != null
-                    && startWith.getImmediateParentPointer() != pointer) {
+            while (startWith != null && startWith.getImmediateParentPointer() != pointer) {
                 startWith = startWith.getImmediateParentPointer();
             }
             if (startWith == null) {
-                throw new JXPathException(
-                    "PropertyIerator startWith parameter is "
-                        + "not a child of the supplied parent");
+                throw new JXPathException("PropertyIerator startWith parameter is " + "not a child of the supplied parent");
             }
-            this.startPropertyIndex =
-                ((PropertyPointer) startWith).getPropertyIndex();
+            this.startPropertyIndex = ((PropertyPointer) startWith).getPropertyIndex();
             this.startIndex = startWith.getIndex();
             if (this.startIndex == NodePointer.WHOLE_COLLECTION) {
                 this.startIndex = 0;
@@ -82,14 +75,14 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Computes length for the current pointer - ignores any exceptions.
+     * 
      * @return length
      */
     private int getLength() {
         int length;
         try {
             length = propertyNodePointer.getLength(); // TBD: cache length
-        }
-        catch (final Throwable t) {
+        } catch (final Throwable t) {
             propertyNodePointer.handle(t);
             length = 0;
         }
@@ -107,8 +100,7 @@ public class PropertyIterator implements NodeIterator {
                 if (empty) {
                     return null;
                 }
-            }
-            else {
+            } else {
                 if (!setPosition(1)) {
                     return null;
                 }
@@ -117,12 +109,9 @@ public class PropertyIterator implements NodeIterator {
         }
         try {
             return propertyNodePointer.getValuePointer();
-        }
-        catch (final Throwable t) {
+        } catch (final Throwable t) {
             propertyNodePointer.handle(t);
-            final NullPropertyPointer npp =
-                new NullPropertyPointer(
-                        propertyNodePointer.getImmediateParentPointer());
+            final NullPropertyPointer npp = new NullPropertyPointer(propertyNodePointer.getImmediateParentPointer());
             npp.setPropertyName(propertyNodePointer.getPropertyName());
             npp.setIndex(propertyNodePointer.getIndex());
             return npp.getValuePointer();
@@ -136,6 +125,7 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Gets the property pointer.
+     * 
      * @return NodePointer
      */
     protected NodePointer getPropertyPointer() {
@@ -144,12 +134,12 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Prepare for an individual property.
+     * 
      * @param name property name
      */
     protected void prepareForIndividualProperty(final String name) {
         targetReady = true;
         empty = true;
-
         final String[] names = propertyNodePointer.getPropertyNames();
         if (!reverse) {
             if (startPropertyIndex == PropertyPointer.UNSPECIFIED_PROPERTY) {
@@ -169,8 +159,7 @@ public class PropertyIterator implements NodeIterator {
                     break;
                 }
             }
-        }
-        else {
+        } else {
             if (startPropertyIndex == PropertyPointer.UNSPECIFIED_PROPERTY) {
                 startPropertyIndex = names.length - 1;
             }
@@ -206,6 +195,7 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Sets position for all properties
+     * 
      * @param position int position
      * @return whether this was a valid position
      */
@@ -214,7 +204,6 @@ public class PropertyIterator implements NodeIterator {
         if (position < 1) {
             return false;
         }
-
         int offset;
         final int count = propertyNodePointer.getPropertyCount();
         if (!reverse) {
@@ -231,8 +220,7 @@ public class PropertyIterator implements NodeIterator {
                     if (!includeStart) {
                         offset++;
                     }
-                }
-                else {
+                } else {
                     offset = position - index;
                 }
                 if (index <= position && position < index + length) {
@@ -241,8 +229,7 @@ public class PropertyIterator implements NodeIterator {
                 }
                 index += length;
             }
-        }
-        else {
+        } else {
             int index = 1;
             int start = startPropertyIndex;
             if (start == PropertyPointer.UNSPECIFIED_PROPERTY) {
@@ -262,11 +249,9 @@ public class PropertyIterator implements NodeIterator {
                         offset--;
                         length--;
                     }
-                }
-                else {
+                } else {
                     offset = length - (position - index) - 1;
                 }
-
                 if (index <= position && position < index + length) {
                     propertyNodePointer.setIndex(offset);
                     return true;
@@ -279,6 +264,7 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Sets position for an individual property.
+     * 
      * @param position int position
      * @return whether this was a valid position
      */
@@ -287,15 +273,12 @@ public class PropertyIterator implements NodeIterator {
         if (position < 1) {
             return false;
         }
-
         if (!targetReady) {
             prepareForIndividualProperty(name);
         }
-
         if (empty) {
             return false;
         }
-
         final int length = getLength();
         int index;
         if (!reverse) {
@@ -306,8 +289,7 @@ public class PropertyIterator implements NodeIterator {
             if (index > length) {
                 return false;
             }
-        }
-        else {
+        } else {
             int end = startIndex;
             if (end == -1) {
                 end = length - 1;

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,7 +42,6 @@ public class LazyDynaBeanTest extends AbstractJXPathTest {
         final StrictLazyDynaBeanPointerFactory factory = new StrictLazyDynaBeanPointerFactory();
         JXPathContextReferenceImpl.addNodePointerFactory(factory);
         assertThrows(JXPathNotFoundException.class, this::testLazyProperty);
-
         while (JXPathContextReferenceImpl.removeNodePointerFactory(factory)) {
             // NOP
         }

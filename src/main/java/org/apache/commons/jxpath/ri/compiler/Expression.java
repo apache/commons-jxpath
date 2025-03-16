@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import java.util.Collections;
@@ -28,11 +29,8 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
- * Common superclass for several types of nodes in the parse tree. Provides
- * APIs for optimization of evaluation of expressions.  Specifically, an
- * expression only needs to executed once during the evaluation of an xpath
- * if that expression is context-independent.  Expression.isContextDependent()
- * provides that hint.
+ * Common superclass for several types of nodes in the parse tree. Provides APIs for optimization of evaluation of expressions. Specifically, an expression only
+ * needs to executed once during the evaluation of an xpath if that expression is context-independent. Expression.isContextDependent() provides that hint.
  */
 public abstract class Expression {
 
@@ -40,15 +38,17 @@ public abstract class Expression {
      * Pointer iterator
      */
     public static class PointerIterator implements Iterator {
+
         private final Iterator iterator;
         private final QName qname;
         private final Locale locale;
 
-        //to what method does the following comment refer?
+        // to what method does the following comment refer?
         /**
          * Create a new PointerIterator
-         * @param it underlying Iterator
-         * @param qname name
+         * 
+         * @param it     underlying Iterator
+         * @param qname  name
          * @param locale Locale
          * @deprecated Use the method that takes a NamespaceManager
          */
@@ -83,10 +83,12 @@ public abstract class Expression {
      * Value Iterator
      */
     public static class ValueIterator implements Iterator {
+
         private final Iterator iterator;
 
         /**
          * Create a new ValueIterator.
+         * 
          * @param it underlying Iterator, may contain pointers
          */
         public ValueIterator(final Iterator it) {
@@ -115,19 +117,16 @@ public abstract class Expression {
 
     /** Zero */
     protected static final Double ZERO = Double.valueOf(0);
-
     /** One */
     protected static final Double ONE = Double.valueOf(1);
     /** NaN */
     protected static final Double NOT_A_NUMBER = Double.valueOf(Double.NaN);
-
     private boolean contextDependencyKnown = false;
-
     private boolean contextDependent;
 
     /**
-     * Evaluates the expression. If the result is a node set, returns
-     * the first element of the node set.
+     * Evaluates the expression. If the result is a node set, returns the first element of the node set.
+     * 
      * @param context evaluation context
      * @return Object
      */
@@ -135,21 +134,22 @@ public abstract class Expression {
 
     /**
      * Implemented by subclasses and result is cached by isContextDependent()
+     * 
      * @return calculated context-dependentness as boolean
      */
     public abstract boolean computeContextDependent();
 
     /**
-     * Evaluates the expression. If the result is a node set, returns
-     * the first element of the node set.
+     * Evaluates the expression. If the result is a node set, returns the first element of the node set.
+     * 
      * @param context evaluation context
      * @return Object
      */
     public abstract Object computeValue(EvalContext context);
 
     /**
-     * Returns true if this expression should be re-evaluated
-     * each time the current position in the context changes.
+     * Returns true if this expression should be re-evaluated each time the current position in the context changes.
+     * 
      * @return boolean
      */
     public synchronized boolean isContextDependent() {
@@ -162,6 +162,7 @@ public abstract class Expression {
 
     /**
      * Iterate over the values from the specified context.
+     * 
      * @param context evaluation context
      * @return value Iterator
      */
@@ -178,6 +179,7 @@ public abstract class Expression {
 
     /**
      * Iterate over the pointers from the specified context.
+     * 
      * @param context evaluation context
      * @return pointer Iterator
      */
@@ -190,12 +192,9 @@ public abstract class Expression {
             return (EvalContext) result;
         }
         if (result instanceof NodeSet) {
-            return new PointerIterator(((NodeSet) result).getPointers().iterator(),
-                    new QName(null, "value"),
+            return new PointerIterator(((NodeSet) result).getPointers().iterator(), new QName(null, "value"),
                     context.getRootContext().getCurrentNodePointer().getLocale());
         }
-        return new PointerIterator(ValueUtils.iterate(result),
-                new QName(null, "value"),
-                context.getRootContext().getCurrentNodePointer().getLocale());
+        return new PointerIterator(ValueUtils.iterate(result), new QName(null, "value"), context.getRootContext().getCurrentNodePointer().getLocale());
     }
 }

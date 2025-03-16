@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.jdom;
 
 import java.util.Locale;
@@ -33,8 +34,7 @@ public class JDOMPointerFactory implements NodePointerFactory {
     public static final int JDOM_POINTER_FACTORY_ORDER = 110;
 
     @Override
-    public NodePointer createNodePointer(
-            final NodePointer parent, final QName name, final Object bean) {
+    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
         if (bean instanceof Document) {
             return new JDOMNodePointer(parent, bean);
         }
@@ -45,8 +45,7 @@ public class JDOMPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(
-            final QName name, final Object bean, final Locale locale) {
+    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
         if (bean instanceof Document) {
             return new JDOMNodePointer(bean, locale);
         }

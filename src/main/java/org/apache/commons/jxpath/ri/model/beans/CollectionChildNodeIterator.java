@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
@@ -21,8 +22,7 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * Combines child node iterators of all elements of a collection into one
- * aggregate child node iterator.
+ * Combines child node iterators of all elements of a collection into one aggregate child node iterator.
  */
 public class CollectionChildNodeIterator extends CollectionNodeIterator {
 
@@ -30,16 +30,13 @@ public class CollectionChildNodeIterator extends CollectionNodeIterator {
 
     /**
      * Create a new CollectionChildNodeIterator.
-     * @param pointer CollectionPointer
-     * @param test child test
-     * @param reverse iteration order
+     * 
+     * @param pointer   CollectionPointer
+     * @param test      child test
+     * @param reverse   iteration order
      * @param startWith starting pointer
      */
-    public CollectionChildNodeIterator(
-        final CollectionPointer pointer,
-        final NodeTest test,
-        final boolean reverse,
-        final NodePointer startWith) {
+    public CollectionChildNodeIterator(final CollectionPointer pointer, final NodeTest test, final boolean reverse, final NodePointer startWith) {
         super(pointer, reverse, startWith);
         this.test = test;
     }

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.EvalContext;
@@ -26,6 +27,7 @@ public class CoreOperationMultiply extends CoreOperation {
 
     /**
      * Create a new CoreOperationMultiply.
+     * 
      * @param arg1 factor 1
      * @param arg2 factor 2
      */

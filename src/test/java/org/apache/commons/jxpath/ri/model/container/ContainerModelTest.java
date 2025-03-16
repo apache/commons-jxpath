@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.container;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,13 +32,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests JXPath with containers as root or value of a variable, property, etc.
  */
-
 public class ContainerModelTest extends AbstractJXPathTest {
 
-    private static final class ArrayContainer implements Container
-    {
+    private static final class ArrayContainer implements Container {
+
         private static final long serialVersionUID = 1L;
-        private final String[] array = {"foo", "bar"};
+        private final String[] array = { "foo", "bar" };
+
         @Override
         public Object getValue() {
             return array;
@@ -49,8 +50,8 @@ public class ContainerModelTest extends AbstractJXPathTest {
         }
     }
 
-    public class Bean
-    {
+    public class Bean {
+
         private final ListContainer container = new ListContainer();
 
         public ListContainer getContainer() {
@@ -58,8 +59,8 @@ public class ContainerModelTest extends AbstractJXPathTest {
         }
     }
 
-    public class ListContainer implements Container
-    {
+    public class ListContainer implements Container {
+
         private static final long serialVersionUID = 1L;
         private final List list;
 
@@ -84,19 +85,12 @@ public class ContainerModelTest extends AbstractJXPathTest {
     public void testContainerMapWithCollection() {
         final ListContainer container = new ListContainer();
         final List list = (List) container.getValue();
-
         final Map map = new HashMap();
         map.put("container", container);
-
         final JXPathContext context = JXPathContext.newContext(map);
-
-        assertXPathValueAndPointer(context, "/container",
-                list, "/.[@name='container']");
-        assertXPathValueAndPointer(context, "/container[1]",
-                list.get(0), "/.[@name='container'][1]");
-        assertXPathValueAndPointer(context, "/container[2]",
-                list.get(1), "/.[@name='container'][2]");
-
+        assertXPathValueAndPointer(context, "/container", list, "/.[@name='container']");
+        assertXPathValueAndPointer(context, "/container[1]", list.get(0), "/.[@name='container'][1]");
+        assertXPathValueAndPointer(context, "/container[2]", list.get(1), "/.[@name='container'][2]");
         assertXPathSetValue(context, "/container[1]", "baz");
         assertEquals("baz", list.get(0), "Checking setValue(index)");
     }
@@ -105,16 +99,10 @@ public class ContainerModelTest extends AbstractJXPathTest {
     public void testContainerPropertyWithCollection() {
         final Bean bean = new Bean();
         final List list = (List) bean.getContainer().getValue();
-
         final JXPathContext context = JXPathContext.newContext(bean);
-
-        assertXPathValueAndPointer(context, "/container",
-                list, "/container");
-        assertXPathValueAndPointer(context, "/container[1]",
-                list.get(0), "/container[1]");
-        assertXPathValueAndPointer(context, "/container[2]",
-                list.get(1), "/container[2]");
-
+        assertXPathValueAndPointer(context, "/container", list, "/container");
+        assertXPathValueAndPointer(context, "/container[1]", list.get(0), "/container[1]");
+        assertXPathValueAndPointer(context, "/container[2]", list.get(1), "/container[2]");
         assertXPathSetValue(context, "/container[1]", "baz");
         assertEquals("baz", list.get(0), "Checking setValue(index)");
     }
@@ -123,31 +111,25 @@ public class ContainerModelTest extends AbstractJXPathTest {
     public void testContainerRootWithCollection() {
         final ArrayContainer container = new ArrayContainer();
         final String[] array = (String[]) container.getValue();
-
         final JXPathContext context = JXPathContext.newContext(container);
         context.getVariables().declareVariable("list", container);
-
         assertXPathValueAndPointer(context, "/", array, "/");
         assertXPathValueAndPointer(context, "/.[1]", "foo", "/.[1]");
         assertXPathValueAndPointer(context, "/.[2]", "bar", "/.[2]");
-
         assertXPathSetValue(context, "/.[1]", "baz");
-        assertEquals("baz", array[0], "Checking setValue(index)");    }
+        assertEquals("baz", array[0], "Checking setValue(index)");
+    }
 
     @Test
     public void testContainerVariableWithCollection() {
         final ArrayContainer container = new ArrayContainer();
         final String[] array = (String[]) container.getValue();
-
         final JXPathContext context = JXPathContext.newContext(null);
         context.getVariables().declareVariable("list", container);
-
         assertXPathValueAndPointer(context, "$list", array, "$list");
         assertXPathValueAndPointer(context, "$list[1]", "foo", "$list[1]");
         assertXPathValueAndPointer(context, "$list[2]", "bar", "$list[2]");
-
         assertXPathSetValue(context, "$list[1]", "baz");
         assertEquals("baz", array[0], "Checking setValue(index)");
     }
-
 }

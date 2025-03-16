@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,10 +29,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test basic functionality of JXPath - infoset types,
- * operations.
+ * Test basic functionality of JXPath - infoset types, operations.
  */
 public class VariableTest extends AbstractJXPathTest {
+
     private JXPathContext context;
 
     @Override
@@ -40,7 +41,6 @@ public class VariableTest extends AbstractJXPathTest {
         if (context == null) {
             context = JXPathContext.newContext(new TestMixedModelBean());
             context.setFactory(new VariableFactory());
-
             final Variables vars = context.getVariables();
             vars.declareVariable("a", Double.valueOf(1));
             vars.declareVariable("b", Double.valueOf(1));
@@ -56,39 +56,22 @@ public class VariableTest extends AbstractJXPathTest {
     public void testCreateAndSetValuePathDeclareVariableSetCollectionElement() {
         // Calls factory.declareVariable("stringArray").
         // The factory needs to create a collection
-        assertXPathCreatePathAndSetValue(
-            context,
-            "$stringArray[2]",
-            "Value2",
-            "$stringArray[2]");
-
+        assertXPathCreatePathAndSetValue(context, "$stringArray[2]", "Value2", "$stringArray[2]");
         // See if the factory populated the first element as well
-        assertEquals(
-            "Value1",
-            context.getValue("$stringArray[1]"),
-            "Created <" + "$stringArray[1]" + ">");
+        assertEquals("Value1", context.getValue("$stringArray[1]"), "Created <" + "$stringArray[1]" + ">");
     }
 
     @Test
     public void testCreatePathAndSetValueDeclareVariable() {
         // Calls factory.declareVariable("string")
-        assertXPathCreatePathAndSetValue(
-            context,
-            "$string",
-            "Value",
-            "$string");
+        assertXPathCreatePathAndSetValue(context, "$string", "Value", "$string");
     }
 
     @Test
     public void testCreatePathAndSetValueDeclareVariableSetProperty() {
         // Calls factory.declareVariable("test").
         // The factory should create a TestBean
-        assertXPathCreatePathAndSetValue(
-            context,
-            "$test/boolean",
-            Boolean.TRUE,
-            "$test/boolean");
-
+        assertXPathCreatePathAndSetValue(context, "$test/boolean", Boolean.TRUE, "$test/boolean");
     }
 
     @Test
@@ -98,31 +81,16 @@ public class VariableTest extends AbstractJXPathTest {
         // Then calls factory.createObject(..., collection, "testArray", 1).
         // That one should produce an instance of TestBean and
         // put it in the collection at index 1.
-        assertXPathCreatePathAndSetValue(
-            context,
-            "$testArray[2]/boolean",
-            Boolean.TRUE,
-            "$testArray[2]/boolean");
+        assertXPathCreatePathAndSetValue(context, "$testArray[2]/boolean", Boolean.TRUE, "$testArray[2]/boolean");
     }
 
     @Test
     public void testCreatePathAndSetValueExpandCollection() {
-        context.getVariables().declareVariable(
-            "array",
-            new String[] { "Value1" });
-
+        context.getVariables().declareVariable("array", new String[] { "Value1" });
         // Does not involve factory at all - just expands the collection
-        assertXPathCreatePathAndSetValue(
-            context,
-            "$array[2]",
-            "Value2",
-            "$array[2]");
-
+        assertXPathCreatePathAndSetValue(context, "$array[2]", "Value2", "$array[2]");
         // Make sure it is still the same array
-        assertEquals(
-            "Value1",
-            context.getValue("$array[1]"),
-            "Created <" + "$array[1]" + ">");
+        assertEquals("Value1", context.getValue("$array[1]"), "Created <" + "$array[1]" + ">");
     }
 
     @Test
@@ -135,17 +103,9 @@ public class VariableTest extends AbstractJXPathTest {
     public void testCreatePathDeclareVariableSetCollectionElement() {
         // Calls factory.declareVariable("stringArray").
         // The factory needs to create a collection
-        assertXPathCreatePath(
-            context,
-            "$stringArray[2]",
-            "",
-            "$stringArray[2]");
-
+        assertXPathCreatePath(context, "$stringArray[2]", "", "$stringArray[2]");
         // See if the factory populated the first element as well
-        assertEquals(
-            "Value1",
-            context.getValue("$stringArray[1]"),
-            "Created <" + "$stringArray[1]" + ">");
+        assertEquals("Value1", context.getValue("$stringArray[1]"), "Created <" + "$stringArray[1]" + ">");
     }
 
     @Test
@@ -155,48 +115,29 @@ public class VariableTest extends AbstractJXPathTest {
         // Then calls factory.createObject(..., collection, "testArray", 1).
         // That one should produce an instance of TestBean and
         // put it in the collection at index 1.
-        assertXPathCreatePath(
-            context,
-            "$testArray[2]/boolean",
-            Boolean.FALSE,
-            "$testArray[2]/boolean");
+        assertXPathCreatePath(context, "$testArray[2]/boolean", Boolean.FALSE, "$testArray[2]/boolean");
     }
 
     @Test
     public void testCreatePathDeclareVariableSetProperty() {
         // Calls factory.declareVariable("test").
         // The factory should create a TestBean
-        assertXPathCreatePath(
-            context,
-            "$test/boolean",
-            Boolean.FALSE,
-            "$test/boolean");
-
+        assertXPathCreatePath(context, "$test/boolean", Boolean.FALSE, "$test/boolean");
     }
 
     @Test
     public void testCreatePathExpandCollection() {
-        context.getVariables().declareVariable(
-            "array",
-            new String[] { "Value1" });
-
+        context.getVariables().declareVariable("array", new String[] { "Value1" });
         // Does not involve factory at all - just expands the collection
         assertXPathCreatePath(context, "$array[2]", "", "$array[2]");
-
         // Make sure it is still the same array
-        assertEquals(
-            "Value1",
-            context.getValue("$array[1]"),
-            "Created <" + "$array[1]" + ">");
+        assertEquals("Value1", context.getValue("$array[1]"), "Created <" + "$array[1]" + ">");
     }
 
     @Test
     public void testInvalidVariableName() {
-        assertThrows(Exception.class, () -> context.getValue("$none"),
-            "Evaluating '$none', expected exception - did not get it");
-
-        assertThrows(Exception.class, () -> context.setValue("$none", Integer.valueOf(1)),
-            "Setting '$none = 1', expected exception - did not get it");
+        assertThrows(Exception.class, () -> context.getValue("$none"), "Evaluating '$none', expected exception - did not get it");
+        assertThrows(Exception.class, () -> context.setValue("$none", Integer.valueOf(1)), "Setting '$none = 1', expected exception - did not get it");
     }
 
     @Test
@@ -209,21 +150,15 @@ public class VariableTest extends AbstractJXPathTest {
     @Test
     public void testNestedContext() {
         final JXPathContext nestedContext = JXPathContext.newContext(context, null);
-
         assertXPathValue(nestedContext, "$a", Double.valueOf(1));
     }
 
     @Test
     public void testRemovePathArrayElement() {
         // Remove array element - reassigns the new array to the var
-        context.getVariables().declareVariable(
-            "temp",
-            new String[] { "temp1", "temp2" });
+        context.getVariables().declareVariable("temp", new String[] { "temp1", "temp2" });
         context.removePath("$temp[1]");
-        assertEquals(
-            "temp2",
-            context.getValue("$temp[1]"),
-            "Remove array element");
+        assertEquals("temp2", context.getValue("$temp[1]"), "Remove array element");
     }
 
     @Test
@@ -231,10 +166,7 @@ public class VariableTest extends AbstractJXPathTest {
         // Remove list element - does not create a new list
         context.getVariables().declareVariable("temp", list("temp1", "temp2"));
         context.removePath("$temp[1]");
-        assertEquals(
-            "temp2",
-            context.getValue("$temp[1]"),
-            "Remove collection element");
+        assertEquals("temp2", context.getValue("$temp[1]"), "Remove collection element");
     }
 
     @Test
@@ -242,10 +174,7 @@ public class VariableTest extends AbstractJXPathTest {
         // Undeclare variable
         context.getVariables().declareVariable("temp", "temp");
         context.removePath("$temp");
-        assertFalse(
-            context.getVariables().isDeclaredVariable("temp"),
-            "Undeclare variable");
-
+        assertFalse(context.getVariables().isDeclaredVariable("temp"), "Undeclare variable");
     }
 
     @Test
@@ -256,7 +185,8 @@ public class VariableTest extends AbstractJXPathTest {
     @Test
     public void testUnionOfVariableAndNode() throws Exception {
         assertXPathValue(context, "count($a | /document/vendor/location)", Double.valueOf(3));
-        assertXPathValue(context, "count($a | /list)", Double.valueOf(7)); //$o + list which contains six discrete values (one is duped, wrapped in a Container)
+        assertXPathValue(context, "count($a | /list)", Double.valueOf(7)); // $o + list which contains six discrete values (one is duped, wrapped in a
+                                                                           // Container)
     }
 
     @Test
@@ -268,13 +198,9 @@ public class VariableTest extends AbstractJXPathTest {
     @Test
     public void testVariablesInExpressions() {
         assertXPathValue(context, "$a = $b", Boolean.TRUE);
-
         assertXPathValue(context, "$a = $nan", Boolean.FALSE);
-
         assertXPathValue(context, "$a + 1", Double.valueOf(2));
-
         assertXPathValue(context, "$c", null);
-
         assertXPathValue(context, "$d[2]", "b");
     }
 }

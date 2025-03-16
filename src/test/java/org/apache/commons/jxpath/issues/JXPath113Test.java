@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.issues;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,21 +33,16 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class JXPath113Test extends AbstractJXPathTest
-{
+public class JXPath113Test extends AbstractJXPathTest {
 
-    static class JAXP
-    {
+    static class JAXP {
 
-        public static Document getDocument(final InputSource is) throws Exception
-        {
-
+        public static Document getDocument(final InputSource is) throws Exception {
             final DocumentBuilder builder = getDocumentBuilder();
             return builder.parse(is);
         }
 
-        public static Document getDocument(final String xml) throws Exception
-        {
+        public static Document getDocument(final String xml) throws Exception {
             return getDocument(new InputSource(new StringReader(xml)));
         }
 
@@ -60,14 +56,11 @@ public class JXPath113Test extends AbstractJXPathTest
     }
 
     @Test
-    public void testIssue113() throws Exception
-    {
+    public void testIssue113() throws Exception {
         final Document doc = JAXP.getDocument("<xml/>");
         final JXPathContext context = JXPathContext.newContext(doc);
-
         final List result = context.selectNodes("//following-sibling::node()");
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
-
 }

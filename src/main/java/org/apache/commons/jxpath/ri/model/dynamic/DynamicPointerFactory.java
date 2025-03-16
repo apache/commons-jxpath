@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dynamic;
 
 import java.util.Locale;
@@ -38,34 +39,23 @@ public class DynamicPointerFactory implements NodePointerFactory {
     public static final int DYNAMIC_POINTER_FACTORY_ORDER = 800;
 
     @Override
-    public NodePointer createNodePointer(
-        final NodePointer parent,
-        final QName name,
-        final Object bean) {
+    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
         if (bean == null) {
             return new NullPointer(parent, name);
         }
-
         final JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         if (bi.isDynamic()) {
-            final DynamicPropertyHandler handler =
-                ValueUtils.getDynamicPropertyHandler(
-                    bi.getDynamicPropertyHandlerClass());
+            final DynamicPropertyHandler handler = ValueUtils.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
             return new DynamicPointer(parent, name, bean, handler);
         }
         return null;
     }
 
     @Override
-    public NodePointer createNodePointer(
-        final QName name,
-        final Object bean,
-        final Locale locale) {
+    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
         final JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
         if (bi.isDynamic()) {
-            final DynamicPropertyHandler handler =
-                ValueUtils.getDynamicPropertyHandler(
-                    bi.getDynamicPropertyHandlerClass());
+            final DynamicPropertyHandler handler = ValueUtils.getDynamicPropertyHandler(bi.getDynamicPropertyHandlerClass());
             return new DynamicPointer(name, bean, handler, locale);
         }
         return null;

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.EvalContext;
@@ -28,6 +29,7 @@ public class Constant extends Expression {
 
     /**
      * Create a new Constant.
+     * 
      * @param number constant
      */
     public Constant(final Number number) {
@@ -36,6 +38,7 @@ public class Constant extends Expression {
 
     /**
      * Create a new Constant.
+     * 
      * @param string constant
      */
     public Constant(final String string) {
@@ -49,6 +52,7 @@ public class Constant extends Expression {
 
     /**
      * Returns false
+     * 
      * @return false
      */
     @Override
@@ -63,6 +67,7 @@ public class Constant extends Expression {
 
     /**
      * Returns false
+     * 
      * @return false
      */
     @Override

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 import java.util.ArrayList;
@@ -40,14 +41,11 @@ public class TestBean {
         beans[1] = new NestedTestBean("Name 2");
         beans[1].setInt(3);
     }
-
     /**
      * A boolean property.
      */
     private boolean bool = false;
-
     private int integer = 1;
-
     /**
      * A read-only array of integers
      */
@@ -56,12 +54,10 @@ public class TestBean {
      * A heterogeneous list: String, Integer, NestedTestBean
      */
     private ArrayList list;
-
     /**
      * A Map
      */
     private HashMap map;
-
     {
         map = new HashMap();
         map.put("Key1", "Value 1");
@@ -71,13 +67,12 @@ public class TestBean {
      * A nested read-only java bean
      */
     private NestedTestBean nestedBean = new NestedTestBean("Name 0");
-
     private final NestedTestBean object = new NestedTestBean("Name 5");
-
     /**
      * A heterogeneous set: String, Integer, NestedTestBean
      */
     private HashSet set;
+
     public NestedTestBean[] getBeans() {
         return beans;
     }
@@ -96,6 +91,7 @@ public class TestBean {
     public int getIntegers(final int index) {
         return array[index];
     }
+
     public List getList() {
         if (list == null) {
             list = new ArrayList();
@@ -109,6 +105,7 @@ public class TestBean {
     public Map getMap() {
         return map;
     }
+
     public NestedTestBean getNestedBean() {
         return nestedBean;
     }
@@ -136,6 +133,7 @@ public class TestBean {
         }
         return set;
     }
+
     public boolean isBoolean() {
         return bool;
     }
@@ -162,6 +160,7 @@ public class TestBean {
     public void setMap(final Map map) {
         this.map = (HashMap) map;
     }
+
     public void setNestedBean(final NestedTestBean bean) {
         this.nestedBean = bean;
     }

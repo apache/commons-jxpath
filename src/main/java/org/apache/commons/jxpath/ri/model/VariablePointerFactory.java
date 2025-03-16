@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model;
 
 import java.util.Locale;
@@ -24,17 +25,21 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * NodePointerFactory to create {@link VariablePointer VariablePointers}.
+ * 
  * @since JXPath 1.3
  */
 public class VariablePointerFactory implements NodePointerFactory {
+
     /**
      * Node value wrapper to trigger a VariablePointerFactory.
      */
     public static final class VariableContextWrapper {
+
         private final JXPathContext context;
 
         /**
          * Create a new VariableContextWrapper.
+         * 
          * @param context to wrap
          */
         private VariableContextWrapper(final JXPathContext context) {
@@ -56,6 +61,7 @@ public class VariablePointerFactory implements NodePointerFactory {
 
     /**
      * VariableContextWrapper factory method.
+     * 
      * @param context the JXPathContext to wrap.
      * @return VariableContextWrapper.
      */
@@ -64,14 +70,12 @@ public class VariablePointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name,
-            final Object object) {
+    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object object) {
         return createNodePointer(name, object, null);
     }
 
     @Override
-    public NodePointer createNodePointer(final QName name, final Object object,
-            final Locale locale) {
+    public NodePointer createNodePointer(final QName name, final Object object, final Locale locale) {
         if (object instanceof VariableContextWrapper) {
             JXPathContext varCtx = ((VariableContextWrapper) object).getContext();
             while (varCtx != null) {
@@ -93,5 +97,4 @@ public class VariablePointerFactory implements NodePointerFactory {
     public int getOrder() {
         return VARIABLE_POINTER_FACTORY_ORDER;
     }
-
 }

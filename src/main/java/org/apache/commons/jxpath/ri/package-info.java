@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * Reference implementation of JXPath. It comes with a JavaCC-based parser for XPath expressions, a parse tree and a fast interpreter, which applies XPaths to
  * graphs of Java objects.
  */
+
 package org.apache.commons.jxpath.ri;

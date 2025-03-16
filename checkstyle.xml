@@ -55,9 +55,7 @@
     <module name="LeftCurly">
       <property name="option" value="eol" />
     </module>
-    <module name="RightCurly">
-      <property name="option" value="alone" />
-    </module>
+    <module name="RightCurly" />
     <module name="MethodLength">
       <property name="max" value="175" />
     </module>

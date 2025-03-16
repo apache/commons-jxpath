@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.JXPathContext;
@@ -31,9 +32,7 @@ public class JXPathContextFactoryReferenceImpl extends JXPathContextFactory {
     }
 
     @Override
-    public JXPathContext newContext(
-        final JXPathContext parentContext,
-        final Object contextBean) {
+    public JXPathContext newContext(final JXPathContext parentContext, final Object contextBean) {
         return new JXPathContextReferenceImpl(parentContext, contextBean);
     }
 }

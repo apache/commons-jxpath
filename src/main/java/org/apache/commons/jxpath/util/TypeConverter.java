@@ -14,20 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.util;
 
 /**
- * A type converter can be installed on {@link TypeUtils} to introduce
- * additional type conversions for JXPath. Most of
- * the time {@link BasicTypeConverter} should be used as the superclass.
+ * A type converter can be installed on {@link TypeUtils} to introduce additional type conversions for JXPath. Most of the time {@link BasicTypeConverter}
+ * should be used as the superclass.
  *
  * @see TypeUtils#setTypeConverter
  */
 public interface TypeConverter {
 
     /**
-     * Returns true if it can convert the supplied
-     * object to the specified class.
+     * Returns true if it can convert the supplied object to the specified class.
+     * 
      * @param object object to test
      * @param toType target class
      * @return boolean
@@ -35,9 +35,8 @@ public interface TypeConverter {
     boolean canConvert(Object object, Class toType);
 
     /**
-     * Converts the supplied object to the specified
-     * type. Throws a runtime exception if the conversion is
-     * not possible.
+     * Converts the supplied object to the specified type. Throws a runtime exception if the conversion is not possible.
+     * 
      * @param object object to convert
      * @param toType target class
      * @return resulting Object

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.xml;
 
 import java.io.InputStream;
@@ -29,19 +30,15 @@ public class JDOMParser extends XMLParser2 {
     @Override
     public Object parseXML(final InputStream stream) {
         if (!isNamespaceAware()) {
-            throw new JXPathException("JDOM parser configuration error. JDOM "
-                    + "does not support the namespaceAware=false setting.");
+            throw new JXPathException("JDOM parser configuration error. JDOM " + "does not support the namespaceAware=false setting.");
         }
-
         try {
             final SAXBuilder builder = new SAXBuilder();
             builder.setExpandEntities(isExpandEntityReferences());
-            builder.setIgnoringElementContentWhitespace(
-                    isIgnoringElementContentWhitespace());
+            builder.setIgnoringElementContentWhitespace(isIgnoringElementContentWhitespace());
             builder.setValidation(isValidating());
             return builder.build(stream);
-        }
-        catch (final Exception ex) {
+        } catch (final Exception ex) {
             throw new JXPathException("JDOM parser error", ex);
         }
     }

@@ -14,18 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
  * Thrown when JXPath cannot convert supplied value to the required type.
  */
-
 public class JXPathTypeConversionException extends JXPathException {
 
     private static final long serialVersionUID = -4403564377958943239L;
 
     /**
      * Create a new JXPathTypeConversionException.
+     * 
      * @param message exception text
      */
     public JXPathTypeConversionException(final String message) {
@@ -34,8 +35,9 @@ public class JXPathTypeConversionException extends JXPathException {
 
     /**
      * Create a new JXPathTypeConversionException.
+     * 
      * @param message exception text
-     * @param ex underlying cause
+     * @param ex      underlying cause
      */
     public JXPathTypeConversionException(final String message, final Exception ex) {
         super(message, ex);

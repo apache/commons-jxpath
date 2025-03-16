@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.ri.EvalContext;
@@ -24,14 +25,16 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "parent::" axis.
  */
 public class ParentContext extends EvalContext {
+
     private final NodeTest nodeTest;
     private boolean setStarted = false;
     private NodePointer currentNodePointer;
 
     /**
      * Create a new ParentContext.
+     * 
      * @param parentContext parent context
-     * @param nodeTest test
+     * @param nodeTest      test
      */
     public ParentContext(final EvalContext parentContext, final NodeTest nodeTest) {
         super(parentContext);
@@ -62,12 +65,10 @@ public class ParentContext extends EvalContext {
         setStarted = true;
         final NodePointer thisLocation = parentContext.getCurrentNodePointer();
         currentNodePointer = thisLocation.getImmediateParentPointer();
-        while (currentNodePointer != null
-            && currentNodePointer.isContainer()) {
+        while (currentNodePointer != null && currentNodePointer.isContainer()) {
             currentNodePointer = currentNodePointer.getImmediateParentPointer();
         }
-        if (currentNodePointer != null
-            && currentNodePointer.testNode(nodeTest)) {
+        if (currentNodePointer != null && currentNodePointer.testNode(nodeTest)) {
             position++;
             return true;
         }

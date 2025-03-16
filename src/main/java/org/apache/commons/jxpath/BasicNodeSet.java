@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 import java.util.ArrayList;
@@ -21,10 +22,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A simple implementation of {@link NodeSet} that behaves as a collection
- * of pointers.
+ * A simple implementation of {@link NodeSet} that behaves as a collection of pointers.
  */
 public class BasicNodeSet implements NodeSet {
+
     private final List pointers = new ArrayList();
     private List readOnlyPointers;
     private List nodes;
@@ -32,6 +33,7 @@ public class BasicNodeSet implements NodeSet {
 
     /**
      * Add the specified NodeSet to this NodeSet.
+     * 
      * @param nodeSet to add
      */
     public void add(final NodeSet nodeSet) {
@@ -42,6 +44,7 @@ public class BasicNodeSet implements NodeSet {
 
     /**
      * Add a pointer to this NodeSet.
+     * 
      * @param pointer to add
      */
     public void add(final Pointer pointer) {
@@ -95,6 +98,7 @@ public class BasicNodeSet implements NodeSet {
 
     /**
      * Remove a pointer from this NodeSet.
+     * 
      * @param pointer to remove
      */
     public void remove(final Pointer pointer) {
@@ -107,5 +111,4 @@ public class BasicNodeSet implements NodeSet {
     public String toString() {
         return pointers.toString();
     }
-
 }

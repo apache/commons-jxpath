@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model;
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.Test;
  * JXPATH-104 test.
  */
 public class EmbeddedColonMapKeysTest extends AbstractJXPathTest {
+
     private JXPathContext context;
 
     @Override

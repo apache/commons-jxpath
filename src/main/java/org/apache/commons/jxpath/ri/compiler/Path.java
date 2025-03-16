@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.Pointer;
@@ -45,6 +46,7 @@ public abstract class Path extends Expression {
 
     /**
      * Create a new Path.
+     * 
      * @param steps that compose the Path
      */
     public Path(final Step[] steps) {
@@ -53,6 +55,7 @@ public abstract class Path extends Expression {
 
     /**
      * Learn whether the elements of the specified array are "basic" predicates.
+     * 
      * @param predicates the Expression[] to check
      * @return boolean
      */
@@ -61,16 +64,12 @@ public abstract class Path extends Expression {
             boolean firstIndex = true;
             for (final Expression predicate : predicates) {
                 if (predicate instanceof NameAttributeTest) {
-                    if (((NameAttributeTest) predicate)
-                        .getNameTestExpression()
-                        .isContextDependent()) {
+                    if (((NameAttributeTest) predicate).getNameTestExpression().isContextDependent()) {
                         return false;
                     }
-                }
-                else if (predicate.isContextDependent()) {
+                } else if (predicate.isContextDependent()) {
                     return false;
-                }
-                else {
+                } else {
                     if (!firstIndex) {
                         return false;
                     }
@@ -83,15 +82,13 @@ public abstract class Path extends Expression {
 
     /**
      * Build a context from a chain of contexts.
-     * @param context evaluation context
-     * @param stepCount number of steps to descend
+     * 
+     * @param context              evaluation context
+     * @param stepCount            number of steps to descend
      * @param createInitialContext whether to create the initial context
      * @return created context
      */
-    protected EvalContext buildContextChain(
-            EvalContext context,
-            final int stepCount,
-            final boolean createInitialContext) {
+    protected EvalContext buildContextChain(EvalContext context, final int stepCount, final boolean createInitialContext) {
         if (createInitialContext) {
             context = new InitialContext(context);
         }
@@ -99,16 +96,12 @@ public abstract class Path extends Expression {
             return context;
         }
         for (int i = 0; i < stepCount; i++) {
-            context =
-                createContextForStep(
-                    context,
-                    steps[i].getAxis(),
-                    steps[i].getNodeTest());
+            context = createContextForStep(context, steps[i].getAxis(), steps[i].getNodeTest());
             final Expression[] predicates = steps[i].getPredicates();
             if (predicates != null) {
                 for (int j = 0; j < predicates.length; j++) {
                     if (j != 0) {
-                        context = new UnionContext(context, new EvalContext[]{context});
+                        context = new UnionContext(context, new EvalContext[] { context });
                     }
                     context = new PredicateContext(context, predicates[j]);
                 }
@@ -130,53 +123,48 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * Different axes are serviced by different contexts. This method
-     * allocates the right context for the supplied step.
-     * @param context evaluation context
-     * @param axis code
+     * Different axes are serviced by different contexts. This method allocates the right context for the supplied step.
+     * 
+     * @param context  evaluation context
+     * @param axis     code
      * @param nodeTest node test
      * @return EvalContext
      */
-    protected EvalContext createContextForStep(
-        final EvalContext context,
-        final int axis,
-        NodeTest nodeTest) {
+    protected EvalContext createContextForStep(final EvalContext context, final int axis, NodeTest nodeTest) {
         if (nodeTest instanceof NodeNameTest) {
             final QName qname = ((NodeNameTest) nodeTest).getNodeName();
             final String prefix = qname.getPrefix();
             if (prefix != null) {
-                final String namespaceURI = context.getJXPathContext()
-                        .getNamespaceURI(prefix);
+                final String namespaceURI = context.getJXPathContext().getNamespaceURI(prefix);
                 nodeTest = new NodeNameTest(qname, namespaceURI);
             }
         }
-
         switch (axis) {
-        case Compiler.AXIS_ANCESTOR :
+        case Compiler.AXIS_ANCESTOR:
             return new AncestorContext(context, false, nodeTest);
-        case Compiler.AXIS_ANCESTOR_OR_SELF :
+        case Compiler.AXIS_ANCESTOR_OR_SELF:
             return new AncestorContext(context, true, nodeTest);
-        case Compiler.AXIS_ATTRIBUTE :
+        case Compiler.AXIS_ATTRIBUTE:
             return new AttributeContext(context, nodeTest);
-        case Compiler.AXIS_CHILD :
+        case Compiler.AXIS_CHILD:
             return new ChildContext(context, nodeTest, false, false);
-        case Compiler.AXIS_DESCENDANT :
+        case Compiler.AXIS_DESCENDANT:
             return new DescendantContext(context, false, nodeTest);
-        case Compiler.AXIS_DESCENDANT_OR_SELF :
+        case Compiler.AXIS_DESCENDANT_OR_SELF:
             return new DescendantContext(context, true, nodeTest);
-        case Compiler.AXIS_FOLLOWING :
+        case Compiler.AXIS_FOLLOWING:
             return new PrecedingOrFollowingContext(context, nodeTest, false);
-        case Compiler.AXIS_FOLLOWING_SIBLING :
+        case Compiler.AXIS_FOLLOWING_SIBLING:
             return new ChildContext(context, nodeTest, true, false);
-        case Compiler.AXIS_NAMESPACE :
+        case Compiler.AXIS_NAMESPACE:
             return new NamespaceContext(context, nodeTest);
-        case Compiler.AXIS_PARENT :
+        case Compiler.AXIS_PARENT:
             return new ParentContext(context, nodeTest);
-        case Compiler.AXIS_PRECEDING :
+        case Compiler.AXIS_PRECEDING:
             return new PrecedingOrFollowingContext(context, nodeTest, true);
-        case Compiler.AXIS_PRECEDING_SIBLING :
+        case Compiler.AXIS_PRECEDING_SIBLING:
             return new ChildContext(context, nodeTest, true, true);
-        case Compiler.AXIS_SELF :
+        case Compiler.AXIS_SELF:
             return new SelfContext(context, nodeTest);
         default:
             return null; // Never happens
@@ -184,8 +172,8 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * Given a root context, walks a path therefrom and builds a context
-     * that contains all nodes matching the path.
+     * Given a root context, walks a path therefrom and builds a context that contains all nodes matching the path.
+     * 
      * @param context evaluation context
      * @return EvaluationContext
      */
@@ -194,8 +182,8 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * Given a root context, walks a path therefrom and finds the
-     * pointer to the first element matching the path.
+     * Given a root context, walks a path therefrom and finds the pointer to the first element matching the path.
+     * 
      * @param context evaluation context
      * @return Pointer
      */
@@ -203,19 +191,16 @@ public abstract class Path extends Expression {
         if (steps.length == 0) {
             return context.getSingleNodePointer();
         }
-
         if (isSimplePath()) {
             final NodePointer ptr = (NodePointer) context.getSingleNodePointer();
-            return SimplePathInterpreter.interpretSimpleLocationPath(
-                context,
-                ptr,
-                steps);
+            return SimplePathInterpreter.interpretSimpleLocationPath(context, ptr, steps);
         }
         return searchForPath(context);
     }
 
     /**
      * Gets the steps.
+     * 
      * @return Step[]
      */
     public Step[] getSteps() {
@@ -223,9 +208,8 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * Recognizes paths formatted as {@code foo/bar[3]/baz[@name = 'biz']}.
-     * The evaluation of such "simple" paths is optimized and
-     * streamlined.
+     * Recognizes paths formatted as {@code foo/bar[3]/baz[@name = 'biz']}. The evaluation of such "simple" paths is optimized and streamlined.
+     * 
      * @return {@code true} if this path is simple
      */
     public synchronized boolean isSimplePath() {
@@ -244,9 +228,9 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * A Step is "simple" if it takes one of these forms: ".", "/foo",
-     * "@bar", "/foo[3]". If there are predicates, they should be
-     * context independent for the step to still be considered simple.
+     * A Step is "simple" if it takes one of these forms: ".", "/foo", "@bar", "/foo[3]". If there are predicates, they should be context independent for the
+     * step to still be considered simple.
+     * 
      * @param step the step to check
      * @return boolean
      */
@@ -262,8 +246,7 @@ public abstract class Path extends Expression {
             }
             return areBasicPredicates(step.getPredicates());
         }
-        if (step.getAxis() == Compiler.AXIS_CHILD
-                || step.getAxis() == Compiler.AXIS_ATTRIBUTE) {
+        if (step.getAxis() == Compiler.AXIS_CHILD || step.getAxis() == Compiler.AXIS_ATTRIBUTE) {
             final NodeTest nodeTest = step.getNodeTest();
             if (!(nodeTest instanceof NodeNameTest)) {
                 return false;
@@ -277,33 +260,26 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * The idea here is to return a NullPointer rather than null if that's at
-     * all possible. Take for example this path: "//map/key". Let's say, "map"
-     * is an existing node, but "key" is not there. We will create a
-     * NullPointer that can be used to set/create the "key" property.
+     * The idea here is to return a NullPointer rather than null if that's at all possible. Take for example this path: "//map/key". Let's say, "map" is an
+     * existing node, but "key" is not there. We will create a NullPointer that can be used to set/create the "key" property.
      * <p>
-     * However, a path like "//key" would still produce null, because we have
-     * no way of knowing where "key" would be if it existed.
+     * However, a path like "//key" would still produce null, because we have no way of knowing where "key" would be if it existed.
      * </p>
      * <p>
-     * To accomplish this, we first try the path itself. If it does not find
-     * anything, we chop off last step of the path, as long as it is a simple
-     * one like child:: or attribute:: and try to evaluate the truncated path.
-     * If it finds exactly one node - create a NullPointer and return. If it
-     * fails, chop off another step and repeat. If it finds more than one
-     * location - return null.
+     * To accomplish this, we first try the path itself. If it does not find anything, we chop off last step of the path, as long as it is a simple one like
+     * child:: or attribute:: and try to evaluate the truncated path. If it finds exactly one node - create a NullPointer and return. If it fails, chop off
+     * another step and repeat. If it finds more than one location - return null.
      * </p>
+     * 
      * @param context evaluation context
      * @return Pointer
      */
     protected Pointer searchForPath(final EvalContext context) {
         EvalContext ctx = buildContextChain(context, steps.length, true);
         final Pointer pointer = ctx.getSingleNodePointer();
-
         if (pointer != null) {
             return pointer;
         }
-
         for (int i = steps.length; --i > 0;) {
             if (!isSimpleStep(steps[i])) {
                 return null;
@@ -317,11 +293,7 @@ public abstract class Path extends Expression {
                     return null;
                 }
                 if (partial instanceof NodePointer) {
-                    return SimplePathInterpreter.createNullPointer(
-                            context,
-                            (NodePointer) partial,
-                            steps,
-                            i);
+                    return SimplePathInterpreter.createNullPointer(context, (NodePointer) partial, steps, i);
                 }
             }
         }

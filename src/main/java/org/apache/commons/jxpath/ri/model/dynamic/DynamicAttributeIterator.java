@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dynamic;
 
 import org.apache.commons.jxpath.ri.QName;
@@ -21,16 +22,16 @@ import org.apache.commons.jxpath.ri.model.beans.BeanAttributeIterator;
 import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 
 /**
- * {@code DynamicAttributeIterator} is different from a regular
- * {@code BeanAttributeIterator} in that given a property name it
- * will always find that property (albeit with a null value).
+ * {@code DynamicAttributeIterator} is different from a regular {@code BeanAttributeIterator} in that given a property name it will always find that property
+ * (albeit with a null value).
  */
 public class DynamicAttributeIterator extends BeanAttributeIterator {
 
     /**
      * Create a new DynamicAttributeIterator.
+     * 
      * @param parent pointer
-     * @param name to match properties
+     * @param name   to match properties
      */
     public DynamicAttributeIterator(final PropertyOwnerPointer parent, final QName name) {
         super(parent, name);
@@ -38,7 +39,7 @@ public class DynamicAttributeIterator extends BeanAttributeIterator {
 
     @Override
     protected void prepareForIndividualProperty(final String name) {
-         ((DynamicPropertyPointer) getPropertyPointer()).setPropertyName(name);
-         super.prepareForIndividualProperty(name);
+        ((DynamicPropertyPointer) getPropertyPointer()).setPropertyName(name);
+        super.prepareForIndividualProperty(name);
     }
 }

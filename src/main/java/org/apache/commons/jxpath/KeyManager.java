@@ -14,24 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
- * A delegate of {@link JXPathContext} that implements the XPath {@code "key()"}
- * function.
+ * A delegate of {@link JXPathContext} that implements the XPath {@code "key()"} function.
  */
 public interface KeyManager {
 
     /**
      * Find a node by key/value.
      *
-     * @param context to search
-     * @param keyName String
+     * @param context  to search
+     * @param keyName  String
      * @param keyValue String
      * @return Pointer
      */
-    Pointer getPointerByKey(
-        JXPathContext context,
-        String keyName,
-        String keyValue);
+    Pointer getPointerByKey(JXPathContext context, String keyName, String keyValue);
 }

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dynamic;
 
 import java.util.HashMap;
@@ -32,17 +33,11 @@ import org.apache.commons.jxpath.TestBean;
 public class TestDynamicPropertyFactory extends AbstractFactory {
 
     /**
-     * Create a new instance and put it in the collection on the parent object.
-     * Return <strong>false</strong> if this factory cannot create the requested object.
+     * Create a new instance and put it in the collection on the parent object. Return <strong>false</strong> if this factory cannot create the requested
+     * object.
      */
     @Override
-    public boolean createObject(
-        final JXPathContext context,
-        final Pointer pointer,
-        final Object parent,
-        final String name,
-        final int index)
-    {
+    public boolean createObject(final JXPathContext context, final Pointer pointer, final Object parent, final String name, final int index) {
         switch (name) {
         case "map":
             ((TestBean) parent).setMap(new HashMap());
@@ -62,7 +57,7 @@ public class TestDynamicPropertyFactory extends AbstractFactory {
             return true;
         }
         case "TestKey4":
-            ((Map) parent).put(name, new Object[] { new TestBean()});
+            ((Map) parent).put(name, new Object[] { new TestBean() });
             return true;
         default:
             break;

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.functions;
 
 import java.lang.reflect.InvocationTargetException;
@@ -36,6 +37,7 @@ public class MethodFunction implements Function {
 
     /**
      * Create a new MethodFunction.
+     * 
      * @param method implementing Method
      */
     public MethodFunction(final Method method) {
@@ -54,8 +56,7 @@ public class MethodFunction implements Function {
                 }
                 int pi = 0;
                 final Class[] types = method.getParameterTypes();
-                if (types.length >= 1
-                    && ExpressionContext.class.isAssignableFrom(types[0])) {
+                if (types.length >= 1 && ExpressionContext.class.isAssignableFrom(types[0])) {
                     pi = 1;
                 }
                 args = new Object[parameters.length + pi];
@@ -63,39 +64,29 @@ public class MethodFunction implements Function {
                     args[0] = context;
                 }
                 for (int i = 0; i < parameters.length; i++) {
-                    args[i + pi] =
-                        TypeUtils.convert(parameters[i], types[i + pi]);
+                    args[i + pi] = TypeUtils.convert(parameters[i], types[i + pi]);
                 }
-            }
-            else {
+            } else {
                 int pi = 0;
                 final Class[] types = method.getParameterTypes();
-                if (types.length >= 1
-                    && ExpressionContext.class.isAssignableFrom(types[0])) {
+                if (types.length >= 1 && ExpressionContext.class.isAssignableFrom(types[0])) {
                     pi = 1;
                 }
-                target =
-                    TypeUtils.convert(
-                        parameters[0],
-                        method.getDeclaringClass());
+                target = TypeUtils.convert(parameters[0], method.getDeclaringClass());
                 args = new Object[parameters.length - 1 + pi];
                 if (pi == 1) {
                     args[0] = context;
                 }
                 for (int i = 1; i < parameters.length; i++) {
-                    args[pi + i - 1] =
-                        TypeUtils.convert(parameters[i], types[i + pi - 1]);
+                    args[pi + i - 1] = TypeUtils.convert(parameters[i], types[i + pi - 1]);
                 }
             }
-
             return method.invoke(target, args);
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             if (ex instanceof InvocationTargetException) {
                 ex = ((InvocationTargetException) ex).getTargetException();
             }
-            throw new JXPathInvalidAccessException("Cannot invoke " + method,
-                    ex);
+            throw new JXPathInvalidAccessException("Cannot invoke " + method, ex);
         }
     }
 

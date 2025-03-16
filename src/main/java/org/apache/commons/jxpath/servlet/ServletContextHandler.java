@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
@@ -24,8 +25,7 @@ import javax.servlet.ServletContext;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
- * Implementation of the {@link DynamicPropertyHandler} interface that provides
- * access to attributes of a {@link ServletContext}.
+ * Implementation of the {@link DynamicPropertyHandler} interface that provides access to attributes of a {@link ServletContext}.
  */
 public class ServletContextHandler implements DynamicPropertyHandler {
 
@@ -33,7 +33,8 @@ public class ServletContextHandler implements DynamicPropertyHandler {
 
     /**
      * Collect the property names from bean, storing in set.
-     * @param set destination
+     * 
+     * @param set  destination
      * @param bean to read
      */
     protected void collectPropertyNames(final HashSet set, Object bean) {

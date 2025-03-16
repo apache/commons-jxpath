@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.jdom;
 
 import java.util.List;
@@ -45,16 +46,16 @@ import org.jdom.Text;
  * A Pointer that points to a DOM node.
  */
 public class JDOMNodePointer extends NodePointer {
-    private static final long serialVersionUID = -6346532297491082651L;
 
+    private static final long serialVersionUID = -6346532297491082651L;
     /** XML ns uri */
-    public static final String XML_NAMESPACE_URI =
-            "http://www.w3.org/XML/1998/namespace";
+    public static final String XML_NAMESPACE_URI = "http://www.w3.org/XML/1998/namespace";
     /** XMLNS ns uri */
-    public static final String XMLNS_NAMESPACE_URI =
-            "http://www.w3.org/2000/xmlns/";
+    public static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
+
     /**
      * Learn whether two strings are == or .equals()
+     * 
      * @param s1 string 1
      * @param s2 string 2
      * @return true if equal
@@ -69,11 +70,11 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Find the nearest occurrence of the specified attribute
-     * on the specified and enclosing elements.
-     * @param n current node
+     * Find the nearest occurrence of the specified attribute on the specified and enclosing elements.
+     * 
+     * @param n        current node
      * @param attrName attribute name
-     * @param ns Namespace
+     * @param ns       Namespace
      * @return attribute value
      */
     protected static String findEnclosingAttribute(Object n, final String attrName, final Namespace ns) {
@@ -92,6 +93,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the local name of the specified node.
+     * 
      * @param node to check
      * @return String local name
      */
@@ -107,6 +109,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the ns uri of the specified node.
+     * 
      * @param node Node to check
      * @return String
      */
@@ -124,6 +127,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the prefix from a given node.
+     * 
      * @param node to check
      * @return String
      */
@@ -141,6 +145,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the parent of the specified node.
+     * 
      * @param node to check
      * @return parent Element
      */
@@ -166,15 +171,13 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Execute test against node on behalf of pointer.
+     * 
      * @param pointer Pointer
-     * @param node to test
-     * @param test to execute
+     * @param node    to test
+     * @param test    to execute
      * @return true if node passes test
      */
-    public static boolean testNode(
-        final NodePointer pointer,
-        final Object node,
-        final NodeTest test) {
+    public static boolean testNode(final NodePointer pointer, final Object node, final NodeTest test) {
         if (test == null) {
             return true;
         }
@@ -182,7 +185,6 @@ public class JDOMNodePointer extends NodePointer {
             if (!(node instanceof Element)) {
                 return false;
             }
-
             final NodeNameTest nodeNameTest = (NodeNameTest) test;
             final QName testName = nodeNameTest.getNodeName();
             final String namespaceURI = nodeNameTest.getNamespaceURI();
@@ -191,27 +193,24 @@ public class JDOMNodePointer extends NodePointer {
             if (wildcard && testPrefix == null) {
                 return true;
             }
-            if (wildcard
-                || testName.getName()
-                        .equals(getLocalName(node))) {
+            if (wildcard || testName.getName().equals(getLocalName(node))) {
                 final String nodeNS = getNamespaceURI(node);
-                return equalStrings(namespaceURI, nodeNS) || nodeNS == null
-                        && equalStrings(testPrefix, getPrefix(node));
+                return equalStrings(namespaceURI, nodeNS) || nodeNS == null && equalStrings(testPrefix, getPrefix(node));
             }
             return false;
         }
         if (test instanceof NodeTypeTest) {
             switch (((NodeTypeTest) test).getNodeType()) {
-                case Compiler.NODE_TYPE_NODE :
-                    return true;
-                case Compiler.NODE_TYPE_TEXT :
-                    return node instanceof Text || node instanceof CDATA;
-                case Compiler.NODE_TYPE_COMMENT :
-                    return node instanceof Comment;
-                case Compiler.NODE_TYPE_PI :
-                    return node instanceof ProcessingInstruction;
-                default:
-                    return false;
+            case Compiler.NODE_TYPE_NODE:
+                return true;
+            case Compiler.NODE_TYPE_TEXT:
+                return node instanceof Text || node instanceof CDATA;
+            case Compiler.NODE_TYPE_COMMENT:
+                return node instanceof Comment;
+            case Compiler.NODE_TYPE_PI:
+                return node instanceof ProcessingInstruction;
+            default:
+                return false;
             }
         }
         if (test instanceof ProcessingInstructionTest && node instanceof ProcessingInstruction) {
@@ -223,15 +222,14 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     private final Object node;
-
     private String id;
-
     private NamespaceResolver localNamespaceResolver;
 
     /**
      * Create a new JDOMNodePointer.
+     * 
      * @param parent NodePointer
-     * @param node pointed
+     * @param node   pointed
      */
     public JDOMNodePointer(final NodePointer parent, final Object node) {
         super(parent);
@@ -240,7 +238,8 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Create a new JDOMNodePointer.
-     * @param node pointed
+     * 
+     * @param node   pointed
      * @param locale Locale
      */
     public JDOMNodePointer(final Object node, final Locale locale) {
@@ -250,9 +249,10 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Create a new JDOMNodePointer.
-     * @param node pointed
+     * 
+     * @param node   pointed
      * @param locale Locale
-     * @param id String id
+     * @param id     String id
      */
     public JDOMNodePointer(final Object node, final Locale locale, final String id) {
         super(null, locale);
@@ -262,31 +262,27 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Add the specified content to this element.
+     * 
      * @param content List
      */
     private void addContent(final List content) {
         final Element element = (Element) node;
         final int count = content.size();
-
         for (int i = 0; i < count; i++) {
             Object child = content.get(i);
             if (child instanceof Element) {
                 child = ((Element) child).clone();
                 element.addContent((Element) child);
-            }
-            else if (child instanceof Text) {
+            } else if (child instanceof Text) {
                 child = ((Text) child).clone();
                 element.addContent((Text) child);
-            }
-            else if (node instanceof CDATA) {
+            } else if (node instanceof CDATA) {
                 child = ((CDATA) child).clone();
                 element.addContent((CDATA) child);
-            }
-            else if (node instanceof ProcessingInstruction) {
+            } else if (node instanceof ProcessingInstruction) {
                 child = ((ProcessingInstruction) child).clone();
                 element.addContent((ProcessingInstruction) child);
-            }
-            else if (node instanceof Comment) {
+            } else if (node instanceof Comment) {
                 child = ((Comment) child).clone();
                 element.addContent((Comment) child);
             }
@@ -298,7 +294,6 @@ public class JDOMNodePointer extends NodePointer {
         if (id != null) {
             return "id('" + escape(id) + "')";
         }
-
         final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
             buffer.append(parent.asPath());
@@ -308,19 +303,16 @@ public class JDOMNodePointer extends NodePointer {
             // the parent's responsibility to produce the node test part
             // of the path
             if (parent instanceof JDOMNodePointer) {
-                if (buffer.length() == 0
-                    || buffer.charAt(buffer.length() - 1) != '/') {
+                if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
                     buffer.append('/');
                 }
                 final String nsURI = getNamespaceURI();
                 final String ln = getLocalName(node);
-
                 if (nsURI == null) {
                     buffer.append(ln);
                     buffer.append('[');
                     buffer.append(getRelativePositionByQName()).append(']');
-                }
-                else {
+                } else {
                     final String prefix = getNamespaceResolver().getPrefix(nsURI);
                     if (prefix != null) {
                         buffer.append(prefix);
@@ -328,27 +320,20 @@ public class JDOMNodePointer extends NodePointer {
                         buffer.append(ln);
                         buffer.append('[');
                         buffer.append(getRelativePositionByQName());
-                    }
-                    else {
+                    } else {
                         buffer.append("node()");
                         buffer.append('[');
                         buffer.append(getRelativePositionOfElement());
                     }
                     buffer.append(']');
                 }
-
             }
-        }
-        else if (node instanceof Text || node instanceof CDATA) {
+        } else if (node instanceof Text || node instanceof CDATA) {
             buffer.append("/text()");
-            buffer.append('[').append(getRelativePositionOfTextNode()).append(
-                ']');
-        }
-        else if (node instanceof ProcessingInstruction) {
-            buffer.append("/processing-instruction(\'").append(((ProcessingInstruction) node).getTarget()).append(
-                "')");
-            buffer.append('[').append(getRelativePositionOfPI()).append(
-                ']');
+            buffer.append('[').append(getRelativePositionOfTextNode()).append(']');
+        } else if (node instanceof ProcessingInstruction) {
+            buffer.append("/processing-instruction(\'").append(((ProcessingInstruction) node).getTarget()).append("')");
+            buffer.append('[').append(getRelativePositionOfPI()).append(']');
         }
         return buffer.toString();
     }
@@ -359,32 +344,24 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator childIterator(
-        final NodeTest test,
-        final boolean reverse,
-        final NodePointer startWith) {
+    public NodeIterator childIterator(final NodeTest test, final boolean reverse, final NodePointer startWith) {
         return new JDOMNodeIterator(this, test, reverse, startWith);
     }
 
     @Override
-    public int compareChildNodePointers(
-        final NodePointer pointer1,
-        final NodePointer pointer2) {
+    public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2) {
         final Object node1 = pointer1.getBaseValue();
         final Object node2 = pointer2.getBaseValue();
         if (node1 == node2) {
             return 0;
         }
-
         if (node1 instanceof Attribute && !(node2 instanceof Attribute)) {
             return -1;
         }
-        if (
-            !(node1 instanceof Attribute) && node2 instanceof Attribute) {
+        if (!(node1 instanceof Attribute) && node2 instanceof Attribute) {
             return 1;
         }
-        if (
-            node1 instanceof Attribute && node2 instanceof Attribute) {
+        if (node1 instanceof Attribute && node2 instanceof Attribute) {
             final List list = ((Element) getNode()).getAttributes();
             final int length = list.size();
             for (int i = 0; i < length; i++) {
@@ -398,11 +375,9 @@ public class JDOMNodePointer extends NodePointer {
             }
             return 0; // Should not happen
         }
-
         if (!(node instanceof Element)) {
             throw new IllegalStateException("JXPath internal error: " + "compareChildNodes called for " + node);
         }
-
         final List children = ((Element) node).getContent();
         final int length = children.size();
         for (int i = 0; i < length; i++) {
@@ -414,7 +389,6 @@ public class JDOMNodePointer extends NodePointer {
                 return 1;
             }
         }
-
         return 0;
     }
 
@@ -423,22 +397,19 @@ public class JDOMNodePointer extends NodePointer {
         if (!(node instanceof Element)) {
             return super.createAttribute(context, name);
         }
-
         final Element element = (Element) node;
         final String prefix = name.getPrefix();
         if (prefix != null) {
             final String namespaceUri = getNamespaceResolver().getNamespaceURI(prefix);
             if (namespaceUri == null) {
-                throw new JXPathException(
-                    "Unknown namespace prefix: " + prefix);
+                throw new JXPathException("Unknown namespace prefix: " + prefix);
             }
             final Namespace ns = Namespace.getNamespace(prefix, namespaceUri);
             final Attribute attr = element.getAttribute(name.getName(), ns);
             if (attr == null) {
                 element.setAttribute(name.getName(), "", ns);
             }
-        }
-        else {
+        } else {
             final Attribute attr = element.getAttribute(name.getName());
             if (attr == null) {
                 element.setAttribute(name.getName(), "");
@@ -450,41 +421,26 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     @Override
-    public NodePointer createChild(
-        final JXPathContext context,
-        final QName name,
-        int index) {
+    public NodePointer createChild(final JXPathContext context, final QName name, int index) {
         if (index == WHOLE_COLLECTION) {
             index = 0;
         }
-        final boolean success =
-            getAbstractFactory(context).createObject(
-                context,
-                this,
-                node,
-                name.toString(),
-                index);
+        final boolean success = getAbstractFactory(context).createObject(context, this, node, name.toString(), index);
         if (success) {
             NodeTest nodeTest;
             final String prefix = name.getPrefix();
-            final String namespaceURI = prefix == null ? null : context
-                    .getNamespaceURI(prefix);
+            final String namespaceURI = prefix == null ? null : context.getNamespaceURI(prefix);
             nodeTest = new NodeNameTest(name, namespaceURI);
-
-            final NodeIterator it =
-                childIterator(nodeTest, false, null);
+            final NodeIterator it = childIterator(nodeTest, false, null);
             if (it != null && it.setPosition(index + 1)) {
                 return it.getNodePointer();
             }
         }
-        throw new JXPathAbstractFactoryException("Factory could not create "
-                + "a child node for path: " + asPath() + "/" + name + "["
-                + (index + 1) + "]");
+        throw new JXPathAbstractFactoryException("Factory could not create " + "a child node for path: " + asPath() + "/" + name + "[" + (index + 1) + "]");
     }
 
     @Override
-    public NodePointer createChild(
-            final JXPathContext context, final QName name, final int index, final Object value) {
+    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
         final NodePointer ptr = createChild(context, name, index);
         ptr.setValue(value);
         return ptr;
@@ -495,11 +451,9 @@ public class JDOMNodePointer extends NodePointer {
         if (object == this) {
             return true;
         }
-
         if (!(object instanceof JDOMNodePointer)) {
             return false;
         }
-
         final JDOMNodePointer other = (JDOMNodePointer) object;
         return node == other.node;
     }
@@ -516,6 +470,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the language of this element.
+     * 
      * @return String language
      */
     protected String getLanguage() {
@@ -537,8 +492,7 @@ public class JDOMNodePointer extends NodePointer {
                 ns = null;
             }
             ln = ((Element) node).getName();
-        }
-        else if (node instanceof ProcessingInstruction) {
+        } else if (node instanceof ProcessingInstruction) {
             ln = ((ProcessingInstruction) node).getTarget();
         }
         return new QName(ns, ln);
@@ -579,6 +533,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets relative position of this among like-named siblings.
+     * 
      * @return 1..n
      */
     private int getRelativePositionByQName() {
@@ -587,7 +542,6 @@ public class JDOMNodePointer extends NodePointer {
             if (!(parent instanceof Element)) {
                 return 1;
             }
-
             final List children = ((Element) parent).getContent();
             int count = 0;
             for (final Object child : children) {
@@ -605,6 +559,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets relative position of this among all siblings.
+     * 
      * @return 1..n
      */
     private int getRelativePositionOfElement() {
@@ -615,8 +570,7 @@ public class JDOMNodePointer extends NodePointer {
         List children;
         if (parent instanceof Element) {
             children = ((Element) parent).getContent();
-        }
-        else {
+        } else {
             children = ((Document) parent).getContent();
         }
         int count = 0;
@@ -633,6 +587,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the relative position of this among same-target processing instruction siblings.
+     * 
      * @return 1..n
      */
     private int getRelativePositionOfPI() {
@@ -644,10 +599,7 @@ public class JDOMNodePointer extends NodePointer {
         final List children = parent.getContent();
         int count = 0;
         for (final Object child : children) {
-            if (child instanceof ProcessingInstruction
-                && (target == null
-                    || target.equals(
-                        ((ProcessingInstruction) child).getTarget()))) {
+            if (child instanceof ProcessingInstruction && (target == null || target.equals(((ProcessingInstruction) child).getTarget()))) {
                 count++;
             }
             if (child == node) {
@@ -659,14 +611,14 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the relative position of this among sibling text nodes.
+     * 
      * @return 1..n
      */
     private int getRelativePositionOfTextNode() {
         Element parent;
         if (node instanceof Text) {
             parent = (Element) ((Text) node).getParent();
-        }
-        else {
+        } else {
             parent = (Element) ((CDATA) node).getParent();
         }
         if (parent == null) {
@@ -726,17 +678,16 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Returns true if the xml:lang attribute for the current node
-     * or its parent has the specified prefix <em>lang</em>.
-     * If no node has this prefix, calls {@code super.isLanguage(lang)}.
+     * Returns true if the xml:lang attribute for the current node or its parent has the specified prefix <em>lang</em>. If no node has this prefix, calls
+     * {@code super.isLanguage(lang)}.
+     * 
      * @param lang to compare
      * @return true if this element uses the specified language.
      */
     @Override
     public boolean isLanguage(final String lang) {
         final String current = getLanguage();
-        return current == null ? super.isLanguage(lang) : current.toUpperCase(
-                Locale.ENGLISH).startsWith(lang.toUpperCase(Locale.ENGLISH));
+        return current == null ? super.isLanguage(lang) : current.toUpperCase(Locale.ENGLISH).startsWith(lang.toUpperCase(Locale.ENGLISH));
     }
 
     @Override
@@ -785,38 +736,28 @@ public class JDOMNodePointer extends NodePointer {
             final String string = (String) TypeUtils.convert(value, String.class);
             if (string != null && !string.isEmpty()) {
                 ((Text) node).setText(string);
-            }
-            else {
+            } else {
                 nodeParent(node).removeContent((Text) node);
             }
-        }
-        else {
+        } else {
             final Element element = (Element) node;
             element.getContent().clear();
-
             if (value instanceof Element) {
                 final Element valueElement = (Element) value;
                 addContent(valueElement.getContent());
-            }
-            else if (value instanceof Document) {
+            } else if (value instanceof Document) {
                 final Document valueDocument = (Document) value;
                 addContent(valueDocument.getContent());
-            }
-            else if (value instanceof Text || value instanceof CDATA) {
+            } else if (value instanceof Text || value instanceof CDATA) {
                 final String string = ((Text) value).getText();
                 element.addContent(new Text(string));
-            }
-            else if (value instanceof ProcessingInstruction) {
-                final ProcessingInstruction pi =
-                    (ProcessingInstruction) ((ProcessingInstruction) value)
-                        .clone();
+            } else if (value instanceof ProcessingInstruction) {
+                final ProcessingInstruction pi = (ProcessingInstruction) ((ProcessingInstruction) value).clone();
                 element.addContent(pi);
-            }
-            else if (value instanceof Comment) {
+            } else if (value instanceof Comment) {
                 final Comment comment = (Comment) ((Comment) value).clone();
                 element.addContent(comment);
-            }
-            else {
+            } else {
                 final String string = (String) TypeUtils.convert(value, String.class);
                 if (string != null && !string.isEmpty()) {
                     element.addContent(new Text(string));
@@ -829,5 +770,4 @@ public class JDOMNodePointer extends NodePointer {
     public boolean testNode(final NodeTest test) {
         return testNode(this, node, test);
     }
-
 }

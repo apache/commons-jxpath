@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * Implementation of "model" APIs for dynamic property objects e.g. Maps or anything else for which a client can provide a DynamicPropertyHandler class.
  */
+
 package org.apache.commons.jxpath.ri.model.dynamic;

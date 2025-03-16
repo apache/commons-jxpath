@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model;
 
 import java.util.Collection;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.Test;
  * Test aliased/doubled XML namespace iteration; JXPATH-125.
  */
 public class AliasedNamespaceIterationTest extends AbstractJXPathTest {
+
     protected JXPathContext context;
 
     protected JXPathContext createContext(final String model) {
@@ -36,8 +38,7 @@ public class AliasedNamespaceIterationTest extends AbstractJXPathTest {
     }
 
     protected DocumentContainer createDocumentContainer(final String model) {
-        final DocumentContainer result = new DocumentContainer(AbstractJXPathTest.class
-                .getResource("IterateAliasedNS.xml"), model);
+        final DocumentContainer result = new DocumentContainer(AbstractJXPathTest.class.getResource("IterateAliasedNS.xml"), model);
         return result;
     }
 

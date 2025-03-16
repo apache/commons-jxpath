@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.beans;
 
 import java.util.Locale;
@@ -33,14 +34,15 @@ import org.apache.commons.jxpath.util.ValueUtils;
  * Transparent pointer to a collection (array or Collection).
  */
 public class CollectionPointer extends NodePointer {
+
     private static final long serialVersionUID = 8620254915563256588L;
     private Object collection;
-
     private NodePointer valuePointer;
 
     /**
      * Create a new CollectionPointer.
-     * @param parent parent NodePointer
+     * 
+     * @param parent     parent NodePointer
      * @param collection value
      */
     public CollectionPointer(final NodePointer parent, final Object collection) {
@@ -50,8 +52,9 @@ public class CollectionPointer extends NodePointer {
 
     /**
      * Create a new CollectionPointer.
+     * 
      * @param collection value
-     * @param locale Locale
+     * @param locale     Locale
      */
     public CollectionPointer(final Object collection, final Locale locale) {
         super(null, locale);
@@ -71,11 +74,9 @@ public class CollectionPointer extends NodePointer {
                 }
                 buffer.append("[").append(index + 1).append(']');
             }
-        }
-        else if (index != WHOLE_COLLECTION) {
+        } else if (index != WHOLE_COLLECTION) {
             buffer.append("/.[").append(index + 1).append(']');
-        }
-        else {
+        } else {
             buffer.append("/");
         }
         return buffer.toString();
@@ -83,45 +84,31 @@ public class CollectionPointer extends NodePointer {
 
     @Override
     public NodeIterator attributeIterator(final QName name) {
-        return index == WHOLE_COLLECTION ? new CollectionAttributeNodeIterator(this, name)
-                : getValuePointer().attributeIterator(name);
+        return index == WHOLE_COLLECTION ? new CollectionAttributeNodeIterator(this, name) : getValuePointer().attributeIterator(name);
     }
 
     @Override
-    public NodeIterator childIterator(final NodeTest test,
-                final boolean reverse, final NodePointer startWith) {
+    public NodeIterator childIterator(final NodeTest test, final boolean reverse, final NodePointer startWith) {
         if (index == WHOLE_COLLECTION) {
-            return new CollectionChildNodeIterator(
-                this,
-                test,
-                reverse,
-                startWith);
+            return new CollectionChildNodeIterator(this, test, reverse, startWith);
         }
         return getValuePointer().childIterator(test, reverse, startWith);
     }
 
     @Override
-    public int compareChildNodePointers(
-                final NodePointer pointer1, final NodePointer pointer2) {
+    public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2) {
         return pointer1.getIndex() - pointer2.getIndex();
     }
 
     @Override
-    public NodePointer createChild(
-        final JXPathContext context,
-        final QName name,
-        final int index) {
+    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
         final NodePointer ptr = (NodePointer) clone();
         ptr.setIndex(index);
         return ptr.createPath(context);
     }
 
     @Override
-    public NodePointer createChild(
-        final JXPathContext context,
-        final QName name,
-        final int index,
-        final Object value) {
+    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
         final NodePointer ptr = (NodePointer) clone();
         ptr.setIndex(index);
         return ptr.createPath(context, value);
@@ -147,11 +134,9 @@ public class CollectionPointer extends NodePointer {
         if (object == this) {
             return true;
         }
-
         if (!(object instanceof CollectionPointer)) {
             return false;
         }
-
         final CollectionPointer other = (CollectionPointer) object;
         return collection == other.collection && index == other.index;
     }
@@ -163,8 +148,7 @@ public class CollectionPointer extends NodePointer {
 
     @Override
     public Object getImmediateNode() {
-        return index == WHOLE_COLLECTION ? ValueUtils.getValue(collection)
-                : ValueUtils.getValue(collection, index);
+        return index == WHOLE_COLLECTION ? ValueUtils.getValue(collection) : ValueUtils.getValue(collection, index);
     }
 
     @Override
@@ -182,8 +166,7 @@ public class CollectionPointer extends NodePointer {
         if (valuePointer == null) {
             if (index == WHOLE_COLLECTION) {
                 valuePointer = this;
-            }
-            else {
+            } else {
                 final Object value = getImmediateNode();
                 valuePointer = newChildNodePointer(this, getName(), value);
             }
@@ -232,8 +215,7 @@ public class CollectionPointer extends NodePointer {
     public void setValue(final Object value) {
         if (index == WHOLE_COLLECTION) {
             parent.setValue(value);
-        }
-        else {
+        } else {
             ValueUtils.setValue(collection, index, value);
         }
     }

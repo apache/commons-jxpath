@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.container;
 
 import java.util.Locale;
@@ -26,20 +27,19 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
- * Transparent pointer to a Container. The {@link #getValue()} method
- * returns the contents of the container, rather than the container
- * itself.
+ * Transparent pointer to a Container. The {@link #getValue()} method returns the contents of the container, rather than the container itself.
  */
 public class ContainerPointer extends NodePointer {
+
     private static final long serialVersionUID = 6140752946621686118L;
     private final Container container;
-
     private NodePointer valuePointer;
 
     /**
      * Create a new ContainerPointer.
+     * 
      * @param container Container object
-     * @param locale Locale
+     * @param locale    Locale
      */
     public ContainerPointer(final Container container, final Locale locale) {
         super(null, locale);
@@ -48,7 +48,8 @@ public class ContainerPointer extends NodePointer {
 
     /**
      * Create a new ContainerPointer.
-     * @param parent parent pointer
+     * 
+     * @param parent    parent pointer
      * @param container Container object
      */
     public ContainerPointer(final NodePointer parent, final Container container) {
@@ -67,17 +68,12 @@ public class ContainerPointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator childIterator(
-        final NodeTest test,
-        final boolean reverse,
-        final NodePointer startWith) {
+    public NodeIterator childIterator(final NodeTest test, final boolean reverse, final NodePointer startWith) {
         return getValuePointer().childIterator(test, reverse, startWith);
     }
 
     @Override
-    public int compareChildNodePointers(
-        final NodePointer pointer1,
-        final NodePointer pointer2) {
+    public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2) {
         return pointer1.getIndex() - pointer2.getIndex();
     }
 
@@ -86,11 +82,9 @@ public class ContainerPointer extends NodePointer {
         if (object == this) {
             return true;
         }
-
         if (!(object instanceof ContainerPointer)) {
             return false;
         }
-
         final ContainerPointer other = (ContainerPointer) object;
         return container == other.container && index == other.index;
     }
@@ -147,6 +141,7 @@ public class ContainerPointer extends NodePointer {
 
     /**
      * This type of node is auxiliary.
+     * 
      * @return {@code true}.
      */
     @Override

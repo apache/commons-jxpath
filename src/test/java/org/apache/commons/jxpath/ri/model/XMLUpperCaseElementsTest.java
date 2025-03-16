@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.Test;
  * Test for uppercase element matching, etc. showing JXPATH-136 is not reproducible.
  */
 public class XMLUpperCaseElementsTest extends AbstractJXPathTest {
+
     protected JXPathContext context;
 
     protected JXPathContext createContext(final String model) {
@@ -45,25 +47,21 @@ public class XMLUpperCaseElementsTest extends AbstractJXPathTest {
 
     @Test
     public void testBasicGetDOM() {
-        assertXPathValue(createContext(DocumentContainer.MODEL_DOM), "/Vendor[1]/Contact[1]",
-                "John");
+        assertXPathValue(createContext(DocumentContainer.MODEL_DOM), "/Vendor[1]/Contact[1]", "John");
     }
 
     @Test
     public void testBasicGetJDOM() {
-        assertXPathValue(createContext(DocumentContainer.MODEL_JDOM), "/Vendor[1]/Contact[1]",
-                "John");
+        assertXPathValue(createContext(DocumentContainer.MODEL_JDOM), "/Vendor[1]/Contact[1]", "John");
     }
 
     @Test
     public void testBasicIterateDOM() {
-        assertXPathValueIterator(createContext(DocumentContainer.MODEL_DOM), "/Vendor/Contact",
-                list("John", "Jack", "Jim", "Jack Black"));
+        assertXPathValueIterator(createContext(DocumentContainer.MODEL_DOM), "/Vendor/Contact", list("John", "Jack", "Jim", "Jack Black"));
     }
 
     @Test
     public void testBasicIterateJDOM() {
-        assertXPathValueIterator(createContext(DocumentContainer.MODEL_JDOM), "/Vendor/Contact",
-                list("John", "Jack", "Jim", "Jack Black"));
+        assertXPathValueIterator(createContext(DocumentContainer.MODEL_JDOM), "/Vendor/Contact", list("John", "Jack", "Jim", "Jack Black"));
     }
 }

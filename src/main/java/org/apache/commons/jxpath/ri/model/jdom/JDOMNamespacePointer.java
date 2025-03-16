@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.jdom;
 
 import org.apache.commons.jxpath.ri.QName;
@@ -23,13 +24,14 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * Represents a namespace node.
  */
 public class JDOMNamespacePointer extends NodePointer {
+
     private static final long serialVersionUID = 7935311686545862379L;
     private final String prefix;
-
     private String namespaceURI;
 
     /**
      * Create a new JDOMNamespacePointer.
+     * 
      * @param parent parent pointer
      * @param prefix ns prefix
      */
@@ -40,14 +42,12 @@ public class JDOMNamespacePointer extends NodePointer {
 
     /**
      * Create a new JDOMNamespacePointer.
-     * @param parent parent pointer
-     * @param prefix ns prefix
+     * 
+     * @param parent       parent pointer
+     * @param prefix       ns prefix
      * @param namespaceURI ns URI
      */
-    public JDOMNamespacePointer(
-            final NodePointer parent,
-            final String prefix,
-            final String namespaceURI) {
+    public JDOMNamespacePointer(final NodePointer parent, final String prefix, final String namespaceURI) {
         super(parent);
         this.prefix = prefix;
         this.namespaceURI = namespaceURI;
@@ -58,8 +58,7 @@ public class JDOMNamespacePointer extends NodePointer {
         final StringBuilder buffer = new StringBuilder();
         if (parent != null) {
             buffer.append(parent.asPath());
-            if (buffer.length() == 0
-                || buffer.charAt(buffer.length() - 1) != '/') {
+            if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
                 buffer.append('/');
             }
         }
@@ -69,9 +68,7 @@ public class JDOMNamespacePointer extends NodePointer {
     }
 
     @Override
-    public int compareChildNodePointers(
-        final NodePointer pointer1,
-        final NodePointer pointer2) {
+    public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2) {
         // Won't happen - namespaces don't have children
         return 0;
     }
@@ -126,6 +123,7 @@ public class JDOMNamespacePointer extends NodePointer {
 
     /**
      * Throws UnsupportedOperationException.
+     * 
      * @param value Object value to set
      */
     @Override

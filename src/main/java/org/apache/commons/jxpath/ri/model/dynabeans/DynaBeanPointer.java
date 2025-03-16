@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
 import java.util.Locale;
@@ -25,14 +26,15 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 
 /**
- * A Pointer that points to a {@link DynaBean}.  If the target DynaBean is Serializable,
- * so should this instance be.
+ * A Pointer that points to a {@link DynaBean}. If the target DynaBean is Serializable, so should this instance be.
  */
 public class DynaBeanPointer extends PropertyOwnerPointer {
+
     private static final long serialVersionUID = -9135052498044877965L;
 
     /**
      * Learn whether two objects are == || .equals().
+     * 
      * @param o1 first object
      * @param o2 second object
      * @return boolean
@@ -40,14 +42,15 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
     private static boolean equalObjects(final Object o1, final Object o2) {
         return o1 == o2 || o1 != null && o1.equals(o2);
     }
-    private final QName name;
 
+    private final QName name;
     private final DynaBean dynaBean;
 
     /**
      * Create a new DynaBeanPointer.
-     * @param parent pointer
-     * @param name is the name given to the first node
+     * 
+     * @param parent   pointer
+     * @param name     is the name given to the first node
      * @param dynaBean pointed
      */
     public DynaBeanPointer(final NodePointer parent, final QName name, final DynaBean dynaBean) {
@@ -58,9 +61,10 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
 
     /**
      * Create a new DynaBeanPointer.
-     * @param name is the name given to the first node
+     * 
+     * @param name     is the name given to the first node
      * @param dynaBean pointed
-     * @param locale Locale
+     * @param locale   Locale
      */
     public DynaBeanPointer(final QName name, final DynaBean dynaBean, final Locale locale) {
         super(null, locale);
@@ -78,16 +82,13 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
         if (object == this) {
             return true;
         }
-
         if (!(object instanceof DynaBeanPointer)) {
             return false;
         }
-
         final DynaBeanPointer other = (DynaBeanPointer) object;
         if (!(equalObjects(parent, other.parent) && equalObjects(name, other.name))) {
             return false;
         }
-
         final int iThis = index == WHOLE_COLLECTION ? 0 : index;
         final int iOther = other.index == WHOLE_COLLECTION ? 0 : other.index;
         return iThis == iOther && dynaBean == other.dynaBean;

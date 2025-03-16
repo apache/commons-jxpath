@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.ri.Compiler;
@@ -29,8 +30,8 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  * EvalContext that walks the "attribute::" axis.
  */
 public class AttributeContext extends EvalContext {
-    private static final QName WILDCARD = new QName(null, "*");
 
+    private static final QName WILDCARD = new QName(null, "*");
     private final NodeTest nodeTest;
     private boolean setStarted = false;
     private NodeIterator iterator;
@@ -38,8 +39,9 @@ public class AttributeContext extends EvalContext {
 
     /**
      * Create a new AttributeContext.
+     * 
      * @param parentContext represents the previous step on the path
-     * @param nodeTest is the name of the attribute we are looking for
+     * @param nodeTest      is the name of the attribute we are looking for
      */
     public AttributeContext(final EvalContext parentContext, final NodeTest nodeTest) {
         super(parentContext);
@@ -59,11 +61,9 @@ public class AttributeContext extends EvalContext {
             QName name;
             if (nodeTest instanceof NodeNameTest) {
                 name = ((NodeNameTest) nodeTest).getNodeName();
-            }
-            else if (nodeTest instanceof NodeTypeTest && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE) {
+            } else if (nodeTest instanceof NodeTypeTest && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE) {
                 name = WILDCARD;
-            }
-            else {
+            } else {
                 iterator = null;
                 return false;
             }
@@ -91,7 +91,6 @@ public class AttributeContext extends EvalContext {
         if (position < getCurrentPosition()) {
             reset();
         }
-
         while (getCurrentPosition() < position) {
             if (!nextNode()) {
                 return false;

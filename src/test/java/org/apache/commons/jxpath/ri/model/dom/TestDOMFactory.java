@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dom;
 
 import org.apache.commons.jxpath.AbstractFactory;
@@ -36,18 +37,15 @@ public class TestDOMFactory extends AbstractFactory {
             }
             child = child.getNextSibling();
         }
-
         // Keep inserting new elements until we have index + 1 of them
         while (count <= index) {
             final Document doc = parent.getOwnerDocument();
             Node newElement;
             if (namespaceURI == null) {
                 newElement = doc.createElement(tag);
-            }
-            else {
+            } else {
                 newElement = doc.createElementNS(namespaceURI, tag);
             }
-
             parent.appendChild(newElement);
             count++;
         }
@@ -57,16 +55,8 @@ public class TestDOMFactory extends AbstractFactory {
      * Return <strong>false</strong> if this factory cannot create the requested object.
      */
     @Override
-    public boolean createObject(
-        final JXPathContext context,
-        final Pointer pointer,
-        final Object parent,
-        final String name,
-        final int index)
-    {
-        if (name.equals("location")
-            || name.equals("address")
-            || name.equals("street")) {
+    public boolean createObject(final JXPathContext context, final Pointer pointer, final Object parent, final String name, final int index) {
+        if (name.equals("location") || name.equals("address") || name.equals("street")) {
             addDOMElement((Node) parent, index, name, null);
             return true;
         }

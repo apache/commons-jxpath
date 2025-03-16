@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.AbstractJXPathTest;
@@ -22,8 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test for the protection mechanism that stops infinite recursion
- * in descent down a recursive graph.
+ * Test for the protection mechanism that stops infinite recursion in descent down a recursive graph.
  */
 public class RecursiveAxesTest extends AbstractJXPathTest {
 
@@ -41,16 +41,12 @@ public class RecursiveAxesTest extends AbstractJXPathTest {
         bean1.setFirst(bean2);
         bean2.setFirst(bean1);
         bean2.setSecond(bean3);
-
         context = JXPathContext.newContext(null, bean);
     }
 
     @Test
     public void testInfiniteDescent() {
         // Existing scalar property
-        assertXPathPointer(
-            context,
-            "//.[name = 'three']",
-            "/first/first/second");
+        assertXPathPointer(context, "//.[name = 'three']", "/first/first/second");
     }
 }

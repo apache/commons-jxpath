@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri;
 
 import org.apache.commons.jxpath.Pointer;
@@ -31,6 +32,7 @@ public class InfoSetUtil {
 
     /**
      * Converts the supplied object to boolean.
+     * 
      * @param object to convert
      * @return boolean
      */
@@ -64,6 +66,7 @@ public class InfoSetUtil {
 
     /**
      * Converts the supplied object to double.
+     * 
      * @param object to convert
      * @return double
      */
@@ -80,8 +83,7 @@ public class InfoSetUtil {
             }
             try {
                 return Double.parseDouble((String) object);
-            }
-            catch (final NumberFormatException ex) {
+            } catch (final NumberFormatException ex) {
                 return Double.NaN;
             }
         }
@@ -98,6 +100,7 @@ public class InfoSetUtil {
 
     /**
      * Converts the supplied object to Number.
+     * 
      * @param object to convert
      * @return Number result
      */
@@ -111,8 +114,7 @@ public class InfoSetUtil {
         if (object instanceof String) {
             try {
                 return Double.valueOf((String) object);
-            }
-            catch (final NumberFormatException ex) {
+            } catch (final NumberFormatException ex) {
                 return NOT_A_NUMBER;
             }
         }
@@ -129,6 +131,7 @@ public class InfoSetUtil {
 
     /**
      * Converts the supplied object to String.
+     * 
      * @param object to convert
      * @return String value
      */

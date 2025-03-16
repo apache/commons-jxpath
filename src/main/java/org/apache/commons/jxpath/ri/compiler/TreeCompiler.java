@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.Compiler;
@@ -38,18 +39,13 @@ public class TreeCompiler implements Compiler {
 
     @Override
     public Object equal(final Object left, final Object right) {
-        return isNameAttributeTest((Expression) left)
-                ? new NameAttributeTest((Expression) left, (Expression) right)
+        return isNameAttributeTest((Expression) left) ? new NameAttributeTest((Expression) left, (Expression) right)
                 : new CoreOperationEqual((Expression) left, (Expression) right);
     }
 
     @Override
-    public Object expressionPath(final Object expression, final Object[] predicates,
-            final Object[] steps) {
-        return new ExpressionPath(
-            (Expression) expression,
-            toExpressionArray(predicates),
-            toStepArray(steps));
+    public Object expressionPath(final Object expression, final Object[] predicates, final Object[] steps) {
+        return new ExpressionPath((Expression) expression, toExpressionArray(predicates), toStepArray(steps));
     }
 
     @Override
@@ -64,20 +60,17 @@ public class TreeCompiler implements Compiler {
 
     @Override
     public Object greaterThan(final Object left, final Object right) {
-        return new CoreOperationGreaterThan(
-            (Expression) left,
-            (Expression) right);
+        return new CoreOperationGreaterThan((Expression) left, (Expression) right);
     }
 
     @Override
     public Object greaterThanOrEqual(final Object left, final Object right) {
-        return new CoreOperationGreaterThanOrEqual(
-            (Expression) left,
-            (Expression) right);
+        return new CoreOperationGreaterThanOrEqual((Expression) left, (Expression) right);
     }
 
     /**
      * Learn whether arg is a name attribute test.
+     * 
      * @param arg Expression to test
      * @return boolean
      */
@@ -85,7 +78,6 @@ public class TreeCompiler implements Compiler {
         if (!(arg instanceof LocationPath)) {
             return false;
         }
-
         final Step[] steps = ((LocationPath) arg).getSteps();
         if (steps.length != 1) {
             return false;
@@ -110,9 +102,7 @@ public class TreeCompiler implements Compiler {
 
     @Override
     public Object lessThanOrEqual(final Object left, final Object right) {
-        return new CoreOperationLessThanOrEqual(
-            (Expression) left,
-            (Expression) right);
+        return new CoreOperationLessThanOrEqual((Expression) left, (Expression) right);
     }
 
     @Override
@@ -132,9 +122,7 @@ public class TreeCompiler implements Compiler {
 
     @Override
     public Object minus(final Object left, final Object right) {
-        return new CoreOperationSubtract(
-            (Expression) left,
-            (Expression) right);
+        return new CoreOperationSubtract((Expression) left, (Expression) right);
     }
 
     @Override
@@ -184,10 +172,7 @@ public class TreeCompiler implements Compiler {
 
     @Override
     public Object step(final int axis, final Object nodeTest, final Object[] predicates) {
-        return new Step(
-            axis,
-            (NodeTest) nodeTest,
-            toExpressionArray(predicates));
+        return new Step(axis, (NodeTest) nodeTest, toExpressionArray(predicates));
     }
 
     @Override
@@ -197,6 +182,7 @@ public class TreeCompiler implements Compiler {
 
     /**
      * Gets an Object[] as an Expression[].
+     * 
      * @param array Object[]
      * @return Expression[]
      */
@@ -213,6 +199,7 @@ public class TreeCompiler implements Compiler {
 
     /**
      * Gets an Object[] as a Step[].
+     * 
      * @param array Object[]
      * @return Step[]
      */

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.util;
 
 import java.util.HashMap;
@@ -22,10 +23,11 @@ import java.util.HashMap;
  * Global type conversion utilities.
  */
 public class TypeUtils {
+
     private static TypeConverter typeConverter = new BasicTypeConverter();
     private static final HashMap PRIMITIVE_TYPE_MAP = new HashMap() {
-        private static final long serialVersionUID = 1L;
 
+        private static final long serialVersionUID = 1L;
         {
             put(int.class, Integer.class);
             put(byte.class, Byte.class);
@@ -39,8 +41,8 @@ public class TypeUtils {
     };
 
     /**
-     * Returns true if the global converter can convert the supplied
-     * object to the specified type.
+     * Returns true if the global converter can convert the supplied object to the specified type.
+     * 
      * @param object object to test
      * @param toType target class
      * @return boolean
@@ -50,8 +52,8 @@ public class TypeUtils {
     }
 
     /**
-     * Converts the supplied object to the specified type. May
-     * throw a RuntimeException.
+     * Converts the supplied object to the specified type. May throw a RuntimeException.
+     * 
      * @param object object to convert
      * @param toType target class
      * @return resulting Object
@@ -62,6 +64,7 @@ public class TypeUtils {
 
     /**
      * Returns the current type converter.
+     * 
      * @return TypeConverter
      */
     public static TypeConverter getTypeConverter() {
@@ -70,6 +73,7 @@ public class TypeUtils {
 
     /**
      * Install an alternative type converter.
+     * 
      * @param converter new TypeConverter
      */
     public static synchronized void setTypeConverter(final TypeConverter converter) {
@@ -78,6 +82,7 @@ public class TypeUtils {
 
     /**
      * Return the appropriate wrapper type for the specified class.
+     * 
      * @param p Class for which to retrieve a wrapper class.
      * @return the wrapper if {@code p} is primitive, else {@code p}.
      * @since JXPath 1.3

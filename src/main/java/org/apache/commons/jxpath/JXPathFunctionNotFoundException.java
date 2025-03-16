@@ -14,18 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
  * Thrown when JXPath encounters an unknown extension function.
  */
-
 public class JXPathFunctionNotFoundException extends JXPathException {
 
     private static final long serialVersionUID = -8875537628056117241L;
 
     /**
      * Create a new JXPathFunctionNotFoundException.
+     * 
      * @param message exception message
      */
     public JXPathFunctionNotFoundException(final String message) {

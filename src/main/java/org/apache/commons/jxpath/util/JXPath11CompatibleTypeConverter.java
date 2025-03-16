@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.util;
 
 import org.apache.commons.jxpath.NodeSet;
 
 /**
- * TypeConverter implementation to circumvent automagic {@link NodeSet}
- * decoding. Suggested by JIRA issue JXPATH-10.
+ * TypeConverter implementation to circumvent automagic {@link NodeSet} decoding. Suggested by JIRA issue JXPATH-10.
  *
  * @since JXPath 1.3
  */

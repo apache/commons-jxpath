@@ -14,39 +14,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 import java.util.List;
 
 /**
- * If an extenstion function has an argument of type ExpressionContext,
- * it can gain access to the current node of an XPath expression context.
+ * If an extenstion function has an argument of type ExpressionContext, it can gain access to the current node of an XPath expression context.
  * <p>
- * Example:
- * <blockquote><pre>
+ * Example: <blockquote>
+ * 
+ * <pre>
  * public class MyExtenstionFunctions {
- *    public static String objectType(ExpressionContext context){
- *       Object value = context.getContextNodePointer().getValue();
- *       if (value == null){
- *           return "null";
- *       }
- *       return value.getClass().getName();
- *    }
+ * 
+ *     public static String objectType(ExpressionContext context) {
+ *         Object value = context.getContextNodePointer().getValue();
+ *         if (value == null) {
+ *             return "null";
+ *         }
+ *         return value.getClass().getName();
+ *     }
  * }
- * </pre></blockquote>
+ * </pre>
+ * 
+ * </blockquote>
  *
- * You can then register this extension function using a {@link ClassFunctions
- * ClassFunctions} object and call it like this:
- * <blockquote><pre>
- *   "/descendent-or-self::node()[ns:objectType() = 'java.util.Date']"
- * </pre></blockquote>
- * This expression will find all nodes of the graph that are dates.
+ * You can then register this extension function using a {@link ClassFunctions ClassFunctions} object and call it like this: <blockquote>
+ * 
+ * <pre>
+ * "/descendent-or-self::node()[ns:objectType() = 'java.util.Date']"
+ * </pre>
+ * 
+ * </blockquote> This expression will find all nodes of the graph that are dates.
  */
 public interface ExpressionContext {
 
     /**
-     * Gets the current context node list.  Each element of the list is
-     * a Pointer.
+     * Gets the current context node list. Each element of the list is a Pointer.
      *
      * @return A list representing the current context nodes.
      */
@@ -68,6 +72,7 @@ public interface ExpressionContext {
 
     /**
      * Returns the current context position.
+     * 
      * @return int
      */
     int getPosition();

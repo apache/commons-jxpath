@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * Utility classes to assist with JXPath implementation(s) and/or usage.
  */
+
 package org.apache.commons.jxpath.util;

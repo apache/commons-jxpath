@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.AbstractFactory;
@@ -24,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests JXPath with JavaBeans
-*
+ *
  */
 public class BeanModelTest extends AbstractBeanModelTest {
 
@@ -40,14 +41,7 @@ public class BeanModelTest extends AbstractBeanModelTest {
 
     @Test
     public void testIndexedProperty() {
-        final JXPathContext context =
-            JXPathContext.newContext(null, new TestIndexedPropertyBean());
-
-        assertXPathValueAndPointer(
-            context,
-            "indexed[1]",
-            Integer.valueOf(0),
-            "/indexed[1]");
+        final JXPathContext context = JXPathContext.newContext(null, new TestIndexedPropertyBean());
+        assertXPathValueAndPointer(context, "indexed[1]", Integer.valueOf(0), "/indexed[1]");
     }
-
 }

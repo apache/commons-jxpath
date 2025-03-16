@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dom;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import org.w3c.dom.Node;
  * An iterator of attributes of a DOM Node.
  */
 public class DOMAttributeIterator implements NodeIterator {
+
     private final NodePointer parent;
     private final QName name;
     private final List attributes;
@@ -39,8 +41,9 @@ public class DOMAttributeIterator implements NodeIterator {
 
     /**
      * Create a new DOMAttributeIterator.
+     * 
      * @param parent pointer
-     * @param name to test
+     * @param name   to test
      */
     public DOMAttributeIterator(final NodePointer parent, final QName name) {
         this.parent = parent;
@@ -54,8 +57,7 @@ public class DOMAttributeIterator implements NodeIterator {
                 if (attr != null) {
                     attributes.add(attr);
                 }
-            }
-            else {
+            } else {
                 final NamedNodeMap map = node.getAttributes();
                 final int count = map.getLength();
                 for (int i = 0; i < count; i++) {
@@ -70,24 +72,22 @@ public class DOMAttributeIterator implements NodeIterator {
 
     /**
      * Gets the named attribute.
+     * 
      * @param element to search
-     * @param name to match
+     * @param name    to match
      * @return Attr found
      */
     private Attr getAttribute(final Element element, final QName name) {
         final String testPrefix = name.getPrefix();
         String testNS = null;
-
         if (testPrefix != null) {
             testNS = parent.getNamespaceResolver().getNamespaceURI(testPrefix);
         }
-
         if (testNS != null) {
             Attr attr = element.getAttributeNodeNS(testNS, name.getName());
             if (attr != null) {
                 return attr;
             }
-
             // This may mean that the parser does not support NS for
             // attributes, example - the version of Crimson bundled
             // with JDK 1.4.0
@@ -131,33 +131,29 @@ public class DOMAttributeIterator implements NodeIterator {
 
     /**
      * Test an attribute.
+     * 
      * @param attr to test
      * @return whether test succeeded
      */
     private boolean testAttr(final Attr attr) {
         final String nodePrefix = DOMNodePointer.getPrefix(attr);
         final String nodeLocalName = DOMNodePointer.getLocalName(attr);
-
         if (nodePrefix != null && nodePrefix.equals("xmlns")) {
             return false;
         }
-
         if (nodePrefix == null && nodeLocalName.equals("xmlns")) {
             return false;
         }
-
         final String testLocalName = name.getName();
         if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)) {
             final String testPrefix = name.getPrefix();
-
             if (testPrefix == null || Objects.equals(testPrefix, nodePrefix)) {
                 return true;
             }
             if (nodePrefix == null) {
                 return false;
             }
-            return Objects.equals(parent.getNamespaceURI(testPrefix), parent
-                        .getNamespaceURI(nodePrefix));
+            return Objects.equals(parent.getNamespaceURI(testPrefix), parent.getNamespaceURI(nodePrefix));
         }
         return false;
     }

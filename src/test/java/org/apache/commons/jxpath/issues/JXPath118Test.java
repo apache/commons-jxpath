@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.issues;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,51 +28,41 @@ import org.junit.jupiter.api.Test;
 /**
  * Testcase proving JXPATH-118 issue with asPath() returning wrong names.
  */
-public class JXPath118Test
-{
+public class JXPath118Test {
 
-    public static class SomeChildClass
-    {
+    public static class SomeChildClass {
 
         private int foo = 1;
         private int bar = 2;
         private int baz = 3;
 
-        public int getBar()
-        {
+        public int getBar() {
             return bar;
         }
 
-        public int getBaz()
-        {
+        public int getBaz() {
             return baz;
         }
 
-        public int getFoo()
-        {
+        public int getFoo() {
             return foo;
         }
 
-        public void setBar(final int bar)
-        {
+        public void setBar(final int bar) {
             this.bar = bar;
         }
 
-        public void setBaz(final int baz)
-        {
+        public void setBaz(final int baz) {
             this.baz = baz;
         }
 
-        public void setFoo(final int foo)
-        {
+        public void setFoo(final int foo) {
             this.foo = foo;
         }
-
     }
 
     @Test
-    public void testJXPATH118IssueWithAsPath() throws Exception
-    {
+    public void testJXPATH118IssueWithAsPath() throws Exception {
         final Object contextBean = new SomeChildClass();
         final JXPathContext context = JXPathContext.newContext(contextBean);
         final Iterator<Pointer> iteratePointers = context.iteratePointers("//*");
@@ -79,5 +70,4 @@ public class JXPath118Test
         assertEquals("/baz", iteratePointers.next().asPath());
         assertEquals("/foo", iteratePointers.next().asPath());
     }
-
 }

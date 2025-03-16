@@ -14,24 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.servlet;
 
 import org.apache.commons.jxpath.Variables;
 
 /**
- * Implementation of the Variables interface that provides access
- * to a single object using a reserved name (keyword).
+ * Implementation of the Variables interface that provides access to a single object using a reserved name (keyword).
  */
 public class KeywordVariables implements Variables {
-    private static final long serialVersionUID = 894145608741325442L;
 
+    private static final long serialVersionUID = 894145608741325442L;
     private final String keyword;
     private final Object object;
 
     /**
      * Create a new KeywordVariables.
+     * 
      * @param keyword String
-     * @param object value
+     * @param object  value
      */
     public KeywordVariables(final String keyword, final Object object) {
         if (keyword == null) {
@@ -43,8 +44,7 @@ public class KeywordVariables implements Variables {
 
     @Override
     public void declareVariable(final String variable, final Object value) {
-        throw new UnsupportedOperationException(
-            "Cannot declare new keyword variables.");
+        throw new UnsupportedOperationException("Cannot declare new keyword variables.");
     }
 
     @Override
@@ -59,7 +59,6 @@ public class KeywordVariables implements Variables {
 
     @Override
     public void undeclareVariable(final String variable) {
-        throw new UnsupportedOperationException(
-            "Cannot undeclare keyword variables.");
+        throw new UnsupportedOperationException("Cannot undeclare keyword variables.");
     }
 }

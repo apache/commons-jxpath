@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.util;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -31,13 +32,13 @@ public class ValueUtilsTest {
     @Test
     public void testGetValueFromArray() {
         final Object data = new Object();
-        assertSame(data, ValueUtils.getValue(new Object[] {data}, 0));
+        assertSame(data, ValueUtils.getValue(new Object[] { data }, 0));
     }
 
     @Test
     public void testGetValueFromArrayNegativeIndex() {
         final Object data = new Object();
-        assertNull(ValueUtils.getValue(new Object[] {data}, -1));
+        assertNull(ValueUtils.getValue(new Object[] { data }, -1));
     }
 
     @Test
@@ -80,8 +81,7 @@ public class ValueUtilsTest {
     }
 
     /*
-     * This test would break without the patch and an NoSuchElementException being
-     * thrown instead.
+     * This test would break without the patch and an NoSuchElementException being thrown instead.
      */
     @Test
     public void testGetValueFromSetTooSmall() {

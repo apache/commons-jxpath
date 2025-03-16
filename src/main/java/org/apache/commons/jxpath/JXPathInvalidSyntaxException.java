@@ -14,17 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
  * Thrown when JXPath cannot parse a supplied XPath.
  */
-
 public class JXPathInvalidSyntaxException extends JXPathException {
+
     private static final long serialVersionUID = 504555366032561816L;
 
     /**
      * Create a new JXPathInvalidSyntaxException.
+     * 
      * @param message relevant message
      */
     public JXPathInvalidSyntaxException(final String message) {

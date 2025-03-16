@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.beans;
 
 import org.apache.commons.jxpath.AbstractFactory;
@@ -31,13 +32,7 @@ public class TestBeanFactory extends AbstractFactory {
      * Return <strong>false</strong> if this factory cannot create the requested object.
      */
     @Override
-    public boolean createObject(
-        final JXPathContext context,
-        final Pointer pointer,
-        final Object parent,
-        final String name,
-        final int index)
-    {
+    public boolean createObject(final JXPathContext context, final Pointer pointer, final Object parent, final String name, final int index) {
         switch (name) {
         case "nestedBean":
             ((TestBean) parent).setNestedBean(new NestedTestBean("newName"));
@@ -52,7 +47,7 @@ public class TestBeanFactory extends AbstractFactory {
         }
         case "integers":
             // This will implicitly expand the collection
-             ((TestBean) parent).setIntegers(index, 0);
+            ((TestBean) parent).setIntegers(index, 0);
             return true;
         default:
             break;

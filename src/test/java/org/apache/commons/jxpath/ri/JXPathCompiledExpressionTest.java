@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,7 +48,6 @@ import org.junit.jupiter.api.Test;
 /**
  * Test compiler.
  */
-
 public class JXPathCompiledExpressionTest extends AbstractJXPathTest {
 
     private void assertXPathExpression(final String xpath, final Class expectedClass) {
@@ -55,13 +55,11 @@ public class JXPathCompiledExpressionTest extends AbstractJXPathTest {
     }
 
     /**
-     * Compiles the xpath into an Expression, checks the expression
-     * class, converts the expression to string and checks that the string
-     * matches the expected one.
+     * Compiles the xpath into an Expression, checks the expression class, converts the expression to string and checks that the string matches the expected
+     * one.
      */
     private void assertXPathExpression(final String xpath, final Class expectedClass, final String expected) {
         final JXPathCompiledExpression expression = (JXPathCompiledExpression) JXPathContext.compile(xpath);
-
         assertEquals(expectedClass, expression.getExpression().getClass(), "Expression class for " + xpath);
         assertEquals(expected, expression.getExpression().toString(), "Expression toString() for " + xpath);
     }
@@ -291,5 +289,4 @@ public class JXPathCompiledExpressionTest extends AbstractJXPathTest {
         assertXPathExpression("$x", VariableReference.class);
         assertXPathExpression("$x:y", VariableReference.class);
     }
-
 }

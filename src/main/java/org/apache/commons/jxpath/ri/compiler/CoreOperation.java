@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.EvalContext;
 
 /**
- * The common subclass for tree elements representing core operations like "+",
- * "- ", "*" etc.
+ * The common subclass for tree elements representing core operations like "+", "- ", "*" etc.
  */
 public abstract class CoreOperation extends Operation {
 
@@ -43,6 +43,7 @@ public abstract class CoreOperation extends Operation {
 
     /**
      * Create a new CoreOperation.
+     * 
      * @param args Expression[]
      */
     public CoreOperation(final Expression[] args) {
@@ -59,27 +60,30 @@ public abstract class CoreOperation extends Operation {
 
     /**
      * Computes the precedence of the operation.
+     * 
      * @return int precedence
      */
     protected abstract int getPrecedence();
 
     /**
      * Returns the XPath symbol for this operation, e.g. "+", "div", etc.
+     * 
      * @return String symbol
      */
     public abstract String getSymbol();
 
     /**
-     * Returns true if the operation is not sensitive to the order of arguments,
-     * e.g. "=", "and" etc, and false if it is, e.g. "&lt;=", "div".
+     * Returns true if the operation is not sensitive to the order of arguments, e.g. "=", "and" etc, and false if it is, e.g. "&lt;=", "div".
+     * 
      * @return boolean
      */
     protected abstract boolean isSymmetric();
 
     /**
      * Wrap an expression in parens if necessary.
+     * 
      * @param expression other Expression
-     * @param left whether {@code expression} is left of this one.
+     * @param left       whether {@code expression} is left of this one.
      * @return String
      */
     private String parenthesize(final Expression expression, final boolean left) {
@@ -88,7 +92,6 @@ public abstract class CoreOperation extends Operation {
             return s;
         }
         final int compared = getPrecedence() - ((CoreOperation) expression).getPrecedence();
-
         if (compared < 0) {
             return s;
         }

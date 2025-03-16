@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.Pointer;
@@ -21,26 +22,25 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * A single-set EvalContext that provides access to the current node of
- * the parent context and nothing else.  It does not pass the iteration
- * on to the parent context.
+ * A single-set EvalContext that provides access to the current node of the parent context and nothing else. It does not pass the iteration on to the parent
+ * context.
  */
 public class InitialContext extends EvalContext {
+
     private boolean started = false;
     private boolean collection;
     private final NodePointer nodePointer;
 
     /**
      * Create a new InitialContext.
+     * 
      * @param parentContext parent context
      */
     public InitialContext(final EvalContext parentContext) {
         super(parentContext);
-        nodePointer =
-            (NodePointer) parentContext.getCurrentNodePointer().clone();
+        nodePointer = (NodePointer) parentContext.getCurrentNodePointer().clone();
         if (nodePointer != null) {
-            collection =
-                nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION;
+            collection = nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION;
         }
     }
 

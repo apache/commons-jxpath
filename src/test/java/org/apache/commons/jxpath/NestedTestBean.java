@@ -14,17 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
  * A general purpose JavaBean for JUnit tests for the "jxpath" component.
  */
 public class NestedTestBean {
+
     private String name = "Name 0";
     private int integer = 1;
-
-    private String[] strings =
-        { "String 1", "String 2", "String 3" };
+    private String[] strings = { "String 1", "String 2", "String 3" };
 
     public NestedTestBean() {
     }

@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * XPath parse tree. TreeCompiler is the class responsible for the construction of a parse tree out of individual elements.
  */
+
 package org.apache.commons.jxpath.ri.compiler;

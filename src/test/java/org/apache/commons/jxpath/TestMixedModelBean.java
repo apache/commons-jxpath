@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 import java.util.ArrayList;
@@ -30,14 +31,13 @@ import org.w3c.dom.Element;
  * Mixed model test bean: Java, collections, map, DOM, Container.
  */
 public class TestMixedModelBean {
+
     private final String string;
     private final TestBean bean;
     private final Container container;
     private final Document document;
     private final Element element;
-
     private final Map map;
-
     private final List list;
     private int[][] matrix;
 
@@ -46,11 +46,9 @@ public class TestMixedModelBean {
         bean = new TestBean();
         map = new HashMap();
         list = new ArrayList();
-
         container = new DocumentContainer(getClass().getResource("Vendor.xml"));
         document = (Document) container.getValue();
         element = document.getDocumentElement();
-
         map.put("string", string);
         map.put("bean", bean);
         map.put("map", map);
@@ -58,7 +56,6 @@ public class TestMixedModelBean {
         map.put("document", document);
         map.put("element", element);
         map.put("container", container);
-
         list.add(string);
         list.add(bean);
         list.add(map);
@@ -66,7 +63,6 @@ public class TestMixedModelBean {
         list.add(document);
         list.add(element);
         list.add(container);
-
         matrix = new int[1][];
         matrix[0] = new int[1];
         matrix[0][0] = 3;

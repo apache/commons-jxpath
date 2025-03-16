@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dom;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -32,76 +33,43 @@ import org.w3c.dom.NodeList;
 /**
  * Tests JXPath with DOM
  */
-
 public class DOMModelTest extends AbstractXMLModelTest {
 
-    private void appendXMLSignature(
-        final StringBuilder buffer,
-        final NodeList children,
-        final boolean elements,
-        final boolean attributes,
-        final boolean text,
-        final boolean pi)
-    {
+    private void appendXMLSignature(final StringBuilder buffer, final NodeList children, final boolean elements, final boolean attributes, final boolean text,
+            final boolean pi) {
         for (int i = 0; i < children.getLength(); i++) {
-            appendXMLSignature(
-                buffer,
-                children.item(i),
-                elements,
-                attributes,
-                text,
-                pi);
+            appendXMLSignature(buffer, children.item(i), elements, attributes, text, pi);
         }
     }
 
-    private void appendXMLSignature(
-        final StringBuilder buffer,
-        final Object object,
-        final boolean elements,
-        final boolean attributes,
-        final boolean text,
-        final boolean pi)
-    {
+    private void appendXMLSignature(final StringBuilder buffer, final Object object, final boolean elements, final boolean attributes, final boolean text,
+            final boolean pi) {
         final Node node = (Node) object;
         final int type = node.getNodeType();
         switch (type) {
-            case Node.DOCUMENT_NODE :
-                buffer.append("<D>");
-                appendXMLSignature(
-                    buffer,
-                    node.getChildNodes(),
-                    elements,
-                    attributes,
-                    text,
-                    pi);
-                buffer.append("</D");
-                break;
-
-            case Node.ELEMENT_NODE :
-                final String tag = elements ? ((Element) node).getTagName() : "E";
-                buffer.append("<");
-                buffer.append(tag);
-                buffer.append(">");
-                appendXMLSignature(
-                    buffer,
-                    node.getChildNodes(),
-                    elements,
-                    attributes,
-                    text,
-                    pi);
-                buffer.append("</");
-                buffer.append(tag);
-                buffer.append(">");
-                break;
-
-            case Node.TEXT_NODE :
-            case Node.CDATA_SECTION_NODE :
-                if (text) {
-                    String string = node.getNodeValue();
-                    string = string.replace('\n', '=');
-                    buffer.append(string);
-                }
-                break;
+        case Node.DOCUMENT_NODE:
+            buffer.append("<D>");
+            appendXMLSignature(buffer, node.getChildNodes(), elements, attributes, text, pi);
+            buffer.append("</D");
+            break;
+        case Node.ELEMENT_NODE:
+            final String tag = elements ? ((Element) node).getTagName() : "E";
+            buffer.append("<");
+            buffer.append(tag);
+            buffer.append(">");
+            appendXMLSignature(buffer, node.getChildNodes(), elements, attributes, text, pi);
+            buffer.append("</");
+            buffer.append(tag);
+            buffer.append(">");
+            break;
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+            if (text) {
+                String string = node.getNodeValue();
+                string = string.replace('\n', '=');
+                buffer.append(string);
+            }
+            break;
         }
     }
 
@@ -116,13 +84,7 @@ public class DOMModelTest extends AbstractXMLModelTest {
     }
 
     @Override
-    protected String getXMLSignature(
-        final Object node,
-        final boolean elements,
-        final boolean attributes,
-        final boolean text,
-        final boolean pi)
-    {
+    protected String getXMLSignature(final Object node, final boolean elements, final boolean attributes, final boolean text, final boolean pi) {
         final StringBuilder buffer = new StringBuilder();
         appendXMLSignature(buffer, node, elements, attributes, text, pi);
         return buffer.toString();

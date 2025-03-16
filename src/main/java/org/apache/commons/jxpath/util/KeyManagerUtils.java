@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.util;
 
 import org.apache.commons.jxpath.BasicNodeSet;
@@ -26,18 +27,21 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
  * Utility class.
+ * 
  * @since JXPath 1.3
  */
 public class KeyManagerUtils {
+
     /**
      * Adapt KeyManager to implement ExtendedKeyManager.
      */
-    private static final class SingleNodeExtendedKeyManager implements
-            ExtendedKeyManager {
+    private static final class SingleNodeExtendedKeyManager implements ExtendedKeyManager {
+
         private final KeyManager delegate;
 
         /**
          * Create a new SingleNodeExtendedKeyManager.
+         * 
          * @param delegate KeyManager to wrap
          */
         public SingleNodeExtendedKeyManager(final KeyManager delegate) {
@@ -45,8 +49,7 @@ public class KeyManagerUtils {
         }
 
         @Override
-        public NodeSet getNodeSetByKey(final JXPathContext context, final String key,
-                final Object value) {
+        public NodeSet getNodeSetByKey(final JXPathContext context, final String key, final Object value) {
             final Pointer pointer = delegate.getPointerByKey(context, key, InfoSetUtil.stringValue(value));
             final BasicNodeSet result = new BasicNodeSet();
             result.add(pointer);
@@ -54,21 +57,18 @@ public class KeyManagerUtils {
         }
 
         @Override
-        public Pointer getPointerByKey(final JXPathContext context, final String keyName,
-                final String keyValue) {
+        public Pointer getPointerByKey(final JXPathContext context, final String keyName, final String keyValue) {
             return delegate.getPointerByKey(context, keyName, keyValue);
         }
     }
 
     /**
      * Gets an ExtendedKeyManager from the specified KeyManager.
+     * 
      * @param keyManager to adapt, if necessary
-     * @return {@code keyManager} if it implements ExtendedKeyManager
-     *         or a basic single-result ExtendedKeyManager that delegates to
-     *         {@code keyManager}.
+     * @return {@code keyManager} if it implements ExtendedKeyManager or a basic single-result ExtendedKeyManager that delegates to {@code keyManager}.
      */
     public static ExtendedKeyManager getExtendedKeyManager(final KeyManager keyManager) {
-        return keyManager instanceof ExtendedKeyManager ? (ExtendedKeyManager) keyManager
-                : new SingleNodeExtendedKeyManager(keyManager);
+        return keyManager instanceof ExtendedKeyManager ? (ExtendedKeyManager) keyManager : new SingleNodeExtendedKeyManager(keyManager);
     }
 }

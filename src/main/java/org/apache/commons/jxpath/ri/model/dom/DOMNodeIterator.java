@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dom;
 
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
@@ -25,6 +26,7 @@ import org.w3c.dom.Node;
  * An iterator of children of a DOM Node.
  */
 public class DOMNodeIterator implements NodeIterator {
+
     private final NodePointer parent;
     private final NodeTest nodeTest;
     private final Node node;
@@ -34,16 +36,13 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Create a new DOMNodeIterator.
-     * @param parent parent pointer
-     * @param nodeTest test
-     * @param reverse whether to iterate in reverse
+     * 
+     * @param parent    parent pointer
+     * @param nodeTest  test
+     * @param reverse   whether to iterate in reverse
      * @param startWith starting pointer
      */
-    public DOMNodeIterator(
-        final NodePointer parent,
-        final NodeTest nodeTest,
-        final boolean reverse,
-        final NodePointer startWith) {
+    public DOMNodeIterator(final NodePointer parent, final NodeTest nodeTest, final boolean reverse, final NodePointer startWith) {
         this.parent = parent;
         this.node = (Node) parent.getNode();
         if (startWith != null) {
@@ -68,6 +67,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Sets the next position.
+     * 
      * @return whether valid
      */
     private boolean next() {
@@ -75,19 +75,16 @@ public class DOMNodeIterator implements NodeIterator {
         if (!reverse) {
             if (position == 1 && child == null) {
                 child = node.getFirstChild();
-            }
-            else {
+            } else {
                 child = child.getNextSibling();
             }
             while (child != null && !testChild()) {
                 child = child.getNextSibling();
             }
-        }
-        else {
+        } else {
             if (position == 1 && child == null) {
                 child = node.getLastChild();
-            }
-            else {
+            } else {
                 child = child.getPreviousSibling();
             }
             while (child != null && !testChild()) {
@@ -99,6 +96,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Sets the previous position.
+     * 
      * @return whether valid
      */
     private boolean previous() {
@@ -106,18 +104,15 @@ public class DOMNodeIterator implements NodeIterator {
         if (!reverse) {
             if (position == 0) {
                 child = null;
-            }
-            else if (child == null) {
+            } else if (child == null) {
                 child = node.getLastChild();
-            }
-            else {
+            } else {
                 child = child.getPreviousSibling();
             }
             while (child != null && !testChild()) {
                 child = child.getPreviousSibling();
             }
-        }
-        else {
+        } else {
             child = child.getNextSibling();
             while (child != null && !testChild()) {
                 child = child.getNextSibling();
@@ -143,6 +138,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Test child.
+     * 
      * @return result of the test
      */
     private boolean testChild() {

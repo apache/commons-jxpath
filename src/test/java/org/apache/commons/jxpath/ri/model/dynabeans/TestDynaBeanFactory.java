@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
 import org.apache.commons.beanutils.DynaBean;
@@ -30,18 +31,10 @@ public class TestDynaBeanFactory extends AbstractFactory {
     /**
      */
     @Override
-    public boolean createObject(
-        final JXPathContext context,
-        final Pointer pointer,
-        final Object parent,
-        final String name,
-        final int index)
-    {
+    public boolean createObject(final JXPathContext context, final Pointer pointer, final Object parent, final String name, final int index) {
         switch (name) {
         case "nestedBean":
-            ((DynaBean) parent).set(
-                "nestedBean",
-                new NestedTestBean("newName"));
+            ((DynaBean) parent).set("nestedBean", new NestedTestBean("newName"));
             return true;
         case "beans": {
             final DynaBean bean = (DynaBean) parent;

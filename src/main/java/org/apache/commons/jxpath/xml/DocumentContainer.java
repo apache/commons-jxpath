@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.xml;
 
 import java.io.IOException;
@@ -26,37 +27,27 @@ import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
 
 /**
- * An XML document container reads and parses XML only when it is
- * accessed.  JXPath traverses Containers transparently -
- * you use the same paths to access objects in containers as you
- * do to access those objects directly.  You can create
- * XMLDocumentContainers for various XML documents that may or
- * may not be accessed by XPaths.  If they are, they will be automatically
- * read, parsed and traversed. If they are not - they won't be
- * read at all.
+ * An XML document container reads and parses XML only when it is accessed. JXPath traverses Containers transparently - you use the same paths to access objects
+ * in containers as you do to access those objects directly. You can create XMLDocumentContainers for various XML documents that may or may not be accessed by
+ * XPaths. If they are, they will be automatically read, parsed and traversed. If they are not - they won't be read at all.
  */
 public class DocumentContainer extends XMLParser2 implements Container {
 
     /** DOM constant */
     public static final String MODEL_DOM = "DOM";
-
     /** JDOM constant */
     public static final String MODEL_JDOM = "JDOM";
-
     private static final long serialVersionUID = -8713290334113427066L;
-
     private static HashMap parserClasses = new HashMap();
     static {
-        parserClasses.put(MODEL_DOM,
-                          "org.apache.commons.jxpath.xml.DOMParser");
-        parserClasses.put(MODEL_JDOM,
-                          "org.apache.commons.jxpath.xml.JDOMParser");
+        parserClasses.put(MODEL_DOM, "org.apache.commons.jxpath.xml.DOMParser");
+        parserClasses.put(MODEL_JDOM, "org.apache.commons.jxpath.xml.JDOMParser");
     }
-
     private static HashMap parsers = new HashMap();
 
     /**
      * Maps a model type to a parser.
+     * 
      * @param model input model type
      * @return XMLParser
      */
@@ -69,25 +60,26 @@ public class DocumentContainer extends XMLParser2 implements Container {
             try {
                 final Class clazz = ClassLoaderUtil.getClass(className, true);
                 return (XMLParser) clazz.getConstructor().newInstance();
-            }
-            catch (final Exception ex) {
+            } catch (final Exception ex) {
                 throw new JXPathException("Cannot allocate XMLParser: " + className, ex);
             }
         });
     }
+
     /**
-     * Add a class of a custom XML parser.
-     * Parsers for the models "DOM" and "JDOM" are pre-registered.
-     * @param model model name
+     * Add a class of a custom XML parser. Parsers for the models "DOM" and "JDOM" are pre-registered.
+     * 
+     * @param model           model name
      * @param parserClassName parser class name
      */
     public static void registerXMLParser(final String model, final String parserClassName) {
         parserClasses.put(model, parserClassName);
     }
+
     /**
-     * Add an XML parser.  Parsers for the models "DOM" and "JDOM" are
-     * pre-registered.
-     * @param model model name
+     * Add an XML parser. Parsers for the models "DOM" and "JDOM" are pre-registered.
+     * 
+     * @param model  model name
      * @param parser parser
      */
     public static void registerXMLParser(final String model, final XMLParser parser) {
@@ -95,17 +87,13 @@ public class DocumentContainer extends XMLParser2 implements Container {
     }
 
     private Object document;
-
     private final URL xmlURL;
-
     private final String model;
 
     /**
      * Use this constructor if the desired model is DOM.
      *
-     * @param xmlURL is a URL for an XML file.
-     * Use getClass().getResource(resourceName) to load XML from a
-     * resource file.
+     * @param xmlURL is a URL for an XML file. Use getClass().getResource(resourceName) to load XML from a resource file.
      */
     public DocumentContainer(final URL xmlURL) {
         this(xmlURL, MODEL_DOM);
@@ -113,11 +101,10 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Constructs a new DocumentContainer.
-     * @param xmlURL is a URL for an XML file. Use getClass().getResource
-     *               (resourceName) to load XML from a resource file.
+     * 
+     * @param xmlURL is a URL for an XML file. Use getClass().getResource (resourceName) to load XML from a resource file.
      *
-     * @param model is one of the MODEL_* constants defined in this class. It
-     *              determines which parser should be used to load the XML.
+     * @param model  is one of the MODEL_* constants defined in this class. It determines which parser should be used to load the XML.
      */
     public DocumentContainer(final URL xmlURL, final String model) {
         this.xmlURL = xmlURL;
@@ -129,6 +116,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Reads XML, caches it internally and returns the Document.
+     * 
      * @return Object
      */
     @Override
@@ -141,17 +129,13 @@ public class DocumentContainer extends XMLParser2 implements Container {
                         stream = xmlURL.openStream();
                     }
                     document = parseXML(stream);
-                }
-                finally {
+                } finally {
                     if (stream != null) {
                         stream.close();
                     }
                 }
-            }
-            catch (final IOException ex) {
-                throw new JXPathException(
-                    "Cannot read XML from: " + xmlURL.toString(),
-                    ex);
+            } catch (final IOException ex) {
+                throw new JXPathException("Cannot read XML from: " + xmlURL.toString(), ex);
             }
         }
         return document;
@@ -159,6 +143,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Parses XML using the parser for the specified model.
+     * 
      * @param stream InputStream
      * @return Object
      */
@@ -169,8 +154,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
             final XMLParser2 parser2 = (XMLParser2) parser;
             parser2.setValidating(isValidating());
             parser2.setNamespaceAware(isNamespaceAware());
-            parser2.setIgnoringElementContentWhitespace(
-                    isIgnoringElementContentWhitespace());
+            parser2.setIgnoringElementContentWhitespace(isIgnoringElementContentWhitespace());
             parser2.setExpandEntityReferences(isExpandEntityReferences());
             parser2.setIgnoringComments(isIgnoringComments());
             parser2.setCoalescing(isCoalescing());
@@ -180,6 +164,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Throws an UnsupportedOperationException.
+     * 
      * @param value value (not) to set
      */
     @Override

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
@@ -24,15 +25,15 @@ import javax.servlet.jsp.PageContext;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
- * Implementation of the {@link DynamicPropertyHandler} interface that provides
- * access to attributes of a {@link PageContext} in all scopes.
+ * Implementation of the {@link DynamicPropertyHandler} interface that provides access to attributes of a {@link PageContext} in all scopes.
  */
 public class PageContextHandler implements DynamicPropertyHandler {
 
     /**
      * Returns {@code pageContext.findAttribute(property)}.
+     * 
      * @param pageContext to search
-     * @param property name
+     * @param property    name
      * @return Object value
      */
     @Override
@@ -43,27 +44,19 @@ public class PageContextHandler implements DynamicPropertyHandler {
     @Override
     public String[] getPropertyNames(final Object pageContext) {
         final HashSet list = new HashSet();
-        Enumeration e =
-            ((PageContext) pageContext).getAttributeNamesInScope(
-                PageContext.PAGE_SCOPE);
+        Enumeration e = ((PageContext) pageContext).getAttributeNamesInScope(PageContext.PAGE_SCOPE);
         while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        e =
-            ((PageContext) pageContext).getAttributeNamesInScope(
-                PageContext.REQUEST_SCOPE);
+        e = ((PageContext) pageContext).getAttributeNamesInScope(PageContext.REQUEST_SCOPE);
         while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        e =
-            ((PageContext) pageContext).getAttributeNamesInScope(
-                PageContext.SESSION_SCOPE);
+        e = ((PageContext) pageContext).getAttributeNamesInScope(PageContext.SESSION_SCOPE);
         while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
-        e =
-            ((PageContext) pageContext).getAttributeNamesInScope(
-                PageContext.APPLICATION_SCOPE);
+        e = ((PageContext) pageContext).getAttributeNamesInScope(PageContext.APPLICATION_SCOPE);
         while (e.hasMoreElements()) {
             list.add(e.nextElement());
         }
@@ -72,9 +65,6 @@ public class PageContextHandler implements DynamicPropertyHandler {
 
     @Override
     public void setProperty(final Object pageContext, final String property, final Object value) {
-        ((PageContext) pageContext).setAttribute(
-            property,
-            value,
-            PageContext.PAGE_SCOPE);
+        ((PageContext) pageContext).setAttribute(property, value, PageContext.PAGE_SCOPE);
     }
 }

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.axes;
 
 import org.apache.commons.jxpath.AbstractJXPathTest;
@@ -25,18 +26,17 @@ import org.w3c.dom.Document;
  * Test bean for mixed model JUnit tests.
  */
 public class TestBeanWithNode extends TestBean {
+
     public static TestBeanWithNode createTestBeanWithDOM() {
-        final DocumentContainer docCtr =
-            new DocumentContainer(
-                AbstractJXPathTest.class.getResource("Vendor.xml"));
+        final DocumentContainer docCtr = new DocumentContainer(AbstractJXPathTest.class.getResource("Vendor.xml"));
         final Document doc = (Document) docCtr.getValue();
         final TestBeanWithNode tbwdom = new TestBeanWithNode();
         tbwdom.setVendor(doc.getDocumentElement());
         tbwdom.setObject(docCtr);
         return tbwdom;
     }
-    private Object node;
 
+    private Object node;
     private Object object;
 
     @Override
@@ -59,5 +59,4 @@ public class TestBeanWithNode extends TestBean {
     public void setVendor(final Object node) {
         this.node = node;
     }
-
 }

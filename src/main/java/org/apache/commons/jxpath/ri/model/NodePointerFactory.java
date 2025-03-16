@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath.ri.model;
 
 import java.util.Locale;
@@ -21,9 +22,8 @@ import java.util.Locale;
 import org.apache.commons.jxpath.ri.QName;
 
 /**
- * Creates NodePointers for objects of a certain type.
- * NodePointerFactories are ordered according to the values returned
- * by the "getOrder" method and always queried in that order.
+ * Creates NodePointers for objects of a certain type. NodePointerFactories are ordered according to the values returned by the "getOrder" method and always
+ * queried in that order.
  */
 public interface NodePointerFactory {
 
@@ -31,30 +31,25 @@ public interface NodePointerFactory {
      * Create a NodePointer for the supplied child object.
      *
      * @param parent parent node
-     * @param name String node name
+     * @param name   String node name
      * @param object child object
-     * @return null if this factory does not recognize objects of the supplied
-     * type.
+     * @return null if this factory does not recognize objects of the supplied type.
      */
-    NodePointer createNodePointer(
-        NodePointer parent,
-        QName name,
-        Object object);
+    NodePointer createNodePointer(NodePointer parent, QName name, Object object);
 
     /**
-     * Create a NodePointer for the supplied object.  The node will represent
-     * the "root" object for a path.
+     * Create a NodePointer for the supplied object. The node will represent the "root" object for a path.
      *
-     * @param name String node name
+     * @param name   String node name
      * @param object child object
      * @param locale Locale
-     * @return  null if this factory does not recognize objects of the supplied
-     * type.
+     * @return null if this factory does not recognize objects of the supplied type.
      */
     NodePointer createNodePointer(QName name, Object object, Locale locale);
 
     /**
      * The factory order number determines its position between other factories.
+     * 
      * @return int order
      */
     int getOrder();

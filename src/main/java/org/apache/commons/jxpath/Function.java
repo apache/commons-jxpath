@@ -14,29 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
- * Extension function interface. Extension functions are grouped into
- * {@link Functions Functions} objects, which are installed on
- * JXPathContexts using the
- * {@link JXPathContext#setFunctions JXPathContext.setFunctions()}
- * call.
+ * Extension function interface. Extension functions are grouped into {@link Functions Functions} objects, which are installed on JXPathContexts using the
+ * {@link JXPathContext#setFunctions JXPathContext.setFunctions()} call.
  * <p>
- * The Function interface can be implemented directly. However,
- * most of the time JXPath's built-in implementations should suffice.
- * See {@link ClassFunctions ClassFunctions} and
- * {@link PackageFunctions PackageFunctions}.
+ * The Function interface can be implemented directly. However, most of the time JXPath's built-in implementations should suffice. See {@link ClassFunctions
+ * ClassFunctions} and {@link PackageFunctions PackageFunctions}.
  */
 public interface Function {
 
     /**
-     * Computes the value of the function. Each implementation of Function
-     * is responsible for conversion of supplied parameters to the required
-     * argument types.
+     * Computes the value of the function. Each implementation of Function is responsible for conversion of supplied parameters to the required argument types.
      *
-     * @param context can be used to acquire the context in which the
-     *    function is being evaluted.
+     * @param context    can be used to acquire the context in which the function is being evaluted.
      * @param parameters function arguments
      * @return Object result
      */

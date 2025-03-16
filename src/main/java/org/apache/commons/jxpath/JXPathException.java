@@ -14,30 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.commons.jxpath;
 
 /**
  * Thrown in various situations by JXPath; may contain a nested exception.
  */
-
 public class JXPathException extends RuntimeException {
-    private static final long serialVersionUID = 4306409701468017766L;
 
+    private static final long serialVersionUID = 4306409701468017766L;
     /** @serial */
     private final Throwable exception;
 
     /**
-     * Create a new {@code JXPathException} with no
-     * detail mesage.
+     * Create a new {@code JXPathException} with no detail mesage.
      */
-
-     public JXPathException() {
-         this.exception = null;
-     }
+    public JXPathException() {
+        this.exception = null;
+    }
 
     /**
-     * Create a new {@code JXPathException} with
-     * the {@code String } specified as an error message.
+     * Create a new {@code JXPathException} with the {@code String } specified as an error message.
      *
      * @param msg The error message for the exception.
      */
@@ -47,11 +44,10 @@ public class JXPathException extends RuntimeException {
     }
 
     /**
-     * Create a new {@code JXPathException} with the
-     * given {@code Exception} base cause and detail message.
+     * Create a new {@code JXPathException} with the given {@code Exception} base cause and detail message.
      *
      * @param msg The detail message.
-     * @param e The exception to be encapsulated in a JXPathException
+     * @param e   The exception to be encapsulated in a JXPathException
      */
     public JXPathException(final String msg, final Throwable e) {
         super(msg);
@@ -59,11 +55,9 @@ public class JXPathException extends RuntimeException {
     }
 
     /**
-     * Create a new {@code JXPathException} with a
-     * given {@code Throwable} base cause of the error.
+     * Create a new {@code JXPathException} with a given {@code Throwable} base cause of the error.
      *
-     * @param e The exception to be encapsulated in a
-     * JXPathException.
+     * @param e The exception to be encapsulated in a JXPathException.
      */
     public JXPathException(final Throwable e) {
         super(e.toString());
@@ -72,6 +66,7 @@ public class JXPathException extends RuntimeException {
 
     /**
      * Same as {@link #getException() getException()}
+     * 
      * @return The encapsulated exception, or null if there is none.
      */
     @Override
@@ -80,8 +75,7 @@ public class JXPathException extends RuntimeException {
     }
 
     /**
-     * Gets the actual exception (if any) that caused this exception to
-     * be raised.
+     * Gets the actual exception (if any) that caused this exception to be raised.
      *
      * @return The encapsulated exception, or null if there is none.
      */
@@ -90,9 +84,8 @@ public class JXPathException extends RuntimeException {
     }
 
     /**
-     * Gets the message (if any) for this error . If there is no
-     * message for the exception and there is an encapsulated
-     * exception then the message of that exception will be returned.
+     * Gets the message (if any) for this error . If there is no message for the exception and there is an encapsulated exception then the message of that
+     * exception will be returned.
      *
      * @return The error message.
      */
@@ -110,5 +103,4 @@ public class JXPathException extends RuntimeException {
         buf.append(eMsg == null ? exception.getClass().getName() : eMsg);
         return buf.toString();
     }
-
 }
