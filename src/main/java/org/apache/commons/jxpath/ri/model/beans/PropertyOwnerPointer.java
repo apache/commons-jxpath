@@ -144,14 +144,12 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     @Override
     public void remove() {
         this.value = null;
-        if (parent != null) {
-            parent.remove();
-        }
-        else {
+        if (parent == null) {
             throw new UnsupportedOperationException(
                 "Cannot remove an object that is not "
                     + "some other object's property or a collection element");
         }
+        parent.remove();
     }
 
     @Override
@@ -170,23 +168,19 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     @Override
     public void setValue(final Object value) {
         this.value = value;
-        if (parent != null) {
-            if (parent.isContainer()) {
-                parent.setValue(value);
-            }
-            else {
-                if (index == WHOLE_COLLECTION) {
-                    throw new UnsupportedOperationException(
-                        "Cannot setValue of an object that is not "
-                            + "some other object's property");
-                }
-                throw new JXPathInvalidAccessException(
-                    "The specified collection element does not exist: " + this);
-            }
-        }
-        else {
+        if (parent == null) {
             throw new UnsupportedOperationException(
                 "Cannot replace the root object");
         }
+        if (!parent.isContainer()) {
+            if (index == WHOLE_COLLECTION) {
+                throw new UnsupportedOperationException(
+                    "Cannot setValue of an object that is not "
+                        + "some other object's property");
+            }
+            throw new JXPathInvalidAccessException(
+                "The specified collection element does not exist: " + this);
+        }
+        parent.setValue(value);
     }
 }
