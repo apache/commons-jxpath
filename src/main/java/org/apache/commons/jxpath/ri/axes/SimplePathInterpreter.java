@@ -557,7 +557,7 @@ public class SimplePathInterpreter {
                 if (quality == PERFECT_MATCH) {
                     return pointer;
                 }
-                else if (quality > bestQuality) {
+                if (quality > bestQuality) {
                     bestQuality = quality;
                     bestMatch = (NodePointer) pointer.clone();
                 }
