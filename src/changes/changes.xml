@@ -109,6 +109,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Use generics internally.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">NodeSet.getPointers() is now typed with generics.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">ServletContextHandler.collectPropertyNames(HashSet, Object) is now typed with generics.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Deprecate ClassLoaderUtil.ClassLoaderUtil().</action>
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).

@@ -151,4 +151,14 @@ public class ClassLoaderUtil {
         }
         return className;
     }
+
+    /**
+     * Constructs a new instance.
+     *
+     * @deprecated Constructor will be private in the next major version.
+     */
+    @Deprecated
+    public ClassLoaderUtil() {
+        // empty
+    }
 }
