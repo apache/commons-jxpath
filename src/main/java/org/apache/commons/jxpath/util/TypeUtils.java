@@ -90,4 +90,14 @@ public class TypeUtils {
     public static Class wrapPrimitive(final Class p) {
         return p.isPrimitive() ? (Class) PRIMITIVE_TYPE_MAP.get(p) : p;
     }
+
+    /**
+     * Constructs a new instance.
+     *
+     * @deprecated Will be private in the next major version.
+     */
+    @Deprecated
+    public TypeUtils() {
+        // empty
+    }
 }
