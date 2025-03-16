@@ -37,7 +37,7 @@ public interface NodeSet {
      * 
      * @return List
      */
-    List getPointers();
+    List<Pointer> getPointers();
 
     /**
      * Returns a list of values of all contained pointers.

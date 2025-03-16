@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class BasicNodeSet implements NodeSet {
 
-    private final List pointers = new ArrayList();
+    private final List<Pointer> pointers = new ArrayList<>();
     private List readOnlyPointers;
     private List nodes;
     private List values;
@@ -65,7 +65,7 @@ public class BasicNodeSet implements NodeSet {
     @Override
     public synchronized List getNodes() {
         if (nodes == null) {
-            nodes = new ArrayList();
+            nodes = new ArrayList<>();
             for (int i = 0; i < pointers.size(); i++) {
                 final Pointer pointer = (Pointer) pointers.get(i);
                 nodes.add(pointer.getNode());
@@ -86,7 +86,7 @@ public class BasicNodeSet implements NodeSet {
     @Override
     public synchronized List getValues() {
         if (values == null) {
-            values = new ArrayList();
+            values = new ArrayList<>();
             for (int i = 0; i < pointers.size(); i++) {
                 final Pointer pointer = (Pointer) pointers.get(i);
                 values.add(pointer.getValue());
