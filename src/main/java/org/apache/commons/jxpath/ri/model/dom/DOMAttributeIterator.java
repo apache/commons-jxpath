@@ -36,7 +36,7 @@ public class DOMAttributeIterator implements NodeIterator {
 
     private final NodePointer parent;
     private final QName name;
-    private final List attributes;
+    private final List<Attr> attributes;
     private int position = 0;
 
     /**
@@ -48,7 +48,7 @@ public class DOMAttributeIterator implements NodeIterator {
     public DOMAttributeIterator(final NodePointer parent, final QName name) {
         this.parent = parent;
         this.name = name;
-        attributes = new ArrayList();
+        attributes = new ArrayList<>();
         final Node node = (Node) parent.getNode();
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             final String lname = name.getName();
