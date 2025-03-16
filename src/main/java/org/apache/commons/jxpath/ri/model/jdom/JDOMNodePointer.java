@@ -392,7 +392,7 @@ public class JDOMNodePointer extends NodePointer {
                 if (n == node1) {
                     return -1;
                 }
-                else if (n == node2) {
+                if (n == node2) {
                     return 1;
                 }
             }
