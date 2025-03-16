@@ -35,54 +35,11 @@
     <url>http://issues.apache.org/jira/browse/JXPATH</url>
   </issueManagement>
   <inceptionYear>2001</inceptionYear>
-  <developers>
-    <developer>
-      <id>dmitri</id>
-      <name>Dmitri Plotnikov</name>
-      <email>dmitri@apache.org</email>
-      <organization />
-    </developer>
-    <developer>
-      <id>craigmcc</id>
-      <name>Craig McClanahan</name>
-      <email>Craig.McClanahan@eng.sun.com</email>
-      <organization>Sun Microsystems</organization>
-    </developer>
-    <developer>
-      <id>mbenson</id>
-      <name>Matt Benson</name>
-      <email>mbenson@apache.org</email>
-    </developer>
-    <developer>
-      <id>ggregory</id>
-      <name>Gary Gregory</name>
-      <email>ggregory at apache.org</email>
-      <url>https://www.garygregory.com</url>
-      <organization>The Apache Software Foundation</organization>
-      <organizationUrl>https://www.apache.org/</organizationUrl>
-      <roles>
-        <role>PMC Member</role>
-      </roles>
-      <timezone>America/New_York</timezone>
-      <properties>
-        <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
-      </properties>
-    </developer>
-  </developers>
-  <contributors>
-    <contributor>
-      <name>Michele Vivoda</name>
-    </contributor>
-    <contributor>
-      <name>Uwe Barthel</name>
-    </contributor>
-  </contributors>
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/commons-jxpath</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-jxpath</developerConnection>
     <url>https://gitbox.apache.org/repos/asf/commons-jxpath</url>
   </scm>
-
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -338,4 +295,46 @@
     <system>GitHub</system>
     <url>https://github.com/apache/commons-jaxpth/actions</url>
   </ciManagement>
+  <developers>
+    <developer>
+      <id>dmitri</id>
+      <name>Dmitri Plotnikov</name>
+      <email>dmitri@apache.org</email>
+      <organization />
+    </developer>
+    <developer>
+      <id>craigmcc</id>
+      <name>Craig McClanahan</name>
+      <email>Craig.McClanahan@eng.sun.com</email>
+      <organization>Sun Microsystems</organization>
+    </developer>
+    <developer>
+      <id>mbenson</id>
+      <name>Matt Benson</name>
+      <email>mbenson@apache.org</email>
+    </developer>
+    <developer>
+      <id>ggregory</id>
+      <name>Gary Gregory</name>
+      <email>ggregory at apache.org</email>
+      <url>https://www.garygregory.com</url>
+      <organization>The Apache Software Foundation</organization>
+      <organizationUrl>https://www.apache.org/</organizationUrl>
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>America/New_York</timezone>
+      <properties>
+        <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
+      </properties>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Michele Vivoda</name>
+    </contributor>
+    <contributor>
+      <name>Uwe Barthel</name>
+    </contributor>
+  </contributors>
 </project>
