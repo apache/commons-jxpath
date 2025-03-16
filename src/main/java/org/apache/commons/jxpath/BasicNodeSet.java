@@ -20,6 +20,7 @@ package org.apache.commons.jxpath;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A simple implementation of {@link NodeSet} that behaves as a collection of pointers.
@@ -65,12 +66,7 @@ public class BasicNodeSet implements NodeSet {
     @Override
     public synchronized List getNodes() {
         if (nodes == null) {
-            nodes = new ArrayList<>();
-            for (int i = 0; i < pointers.size(); i++) {
-                final Pointer pointer = pointers.get(i);
-                nodes.add(pointer.getNode());
-            }
-            nodes = Collections.unmodifiableList(nodes);
+            nodes = Collections.unmodifiableList(pointers.stream().map(Pointer::getNode).collect(Collectors.toList()));
         }
         return nodes;
     }
@@ -86,12 +82,7 @@ public class BasicNodeSet implements NodeSet {
     @Override
     public synchronized List getValues() {
         if (values == null) {
-            values = new ArrayList<>();
-            for (int i = 0; i < pointers.size(); i++) {
-                final Pointer pointer = pointers.get(i);
-                values.add(pointer.getValue());
-            }
-            values = Collections.unmodifiableList(values);
+            values = Collections.unmodifiableList(pointers.stream().map(Pointer::getValue).collect(Collectors.toList()));
         }
         return values;
     }
