@@ -60,16 +60,14 @@ public class NamespaceContext extends EvalContext {
             if (testName.getPrefix() != null) {
                 return false;
             }
-            if (nodeNameTest.isWildcard()) {
-                iterator =
-                    parentContext.getCurrentNodePointer().namespaceIterator();
-            }
-            else {
+            if (!nodeNameTest.isWildcard()) {
                 currentNodePointer =
                     parentContext.getCurrentNodePointer().namespacePointer(
                             testName.getName());
                 return currentNodePointer != null;
             }
+            iterator =
+                parentContext.getCurrentNodePointer().namespaceIterator();
         }
 
         if (iterator == null) {
