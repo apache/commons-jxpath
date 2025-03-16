@@ -59,7 +59,7 @@ public class JDOMAttributeIterator implements NodeIterator {
                     }
                     if (ns == null) {
                         // TBD: no attributes
-                        attributes = Collections.EMPTY_LIST;
+                        attributes = Collections.emptyList();
                         return;
                     }
                 }
