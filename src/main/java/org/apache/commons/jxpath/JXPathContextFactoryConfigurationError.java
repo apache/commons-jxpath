@@ -23,36 +23,31 @@ package org.apache.commons.jxpath;
  */
 public class JXPathContextFactoryConfigurationError extends Error {
 
-    private static final long serialVersionUID = 1L;
-    /** @serial */
-    private final Exception exception;
+    private static final long serialVersionUID = 2L;
 
     /**
      * Create a new {@code JXPathContextFactoryConfigurationError} with no detail mesage.
      */
     public JXPathContextFactoryConfigurationError() {
-        this.exception = null;
     }
 
     /**
      * Create a new {@code JXPathContextFactoryConfigurationError} with a given {@code Exception} base cause of the error.
      *
-     * @param e The exception to be encapsulated in a JXPathContextFactoryConfigurationError.
+     * @param cause The exception to be encapsulated in a JXPathContextFactoryConfigurationError.
      */
-    public JXPathContextFactoryConfigurationError(final Exception e) {
-        super(e.toString());
-        this.exception = e;
+    public JXPathContextFactoryConfigurationError(final Exception cause) {
+        super(cause);
     }
 
     /**
      * Create a new {@code JXPathContextFactoryConfigurationError} with the given {@code Exception} base cause and detail message.
      *
-     * @param e   The exception to be encapsulated in a JXPathContextFactoryConfigurationError
+     * @param cause   The exception to be encapsulated in a JXPathContextFactoryConfigurationError
      * @param msg The detail message.
      */
-    public JXPathContextFactoryConfigurationError(final Exception e, final String msg) {
-        super(msg);
-        this.exception = e;
+    public JXPathContextFactoryConfigurationError(final Exception cause, final String msg) {
+        super(msg, cause);
     }
 
     /**
@@ -62,7 +57,6 @@ public class JXPathContextFactoryConfigurationError extends Error {
      */
     public JXPathContextFactoryConfigurationError(final String msg) {
         super(msg);
-        this.exception = null;
     }
 
     /**
@@ -71,21 +65,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
      * @return The encapsulated exception, or null if there is none.
      */
     public Exception getException() {
-        return exception;
+        return (Exception) super.getCause();
     }
 
-    /**
-     * Gets the message (if any) for this error . If there is no message for the exception and there is an encapsulated exception then the message of that
-     * exception will be returned.
-     *
-     * @return The error message.
-     */
-    @Override
-    public String getMessage() {
-        final String message = super.getMessage();
-        if (message == null && exception != null) {
-            return exception.getMessage();
-        }
-        return message;
-    }
 }

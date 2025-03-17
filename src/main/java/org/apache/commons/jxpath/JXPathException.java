@@ -22,7 +22,7 @@ package org.apache.commons.jxpath;
  */
 public class JXPathException extends RuntimeException {
 
-    private static final long serialVersionUID = 4306409701468017766L;
+    private static final long serialVersionUID = 2L;
 
     /**
      * Create a new {@code JXPathException} with no detail mesage.
