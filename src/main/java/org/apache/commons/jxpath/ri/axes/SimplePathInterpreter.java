@@ -695,4 +695,14 @@ public class SimplePathInterpreter {
     private static NodePointer valuePointer(final NodePointer pointer) {
         return pointer == null ? null : pointer.getValuePointer();
     }
+    
+    /**
+     * Constructs a new instance.
+     *
+     * @deprecated Will be private in the next major version.
+     */
+    @Deprecated
+    public SimplePathInterpreter() {
+        // empty
+    }
 }

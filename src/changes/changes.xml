@@ -120,6 +120,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Bump JXPathException serialVersionUID from 4306409701468017766L to 2L.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">JXPathContextFactoryConfigurationError now reuses its superclass' Throwable cause.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Bump JXPathContextFactoryConfigurationError serialVersionUID from 1L to 2L.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Deprecate SimplePathInterpreter.SimplePathInterpreter().</action>
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).
