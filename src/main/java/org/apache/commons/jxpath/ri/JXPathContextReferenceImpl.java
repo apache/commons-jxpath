@@ -70,25 +70,27 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     private static NodePointerFactory[] nodeFactoryArray = null;
     // The frequency of the cache cleanup
     private static final int CLEANUP_THRESHOLD = 500;
-    private static final Vector nodeFactories = new Vector();
+    private static final Vector<NodePointerFactory> nodeFactories = new Vector<>();
     static {
         nodeFactories.add(new CollectionPointerFactory());
         nodeFactories.add(new BeanPointerFactory());
         nodeFactories.add(new DynamicPointerFactory());
         nodeFactories.add(new VariablePointerFactory());
         // DOM factory is only registered if DOM support is on the classpath
-        final Object domFactory = allocateConditionally("org.apache.commons.jxpath.ri.model.dom.DOMPointerFactory", "org.w3c.dom.Node");
+        final NodePointerFactory domFactory = (NodePointerFactory) allocateConditionally("org.apache.commons.jxpath.ri.model.dom.DOMPointerFactory",
+                "org.w3c.dom.Node");
         if (domFactory != null) {
             nodeFactories.add(domFactory);
         }
         // JDOM factory is only registered if JDOM is on the classpath
-        final Object jdomFactory = allocateConditionally("org.apache.commons.jxpath.ri.model.jdom.JDOMPointerFactory", "org.jdom.Document");
+        final NodePointerFactory jdomFactory = (NodePointerFactory) allocateConditionally("org.apache.commons.jxpath.ri.model.jdom.JDOMPointerFactory",
+                "org.jdom.Document");
         if (jdomFactory != null) {
             nodeFactories.add(jdomFactory);
         }
         // DynaBean factory is only registered if BeanUtils are on the classpath
-        final Object dynaBeanFactory = allocateConditionally("org.apache.commons.jxpath.ri.model.dynabeans." + "DynaBeanPointerFactory",
-                "org.apache.commons.beanutils.DynaBean");
+        final NodePointerFactory dynaBeanFactory = (NodePointerFactory) allocateConditionally(
+                "org.apache.commons.jxpath.ri.model.dynabeans." + "DynaBeanPointerFactory", "org.apache.commons.beanutils.DynaBean");
         if (dynaBeanFactory != null) {
             nodeFactories.add(dynaBeanFactory);
         }
@@ -123,7 +125,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             } catch (final ClassNotFoundException ex) {
                 return null;
             }
-            final Class cls = ClassLoaderUtil.getClass(className, true);
+            final Class<NodePointerFactory> cls = ClassLoaderUtil.getClass(className, true);
             return cls.getConstructor().newInstance();
         } catch (final Exception ex) {
             throw new JXPathException("Cannot allocate " + className, ex);
@@ -135,7 +137,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      */
     private static synchronized void createNodeFactoryArray() {
         if (nodeFactoryArray == null) {
-            nodeFactoryArray = (NodePointerFactory[]) nodeFactories.toArray(new NodePointerFactory[nodeFactories.size()]);
+            nodeFactoryArray = nodeFactories.toArray(new NodePointerFactory[nodeFactories.size()]);
             Arrays.sort(nodeFactoryArray, (a, b) -> {
                 final int orderA = a.getOrder();
                 final int orderB = b.getOrder();
@@ -672,18 +674,18 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      */
     public void removeAll(final String xpath, final Expression expr) {
         try {
-            final ArrayList list = new ArrayList();
-            Iterator it = expr.iteratePointers(getEvalContext());
+            final ArrayList<NodePointer> list = new ArrayList<>();
+            Iterator<NodePointer> it = expr.iteratePointers(getEvalContext());
             while (it.hasNext()) {
                 list.add(it.next());
             }
             Collections.sort(list, ReverseComparator.INSTANCE);
             it = list.iterator();
             if (it.hasNext()) {
-                final NodePointer pointer = (NodePointer) it.next();
+                final NodePointer pointer = it.next();
                 pointer.remove();
                 while (it.hasNext()) {
-                    removePath(((NodePointer) it.next()).asPath());
+                    removePath(it.next().asPath());
                 }
             }
         } catch (final Throwable ex) {
