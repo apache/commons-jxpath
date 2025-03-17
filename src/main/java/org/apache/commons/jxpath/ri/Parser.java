@@ -25,12 +25,12 @@ import org.apache.commons.jxpath.ri.parser.TokenMgrError;
 import org.apache.commons.jxpath.ri.parser.XPathParser;
 
 /**
- * XPath parser
+ * XPath parser.
  */
 public class Parser {
 
     private static final XPathParser PARSER = new XPathParser(new StringReader(""));
-
+    
     /**
      * Add escapes to the specified String.
      * 
@@ -82,5 +82,15 @@ public class Parser {
             }
             return expr;
         }
+    }
+
+    /**
+     * Constructs a new instance.
+     *
+     *@deprecated Will be private in the next major version.
+     */
+    @Deprecated
+    public Parser() {
+        // empty
     }
 }
