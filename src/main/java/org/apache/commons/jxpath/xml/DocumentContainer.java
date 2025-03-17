@@ -49,19 +49,19 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Maps a model type to a parser.
-     * 
+     *
      * @param model input model type
      * @return XMLParser
      */
     private static XMLParser getParser(final String model) {
-        return (XMLParser) parsers.computeIfAbsent(model, k -> {
-            final String className = (String) parserClasses.get(model);
+        return parsers.computeIfAbsent(model, k -> {
+            final String className = parserClasses.get(model);
             if (className == null) {
                 throw new JXPathException("Unsupported XML model: " + model);
             }
             try {
                 final Class<XMLParser> clazz = ClassLoaderUtil.getClass(className, true);
-                return (XMLParser) clazz.getConstructor().newInstance();
+                return clazz.getConstructor().newInstance();
             } catch (final Exception ex) {
                 throw new JXPathException("Cannot allocate XMLParser: " + className, ex);
             }
@@ -70,7 +70,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Add a class of a custom XML parser. Parsers for the models "DOM" and "JDOM" are pre-registered.
-     * 
+     *
      * @param model           model name
      * @param parserClassName parser class name
      */
@@ -80,7 +80,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Add an XML parser. Parsers for the models "DOM" and "JDOM" are pre-registered.
-     * 
+     *
      * @param model  model name
      * @param parser parser
      */
@@ -103,7 +103,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Constructs a new DocumentContainer.
-     * 
+     *
      * @param xmlURL is a URL for an XML file. Use getClass().getResource (resourceName) to load XML from a resource file.
      *
      * @param model  is one of the MODEL_* constants defined in this class. It determines which parser should be used to load the XML.
@@ -118,7 +118,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Reads XML, caches it internally and returns the Document.
-     * 
+     *
      * @return Object
      */
     @Override
@@ -145,7 +145,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Parses XML using the parser for the specified model.
-     * 
+     *
      * @param stream InputStream
      * @return Object
      */
@@ -166,7 +166,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /**
      * Throws an UnsupportedOperationException.
-     * 
+     *
      * @param value value (not) to set
      */
     @Override
