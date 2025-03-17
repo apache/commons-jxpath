@@ -33,7 +33,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 public class PredicateContext extends EvalContext {
 
     private final Expression expression;
-    private boolean done = false;
+    private boolean done;
     private Expression nameTestExpression;
     private PropertyPointer dynamicPropertyPointer;
 

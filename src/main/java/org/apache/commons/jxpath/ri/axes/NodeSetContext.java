@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class NodeSetContext extends EvalContext {
 
-    private boolean startedSet = false;
+    private boolean startedSet;
     private final NodeSet nodeSet;
 
     /**

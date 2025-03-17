@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class InitialContext extends EvalContext {
 
-    private boolean started = false;
+    private boolean started;
     private boolean collection;
     private final NodePointer nodePointer;
 

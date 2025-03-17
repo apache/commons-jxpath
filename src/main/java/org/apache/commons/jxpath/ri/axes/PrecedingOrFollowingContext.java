@@ -30,8 +30,8 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class PrecedingOrFollowingContext extends EvalContext {
 
     private final NodeTest nodeTest;
-    private boolean setStarted = false;
-    private Stack stack = null;
+    private boolean setStarted;
+    private Stack stack;
     private NodePointer currentNodePointer;
     private NodePointer currentRootLocation;
     private final boolean reverse;

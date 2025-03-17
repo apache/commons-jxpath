@@ -33,7 +33,7 @@ public class AttributeContext extends EvalContext {
 
     private static final QName WILDCARD = new QName(null, "*");
     private final NodeTest nodeTest;
-    private boolean setStarted = false;
+    private boolean setStarted;
     private NodeIterator iterator;
     private NodePointer currentNodePointer;
 

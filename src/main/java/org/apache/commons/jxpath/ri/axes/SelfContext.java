@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class SelfContext extends EvalContext {
 
     private final NodeTest nodeTest;
-    private boolean startedSet = false;
+    private boolean startedSet;
     private NodePointer nodePointer;
 
     /**

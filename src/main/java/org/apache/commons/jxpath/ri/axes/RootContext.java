@@ -35,7 +35,7 @@ public class RootContext extends EvalContext {
     private final JXPathContextReferenceImpl jxpathContext;
     private final NodePointer pointer;
     private Object[] registers;
-    private int availableRegister = 0;
+    private int availableRegister;
 
     /**
      * Create a new RootContext.

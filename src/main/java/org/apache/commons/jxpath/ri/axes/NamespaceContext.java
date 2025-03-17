@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class NamespaceContext extends EvalContext {
 
     private final NodeTest nodeTest;
-    private boolean setStarted = false;
+    private boolean setStarted;
     private NodeIterator iterator;
     private NodePointer currentNodePointer;
 

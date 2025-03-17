@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class AncestorContext extends EvalContext {
 
     private final NodeTest nodeTest;
-    private boolean setStarted = false;
+    private boolean setStarted;
     private NodePointer currentNodePointer;
     private final boolean includeSelf;
 
