@@ -125,6 +125,13 @@ public abstract class Expression {
     private boolean contextDependent;
 
     /**
+     * Constructs a new instance.
+     */
+    public Expression() {
+        // empty
+    }
+
+    /**
      * Evaluates the expression. If the result is a node set, returns the first element of the node set.
      * 
      * @param context evaluation context

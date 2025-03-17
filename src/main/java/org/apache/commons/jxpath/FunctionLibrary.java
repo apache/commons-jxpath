@@ -33,6 +33,13 @@ public class FunctionLibrary implements Functions {
     private Map<String, Object> byNamespace;
 
     /**
+     * Constructs a new instance.
+     */
+    public FunctionLibrary() {
+        // empty
+    }
+
+    /**
      * Add functions to the library
      *
      * @param functions to add

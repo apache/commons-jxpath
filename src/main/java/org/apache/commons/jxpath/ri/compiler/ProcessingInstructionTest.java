@@ -18,6 +18,7 @@
 package org.apache.commons.jxpath.ri.compiler;
 
 /**
+ * Processing instruction test.
  */
 public class ProcessingInstructionTest extends NodeTest {
 

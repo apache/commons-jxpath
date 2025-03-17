@@ -460,8 +460,10 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * @see #getValuePointer()
+     * Gets this instance by default, subclasses can return a pointer for the immediately contained value.
+     *
      * @return NodePointer is either {@code this} or a pointer for the immediately contained value.
+     * @see #getValuePointer()
      */
     public NodePointer getImmediateValuePointer() {
         return this;
@@ -471,7 +473,7 @@ public abstract class NodePointer implements Pointer {
      * If the pointer represents a collection, the index identifies an element of that collection. The default value of {@code index} is
      * {@code WHOLE_COLLECTION}, which just means that the pointer is not indexed at all. Note: the index on NodePointer starts with 0, not 1.
      * 
-     * @return int
+     * @return the index.
      */
     public int getIndex() {
         return index;
@@ -480,7 +482,7 @@ public abstract class NodePointer implements Pointer {
     /**
      * If the pointer represents a collection (or collection element), returns the length of the collection. Otherwise returns 1 (even if the value is null).
      * 
-     * @return int
+     * @return the length.
      */
     public abstract int getLength();
 
@@ -497,9 +499,9 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Returns the name of this node. Can be null.
+     * Gets the name of this node. Can be null.
      * 
-     * @return QName
+     * @return QName The name of this node. Can be null.
      */
     public abstract QName getName();
 

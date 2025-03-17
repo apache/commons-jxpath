@@ -20,6 +20,7 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.ri.Compiler;
 
 /**
+ * Node type test.
  */
 public class NodeTypeTest extends NodeTest {
 

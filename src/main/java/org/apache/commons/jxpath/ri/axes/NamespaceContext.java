@@ -35,6 +35,8 @@ public class NamespaceContext extends EvalContext {
     private NodePointer currentNodePointer;
 
     /**
+     * Constructs a new instance.
+     *
      * @param parentContext represents the previous step on the path
      * @param nodeTest      is the name of the namespace we are looking for
      */

@@ -20,6 +20,7 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.ri.QName;
 
 /**
+ * Node name test.
  */
 public class NodeNameTest extends NodeTest {
 

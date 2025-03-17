@@ -30,7 +30,11 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class RootContext extends EvalContext {
 
+    /**
+     * Unknown value marker.
+     */
     public static final Object UNKNOWN_VALUE = new Object();
+
     private static final int MAX_REGISTER = 4;
     private final JXPathContextReferenceImpl jxpathContext;
     private final NodePointer pointer;
