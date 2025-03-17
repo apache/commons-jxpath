@@ -33,7 +33,7 @@ public class ExpressionPath extends Path {
 
     private final Expression expression;
     private final Expression[] predicates;
-    private boolean basicKnown = false;
+    private boolean basicKnown;
     private boolean basic;
 
     /**

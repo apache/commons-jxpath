@@ -30,9 +30,9 @@ public class DOMNodeIterator implements NodeIterator {
     private final NodePointer parent;
     private final NodeTest nodeTest;
     private final Node node;
-    private Node child = null;
+    private Node child;
     private final boolean reverse;
-    private int position = 0;
+    private int position;
 
     /**
      * Create a new DOMNodeIterator.

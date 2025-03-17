@@ -27,15 +27,15 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
  */
 public class PropertyIterator implements NodeIterator {
 
-    private boolean empty = false;
+    private boolean empty;
     private final boolean reverse;
     private final String name;
-    private int startIndex = 0;
-    private boolean targetReady = false;
-    private int position = 0;
+    private int startIndex;
+    private boolean targetReady;
+    private int position;
     private final PropertyPointer propertyNodePointer;
     private int startPropertyIndex;
-    private boolean includeStart = false;
+    private boolean includeStart;
 
     /**
      * Create a new PropertyIterator.

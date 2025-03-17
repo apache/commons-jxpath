@@ -34,7 +34,7 @@ public class DOMNamespaceIterator implements NodeIterator {
 
     private final NodePointer parent;
     private final List<Attr> attributes;
-    private int position = 0;
+    private int position;
 
     /**
      * Create a new DOMNamespaceIterator.

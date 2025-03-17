@@ -36,7 +36,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
     private final NodePointer parent;
     private List<Namespace> namespaces;
     private Set<String> prefixes;
-    private int position = 0;
+    private int position;
 
     /**
      * Create a new JDOMNamespaceIterator.

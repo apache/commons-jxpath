@@ -138,7 +138,7 @@ public abstract class NodePointer implements Pointer {
 
     /** Index for this NodePointer */
     protected int index = WHOLE_COLLECTION;
-    private boolean attribute = false;
+    private boolean attribute;
     private NamespaceResolver namespaceResolver;
     private ExceptionHandler exceptionHandler;
     private transient Object rootNode;

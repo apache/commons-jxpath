@@ -121,7 +121,7 @@ public abstract class Expression {
     protected static final Double ONE = Double.valueOf(1);
     /** NaN */
     protected static final Double NOT_A_NUMBER = Double.valueOf(Double.NaN);
-    private boolean contextDependencyKnown = false;
+    private boolean contextDependencyKnown;
     private boolean contextDependent;
 
     /**

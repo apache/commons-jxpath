@@ -47,10 +47,10 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /** Root context */
     protected RootContext rootContext;
     /** Position */
-    protected int position = 0;
-    private boolean startedSetIteration = false;
-    private boolean done = false;
-    private boolean hasPerformedIteratorStep = false;
+    protected int position;
+    private boolean startedSetIteration;
+    private boolean done;
+    private boolean hasPerformedIteratorStep;
     private Iterator<Pointer> pointerIterator;
 
     /**

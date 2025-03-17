@@ -24,12 +24,12 @@ import java.io.InputStream;
  */
 public abstract class XMLParser2 implements XMLParser {
 
-    private boolean validating = false;
+    private boolean validating;
     private boolean namespaceAware = true;
-    private boolean whitespace = false;
+    private boolean whitespace;
     private boolean expandEntityRef = true;
-    private boolean ignoreComments = false;
-    private boolean coalescing = false;
+    private boolean ignoreComments;
+    private boolean coalescing;
 
     
     /**

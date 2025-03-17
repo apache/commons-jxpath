@@ -428,8 +428,8 @@ public abstract class JXPathContext {
     /** Decimal format map */
     protected HashMap<String, DecimalFormatSymbols> decimalFormats;
     private Locale locale;
-    private boolean lenientSet = false;
-    private boolean lenient = false;
+    private boolean lenientSet;
+    private boolean lenient;
 
     /**
      * This constructor should remain protected - it is to be overridden by subclasses, but never explicitly invoked by clients.

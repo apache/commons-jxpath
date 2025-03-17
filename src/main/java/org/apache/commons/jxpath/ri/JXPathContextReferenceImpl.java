@@ -66,8 +66,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     public static final boolean USE_SOFT_CACHE = true;
     private static final Compiler COMPILER = new TreeCompiler();
     private static Map compiled = new HashMap();
-    private static int cleanupCount = 0;
-    private static NodePointerFactory[] nodeFactoryArray = null;
+    private static int cleanupCount;
+    private static NodePointerFactory[] nodeFactoryArray;
     // The frequency of the cache cleanup
     private static final int CLEANUP_THRESHOLD = 500;
     private static final Vector<NodePointerFactory> nodeFactories = new Vector<>();

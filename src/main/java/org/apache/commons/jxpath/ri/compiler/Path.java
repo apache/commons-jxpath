@@ -41,7 +41,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public abstract class Path extends Expression {
 
     private final Step[] steps;
-    private boolean basicKnown = false;
+    private boolean basicKnown;
     private boolean basic;
 
     /**

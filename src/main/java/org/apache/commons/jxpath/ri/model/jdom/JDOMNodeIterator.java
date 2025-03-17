@@ -34,8 +34,8 @@ public class JDOMNodeIterator implements NodeIterator {
     private final NodePointer parent;
     private final NodeTest nodeTest;
     private final boolean reverse;
-    private int position = 0;
-    private int index = 0;
+    private int position;
+    private int index;
     private List children;
     private Object child;
 

@@ -35,7 +35,7 @@ public class JDOMAttributeIterator implements NodeIterator {
 
     private NodePointer parent;
     private List<Attribute> attributes;
-    private int position = 0;
+    private int position;
 
     /**
      * Create a new JDOMAttributeIterator.

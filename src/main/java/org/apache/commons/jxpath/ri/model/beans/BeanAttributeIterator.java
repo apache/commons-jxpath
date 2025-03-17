@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class BeanAttributeIterator extends PropertyIterator {
 
     private final NodePointer parent;
-    private int position = 0;
+    private int position;
     private final boolean includeXmlLang;
 
     /**

@@ -49,7 +49,8 @@ public abstract class JXPathContextFactory {
     /**
      * Temp debug code - this will be removed after we test everything
      */
-    private static boolean debug = false;
+    private static boolean debug;
+
     static {
         try {
             debug = System.getProperty("jxpath.debug") != null;

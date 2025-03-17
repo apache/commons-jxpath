@@ -37,7 +37,7 @@ public class DOMAttributeIterator implements NodeIterator {
     private final NodePointer parent;
     private final QName name;
     private final List<Attr> attributes;
-    private int position = 0;
+    private int position;
 
     /**
      * Create a new DOMAttributeIterator.
