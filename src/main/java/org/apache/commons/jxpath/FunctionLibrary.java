@@ -19,7 +19,6 @@ package org.apache.commons.jxpath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,12 +29,12 @@ import java.util.Set;
  */
 public class FunctionLibrary implements Functions {
 
-    private final List allFunctions = new ArrayList();
-    private Map byNamespace;
+    private final List<Functions> allFunctions = new ArrayList<>();
+    private Map<String, Object> byNamespace;
 
     /**
      * Add functions to the library
-     * 
+     *
      * @param functions to add
      */
     public void addFunctions(final Functions functions) {
@@ -47,23 +46,22 @@ public class FunctionLibrary implements Functions {
 
     /**
      * Prepare the cache.
-     * 
+     *
      * @return cache map keyed by namespace
      */
-    private synchronized Map functionCache() {
+    private synchronized Map<String, Object> functionCache() {
         if (byNamespace == null) {
-            byNamespace = new HashMap();
+            byNamespace = new HashMap<>();
             final int count = allFunctions.size();
             for (int i = 0; i < count; i++) {
-                final Functions funcs = (Functions) allFunctions.get(i);
+                final Functions funcs = allFunctions.get(i);
                 final Set<String> namespaces = funcs.getUsedNamespaces();
-                for (final Iterator<String> it = namespaces.iterator(); it.hasNext();) {
-                    final String ns = it.next();
+                for (final String ns : namespaces) {
                     final Object candidates = byNamespace.get(ns);
                     if (candidates == null) {
                         byNamespace.put(ns, funcs);
                     } else if (candidates instanceof Functions) {
-                        final List lst = new ArrayList();
+                        final List<Object> lst = new ArrayList<>();
                         lst.add(candidates);
                         lst.add(funcs);
                         byNamespace.put(ns, lst);
@@ -77,8 +75,8 @@ public class FunctionLibrary implements Functions {
     }
 
     /**
-     * Returns a Function, if any, for the specified namespace, name and parameter types.
-     * 
+     * Gets a Function, if any, for the specified namespace, name and parameter types.
+     *
      * @param namespace  function namespace
      * @param name       function name
      * @param parameters parameters
@@ -91,10 +89,10 @@ public class FunctionLibrary implements Functions {
             return ((Functions) candidates).getFunction(namespace, name, parameters);
         }
         if (candidates instanceof List) {
-            final List list = (List) candidates;
+            final List<Functions> list = (List<Functions>) candidates;
             final int count = list.size();
             for (int i = 0; i < count; i++) {
-                final Function function = ((Functions) list.get(i)).getFunction(namespace, name, parameters);
+                final Function function = list.get(i).getFunction(namespace, name, parameters);
                 if (function != null) {
                     return function;
                 }
@@ -104,9 +102,9 @@ public class FunctionLibrary implements Functions {
     }
 
     /**
-     * Returns a set containing all namespaces used by the aggregated Functions.
-     * 
-     * @return Set
+     * Gets a set containing all namespaces used by the aggregated Functions.
+     *
+     * @return a set containing all namespaces used by the aggregated Functions.
      */
     @Override
     public Set<String> getUsedNamespaces() {
@@ -114,9 +112,9 @@ public class FunctionLibrary implements Functions {
     }
 
     /**
-     * Remove functions from the library.
-     * 
-     * @param functions to remove
+     * Removes functions from the library.
+     *
+     * @param functions to remove.
      */
     public void removeFunctions(final Functions functions) {
         allFunctions.remove(functions);
