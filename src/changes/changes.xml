@@ -123,6 +123,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Deprecate SimplePathInterpreter.SimplePathInterpreter().</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Deprecate JXPathServletContexts.JXPathServletContexts().</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Deprecate JXPathIntrospector.JXPathIntrospector().</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Deprecate InfoSetUtil.InfoSetUtil().</action>
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).

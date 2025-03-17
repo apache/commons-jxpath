@@ -160,4 +160,14 @@ public class InfoSetUtil {
         }
         return String.valueOf(object);
     }
+
+    /**
+     * Constructs a new instance.
+     *
+     * @deprecated Will be private in the next major version.
+     */
+    @Deprecated
+    public InfoSetUtil() {
+        // empty
+    }
 }
