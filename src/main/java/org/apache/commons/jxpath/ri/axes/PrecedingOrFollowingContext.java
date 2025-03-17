@@ -31,7 +31,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
 
     private final NodeTest nodeTest;
     private boolean setStarted;
-    private Stack stack;
+    private Stack<NodeIterator> stack;
     private NodePointer currentNodePointer;
     private NodePointer currentRootLocation;
     private final boolean reverse;
@@ -64,7 +64,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
         if (!setStarted) {
             setStarted = true;
             if (stack == null) {
-                stack = new Stack();
+                stack = new Stack<>();
             } else {
                 stack.clear();
             }
@@ -88,7 +88,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
             }
             while (!stack.isEmpty()) {
                 if (!reverse) {
-                    final NodeIterator it = (NodeIterator) stack.peek();
+                    final NodeIterator it = stack.peek();
                     if (it.setPosition(it.getPosition() + 1)) {
                         currentNodePointer = it.getNodePointer();
                         if (!currentNodePointer.isLeaf()) {
@@ -104,7 +104,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
                         stack.pop();
                     }
                 } else {
-                    NodeIterator it = (NodeIterator) stack.peek();
+                    NodeIterator it = stack.peek();
                     if (it.setPosition(it.getPosition() + 1)) {
                         currentNodePointer = it.getNodePointer();
                         if (!currentNodePointer.isLeaf()) {
@@ -116,7 +116,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
                     } else {
                         stack.pop();
                         if (!stack.isEmpty()) {
-                            it = (NodeIterator) stack.peek();
+                            it = stack.peek();
                             currentNodePointer = it.getNodePointer();
                             if (currentNodePointer.testNode(nodeTest)) {
                                 super.setPosition(getCurrentPosition() + 1);

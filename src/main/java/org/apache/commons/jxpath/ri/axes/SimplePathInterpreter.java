@@ -290,7 +290,7 @@ public class SimplePathInterpreter {
      * @param currentPredicate int predicate number
      * @return NodePointer
      */
-    private static NodePointer doPredicatesStandard(final EvalContext context, final List parents, final Step[] steps, final int currentStep,
+    private static NodePointer doPredicatesStandard(final EvalContext context, final List<NodePointer> parents, final Step[] steps, final int currentStep,
             final Expression[] predicates, final int currentPredicate) {
         if (parents.isEmpty()) {
             return null;
@@ -299,15 +299,15 @@ public class SimplePathInterpreter {
         // element from the list of results and proceed to the
         // remaining steps with that element.
         if (currentPredicate == predicates.length) {
-            final NodePointer pointer = (NodePointer) parents.get(0);
+            final NodePointer pointer = parents.get(0);
             return doStep(context, pointer, steps, currentStep + 1);
         }
         final Expression predicate = predicates[currentPredicate];
         if (predicate instanceof NameAttributeTest) {
             final String key = keyFromPredicate(context, predicate);
-            final List newList = new ArrayList();
+            final List<NodePointer> newList = new ArrayList<>();
             for (int i = 0; i < parents.size(); i++) {
-                final NodePointer pointer = (NodePointer) parents.get(i);
+                final NodePointer pointer = parents.get(i);
                 if (isNameAttributeEqual(pointer, key)) {
                     newList.add(pointer);
                 }
@@ -324,7 +324,7 @@ public class SimplePathInterpreter {
         if (index < 0 || index >= parents.size()) {
             return null;
         }
-        final NodePointer ptr = (NodePointer) parents.get(index);
+        final NodePointer ptr = parents.get(index);
         return doPredicate(context, ptr, steps, currentStep, predicates, currentPredicate + 1);
     }
 
@@ -541,7 +541,7 @@ public class SimplePathInterpreter {
         } else {
             final NodeIterator it = getNodeIterator(context, parent, step);
             if (it != null) {
-                final List list = new ArrayList();
+                final List<NodePointer> list = new ArrayList<>();
                 for (int i = 1; it.setPosition(i); i++) {
                     list.add(it.getNodePointer());
                 }
