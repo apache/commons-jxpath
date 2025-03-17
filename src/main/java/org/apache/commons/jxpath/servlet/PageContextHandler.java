@@ -30,6 +30,13 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
 public class PageContextHandler implements DynamicPropertyHandler {
 
     /**
+     * Constructs a new instance.
+     */
+    public PageContextHandler() {
+        // empty
+    }
+
+    /**
      * Returns {@code pageContext.findAttribute(property)}.
      * 
      * @param pageContext to search

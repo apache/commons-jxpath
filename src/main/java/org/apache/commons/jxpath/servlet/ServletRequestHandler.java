@@ -28,6 +28,13 @@ import javax.servlet.ServletRequest;
  */
 public class ServletRequestHandler extends HttpSessionHandler {
 
+    /**
+     * Constructs a new instance.
+     */
+    public ServletRequestHandler() {
+        // empty
+    }
+
     @Override
     protected void collectPropertyNames(final HashSet<String> set, final Object bean) {
         super.collectPropertyNames(set, bean);

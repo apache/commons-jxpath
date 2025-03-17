@@ -29,6 +29,13 @@ public class PageScopeContextHandler implements DynamicPropertyHandler {
 
     private static final int DEFAULT_LIST_SIZE = 16;
 
+    /**
+     * Constructs a new instance.
+     */
+    public PageScopeContextHandler() {
+        // empty
+    }
+
     @Override
     public Object getProperty(final Object pageScope, final String property) {
         return ((PageScopeContext) pageScope).getAttribute(property);

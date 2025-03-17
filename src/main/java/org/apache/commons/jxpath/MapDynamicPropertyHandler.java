@@ -26,6 +26,13 @@ import java.util.Set;
  */
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
+    /**
+     * Constructs a new instance.
+     */
+    public MapDynamicPropertyHandler() {
+        // empty
+    }
+
     @Override
     public Object getProperty(final Object object, final String propertyName) {
         return ((Map) object).get(propertyName);

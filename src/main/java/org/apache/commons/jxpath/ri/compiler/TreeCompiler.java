@@ -27,6 +27,13 @@ public class TreeCompiler implements Compiler {
 
     private static final QName QNAME_NAME = new QName(null, "name");
 
+    /**
+     * Constructs a new instance.
+     */
+    public TreeCompiler() {
+        // empty
+    }
+
     @Override
     public Object and(final Object[] arguments) {
         return new CoreOperationAnd(toExpressionArray(arguments));

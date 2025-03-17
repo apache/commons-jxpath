@@ -32,6 +32,13 @@ public class ServletContextHandler implements DynamicPropertyHandler {
     private static final int DEFAULT_PROPERTY_COUNT = 16;
 
     /**
+     * Constructs a new instance.
+     */
+    public ServletContextHandler() {
+        // empty
+    }
+
+    /**
      * Collect the property names from bean, storing in set.
      * 
      * @param set  destination

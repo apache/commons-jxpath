@@ -29,6 +29,13 @@ import org.apache.commons.jxpath.JXPathException;
  */
 public class HttpSessionHandler extends ServletContextHandler {
 
+    /**
+     * Constructs a new instance.
+     */
+    public HttpSessionHandler() {
+        // empty
+    }
+
     @Override
     protected void collectPropertyNames(final HashSet<String> set, final Object bean) {
         final HttpSessionAndServletContext handle = (HttpSessionAndServletContext) bean;
