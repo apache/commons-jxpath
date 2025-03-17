@@ -170,7 +170,7 @@ public class PackageFunctions implements Functions {
      * @return (singleton) namespace Set
      */
     @Override
-    public Set getUsedNamespaces() {
+    public Set<String> getUsedNamespaces() {
         return Collections.singleton(namespace);
     }
 }

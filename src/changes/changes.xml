@@ -115,6 +115,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Deprecate TypeUtils.TypeUtils().</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Deprecate ValueUtils.ValueUtils().</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">PageScopeContext.getAttributeNames() is now typed with generics.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Functions.getUsedNamespaces() is now typed with generics.</action>
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).

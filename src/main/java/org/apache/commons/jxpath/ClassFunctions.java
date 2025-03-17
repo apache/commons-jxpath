@@ -111,7 +111,7 @@ public class ClassFunctions implements Functions {
      * @return a singleton
      */
     @Override
-    public Set getUsedNamespaces() {
+    public Set<String> getUsedNamespaces() {
         return Collections.singleton(namespace);
     }
 }

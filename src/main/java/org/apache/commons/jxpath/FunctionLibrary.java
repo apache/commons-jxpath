@@ -56,9 +56,9 @@ public class FunctionLibrary implements Functions {
             final int count = allFunctions.size();
             for (int i = 0; i < count; i++) {
                 final Functions funcs = (Functions) allFunctions.get(i);
-                final Set namespaces = funcs.getUsedNamespaces();
-                for (final Iterator it = namespaces.iterator(); it.hasNext();) {
-                    final String ns = (String) it.next();
+                final Set<String> namespaces = funcs.getUsedNamespaces();
+                for (final Iterator<String> it = namespaces.iterator(); it.hasNext();) {
+                    final String ns = it.next();
                     final Object candidates = byNamespace.get(ns);
                     if (candidates == null) {
                         byNamespace.put(ns, funcs);
@@ -109,7 +109,7 @@ public class FunctionLibrary implements Functions {
      * @return Set
      */
     @Override
-    public Set getUsedNamespaces() {
+    public Set<String> getUsedNamespaces() {
         return functionCache().keySet();
     }
 
