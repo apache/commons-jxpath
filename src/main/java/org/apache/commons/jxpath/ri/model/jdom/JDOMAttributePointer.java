@@ -28,17 +28,19 @@ import org.jdom.Attribute;
 public class JDOMAttributePointer extends NodePointer {
 
     private static final long serialVersionUID = 8896050354479644028L;
-    private final Attribute attr;
+
+    /** JDOM Attribute. */
+    private final Attribute attribute;
 
     /**
      * Create a JDOMAttributePointer.
-     * 
-     * @param parent NodePointer parent
-     * @param attr   JDOM Attribute
+     *
+     * @param parent NodePointer parent.
+     * @param attribute   JDOM Attribute.
      */
-    public JDOMAttributePointer(final NodePointer parent, final Attribute attr) {
+    public JDOMAttributePointer(final NodePointer parent, final Attribute attribute) {
         super(parent);
-        this.attr = attr;
+        this.attribute = attribute;
     }
 
     @Override
@@ -63,17 +65,17 @@ public class JDOMAttributePointer extends NodePointer {
 
     @Override
     public boolean equals(final Object object) {
-        return object == this || object instanceof JDOMAttributePointer && ((JDOMAttributePointer) object).attr == attr;
+        return object == this || object instanceof JDOMAttributePointer && ((JDOMAttributePointer) object).attribute == attribute;
     }
 
     @Override
     public Object getBaseValue() {
-        return attr;
+        return attribute;
     }
 
     @Override
     public Object getImmediateNode() {
-        return attr;
+        return attribute;
     }
 
     @Override
@@ -83,12 +85,12 @@ public class JDOMAttributePointer extends NodePointer {
 
     @Override
     public QName getName() {
-        return new QName(JDOMNodePointer.getPrefix(attr), JDOMNodePointer.getLocalName(attr));
+        return new QName(JDOMNodePointer.getPrefix(attribute), JDOMNodePointer.getLocalName(attribute));
     }
 
     @Override
     public String getNamespaceURI() {
-        String uri = attr.getNamespaceURI();
+        String uri = attribute.getNamespaceURI();
         if (uri != null && uri.isEmpty()) {
             uri = null;
         }
@@ -97,12 +99,12 @@ public class JDOMAttributePointer extends NodePointer {
 
     @Override
     public Object getValue() {
-        return attr.getValue();
+        return attribute.getValue();
     }
 
     @Override
     public int hashCode() {
-        return System.identityHashCode(attr);
+        return System.identityHashCode(attribute);
     }
 
     @Override
@@ -122,11 +124,11 @@ public class JDOMAttributePointer extends NodePointer {
 
     @Override
     public void remove() {
-        attr.getParent().removeAttribute(attr);
+        attribute.getParent().removeAttribute(attribute);
     }
 
     @Override
     public void setValue(final Object value) {
-        attr.setValue((String) TypeUtils.convert(value, String.class));
+        attribute.setValue((String) TypeUtils.convert(value, String.class));
     }
 }

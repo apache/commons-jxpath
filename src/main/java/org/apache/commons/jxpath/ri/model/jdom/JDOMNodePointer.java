@@ -55,7 +55,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Learn whether two strings are == or .equals()
-     * 
+     *
      * @param s1 string 1
      * @param s2 string 2
      * @return true if equal
@@ -71,7 +71,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Find the nearest occurrence of the specified attribute on the specified and enclosing elements.
-     * 
+     *
      * @param n        current node
      * @param attrName attribute name
      * @param ns       Namespace
@@ -93,7 +93,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the local name of the specified node.
-     * 
+     *
      * @param node to check
      * @return String local name
      */
@@ -109,7 +109,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the ns uri of the specified node.
-     * 
+     *
      * @param node Node to check
      * @return String
      */
@@ -127,7 +127,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the prefix from a given node.
-     * 
+     *
      * @param node to check
      * @return String
      */
@@ -145,7 +145,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the parent of the specified node.
-     * 
+     *
      * @param node to check
      * @return parent Element
      */
@@ -171,7 +171,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Execute test against node on behalf of pointer.
-     * 
+     *
      * @param pointer Pointer
      * @param node    to test
      * @param test    to execute
@@ -221,13 +221,18 @@ public class JDOMNodePointer extends NodePointer {
         return false;
     }
 
+    /** Node, like a bean. */
     private final Object node;
+
+    /** ID. */
     private String id;
+
+    /** Local namespace resolver. */
     private NamespaceResolver localNamespaceResolver;
 
     /**
      * Create a new JDOMNodePointer.
-     * 
+     *
      * @param parent NodePointer
      * @param node   pointed
      */
@@ -238,8 +243,8 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Create a new JDOMNodePointer.
-     * 
-     * @param node   pointed
+     *
+     * @param node   node, like a bean.
      * @param locale Locale
      */
     public JDOMNodePointer(final Object node, final Locale locale) {
@@ -249,7 +254,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Create a new JDOMNodePointer.
-     * 
+     *
      * @param node   pointed
      * @param locale Locale
      * @param id     String id
@@ -262,7 +267,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Add the specified content to this element.
-     * 
+     *
      * @param content List
      */
     private void addContent(final List content) {
@@ -470,7 +475,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the language of this element.
-     * 
+     *
      * @return String language
      */
     protected String getLanguage() {
@@ -533,7 +538,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets relative position of this among like-named siblings.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionByQName() {
@@ -559,7 +564,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets relative position of this among all siblings.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionOfElement() {
@@ -587,7 +592,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the relative position of this among same-target processing instruction siblings.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionOfPI() {
@@ -611,7 +616,7 @@ public class JDOMNodePointer extends NodePointer {
 
     /**
      * Gets the relative position of this among sibling text nodes.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionOfTextNode() {
@@ -680,7 +685,7 @@ public class JDOMNodePointer extends NodePointer {
     /**
      * Returns true if the xml:lang attribute for the current node or its parent has the specified prefix <em>lang</em>. If no node has this prefix, calls
      * {@code super.isLanguage(lang)}.
-     * 
+     *
      * @param lang to compare
      * @return true if this element uses the specified language.
      */

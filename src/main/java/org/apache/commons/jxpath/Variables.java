@@ -28,32 +28,32 @@ public interface Variables extends Serializable {
     /**
      * Defines a new variable with the specified value or modifies the value of an existing variable. May throw UnsupportedOperationException.
      * 
-     * @param varName variable name
+     * @param name variable name
      * @param value   to declare
      */
-    void declareVariable(String varName, Object value);
+    void declareVariable(String name, Object value);
 
     /**
      * Returns the value of the specified variable.
      * 
-     * @param varName variable name
+     * @param name variable name
      * @return Object value
      * @throws IllegalArgumentException if there is no such variable.
      */
-    Object getVariable(String varName);
+    Object getVariable(String name);
 
     /**
      * Returns true if the specified variable is declared.
      * 
-     * @param varName variable name
+     * @param name variable name
      * @return boolean
      */
-    boolean isDeclaredVariable(String varName);
+    boolean isDeclaredVariable(String name);
 
     /**
      * Removes an existing variable. May throw UnsupportedOperationException.
      *
-     * @param varName is a variable name without the "$" sign
+     * @param name is a variable name without the "$" sign
      */
-    void undeclareVariable(String varName);
+    void undeclareVariable(String name);
 }

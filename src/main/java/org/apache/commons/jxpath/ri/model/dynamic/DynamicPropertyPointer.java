@@ -36,7 +36,11 @@ public class DynamicPropertyPointer extends PropertyPointer {
 
     private static final long serialVersionUID = -5720585681149150822L;
     private final DynamicPropertyHandler handler;
+    
+    /** The name of the currently selected property or "*" if none has been selected. */
     private String name;
+    
+    /** The names of all properties, sorted alphabetically. */
     private String[] names;
     private String requiredPropertyName;
 
@@ -161,7 +165,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Returns the name of the currently selected property or "*" if none has been selected.
+     * Gets the name of the currently selected property or "*" if none has been selected.
      * 
      * @return String
      */
@@ -175,7 +179,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Names of all properties, sorted alphabetically.
+     * Gets the names of all properties, sorted alphabetically.
      * 
      * @return String[]
      */

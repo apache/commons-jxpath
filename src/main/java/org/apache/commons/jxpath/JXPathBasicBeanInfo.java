@@ -38,15 +38,34 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private static final Comparator PROPERTY_DESCRIPTOR_COMPARATOR = (left, right) -> ((PropertyDescriptor) left).getName()
             .compareTo(((PropertyDescriptor) right).getName());
 
+    /**
+     * Whether objects of this class are treated as atomic objects which have no properties of their own.
+     */
     private boolean atomic;
+
+    /**
+     * Bean class.
+     */
     private final Class clazz;
+
+    /**
+     * The DynamicPropertyHandler class for a dynamic class.
+     */
     private Class dynamicPropertyHandlerClass;
+
+    /**
+     * List of property descriptors for the beans described by this bean info object.
+     */
     private transient PropertyDescriptor[] propertyDescriptors;
+
+    /**
+     * PropertyDescriptor for the specified name or null if there is no such property.
+     */
     private transient HashMap propertyDescriptorMap;
 
     /**
      * Create a new JXPathBasicBeanInfo.
-     * 
+     *
      * @param clazz bean class
      */
     public JXPathBasicBeanInfo(final Class clazz) {
@@ -55,7 +74,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     /**
      * Create a new JXPathBasicBeanInfo.
-     * 
+     *
      * @param clazz  bean class
      * @param atomic whether objects of this class are treated as atomic objects which have no properties of their own.
      */
@@ -66,7 +85,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     /**
      * Create a new JXPathBasicBeanInfo.
-     * 
+     *
      * @param clazz                       bean class
      * @param dynamicPropertyHandlerClass dynamic property handler class
      */
@@ -77,9 +96,9 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     }
 
     /**
-     * For a dynamic class, returns the corresponding DynamicPropertyHandler class.
-     * 
-     * @return Class
+     * Gets the DynamicPropertyHandler class for a dynamic class.
+     *
+     * @return the DynamicPropertyHandler class for a dynamic class.
      */
     @Override
     public Class getDynamicPropertyHandlerClass() {
@@ -131,9 +150,9 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     }
 
     /**
-     * Returns true if objects of this class are treated as atomic objects which have no properties of their own.
-     * 
-     * @return boolean
+     * Tests whether objects of this class are treated as atomic objects which have no properties of their own.
+     *
+     * @return whether objects of this class are treated as atomic objects which have no properties of their own.
      */
     @Override
     public boolean isAtomic() {
@@ -142,7 +161,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     /**
      * Return true if the corresponding objects have dynamic properties.
-     * 
+     *
      * @return boolean
      */
     @Override

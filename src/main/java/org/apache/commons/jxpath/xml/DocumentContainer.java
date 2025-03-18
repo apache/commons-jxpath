@@ -88,8 +88,19 @@ public class DocumentContainer extends XMLParser2 implements Container {
         parsers.put(model, parser);
     }
 
+    /**
+     * Parsed XML.
+     */
     private Object document;
-    private final URL xmlURL;
+
+    /**
+     * XML source URL.
+     */
+    private final URL xmlUrl;
+
+    /**
+     * XML model: DOM, JDOM.
+     */
     private final String model;
 
     /**
@@ -104,13 +115,13 @@ public class DocumentContainer extends XMLParser2 implements Container {
     /**
      * Constructs a new DocumentContainer.
      *
-     * @param xmlURL is a URL for an XML file. Use getClass().getResource (resourceName) to load XML from a resource file.
+     * @param xmlUrl is a URL for an XML file. Use getClass().getResource (resourceName) to load XML from a resource file.
      *
      * @param model  is one of the MODEL_* constants defined in this class. It determines which parser should be used to load the XML.
      */
-    public DocumentContainer(final URL xmlURL, final String model) {
-        this.xmlURL = xmlURL;
-        if (xmlURL == null) {
+    public DocumentContainer(final URL xmlUrl, final String model) {
+        this.xmlUrl = xmlUrl;
+        if (xmlUrl == null) {
             throw new JXPathException("XML URL is null");
         }
         this.model = model;
@@ -127,8 +138,8 @@ public class DocumentContainer extends XMLParser2 implements Container {
             try {
                 InputStream stream = null;
                 try {
-                    if (xmlURL != null) {
-                        stream = xmlURL.openStream();
+                    if (xmlUrl != null) {
+                        stream = xmlUrl.openStream();
                     }
                     document = parseXML(stream);
                 } finally {
@@ -137,7 +148,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
                     }
                 }
             } catch (final IOException ex) {
-                throw new JXPathException("Cannot read XML from: " + xmlURL.toString(), ex);
+                throw new JXPathException("Cannot read XML from: " + xmlUrl.toString(), ex);
             }
         }
         return document;

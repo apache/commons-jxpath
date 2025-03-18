@@ -26,12 +26,16 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class JDOMNamespacePointer extends NodePointer {
 
     private static final long serialVersionUID = 7935311686545862379L;
+
+    /** Namespace prefix. */
     private final String prefix;
+
+    /** Namespace URI string. */
     private String namespaceURI;
 
     /**
      * Create a new JDOMNamespacePointer.
-     * 
+     *
      * @param parent parent pointer
      * @param prefix ns prefix
      */
@@ -42,7 +46,7 @@ public class JDOMNamespacePointer extends NodePointer {
 
     /**
      * Create a new JDOMNamespacePointer.
-     * 
+     *
      * @param parent       parent pointer
      * @param prefix       ns prefix
      * @param namespaceURI ns URI
@@ -123,7 +127,7 @@ public class JDOMNamespacePointer extends NodePointer {
 
     /**
      * Throws UnsupportedOperationException.
-     * 
+     *
      * @param value Object value to set
      */
     @Override
