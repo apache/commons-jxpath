@@ -28,7 +28,7 @@ public class LocationPath extends Path {
     private final boolean absolute;
 
     /**
-     * Create a new LocationPath.
+     * Constructs a new LocationPath.
      * 
      * @param absolute whether this is an absolute path
      * @param steps    to evaluate

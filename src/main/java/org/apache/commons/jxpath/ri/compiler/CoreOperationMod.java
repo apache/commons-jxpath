@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 public class CoreOperationMod extends CoreOperation {
 
     /**
-     * Create a new CoreOperationMod.
+     * Constructs a new CoreOperationMod.
      * 
      * @param arg1 dividend
      * @param arg2 divisor

@@ -37,7 +37,7 @@ public class PrecedingOrFollowingContext extends EvalContext {
     private final boolean reverse;
 
     /**
-     * Create a new PrecedingOrFollowingContext.
+     * Constructs a new PrecedingOrFollowingContext.
      * 
      * @param parentContext parent context
      * @param nodeTest      test

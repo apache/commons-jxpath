@@ -51,7 +51,7 @@ public class BasicTypeConverter implements TypeConverter {
         private List<Pointer> pointers;
 
         /**
-         * Create a new ValueNodeSet.
+         * Constructs a new ValueNodeSet.
          * 
          * @param values to return
          */
@@ -91,7 +91,7 @@ public class BasicTypeConverter implements TypeConverter {
         private final Object bean;
 
         /**
-         * Create a new ValuePointer.
+         * Constructs a new ValuePointer.
          * 
          * @param object value
          */

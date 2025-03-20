@@ -43,7 +43,7 @@ public class CoreFunction extends Operation {
     private final int functionCode;
 
     /**
-     * Create a new CoreFunction.
+     * Constructs a new CoreFunction.
      * 
      * @param functionCode int function code
      * @param args         argument Expressions

@@ -38,7 +38,7 @@ public class JDOMAttributeIterator implements NodeIterator {
     private int position;
 
     /**
-     * Create a new JDOMAttributeIterator.
+     * Constructs a new JDOMAttributeIterator.
      * 
      * @param parent pointer
      * @param name   test

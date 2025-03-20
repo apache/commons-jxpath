@@ -39,7 +39,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     private Object value = UNINITIALIZED;
 
     /**
-     * Create a new PropertyOwnerPointer.
+     * Constructs a new PropertyOwnerPointer.
      * 
      * @param parent pointer
      */
@@ -48,7 +48,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     /**
-     * Create a new PropertyOwnerPointer.
+     * Constructs a new PropertyOwnerPointer.
      * 
      * @param parent parent pointer
      * @param locale Locale

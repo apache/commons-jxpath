@@ -33,7 +33,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     private final Expression expression;
 
     /**
-     * Create a new JXPathCompiledExpression.
+     * Constructs a new JXPathCompiledExpression.
      * 
      * @param xpath      source
      * @param expression compiled

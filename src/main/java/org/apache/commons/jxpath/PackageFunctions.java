@@ -71,7 +71,7 @@ public class PackageFunctions implements Functions {
     private final String namespace;
 
     /**
-     * Create a new PackageFunctions.
+     * Constructs a new PackageFunctions.
      * 
      * @param classPrefix class prefix
      * @param namespace   namespace String

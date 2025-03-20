@@ -40,7 +40,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
     private final DynamicPropertyHandler handler;
 
     /**
-     * Create a new DynamicPointer.
+     * Constructs a new DynamicPointer.
      * 
      * @param parent  parent pointer
      * @param name    property name
@@ -55,7 +55,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
     }
 
     /**
-     * Create a new DynamicPointer.
+     * Constructs a new DynamicPointer.
      * 
      * @param name    property name
      * @param bean    owning bean

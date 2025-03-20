@@ -48,7 +48,7 @@ public class NodeTypeTest extends NodeTest {
     private final int nodeType;
 
     /**
-     * Create a new NodeTypeTest.
+     * Constructs a new NodeTypeTest.
      * 
      * @param nodeType to match
      */

@@ -32,7 +32,7 @@ public class InitialContext extends EvalContext {
     private final NodePointer nodePointer;
 
     /**
-     * Create a new InitialContext.
+     * Constructs a new InitialContext.
      * 
      * @param parentContext parent context
      */

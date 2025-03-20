@@ -30,7 +30,7 @@ public class BeanAttributeIterator extends PropertyIterator {
     private final boolean includeXmlLang;
 
     /**
-     * Create a new BeanAttributeIterator.
+     * Constructs a new BeanAttributeIterator.
      * 
      * @param parent parent pointer
      * @param name   name of this bean

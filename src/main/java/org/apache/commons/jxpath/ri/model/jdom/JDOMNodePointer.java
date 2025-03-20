@@ -231,7 +231,7 @@ public class JDOMNodePointer extends NodePointer {
     private NamespaceResolver localNamespaceResolver;
 
     /**
-     * Create a new JDOMNodePointer.
+     * Constructs a new JDOMNodePointer.
      *
      * @param parent NodePointer
      * @param node   pointed
@@ -242,7 +242,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Create a new JDOMNodePointer.
+     * Constructs a new JDOMNodePointer.
      *
      * @param node   node, like a bean.
      * @param locale Locale
@@ -253,7 +253,7 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     /**
-     * Create a new JDOMNodePointer.
+     * Constructs a new JDOMNodePointer.
      *
      * @param node   pointed
      * @param locale Locale

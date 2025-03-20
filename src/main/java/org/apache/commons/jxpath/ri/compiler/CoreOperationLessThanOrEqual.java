@@ -23,7 +23,7 @@ package org.apache.commons.jxpath.ri.compiler;
 public class CoreOperationLessThanOrEqual extends CoreOperationRelationalExpression {
 
     /**
-     * Create a new CoreOperationLessThanOrEqual.
+     * Constructs a new CoreOperationLessThanOrEqual.
      * 
      * @param arg1 left Expression
      * @param arg2 right Expression

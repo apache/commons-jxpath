@@ -35,14 +35,30 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public class VariablePointer extends NodePointer {
 
     private static final long serialVersionUID = -454731297397189293L;
+
+    /**
+     * Variables.
+     */
     private Variables variables;
+
+    /**
+     * Qualified name.
+     */
     private final QName name;
+
+    /**
+     * Value pointer.
+     */
     private NodePointer valuePointer;
+
+    /**
+     * Implements {@link NodePointer#isActual()}.
+     */
     private boolean actual;
 
     /**
-     * Create a new (non-actual) VariablePointer.
-     * 
+     * Constructs a new (non-actual) VariablePointer.
+     *
      * @param name variable name
      */
     public VariablePointer(final QName name) {
@@ -52,8 +68,8 @@ public class VariablePointer extends NodePointer {
     }
 
     /**
-     * Create a new VariablePointer.
-     * 
+     * Constructs a new VariablePointer.
+     *
      * @param variables Variables instance
      * @param name      variable name
      */
@@ -121,7 +137,7 @@ public class VariablePointer extends NodePointer {
 
     /**
      * Create a collection.
-     * 
+     *
      * @param context JXPathContext
      * @param index   collection index
      * @return Object
@@ -182,7 +198,7 @@ public class VariablePointer extends NodePointer {
 
     /**
      * Assimilate the Variables instance associated with the specified context.
-     * 
+     *
      * @param context JXPathContext to search
      */
     protected void findVariables(final JXPathContext context) {

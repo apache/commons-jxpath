@@ -23,7 +23,7 @@ package org.apache.commons.jxpath.ri.compiler;
 public class NameAttributeTest extends CoreOperationEqual {
 
     /**
-     * Create a new NameAttributeTest.
+     * Constructs a new NameAttributeTest.
      * 
      * @param namePath  Expression
      * @param nameValue Expression

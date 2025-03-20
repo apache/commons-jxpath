@@ -37,7 +37,7 @@ public class ExpressionPath extends Path {
     private boolean basic;
 
     /**
-     * Create a new ExpressionPath.
+     * Constructs a new ExpressionPath.
      * 
      * @param expression Expression
      * @param predicates to execute

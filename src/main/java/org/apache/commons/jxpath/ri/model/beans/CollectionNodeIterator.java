@@ -36,7 +36,7 @@ public abstract class CollectionNodeIterator implements NodeIterator {
     private List<NodePointer> collection;
 
     /**
-     * Create a new CollectionNodeIterator.
+     * Constructs a new CollectionNodeIterator.
      * 
      * @param pointer   collection pointer
      * @param reverse   iteration order

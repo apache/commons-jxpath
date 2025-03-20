@@ -26,13 +26,13 @@ public class JXPathContextFactoryConfigurationError extends Error {
     private static final long serialVersionUID = 2L;
 
     /**
-     * Create a new {@code JXPathContextFactoryConfigurationError} with no detail mesage.
+     * Constructs a new {@code JXPathContextFactoryConfigurationError} with no detail mesage.
      */
     public JXPathContextFactoryConfigurationError() {
     }
 
     /**
-     * Create a new {@code JXPathContextFactoryConfigurationError} with a given {@code Exception} base cause of the error.
+     * Constructs a new {@code JXPathContextFactoryConfigurationError} with a given {@code Exception} base cause of the error.
      *
      * @param cause The exception to be encapsulated in a JXPathContextFactoryConfigurationError.
      */
@@ -41,7 +41,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
     }
 
     /**
-     * Create a new {@code JXPathContextFactoryConfigurationError} with the given {@code Exception} base cause and detail message.
+     * Constructs a new {@code JXPathContextFactoryConfigurationError} with the given {@code Exception} base cause and detail message.
      *
      * @param cause   The exception to be encapsulated in a JXPathContextFactoryConfigurationError
      * @param msg The detail message.
@@ -51,7 +51,7 @@ public class JXPathContextFactoryConfigurationError extends Error {
     }
 
     /**
-     * Create a new {@code JXPathContextFactoryConfigurationError} with the {@code String } specified as an error message.
+     * Constructs a new {@code JXPathContextFactoryConfigurationError} with the {@code String } specified as an error message.
      *
      * @param msg The error message for the exception.
      */

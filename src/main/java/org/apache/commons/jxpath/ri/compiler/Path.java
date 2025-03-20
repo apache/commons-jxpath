@@ -45,7 +45,7 @@ public abstract class Path extends Expression {
     private boolean basic;
 
     /**
-     * Create a new Path.
+     * Constructs a new Path.
      * 
      * @param steps that compose the Path
      */

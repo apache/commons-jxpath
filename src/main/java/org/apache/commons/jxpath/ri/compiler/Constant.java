@@ -28,7 +28,7 @@ public class Constant extends Expression {
     private final Object value;
 
     /**
-     * Create a new Constant.
+     * Constructs a new Constant.
      * 
      * @param number constant
      */
@@ -37,7 +37,7 @@ public class Constant extends Expression {
     }
 
     /**
-     * Create a new Constant.
+     * Constructs a new Constant.
      * 
      * @param string constant
      */

@@ -32,7 +32,7 @@ public class SelfContext extends EvalContext {
     private NodePointer nodePointer;
 
     /**
-     * Create a new SelfContext.
+     * Constructs a new SelfContext.
      * 
      * @param parentContext EvalContext
      * @param nodeTest      guard

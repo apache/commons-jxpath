@@ -33,7 +33,7 @@ public class NamespacePointer extends NodePointer {
     private String namespaceURI;
 
     /**
-     * Create a new NamespacePointer.
+     * Constructs a new NamespacePointer.
      * 
      * @param parent parent pointer
      * @param prefix associated ns prefix.
@@ -44,7 +44,7 @@ public class NamespacePointer extends NodePointer {
     }
 
     /**
-     * Create a new NamespacePointer.
+     * Constructs a new NamespacePointer.
      * 
      * @param parent       parent pointer
      * @param prefix       associated ns prefix.

@@ -184,7 +184,7 @@ public abstract class JXPathContextFactory {
     }
 
     /**
-     * Create a new JXPathContextFactory.
+     * Constructs a new JXPathContextFactory.
      */
     protected JXPathContextFactory() {
     }

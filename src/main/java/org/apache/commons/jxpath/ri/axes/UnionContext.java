@@ -33,7 +33,7 @@ public class UnionContext extends NodeSetContext {
     private boolean prepared;
 
     /**
-     * Create a new UnionContext.
+     * Constructs a new UnionContext.
      * 
      * @param parentContext parent context
      * @param contexts      child contexts

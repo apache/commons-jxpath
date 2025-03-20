@@ -42,7 +42,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     private transient PropertyDescriptor propertyDescriptor;
 
     /**
-     * Create a new BeanPropertyPointer.
+     * Constructs a new BeanPropertyPointer.
      * 
      * @param parent   parent pointer
      * @param beanInfo describes the target property/ies.

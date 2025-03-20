@@ -32,7 +32,7 @@ public final class ReverseComparator implements Comparator, Serializable {
     public static final Comparator INSTANCE = new ReverseComparator();
 
     /**
-     * Create a new ReverseComparator.
+     * Constructs a new ReverseComparator.
      */
     private ReverseComparator() {
     }

@@ -25,13 +25,13 @@ public class JXPathException extends RuntimeException {
     private static final long serialVersionUID = 2L;
 
     /**
-     * Create a new {@code JXPathException} with no detail mesage.
+     * Constructs a new {@code JXPathException} with no detail mesage.
      */
     public JXPathException() {
     }
 
     /**
-     * Create a new {@code JXPathException} with the {@code String } specified as an error message.
+     * Constructs a new {@code JXPathException} with the {@code String } specified as an error message.
      *
      * @param msg The error message for the exception.
      */
@@ -40,7 +40,7 @@ public class JXPathException extends RuntimeException {
     }
 
     /**
-     * Create a new {@code JXPathException} with the given {@code Exception} base cause and detail message.
+     * Constructs a new {@code JXPathException} with the given {@code Exception} base cause and detail message.
      *
      * @param msg The detail message.
      * @param cause   The exception to be encapsulated in a JXPathException
@@ -50,7 +50,7 @@ public class JXPathException extends RuntimeException {
     }
 
     /**
-     * Create a new {@code JXPathException} with a given {@code Throwable} base cause of the error.
+     * Constructs a new {@code JXPathException} with a given {@code Throwable} base cause of the error.
      *
      * @param cause The exception to be encapsulated in a JXPathException.
      */

@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 public class CoreOperationAdd extends CoreOperation {
 
     /**
-     * Create a new CoreOperationAdd.
+     * Constructs a new CoreOperationAdd.
      * 
      * @param args Expression arguments to add together.
      */

@@ -70,7 +70,7 @@ public class Step {
     private final Expression[] predicates;
 
     /**
-     * Create a new Step.
+     * Constructs a new Step.
      * 
      * @param axis       axis code
      * @param nodeTest   step test

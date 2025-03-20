@@ -25,7 +25,7 @@ public class ProcessingInstructionTest extends NodeTest {
     private final String target;
 
     /**
-     * Create a new ProcessingInstructionTest.
+     * Constructs a new ProcessingInstructionTest.
      * 
      * @param target string
      */

@@ -214,7 +214,7 @@ public class DOMNodePointer extends NodePointer {
     private NamespaceResolver localNamespaceResolver;
 
     /**
-     * Create a new DOMNodePointer.
+     * Constructs a new DOMNodePointer.
      * 
      * @param node   pointed at
      * @param locale Locale
@@ -225,7 +225,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Create a new DOMNodePointer.
+     * Constructs a new DOMNodePointer.
      * 
      * @param node   pointed at
      * @param locale Locale
@@ -238,7 +238,7 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Create a new DOMNodePointer.
+     * Constructs a new DOMNodePointer.
      * 
      * @param parent pointer
      * @param node   pointed

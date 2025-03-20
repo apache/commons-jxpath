@@ -34,7 +34,7 @@ public class JDOMNamespacePointer extends NodePointer {
     private String namespaceURI;
 
     /**
-     * Create a new JDOMNamespacePointer.
+     * Constructs a new JDOMNamespacePointer.
      *
      * @param parent parent pointer
      * @param prefix ns prefix
@@ -45,7 +45,7 @@ public class JDOMNamespacePointer extends NodePointer {
     }
 
     /**
-     * Create a new JDOMNamespacePointer.
+     * Constructs a new JDOMNamespacePointer.
      *
      * @param parent       parent pointer
      * @param prefix       ns prefix

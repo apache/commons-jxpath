@@ -28,7 +28,7 @@ public class VariableReference extends Expression {
     private final QName varName;
 
     /**
-     * Create a new VariableReference.
+     * Constructs a new VariableReference.
      * 
      * @param varName variable name
      */

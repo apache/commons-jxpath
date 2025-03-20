@@ -38,14 +38,26 @@ import org.apache.commons.jxpath.xml.DocumentContainer;
 public class XMLDocumentContainer implements Container {
 
     private static final long serialVersionUID = 1L;
+
+    /** The delegate document container. */
     private DocumentContainer delegate;
+
+    /** The DOM document. */
     private Object document;
+
+    /**
+     * The document source.
+     */
     private URL xmlURL;
+
+    /**
+     * The transformation source.
+     */
     private Source source;
 
     /**
-     * Create a new XMLDocumentContainer.
-     * 
+     * Constructs a new XMLDocumentContainer.
+     *
      * @param source XML source
      */
     public XMLDocumentContainer(final Source source) {
@@ -53,8 +65,8 @@ public class XMLDocumentContainer implements Container {
     }
 
     /**
-     * Create a new XMLDocumentContainer.
-     * 
+     * Constructs a new XMLDocumentContainer.
+     *
      * @param xmlURL a URL for an XML file. Use getClass().getResource(resourceName) to load XML from a resource file.
      */
     public XMLDocumentContainer(final URL xmlURL) {
@@ -64,7 +76,7 @@ public class XMLDocumentContainer implements Container {
 
     /**
      * Reads XML, caches it internally and returns the Document.
-     * 
+     *
      * @return Object value
      */
     @Override
@@ -89,7 +101,7 @@ public class XMLDocumentContainer implements Container {
 
     /**
      * Throws an UnsupportedOperationException
-     * 
+     *
      * @param value to set
      */
     @Override

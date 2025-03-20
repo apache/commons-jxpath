@@ -34,7 +34,7 @@ public class ExtensionFunction extends Operation {
     private final QName functionName;
 
     /**
-     * Create a new ExtensionFunction.
+     * Constructs a new ExtensionFunction.
      * 
      * @param functionName name of the function
      * @param args         Expression[] of function args

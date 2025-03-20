@@ -34,7 +34,7 @@ public class NullPropertyPointer extends PropertyPointer {
     private boolean byNameAttribute;
 
     /**
-     * Create a new NullPropertyPointer.
+     * Constructs a new NullPropertyPointer.
      * 
      * @param parent pointer
      */

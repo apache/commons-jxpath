@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 public class CoreOperationDivide extends CoreOperation {
 
     /**
-     * Create a new CoreOperationDivide.
+     * Constructs a new CoreOperationDivide.
      * 
      * @param arg1 dividend
      * @param arg2 divisor

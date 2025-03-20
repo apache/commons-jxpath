@@ -40,7 +40,7 @@ public class JDOMNodeIterator implements NodeIterator {
     private Object child;
 
     /**
-     * Create a new JDOMNodeIterator.
+     * Constructs a new JDOMNodeIterator.
      * 
      * @param parent    pointer
      * @param nodeTest  test

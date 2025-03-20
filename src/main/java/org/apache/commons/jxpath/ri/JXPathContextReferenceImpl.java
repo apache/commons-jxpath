@@ -176,7 +176,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     private Pointer contextPointer;
 
     /**
-     * Create a new JXPathContextReferenceImpl.
+     * Constructs a new JXPathContextReferenceImpl.
      * 
      * @param parentContext parent context
      * @param contextBean   Object
@@ -186,7 +186,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Create a new JXPathContextReferenceImpl.
+     * Constructs a new JXPathContextReferenceImpl.
      * 
      * @param parentContext  parent context
      * @param contextBean    Object

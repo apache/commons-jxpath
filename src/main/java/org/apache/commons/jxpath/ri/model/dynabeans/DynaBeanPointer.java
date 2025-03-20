@@ -47,7 +47,7 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
     private final DynaBean dynaBean;
 
     /**
-     * Create a new DynaBeanPointer.
+     * Constructs a new DynaBeanPointer.
      * 
      * @param parent   pointer
      * @param name     is the name given to the first node
@@ -60,7 +60,7 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
     }
 
     /**
-     * Create a new DynaBeanPointer.
+     * Constructs a new DynaBeanPointer.
      * 
      * @param name     is the name given to the first node
      * @param dynaBean pointed

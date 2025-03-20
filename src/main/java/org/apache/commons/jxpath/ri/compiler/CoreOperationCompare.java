@@ -35,7 +35,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
     private final boolean invert;
 
     /**
-     * Create a new CoreOperationCompare.
+     * Constructs a new CoreOperationCompare.
      * 
      * @param arg1 left operand
      * @param arg2 right operand
@@ -45,7 +45,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
     }
 
     /**
-     * Create a new CoreOperationCompare.
+     * Constructs a new CoreOperationCompare.
      * 
      * @param arg1   left operand
      * @param arg2   right operand

@@ -33,7 +33,7 @@ public class NullPointer extends PropertyOwnerPointer {
     private String id;
 
     /**
-     * Create a new NullPointer.
+     * Constructs a new NullPointer.
      * 
      * @param locale Locale
      * @param id     String
@@ -55,7 +55,7 @@ public class NullPointer extends PropertyOwnerPointer {
     }
 
     /**
-     * Create a new NullPointer.
+     * Constructs a new NullPointer.
      * 
      * @param name   node name
      * @param locale Locale

@@ -38,7 +38,7 @@ public class AttributeContext extends EvalContext {
     private NodePointer currentNodePointer;
 
     /**
-     * Create a new AttributeContext.
+     * Constructs a new AttributeContext.
      * 
      * @param parentContext represents the previous step on the path
      * @param nodeTest      is the name of the attribute we are looking for

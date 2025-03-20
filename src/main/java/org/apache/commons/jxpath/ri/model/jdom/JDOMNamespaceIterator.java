@@ -39,7 +39,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
     private int position;
 
     /**
-     * Create a new JDOMNamespaceIterator.
+     * Constructs a new JDOMNamespaceIterator.
      * 
      * @param parent the parent NodePointer.
      */

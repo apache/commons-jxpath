@@ -34,7 +34,7 @@ public class ConstructorFunction implements Function {
     private final Constructor constructor;
 
     /**
-     * Create a new ConstructorFunction.
+     * Constructs a new ConstructorFunction.
      * 
      * @param constructor the constructor to call.
      */

@@ -34,7 +34,7 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
 public abstract class CoreOperationRelationalExpression extends CoreOperation {
 
     /**
-     * Create a new CoreOperationRelationalExpression.
+     * Constructs a new CoreOperationRelationalExpression.
      * 
      * @param args arguments
      */

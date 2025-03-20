@@ -25,13 +25,25 @@ import java.io.Serializable;
 public class QName implements Serializable {
 
     private static final long serialVersionUID = 7616199282015091496L;
+
+    /**
+     * Prefix.
+     */
     private final String prefix;
+
+    /**
+     * Name.
+     */
     private final String name;
+
+    /**
+     * Qualified name.
+     */
     private final String qualifiedName;
 
     /**
-     * Create a new QName.
-     * 
+     * Constructs a new QName.
+     *
      * @param qualifiedName value
      */
     public QName(final String qualifiedName) {
@@ -42,8 +54,8 @@ public class QName implements Serializable {
     }
 
     /**
-     * Create a new QName.
-     * 
+     * Constructs a new QName.
+     *
      * @param prefix    ns
      * @param localName String
      */
@@ -66,7 +78,7 @@ public class QName implements Serializable {
 
     /**
      * Gets the local name.
-     * 
+     *
      * @return String
      */
     public String getName() {
@@ -75,7 +87,7 @@ public class QName implements Serializable {
 
     /**
      * Gets the prefix of this QName.
-     * 
+     *
      * @return String
      */
     public String getPrefix() {

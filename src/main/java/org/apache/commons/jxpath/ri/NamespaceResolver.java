@@ -33,7 +33,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
 
     /**
      * Find the namespace prefix for the specified namespace URI and NodePointer.
-     * 
+     *
      * @param pointer      location
      * @param namespaceURI to check
      * @return prefix if found
@@ -58,26 +58,33 @@ public class NamespaceResolver implements Cloneable, Serializable {
         return null;
     }
 
-    /** Parent NamespaceResolver */
+    /** Parent NamespaceResolver. */
     protected final NamespaceResolver parent;
-    /** Namespace map */
+
+    /** Namespace map. */
     protected HashMap namespaceMap = new HashMap();
+
     /** Reverse lookup map */
     protected HashMap reverseMap = new HashMap();
-    /** Pointer */
+
+    /** Node pointer. */
     protected NodePointer pointer;
+
+    /**
+     * Whether this instance is sealed.
+     */
     private boolean sealed;
 
     /**
-     * Create a new NamespaceResolver.
+     * Constructs a new NamespaceResolver.
      */
     public NamespaceResolver() {
         this(null);
     }
 
     /**
-     * Create a new NamespaceResolver.
-     * 
+     * Constructs a new NamespaceResolver.
+     *
      * @param parent NamespaceResolver
      */
     public NamespaceResolver(final NamespaceResolver parent) {
@@ -111,7 +118,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
 
     /**
      * Gets the nearest prefix found that matches an externally-registered namespace.
-     * 
+     *
      * @param namespaceURI the ns URI to check.
      * @return String prefix if found.
      * @since JXPath 1.3
@@ -123,7 +130,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
 
     /**
      * Gets the namespace context pointer.
-     * 
+     *
      * @return Pointer
      */
     public Pointer getNamespaceContextPointer() {
@@ -147,7 +154,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
 
     /**
      * Gets the prefix associated with the specifed namespace URI.
-     * 
+     *
      * @param namespaceURI the ns URI to check.
      * @return String prefix
      */
@@ -158,7 +165,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
 
     /**
      * Learn whether this NamespaceResolver has been sealed.
-     * 
+     *
      * @return boolean
      */
     public boolean isSealed() {
@@ -191,7 +198,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
 
     /**
      * Register a namespace for the expression context.
-     * 
+     *
      * @param pointer the Pointer to set.
      */
     public void setNamespaceContextPointer(final NodePointer pointer) {

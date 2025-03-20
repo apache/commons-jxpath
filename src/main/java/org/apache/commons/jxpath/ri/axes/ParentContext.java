@@ -31,7 +31,7 @@ public class ParentContext extends EvalContext {
     private NodePointer currentNodePointer;
 
     /**
-     * Create a new ParentContext.
+     * Constructs a new ParentContext.
      * 
      * @param parentContext parent context
      * @param nodeTest      test

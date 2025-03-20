@@ -38,7 +38,7 @@ public class PropertyIterator implements NodeIterator {
     private boolean includeStart;
 
     /**
-     * Create a new PropertyIterator.
+     * Constructs a new PropertyIterator.
      * 
      * @param pointer   owning pointer
      * @param name      property name

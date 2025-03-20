@@ -35,7 +35,7 @@ public class DOMNodeIterator implements NodeIterator {
     private int position;
 
     /**
-     * Create a new DOMNodeIterator.
+     * Constructs a new DOMNodeIterator.
      * 
      * @param parent    parent pointer
      * @param nodeTest  test

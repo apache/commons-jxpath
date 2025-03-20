@@ -25,7 +25,7 @@ public class JXPathInvalidSyntaxException extends JXPathException {
     private static final long serialVersionUID = 504555366032561816L;
 
     /**
-     * Create a new JXPathInvalidSyntaxException.
+     * Constructs a new JXPathInvalidSyntaxException.
      * 
      * @param message relevant message
      */

@@ -40,7 +40,7 @@ public class CollectionPointer extends NodePointer {
     private NodePointer valuePointer;
 
     /**
-     * Create a new CollectionPointer.
+     * Constructs a new CollectionPointer.
      * 
      * @param parent     parent NodePointer
      * @param collection value
@@ -51,7 +51,7 @@ public class CollectionPointer extends NodePointer {
     }
 
     /**
-     * Create a new CollectionPointer.
+     * Constructs a new CollectionPointer.
      * 
      * @param collection value
      * @param locale     Locale

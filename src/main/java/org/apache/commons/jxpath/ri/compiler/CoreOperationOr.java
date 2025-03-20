@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 public class CoreOperationOr extends CoreOperation {
 
     /**
-     * Create a new CoreOperationOr.
+     * Constructs a new CoreOperationOr.
      * 
      * @param args or'd Expression components
      */

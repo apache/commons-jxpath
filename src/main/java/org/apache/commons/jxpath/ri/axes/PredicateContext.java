@@ -38,7 +38,7 @@ public class PredicateContext extends EvalContext {
     private PropertyPointer dynamicPropertyPointer;
 
     /**
-     * Create a new PredicateContext.
+     * Constructs a new PredicateContext.
      * 
      * @param parentContext parent context
      * @param expression    compiled Expression

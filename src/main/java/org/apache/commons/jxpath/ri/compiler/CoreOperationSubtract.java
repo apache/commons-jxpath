@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 public class CoreOperationSubtract extends CoreOperation {
 
     /**
-     * Create a new CoreOperationSubtract.
+     * Constructs a new CoreOperationSubtract.
      * 
      * @param arg1 minuend
      * @param arg2 subtrahend

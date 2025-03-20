@@ -41,7 +41,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     private String[] names;
 
     /**
-     * Create a new DynaBeanPropertyPointer.
+     * Constructs a new DynaBeanPropertyPointer.
      * 
      * @param parent   pointer
      * @param dynaBean pointed

@@ -42,7 +42,7 @@ public class RootContext extends EvalContext {
     private int availableRegister;
 
     /**
-     * Create a new RootContext.
+     * Constructs a new RootContext.
      * 
      * @param jxpathContext context
      * @param pointer       pointer

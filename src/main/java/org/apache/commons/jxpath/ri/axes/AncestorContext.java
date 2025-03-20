@@ -32,7 +32,7 @@ public class AncestorContext extends EvalContext {
     private final boolean includeSelf;
 
     /**
-     * Create a new AncestorContext.
+     * Constructs a new AncestorContext.
      * 
      * @param parentContext represents the previous step on the path
      * @param includeSelf   differentiates between "ancestor::" and "ancestor-or-self::" axes

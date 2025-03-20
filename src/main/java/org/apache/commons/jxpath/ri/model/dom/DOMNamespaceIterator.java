@@ -37,7 +37,7 @@ public class DOMNamespaceIterator implements NodeIterator {
     private int position;
 
     /**
-     * Create a new DOMNamespaceIterator.
+     * Constructs a new DOMNamespaceIterator.
      * 
      * @param parent parent pointer
      */

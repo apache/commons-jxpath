@@ -36,7 +36,7 @@ public class ContainerPointer extends NodePointer {
     private NodePointer valuePointer;
 
     /**
-     * Create a new ContainerPointer.
+     * Constructs a new ContainerPointer.
      * 
      * @param container Container object
      * @param locale    Locale
@@ -47,7 +47,7 @@ public class ContainerPointer extends NodePointer {
     }
 
     /**
-     * Create a new ContainerPointer.
+     * Constructs a new ContainerPointer.
      * 
      * @param parent    parent pointer
      * @param container Container object

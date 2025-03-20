@@ -42,7 +42,7 @@ public abstract class CoreOperation extends Operation {
     protected static final int UNION_PRECEDENCE = 7;
 
     /**
-     * Create a new CoreOperation.
+     * Constructs a new CoreOperation.
      * 
      * @param args Expression[]
      */

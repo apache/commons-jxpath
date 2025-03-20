@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 public class CoreOperationNegate extends CoreOperation {
 
     /**
-     * Create a new CoreOperationNegate.
+     * Constructs a new CoreOperationNegate.
      * 
      * @param arg the Expression to negate
      */

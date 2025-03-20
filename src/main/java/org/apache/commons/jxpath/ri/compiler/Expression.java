@@ -45,7 +45,7 @@ public abstract class Expression {
 
         // to what method does the following comment refer?
         /**
-         * Create a new PointerIterator
+         * Constructs a new PointerIterator
          * 
          * @param it     underlying Iterator
          * @param qname  name
@@ -87,7 +87,7 @@ public abstract class Expression {
         private final Iterator iterator;
 
         /**
-         * Create a new ValueIterator.
+         * Constructs a new ValueIterator.
          * 
          * @param it underlying Iterator, may contain pointers
          */

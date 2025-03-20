@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 public class CoreOperationAnd extends CoreOperation {
 
     /**
-     * Create a new CoreOperationAnd.
+     * Constructs a new CoreOperationAnd.
      * 
      * @param args to combine
      */

@@ -42,7 +42,7 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
         private final LazyDynaBean lazyDynaBean;
 
         /**
-         * Create a new StrictLazyDynaBeanPointer instance.
+         * Constructs a new StrictLazyDynaBeanPointer instance.
          *
          * @param parent       pointer
          * @param name         is the name given to the first node
@@ -54,7 +54,7 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
         }
 
         /**
-         * Create a new StrictLazyDynaBeanPointer instance.
+         * Constructs a new StrictLazyDynaBeanPointer instance.
          *
          * @param name         is the name given to the first node
          * @param lazyDynaBean pointed

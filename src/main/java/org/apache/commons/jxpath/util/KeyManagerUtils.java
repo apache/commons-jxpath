@@ -40,7 +40,7 @@ public class KeyManagerUtils {
         private final KeyManager delegate;
 
         /**
-         * Create a new SingleNodeExtendedKeyManager.
+         * Constructs a new SingleNodeExtendedKeyManager.
          * 
          * @param delegate KeyManager to wrap
          */

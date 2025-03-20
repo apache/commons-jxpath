@@ -57,7 +57,7 @@ public class ClassFunctions implements Functions {
     private final String namespace;
 
     /**
-     * Create a new ClassFunctions.
+     * Constructs a new ClassFunctions.
      * 
      * @param functionClass Class providing the functions
      * @param namespace     assigned ns

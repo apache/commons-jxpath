@@ -34,7 +34,7 @@ public class ChildContext extends EvalContext {
     private NodeIterator iterator;
 
     /**
-     * Create a new ChildContext.
+     * Constructs a new ChildContext.
      * 
      * @param parentContext           parent EvalContext
      * @param nodeTest                NodeTest

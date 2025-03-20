@@ -45,7 +45,7 @@ public class DynamicPropertyPointer extends PropertyPointer {
     private String requiredPropertyName;
 
     /**
-     * Create a new DynamicPropertyPointer.
+     * Constructs a new DynamicPropertyPointer.
      * 
      * @param parent  pointer
      * @param handler DynamicPropertyHandler

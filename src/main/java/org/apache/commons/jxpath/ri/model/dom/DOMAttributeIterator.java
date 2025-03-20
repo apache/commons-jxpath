@@ -40,7 +40,7 @@ public class DOMAttributeIterator implements NodeIterator {
     private int position;
 
     /**
-     * Create a new DOMAttributeIterator.
+     * Constructs a new DOMAttributeIterator.
      * 
      * @param parent pointer
      * @param name   to test

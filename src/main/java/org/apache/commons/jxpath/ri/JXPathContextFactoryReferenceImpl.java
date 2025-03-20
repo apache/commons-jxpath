@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.JXPathContextFactory;
 public class JXPathContextFactoryReferenceImpl extends JXPathContextFactory {
 
     /**
-     * Create a new JXPathContextFactoryReferenceImpl.
+     * Constructs a new JXPathContextFactoryReferenceImpl.
      */
     public JXPathContextFactoryReferenceImpl() {
     }

@@ -28,7 +28,7 @@ public class NodeNameTest extends NodeTest {
     private String namespaceURI;
 
     /**
-     * Create a new NodeNameTest.
+     * Constructs a new NodeNameTest.
      * 
      * @param qname name to match
      */
@@ -37,7 +37,7 @@ public class NodeNameTest extends NodeTest {
     }
 
     /**
-     * Create a new NodeNameTest.
+     * Constructs a new NodeNameTest.
      * 
      * @param qname        name to match
      * @param namespaceURI uri to match

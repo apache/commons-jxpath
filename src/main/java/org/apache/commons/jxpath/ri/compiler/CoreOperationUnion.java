@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.ri.axes.UnionContext;
 public class CoreOperationUnion extends CoreOperation {
 
     /**
-     * Create a new CoreOperationUnion.
+     * Constructs a new CoreOperationUnion.
      * 
      * @param args Expression[]
      */

@@ -29,7 +29,7 @@ public class CollectionChildNodeIterator extends CollectionNodeIterator {
     private final NodeTest test;
 
     /**
-     * Create a new CollectionChildNodeIterator.
+     * Constructs a new CollectionChildNodeIterator.
      * 
      * @param pointer   CollectionPointer
      * @param test      child test

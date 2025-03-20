@@ -64,7 +64,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     private transient HashMap propertyDescriptorMap;
 
     /**
-     * Create a new JXPathBasicBeanInfo.
+     * Constructs a new JXPathBasicBeanInfo.
      *
      * @param clazz bean class
      */
@@ -73,7 +73,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     }
 
     /**
-     * Create a new JXPathBasicBeanInfo.
+     * Constructs a new JXPathBasicBeanInfo.
      *
      * @param clazz  bean class
      * @param atomic whether objects of this class are treated as atomic objects which have no properties of their own.
@@ -84,7 +84,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     }
 
     /**
-     * Create a new JXPathBasicBeanInfo.
+     * Constructs a new JXPathBasicBeanInfo.
      *
      * @param clazz                       bean class
      * @param dynamicPropertyHandlerClass dynamic property handler class

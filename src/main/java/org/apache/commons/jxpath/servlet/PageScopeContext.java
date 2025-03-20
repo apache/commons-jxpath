@@ -30,7 +30,7 @@ public class PageScopeContext {
     private final PageContext pageContext;
 
     /**
-     * Create a new PageScopeContext.
+     * Constructs a new PageScopeContext.
      * 
      * @param pageContext base
      */

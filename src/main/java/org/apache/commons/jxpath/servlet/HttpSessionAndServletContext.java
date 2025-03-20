@@ -29,7 +29,7 @@ public class HttpSessionAndServletContext {
     private final ServletContext context;
 
     /**
-     * Create a new HttpSessionAndServletContext.
+     * Constructs a new HttpSessionAndServletContext.
      * 
      * @param session HttpSession
      * @param context ServletContext

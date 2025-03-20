@@ -54,7 +54,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     private Iterator<Pointer> pointerIterator;
 
     /**
-     * Create a new EvalContext.
+     * Constructs a new EvalContext.
      * 
      * @param parentContext parent context
      */

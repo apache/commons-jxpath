@@ -40,7 +40,7 @@ public class DescendantContext extends EvalContext {
     private final boolean includeSelf;
 
     /**
-     * Create a new DescendantContext.
+     * Constructs a new DescendantContext.
      * 
      * @param parentContext parent context
      * @param includeSelf   whether to include this node

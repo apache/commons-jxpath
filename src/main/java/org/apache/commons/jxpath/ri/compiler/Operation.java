@@ -26,7 +26,7 @@ public abstract class Operation extends Expression {
     protected Expression[] args;
 
     /**
-     * Create a new Operation.
+     * Constructs a new Operation.
      * 
      * @param args Expression[]
      */

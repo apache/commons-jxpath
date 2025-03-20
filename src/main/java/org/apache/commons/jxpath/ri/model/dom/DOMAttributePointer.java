@@ -34,7 +34,7 @@ public class DOMAttributePointer extends NodePointer {
     private final Attr attr;
 
     /**
-     * Create a new DOMAttributePointer.
+     * Constructs a new DOMAttributePointer.
      * 
      * @param parent pointer
      * @param attr   pointed

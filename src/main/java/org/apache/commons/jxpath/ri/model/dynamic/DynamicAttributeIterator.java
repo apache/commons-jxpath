@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer;
 public class DynamicAttributeIterator extends BeanAttributeIterator {
 
     /**
-     * Create a new DynamicAttributeIterator.
+     * Constructs a new DynamicAttributeIterator.
      * 
      * @param parent pointer
      * @param name   to match properties

@@ -26,7 +26,7 @@ public class JXPathInvalidAccessException extends JXPathException {
     private static final long serialVersionUID = -8875537628056117241L;
 
     /**
-     * Create a new JXPathInvalidAccessException.
+     * Constructs a new JXPathInvalidAccessException.
      * 
      * @param message exception message
      */
@@ -35,7 +35,7 @@ public class JXPathInvalidAccessException extends JXPathException {
     }
 
     /**
-     * Create a new JXPathInvalidAccessException.
+     * Constructs a new JXPathInvalidAccessException.
      * 
      * @param message exception message
      * @param ex      precipitating exception

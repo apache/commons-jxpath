@@ -30,7 +30,7 @@ public class ServletRequestAndContext extends HttpSessionAndServletContext {
     private final ServletRequest request;
 
     /**
-     * Create a new ServletRequestAndContext.
+     * Constructs a new ServletRequestAndContext.
      *
      * @param request ServletRequest
      * @param context ServletContext

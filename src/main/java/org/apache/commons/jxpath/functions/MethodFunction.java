@@ -36,7 +36,7 @@ public class MethodFunction implements Function {
     private final Method method;
 
     /**
-     * Create a new MethodFunction.
+     * Constructs a new MethodFunction.
      * 
      * @param method implementing Method
      */

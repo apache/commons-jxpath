@@ -37,7 +37,7 @@ public class KeywordVariables implements Variables {
     private final Object value;
 
     /**
-     * Create a new KeywordVariables.
+     * Constructs a new KeywordVariables.
      * 
      * @param keyword The keyword.
      * @param value  The value.

@@ -29,7 +29,7 @@ public class CollectionAttributeNodeIterator extends CollectionNodeIterator {
     private final QName name;
 
     /**
-     * Create a new CollectionAttributeNodeIterator.
+     * Constructs a new CollectionAttributeNodeIterator.
      * 
      * @param pointer collection pointer
      * @param name    attribute name
