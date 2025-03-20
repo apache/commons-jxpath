@@ -65,7 +65,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      */
     public static final boolean USE_SOFT_CACHE = true;
     private static final Compiler COMPILER = new TreeCompiler();
-    private static Map compiled = new HashMap();
+    private static Map<String, Object> compiled = new HashMap<>();
     private static int cleanupCount;
     private static NodePointerFactory[] nodeFactoryArray;
     // The frequency of the cache cleanup
@@ -235,9 +235,9 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         synchronized (compiled) {
             if (USE_SOFT_CACHE) {
                 expr = null;
-                final SoftReference ref = (SoftReference) compiled.get(xpath);
+                final SoftReference<Expression> ref = (SoftReference) compiled.get(xpath);
                 if (ref != null) {
-                    expr = (Expression) ref.get();
+                    expr = ref.get();
                 }
             } else {
                 expr = (Expression) compiled.get(xpath);
@@ -250,16 +250,16 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         synchronized (compiled) {
             if (USE_SOFT_CACHE) {
                 if (cleanupCount++ >= CLEANUP_THRESHOLD) {
-                    final Iterator it = compiled.entrySet().iterator();
+                    final Iterator<Entry<String, Object>> it = compiled.entrySet().iterator();
                     while (it.hasNext()) {
-                        final Entry me = (Entry) it.next();
-                        if (((SoftReference) me.getValue()).get() == null) {
+                        final Entry<String, ?> me = it.next();
+                        if (((SoftReference<Expression>) me.getValue()).get() == null) {
                             it.remove();
                         }
                     }
                     cleanupCount = 0;
                 }
-                compiled.put(xpath, new SoftReference(expr));
+                compiled.put(xpath, new SoftReference<>(expr));
             } else {
                 compiled.put(xpath, expr);
             }
