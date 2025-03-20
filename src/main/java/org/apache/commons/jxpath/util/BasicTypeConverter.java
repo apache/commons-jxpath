@@ -536,18 +536,19 @@ public class BasicTypeConverter implements TypeConverter {
     /**
      * Gets an unmodifiable version of a collection.
      *
+     * @param <E> the type of elements in this collection.
      * @param collection to wrap
      * @return Collection
      */
-    protected Collection unmodifiableCollection(final Collection collection) {
+    protected <E> Collection<E> unmodifiableCollection(final Collection<E> collection) {
         if (collection instanceof List) {
-            return Collections.unmodifiableList((List) collection);
+            return Collections.unmodifiableList((List<E>) collection);
         }
         if (collection instanceof SortedSet) {
-            return Collections.unmodifiableSortedSet((SortedSet) collection);
+            return Collections.unmodifiableSortedSet((SortedSet<E>) collection);
         }
         if (collection instanceof Set) {
-            return Collections.unmodifiableSet((Set) collection);
+            return Collections.unmodifiableSet((Set<E>) collection);
         }
         return Collections.unmodifiableCollection(collection);
     }
