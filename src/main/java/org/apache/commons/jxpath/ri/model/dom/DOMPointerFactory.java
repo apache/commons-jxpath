@@ -40,12 +40,12 @@ public class DOMPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
+    public NodePointer createNodePointer(final NodePointer parent, final QName qName, final Object bean) {
         return bean instanceof Node ? new DOMNodePointer(parent, (Node) bean) : null;
     }
 
     @Override
-    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
+    public NodePointer createNodePointer(final QName qName, final Object bean, final Locale locale) {
         return bean instanceof Node ? new DOMNodePointer((Node) bean, locale) : null;
     }
 

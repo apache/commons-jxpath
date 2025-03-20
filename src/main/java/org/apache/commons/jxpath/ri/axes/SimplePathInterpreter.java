@@ -82,13 +82,13 @@ public class SimplePathInterpreter {
     private static NodePointer createChildPointerForStep(final PropertyOwnerPointer parentPointer, final Step step) {
         final int axis = step.getAxis();
         if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE) {
-            final QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
-            if (axis == Compiler.AXIS_ATTRIBUTE && isLangAttribute(name)) {
+            final QName qName = ((NodeNameTest) step.getNodeTest()).getNodeName();
+            if (axis == Compiler.AXIS_ATTRIBUTE && isLangAttribute(qName)) {
                 return new LangAttributePointer(parentPointer);
             }
-            if (parentPointer.isValidProperty(name)) {
+            if (parentPointer.isValidProperty(qName)) {
                 final NodePointer childPointer = parentPointer.getPropertyPointer();
-                ((PropertyPointer) childPointer).setPropertyName(name.toString());
+                ((PropertyPointer) childPointer).setPropertyName(qName.toString());
                 childPointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
                 return childPointer;
             }
@@ -116,8 +116,8 @@ public class SimplePathInterpreter {
         final int axis = step.getAxis();
         if (axis == Compiler.AXIS_CHILD || axis == Compiler.AXIS_ATTRIBUTE) {
             final NullPropertyPointer pointer = new NullPropertyPointer(parent);
-            final QName name = ((NodeNameTest) step.getNodeTest()).getNodeName();
-            pointer.setPropertyName(name.toString());
+            final QName qName = ((NodeNameTest) step.getNodeTest()).getNodeName();
+            pointer.setPropertyName(qName.toString());
             pointer.setAttribute(axis == Compiler.AXIS_ATTRIBUTE);
             parent = pointer;
         }
@@ -655,11 +655,11 @@ public class SimplePathInterpreter {
     /**
      * Learn whether {@code name} is a lang attribute.
      * 
-     * @param name to compare
+     * @param qName to compare
      * @return boolean
      */
-    private static boolean isLangAttribute(final QName name) {
-        return name.getPrefix() != null && name.getPrefix().equals("xml") && name.getName().equals("lang");
+    private static boolean isLangAttribute(final QName qName) {
+        return qName.getPrefix() != null && qName.getPrefix().equals("xml") && qName.getName().equals("lang");
     }
 
     /**

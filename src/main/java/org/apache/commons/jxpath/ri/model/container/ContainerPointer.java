@@ -71,8 +71,8 @@ public class ContainerPointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return getValuePointer().attributeIterator(name);
+    public NodeIterator attributeIterator(final QName qName) {
+        return getValuePointer().attributeIterator(qName);
     }
 
     @Override

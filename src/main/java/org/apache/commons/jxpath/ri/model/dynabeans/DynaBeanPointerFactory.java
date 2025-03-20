@@ -40,13 +40,13 @@ public class DynaBeanPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
-        return bean instanceof DynaBean ? new DynaBeanPointer(parent, name, (DynaBean) bean) : null;
+    public NodePointer createNodePointer(final NodePointer parent, final QName qName, final Object bean) {
+        return bean instanceof DynaBean ? new DynaBeanPointer(parent, qName, (DynaBean) bean) : null;
     }
 
     @Override
-    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
-        return bean instanceof DynaBean ? new DynaBeanPointer(name, (DynaBean) bean, locale) : null;
+    public NodePointer createNodePointer(final QName qName, final Object bean, final Locale locale) {
+        return bean instanceof DynaBean ? new DynaBeanPointer(qName, (DynaBean) bean, locale) : null;
     }
 
     @Override

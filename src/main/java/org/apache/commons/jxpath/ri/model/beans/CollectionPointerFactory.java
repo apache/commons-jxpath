@@ -40,12 +40,12 @@ public class CollectionPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
+    public NodePointer createNodePointer(final NodePointer parent, final QName qName, final Object bean) {
         return ValueUtils.isCollection(bean) ? new CollectionPointer(parent, bean) : null;
     }
 
     @Override
-    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
+    public NodePointer createNodePointer(final QName qName, final Object bean, final Locale locale) {
         return ValueUtils.isCollection(bean) ? new CollectionPointer(bean, locale) : null;
     }
 

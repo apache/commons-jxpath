@@ -41,13 +41,13 @@ public class JDOMAttributeIterator implements NodeIterator {
      * Constructs a new JDOMAttributeIterator.
      * 
      * @param parent pointer
-     * @param name   test
+     * @param qName   test
      */
-    public JDOMAttributeIterator(final NodePointer parent, final QName name) {
+    public JDOMAttributeIterator(final NodePointer parent, final QName qName) {
         this.parent = parent;
         if (parent.getNode() instanceof Element) {
             final Element element = (Element) parent.getNode();
-            final String prefix = name.getPrefix();
+            final String prefix = qName.getPrefix();
             Namespace ns = null;
             if (prefix != null) {
                 if (prefix.equals("xml")) {
@@ -66,7 +66,7 @@ public class JDOMAttributeIterator implements NodeIterator {
             } else {
                 ns = Namespace.NO_NAMESPACE;
             }
-            final String lname = name.getName();
+            final String lname = qName.getName();
             if (!lname.equals("*")) {
                 attributes = new ArrayList<>();
                 final Attribute attr = element.getAttribute(lname, ns);

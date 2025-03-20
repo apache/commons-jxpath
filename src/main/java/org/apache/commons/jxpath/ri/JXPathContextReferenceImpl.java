@@ -598,11 +598,11 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     /**
      * Gets a VariablePointer for the given variable name.
      * 
-     * @param name variable name
+     * @param qName variable name
      * @return NodePointer
      */
-    public NodePointer getVariablePointer(final QName name) {
-        return NodePointer.newNodePointer(name, VariablePointerFactory.contextWrapper(this), getLocale());
+    public NodePointer getVariablePointer(final QName qName) {
+        return NodePointer.newNodePointer(qName, VariablePointerFactory.contextWrapper(this), getLocale());
     }
 
     /**

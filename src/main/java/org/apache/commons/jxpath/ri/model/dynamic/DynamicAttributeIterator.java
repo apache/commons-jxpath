@@ -31,10 +31,10 @@ public class DynamicAttributeIterator extends BeanAttributeIterator {
      * Constructs a new DynamicAttributeIterator.
      * 
      * @param parent pointer
-     * @param name   to match properties
+     * @param qName  to match properties
      */
-    public DynamicAttributeIterator(final PropertyOwnerPointer parent, final QName name) {
-        super(parent, name);
+    public DynamicAttributeIterator(final PropertyOwnerPointer parent, final QName qName) {
+        super(parent, qName);
     }
 
     @Override

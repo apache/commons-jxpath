@@ -44,7 +44,7 @@ public class VariablePointer extends NodePointer {
     /**
      * Qualified name.
      */
-    private final QName name;
+    private final QName qName;
 
     /**
      * Value pointer.
@@ -59,11 +59,11 @@ public class VariablePointer extends NodePointer {
     /**
      * Constructs a new (non-actual) VariablePointer.
      *
-     * @param name variable name
+     * @param qName variable name
      */
-    public VariablePointer(final QName name) {
+    public VariablePointer(final QName qName) {
         super(null);
-        this.name = name;
+        this.qName = qName;
         actual = false;
     }
 
@@ -71,12 +71,12 @@ public class VariablePointer extends NodePointer {
      * Constructs a new VariablePointer.
      *
      * @param variables Variables instance
-     * @param name      variable name
+     * @param qName      variable name
      */
-    public VariablePointer(final Variables variables, final QName name) {
+    public VariablePointer(final Variables variables, final QName qName) {
         super(null);
         this.variables = variables;
-        this.name = name;
+        this.qName = qName;
         actual = true;
     }
 
@@ -84,7 +84,7 @@ public class VariablePointer extends NodePointer {
     public String asPath() {
         final StringBuilder buffer = new StringBuilder();
         buffer.append('$');
-        buffer.append(name);
+        buffer.append(qName);
         if (!actual) {
             if (index != WHOLE_COLLECTION) {
                 buffer.append('[').append(index + 1).append(']');
@@ -96,8 +96,8 @@ public class VariablePointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return getValuePointer().attributeIterator(name);
+    public NodeIterator attributeIterator(final QName qName) {
+        return getValuePointer().attributeIterator(qName);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class VariablePointer extends NodePointer {
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index) {
         final Object collection = createCollection(context, index);
         if (!isActual() || index != 0 && index != WHOLE_COLLECTION) {
             final AbstractFactory factory = getAbstractFactory(context);
@@ -127,7 +127,7 @@ public class VariablePointer extends NodePointer {
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
         final Object collection = createCollection(context, index);
         ValueUtils.setValue(collection, index, value);
         final NodePointer cl = (NodePointer) clone();
@@ -146,7 +146,7 @@ public class VariablePointer extends NodePointer {
         createPath(context);
         Object collection = getBaseValue();
         if (collection == null) {
-            throw new JXPathAbstractFactoryException("Factory did not assign a collection to variable '" + name + "' for path: " + asPath());
+            throw new JXPathAbstractFactoryException("Factory did not assign a collection to variable '" + qName + "' for path: " + asPath());
         }
         if (index == WHOLE_COLLECTION) {
             index = 0;
@@ -155,7 +155,7 @@ public class VariablePointer extends NodePointer {
         }
         if (index >= getLength()) {
             collection = ValueUtils.expandCollection(collection, index + 1);
-            variables.declareVariable(name.toString(), collection);
+            variables.declareVariable(qName.toString(), collection);
         }
         return collection;
     }
@@ -164,8 +164,8 @@ public class VariablePointer extends NodePointer {
     public NodePointer createPath(final JXPathContext context) {
         if (!actual) {
             final AbstractFactory factory = getAbstractFactory(context);
-            if (!factory.declareVariable(context, name.toString())) {
-                throw new JXPathAbstractFactoryException("Factory cannot define variable '" + name + "' for path: " + asPath());
+            if (!factory.declareVariable(context, qName.toString())) {
+                throw new JXPathAbstractFactoryException("Factory cannot define variable '" + qName + "' for path: " + asPath());
             }
             findVariables(context);
             // Assert: actual == true
@@ -193,7 +193,7 @@ public class VariablePointer extends NodePointer {
             return false;
         }
         final VariablePointer other = (VariablePointer) object;
-        return variables == other.variables && name.equals(other.name) && index == other.index;
+        return variables == other.variables && qName.equals(other.qName) && index == other.index;
     }
 
     /**
@@ -206,7 +206,7 @@ public class VariablePointer extends NodePointer {
         JXPathContext varCtx = context;
         while (varCtx != null) {
             variables = varCtx.getVariables();
-            if (variables.isDeclaredVariable(name.toString())) {
+            if (variables.isDeclaredVariable(qName.toString())) {
                 actual = true;
                 break;
             }
@@ -218,9 +218,9 @@ public class VariablePointer extends NodePointer {
     @Override
     public Object getBaseValue() {
         if (!actual) {
-            throw new JXPathException("Undefined variable: " + name);
+            throw new JXPathException("Undefined variable: " + qName);
         }
-        return variables.getVariable(name.toString());
+        return variables.getVariable(qName.toString());
     }
 
     @Override
@@ -240,7 +240,7 @@ public class VariablePointer extends NodePointer {
 
                     @Override
                     public Object getImmediateNode() {
-                        throw new JXPathException("Undefined variable: " + name);
+                        throw new JXPathException("Undefined variable: " + qName);
                     }
                 };
             }
@@ -261,12 +261,12 @@ public class VariablePointer extends NodePointer {
 
     @Override
     public QName getName() {
-        return name;
+        return qName;
     }
 
     @Override
     public int hashCode() {
-        return (actual ? System.identityHashCode(variables) : 0) + name.hashCode() + index;
+        return (actual ? System.identityHashCode(variables) : 0) + qName.hashCode() + index;
     }
 
     @Override
@@ -305,7 +305,7 @@ public class VariablePointer extends NodePointer {
     public void remove() {
         if (actual) {
             if (index == WHOLE_COLLECTION) {
-                variables.undeclareVariable(name.toString());
+                variables.undeclareVariable(qName.toString());
             } else {
                 if (index < 0) {
                     throw new JXPathInvalidAccessException("Index is less than 1: " + asPath());
@@ -313,7 +313,7 @@ public class VariablePointer extends NodePointer {
                 Object collection = getBaseValue();
                 if (collection != null && index < getLength()) {
                     collection = ValueUtils.remove(collection, index);
-                    variables.declareVariable(name.toString(), collection);
+                    variables.declareVariable(qName.toString(), collection);
                 }
             }
         }
@@ -328,14 +328,14 @@ public class VariablePointer extends NodePointer {
     @Override
     public void setValue(final Object value) {
         if (!actual) {
-            throw new JXPathException("Cannot set undefined variable: " + name);
+            throw new JXPathException("Cannot set undefined variable: " + qName);
         }
         valuePointer = null;
         if (index != WHOLE_COLLECTION) {
             final Object collection = getBaseValue();
             ValueUtils.setValue(collection, index, value);
         } else {
-            variables.declareVariable(name.toString(), value);
+            variables.declareVariable(qName.toString(), value);
         }
     }
 

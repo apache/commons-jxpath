@@ -35,7 +35,7 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 public class DynamicPointer extends PropertyOwnerPointer {
 
     private static final long serialVersionUID = -1842347025295904256L;
-    private final QName name;
+    private final QName qName;
     private final Object bean;
     private final DynamicPropertyHandler handler;
 
@@ -43,13 +43,13 @@ public class DynamicPointer extends PropertyOwnerPointer {
      * Constructs a new DynamicPointer.
      * 
      * @param parent  parent pointer
-     * @param name    property name
+     * @param qName    property name
      * @param bean    owning bean
      * @param handler DynamicPropertyHandler
      */
-    public DynamicPointer(final NodePointer parent, final QName name, final Object bean, final DynamicPropertyHandler handler) {
+    public DynamicPointer(final NodePointer parent, final QName qName, final Object bean, final DynamicPropertyHandler handler) {
         super(parent);
-        this.name = name;
+        this.qName = qName;
         this.bean = bean;
         this.handler = handler;
     }
@@ -57,14 +57,14 @@ public class DynamicPointer extends PropertyOwnerPointer {
     /**
      * Constructs a new DynamicPointer.
      * 
-     * @param name    property name
+     * @param qName    property name
      * @param bean    owning bean
      * @param handler DynamicPropertyHandler
      * @param locale  Locale
      */
-    public DynamicPointer(final QName name, final Object bean, final DynamicPropertyHandler handler, final Locale locale) {
+    public DynamicPointer(final QName qName, final Object bean, final DynamicPropertyHandler handler, final Locale locale) {
         super(null, locale);
-        this.name = name;
+        this.qName = qName;
         this.bean = bean;
         this.handler = handler;
     }
@@ -75,8 +75,8 @@ public class DynamicPointer extends PropertyOwnerPointer {
     }
 
     @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return new DynamicAttributeIterator(this, name);
+    public NodeIterator attributeIterator(final QName qName) {
+        return new DynamicAttributeIterator(this, qName);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
         if (bean != other.bean) {
             return false;
         }
-        return name == other.name || name != null && name.equals(other.name);
+        return qName == other.qName || qName != null && qName.equals(other.qName);
     }
 
     /**
@@ -121,7 +121,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
 
     @Override
     public QName getName() {
-        return name;
+        return qName;
     }
 
     @Override
@@ -131,7 +131,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
 
     @Override
     public int hashCode() {
-        return System.identityHashCode(bean) + (name == null ? 0 : name.hashCode());
+        return System.identityHashCode(bean) + (qName == null ? 0 : qName.hashCode());
     }
 
     @Override

@@ -53,14 +53,14 @@ public abstract class NodePointer implements Pointer {
      * Allocates an new child NodePointer by iterating through all installed NodePointerFactories until it finds one that can create a pointer.
      *
      * @param parent pointer
-     * @param name   QName
+     * @param qName   QName
      * @param bean   Object
      * @return NodePointer
      */
-    public static NodePointer newChildNodePointer(final NodePointer parent, final QName name, final Object bean) {
+    public static NodePointer newChildNodePointer(final NodePointer parent, final QName qName, final Object bean) {
         final NodePointerFactory[] factories = JXPathContextReferenceImpl.getNodePointerFactories();
         for (final NodePointerFactory element : factories) {
-            final NodePointer pointer = element.createNodePointer(parent, name, bean);
+            final NodePointer pointer = element.createNodePointer(parent, qName, bean);
             if (pointer != null) {
                 return pointer;
             }
@@ -71,20 +71,20 @@ public abstract class NodePointer implements Pointer {
     /**
      * Allocates an entirely new NodePointer by iterating through all installed NodePointerFactories until it finds one that can create a pointer.
      *
-     * @param name   QName
+     * @param qName   QName
      * @param bean   Object
      * @param locale Locale
      * @return NodePointer
      */
-    public static NodePointer newNodePointer(final QName name, final Object bean, final Locale locale) {
+    public static NodePointer newNodePointer(final QName qName, final Object bean, final Locale locale) {
         NodePointer pointer;
         if (bean == null) {
-            pointer = new NullPointer(name, locale);
+            pointer = new NullPointer(qName, locale);
             return pointer;
         }
         final NodePointerFactory[] factories = JXPathContextReferenceImpl.getNodePointerFactories();
         for (final NodePointerFactory element : factories) {
-            pointer = element.createNodePointer(name, bean, locale);
+            pointer = element.createNodePointer(qName, bean, locale);
             if (pointer != null) {
                 return pointer;
             }
@@ -336,11 +336,11 @@ public abstract class NodePointer implements Pointer {
      * Called to create a non-existing attribute
      *
      * @param context the owning JXPathCOntext
-     * @param name    the QName at which an attribute should be created
+     * @param qName    the QName at which an attribute should be created
      * @return created NodePointer
      */
-    public NodePointer createAttribute(final JXPathContext context, final QName name) {
-        throw new JXPathException("Cannot create an attribute for path " + asPath() + "/@" + name + ", operation is not allowed for this type of node");
+    public NodePointer createAttribute(final JXPathContext context, final QName qName) {
+        throw new JXPathException("Cannot create an attribute for path " + asPath() + "/@" + qName + ", operation is not allowed for this type of node");
     }
 
     /**
@@ -348,13 +348,13 @@ public abstract class NodePointer implements Pointer {
      * create an element object and return a new pointer describing the newly created element.
      *
      * @param context the owning JXPathCOntext
-     * @param name    the QName at which a child should be created
+     * @param qName    the QName at which a child should be created
      * @param index   child index.
      * @return created NodePointer
      */
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index) {
         throw new JXPathException(
-                "Cannot create an object for path " + asPath() + "/" + name + "[" + (index + 1) + "]" + ", operation is not allowed for this type of node");
+                "Cannot create an object for path " + asPath() + "/" + qName + "[" + (index + 1) + "]" + ", operation is not allowed for this type of node");
     }
 
     /**
@@ -362,14 +362,14 @@ public abstract class NodePointer implements Pointer {
      * have to expand the collection in order to assign the element.
      *
      * @param context the owning JXPathCOntext
-     * @param name    the QName at which a child should be created
+     * @param qName    the QName at which a child should be created
      * @param index   child index.
      * @param value   node value to set
      * @return created NodePointer
      */
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
         throw new JXPathException(
-                "Cannot create an object for path " + asPath() + "/" + name + "[" + (index + 1) + "]" + ", operation is not allowed for this type of node");
+                "Cannot create an object for path " + asPath() + "/" + qName + "[" + (index + 1) + "]" + ", operation is not allowed for this type of node");
     }
 
     /**

@@ -78,13 +78,13 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
-        return createPath(context).createChild(context, name, index);
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index) {
+        return createPath(context).createChild(context, qName, index);
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
-        return createPath(context).createChild(context, name, index, value);
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
+        return createPath(context).createChild(context, qName, index, value);
     }
 
     @Override

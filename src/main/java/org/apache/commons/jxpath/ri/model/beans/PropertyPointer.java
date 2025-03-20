@@ -63,20 +63,20 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index) {
         final PropertyPointer prop = (PropertyPointer) clone();
-        if (name != null) {
-            prop.setPropertyName(name.toString());
+        if (qName != null) {
+            prop.setPropertyName(qName.toString());
         }
         prop.setIndex(index);
         return prop.createPath(context);
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
         final PropertyPointer prop = (PropertyPointer) clone();
-        if (name != null) {
-            prop.setPropertyName(name.toString());
+        if (qName != null) {
+            prop.setPropertyName(qName.toString());
         }
         prop.setIndex(index);
         return prop.createPath(context, value);

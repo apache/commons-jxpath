@@ -41,18 +41,18 @@ public class BeanPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
+    public NodePointer createNodePointer(final NodePointer parent, final QName qName, final Object bean) {
         if (bean == null) {
-            return new NullPointer(parent, name);
+            return new NullPointer(parent, qName);
         }
         final JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
-        return new BeanPointer(parent, name, bean, bi);
+        return new BeanPointer(parent, qName, bean, bi);
     }
 
     @Override
-    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
+    public NodePointer createNodePointer(final QName qName, final Object bean, final Locale locale) {
         final JXPathBeanInfo bi = JXPathIntrospector.getBeanInfo(bean.getClass());
-        return new BeanPointer(name, bean, bi, locale);
+        return new BeanPointer(qName, bean, bi, locale);
     }
 
     @Override

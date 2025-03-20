@@ -91,8 +91,8 @@ public class CollectionPointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return index == WHOLE_COLLECTION ? new CollectionAttributeNodeIterator(this, name) : getValuePointer().attributeIterator(name);
+    public NodeIterator attributeIterator(final QName qName) {
+        return index == WHOLE_COLLECTION ? new CollectionAttributeNodeIterator(this, qName) : getValuePointer().attributeIterator(qName);
     }
 
     @Override
@@ -109,14 +109,14 @@ public class CollectionPointer extends NodePointer {
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index) {
         final NodePointer ptr = (NodePointer) clone();
         ptr.setIndex(index);
         return ptr.createPath(context);
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
         final NodePointer ptr = (NodePointer) clone();
         ptr.setIndex(index);
         return ptr.createPath(context, value);

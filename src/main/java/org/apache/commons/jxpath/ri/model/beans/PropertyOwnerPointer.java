@@ -62,8 +62,8 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return new BeanAttributeIterator(this, name);
+    public NodeIterator attributeIterator(final QName qName) {
+        return new BeanAttributeIterator(this, qName);
     }
 
     @Override
@@ -132,12 +132,12 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     /**
      * Learn whether {@code name} is a valid child name for this PropertyOwnerPointer.
      *
-     * @param name the QName to test
+     * @param qName the QName to test
      * @return {@code true} if {@code QName} is a valid property name.
      * @since JXPath 1.3
      */
-    public boolean isValidProperty(final QName name) {
-        return isDefaultNamespace(name.getPrefix());
+    public boolean isValidProperty(final QName qName) {
+        return isDefaultNamespace(qName.getPrefix());
     }
 
     /**

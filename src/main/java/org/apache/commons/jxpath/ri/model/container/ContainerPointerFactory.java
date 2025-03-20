@@ -40,12 +40,12 @@ public class ContainerPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
+    public NodePointer createNodePointer(final NodePointer parent, final QName qName, final Object bean) {
         return bean instanceof Container ? new ContainerPointer(parent, (Container) bean) : null;
     }
 
     @Override
-    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
+    public NodePointer createNodePointer(final QName qName, final Object bean, final Locale locale) {
         return bean instanceof Container ? new ContainerPointer((Container) bean, locale) : null;
     }
 

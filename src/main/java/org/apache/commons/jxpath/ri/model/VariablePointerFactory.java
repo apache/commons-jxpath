@@ -77,25 +77,25 @@ public class VariablePointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object object) {
-        return createNodePointer(name, object, null);
+    public NodePointer createNodePointer(final NodePointer parent, final QName qName, final Object object) {
+        return createNodePointer(qName, object, null);
     }
 
     @Override
-    public NodePointer createNodePointer(final QName name, final Object object, final Locale locale) {
+    public NodePointer createNodePointer(final QName qName, final Object object, final Locale locale) {
         if (object instanceof VariableContextWrapper) {
             JXPathContext varCtx = ((VariableContextWrapper) object).getContext();
             while (varCtx != null) {
                 final Variables vars = varCtx.getVariables();
-                if (vars.isDeclaredVariable(name.toString())) {
-                    return new VariablePointer(vars, name);
+                if (vars.isDeclaredVariable(qName.toString())) {
+                    return new VariablePointer(vars, qName);
                 }
                 varCtx = varCtx.getParentContext();
             }
             // The variable is not declared, but we will create
             // a pointer anyway in case the user wants to set, rather
             // than get, the value of the variable.
-            return new VariablePointer(name);
+            return new VariablePointer(qName);
         }
         return null;
     }

@@ -346,8 +346,8 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return new JDOMAttributeIterator(this, name);
+    public NodeIterator attributeIterator(final QName qName) {
+        return new JDOMAttributeIterator(this, qName);
     }
 
     @Override
@@ -400,55 +400,55 @@ public class JDOMNodePointer extends NodePointer {
     }
 
     @Override
-    public NodePointer createAttribute(final JXPathContext context, final QName name) {
+    public NodePointer createAttribute(final JXPathContext context, final QName qName) {
         if (!(node instanceof Element)) {
-            return super.createAttribute(context, name);
+            return super.createAttribute(context, qName);
         }
         final Element element = (Element) node;
-        final String prefix = name.getPrefix();
+        final String prefix = qName.getPrefix();
         if (prefix != null) {
             final String namespaceUri = getNamespaceResolver().getNamespaceURI(prefix);
             if (namespaceUri == null) {
                 throw new JXPathException("Unknown namespace prefix: " + prefix);
             }
             final Namespace ns = Namespace.getNamespace(prefix, namespaceUri);
-            final Attribute attr = element.getAttribute(name.getName(), ns);
+            final Attribute attr = element.getAttribute(qName.getName(), ns);
             if (attr == null) {
-                element.setAttribute(name.getName(), "", ns);
+                element.setAttribute(qName.getName(), "", ns);
             }
         } else {
-            final Attribute attr = element.getAttribute(name.getName());
+            final Attribute attr = element.getAttribute(qName.getName());
             if (attr == null) {
-                element.setAttribute(name.getName(), "");
+                element.setAttribute(qName.getName(), "");
             }
         }
-        final NodeIterator it = attributeIterator(name);
+        final NodeIterator it = attributeIterator(qName);
         it.setPosition(1);
         return it.getNodePointer();
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, int index) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, int index) {
         if (index == WHOLE_COLLECTION) {
             index = 0;
         }
-        final boolean success = getAbstractFactory(context).createObject(context, this, node, name.toString(), index);
+        final boolean success = getAbstractFactory(context).createObject(context, this, node, qName.toString(), index);
         if (success) {
             NodeTest nodeTest;
-            final String prefix = name.getPrefix();
+            final String prefix = qName.getPrefix();
             final String namespaceURI = prefix == null ? null : context.getNamespaceURI(prefix);
-            nodeTest = new NodeNameTest(name, namespaceURI);
+            nodeTest = new NodeNameTest(qName, namespaceURI);
             final NodeIterator it = childIterator(nodeTest, false, null);
             if (it != null && it.setPosition(index + 1)) {
                 return it.getNodePointer();
             }
         }
-        throw new JXPathAbstractFactoryException("Factory could not create a child node for path: " + asPath() + "/" + name + "[" + (index + 1) + "]");
+        throw new JXPathAbstractFactoryException("Factory could not create a child node for path: " + asPath() + "/" + qName + "[" + (index + 1) + "]");
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
-        final NodePointer ptr = createChild(context, name, index);
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
+        final NodePointer ptr = createChild(context, qName, index);
         ptr.setValue(value);
         return ptr;
     }

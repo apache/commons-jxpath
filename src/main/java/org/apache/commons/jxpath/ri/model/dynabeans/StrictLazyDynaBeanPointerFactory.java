@@ -45,23 +45,23 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
          * Constructs a new StrictLazyDynaBeanPointer instance.
          *
          * @param parent       pointer
-         * @param name         is the name given to the first node
+         * @param qName        is the name given to the first node
          * @param lazyDynaBean pointed
          */
-        public StrictLazyDynaBeanPointer(final NodePointer parent, final QName name, final LazyDynaBean lazyDynaBean) {
-            super(parent, name, lazyDynaBean);
+        public StrictLazyDynaBeanPointer(final NodePointer parent, final QName qName, final LazyDynaBean lazyDynaBean) {
+            super(parent, qName, lazyDynaBean);
             this.lazyDynaBean = lazyDynaBean;
         }
 
         /**
          * Constructs a new StrictLazyDynaBeanPointer instance.
          *
-         * @param name         is the name given to the first node
+         * @param qName        is the name given to the first node
          * @param lazyDynaBean pointed
          * @param locale       Locale
          */
-        public StrictLazyDynaBeanPointer(final QName name, final LazyDynaBean lazyDynaBean, final Locale locale) {
-            super(name, lazyDynaBean, locale);
+        public StrictLazyDynaBeanPointer(final QName qName, final LazyDynaBean lazyDynaBean, final Locale locale) {
+            super(qName, lazyDynaBean, locale);
             this.lazyDynaBean = lazyDynaBean;
         }
 
@@ -93,16 +93,16 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
      * {@inheritDoc}
      */
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object object) {
-        return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(parent, name, (LazyDynaBean) object) : null;
+    public NodePointer createNodePointer(final NodePointer parent, final QName qName, final Object object) {
+        return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(parent, qName, (LazyDynaBean) object) : null;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public NodePointer createNodePointer(final QName name, final Object object, final Locale locale) {
-        return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(name, (LazyDynaBean) object, locale) : null;
+    public NodePointer createNodePointer(final QName qName, final Object object, final Locale locale) {
+        return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(qName, (LazyDynaBean) object, locale) : null;
     }
 
     /**

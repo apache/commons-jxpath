@@ -29,14 +29,22 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class NamespacePointer extends NodePointer {
 
     private static final long serialVersionUID = -7622456151550131709L;
+
+    /**
+     * Namespace prefix.
+     */
     private final String prefix;
+
+    /**
+     * Namespace URI String.
+     */
     private String namespaceURI;
 
     /**
      * Constructs a new NamespacePointer.
-     * 
+     *
      * @param parent parent pointer
-     * @param prefix associated ns prefix.
+     * @param prefix namespace prefix.
      */
     public NamespacePointer(final NodePointer parent, final String prefix) {
         super(parent);
@@ -45,10 +53,10 @@ public class NamespacePointer extends NodePointer {
 
     /**
      * Constructs a new NamespacePointer.
-     * 
+     *
      * @param parent       parent pointer
-     * @param prefix       associated ns prefix.
-     * @param namespaceURI associated ns URI.
+     * @param prefix       namespace prefix.
+     * @param namespaceURI namespace URI.
      */
     public NamespacePointer(final NodePointer parent, final String prefix, final String namespaceURI) {
         super(parent);
@@ -133,7 +141,7 @@ public class NamespacePointer extends NodePointer {
 
     /**
      * Throws UnsupportedOperationException.
-     * 
+     *
      * @param value Object
      */
     @Override
