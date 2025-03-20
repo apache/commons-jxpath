@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>81</version>
+    <version>79</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-jxpath</groupId>
@@ -117,9 +117,7 @@
             <!-- http://www.jdom.org/docs/apidocs/ is not a secure link -->
             <link>https://javadoc.io/doc/org.jdom/jdom/1.1</link>
           </links>
-          <excludePackageNames>
-            org.apache.commons.jxpath.ri.parser
-          </excludePackageNames>
+          <excludePackageNames>org.apache.commons.jxpath.ri.parser</excludePackageNames>
         </configuration>
       </plugin>
       <plugin>
@@ -298,6 +296,18 @@
     <system>GitHub</system>
     <url>https://github.com/apache/commons-jaxpth/actions</url>
   </ciManagement>
+  <profiles>
+    <profile>
+      <id>java-8</id>
+      <activation>
+        <jdk>8</jdk>
+      </activation>
+      <properties>
+        <!-- Javadoc 8 expects a package-list file in the Javadoc root but current Java versions generate an element-list file. -->
+        <commons.javadoc.failOnWarnings>true</commons.javadoc.failOnWarnings>
+      </properties>
+    </profile>
+  </profiles>
   <developers>
     <developer>
       <id>dmitri</id>
