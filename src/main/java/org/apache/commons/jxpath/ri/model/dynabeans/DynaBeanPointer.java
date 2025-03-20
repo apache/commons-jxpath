@@ -34,7 +34,7 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
 
     /**
      * Learn whether two objects are == || .equals().
-     * 
+     *
      * @param o1 first object
      * @param o2 second object
      * @return boolean
@@ -43,12 +43,19 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
         return o1 == o2 || o1 != null && o1.equals(o2);
     }
 
+    /**
+     * Qualified name.
+     */
     private final QName qName;
+
+    /**
+     * DynaBean.
+     */
     private final DynaBean dynaBean;
 
     /**
      * Constructs a new DynaBeanPointer.
-     * 
+     *
      * @param parent   pointer
      * @param qName     is the name given to the first node
      * @param dynaBean pointed
@@ -61,7 +68,7 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
 
     /**
      * Constructs a new DynaBeanPointer.
-     * 
+     *
      * @param qName     is the name given to the first node
      * @param dynaBean pointed
      * @param locale   Locale

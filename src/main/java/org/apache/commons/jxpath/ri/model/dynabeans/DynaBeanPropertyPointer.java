@@ -36,13 +36,25 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     private static final String CLASS = "class";
     private static final long serialVersionUID = 2094421509141267239L;
+
+    /**
+     * DynaBean.
+     */
     private final DynaBean dynaBean;
+
+    /**
+     * The name of the currently selected property or "*" if none has been selected.
+     */
     private String name;
+
+    /**
+     * The names of the included properties.
+     */
     private String[] names;
 
     /**
      * Constructs a new DynaBeanPropertyPointer.
-     * 
+     *
      * @param parent   pointer
      * @param dynaBean pointed
      */
@@ -53,7 +65,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     /**
      * Convert a value to the appropriate property type.
-     * 
+     *
      * @param value   to convert
      * @param element whether this should be a collection element.
      * @return conversion result
@@ -84,7 +96,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     /**
      * If index == WHOLE_COLLECTION, the value of the property, otherwise the value of the index'th element of the collection represented by the property. If
      * the property is not a collection, index should be zero and the value will be the property itself.
-     * 
+     *
      * @return Object
      */
     @Override
@@ -127,7 +139,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     /**
      * Index of the currently selected property in the list of all properties sorted alphabetically.
-     * 
+     *
      * @return int
      */
     @Override
@@ -147,7 +159,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     /**
      * Returns the name of the currently selected property or "*" if none has been selected.
-     * 
+     *
      * @return String
      */
     @Override
@@ -172,7 +184,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
                     properties.add(name);
                 }
             }
-            names = (String[]) properties.toArray(new String[properties.size()]);
+            names = properties.toArray(new String[properties.size()]);
             Arrays.sort(names);
         }
         return names;
@@ -180,7 +192,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     /**
      * Returns true if the bean has the currently selected property.
-     * 
+     *
      * @return boolean
      */
     @Override
@@ -191,7 +203,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     /**
      * This type of node is auxiliary.
-     * 
+     *
      * @return true
      */
     @Override
@@ -201,7 +213,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     /**
      * Learn whether the property referenced is an indexed property.
-     * 
+     *
      * @return boolean
      */
     protected boolean isIndexedProperty() {
@@ -226,7 +238,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     /**
      * Index a property by its index in the list of all properties sorted alphabetically.
-     * 
+     *
      * @param index to set
      */
     @Override
@@ -239,7 +251,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     /**
      * Select a property by name.
-     * 
+     *
      * @param propertyName to select
      */
     @Override
@@ -250,7 +262,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
 
     /**
      * Sets an indexed value.
-     * 
+     *
      * @param index to change
      * @param value to set
      */
@@ -268,7 +280,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     /**
      * If index == WHOLE_COLLECTION, change the value of the property, otherwise change the value of the index'th element of the collection represented by the
      * property.
-     * 
+     *
      * @param value to set
      */
     @Override

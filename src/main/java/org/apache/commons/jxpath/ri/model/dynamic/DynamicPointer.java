@@ -35,13 +35,25 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 public class DynamicPointer extends PropertyOwnerPointer {
 
     private static final long serialVersionUID = -1842347025295904256L;
+
+    /**
+     * Qualified name.
+     */
     private final QName qName;
+
+    /**
+     * Java bean.
+     */
     private final Object bean;
+
+    /**
+     * Dynamic property handler.
+     */
     private final DynamicPropertyHandler handler;
 
     /**
      * Constructs a new DynamicPointer.
-     * 
+     *
      * @param parent  parent pointer
      * @param qName    property name
      * @param bean    owning bean
@@ -56,7 +68,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
 
     /**
      * Constructs a new DynamicPointer.
-     * 
+     *
      * @param qName    property name
      * @param bean    owning bean
      * @param handler DynamicPropertyHandler
@@ -101,7 +113,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
 
     /**
      * Returns the DP object iself.
-     * 
+     *
      * @return Object
      */
     @Override
@@ -111,7 +123,7 @@ public class DynamicPointer extends PropertyOwnerPointer {
 
     /**
      * Returns 1.
-     * 
+     *
      * @return int
      */
     @Override
