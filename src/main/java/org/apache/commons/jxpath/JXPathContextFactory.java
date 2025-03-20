@@ -18,11 +18,12 @@
 package org.apache.commons.jxpath;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
@@ -40,12 +41,15 @@ public abstract class JXPathContextFactory {
 
     /** The default property */
     public static final String FACTORY_NAME_PROPERTY = "org.apache.commons.jxpath.JXPathContextFactory";
+
     /** The default factory class */
     private static final String DEFAULT_FACTORY_CLASS = "org.apache.commons.jxpath.ri.JXPathContextFactoryReferenceImpl";
+
     /**
      * Avoid reading all the files when the findFactory method is called the second time ( cache the result of finding the default impl )
      */
     private static final String FACTORY_IMPL_NAME = findFactory(FACTORY_NAME_PROPERTY, DEFAULT_FACTORY_CLASS);
+
     /**
      * Temp debug code - this will be removed after we test everything
      */
@@ -81,12 +85,11 @@ public abstract class JXPathContextFactory {
         }
         // try to read from $java.home/lib/xml.properties
         try {
-            final String javaHome = System.getProperty("java.home");
-            final String configFile = javaHome + File.separator + "lib" + File.separator + "jxpath.properties";
-            final File f = new File(configFile);
-            if (f.exists()) {
+            final Path javaHome = Paths.get(System.getProperty("java.home"));
+            final Path configFile = javaHome.resolve(Paths.get("lib", "jxpath.properties"));
+            if (Files.exists(configFile)) {
                 final Properties props = new Properties();
-                try (FileInputStream fis = new FileInputStream(f)) {
+                try (InputStream fis = Files.newInputStream(configFile)) {
                     props.load(fis);
                 }
                 final String factory = props.getProperty(property);
