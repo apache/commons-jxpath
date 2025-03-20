@@ -33,7 +33,7 @@ public class SelfContext extends EvalContext {
 
     /**
      * Constructs a new SelfContext.
-     * 
+     *
      * @param parentContext EvalContext
      * @param nodeTest      guard
      */

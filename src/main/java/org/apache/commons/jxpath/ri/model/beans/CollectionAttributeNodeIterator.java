@@ -30,7 +30,7 @@ public class CollectionAttributeNodeIterator extends CollectionNodeIterator {
 
     /**
      * Constructs a new CollectionAttributeNodeIterator.
-     * 
+     *
      * @param pointer collection pointer
      * @param qName    attribute name
      */

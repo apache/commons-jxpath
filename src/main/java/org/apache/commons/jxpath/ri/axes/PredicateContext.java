@@ -39,7 +39,7 @@ public class PredicateContext extends EvalContext {
 
     /**
      * Constructs a new PredicateContext.
-     * 
+     *
      * @param parentContext parent context
      * @param expression    compiled Expression
      */
@@ -148,7 +148,7 @@ public class PredicateContext extends EvalContext {
 
     /**
      * Basic setPosition
-     * 
+     *
      * @param position to set
      * @return whether valid
      */
@@ -166,7 +166,7 @@ public class PredicateContext extends EvalContext {
 
     /**
      * Used for an optimized access to dynamic properties using the "map[@name = 'name']" syntax
-     * 
+     *
      * @return whether valid
      */
     private boolean setupDynamicPropertyPointer() {

@@ -77,7 +77,7 @@ public class TreeCompiler implements Compiler {
 
     /**
      * Learn whether arg is a name attribute test.
-     * 
+     *
      * @param arg Expression to test
      * @return boolean
      */
@@ -189,7 +189,7 @@ public class TreeCompiler implements Compiler {
 
     /**
      * Gets an Object[] as an Expression[].
-     * 
+     *
      * @param array Object[]
      * @return Expression[]
      */
@@ -206,7 +206,7 @@ public class TreeCompiler implements Compiler {
 
     /**
      * Gets an Object[] as a Step[].
-     * 
+     *
      * @param array Object[]
      * @return Step[]
      */

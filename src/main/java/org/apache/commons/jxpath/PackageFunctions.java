@@ -36,11 +36,11 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * a class prefix is a package name (hence the name of this class).
  *
  * Let's say, we declared a PackageFunction like this: <blockquote>
- * 
+ *
  * <pre>
  * new PackageFunctions("java.util.", "util")
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * We can now use XPaths like:
@@ -72,7 +72,7 @@ public class PackageFunctions implements Functions {
 
     /**
      * Constructs a new PackageFunctions.
-     * 
+     *
      * @param classPrefix class prefix
      * @param namespace   namespace String
      */
@@ -166,7 +166,7 @@ public class PackageFunctions implements Functions {
 
     /**
      * Returns the namespace specified in the constructor
-     * 
+     *
      * @return (singleton) namespace Set
      */
     @Override

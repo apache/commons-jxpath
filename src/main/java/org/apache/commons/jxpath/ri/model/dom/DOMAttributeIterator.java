@@ -41,7 +41,7 @@ public class DOMAttributeIterator implements NodeIterator {
 
     /**
      * Constructs a new DOMAttributeIterator.
-     * 
+     *
      * @param parent pointer
      * @param qName   to test
      */
@@ -72,7 +72,7 @@ public class DOMAttributeIterator implements NodeIterator {
 
     /**
      * Gets the named attribute.
-     * 
+     *
      * @param element to search
      * @param qName    to match
      * @return Attr found
@@ -115,7 +115,7 @@ public class DOMAttributeIterator implements NodeIterator {
         if (index < 0) {
             index = 0;
         }
-        return new DOMAttributePointer(parent, (Attr) attributes.get(index));
+        return new DOMAttributePointer(parent, attributes.get(index));
     }
 
     @Override
@@ -131,7 +131,7 @@ public class DOMAttributeIterator implements NodeIterator {
 
     /**
      * Test an attribute.
-     * 
+     *
      * @param attr to test
      * @return whether test succeeded
      */

@@ -39,7 +39,7 @@ public class JDOMAttributeIterator implements NodeIterator {
 
     /**
      * Constructs a new JDOMAttributeIterator.
-     * 
+     *
      * @param parent pointer
      * @param qName   test
      */
@@ -98,7 +98,7 @@ public class JDOMAttributeIterator implements NodeIterator {
         if (index < 0) {
             index = 0;
         }
-        return new JDOMAttributePointer(parent, (Attribute) attributes.get(index));
+        return new JDOMAttributePointer(parent, attributes.get(index));
     }
 
     @Override

@@ -42,7 +42,7 @@ public final class Constants {
      * Attribute name used in page context, requst, session, and servlet context to store the corresponding {@link org.apache.commons.jxpath.JXPathContext}.
      */
     public static final String JXPATH_CONTEXT = "org.apache.commons.jxpath.JXPATH_CONTEXT";
-    
+
     /**
      * Constructs a new instance.
      * @deprecated Will be private in the next major version.

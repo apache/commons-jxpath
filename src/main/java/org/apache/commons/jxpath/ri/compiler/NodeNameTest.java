@@ -29,7 +29,7 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Constructs a new NodeNameTest.
-     * 
+     *
      * @param qname name to match
      */
     public NodeNameTest(final QName qname) {
@@ -38,7 +38,7 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Constructs a new NodeNameTest.
-     * 
+     *
      * @param qname        name to match
      * @param namespaceURI uri to match
      */
@@ -49,7 +49,7 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Gets the ns URI.
-     * 
+     *
      * @return String
      */
     public String getNamespaceURI() {
@@ -58,7 +58,7 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Gets the node name.
-     * 
+     *
      * @return QName
      */
     public QName getNodeName() {
@@ -67,7 +67,7 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Learn whether this is a wildcard test.
-     * 
+     *
      * @return {@code true} if the node name is "*".
      */
     public boolean isWildcard() {

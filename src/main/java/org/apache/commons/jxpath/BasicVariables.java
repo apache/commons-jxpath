@@ -30,7 +30,7 @@ public class BasicVariables implements Variables {
      * Contains the values of declared variables
      */
     private final HashMap vars = new HashMap();
-    
+
     /**
      * Constructs a new instance.
      */

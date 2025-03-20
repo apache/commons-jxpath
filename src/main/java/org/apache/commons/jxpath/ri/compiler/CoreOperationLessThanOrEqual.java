@@ -24,7 +24,7 @@ public class CoreOperationLessThanOrEqual extends CoreOperationRelationalExpress
 
     /**
      * Constructs a new CoreOperationLessThanOrEqual.
-     * 
+     *
      * @param arg1 left Expression
      * @param arg2 right Expression
      */

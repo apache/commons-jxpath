@@ -39,7 +39,7 @@ public class TypeUtils {
 
     /**
      * Returns true if the global converter can convert the supplied object to the specified type.
-     * 
+     *
      * @param object object to test
      * @param toType target class
      * @return boolean
@@ -50,7 +50,7 @@ public class TypeUtils {
 
     /**
      * Converts the supplied object to the specified type. May throw a RuntimeException.
-     * 
+     *
      * @param object object to convert
      * @param toType target class
      * @return resulting Object
@@ -61,7 +61,7 @@ public class TypeUtils {
 
     /**
      * Returns the current type converter.
-     * 
+     *
      * @return TypeConverter
      */
     public static TypeConverter getTypeConverter() {
@@ -70,7 +70,7 @@ public class TypeUtils {
 
     /**
      * Install an alternative type converter.
-     * 
+     *
      * @param converter new TypeConverter
      */
     public static synchronized void setTypeConverter(final TypeConverter converter) {
@@ -79,7 +79,7 @@ public class TypeUtils {
 
     /**
      * Return the appropriate wrapper type for the specified class.
-     * 
+     *
      * @param p Class for which to retrieve a wrapper class.
      * @return the wrapper if {@code p} is primitive, else {@code p}.
      * @since JXPath 1.3

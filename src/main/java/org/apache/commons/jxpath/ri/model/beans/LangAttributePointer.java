@@ -30,7 +30,7 @@ public class LangAttributePointer extends NodePointer {
 
     /**
      * Constructs a new LangAttributePointer.
-     * 
+     *
      * @param parent parent pointer.
      */
     public LangAttributePointer(final NodePointer parent) {
@@ -105,7 +105,7 @@ public class LangAttributePointer extends NodePointer {
      * {@inheritDoc}
      *
      * Throws UnsupportedOperationException.
-     * 
+     *
      * @param value Object
      */
     @Override

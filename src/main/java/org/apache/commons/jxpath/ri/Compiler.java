@@ -25,7 +25,7 @@ package org.apache.commons.jxpath.ri;
  * four virtual object types: EXPRESSION, QNAME, STEP and NODE_TEST.
  * <p>
  * The following example illustrates this notion. This sequence compiles the xpath "foo[round(1 div 2)]/text()": <blockquote>
- * 
+ *
  * <pre>
  *      Object qname1 = compiler.qname(null, "foo")
  *      Object expr1 = compiler.number("1");
@@ -40,7 +40,7 @@ package org.apache.commons.jxpath.ri;
  *      Object step2 = compiler.nodeTypeTest(Compiler.AXIS_CHILD, test2, null);
  *      Object expr5 = compiler.locationPath(false, new Object[]{step1, step2});
  * </pre>
- * 
+ *
  * </blockquote>
  */
 public interface Compiler {
@@ -281,7 +281,7 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object that represents a string constant.
-     * 
+     *
      * @param value String literal
      * @return Object
      */
@@ -358,7 +358,7 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object that represents a numeric constant.
-     * 
+     *
      * @param value numeric String
      * @return Object
      */
@@ -382,7 +382,7 @@ public interface Compiler {
 
     /**
      * Produces an QNAME that represents a name with an optional prefix.
-     * 
+     *
      * @param prefix String prefix
      * @param name   String name
      * @return Object

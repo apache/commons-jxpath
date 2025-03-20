@@ -27,14 +27,14 @@ public interface Container extends Serializable {
 
     /**
      * Returns the contained value.
-     * 
+     *
      * @return Object value
      */
     Object getValue();
 
     /**
      * Modifies the value contained by this container. May throw UnsupportedOperationException.
-     * 
+     *
      * @param value Object value to set.
      */
     void setValue(Object value);

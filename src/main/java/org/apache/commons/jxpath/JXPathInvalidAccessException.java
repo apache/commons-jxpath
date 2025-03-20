@@ -27,7 +27,7 @@ public class JXPathInvalidAccessException extends JXPathException {
 
     /**
      * Constructs a new JXPathInvalidAccessException.
-     * 
+     *
      * @param message exception message
      */
     public JXPathInvalidAccessException(final String message) {
@@ -36,7 +36,7 @@ public class JXPathInvalidAccessException extends JXPathException {
 
     /**
      * Constructs a new JXPathInvalidAccessException.
-     * 
+     *
      * @param message exception message
      * @param ex      precipitating exception
      */

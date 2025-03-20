@@ -27,7 +27,7 @@ public class CoreOperationAdd extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationAdd.
-     * 
+     *
      * @param args Expression arguments to add together.
      */
     public CoreOperationAdd(final Expression[] args) {

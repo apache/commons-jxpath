@@ -33,7 +33,7 @@ public class InitialContext extends EvalContext {
 
     /**
      * Constructs a new InitialContext.
-     * 
+     *
      * @param parentContext parent context
      */
     public InitialContext(final EvalContext parentContext) {

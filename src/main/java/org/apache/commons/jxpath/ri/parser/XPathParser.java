@@ -356,16 +356,16 @@ public class XPathParser implements XPathParserConstants {
     /*----------------------------------*/
     /*
      * The following special tokenization rules must be applied in the order specified to disambiguate the grammar:
-     * 
+     *
      * 1. If there is a preceding token and the preceding token is not one of
-     * 
+     *
      * @, ::, (, [, , or an Operator, then a * must be recognized as a MultiplyOperator and an NCName must be recognized as an OperatorName.
-     * 
+     *
      * 2. If the character following an NCName (possibly after intervening ExprWhitespace) is (, then the token must be recognized as a NodeType or a
      * FunctionName.
-     * 
+     *
      * 3. If the two characters following an NCName (possibly after intervening ExprWhitespace) are ::, then the token must be recognized as an AxisName.
-     * 
+     *
      * 4. Otherwise, the token must not be recognized as a MultiplyOperator, an OperatorName, a NodeType, a FunctionName, or an AxisName.
      */
     /*

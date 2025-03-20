@@ -40,7 +40,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
 
     /**
      * Constructs a new JDOMNamespaceIterator.
-     * 
+     *
      * @param parent the parent NodePointer.
      */
     public JDOMNamespaceIterator(final NodePointer parent) {
@@ -58,7 +58,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
 
     /**
      * Collect the namespaces from a JDOM Element.
-     * 
+     *
      * @param element the source Element
      */
     private void collectNamespaces(final Element element) {
@@ -68,8 +68,8 @@ public class JDOMNamespaceIterator implements NodeIterator {
             prefixes.add(ns.getPrefix());
         }
         final List others = element.getAdditionalNamespaces();
-        for (int i = 0; i < others.size(); i++) {
-            ns = (Namespace) others.get(i);
+        for (final Object other : others) {
+            ns = (Namespace) other;
             if (ns != null && !prefixes.contains(ns.getPrefix())) {
                 namespaces.add(ns);
                 prefixes.add(ns.getPrefix());

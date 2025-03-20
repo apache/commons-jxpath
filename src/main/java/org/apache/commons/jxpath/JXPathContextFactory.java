@@ -61,7 +61,7 @@ public abstract class JXPathContextFactory {
 
     /**
      * Private implementation method - will find the implementation class in the specified order.
-     * 
+     *
      * @param property       Property name
      * @param defaultFactory Default implementation, if nothing else is found
      * @return class name of the JXPathContextFactory
@@ -191,7 +191,7 @@ public abstract class JXPathContextFactory {
 
     /**
      * Creates a new instance of a JXPathContext using the currently configured parameters.
-     * 
+     *
      * @param parentContext parent context
      * @param contextBean   Object bean
      * @return JXPathContext

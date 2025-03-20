@@ -29,7 +29,7 @@ public class LocationPath extends Path {
 
     /**
      * Constructs a new LocationPath.
-     * 
+     *
      * @param absolute whether this is an absolute path
      * @param steps    to evaluate
      */
@@ -69,7 +69,7 @@ public class LocationPath extends Path {
 
     /**
      * Learn whether this LocationPath is absolute.
-     * 
+     *
      * @return boolean
      */
     public boolean isAbsolute() {

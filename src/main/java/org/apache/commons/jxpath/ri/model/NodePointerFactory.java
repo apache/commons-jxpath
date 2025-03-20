@@ -49,7 +49,7 @@ public interface NodePointerFactory {
 
     /**
      * The factory order number determines its position between other factories.
-     * 
+     *
      * @return int order
      */
     int getOrder();

@@ -35,7 +35,7 @@ public interface DynamicPropertyHandler {
 
     /**
      * Returns the value of the specified dynamic property.
-     * 
+     *
      * @param object       to search
      * @param propertyName to retrieve
      * @return Object
@@ -44,7 +44,7 @@ public interface DynamicPropertyHandler {
 
     /**
      * Returns a list of dynamic property names for the supplied object.
-     * 
+     *
      * @param object to inspect
      * @return String[]
      */
@@ -52,7 +52,7 @@ public interface DynamicPropertyHandler {
 
     /**
      * Modifies the value of the specified dynamic property.
-     * 
+     *
      * @param object       to modify
      * @param propertyName to modify
      * @param value        to set

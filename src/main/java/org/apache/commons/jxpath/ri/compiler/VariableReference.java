@@ -29,7 +29,7 @@ public class VariableReference extends Expression {
 
     /**
      * Constructs a new VariableReference.
-     * 
+     *
      * @param varName variable name
      */
     public VariableReference(final QName varName) {
@@ -48,7 +48,7 @@ public class VariableReference extends Expression {
 
     /**
      * Returns the value of the variable.
-     * 
+     *
      * @param context EvalContext against which to compute the variable's value.
      * @return Object
      */
@@ -59,7 +59,7 @@ public class VariableReference extends Expression {
 
     /**
      * Gets the variable name.
-     * 
+     *
      * @return QName
      */
     public QName getVariableName() {

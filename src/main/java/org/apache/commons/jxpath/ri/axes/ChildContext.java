@@ -35,7 +35,7 @@ public class ChildContext extends EvalContext {
 
     /**
      * Constructs a new ChildContext.
-     * 
+     *
      * @param parentContext           parent EvalContext
      * @param nodeTest                NodeTest
      * @param startFromParentLocation whether to start from parent location
@@ -60,7 +60,7 @@ public class ChildContext extends EvalContext {
      * This method is called on the last context on the path when only one value is needed. Note that this will return the whole property, even if it is a
      * collection. It will not extract the first element of the collection. For example, "books" will return the collection of books rather than the first book
      * from that collection.
-     * 
+     *
      * @return Pointer
      */
     @Override

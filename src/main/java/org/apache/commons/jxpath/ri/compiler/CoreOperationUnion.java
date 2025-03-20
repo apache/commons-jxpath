@@ -27,7 +27,7 @@ public class CoreOperationUnion extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationUnion.
-     * 
+     *
      * @param args Expression[]
      */
     public CoreOperationUnion(final Expression[] args) {

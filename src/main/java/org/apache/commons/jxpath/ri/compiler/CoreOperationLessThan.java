@@ -24,7 +24,7 @@ public class CoreOperationLessThan extends CoreOperationRelationalExpression {
 
     /**
      * Constructs a new CoreOperationLessThan.
-     * 
+     *
      * @param arg1 left Expression
      * @param arg2 right Expression
      */

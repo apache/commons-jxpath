@@ -31,7 +31,7 @@ import org.w3c.dom.Attr;
 public class DOMAttributePointer extends NodePointer {
 
     private static final long serialVersionUID = 1115085175427555951L;
-    
+
     /**
      * A DOM {@link Attr} node.
      */
@@ -39,7 +39,7 @@ public class DOMAttributePointer extends NodePointer {
 
     /**
      * Constructs a new DOMAttributePointer.
-     * 
+     *
      * @param parent pointer
      * @param attr   pointed
      */
@@ -135,7 +135,7 @@ public class DOMAttributePointer extends NodePointer {
 
     /**
      * Sets the value of this attribute.
-     * 
+     *
      * @param value to set
      */
     @Override

@@ -59,7 +59,7 @@ public class JXPathIntrospector {
 
     /**
      * Find a dynamic bean info if available for any superclasses or interfaces.
-     * 
+     *
      * @param beanClass to search for
      * @return JXPathBeanInfo
      */
@@ -94,7 +94,7 @@ public class JXPathIntrospector {
     /**
      * find a JXPathBeanInfo instance for the specified class. Similar to javax.beans property handler discovery; search for a class with "XBeanInfo" appended
      * to beanClass.name, then check whether beanClass implements JXPathBeanInfo for itself. Invokes the default constructor for any class it finds.
-     * 
+     *
      * @param beanClass for which to look for an info provider
      * @return JXPathBeanInfo instance or null if none found
      */
@@ -125,7 +125,7 @@ public class JXPathIntrospector {
      * <li>If class named {@code <beanClass>XBeanInfo} exists, an instance of that class is allocated.
      * <li>Otherwise, an instance of {@link JXPathBasicBeanInfo JXPathBasicBeanInfo} is allocated.
      * </ul>
-     * 
+     *
      * @param beanClass whose info to get
      * @return JXPathBeanInfo
      */
@@ -148,7 +148,7 @@ public class JXPathIntrospector {
 
     /**
      * Try to create an instance of a named class. First try the classloader of "sibling", then try the system classloader.
-     * 
+     *
      * @param sibling   Class
      * @param className to instantiate
      * @return new Object
@@ -172,7 +172,7 @@ public class JXPathIntrospector {
 
     /**
      * Automatically creates and registers a JXPathBeanInfo object for the specified class. That object returns true to isAtomic().
-     * 
+     *
      * @param beanClass to register
      */
     public static void registerAtomicClass(final Class beanClass) {

@@ -32,7 +32,7 @@ public class InfoSetUtil {
 
     /**
      * Converts the supplied object to boolean.
-     * 
+     *
      * @param object to convert
      * @return boolean
      */
@@ -66,7 +66,7 @@ public class InfoSetUtil {
 
     /**
      * Converts the supplied object to double.
-     * 
+     *
      * @param object to convert
      * @return double
      */
@@ -100,7 +100,7 @@ public class InfoSetUtil {
 
     /**
      * Converts the supplied object to Number.
-     * 
+     *
      * @param object to convert
      * @return Number result
      */
@@ -131,7 +131,7 @@ public class InfoSetUtil {
 
     /**
      * Converts the supplied object to String.
-     * 
+     *
      * @param object to convert
      * @return String value
      */

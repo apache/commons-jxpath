@@ -26,7 +26,7 @@ package org.apache.commons.jxpath;
  */
 public abstract class AbstractFactory {
 
-    
+
     /**
      * Constructs a new instance for subclasses.
      */

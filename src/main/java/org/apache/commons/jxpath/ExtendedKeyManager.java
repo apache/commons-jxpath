@@ -20,14 +20,14 @@ package org.apache.commons.jxpath;
 /**
  * More complete implementation for the XPath {@code "key()"} function. Returns NodeSet results and allows Object values for better compatibility with non-XML
  * graphs.
- * 
+ *
  * @since JXPath 1.3
  */
 public interface ExtendedKeyManager extends KeyManager {
 
     /**
      * Find a NodeSet by key/value.
-     * 
+     *
      * @param context base
      * @param key     String
      * @param value   Object

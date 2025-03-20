@@ -29,7 +29,7 @@ public class DynamicAttributeIterator extends BeanAttributeIterator {
 
     /**
      * Constructs a new DynamicAttributeIterator.
-     * 
+     *
      * @param parent pointer
      * @param qName  to match properties
      */

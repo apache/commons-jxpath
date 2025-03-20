@@ -39,7 +39,7 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Constructs a new PropertyIterator.
-     * 
+     *
      * @param pointer   owning pointer
      * @param name      property name
      * @param reverse   iteration order
@@ -75,7 +75,7 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Computes length for the current pointer - ignores any exceptions.
-     * 
+     *
      * @return length
      */
     private int getLength() {
@@ -125,7 +125,7 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Gets the property pointer.
-     * 
+     *
      * @return NodePointer
      */
     protected NodePointer getPropertyPointer() {
@@ -134,7 +134,7 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Prepare for an individual property.
-     * 
+     *
      * @param name property name
      */
     protected void prepareForIndividualProperty(final String name) {
@@ -195,7 +195,7 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Sets position for all properties
-     * 
+     *
      * @param position int position
      * @return whether this was a valid position
      */
@@ -264,7 +264,7 @@ public class PropertyIterator implements NodeIterator {
 
     /**
      * Sets position for an individual property.
-     * 
+     *
      * @param position int position
      * @return whether this was a valid position
      */

@@ -30,10 +30,10 @@ import org.apache.commons.jxpath.ri.parser.XPathParser;
 public class Parser {
 
     private static final XPathParser PARSER = new XPathParser(new StringReader(""));
-    
+
     /**
      * Add escapes to the specified String.
-     * 
+     *
      * @param string incoming String
      * @return String
      */
@@ -44,7 +44,7 @@ public class Parser {
 
     /**
      * Describe a parse position.
-     * 
+     *
      * @param expression to parse
      * @param position   parse position
      * @return String
@@ -61,7 +61,7 @@ public class Parser {
 
     /**
      * Parses the XPath expression. Throws a JXPathException in case of a syntax error.
-     * 
+     *
      * @param expression to parse
      * @param compiler   the compiler
      * @return parsed Object

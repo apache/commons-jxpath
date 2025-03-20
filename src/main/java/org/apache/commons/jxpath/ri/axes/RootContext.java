@@ -43,7 +43,7 @@ public class RootContext extends EvalContext {
 
     /**
      * Constructs a new RootContext.
-     * 
+     *
      * @param jxpathContext context
      * @param pointer       pointer
      */
@@ -58,7 +58,7 @@ public class RootContext extends EvalContext {
 
     /**
      * Gets absolute root context
-     * 
+     *
      * @return EvalContext
      */
     public EvalContext getAbsoluteRootContext() {
@@ -67,7 +67,7 @@ public class RootContext extends EvalContext {
 
     /**
      * Gets a context that points to the specified object.
-     * 
+     *
      * @param constant object
      * @return EvalContext
      */
@@ -96,7 +96,7 @@ public class RootContext extends EvalContext {
 
     /**
      * Gets the specified function from the context.
-     * 
+     *
      * @param functionName QName
      * @param parameters   Object[]
      * @return Function
@@ -112,7 +112,7 @@ public class RootContext extends EvalContext {
 
     /**
      * Gets a registered value.
-     * 
+     *
      * @param id int
      * @return Object
      */
@@ -135,7 +135,7 @@ public class RootContext extends EvalContext {
 
     /**
      * Gets variable context.
-     * 
+     *
      * @param variableName variable name
      * @return EvalContext
      */
@@ -160,7 +160,7 @@ public class RootContext extends EvalContext {
 
     /**
      * Sets the next registered value.
-     * 
+     *
      * @param value Object
      * @return the id that can reclaim value.
      */

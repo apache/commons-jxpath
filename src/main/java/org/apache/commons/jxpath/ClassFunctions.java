@@ -30,11 +30,11 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * Extension functions provided by a Java class.
  *
  * Let's say we declared a ClassFunction like this: <blockquote>
- * 
+ *
  * <pre>
  * new ClassFunctions(Integer.class, "int")
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * We can now use XPaths like:
@@ -58,7 +58,7 @@ public class ClassFunctions implements Functions {
 
     /**
      * Constructs a new ClassFunctions.
-     * 
+     *
      * @param functionClass Class providing the functions
      * @param namespace     assigned ns
      */

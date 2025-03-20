@@ -25,7 +25,7 @@ import org.apache.commons.jxpath.Variables;
 public class KeywordVariables implements Variables {
 
     private static final long serialVersionUID = 894145608741325442L;
-    
+
     /**
      * The keyword.
      */
@@ -38,7 +38,7 @@ public class KeywordVariables implements Variables {
 
     /**
      * Constructs a new KeywordVariables.
-     * 
+     *
      * @param keyword The keyword.
      * @param value  The value.
      */

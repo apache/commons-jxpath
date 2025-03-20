@@ -43,7 +43,17 @@
   <!-- See http://checkstyle.sf.net/config_sizes.html -->
   <module name="FileLength" />
   <module name="FileTabCharacterCheck" />
-
+  <module name="RegexpSingleline">
+    <property name="format" value="^\s+\*\s+@author\s" />
+    <property name="message" value="Deprecated @author tag" />
+    <property name="fileExtensions" value="java" />
+    <property name="severity" value="warning" />
+  </module>
+  <module name="RegexpSingleline">
+    <!-- \s matches whitespace character, $ matches end of line. -->
+    <property name="format" value="\s+$"/>
+    <property name="message" value="Line has trailing spaces."/>
+  </module>
   <module name="TreeWalker">
     <module name="ExplicitInitialization" />
     <!--property name="cacheFile" value="${checkstyle.cache.file}"/ -->

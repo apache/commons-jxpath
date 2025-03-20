@@ -55,7 +55,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Constructs a new EvalContext.
-     * 
+     *
      * @param parentContext parent context
      */
     public EvalContext(final EvalContext parentContext) {
@@ -64,7 +64,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Constructs an iterator.
-     * 
+     *
      * @return whether the Iterator was constructed
      */
     private boolean constructIterator() {
@@ -89,7 +89,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Returns the list of all Pointers in this context for the current position of the parent context.
-     * 
+     *
      * @return List
      */
     @Override
@@ -117,14 +117,14 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Returns the current context node. Undefined before the beginning of the iteration.
-     * 
+     *
      * @return NodePoiner
      */
     public abstract NodePointer getCurrentNodePointer();
 
     /**
      * Gets the current position.
-     * 
+     *
      * @return int position.
      */
     public int getCurrentPosition() {
@@ -148,7 +148,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Returns the list of all Pointers in this context for all positions of the parent contexts. If there was an ongoing iteration over this context, the
      * method should not be called.
-     * 
+     *
      * @return NodeSet
      */
     public NodeSet getNodeSet() {
@@ -171,7 +171,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Returns the root context of the path, which provides easy access to variables and functions.
-     * 
+     *
      * @return RootContext
      */
     public RootContext getRootContext() {
@@ -183,7 +183,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Returns the first encountered Pointer that matches the current context's criteria.
-     * 
+     *
      * @return Pointer
      */
     public Pointer getSingleNodePointer() {
@@ -199,7 +199,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Typically returns the NodeSet by calling getNodeSet(), but will be overridden for contexts that more naturally produce individual values, e.g.
      * VariableContext
-     * 
+     *
      * @return Object
      */
     public Object getValue() {
@@ -208,7 +208,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Returns true if there are mode nodes matching the context's constraints.
-     * 
+     *
      * @return boolean
      */
     @Override
@@ -228,7 +228,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Even if this context has the natural ordering and therefore does not require collecting and sorting all nodes prior to returning them, such operation may
      * be required for any child context.
-     * 
+     *
      * @return boolean
      */
     public boolean isChildOrderingRequired() {
@@ -239,7 +239,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Returns the next node pointer in the context
-     * 
+     *
      * @return Object
      */
     @Override
@@ -265,14 +265,14 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Returns true if there is another object in the current set. Switches the current position and node to the next object.
-     * 
+     *
      * @return boolean
      */
     public abstract boolean nextNode();
 
     /**
      * Returns true if there is another sets of objects to interate over. Resets the current position and node.
-     * 
+     *
      * @return boolean
      */
     public boolean nextSet() {
@@ -324,7 +324,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Operation is not supported
-     * 
+     *
      * @throws UnsupportedOperationException Always thrown.
      */
     @Override
@@ -342,7 +342,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Moves the current position to the specified index. Used with integer predicates to quickly get to the n'th element of the node set. Returns false if the
      * position is out of the node set range. You can call it with 0 as the position argument to restart the iteration.
-     * 
+     *
      * @param position to set
      * @return boolean
      */
@@ -353,7 +353,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /**
      * Sort a list of pointers based on document order.
-     * 
+     *
      * @param l the list to sort.
      */
     protected void sortPointers(final List l) {

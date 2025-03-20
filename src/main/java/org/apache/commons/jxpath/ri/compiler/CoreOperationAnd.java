@@ -27,7 +27,7 @@ public class CoreOperationAnd extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationAnd.
-     * 
+     *
      * @param args to combine
      */
     public CoreOperationAnd(final Expression[] args) {

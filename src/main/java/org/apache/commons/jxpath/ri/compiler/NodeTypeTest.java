@@ -26,7 +26,7 @@ public class NodeTypeTest extends NodeTest {
 
     /**
      * Render the given node type as a String.
-     * 
+     *
      * @param code int
      * @return String
      */
@@ -49,7 +49,7 @@ public class NodeTypeTest extends NodeTest {
 
     /**
      * Constructs a new NodeTypeTest.
-     * 
+     *
      * @param nodeType to match
      */
     public NodeTypeTest(final int nodeType) {
@@ -58,7 +58,7 @@ public class NodeTypeTest extends NodeTest {
 
     /**
      * Gets the nodeType.
-     * 
+     *
      * @return int
      */
     public int getNodeType() {

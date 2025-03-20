@@ -34,7 +34,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
 
     /**
      * Constructs a new JXPathCompiledExpression.
-     * 
+     *
      * @param xpath      source
      * @param expression compiled
      */
@@ -55,7 +55,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
 
     /**
      * Gets the compiled expression.
-     * 
+     *
      * @return Expression
      */
     protected Expression getExpression() {
@@ -79,7 +79,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
 
     /**
      * Gets the source expression.
-     * 
+     *
      * @return String
      */
     protected String getXPath() {

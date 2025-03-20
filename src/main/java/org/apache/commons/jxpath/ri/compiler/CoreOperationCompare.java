@@ -36,7 +36,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationCompare.
-     * 
+     *
      * @param arg1 left operand
      * @param arg2 right operand
      */
@@ -46,7 +46,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationCompare.
-     * 
+     *
      * @param arg1   left operand
      * @param arg2   right operand
      * @param invert whether to invert (not) the comparison
@@ -63,7 +63,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
 
     /**
      * Learn whether it contains value.
-     * 
+     *
      * @param it    Iterator to check
      * @param value for which to look
      * @return whether value was found
@@ -80,7 +80,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
 
     /**
      * Compares two values.
-     * 
+     *
      * @param context evaluation context
      * @param left    operand
      * @param right   operand
@@ -121,7 +121,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
 
     /**
      * Learn whether l equals r in XPath terms.
-     * 
+     *
      * @param l left operand
      * @param r right operand
      * @return whether l = r
@@ -159,7 +159,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
 
     /**
      * Learn whether lit intersects rit.
-     * 
+     *
      * @param lit left Iterator
      * @param rit right Iterator
      * @return boolean

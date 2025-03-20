@@ -34,7 +34,7 @@ public class UnionContext extends NodeSetContext {
 
     /**
      * Constructs a new UnionContext.
-     * 
+     *
      * @param parentContext parent context
      * @param contexts      child contexts
      */

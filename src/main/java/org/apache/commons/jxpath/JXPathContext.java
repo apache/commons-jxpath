@@ -85,9 +85,9 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * <p>
  * A property identified by the xpath does not have to be a "leaf" property. For instance, we can extract the whole Address object in above example:
  * </p>
- * 
+ *
  * <pre>
- * 
+ *
  * Address addr = (Address) context.getValue("homeAddress");
  * </pre>
  *
@@ -106,7 +106,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * JXPathContext context = JXPathContext.newContext(ints);
  * Integer thirdInt = (Integer)context.getValue("numbers[3]");
  * </pre>
- * 
+ *
  * A collection can be an arbitrary array or an instance of java.util. Collection.
  * <p>
  * Note: in XPath the first element of a collection has index 1, not 0.<br>
@@ -139,7 +139,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * Often you will need to use the alternative syntax for accessing Map elements:
  *
  * <pre>
- * 
+ *
  * String homeZipCode = (String) context.getValue("addresses[@name='home']/zipCode");
  * </pre>
  *
@@ -241,7 +241,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * <p>
  * When a variable contains a JavaBean or a collection, you can traverse the bean or collection as well:
- * 
+ *
  * <pre>
  * ...
  * context.getVariables().declareVariable("book", myBook);
@@ -272,33 +272,33 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * and create objects using any constructor. The class names should be fully qualified.
  * <p>
  * Here's how you can create new objects:
- * 
+ *
  * <pre>
- * 
+ *
  * Book book = (Book) context.getValue("org.apache.commons.jxpath.example.Book.new ('John Updike')");
  * </pre>
  *
  * Here's how you can call static methods:
- * 
+ *
  * <pre>
- * 
+ *
  * Book book = (Book) context.getValue("org. apache.commons.jxpath.example.Book.getBestBook('John Updike')");
  * </pre>
  *
  * Here's how you can call regular methods:
- * 
+ *
  * <pre>
- * 
+ *
  * String firstName = (String) context.getValue("getAuthorsFirstName($book)");
  * </pre>
- * 
+ *
  * As you can see, the target of the method is specified as the first parameter of the function.
  *
  * <h3>Example 11: Using Custom Extension Functions</h3> Collections of custom extension functions can be implemented as {@link Functions Functions} objects or
  * as Java classes, whose methods become extenstion functions.
  * <p>
  * Let's say the following class implements various formatting operations:
- * 
+ *
  * <pre>
  * public class Formats {
  *    public static String date(Date d, String pattern){
@@ -318,7 +318,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * String today = (String)context.getValue("format:date($today, 'MM/dd/yyyy')");
  *
  * </pre>
- * 
+ *
  * You can also register whole packages of Java classes using PackageFunctions.
  * <p>
  * Also, see {@link FunctionLibrary FunctionLibrary}, which is a class that allows you to register multiple sets of extension functions with the same
@@ -366,7 +366,7 @@ public abstract class JXPathContext {
     /**
      * Compiles the supplied XPath and returns an internal representation of the path that can then be evaluated. Use CompiledExpressions when you need to
      * evaluate the same expression multiple times and there is a convenient place to cache CompiledExpression between invocations.
-     * 
+     *
      * @param xpath to compile
      * @return CompiledExpression
      */
@@ -379,7 +379,7 @@ public abstract class JXPathContext {
 
     /**
      * Acquires a context factory and caches it.
-     * 
+     *
      * @return JXPathContextFactory
      */
     private static JXPathContextFactory getContextFactory() {
@@ -392,7 +392,7 @@ public abstract class JXPathContext {
     /**
      * Creates a new JXPathContext with the specified bean as the root node and the specified parent context. Variables defined in a parent context can be
      * referenced in XPaths passed to the child context.
-     * 
+     *
      * @param parentContext parent context
      * @param contextBean   Object
      * @return JXPathContext
@@ -403,7 +403,7 @@ public abstract class JXPathContext {
 
     /**
      * Creates a new JXPathContext with the specified object as the root node.
-     * 
+     *
      * @param contextBean Object
      * @return JXPathContext
      */
@@ -433,7 +433,7 @@ public abstract class JXPathContext {
 
     /**
      * This constructor should remain protected - it is to be overridden by subclasses, but never explicitly invoked by clients.
-     * 
+     *
      * @param parentContext parent context
      * @param contextBean   Object
      */
@@ -444,7 +444,7 @@ public abstract class JXPathContext {
 
     /**
      * Overridden by each concrete implementation of JXPathContext to perform compilation. Is called by {@code compile()}.
-     * 
+     *
      * @param xpath to compile
      * @return CompiledExpression
      */
@@ -455,7 +455,7 @@ public abstract class JXPathContext {
      * {@link #setFactory}.
      * <p>
      * Will throw an exception if the AbstractFactory fails to create an instance for a path element.
-     * 
+     *
      * @param xpath indicating destination to create
      * @return pointer to new location
      */
@@ -471,7 +471,7 @@ public abstract class JXPathContext {
      * <li>The AbstractFactory fails to create an instance for an intermediate element.
      * <li>The property is not writable (no public, non-static set method)
      * </ul>
-     * 
+     *
      * @param xpath indicating position to create
      * @param value to set
      * @return pointer to new location
@@ -480,7 +480,7 @@ public abstract class JXPathContext {
 
     /**
      * Returns the JavaBean associated with this context.
-     * 
+     *
      * @return Object
      */
     public Object getContextBean() {
@@ -489,14 +489,14 @@ public abstract class JXPathContext {
 
     /**
      * Returns a Pointer for the context bean.
-     * 
+     *
      * @return Pointer
      */
     public abstract Pointer getContextPointer();
 
     /**
      * Gets the named DecimalFormatSymbols.
-     * 
+     *
      * @param name key
      * @return DecimalFormatSymbols
      * @see #setDecimalFormatSymbols(String, DecimalFormatSymbols)
@@ -511,7 +511,7 @@ public abstract class JXPathContext {
     /**
      * Returns the AbstractFactory installed on this context. If none has been installed and this context has a parent context, returns the parent's factory.
      * Otherwise returns null.
-     * 
+     *
      * @return AbstractFactory
      */
     public AbstractFactory getFactory() {
@@ -523,7 +523,7 @@ public abstract class JXPathContext {
 
     /**
      * Returns the set of functions installed on the context.
-     * 
+     *
      * @return Functions
      */
     public Functions getFunctions() {
@@ -538,7 +538,7 @@ public abstract class JXPathContext {
 
     /**
      * Returns this context's identity manager. If none has been installed, returns the identity manager of the parent context.
-     * 
+     *
      * @return IdentityManager
      */
     public IdentityManager getIdentityManager() {
@@ -550,7 +550,7 @@ public abstract class JXPathContext {
 
     /**
      * Returns this context's key manager. If none has been installed, returns the key manager of the parent context.
-     * 
+     *
      * @return KeyManager
      */
     public KeyManager getKeyManager() {
@@ -562,7 +562,7 @@ public abstract class JXPathContext {
 
     /**
      * Returns the locale set with setLocale. If none was set and the context has a parent, returns the parent's locale. Otherwise, returns Locale.getDefault().
-     * 
+     *
      * @return Locale
      */
     public synchronized Locale getLocale() {
@@ -598,7 +598,7 @@ public abstract class JXPathContext {
 
     /**
      * Locates a NodeSet by key/value.
-     * 
+     *
      * @param key   string
      * @param value object
      * @return NodeSet found
@@ -613,7 +613,7 @@ public abstract class JXPathContext {
 
     /**
      * Returns the parent context of this context or null.
-     * 
+     *
      * @return JXPathContext
      */
     public JXPathContext getParentContext() {
@@ -653,7 +653,7 @@ public abstract class JXPathContext {
 
     /**
      * Locates a Node by a key value.
-     * 
+     *
      * @param key   string
      * @param value string
      * @return Pointer found
@@ -668,7 +668,7 @@ public abstract class JXPathContext {
 
     /**
      * Gets the prefix associated with the specifed namespace URI.
-     * 
+     *
      * @param namespaceURI the ns URI to check.
      * @return String prefix
      * @since JXPath 1.3
@@ -680,7 +680,7 @@ public abstract class JXPathContext {
     /**
      * Returns a JXPathContext that is relative to the current JXPathContext. The supplied pointer becomes the context pointer of the new context. The relative
      * context inherits variables, extension functions, locale etc from the parent context.
-     * 
+     *
      * @param pointer Pointer
      * @return JXPathContext
      */
@@ -688,7 +688,7 @@ public abstract class JXPathContext {
 
     /**
      * Evaluates the xpath and returns the resulting object. Primitive types are wrapped into objects.
-     * 
+     *
      * @param xpath to evaluate
      * @return Object found
      */
@@ -696,7 +696,7 @@ public abstract class JXPathContext {
 
     /**
      * Evaluates the xpath, converts the result to the specified class and returns the resulting object.
-     * 
+     *
      * @param xpath        to evaluate
      * @param requiredType required type
      * @return Object found
@@ -706,7 +706,7 @@ public abstract class JXPathContext {
     /**
      * Returns the variable pool associated with the context. If no such pool was specified with the {@link #setVariables} method, returns the default
      * implementation of Variables, {@link BasicVariables BasicVariables}.
-     * 
+     *
      * @return Variables
      */
     public Variables getVariables() {
@@ -718,7 +718,7 @@ public abstract class JXPathContext {
 
     /**
      * Learn whether this JXPathContext is lenient.
-     * 
+     *
      * @return boolean
      * @see #setLenient(boolean)
      */
@@ -742,7 +742,7 @@ public abstract class JXPathContext {
     /**
      * Traverses the xpath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the xpath matches no properties in the graph,
      * the Iterator be empty, but not null.
-     * 
+     *
      * @param xpath to iterate
      * @return Iterator
      */
@@ -760,14 +760,14 @@ public abstract class JXPathContext {
 
     /**
      * Removes all elements of the object graph described by the xpath.
-     * 
+     *
      * @param xpath indicating positions to remove
      */
     public abstract void removeAll(String xpath);
 
     /**
      * Removes the element of the object graph described by the xpath.
-     * 
+     *
      * @param xpath indicating position to remove
      */
     public abstract void removePath(String xpath);
@@ -817,7 +817,7 @@ public abstract class JXPathContext {
 
     /**
      * Sets the ExceptionHandler used by this context, if any.
-     * 
+     *
      * @param exceptionHandler to set
      * @since 1.4
      */
@@ -827,7 +827,7 @@ public abstract class JXPathContext {
 
     /**
      * Install an abstract factory that should be used by the {@code createPath()} and {@code createPathAndSetValue()} methods.
-     * 
+     *
      * @param factory AbstractFactory
      */
     public void setFactory(final AbstractFactory factory) {
@@ -836,7 +836,7 @@ public abstract class JXPathContext {
 
     /**
      * Install a library of extension functions.
-     * 
+     *
      * @param functions Functions
      * @see FunctionLibrary
      */
@@ -846,7 +846,7 @@ public abstract class JXPathContext {
 
     /**
      * Install an identity manager that will be used by the context to look up a node by its ID.
-     * 
+     *
      * @param idManager IdentityManager to set
      */
     public void setIdentityManager(final IdentityManager idManager) {
@@ -855,7 +855,7 @@ public abstract class JXPathContext {
 
     /**
      * Install a key manager that will be used by the context to look up a node by a key value.
-     * 
+     *
      * @param keyManager KeyManager
      */
     public void setKeyManager(final KeyManager keyManager) {
@@ -867,7 +867,7 @@ public abstract class JXPathContext {
      * will throw an exception. Note that if the property exists, but its value is null, the exception is <em>not</em> thrown.
      * <p>
      * By default, lenient = false
-     * 
+     *
      * @param lenient flag
      */
     public synchronized void setLenient(final boolean lenient) {
@@ -878,7 +878,7 @@ public abstract class JXPathContext {
     /**
      * Sets the locale for this context. The value of the "lang" attribute as well as the lang() function will be affected by the locale. By default, JXPath
      * uses {@code Locale.getDefault()}
-     * 
+     *
      * @param locale Locale
      */
     public synchronized void setLocale(final Locale locale) {
@@ -901,7 +901,7 @@ public abstract class JXPathContext {
      * <li>The xpath does not in fact describe an existing property
      * <li>The property is not writable (no public, non-static set method)
      * </ul>
-     * 
+     *
      * @param xpath indicating position
      * @param value to set
      */
@@ -909,7 +909,7 @@ public abstract class JXPathContext {
 
     /**
      * Installs a custom implementation of the Variables interface.
-     * 
+     *
      * @param vars Variables
      */
     public void setVariables(final Variables vars) {

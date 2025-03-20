@@ -30,7 +30,7 @@ public class HttpSessionAndServletContext {
 
     /**
      * Constructs a new HttpSessionAndServletContext.
-     * 
+     *
      * @param session HttpSession
      * @param context ServletContext
      */
@@ -41,7 +41,7 @@ public class HttpSessionAndServletContext {
 
     /**
      * Gets the ServletContext.
-     * 
+     *
      * @return ServletContext
      */
     public ServletContext getServletContext() {
@@ -50,7 +50,7 @@ public class HttpSessionAndServletContext {
 
     /**
      * Gets the session.
-     * 
+     *
      * @return HttpSession
      */
     public HttpSession getSession() {

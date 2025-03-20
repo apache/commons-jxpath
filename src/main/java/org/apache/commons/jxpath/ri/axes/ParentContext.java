@@ -32,7 +32,7 @@ public class ParentContext extends EvalContext {
 
     /**
      * Constructs a new ParentContext.
-     * 
+     *
      * @param parentContext parent context
      * @param nodeTest      test
      */

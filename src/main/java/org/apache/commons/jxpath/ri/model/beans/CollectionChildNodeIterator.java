@@ -30,7 +30,7 @@ public class CollectionChildNodeIterator extends CollectionNodeIterator {
 
     /**
      * Constructs a new CollectionChildNodeIterator.
-     * 
+     *
      * @param pointer   CollectionPointer
      * @param test      child test
      * @param reverse   iteration order

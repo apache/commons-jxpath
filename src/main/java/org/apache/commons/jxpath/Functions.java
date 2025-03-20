@@ -27,7 +27,7 @@ public interface Functions {
 
     /**
      * Gets a Function, if any, for the specified namespace, name and parameter types.
-     * 
+     *
      * @param namespace  ns
      * @param name       function name
      * @param parameters Object[]

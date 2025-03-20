@@ -59,7 +59,7 @@ public class SimplePathInterpreter {
 
     /**
      * For a pointer that matches an actual node, returns 0. For a pointer that does not match an actual node, but whose parent pointer does returns -1, etc.
-     * 
+     *
      * @param pointer input pointer
      * @return int match quality code
      */
@@ -74,7 +74,7 @@ public class SimplePathInterpreter {
 
     /**
      * Create the child pointer for a given step.
-     * 
+     *
      * @param parentPointer parent pointer
      * @param step          associated step
      * @return NodePointer
@@ -100,7 +100,7 @@ public class SimplePathInterpreter {
 
     /**
      * Creates a "null pointer" that a) represents the requested path and b) can be used for creation of missing nodes in the path.
-     * 
+     *
      * @param context     evaluation context
      * @param parent      parent pointer
      * @param steps       path steps
@@ -128,7 +128,7 @@ public class SimplePathInterpreter {
 
     /**
      * Creates a "null pointer" that starts with predicates.
-     * 
+     *
      * @param context          evaluation context
      * @param parent           parent pointer
      * @param steps            path steps
@@ -162,7 +162,7 @@ public class SimplePathInterpreter {
 
     /**
      * Evaluates predicates and proceeds with the subsequent steps of the path.
-     * 
+     *
      * @param context          evaluation context
      * @param parent           parent pointer
      * @param steps            path steps
@@ -186,7 +186,7 @@ public class SimplePathInterpreter {
 
     /**
      * Evaluate a subscript predicate: see if the node is a collection and if the index is inside the collection.
-     * 
+     *
      * @param context          evaluation context
      * @param parent           parent pointer
      * @param steps            path steps
@@ -210,7 +210,7 @@ public class SimplePathInterpreter {
 
     /**
      * Execute a NameAttributeTest predicate
-     * 
+     *
      * @param context          evaluation context
      * @param parent           parent pointer
      * @param steps            path steps
@@ -281,7 +281,7 @@ public class SimplePathInterpreter {
 
     /**
      * Called exclusively for standard InfoSet nodes, e.g. DOM nodes to evaluate predicate sequences like [@name=...][@name=...][index].
-     * 
+     *
      * @param context          evaluation context
      * @param parents          List of parent pointers
      * @param steps            path steps
@@ -331,7 +331,7 @@ public class SimplePathInterpreter {
     /**
      * Recursive evaluation of a path. The general plan is: Look at the current step, find nodes that match it, iterate over those nodes and for each of them
      * call doStep again for subsequent steps.
-     * 
+     *
      * @param context     evaluation context
      * @param parent      parent pointer
      * @param steps       path steps
@@ -376,7 +376,7 @@ public class SimplePathInterpreter {
      * We have a step that starts with a property owner (bean, map, etc) and has no predicates. The name test of the step may map to a scalar property or to a
      * collection. If it is a collection, we should apply the tail of the path to each element until we find a match. If we don't find a perfect match, we
      * should return the "best quality" pointer, which has the longest chain of steps mapping to existing nodes and the shortes tail of Null* pointers.
-     * 
+     *
      * @param context       evaluation context
      * @param parentPointer property owner pointer
      * @param steps         path steps
@@ -432,7 +432,7 @@ public class SimplePathInterpreter {
      * A path that starts with a standard InfoSet node (e.g. DOM Node) and has no predicates. Get a child iterator and apply the tail of the path to each
      * element until we find a match. If we don't find a perfect match, we should return the "best quality" pointer, which has the longest chain of steps
      * mapping to existing nodes and the shortes tail of Null* pointers.
-     * 
+     *
      * @param context       evaluation context
      * @param parentPointer parent pointer
      * @param steps         path steps
@@ -472,7 +472,7 @@ public class SimplePathInterpreter {
     /**
      * A path that starts with a property owner. The method evaluates the first predicate in a special way and then forwards to a general predicate processing
      * method.
-     * 
+     *
      * @param context       evaluation context
      * @param parentPointer parent pointer
      * @param steps         path steps
@@ -495,7 +495,7 @@ public class SimplePathInterpreter {
     /**
      * A path that starts with a standard InfoSet node, e.g. a DOM Node. The method evaluates the first predicate in a special way and then forwards to a
      * general predicate processing method.
-     * 
+     *
      * @param context     evaluation context
      * @param parent      parent pointer
      * @param steps       path steps
@@ -556,7 +556,7 @@ public class SimplePathInterpreter {
 
     /**
      * Gets a NodeIterator.
-     * 
+     *
      * @param context evaluation context
      * @param pointer owning pointer
      * @param step    triggering step
@@ -582,7 +582,7 @@ public class SimplePathInterpreter {
 
     /**
      * Extract an integer from a subscript predicate. The returned index starts with 0, even though the subscript starts with 1.
-     * 
+     *
      * @param context   evaluation context
      * @param predicate to evaluate
      * @return calculated index
@@ -609,7 +609,7 @@ public class SimplePathInterpreter {
      * Interpret the steps of a simple expression path that starts with the given root, which is the result of evaluation of the root expression of the
      * expression path, applies the given predicates to it and then follows the given steps. All steps must have the axis "child::" or "attribute::" and a name
      * test. They can also optionally have predicates of type [@name=...] or simply [...] interpreted as an index.
-     * 
+     *
      * @param context    evaluation context
      * @param root       root pointer
      * @param predicates predicates corresponding to {@code steps}
@@ -628,7 +628,7 @@ public class SimplePathInterpreter {
     /**
      * Interpret a simple path that starts with the given root and follows the given steps. All steps must have the axis "child::" and a name test. They can
      * also optionally have predicates of type [@name=expression] or simply [expression] interpreted as an index.
-     * 
+     *
      * @param context evaluation context
      * @param root    root pointer
      * @param steps   path steps
@@ -643,7 +643,7 @@ public class SimplePathInterpreter {
 
     /**
      * Returns true if the pointer is a collection and the index is withing the bounds of the collection.
-     * 
+     *
      * @param pointer input pointer
      * @param index   to check
      * @return boolean
@@ -654,7 +654,7 @@ public class SimplePathInterpreter {
 
     /**
      * Learn whether {@code name} is a lang attribute.
-     * 
+     *
      * @param qName to compare
      * @return boolean
      */
@@ -664,7 +664,7 @@ public class SimplePathInterpreter {
 
     /**
      * Returns true if the pointer has an attribute called "name" and its value is equal to the supplied string.
-     * 
+     *
      * @param pointer input pointer
      * @param name    name to check
      * @return boolean
@@ -676,7 +676,7 @@ public class SimplePathInterpreter {
 
     /**
      * Extracts the string value of the expression from a predicate like [@name=expression].
-     * 
+     *
      * @param context   evaluation context
      * @param predicate predicate to evaluate
      * @return String key extracted
@@ -688,14 +688,14 @@ public class SimplePathInterpreter {
 
     /**
      * For an intermediate pointer (e.g. PropertyPointer, ContainerPointer) returns a pointer for the contained value.
-     * 
+     *
      * @param pointer input pointer
      * @return NodePointer
      */
     private static NodePointer valuePointer(final NodePointer pointer) {
         return pointer == null ? null : pointer.getValuePointer();
     }
-    
+
     /**
      * Constructs a new instance.
      *

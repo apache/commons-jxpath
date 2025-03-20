@@ -101,7 +101,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     /**
      * Call this with a custom NodePointerFactory to add support for additional types of objects. Make sure the factory returns a name that puts it in the right
      * position on the list of factories.
-     * 
+     *
      * @param factory NodePointerFactory to add
      */
     public static void addNodePointerFactory(final NodePointerFactory factory) {
@@ -113,7 +113,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Checks if existenceCheckClass exists on the class path. If so, allocates an instance of the specified class, otherwise returns null.
-     * 
+     *
      * @param className               to instantiate
      * @param existenceCheckClassName guard class
      * @return className instance
@@ -148,7 +148,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the registered NodePointerFactories.
-     * 
+     *
      * @return NodePointerFactory[]
      */
     public static NodePointerFactory[] getNodePointerFactories() {
@@ -177,7 +177,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Constructs a new JXPathContextReferenceImpl.
-     * 
+     *
      * @param parentContext parent context
      * @param contextBean   Object
      */
@@ -187,7 +187,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Constructs a new JXPathContextReferenceImpl.
-     * 
+     *
      * @param parentContext  parent context
      * @param contextBean    Object
      * @param contextPointer context pointer
@@ -214,7 +214,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Checks if the path follows the JXPath restrictions on the type of path that can be passed to create... methods.
-     * 
+     *
      * @param expr Expression to check
      */
     private void checkSimplePath(final Expression expr) {
@@ -226,7 +226,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Compile the given expression.
-     * 
+     *
      * @param xpath to compile
      * @return Expression
      */
@@ -307,7 +307,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Create the given path.
-     * 
+     *
      * @param xpath String
      * @param expr  compiled Expression
      * @return resulting Pointer
@@ -334,7 +334,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Create the given path setting its value to value.
-     * 
+     *
      * @param xpath String
      * @param expr  compiled Expression
      * @param value Object
@@ -355,7 +355,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the absolute root context.
-     * 
+     *
      * @return EvalContext
      */
     public EvalContext getAbsoluteRootContext() {
@@ -364,7 +364,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets absolute root pointer.
-     * 
+     *
      * @return NodePointer
      */
     private NodePointer getAbsoluteRootPointer() {
@@ -375,7 +375,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * Returns a static instance of TreeCompiler.
      *
      * Override this to return an alternate compiler.
-     * 
+     *
      * @return Compiler
      */
     protected Compiler getCompiler() {
@@ -389,7 +389,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the evaluation context.
-     * 
+     *
      * @return EvalContext
      */
     private EvalContext getEvalContext() {
@@ -398,7 +398,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the named Function.
-     * 
+     *
      * @param functionName name
      * @param parameters   function args
      * @return Function
@@ -429,7 +429,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the namespace resolver.
-     * 
+     *
      * @return NamespaceResolver
      */
     public NamespaceResolver getNamespaceResolver() {
@@ -449,7 +449,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets a pointer to the specified path/expression.
-     * 
+     *
      * @param xpath String
      * @param expr  compiled Expression
      * @return Pointer
@@ -470,7 +470,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.apache.commons.jxpath.JXPathContext#getPrefix(java.lang.String)
      */
     @Override
@@ -489,7 +489,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Traverses the xpath and returns the resulting object. Primitive types are wrapped into objects.
-     * 
+     *
      * @param xpath expression
      * @return Object found
      */
@@ -532,7 +532,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Calls getValue(xpath), converts the result to the required type and returns the result of the conversion.
-     * 
+     *
      * @param xpath        expression
      * @param requiredType Class
      * @return Object
@@ -545,7 +545,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the value indicated.
-     * 
+     *
      * @param xpath String
      * @param expr  Expression
      * @return Object
@@ -577,7 +577,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the value indicated.
-     * 
+     *
      * @param xpath        expression
      * @param expr         compiled Expression
      * @param requiredType Class
@@ -597,7 +597,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets a VariablePointer for the given variable name.
-     * 
+     *
      * @param qName variable name
      * @return NodePointer
      */
@@ -608,7 +608,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     /**
      * Traverses the xpath and returns a Iterator of all results found for the path. If the xpath matches no properties in the graph, the Iterator will not be
      * null.
-     * 
+     *
      * @param xpath expression
      * @return Iterator
      */
@@ -620,7 +620,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     /**
      * Traverses the xpath and returns a Iterator of all results found for the path. If the xpath matches no properties in the graph, the Iterator will not be
      * null.
-     * 
+     *
      * @param xpath expression
      * @param expr  compiled Expression
      * @return Iterator
@@ -632,7 +632,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     /**
      * Traverses the xpath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the xpath matches no properties in the graph,
      * the Iterator be empty, but not null.
-     * 
+     *
      * @param xpath expression
      * @return Iterator
      */
@@ -644,7 +644,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     /**
      * Traverses the xpath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the xpath matches no properties in the graph,
      * the Iterator be empty, but not null.
-     * 
+     *
      * @param xpath expression
      * @param expr  compiled Expression
      * @return Iterator
@@ -668,7 +668,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Remove all matching nodes.
-     * 
+     *
      * @param xpath expression
      * @param expr  compiled Expression
      */
@@ -700,7 +700,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Remove the specified path.
-     * 
+     *
      * @param xpath expression
      * @param expr  compiled Expression
      */
@@ -735,7 +735,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Sets the value of xpath to value.
-     * 
+     *
      * @param xpath path
      * @param expr  compiled Expression
      * @param value Object
@@ -750,7 +750,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Sets the specified value.
-     * 
+     *
      * @param xpath  path
      * @param expr   compiled Expression
      * @param value  destination value

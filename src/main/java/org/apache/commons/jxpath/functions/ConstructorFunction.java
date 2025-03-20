@@ -35,7 +35,7 @@ public class ConstructorFunction implements Function {
 
     /**
      * Constructs a new ConstructorFunction.
-     * 
+     *
      * @param constructor the constructor to call.
      */
     public ConstructorFunction(final Constructor constructor) {
@@ -44,7 +44,7 @@ public class ConstructorFunction implements Function {
 
     /**
      * Converts parameters to suitable types and invokes the constructor.
-     * 
+     *
      * @param context    evaluation context
      * @param parameters constructor args
      * @return new instance

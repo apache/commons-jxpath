@@ -26,7 +26,7 @@ public class JXPathAbstractFactoryException extends JXPathException {
 
     /**
      * Constructs a new JXPathAbstractFactoryException.
-     * 
+     *
      * @param message exception message
      */
     public JXPathAbstractFactoryException(final String message) {

@@ -36,7 +36,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Constructs a new DOMNodeIterator.
-     * 
+     *
      * @param parent    parent pointer
      * @param nodeTest  test
      * @param reverse   whether to iterate in reverse
@@ -67,7 +67,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Sets the next position.
-     * 
+     *
      * @return whether valid
      */
     private boolean next() {
@@ -96,7 +96,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Sets the previous position.
-     * 
+     *
      * @return whether valid
      */
     private boolean previous() {
@@ -138,7 +138,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Test child.
-     * 
+     *
      * @return result of the test
      */
     private boolean testChild() {

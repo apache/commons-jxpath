@@ -29,7 +29,7 @@ public class DynamicPropertyIterator extends PropertyIterator {
 
     /**
      * Constructs a new DynamicPropertyIterator
-     * 
+     *
      * @param pointer   PropertyOwnerPointer
      * @param name      String
      * @param reverse   iteration order

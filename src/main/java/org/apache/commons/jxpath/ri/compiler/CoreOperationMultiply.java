@@ -27,7 +27,7 @@ public class CoreOperationMultiply extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationMultiply.
-     * 
+     *
      * @param arg1 factor 1
      * @param arg2 factor 2
      */

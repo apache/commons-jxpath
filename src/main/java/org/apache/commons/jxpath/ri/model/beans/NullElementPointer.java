@@ -32,7 +32,7 @@ public class NullElementPointer extends CollectionPointer {
 
     /**
      * Constructs a new NullElementPointer.
-     * 
+     *
      * @param parent parent pointer
      * @param index  int
      */
@@ -104,7 +104,7 @@ public class NullElementPointer extends CollectionPointer {
 
     /**
      * Gets the property pointer for this.
-     * 
+     *
      * @return PropertyPointer
      */
     public PropertyPointer getPropertyPointer() {

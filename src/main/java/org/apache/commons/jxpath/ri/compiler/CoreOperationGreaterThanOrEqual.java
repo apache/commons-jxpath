@@ -24,7 +24,7 @@ public class CoreOperationGreaterThanOrEqual extends CoreOperationRelationalExpr
 
     /**
      * Constructs a new CoreOperationGreaterThanOrEqual.
-     * 
+     *
      * @param arg1 operand 1
      * @param arg2 operand 2
      */

@@ -44,7 +44,7 @@ public class CoreFunction extends Operation {
 
     /**
      * Constructs a new CoreFunction.
-     * 
+     *
      * @param functionCode int function code
      * @param args         argument Expressions
      */
@@ -55,7 +55,7 @@ public class CoreFunction extends Operation {
 
     /**
      * Assert {@code count} args.
-     * 
+     *
      * @param count int
      */
     private void assertArgCount(final int count) {
@@ -64,7 +64,7 @@ public class CoreFunction extends Operation {
 
     /**
      * Assert at least {@code min}/at most {@code max} args.
-     * 
+     *
      * @param min int
      * @param max int
      */
@@ -82,7 +82,7 @@ public class CoreFunction extends Operation {
 
     /**
      * Returns true if any argument is context dependent or if the function is last(), position(), boolean(), local-name(), name(), string(), lang(), number().
-     * 
+     *
      * @return boolean
      */
     @Override
@@ -200,7 +200,7 @@ public class CoreFunction extends Operation {
 
     /**
      * boolean() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Boolean
      */
@@ -211,7 +211,7 @@ public class CoreFunction extends Operation {
 
     /**
      * ceiling() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Number
      */
@@ -226,7 +226,7 @@ public class CoreFunction extends Operation {
 
     /**
      * concat() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -244,7 +244,7 @@ public class CoreFunction extends Operation {
 
     /**
      * contains() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Boolean
      */
@@ -257,7 +257,7 @@ public class CoreFunction extends Operation {
 
     /**
      * count() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Number
      */
@@ -287,7 +287,7 @@ public class CoreFunction extends Operation {
 
     /**
      * ends-with() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Boolean
      * @since 1.4
@@ -301,7 +301,7 @@ public class CoreFunction extends Operation {
 
     /**
      * false() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Boolean.FALSE
      */
@@ -312,7 +312,7 @@ public class CoreFunction extends Operation {
 
     /**
      * floor() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Number
      */
@@ -327,7 +327,7 @@ public class CoreFunction extends Operation {
 
     /**
      * format-number() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -359,7 +359,7 @@ public class CoreFunction extends Operation {
 
     /**
      * id() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Pointer
      */
@@ -373,7 +373,7 @@ public class CoreFunction extends Operation {
 
     /**
      * key() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return various Object
      */
@@ -405,7 +405,7 @@ public class CoreFunction extends Operation {
 
     /**
      * lang() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Boolean
      */
@@ -421,7 +421,7 @@ public class CoreFunction extends Operation {
 
     /**
      * last() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Number
      */
@@ -444,7 +444,7 @@ public class CoreFunction extends Operation {
 
     /**
      * local-name() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -467,7 +467,7 @@ public class CoreFunction extends Operation {
 
     /**
      * name() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -490,7 +490,7 @@ public class CoreFunction extends Operation {
 
     /**
      * namespace-uri() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -515,7 +515,7 @@ public class CoreFunction extends Operation {
 
     /**
      * normalize-space() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -549,7 +549,7 @@ public class CoreFunction extends Operation {
 
     /**
      * not() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Boolean
      */
@@ -560,7 +560,7 @@ public class CoreFunction extends Operation {
 
     /**
      * null() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return null
      */
@@ -571,7 +571,7 @@ public class CoreFunction extends Operation {
 
     /**
      * number() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Number
      */
@@ -585,7 +585,7 @@ public class CoreFunction extends Operation {
 
     /**
      * position() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Number
      */
@@ -596,7 +596,7 @@ public class CoreFunction extends Operation {
 
     /**
      * round() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Number
      */
@@ -611,7 +611,7 @@ public class CoreFunction extends Operation {
 
     /**
      * starts-with() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Boolean
      */
@@ -624,7 +624,7 @@ public class CoreFunction extends Operation {
 
     /**
      * string() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -638,7 +638,7 @@ public class CoreFunction extends Operation {
 
     /**
      * string-length() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Number
      */
@@ -655,7 +655,7 @@ public class CoreFunction extends Operation {
 
     /**
      * substring() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -702,7 +702,7 @@ public class CoreFunction extends Operation {
 
     /**
      * substring-after() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -719,7 +719,7 @@ public class CoreFunction extends Operation {
 
     /**
      * substring-before() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -736,7 +736,7 @@ public class CoreFunction extends Operation {
 
     /**
      * sum() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Number
      */
@@ -760,7 +760,7 @@ public class CoreFunction extends Operation {
 
     /**
      * translate() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return String
      */
@@ -788,7 +788,7 @@ public class CoreFunction extends Operation {
 
     /**
      * true() implementation.
-     * 
+     *
      * @param context evaluation context
      * @return Boolean.TRUE
      */
@@ -799,7 +799,7 @@ public class CoreFunction extends Operation {
 
     /**
      * Convenience method to return the first argument.
-     * 
+     *
      * @return Expression
      */
     public Expression getArg1() {
@@ -808,7 +808,7 @@ public class CoreFunction extends Operation {
 
     /**
      * Convenience method to return the second argument.
-     * 
+     *
      * @return Expression
      */
     public Expression getArg2() {
@@ -817,7 +817,7 @@ public class CoreFunction extends Operation {
 
     /**
      * Convenience method to return the third argument.
-     * 
+     *
      * @return Expression
      */
     public Expression getArg3() {
@@ -826,7 +826,7 @@ public class CoreFunction extends Operation {
 
     /**
      * Gets the number of argument Expressions.
-     * 
+     *
      * @return int count
      */
     public int getArgumentCount() {
@@ -838,7 +838,7 @@ public class CoreFunction extends Operation {
 
     /**
      * Gets the function code.
-     * 
+     *
      * @return int function code
      */
     public int getFunctionCode() {
@@ -847,7 +847,7 @@ public class CoreFunction extends Operation {
 
     /**
      * Gets the name of this function.
-     * 
+     *
      * @return String function name
      */
     protected String getFunctionName() {

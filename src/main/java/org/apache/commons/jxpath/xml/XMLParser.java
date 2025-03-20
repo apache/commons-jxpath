@@ -26,7 +26,7 @@ public interface XMLParser {
 
     /**
      * Reads the supplied XML file and returns the resulting model, which is not necessarily DOM.
-     * 
+     *
      * @param stream InputStream
      * @return Object
      */

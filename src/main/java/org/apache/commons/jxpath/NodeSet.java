@@ -27,21 +27,21 @@ public interface NodeSet {
 
     /**
      * Returns a list of nodes.
-     * 
+     *
      * @return List
      */
     List getNodes();
 
     /**
      * Returns a list of pointers for all nodes in the set.
-     * 
+     *
      * @return List
      */
     List<Pointer> getPointers();
 
     /**
      * Returns a list of values of all contained pointers.
-     * 
+     *
      * @return List
      */
     List getValues();

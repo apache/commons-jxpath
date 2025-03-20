@@ -25,7 +25,7 @@ public interface IdentityManager {
 
     /**
      * Finds a node by its ID.
-     * 
+     *
      * @param context JXPathContext
      * @param id      String
      * @return Pointer

@@ -25,7 +25,7 @@ import org.apache.commons.jxpath.ri.QName;
 
 /**
  * NodePointerFactory to create {@link VariablePointer VariablePointers}.
- * 
+ *
  * @since JXPath 1.3
  */
 public class VariablePointerFactory implements NodePointerFactory {
@@ -39,7 +39,7 @@ public class VariablePointerFactory implements NodePointerFactory {
 
         /**
          * Constructs a new VariableContextWrapper.
-         * 
+         *
          * @param context to wrap
          */
         private VariableContextWrapper(final JXPathContext context) {
@@ -68,7 +68,7 @@ public class VariablePointerFactory implements NodePointerFactory {
 
     /**
      * VariableContextWrapper factory method.
-     * 
+     *
      * @param context the JXPathContext to wrap.
      * @return VariableContextWrapper.
      */

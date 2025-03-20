@@ -27,7 +27,7 @@ public class CoreOperationSubtract extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationSubtract.
-     * 
+     *
      * @param arg1 minuend
      * @param arg2 subtrahend
      */

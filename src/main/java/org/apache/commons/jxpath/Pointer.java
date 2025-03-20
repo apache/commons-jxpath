@@ -39,14 +39,14 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
      * of the result of a search performed by JXPath. If an object in the pointer's path is a Dynamic Property object (like a Map), the asPath method generates
      * an XPath that looks like this: {@code "
      * /departments[@name = 'HR']/employees[3]"}.
-     * 
+     *
      * @return String path
      */
     String asPath();
 
     /**
      * Pointers are cloneable.
-     * 
+     *
      * @return cloned Object
      */
     Object clone();
@@ -56,14 +56,14 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
      * is.
      *
      * For example, for an XML element, getNode() will return the element itself rather than the text it contains.
-     * 
+     *
      * @return Object node
      */
     Object getNode();
 
     /**
      * Returns the node this pointer is based on.
-     * 
+     *
      * @return Object
      */
     Object getRootNode();
@@ -73,14 +73,14 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
      * String, Number, Boolean, Set.
      *
      * For example, in the case of an XML element, getValue() will return the text contained by the element rather than the element itself.
-     * 
+     *
      * @return Object value
      */
     Object getValue();
 
     /**
      * Modifies the value of the object, property or collection element this pointer represents.
-     * 
+     *
      * @param value value to set
      */
     void setValue(Object value);

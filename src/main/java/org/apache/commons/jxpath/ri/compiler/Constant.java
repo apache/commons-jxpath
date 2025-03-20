@@ -29,7 +29,7 @@ public class Constant extends Expression {
 
     /**
      * Constructs a new Constant.
-     * 
+     *
      * @param number constant
      */
     public Constant(final Number number) {
@@ -38,7 +38,7 @@ public class Constant extends Expression {
 
     /**
      * Constructs a new Constant.
-     * 
+     *
      * @param string constant
      */
     public Constant(final String string) {
@@ -52,7 +52,7 @@ public class Constant extends Expression {
 
     /**
      * Returns false
-     * 
+     *
      * @return false
      */
     @Override
@@ -67,7 +67,7 @@ public class Constant extends Expression {
 
     /**
      * Returns false
-     * 
+     *
      * @return false
      */
     @Override

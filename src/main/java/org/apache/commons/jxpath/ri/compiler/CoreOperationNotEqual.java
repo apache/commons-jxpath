@@ -24,7 +24,7 @@ public class CoreOperationNotEqual extends CoreOperationCompare {
 
     /**
      * Constructs a new CoreOperationNotEqual.
-     * 
+     *
      * @param arg1 left operand
      * @param arg2 right operand
      */

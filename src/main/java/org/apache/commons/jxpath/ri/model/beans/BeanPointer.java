@@ -31,17 +31,17 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class BeanPointer extends PropertyOwnerPointer {
 
     private static final long serialVersionUID = -8227317938284982440L;
-    
+
     /**
      * Qualified name.
      */
     private final QName qName;
-    
+
     /**
      * Bean.
      */
     private final Object bean;
-    
+
     /**
      * Bean info.
      */
@@ -49,7 +49,7 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     /**
      * BeanPointer a new BeanPointer.
-     * 
+     *
      * @param parent   pointer
      * @param qName     is the name given to the first node
      * @param bean     pointed
@@ -64,7 +64,7 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     /**
      * Constructs a new BeanPointer.
-     * 
+     *
      * @param qName     is the name given to the first node
      * @param bean     pointed
      * @param beanInfo JXPathBeanInfo
@@ -138,7 +138,7 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @return 1
      */
     @Override
@@ -163,7 +163,7 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @return false
      */
     @Override

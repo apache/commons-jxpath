@@ -26,7 +26,7 @@ public class Step {
 
     /**
      * Decode an axis code to its name.
-     * 
+     *
      * @param axis int code
      * @return String name.
      * @see Compiler
@@ -71,7 +71,7 @@ public class Step {
 
     /**
      * Constructs a new Step.
-     * 
+     *
      * @param axis       axis code
      * @param nodeTest   step test
      * @param predicates predicate expressions
@@ -84,7 +84,7 @@ public class Step {
 
     /**
      * Gets the axis code.
-     * 
+     *
      * @return int
      */
     public int getAxis() {
@@ -93,7 +93,7 @@ public class Step {
 
     /**
      * Gets the step test.
-     * 
+     *
      * @return NodeTest
      */
     public NodeTest getNodeTest() {
@@ -102,7 +102,7 @@ public class Step {
 
     /**
      * Gets the predicates.
-     * 
+     *
      * @return Expression[]
      */
     public Expression[] getPredicates() {
@@ -111,7 +111,7 @@ public class Step {
 
     /**
      * Learn whether this step contains any predicate that is context dependent.
-     * 
+     *
      * @return boolean
      */
     public boolean isContextDependent() {

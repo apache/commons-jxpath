@@ -27,7 +27,7 @@ public abstract class Operation extends Expression {
 
     /**
      * Constructs a new Operation.
-     * 
+     *
      * @param args Expression[]
      */
     public Operation(final Expression[] args) {
@@ -48,7 +48,7 @@ public abstract class Operation extends Expression {
 
     /**
      * Gets the arguments.
-     * 
+     *
      * @return Expression[]
      */
     public Expression[] getArguments() {

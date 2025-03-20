@@ -21,7 +21,7 @@ package org.apache.commons.jxpath.ri.compiler;
  * Node test.
  */
 public abstract class NodeTest {
-    
+
     /**
      * Constructs a new instance for subclasses.
      */

@@ -23,10 +23,10 @@ import java.util.List;
  * If an extenstion function has an argument of type ExpressionContext, it can gain access to the current node of an XPath expression context.
  * <p>
  * Example: <blockquote>
- * 
+ *
  * <pre>
  * public class MyExtenstionFunctions {
- * 
+ *
  *     public static String objectType(ExpressionContext context) {
  *         Object value = context.getContextNodePointer().getValue();
  *         if (value == null) {
@@ -36,15 +36,15 @@ import java.util.List;
  *     }
  * }
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * You can then register this extension function using a {@link ClassFunctions ClassFunctions} object and call it like this: <blockquote>
- * 
+ *
  * <pre>
  * "/descendent-or-self::node()[ns:objectType() = 'java.util.Date']"
  * </pre>
- * 
+ *
  * </blockquote> This expression will find all nodes of the graph that are dates.
  */
 public interface ExpressionContext {
@@ -72,7 +72,7 @@ public interface ExpressionContext {
 
     /**
      * Returns the current context position.
-     * 
+     *
      * @return int
      */
     int getPosition();

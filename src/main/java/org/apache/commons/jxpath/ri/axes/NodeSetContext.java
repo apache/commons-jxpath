@@ -31,7 +31,7 @@ public class NodeSetContext extends EvalContext {
 
     /**
      * Constructs a new NodeSetContext.
-     * 
+     *
      * @param parentContext parent context
      * @param nodeSet       associated NodeSet
      */

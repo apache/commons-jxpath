@@ -50,7 +50,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
 
     /**
      * Do assertions on DOM element names.
-     * 
+     *
      * @param names    List of expected names
      * @param elements List of DOM elements
      */
@@ -65,7 +65,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
 
     /**
      * Do assertions on DOM element values.
-     * 
+     *
      * @param values   List of expected values
      * @param elements List of DOM elements
      */

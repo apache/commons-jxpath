@@ -37,7 +37,7 @@ public class MethodFunction implements Function {
 
     /**
      * Constructs a new MethodFunction.
-     * 
+     *
      * @param method implementing Method
      */
     public MethodFunction(final Method method) {

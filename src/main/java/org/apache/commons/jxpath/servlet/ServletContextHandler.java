@@ -40,7 +40,7 @@ public class ServletContextHandler implements DynamicPropertyHandler {
 
     /**
      * Collect the property names from bean, storing in set.
-     * 
+     *
      * @param set  destination
      * @param bean to read
      */
@@ -63,7 +63,7 @@ public class ServletContextHandler implements DynamicPropertyHandler {
     public String[] getPropertyNames(final Object context) {
         final HashSet<String> set = new HashSet<>(DEFAULT_PROPERTY_COUNT);
         collectPropertyNames(set, context);
-        return (String[]) set.toArray(new String[set.size()]);
+        return set.toArray(new String[set.size()]);
     }
 
     @Override

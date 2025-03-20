@@ -43,7 +43,7 @@ public abstract class CoreOperation extends Operation {
 
     /**
      * Constructs a new CoreOperation.
-     * 
+     *
      * @param args Expression[]
      */
     public CoreOperation(final Expression[] args) {
@@ -60,28 +60,28 @@ public abstract class CoreOperation extends Operation {
 
     /**
      * Computes the precedence of the operation.
-     * 
+     *
      * @return int precedence
      */
     protected abstract int getPrecedence();
 
     /**
      * Returns the XPath symbol for this operation, e.g. "+", "div", etc.
-     * 
+     *
      * @return String symbol
      */
     public abstract String getSymbol();
 
     /**
      * Returns true if the operation is not sensitive to the order of arguments, e.g. "=", "and" etc, and false if it is, e.g. "&lt;=", "div".
-     * 
+     *
      * @return boolean
      */
     protected abstract boolean isSymmetric();
 
     /**
      * Wrap an expression in parens if necessary.
-     * 
+     *
      * @param expression other Expression
      * @param left       whether {@code expression} is left of this one.
      * @return String

@@ -24,7 +24,7 @@ public class NameAttributeTest extends CoreOperationEqual {
 
     /**
      * Constructs a new NameAttributeTest.
-     * 
+     *
      * @param namePath  Expression
      * @param nameValue Expression
      */
@@ -39,7 +39,7 @@ public class NameAttributeTest extends CoreOperationEqual {
 
     /**
      * Gets the name test expression.
-     * 
+     *
      * @return Expression
      */
     public Expression getNameTestExpression() {

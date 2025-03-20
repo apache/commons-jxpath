@@ -52,7 +52,7 @@ public class BasicTypeConverter implements TypeConverter {
 
         /**
          * Constructs a new ValueNodeSet.
-         * 
+         *
          * @param values to return
          */
         public ValueNodeSet(final List values) {
@@ -68,8 +68,8 @@ public class BasicTypeConverter implements TypeConverter {
         public List<Pointer> getPointers() {
             if (pointers == null) {
                 pointers = new ArrayList();
-                for (int i = 0; i < values.size(); i++) {
-                    pointers.add(new ValuePointer(values.get(i)));
+                for (final Object value : values) {
+                    pointers.add(new ValuePointer(value));
                 }
                 pointers = Collections.unmodifiableList(pointers);
             }
@@ -92,7 +92,7 @@ public class BasicTypeConverter implements TypeConverter {
 
         /**
          * Constructs a new ValuePointer.
-         * 
+         *
          * @param object value
          */
         public ValuePointer(final Object object) {
@@ -151,7 +151,7 @@ public class BasicTypeConverter implements TypeConverter {
         }
     }
 
-    
+
     /**
      * Constructs a new instance.
      */
@@ -161,7 +161,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Create a collection of a given type.
-     * 
+     *
      * @param type destination class
      * @return Collection
      */
@@ -184,7 +184,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Allocate a number of a given type and value.
-     * 
+     *
      * @param type  destination class
      * @param value double
      * @return Number
@@ -236,7 +236,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Returns true if it can convert the supplied object to the specified class.
-     * 
+     *
      * @param object to check
      * @param toType prospective destination class
      * @return boolean
@@ -325,7 +325,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Learn whether this BasicTypeConverter can create a collection of the specified type.
-     * 
+     *
      * @param type prospective destination class
      * @return boolean
      */
@@ -343,7 +343,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Converts the supplied object to the specified type. Throws a runtime exception if the conversion is not possible.
-     * 
+     *
      * @param object to convert
      * @param toType destination class
      * @return converted object
@@ -465,7 +465,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Convert null to a primitive type.
-     * 
+     *
      * @param toType destination class
      * @return a wrapper
      */
@@ -499,7 +499,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Convert a string to a primitive type.
-     * 
+     *
      * @param object String
      * @param toType destination class
      * @return wrapper
@@ -535,7 +535,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Gets an unmodifiable version of a collection.
-     * 
+     *
      * @param collection to wrap
      * @return Collection
      */

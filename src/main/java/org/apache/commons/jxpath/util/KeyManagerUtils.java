@@ -27,7 +27,7 @@ import org.apache.commons.jxpath.ri.InfoSetUtil;
 
 /**
  * Utility class.
- * 
+ *
  * @since JXPath 1.3
  */
 public class KeyManagerUtils {
@@ -41,7 +41,7 @@ public class KeyManagerUtils {
 
         /**
          * Constructs a new SingleNodeExtendedKeyManager.
-         * 
+         *
          * @param delegate KeyManager to wrap
          */
         public SingleNodeExtendedKeyManager(final KeyManager delegate) {
@@ -64,14 +64,14 @@ public class KeyManagerUtils {
 
     /**
      * Gets an ExtendedKeyManager from the specified KeyManager.
-     * 
+     *
      * @param keyManager to adapt, if necessary
      * @return {@code keyManager} if it implements ExtendedKeyManager or a basic single-result ExtendedKeyManager that delegates to {@code keyManager}.
      */
     public static ExtendedKeyManager getExtendedKeyManager(final KeyManager keyManager) {
         return keyManager instanceof ExtendedKeyManager ? (ExtendedKeyManager) keyManager : new SingleNodeExtendedKeyManager(keyManager);
     }
-    
+
     /**
      * Constructs a new instance.
      *

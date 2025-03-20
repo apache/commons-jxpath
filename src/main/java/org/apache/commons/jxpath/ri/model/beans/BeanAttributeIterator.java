@@ -31,7 +31,7 @@ public class BeanAttributeIterator extends PropertyIterator {
 
     /**
      * Constructs a new BeanAttributeIterator.
-     * 
+     *
      * @param parent parent pointer
      * @param qName   name of this bean
      */

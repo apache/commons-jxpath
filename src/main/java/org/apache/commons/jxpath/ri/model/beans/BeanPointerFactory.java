@@ -32,7 +32,7 @@ public class BeanPointerFactory implements NodePointerFactory {
 
     /** Factory order constant */
     public static final int BEAN_POINTER_FACTORY_ORDER = 900;
-    
+
     /**
      * Constructs a new instance.
      */

@@ -45,7 +45,7 @@ public class ValueUtils {
 
     /**
      * Convert value to type.
-     * 
+     *
      * @param value Object
      * @param type  destination
      * @return conversion result
@@ -60,7 +60,7 @@ public class ValueUtils {
 
     /**
      * Grows the collection if necessary to the specified size. Returns the new, expanded collection.
-     * 
+     *
      * @param collection to expand
      * @param size       desired size
      * @return collection or array
@@ -166,7 +166,7 @@ public class ValueUtils {
 
     /**
      * Returns 1 if the type is a collection, -1 if it is definitely not and 0 if it may be a collection in some cases.
-     * 
+     *
      * @param clazz to test
      * @return int
      */
@@ -191,12 +191,12 @@ public class ValueUtils {
 
     /**
      * Returns a shared instance of the dynamic property handler class returned by {@code getDynamicPropertyHandlerClass()}.
-     * 
+     *
      * @param clazz to handle
      * @return DynamicPropertyHandler
      */
     public static DynamicPropertyHandler getDynamicPropertyHandler(final Class clazz) {
-        return (DynamicPropertyHandler) dynamicPropertyHandlerMap.computeIfAbsent(clazz, k -> {
+        return dynamicPropertyHandlerMap.computeIfAbsent(clazz, k -> {
             try {
                 return (DynamicPropertyHandler) clazz.getConstructor().newInstance();
             } catch (final Exception ex) {
@@ -209,7 +209,7 @@ public class ValueUtils {
      * If there is a regular non-indexed read method for this property, uses this method to obtain the collection and then returns its length. Otherwise,
      * attempts to guess the length of the collection by calling the indexed get method repeatedly. The method is supposed to throw an exception if the index is
      * out of bounds.
-     * 
+     *
      * @param object collection
      * @param pd     IndexedPropertyDescriptor
      * @return int
@@ -234,7 +234,7 @@ public class ValueUtils {
 
     /**
      * Returns the length of the supplied collection. If the supplied object is not a collection, returns 1. If collection is null, returns 0.
-     * 
+     *
      * @param collection to check
      * @return int
      */
@@ -254,7 +254,7 @@ public class ValueUtils {
 
     /**
      * If the parameter is a container, opens the container and return the contents. The method is recursive.
-     * 
+     *
      * @param object to read
      * @return Object
      */
@@ -267,7 +267,7 @@ public class ValueUtils {
 
     /**
      * Returns the index'th element of the supplied collection.
-     * 
+     *
      * @param collection to read
      * @param index      int
      * @return collection[index]
@@ -307,7 +307,7 @@ public class ValueUtils {
 
     /**
      * Returns the value of the bean's property represented by the supplied property descriptor.
-     * 
+     *
      * @param bean               to read
      * @param propertyDescriptor indicating what to read
      * @return Object value
@@ -329,7 +329,7 @@ public class ValueUtils {
 
     /**
      * Returns the index'th element of the bean's property represented by the supplied property descriptor.
-     * 
+     *
      * @param bean               to read
      * @param propertyDescriptor indicating what to read
      * @param index              int
@@ -359,7 +359,7 @@ public class ValueUtils {
 
     /**
      * Returns true if the object is an array or a Collection.
-     * 
+     *
      * @param value to test
      * @return boolean
      */
@@ -377,7 +377,7 @@ public class ValueUtils {
     /**
      * Returns an iterator for the supplied collection. If the argument is null, returns an empty iterator. If the argument is not a collection, returns an
      * iterator that produces just that one object.
-     * 
+     *
      * @param collection to iterate
      * @return Iterator
      */
@@ -404,7 +404,7 @@ public class ValueUtils {
 
     /**
      * Remove the index'th element from the supplied collection.
-     * 
+     *
      * @param collection to edit
      * @param index      int
      * @return the resulting collection
@@ -454,7 +454,7 @@ public class ValueUtils {
 
     /**
      * Modifies the index'th element of the supplied collection. Converts the value to the required type if necessary.
-     * 
+     *
      * @param collection to edit
      * @param index      to replace
      * @param value      new value
@@ -480,7 +480,7 @@ public class ValueUtils {
     /**
      * Modifies the index'th element of the bean's property represented by the supplied property descriptor. Converts the value to the required type if
      * necessary.
-     * 
+     *
      * @param bean               to edit
      * @param propertyDescriptor indicating what to set
      * @param index              int
@@ -512,7 +512,7 @@ public class ValueUtils {
 
     /**
      * Modifies the value of the bean's property represented by the supplied property descriptor.
-     * 
+     *
      * @param bean               to read
      * @param propertyDescriptor indicating what to read
      * @param value              to set
@@ -530,7 +530,7 @@ public class ValueUtils {
                     ex);
         }
     }
-    
+
     /**
      * Constructs a new instance.
      *

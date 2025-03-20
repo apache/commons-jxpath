@@ -27,7 +27,7 @@ public class CoreOperationDivide extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationDivide.
-     * 
+     *
      * @param arg1 dividend
      * @param arg2 divisor
      */

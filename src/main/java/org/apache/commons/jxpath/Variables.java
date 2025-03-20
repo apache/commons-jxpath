@@ -27,7 +27,7 @@ public interface Variables extends Serializable {
 
     /**
      * Defines a new variable with the specified value or modifies the value of an existing variable. May throw UnsupportedOperationException.
-     * 
+     *
      * @param name variable name
      * @param value   to declare
      */
@@ -35,7 +35,7 @@ public interface Variables extends Serializable {
 
     /**
      * Returns the value of the specified variable.
-     * 
+     *
      * @param name variable name
      * @return Object value
      * @throws IllegalArgumentException if there is no such variable.
@@ -44,7 +44,7 @@ public interface Variables extends Serializable {
 
     /**
      * Returns true if the specified variable is declared.
-     * 
+     *
      * @param name variable name
      * @return boolean
      */
