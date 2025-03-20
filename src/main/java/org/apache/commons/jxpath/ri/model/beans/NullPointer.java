@@ -33,12 +33,12 @@ public class NullPointer extends PropertyOwnerPointer {
     /**
      * The name of this node
      */
-    private QName name;
+    private final QName name;
 
     /**
-     * ID.
+     * Optional ID, may be null.
      */
-    private String id;
+    private final String id;
 
     /**
      * Constructs a new NullPointer.
@@ -49,6 +49,7 @@ public class NullPointer extends PropertyOwnerPointer {
     public NullPointer(final Locale locale, final String id) {
         super(null, locale);
         this.id = id;
+        this.name = null;
     }
 
     /**
@@ -60,6 +61,7 @@ public class NullPointer extends PropertyOwnerPointer {
     public NullPointer(final NodePointer parent, final QName name) {
         super(parent);
         this.name = name;
+        this.id = null;
     }
 
     /**
@@ -71,6 +73,7 @@ public class NullPointer extends PropertyOwnerPointer {
     public NullPointer(final QName name, final Locale locale) {
         super(null, locale);
         this.name = name;
+        this.id = null;
     }
 
     @Override
