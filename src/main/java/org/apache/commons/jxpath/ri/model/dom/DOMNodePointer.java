@@ -225,7 +225,7 @@ public class DOMNodePointer extends NodePointer {
     /**
      * Optional ID.
      */
-    private String id;
+    private final String id;
 
     /**
      * Supports {@link #getNamespaceResolver()}.
@@ -239,8 +239,7 @@ public class DOMNodePointer extends NodePointer {
      * @param locale Locale.
      */
     public DOMNodePointer(final Node node, final Locale locale) {
-        super(null, locale);
-        this.node = node;
+        this(node, locale, null);
     }
 
     /**
@@ -265,6 +264,7 @@ public class DOMNodePointer extends NodePointer {
     public DOMNodePointer(final NodePointer parent, final Node node) {
         super(parent);
         this.node = node;
+        this.id = null;
     }
 
     @Override
