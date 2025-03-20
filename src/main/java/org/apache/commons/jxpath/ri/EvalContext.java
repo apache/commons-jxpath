@@ -93,7 +93,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      * @return List
      */
     @Override
-    public List getContextNodeList() {
+    public List<Pointer> getContextNodeList() {
         final int pos = position;
         if (pos != 0) {
             reset();

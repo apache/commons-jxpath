@@ -59,7 +59,7 @@ public class ExtensionFunctionTest extends AbstractJXPathTest {
         }
 
         @Override
-        public List getContextNodeList() {
+        public List<Pointer> getContextNodeList() {
             return null;
         }
 

@@ -54,7 +54,7 @@ public interface ExpressionContext {
      *
      * @return A list representing the current context nodes.
      */
-    List getContextNodeList();
+    List<Pointer> getContextNodeList();
 
     /**
      * Gets the current context node.
