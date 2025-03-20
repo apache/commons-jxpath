@@ -29,8 +29,8 @@ import org.apache.commons.jxpath.util.ClassLoaderUtil;
  */
 public class JXPathIntrospector {
 
-    private static Map byClass = Collections.synchronizedMap(new HashMap());
-    private static Map byInterface = Collections.synchronizedMap(new HashMap());
+    private static Map<Class, JXPathBeanInfo> byClass = Collections.synchronizedMap(new HashMap<>());
+    private static Map<Class, JXPathBeanInfo> byInterface = Collections.synchronizedMap(new HashMap<>());
     static {
         registerAtomicClass(Class.class);
         registerAtomicClass(Boolean.TYPE);
@@ -66,7 +66,7 @@ public class JXPathIntrospector {
     private static JXPathBeanInfo findDynamicBeanInfo(final Class beanClass) {
         JXPathBeanInfo beanInfo;
         if (beanClass.isInterface()) {
-            beanInfo = (JXPathBeanInfo) byInterface.get(beanClass);
+            beanInfo = byInterface.get(beanClass);
             if (beanInfo != null && beanInfo.isDynamic()) {
                 return beanInfo;
             }
@@ -82,7 +82,7 @@ public class JXPathIntrospector {
         }
         final Class sup = beanClass.getSuperclass();
         if (sup != null) {
-            beanInfo = (JXPathBeanInfo) byClass.get(sup);
+            beanInfo = byClass.get(sup);
             if (beanInfo != null && beanInfo.isDynamic()) {
                 return beanInfo;
             }
@@ -130,7 +130,7 @@ public class JXPathIntrospector {
      * @return JXPathBeanInfo
      */
     public static JXPathBeanInfo getBeanInfo(final Class beanClass) {
-        JXPathBeanInfo beanInfo = (JXPathBeanInfo) byClass.get(beanClass);
+        JXPathBeanInfo beanInfo = byClass.get(beanClass);
         if (beanInfo == null) {
             beanInfo = findDynamicBeanInfo(beanClass);
             if (beanInfo == null) {
