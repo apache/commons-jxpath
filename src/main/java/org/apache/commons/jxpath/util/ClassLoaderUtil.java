@@ -141,7 +141,7 @@ public class ClassLoaderUtil {
                 className = className.substring(0, className.length() - 2);
                 classNameBuffer.append("[");
             }
-            final String abbreviation = (String) abbreviationMap.get(className);
+            final String abbreviation = abbreviationMap.get(className);
             if (abbreviation != null) {
                 classNameBuffer.append(abbreviation);
             } else {
