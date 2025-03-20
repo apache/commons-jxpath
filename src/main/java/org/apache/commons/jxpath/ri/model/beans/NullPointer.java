@@ -33,7 +33,7 @@ public class NullPointer extends PropertyOwnerPointer {
     /**
      * The name of this node
      */
-    private final QName name;
+    private final QName qName;
 
     /**
      * Optional ID, may be null.
@@ -49,30 +49,30 @@ public class NullPointer extends PropertyOwnerPointer {
     public NullPointer(final Locale locale, final String id) {
         super(null, locale);
         this.id = id;
-        this.name = null;
+        this.qName = null;
     }
 
     /**
      * Used for the root node.
      *
      * @param parent parent pointer
-     * @param name   node name
+     * @param qName  node name
      */
-    public NullPointer(final NodePointer parent, final QName name) {
+    public NullPointer(final NodePointer parent, final QName qName) {
         super(parent);
-        this.name = name;
+        this.qName = qName;
         this.id = null;
     }
 
     /**
      * Constructs a new NullPointer.
      *
-     * @param name   node name
+     * @param qName  node name
      * @param locale Locale
      */
-    public NullPointer(final QName name, final Locale locale) {
+    public NullPointer(final QName qName, final Locale locale) {
         super(null, locale);
-        this.name = name;
+        this.qName = qName;
         this.id = null;
     }
 
@@ -119,7 +119,7 @@ public class NullPointer extends PropertyOwnerPointer {
             return false;
         }
         final NullPointer other = (NullPointer) object;
-        return name == other.name || name != null && name.equals(other.name);
+        return qName == other.qName || qName != null && qName.equals(other.qName);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class NullPointer extends PropertyOwnerPointer {
 
     @Override
     public QName getName() {
-        return name;
+        return qName;
     }
 
     @Override
@@ -144,7 +144,7 @@ public class NullPointer extends PropertyOwnerPointer {
 
     @Override
     public int hashCode() {
-        return name == null ? 0 : name.hashCode();
+        return qName == null ? 0 : qName.hashCode();
     }
 
     @Override
