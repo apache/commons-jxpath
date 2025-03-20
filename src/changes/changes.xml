@@ -138,7 +138,7 @@ The <action> type attribute can be add,update,fix,remove.
       </action>
       <!-- UPDATE -->
       <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
-        Bump commons-parent from 54 to 78 #45, #49, #64, #110, #121, #403, #167, #173, #176, #181, #185, #188, #196.
+        Bump commons-parent from 54 to 81 #45, #49, #64, #110, #121, #403, #167, #173, #176, #181, #185, #188, #196.
       </action>
       <action issue="JXPATH-184" dev="britter" type="update" due-to="britter, Gary Gregory">
         Bump Java to 8.
