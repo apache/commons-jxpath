@@ -81,22 +81,13 @@ public abstract class JXPathContextFactory {
         }
         // try to read from $java.home/lib/xml.properties
         try {
-            final String javah = System.getProperty("java.home");
-            final String configFile = javah + File.separator + "lib" + File.separator + "jxpath.properties";
+            final String javaHome = System.getProperty("java.home");
+            final String configFile = javaHome + File.separator + "lib" + File.separator + "jxpath.properties";
             final File f = new File(configFile);
             if (f.exists()) {
                 final Properties props = new Properties();
-                final FileInputStream fis = new FileInputStream(f);
-                try {
+                try (FileInputStream fis = new FileInputStream(f)) {
                     props.load(fis);
-                } finally {
-                    if (fis != null) {
-                        try {
-                            fis.close();
-                        } catch (final IOException ignore) { // NOPMD
-                            // swallow
-                        }
-                    }
                 }
                 final String factory = props.getProperty(property);
                 if (factory != null) {
@@ -115,32 +106,19 @@ public abstract class JXPathContextFactory {
         // try to find services in CLASSPATH
         try {
             final ClassLoader cl = JXPathContextFactory.class.getClassLoader();
-            InputStream is;
-            if (cl == null) {
-                is = ClassLoader.getSystemResourceAsStream(serviceId);
-            } else {
-                is = cl.getResourceAsStream(serviceId);
-            }
-            if (is != null) {
-                if (debug) {
-                    System.err.println("JXPath: found  " + serviceId);
-                }
-                final BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                String factory = null;
-                try {
-                    factory = rd.readLine();
-                } finally {
-                    try {
-                        rd.close();
-                    } catch (final IOException ignore) { // NOPMD
-                        // Ignore
-                    }
-                }
-                if (factory != null && !"".equals(factory)) {
+            try (InputStream is = cl == null ? ClassLoader.getSystemResourceAsStream(serviceId) : cl.getResourceAsStream(serviceId)) {
+                if (is != null) {
                     if (debug) {
-                        System.err.println("JXPath: loaded from services: " + factory);
+                        System.err.println("JXPath: found  " + serviceId);
                     }
-                    return factory;
+                    final BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                    final String factory = rd.readLine();
+                    if (factory != null && !"".equals(factory)) {
+                        if (debug) {
+                            System.err.println("JXPath: loaded from services: " + factory);
+                        }
+                        return factory;
+                    }
                 }
             }
         } catch (final Exception ex) {
