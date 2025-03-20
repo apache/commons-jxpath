@@ -653,7 +653,7 @@ public class SimplePathInterpreter {
     }
 
     /**
-     * Learn whether {@code name} is a lang attribute.
+     * Tests whether {@code name} is a lang attribute.
      *
      * @param qName to compare
      * @return boolean

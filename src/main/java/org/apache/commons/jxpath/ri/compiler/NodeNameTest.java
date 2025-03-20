@@ -66,7 +66,7 @@ public class NodeNameTest extends NodeTest {
     }
 
     /**
-     * Learn whether this is a wildcard test.
+     * Tests whether this is a wildcard test.
      *
      * @return {@code true} if the node name is "*".
      */

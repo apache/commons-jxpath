@@ -40,7 +40,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser is coalescing.
+     * Tests whether the underlying parser is coalescing.
      *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isCoalescing()
@@ -50,7 +50,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser expands entity references.
+     * Tests whether the underlying parser expands entity references.
      *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isExpandEntityReferences()
@@ -60,7 +60,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser ignores comments.
+     * Tests whether the underlying parser ignores comments.
      *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isIgnoringComments()
@@ -70,7 +70,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser is ignoring whitespace.
+     * Tests whether the underlying parser is ignoring whitespace.
      *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isIgnoringElementContentWhitespace()
@@ -80,7 +80,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser is ns-aware.
+     * Tests whether the underlying parser is ns-aware.
      *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isNamespaceAware()
@@ -90,7 +90,7 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser is validating.
+     * Tests whether the underlying parser is validating.
      *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isValidating()

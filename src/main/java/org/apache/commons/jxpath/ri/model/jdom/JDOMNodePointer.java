@@ -54,7 +54,7 @@ public class JDOMNodePointer extends NodePointer {
     public static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
 
     /**
-     * Learn whether two strings are == or .equals()
+     * Tests whether two strings are == or .equals()
      *
      * @param s1 string 1
      * @param s2 string 2

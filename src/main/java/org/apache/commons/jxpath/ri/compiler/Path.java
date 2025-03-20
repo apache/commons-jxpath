@@ -54,7 +54,7 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * Learn whether the elements of the specified array are "basic" predicates.
+     * Tests whether the elements of the specified array are "basic" predicates.
      *
      * @param predicates the Expression[] to check
      * @return boolean

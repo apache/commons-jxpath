@@ -62,7 +62,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
     }
 
     /**
-     * Learn whether it contains value.
+     * Tests whether it contains value.
      *
      * @param it    Iterator to check
      * @param value for which to look
@@ -120,7 +120,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
     }
 
     /**
-     * Learn whether l equals r in XPath terms.
+     * Tests whether l equals r in XPath terms.
      *
      * @param l left operand
      * @param r right operand
@@ -158,7 +158,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
     }
 
     /**
-     * Learn whether lit intersects rit.
+     * Tests whether lit intersects rit.
      *
      * @param lit left Iterator
      * @param rit right Iterator

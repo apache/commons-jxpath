@@ -717,7 +717,7 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Learn whether this JXPathContext is lenient.
+     * Tests whether this JXPathContext is lenient.
      *
      * @return boolean
      * @see #setLenient(boolean)

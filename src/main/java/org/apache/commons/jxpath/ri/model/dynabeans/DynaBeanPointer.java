@@ -33,7 +33,7 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
     private static final long serialVersionUID = -9135052498044877965L;
 
     /**
-     * Learn whether two objects are == || .equals().
+     * Tests whether two objects are == || .equals().
      *
      * @param o1 first object
      * @param o2 second object

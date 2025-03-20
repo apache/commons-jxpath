@@ -68,7 +68,7 @@ public class LocationPath extends Path {
     }
 
     /**
-     * Learn whether this LocationPath is absolute.
+     * Tests whether this LocationPath is absolute.
      *
      * @return boolean
      */

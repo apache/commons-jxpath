@@ -120,7 +120,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     public abstract PropertyPointer getPropertyPointer();
 
     /**
-     * Learn whether dynamic property declaration is supported.
+     * Tests whether dynamic property declaration is supported.
      *
      * @return true if the property owner can set a property "does not exist". A good example is a Map. You can always assign a value to any key even if it has
      *         never been "declared".
@@ -130,7 +130,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     /**
-     * Learn whether {@code name} is a valid child name for this PropertyOwnerPointer.
+     * Tests whether {@code name} is a valid child name for this PropertyOwnerPointer.
      *
      * @param qName the QName to test
      * @return {@code true} if {@code QName} is a valid property name.

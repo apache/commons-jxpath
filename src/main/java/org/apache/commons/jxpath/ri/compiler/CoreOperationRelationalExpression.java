@@ -84,7 +84,7 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
     }
 
     /**
-     * Learn whether any element returned from an Iterator matches a given value.
+     * Tests whether any element returned from an Iterator matches a given value.
      *
      * @param it    Iterator
      * @param value to look for
@@ -101,7 +101,7 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
     }
 
     /**
-     * Learn whether any element returned from an Iterator matches a given value.
+     * Tests whether any element returned from an Iterator matches a given value.
      *
      * @param it    Iterator
      * @param value to look for
@@ -126,7 +126,7 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
     protected abstract boolean evaluateCompare(int compare);
 
     /**
-     * Learn whether there is an intersection between two Iterators.
+     * Tests whether there is an intersection between two Iterators.
      *
      * @param lit left Iterator
      * @param rit right Iterator

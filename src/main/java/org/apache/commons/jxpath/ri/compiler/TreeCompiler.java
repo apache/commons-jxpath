@@ -76,7 +76,7 @@ public class TreeCompiler implements Compiler {
     }
 
     /**
-     * Learn whether arg is a name attribute test.
+     * Tests whether arg is a name attribute test.
      *
      * @param arg Expression to test
      * @return boolean

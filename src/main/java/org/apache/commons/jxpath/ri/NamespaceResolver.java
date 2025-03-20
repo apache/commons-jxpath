@@ -164,7 +164,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
     }
 
     /**
-     * Learn whether this NamespaceResolver has been sealed.
+     * Tests whether this NamespaceResolver has been sealed.
      *
      * @return boolean
      */

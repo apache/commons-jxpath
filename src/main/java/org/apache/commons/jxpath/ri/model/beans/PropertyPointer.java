@@ -215,7 +215,7 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     /**
-     * Learn whether this pointer references an actual property.
+     * Tests whether this pointer references an actual property.
      *
      * @return true if actual
      */

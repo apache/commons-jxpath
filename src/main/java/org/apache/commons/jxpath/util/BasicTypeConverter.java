@@ -324,7 +324,7 @@ public class BasicTypeConverter implements TypeConverter {
     }
 
     /**
-     * Learn whether this BasicTypeConverter can create a collection of the specified type.
+     * Tests whether this BasicTypeConverter can create a collection of the specified type.
      *
      * @param type prospective destination class
      * @return boolean

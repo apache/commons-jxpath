@@ -764,7 +764,7 @@ public abstract class NodePointer implements Pointer {
     public abstract boolean isLeaf();
 
     /**
-     * Learn whether this pointer is considered to be a node.
+     * Tests whether this pointer is considered to be a node.
      *
      * @return boolean
      * @deprecated Please use !isContainer()

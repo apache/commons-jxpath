@@ -212,7 +212,7 @@ public class DynaBeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Learn whether the property referenced is an indexed property.
+     * Tests whether the property referenced is an indexed property.
      *
      * @return boolean
      */

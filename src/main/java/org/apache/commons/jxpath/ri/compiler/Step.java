@@ -110,7 +110,7 @@ public class Step {
     }
 
     /**
-     * Learn whether this step contains any predicate that is context dependent.
+     * Tests whether this step contains any predicate that is context dependent.
      *
      * @return boolean
      */
