@@ -224,8 +224,8 @@ public class JDOMNodePointer extends NodePointer {
     /** Node, like a bean. */
     private final Object node;
 
-    /** ID. */
-    private String id;
+    /** Optional ID, may be null. */
+    private final String id;
 
     /** Local namespace resolver. */
     private NamespaceResolver localNamespaceResolver;
@@ -239,6 +239,7 @@ public class JDOMNodePointer extends NodePointer {
     public JDOMNodePointer(final NodePointer parent, final Object node) {
         super(parent);
         this.node = node;
+        this.id = null;
     }
 
     /**
@@ -250,6 +251,7 @@ public class JDOMNodePointer extends NodePointer {
     public JDOMNodePointer(final Object node, final Locale locale) {
         super(null, locale);
         this.node = node;
+        this.id = null;
     }
 
     /**

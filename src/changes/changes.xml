@@ -131,6 +131,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Make the private DOMNodePointer.id field final.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Make the private NullPointer.id field final.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Make the private NullPointer.qname field final.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Make the private JDOMNodePointer.id field final.</action>
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).
