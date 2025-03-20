@@ -62,7 +62,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
     protected final NamespaceResolver parent;
 
     /** Namespace map. */
-    protected HashMap namespaceMap = new HashMap();
+    protected HashMap<String, String> namespaceMap = new HashMap<>();
 
     /** Reverse lookup map */
     protected HashMap reverseMap = new HashMap();
@@ -112,7 +112,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
      * @since JXPath 1.3
      */
     protected synchronized String getExternallyRegisteredNamespaceURI(final String prefix) {
-        final String uri = (String) namespaceMap.get(prefix);
+        final String uri = namespaceMap.get(prefix);
         return uri == null && parent != null ? parent.getExternallyRegisteredNamespaceURI(prefix) : uri;
     }
 
