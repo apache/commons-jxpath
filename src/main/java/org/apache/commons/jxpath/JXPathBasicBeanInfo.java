@@ -61,7 +61,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     /**
      * PropertyDescriptor for the specified name or null if there is no such property.
      */
-    private transient HashMap propertyDescriptorMap;
+    private transient HashMap<String, PropertyDescriptor> propertyDescriptorMap;
 
     /**
      * Constructs a new JXPathBasicBeanInfo.
@@ -108,13 +108,13 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     @Override
     public synchronized PropertyDescriptor getPropertyDescriptor(final String propertyName) {
         if (propertyDescriptorMap == null) {
-            propertyDescriptorMap = new HashMap();
+            propertyDescriptorMap = new HashMap<>();
             final PropertyDescriptor[] pds = getPropertyDescriptors();
             for (final PropertyDescriptor pd : pds) {
                 propertyDescriptorMap.put(pd.getName(), pd);
             }
         }
-        return (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
+        return propertyDescriptorMap.get(propertyName);
     }
 
     @Override
