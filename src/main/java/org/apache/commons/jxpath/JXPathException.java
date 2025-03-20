@@ -55,7 +55,7 @@ public class JXPathException extends RuntimeException {
      * @param cause The exception to be encapsulated in a JXPathException.
      */
     public JXPathException(final Throwable cause) {
-        super(cause.toString());
+        super(cause);
     }
 
     /**
