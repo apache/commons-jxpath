@@ -445,7 +445,7 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Returns the value represented by the pointer before indexing. So, if the node represents an element of a collection, this method returns the collection
+     * Gets the value represented by the pointer before indexing. So, if the node represents an element of a collection, this method returns the collection
      * itself.
      *
      * @return Object value

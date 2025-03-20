@@ -36,12 +36,20 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public class CollectionPointer extends NodePointer {
 
     private static final long serialVersionUID = 8620254915563256588L;
+
+    /**
+     * The collection itself supporting {@link #getBaseValue()}.
+     */
     private Object collection;
+
+    /**
+     * Supports {@link #getValuePointer()}.
+     */
     private NodePointer valuePointer;
 
     /**
      * Constructs a new CollectionPointer.
-     * 
+     *
      * @param parent     parent NodePointer
      * @param collection value
      */
@@ -52,7 +60,7 @@ public class CollectionPointer extends NodePointer {
 
     /**
      * Constructs a new CollectionPointer.
-     * 
+     *
      * @param collection value
      * @param locale     Locale
      */

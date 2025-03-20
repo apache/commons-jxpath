@@ -36,11 +36,15 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     private static final long serialVersionUID = 1L;
     private static final Object UNINITIALIZED = new Object();
+
+    /**
+     * Supports {@link #getImmediateNode}.
+     */
     private Object value = UNINITIALIZED;
 
     /**
      * Constructs a new PropertyOwnerPointer.
-     * 
+     *
      * @param parent pointer
      */
     protected PropertyOwnerPointer(final NodePointer parent) {
@@ -49,7 +53,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     /**
      * Constructs a new PropertyOwnerPointer.
-     * 
+     *
      * @param parent parent pointer
      * @param locale Locale
      */
@@ -87,7 +91,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     /**
      * Create a NodeIterator.
-     * 
+     *
      * @param property  property name
      * @param reverse   whether to iterate in reverse
      * @param startWith first pointer to return
@@ -110,14 +114,14 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     /**
      * Gets a PropertyPointer for this PropertyOwnerPointer.
-     * 
+     *
      * @return PropertyPointer
      */
     public abstract PropertyPointer getPropertyPointer();
 
     /**
      * Learn whether dynamic property declaration is supported.
-     * 
+     *
      * @return true if the property owner can set a property "does not exist". A good example is a Map. You can always assign a value to any key even if it has
      *         never been "declared".
      */
@@ -127,7 +131,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     /**
      * Learn whether {@code name} is a valid child name for this PropertyOwnerPointer.
-     * 
+     *
      * @param name the QName to test
      * @return {@code true} if {@code QName} is a valid property name.
      * @since JXPath 1.3
@@ -158,7 +162,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     /**
      * Throws an exception if you try to change the root element, otherwise forwards the call to the parent pointer.
-     * 
+     *
      * @param value to set
      */
     @Override

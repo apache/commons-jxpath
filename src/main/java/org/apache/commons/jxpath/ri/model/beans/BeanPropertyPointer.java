@@ -32,18 +32,51 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public class BeanPropertyPointer extends PropertyPointer {
 
     private static final long serialVersionUID = -6008991447676468786L;
+
+    /**
+     * Uninitialized object marker.
+     */
     private static final Object UNINITIALIZED = new Object();
+
+    /**
+     * The name of the currently selected property.
+     */
     private String propertyName;
+
+    /**
+     * JavaBean info.
+     */
     private final JXPathBeanInfo beanInfo;
+
+    /**
+     * The value of the currently selected property..
+     */
     private Object baseValue = UNINITIALIZED;
+
+    /**
+     * If index == WHOLE_COLLECTION, the value of the property, otherwise the value of the index'th element of the collection represented by the property. If
+     * the property is not a collection, index should be zero and the value will be the property itself.
+     */
     private Object value = UNINITIALIZED;
+
+    /**
+     * The names of all properties, sorted alphabetically.
+     */
     private transient String[] names;
+
+    /**
+     * All PropertyDescriptors.
+     */
     private transient PropertyDescriptor[] propertyDescriptors;
+
+    /**
+     * The property descriptor corresponding to the current property index.
+     */
     private transient PropertyDescriptor propertyDescriptor;
 
     /**
      * Constructs a new BeanPropertyPointer.
-     * 
+     *
      * @param parent   parent pointer
      * @param beanInfo describes the target property/ies.
      */
@@ -64,7 +97,7 @@ public class BeanPropertyPointer extends PropertyPointer {
 
     /**
      * Gets the value of the currently selected property.
-     * 
+     *
      * @return Object value
      */
     @Override
@@ -82,7 +115,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     /**
      * If index == WHOLE_COLLECTION, the value of the property, otherwise the value of the index'th element of the collection represented by the property. If
      * the property is not a collection, index should be zero and the value will be the property itself.
-     * 
+     *
      * @return Object
      */
     @Override
@@ -104,7 +137,7 @@ public class BeanPropertyPointer extends PropertyPointer {
 
     /**
      * If the property contains a collection, then the length of that collection, otherwise - 1.
-     * 
+     *
      * @return int length
      */
     @Override
@@ -132,8 +165,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Finds the property descriptor corresponding to the current property index.
-     * 
+     * Gets the property descriptor corresponding to the current property index.
+     *
      * @return PropertyDescriptor
      */
     private PropertyDescriptor getPropertyDescriptor() {
@@ -155,7 +188,7 @@ public class BeanPropertyPointer extends PropertyPointer {
 
     /**
      * Gets all PropertyDescriptors.
-     * 
+     *
      * @return PropertyDescriptor[]
      */
     protected synchronized PropertyDescriptor[] getPropertyDescriptors() {
@@ -167,7 +200,7 @@ public class BeanPropertyPointer extends PropertyPointer {
 
     /**
      * Gets the name of the currently selected property.
-     * 
+     *
      * @return String property name
      */
     @Override
@@ -182,8 +215,8 @@ public class BeanPropertyPointer extends PropertyPointer {
     }
 
     /**
-     * Gets the names of all properties, sorted alphabetically
-     * 
+     * Gets the names of all properties, sorted alphabetically.
+     *
      * @return String[]
      */
     @Override
@@ -225,7 +258,7 @@ public class BeanPropertyPointer extends PropertyPointer {
 
     /**
      * This type of node is auxiliary.
-     * 
+     *
      * @return true
      */
     @Override
@@ -264,7 +297,7 @@ public class BeanPropertyPointer extends PropertyPointer {
 
     /**
      * Selects a property by its offset in the alphabetically sorted list.
-     * 
+     *
      * @param index property index
      */
     @Override
@@ -280,7 +313,7 @@ public class BeanPropertyPointer extends PropertyPointer {
 
     /**
      * Select a property by name.
-     * 
+     *
      * @param propertyName String name
      */
     @Override
@@ -292,7 +325,7 @@ public class BeanPropertyPointer extends PropertyPointer {
     /**
      * If index == WHOLE_COLLECTION, change the value of the property, otherwise change the value of the index'th element of the collection represented by the
      * property.
-     * 
+     *
      * @param value value to set
      */
     @Override

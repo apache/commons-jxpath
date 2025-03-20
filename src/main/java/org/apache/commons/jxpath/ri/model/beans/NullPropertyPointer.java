@@ -30,12 +30,20 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class NullPropertyPointer extends PropertyPointer {
 
     private static final long serialVersionUID = 5296593071854982754L;
+
+    /**
+     * The property name.
+     */
     private String propertyName = "*";
+
+    /**
+     * Whether this property is named.
+     */
     private boolean byNameAttribute;
 
     /**
      * Constructs a new NullPropertyPointer.
-     * 
+     *
      * @param parent pointer
      */
     public NullPropertyPointer(final NodePointer parent) {
@@ -60,7 +68,7 @@ public class NullPropertyPointer extends PropertyPointer {
 
     /**
      * Create a "bad factory" JXPathAbstractFactoryException for the specified AbstractFactory.
-     * 
+     *
      * @param factory AbstractFactory
      * @return JXPathAbstractFactoryException
      */
@@ -193,7 +201,7 @@ public class NullPropertyPointer extends PropertyPointer {
 
     /**
      * Sets the name attribute.
-     * 
+     *
      * @param attributeValue value to set
      */
     public void setNameAttributeValue(final String attributeValue) {

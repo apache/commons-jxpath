@@ -58,7 +58,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Test string equality.
-     * 
+     *
      * @param s1 String 1
      * @param s2 String 2
      * @return true if == or .equals()
@@ -74,7 +74,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Find the nearest occurrence of the specified attribute on the specified and enclosing elements.
-     * 
+     *
      * @param n        current node
      * @param attrName attribute name
      * @return attribute value
@@ -95,7 +95,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the local name of the specified node.
-     * 
+     *
      * @param node node to check
      * @return String local name
      */
@@ -111,7 +111,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the ns uri of the specified node.
-     * 
+     *
      * @param node Node to check
      * @return String ns uri
      */
@@ -141,7 +141,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets any prefix from the specified node.
-     * 
+     *
      * @param node the node to check
      * @return String xml prefix
      */
@@ -157,7 +157,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Test a Node.
-     * 
+     *
      * @param node to test
      * @param test to execute
      * @return true if node passes test
@@ -207,17 +207,36 @@ public class DOMNodePointer extends NodePointer {
         return false;
     }
 
+    /**
+     * A DOM node supporting {@link #getImmediateNode()}.
+     */
     private final Node node;
+
+    /**
+     * Supports {@link #getDefaultNamespaceURI()}.
+     */
     private Map<String, String> namespaces;
+
+    /**
+     * Supports {@link #getNamespaceURI(String)}.
+     */
     private String defaultNamespace;
+
+    /**
+     * Optional ID.
+     */
     private String id;
+
+    /**
+     * Supports {@link #getNamespaceResolver()}.
+     */
     private NamespaceResolver localNamespaceResolver;
 
     /**
      * Constructs a new DOMNodePointer.
-     * 
-     * @param node   pointed at
-     * @param locale Locale
+     *
+     * @param node   A node.
+     * @param locale Locale.
      */
     public DOMNodePointer(final Node node, final Locale locale) {
         super(null, locale);
@@ -226,10 +245,10 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Constructs a new DOMNodePointer.
-     * 
-     * @param node   pointed at
-     * @param locale Locale
-     * @param id     string id
+     *
+     * @param node   A node.
+     * @param locale Locale.
+     * @param id     String ID.
      */
     public DOMNodePointer(final Node node, final Locale locale, final String id) {
         super(null, locale);
@@ -239,7 +258,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Constructs a new DOMNodePointer.
-     * 
+     *
      * @param parent pointer
      * @param node   pointed
      */
@@ -455,7 +474,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the language attribute for this node.
-     * 
+     *
      * @return String language name
      */
     protected String getLanguage() {
@@ -542,7 +561,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Locates a node by ID.
-     * 
+     *
      * @param context starting context
      * @param id      to find
      * @return Pointer
@@ -556,7 +575,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets relative position of this among like-named siblings.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionByQName() {
@@ -573,7 +592,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets relative position of this among all siblings.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionOfElement() {
@@ -590,7 +609,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the relative position of this among same-target processing instruction siblings.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionOfPI() {
@@ -608,7 +627,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the relative position of this among sibling text nodes.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionOfTextNode() {
@@ -650,7 +669,7 @@ public class DOMNodePointer extends NodePointer {
     /**
      * Returns true if the xml:lang attribute for the current node or its parent has the specified prefix <em>lang</em>. If no node has this prefix, calls
      * {@code super.isLanguage(lang)}.
-     * 
+     *
      * @param lang ns to test
      * @return boolean
      */
@@ -694,7 +713,7 @@ public class DOMNodePointer extends NodePointer {
     /**
      * Sets contents of the node to the specified value. If the value is a String, the contents of the node are replaced with this text. If the value is an
      * Element or Document, the children of the node are replaced with the children of the passed node.
-     * 
+     *
      * @param value to set
      */
     @Override
@@ -736,7 +755,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the string value of the specified node.
-     * 
+     *
      * @param node Node to check
      * @return String
      */

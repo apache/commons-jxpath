@@ -32,12 +32,20 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public class ContainerPointer extends NodePointer {
 
     private static final long serialVersionUID = 6140752946621686118L;
+
+    /**
+     * A Container.
+     */
     private final Container container;
+
+    /**
+     * Supports {@link #getImmediateValuePointer()}.
+     */
     private NodePointer valuePointer;
 
     /**
      * Constructs a new ContainerPointer.
-     * 
+     *
      * @param container Container object
      * @param locale    Locale
      */
@@ -48,7 +56,7 @@ public class ContainerPointer extends NodePointer {
 
     /**
      * Constructs a new ContainerPointer.
-     * 
+     *
      * @param parent    parent pointer
      * @param container Container object
      */
@@ -141,7 +149,7 @@ public class ContainerPointer extends NodePointer {
 
     /**
      * This type of node is auxiliary.
-     * 
+     *
      * @return {@code true}.
      */
     @Override

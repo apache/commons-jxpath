@@ -29,14 +29,22 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class NullPointer extends PropertyOwnerPointer {
 
     private static final long serialVersionUID = 2193425983220679887L;
+
+    /**
+     * The name of this node
+     */
     private QName name;
+
+    /**
+     * ID.
+     */
     private String id;
 
     /**
      * Constructs a new NullPointer.
-     * 
-     * @param locale Locale
-     * @param id     String
+     *
+     * @param locale Locale.
+     * @param id     ID.
      */
     public NullPointer(final Locale locale, final String id) {
         super(null, locale);
@@ -45,7 +53,7 @@ public class NullPointer extends PropertyOwnerPointer {
 
     /**
      * Used for the root node.
-     * 
+     *
      * @param parent parent pointer
      * @param name   node name
      */
@@ -56,7 +64,7 @@ public class NullPointer extends PropertyOwnerPointer {
 
     /**
      * Constructs a new NullPointer.
-     * 
+     *
      * @param name   node name
      * @param locale Locale
      */
