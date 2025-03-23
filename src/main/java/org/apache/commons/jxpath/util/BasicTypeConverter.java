@@ -235,11 +235,11 @@ public class BasicTypeConverter implements TypeConverter {
     }
 
     /**
-     * Returns true if it can convert the supplied object to the specified class.
+     * Tests whether this instance can convert the supplied object to the specified class.
      *
      * @param object to check
      * @param toType prospective destination class
-     * @return boolean
+     * @return boolean whether this instance can convert the supplied object to the specified class.
      */
     @Override
     public boolean canConvert(final Object object, final Class toType) {
