@@ -30,6 +30,7 @@ import java.net.URL;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,14 +49,14 @@ public class ClassLoaderUtilTest {
      */
     private static final class TestClassLoader extends ClassLoader {
 
-        private Class testCaseClass = null;
+        private Class<?> testCaseClass = null;
 
         public TestClassLoader(final ClassLoader classLoader) {
             super(classLoader);
         }
 
         @Override
-        public synchronized Class loadClass(final String name, final boolean resolved) throws ClassNotFoundException {
+        public synchronized Class<?> loadClass(final String name, final boolean resolved) throws ClassNotFoundException {
             if (EXAMPLE_CLASS_NAME.equals(name)) {
                 throw new ClassNotFoundException();
             }
@@ -127,24 +128,13 @@ public class ClassLoaderUtilTest {
      *
      * @param cl         the class loader under which to invoke the method.
      * @param methodName the name of the static no argument method on this class to invoke.
+     * @throws ReflectiveOperationException on test failures.
      */
-    private void executeTestMethodUnderClassLoader(final ClassLoader cl, final String methodName) {
-        Class testClass = null;
+    private void executeTestMethodUnderClassLoader(final ClassLoader cl, final String methodName) throws ReflectiveOperationException {
+        final Class<?> testClass = cl.loadClass(TEST_CASE_CLASS_NAME);
+        final Method testMethod = testClass.getMethod(methodName, ArrayUtils.EMPTY_CLASS_ARRAY);
         try {
-            testClass = cl.loadClass(TEST_CASE_CLASS_NAME);
-        } catch (final ClassNotFoundException e) {
-            fail(e.getMessage());
-        }
-        Method testMethod = null;
-        try {
-            testMethod = testClass.getMethod(methodName, null);
-        } catch (final SecurityException | NoSuchMethodException e) {
-            fail(e.getMessage());
-        }
-        try {
-            testMethod.invoke(null, null);
-        } catch (final IllegalArgumentException | IllegalAccessException e) {
-            fail(e.getMessage());
+            testMethod.invoke(null, (Object[]) null);
         } catch (final InvocationTargetException e) {
             if (e.getCause() instanceof RuntimeException) {
                 // Allow the runtime exception to propagate up.
@@ -171,9 +161,11 @@ public class ClassLoaderUtilTest {
 
     /**
      * Tests that JXPath cannot dynamically load a class, which is not visible to its class loader, when the context class loader is null.
+     *
+     * @throws ReflectiveOperationException on test failures.
      */
     @Test
-    public void testClassLoadFailWithoutContextClassLoader() {
+    public void testClassLoadFailWithoutContextClassLoader() throws ReflectiveOperationException {
         Thread.currentThread().setContextClassLoader(null);
         final ClassLoader cl = new TestClassLoader(getClass().getClassLoader());
         executeTestMethodUnderClassLoader(cl, "callExampleMessageMethodAndAssertClassNotFoundJXPathException");
@@ -181,9 +173,11 @@ public class ClassLoaderUtilTest {
 
     /**
      * Tests that JXPath can dynamically load a class, which is not visible to its class loader, when the context class loader is set and can load the class.
+     *
+     * @throws ReflectiveOperationException on test failures.
      */
     @Test
-    public void testClassLoadSuccessWithContextClassLoader() {
+    public void testClassLoadSuccessWithContextClassLoader() throws ReflectiveOperationException {
         Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
         final ClassLoader cl = new TestClassLoader(getClass().getClassLoader());
         executeTestMethodUnderClassLoader(cl, "callExampleMessageMethodAndAssertSuccess");
