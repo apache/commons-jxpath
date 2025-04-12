@@ -649,7 +649,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @param expr  compiled Expression
      * @return Iterator
      */
-    public Iterator iteratePointers(final String xpath, final Expression expr) {
+    public Iterator<Pointer> iteratePointers(final String xpath, final Expression expr) {
         return expr.iteratePointers(getEvalContext());
     }
 
