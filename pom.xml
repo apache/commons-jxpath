@@ -318,24 +318,24 @@
         <!-- Javadoc 8 expects a package-list file in the Javadoc root but current Java versions generate an element-list file. -->
         <commons.javadoc.failOnWarnings>true</commons.javadoc.failOnWarnings>
       </properties>
-        <build>
-          <plugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>
-              <configuration>
-                <linksource>true</linksource>
-                <links>
-                  <link>${commons.javadoc.javaee.link}</link>
-                  <link>https://commons.apache.org/proper/commons-lang/apidocs</link>
-                  <!-- http://www.jdom.org/docs/apidocs/ is not a secure link -->
-                  <link>https://javadoc.io/doc/org.jdom/jdom/1.1</link>
-                </links>
-                <excludePackageNames>org.apache.commons.jxpath.ri.parser</excludePackageNames>
-              </configuration>
-            </plugin>
-          </plugins>
-        </build>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <linksource>true</linksource>
+              <links>
+                <link>${commons.javadoc.javaee.link}</link>
+                <link>https://commons.apache.org/proper/commons-lang/apidocs</link>
+                <!-- http://www.jdom.org/docs/apidocs/ is not a secure link -->
+                <link>https://javadoc.io/doc/org.jdom/jdom/1.1</link>
+              </links>
+              <excludePackageNames>org.apache.commons.jxpath.ri.parser</excludePackageNames>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
   <developers>
