@@ -43,7 +43,7 @@ import org.apache.commons.jxpath.Pointer;
 public class BasicTypeConverter implements TypeConverter {
 
     /**
-     * Value pointer
+     * Value {@link Pointer}.
      */
     static final class ValuePointer implements Pointer {
 
@@ -122,8 +122,8 @@ public class BasicTypeConverter implements TypeConverter {
     /**
      * Create a collection of a given type.
      *
-     * @param type destination class
-     * @return Collection
+     * @param type destination class.
+     * @return A new Collection.
      */
     protected Collection allocateCollection(final Class type) {
         if (!type.isInterface() && (type.getModifiers() & Modifier.ABSTRACT) == 0) {
@@ -147,7 +147,7 @@ public class BasicTypeConverter implements TypeConverter {
      *
      * @param type  destination class
      * @param value double
-     * @return Number
+     * @return Number A Number, possibly cached.
      */
     protected Number allocateNumber(Class type, final double value) {
         type = TypeUtils.wrapPrimitive(type);
