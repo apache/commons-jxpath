@@ -43,46 +43,6 @@ import org.apache.commons.jxpath.Pointer;
 public class BasicTypeConverter implements TypeConverter {
 
     /**
-     * NodeSet implementation
-     */
-    static final class ValueNodeSet implements NodeSet {
-
-        private final List values;
-        private List<Pointer> pointers;
-
-        /**
-         * Constructs a new ValueNodeSet.
-         *
-         * @param values to return
-         */
-        public ValueNodeSet(final List values) {
-            this.values = values;
-        }
-
-        @Override
-        public List getNodes() {
-            return Collections.unmodifiableList(values);
-        }
-
-        @Override
-        public List<Pointer> getPointers() {
-            if (pointers == null) {
-                pointers = new ArrayList();
-                for (final Object value : values) {
-                    pointers.add(new ValuePointer(value));
-                }
-                pointers = Collections.unmodifiableList(pointers);
-            }
-            return pointers;
-        }
-
-        @Override
-        public List getValues() {
-            return Collections.unmodifiableList(values);
-        }
-    }
-
-    /**
      * Value pointer
      */
     static final class ValuePointer implements Pointer {

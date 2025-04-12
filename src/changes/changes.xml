@@ -173,6 +173,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="remove" due-to="Gary Gregory">Remove obsolete maven-surefire-plugin configuration. Configuration is done in the parent POM.</action>
       <action dev="ggregory" type="remove" due-to="Gary Gregory">Remove obsolete maven-assembly-plugin configuration. Configuration is done in the parent POM.</action>
       <action dev="ggregory" type="remove" due-to="Gary Gregory">Remove obsolete STATUS.html files.</action>
+      <action dev="ggregory" type="remove" due-to="Gary Gregory">Remove unused package-private class org.apache.commons.jxpath.util.BasicTypeConverter.ValueNodeSet.</action>
     </release>
   </body>
 </document>
