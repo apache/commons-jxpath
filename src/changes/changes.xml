@@ -170,6 +170,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="remove" due-to="Gary Gregory">Remove obsolete Apache RAT file.</action>
       <action dev="ggregory" type="remove" due-to="Gary Gregory">Remove obsolete Apache Ant files.</action>
       <action dev="ggregory" type="remove" due-to="Gary Gregory">Remove obsolete src/conf/MANIFEST.MF file.</action>
+      <action dev="ggregory" type="remove" due-to="Gary Gregory">Remove obsolete maven-surefire-plugin configuration.</action>
     </release>
   </body>
 </document>
