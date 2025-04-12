@@ -166,8 +166,7 @@ public class JXPathIntrospector {
             }
         }
         // Now try the ClassLoaderUtil.
-        final Class cls = ClassLoaderUtil.getClass(className);
-        return cls.newInstance();
+        return ClassLoaderUtil.getClass(className).newInstance();
     }
 
     /**

@@ -156,8 +156,7 @@ public abstract class JXPathContextFactory {
     public static JXPathContextFactory newInstance() {
         JXPathContextFactory factoryImpl;
         try {
-            final Class clazz = ClassLoaderUtil.getClass(FACTORY_IMPL_NAME, true);
-            factoryImpl = (JXPathContextFactory) clazz.getConstructor().newInstance();
+            factoryImpl = ClassLoaderUtil.<JXPathContextFactory>getClass(FACTORY_IMPL_NAME, true).getConstructor().newInstance();
         } catch (final ReflectiveOperationException ie) {
             throw new JXPathContextFactoryConfigurationError(ie);
         }

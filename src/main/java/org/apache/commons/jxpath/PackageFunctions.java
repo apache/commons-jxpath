@@ -144,7 +144,7 @@ public class PackageFunctions implements Functions {
         }
         final String className = fullName.substring(0, inx);
         final String methodName = fullName.substring(inx + 1);
-        Class functionClass;
+        Class<?> functionClass;
         try {
             functionClass = ClassLoaderUtil.getClass(className, true);
         } catch (final ClassNotFoundException ex) {

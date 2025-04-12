@@ -60,8 +60,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
                 throw new JXPathException("Unsupported XML model: " + model);
             }
             try {
-                final Class<XMLParser> clazz = ClassLoaderUtil.getClass(className, true);
-                return clazz.getConstructor().newInstance();
+                return ClassLoaderUtil.<XMLParser>getClass(className, true).getConstructor().newInstance();
             } catch (final Exception ex) {
                 throw new JXPathException("Cannot allocate XMLParser: " + className, ex);
             }

@@ -62,12 +62,13 @@ public class ClassLoaderUtil {
      * Returns the (initialized) class represented by {@code className} using the {@code classLoader}. This implementation supports names like
      * "{@code java.lang.String[]}" as well as "{@code [Ljava.lang.String;}".
      *
+     * @param <T> The expected class type.
      * @param classLoader the class loader to use to load the class
      * @param className   the class name
      * @return the class represented by {@code className} using the {@code classLoader}
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(final ClassLoader classLoader, final String className) throws ClassNotFoundException {
+    public static <T> Class<T> getClass(final ClassLoader classLoader, final String className) throws ClassNotFoundException {
         return getClass(classLoader, className, true);
     }
 
@@ -76,19 +77,21 @@ public class ClassLoaderUtil {
      * Returns the class represented by {@code className} using the {@code classLoader}. This implementation supports names like "{@code java.lang.String[]}" as
      * well as "{@code [Ljava.lang.String;}".
      *
+     * @param <T> The expected class type.
      * @param classLoader the class loader to use to load the class
      * @param className   the class name
      * @param initialize  whether the class must be initialized
      * @return the class represented by {@code className} using the {@code classLoader}
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(final ClassLoader classLoader, final String className, final boolean initialize) throws ClassNotFoundException {
-        Class clazz;
+    @SuppressWarnings("unchecked") // assume the call site knows what it's doing.
+    public static <T> Class<T> getClass(final ClassLoader classLoader, final String className, final boolean initialize) throws ClassNotFoundException {
+        Class<T> clazz;
         if (abbreviationMap.containsKey(className)) {
             final String clsName = "[" + abbreviationMap.get(className);
-            clazz = Class.forName(clsName, initialize, classLoader).getComponentType();
+            clazz = (Class<T>) Class.forName(clsName, initialize, classLoader).getComponentType();
         } else {
-            clazz = Class.forName(toCanonicalName(className), initialize, classLoader);
+            clazz = (Class<T>) Class.forName(toCanonicalName(className), initialize, classLoader);
         }
         return clazz;
     }
@@ -97,11 +100,12 @@ public class ClassLoaderUtil {
      * Returns the (initialized) class represented by {@code className} using the current thread's context class loader. This implementation supports names like
      * "{@code java.lang.String[]}" as well as "{@code [Ljava.lang.String;}".
      *
+     * @param <T> The expected class type.
      * @param className the class name
      * @return the class represented by {@code className} using the current thread's context class loader
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(final String className) throws ClassNotFoundException {
+    public static <T> Class<T> getClass(final String className) throws ClassNotFoundException {
         return getClass(className, true);
     }
 
@@ -109,12 +113,13 @@ public class ClassLoaderUtil {
      * Returns the class represented by {@code className} using the current thread's context class loader. This implementation supports names like
      * "{@code java.lang.String[]}" as well as "{@code [Ljava.lang.String;}".
      *
+     * @param <T> The expected class type.
      * @param className  the class name
      * @param initialize whether the class must be initialized
      * @return the class represented by {@code className} using the current thread's context class loader
      * @throws ClassNotFoundException if the class is not found
      */
-    public static Class getClass(final String className, final boolean initialize) throws ClassNotFoundException {
+    public static <T> Class<T> getClass(final String className, final boolean initialize) throws ClassNotFoundException {
         final ClassLoader contextCL = Thread.currentThread().getContextClassLoader();
         final ClassLoader currentCL = ClassLoaderUtil.class.getClassLoader();
         if (contextCL != null) {

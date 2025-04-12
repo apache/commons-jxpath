@@ -139,6 +139,10 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">org.apache.commons.jxpath.ri.JXPathContextReferenceImpl.iteratePointers(String, Expression) now uses generics.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">org.apache.commons.jxpath.CompiledExpression.iteratePointers(JXPathContext) now uses generics.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">org.apache.commons.jxpath.JXPathCompiledExpression.iteratePointers(JXPathContext) now uses generics.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">org.apache.commons.jxpath.util.ClassLoaderUtil.getClass(ClassLoader, String) now uses generics.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">org.apache.commons.jxpath.util.ClassLoaderUtil.getClass(ClassLoader, String, boolean) now uses generics.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">org.apache.commons.jxpath.util.ClassLoaderUtil.getClass(String) now uses generics.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">org.apache.commons.jxpath.util.ClassLoaderUtil.getClass(String, boolean) now uses generics.</action>
       <!-- ADD -->
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).
