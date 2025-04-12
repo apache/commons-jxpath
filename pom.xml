@@ -73,7 +73,6 @@
         <configuration>
           <excludes>
             <exclude>src/java/org/apache/commons/jxpath/ri/parser/*</exclude>
-            <exclude>xdocs/style/project.css</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -289,7 +288,6 @@
         <configuration>
           <excludes>
             <exclude>src/java/org/apache/commons/jxpath/ri/parser/*</exclude>
-            <exclude>xdocs/style/project.css</exclude>
           </excludes>
         </configuration>
       </plugin>
