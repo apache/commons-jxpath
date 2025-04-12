@@ -328,7 +328,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             }
             return ((NodePointer) pointer).createPath(this);
         } catch (final Throwable ex) {
-            throw new JXPathException("Exception trying to create xpath " + xpath, ex);
+            throw new JXPathException("Exception trying to create XPath " + xpath, ex);
         }
     }
 
@@ -344,7 +344,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         try {
             return setValue(xpath, expr, value, true);
         } catch (final Throwable ex) {
-            throw new JXPathException("Exception trying to create xpath " + xpath, ex);
+            throw new JXPathException("Exception trying to create XPath " + xpath, ex);
         }
     }
 
@@ -488,7 +488,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns the resulting object. Primitive types are wrapped into objects.
+     * Traverses the XPath and returns the resulting object. Primitive types are wrapped into objects.
      *
      * @param xpath expression
      * @return Object found
@@ -606,7 +606,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns a Iterator of all results found for the path. If the xpath matches no properties in the graph, the Iterator will not be
+     * Traverses the XPath and returns a Iterator of all results found for the path. If the XPath matches no properties in the graph, the Iterator will not be
      * null.
      *
      * @param xpath expression
@@ -618,7 +618,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns a Iterator of all results found for the path. If the xpath matches no properties in the graph, the Iterator will not be
+     * Traverses the XPath and returns a Iterator of all results found for the path. If the XPath matches no properties in the graph, the Iterator will not be
      * null.
      *
      * @param xpath expression
@@ -630,7 +630,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the xpath matches no properties in the graph,
+     * Traverses the XPath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the XPath matches no properties in the graph,
      * the Iterator be empty, but not null.
      *
      * @param xpath expression
@@ -642,7 +642,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the xpath matches no properties in the graph,
+     * Traverses the XPath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the XPath matches no properties in the graph,
      * the Iterator be empty, but not null.
      *
      * @param xpath expression
@@ -711,7 +711,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 pointer.remove();
             }
         } catch (final Throwable ex) {
-            throw new JXPathException("Exception trying to remove xpath " + xpath, ex);
+            throw new JXPathException("Exception trying to remove XPath " + xpath, ex);
         }
     }
 
@@ -734,7 +734,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Sets the value of xpath to value.
+     * Sets the value of XPath to value.
      *
      * @param xpath path
      * @param expr  compiled Expression
@@ -744,7 +744,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         try {
             setValue(xpath, expr, value, false);
         } catch (final Throwable ex) {
-            throw new JXPathException("Exception trying to set value with xpath " + xpath, ex);
+            throw new JXPathException("Exception trying to set value with XPath " + xpath, ex);
         }
     }
 

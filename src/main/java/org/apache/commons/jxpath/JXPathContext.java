@@ -37,7 +37,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * <h2>JXPath Interprets XPath Syntax on Java Object Graphs</h2>
  *
- * JXPath uses an intuitive interpretation of the xpath syntax in the context of Java object graphs. Here are some examples:
+ * JXPath uses an intuitive interpretation of the XPath syntax in the context of Java object graphs. Here are some examples:
  *
  * <h3>Example 1: JavaBean Property Access</h3>
  *
@@ -83,7 +83,7 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * In this case XPath is used to access a property of a nested bean.
  * <p>
- * A property identified by the xpath does not have to be a "leaf" property. For instance, we can extract the whole Address object in above example:
+ * A property identified by the XPath does not have to be a "leaf" property. For instance, we can extract the whole Address object in above example:
  * </p>
  *
  * <pre>
@@ -467,7 +467,7 @@ public abstract class JXPathContext {
      * <p>
      * Will throw an exception if one of the following conditions occurs:
      * <ul>
-     * <li>Elements of the xpath aleady exist, but the path does not in fact describe an existing property
+     * <li>Elements of the XPath aleady exist, but the path does not in fact describe an existing property
      * <li>The AbstractFactory fails to create an instance for an intermediate element.
      * <li>The property is not writable (no public, non-static set method)
      * </ul>
@@ -621,9 +621,9 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns a Pointer. A Pointer provides easy access to a property.
+     * Traverses the XPath and returns a Pointer. A Pointer provides easy access to a property.
      * <p>
-     * If the xpath <a href='#matches_no_property_in_the_graph'>matches no properties in the graph</a> the behavior depends on the value that has been
+     * If the XPath <a href='#matches_no_property_in_the_graph'>matches no properties in the graph</a> the behavior depends on the value that has been
      * configured with {@link #setLenient(boolean)}:
      * </p>
      * <ul>
@@ -687,7 +687,7 @@ public abstract class JXPathContext {
     public abstract JXPathContext getRelativeContext(Pointer pointer);
 
     /**
-     * Evaluates the xpath and returns the resulting object. Primitive types are wrapped into objects.
+     * Evaluates the XPath and returns the resulting object. Primitive types are wrapped into objects.
      *
      * @param xpath to evaluate
      * @return Object found
@@ -730,7 +730,7 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns an Iterator of all results found for the path. If the xpath matches no properties in the graph, the Iterator will be
+     * Traverses the XPath and returns an Iterator of all results found for the path. If the XPath matches no properties in the graph, the Iterator will be
      * empty, but not null.
      *
      * @param <E>   the type of elements returned by the iterator.
@@ -740,7 +740,7 @@ public abstract class JXPathContext {
     public abstract <E> Iterator<E> iterate(String xpath);
 
     /**
-     * Traverses the xpath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the xpath matches no properties in the graph,
+     * Traverses the XPath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the XPath matches no properties in the graph,
      * the Iterator be empty, but not null.
      *
      * @param xpath to iterate
@@ -898,7 +898,7 @@ public abstract class JXPathContext {
     /**
      * Modifies the value of the property described by the supplied xpath. Will throw an exception if one of the following conditions occurs:
      * <ul>
-     * <li>The xpath does not in fact describe an existing property
+     * <li>The XPath does not in fact describe an existing property
      * <li>The property is not writable (no public, non-static set method)
      * </ul>
      *

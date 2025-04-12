@@ -218,7 +218,7 @@ String fName = (String)context.getValue("firstName");
       <subsection name="Lenient Mode">
         <p>
           The <code>context.getValue(xpath)</code>  method throws
-          an exception if the supplied xpath does not map to an
+          an exception if the supplied XPath does not map to an
           existing property. This constraint can be relaxed by
           calling <code>context.setLenient(true)</code>. In the
           lenient mode the method merely returns null if the path
@@ -743,7 +743,7 @@ String fName = (String)context.getValue("firstName");
     <section name="Exceptions During XPath Evaluation">
       <p>
         Exceptions thrown by accessor methods are treated differently depending
-        on the evaluated xpath and the particular method used to do the
+        on the evaluated XPath and the particular method used to do the
         evaluation.
       </p>
       <p>

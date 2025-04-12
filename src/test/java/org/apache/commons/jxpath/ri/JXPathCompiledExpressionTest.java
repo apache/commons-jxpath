@@ -55,7 +55,7 @@ public class JXPathCompiledExpressionTest extends AbstractJXPathTest {
     }
 
     /**
-     * Compiles the xpath into an Expression, checks the expression class, converts the expression to string and checks that the string matches the expected
+     * Compiles the XPath into an Expression, checks the expression class, converts the expression to string and checks that the string matches the expected
      * one.
      */
     private void assertXPathExpression(final String xpath, final Class expectedClass, final String expected) {

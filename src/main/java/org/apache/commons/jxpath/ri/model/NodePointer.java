@@ -188,7 +188,7 @@ public abstract class NodePointer implements Pointer {
     /**
      * Returns an XPath that maps to this Pointer.
      *
-     * @return String xpath expression
+     * @return String XPath expression
      */
     @Override
     public String asPath() {

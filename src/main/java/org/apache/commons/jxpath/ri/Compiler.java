@@ -24,7 +24,7 @@ package org.apache.commons.jxpath.ri;
  * Since objects returned by Compiler methods are passed as arguments to other Compiler methods, the descriptions of these methods use virtual types. There are
  * four virtual object types: EXPRESSION, QNAME, STEP and NODE_TEST.
  * <p>
- * The following example illustrates this notion. This sequence compiles the xpath "foo[round(1 div 2)]/text()": <blockquote>
+ * The following example illustrates this notion. This sequence compiles the XPath "foo[round(1 div 2)]/text()": <blockquote>
  *
  * <pre>
  *      Object qname1 = compiler.qname(null, "foo")

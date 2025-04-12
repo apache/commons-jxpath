@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Common superclass for several types of nodes in the parse tree. Provides APIs for optimization of evaluation of expressions. Specifically, an expression only
- * needs to executed once during the evaluation of an xpath if that expression is context-independent. Expression.isContextDependent() provides that hint.
+ * needs to executed once during the evaluation of an XPath if that expression is context-independent. Expression.isContextDependent() provides that hint.
  */
 public abstract class Expression {
 
