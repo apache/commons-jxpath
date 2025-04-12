@@ -99,7 +99,7 @@ public interface CompiledExpression {
      * @param context to iterate
      * @return Iterator
      */
-    Iterator iteratePointers(JXPathContext context);
+    Iterator<Pointer> iteratePointers(JXPathContext context);
 
     /**
      * Remove all graph elements described by this expression.

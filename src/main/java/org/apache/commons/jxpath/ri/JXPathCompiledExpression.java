@@ -92,7 +92,7 @@ public class JXPathCompiledExpression implements CompiledExpression {
     }
 
     @Override
-    public Iterator iteratePointers(final JXPathContext context) {
+    public Iterator<Pointer> iteratePointers(final JXPathContext context) {
         return ((JXPathContextReferenceImpl) context).iteratePointers(xpath, expression);
     }
 
