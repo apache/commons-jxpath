@@ -637,7 +637,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * @return Iterator
      */
     @Override
-    public Iterator iteratePointers(final String xpath) {
+    public Iterator<Pointer> iteratePointers(final String xpath) {
         return iteratePointers(xpath, compileExpression(xpath));
     }
 
