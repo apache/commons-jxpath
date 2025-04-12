@@ -38,7 +38,7 @@ import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 
 /**
- * The default implementation of TypeConverter.
+ * The default implementation of {@link TypeConverter}.
  */
 public class BasicTypeConverter implements TypeConverter {
 
