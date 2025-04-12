@@ -19,7 +19,6 @@ package org.apache.commons.jxpath.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -65,7 +64,7 @@ public class ClassLoaderUtilTest {
                     byte[] clazzBytes;
                     try {
                         clazzBytes = IOUtils.toByteArray(classUrl);
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         throw new ClassNotFoundException(classUrl.toString(), e);
                     }
                     this.testCaseClass = this.defineClass(TEST_CASE_CLASS_NAME, clazzBytes, 0, clazzBytes.length);
@@ -96,13 +95,7 @@ public class ClassLoaderUtilTest {
      */
     public static void callExampleMessageMethodAndAssertSuccess() {
         final JXPathContext context = JXPathContext.newContext(new Object());
-        Object value;
-        try {
-            value = context.selectSingleNode(EXAMPLE_CLASS_NAME + ".getMessage()");
-            assertEquals("an example class", value);
-        } catch (final Exception e) {
-            fail(e.getMessage());
-        }
+        assertEquals("an example class", context.selectSingleNode(EXAMPLE_CLASS_NAME + ".getMessage()"));
     }
 
     private ClassLoader orginalContextClassLoader;
