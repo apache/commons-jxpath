@@ -21,13 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.lang3.ArrayUtils;
@@ -63,27 +62,12 @@ public class ClassLoaderUtilTest {
             if (TEST_CASE_CLASS_NAME.equals(name)) {
                 if (testCaseClass == null) {
                     final URL classUrl = getParent().getResource("org/apache/commons/jxpath/util/ClassLoaderUtilTest.class");
-                    final ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    InputStream in = null;
+                    byte[] clazzBytes;
                     try {
-                        in = classUrl.openStream();
-                        final byte[] buffer = new byte[2048];
-                        for (int read = in.read(buffer); read > -1; read = in.read(buffer)) {
-                            out.write(buffer, 0, read);
-                        }
-                    } catch (final IOException e) {
-                        throw new ClassNotFoundException("Could not read class from resource " + classUrl + ".", e);
-                    } finally {
-                        try {
-                            in.close();
-                        } catch (final Exception e) {
-                        }
-                        try {
-                            out.close();
-                        } catch (final Exception e) {
-                        }
+                        clazzBytes = IOUtils.toByteArray(classUrl);
+                    } catch (IOException e) {
+                        throw new ClassNotFoundException(classUrl.toString(), e);
                     }
-                    final byte[] clazzBytes = out.toByteArray();
                     this.testCaseClass = this.defineClass(TEST_CASE_CLASS_NAME, clazzBytes, 0, clazzBytes.length);
                 }
                 return this.testCaseClass;
