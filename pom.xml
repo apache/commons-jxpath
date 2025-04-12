@@ -73,7 +73,6 @@
         <configuration>
           <excludes>
             <exclude>src/java/org/apache/commons/jxpath/ri/parser/*</exclude>
-            <exclude>src/conf/MANIFEST.MF</exclude>
             <exclude>xdocs/style/project.css</exclude>
           </excludes>
         </configuration>
@@ -290,7 +289,6 @@
         <configuration>
           <excludes>
             <exclude>src/java/org/apache/commons/jxpath/ri/parser/*</exclude>
-            <exclude>src/conf/MANIFEST.MF</exclude>
             <exclude>xdocs/style/project.css</exclude>
           </excludes>
         </configuration>
