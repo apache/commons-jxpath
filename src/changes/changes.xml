@@ -166,6 +166,8 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump org.codehaus.mojo:taglist-maven-plugin from 3.0.0 to 3.2.1 #161, #194.
       </action>
+      <!-- REMOVE -->
+      <action dev="ggregory" type="remove" due-to="Gary Gregory">Remove obsolete Apache RAT file.</action>
     </release>
   </body>
 </document>
