@@ -62,17 +62,17 @@ public class ClassLoaderUtilTest {
             }
             if (TEST_CASE_CLASS_NAME.equals(name)) {
                 if (testCaseClass == null) {
-                    final URL clazzUrl = getParent().getResource("org/apache/commons/jxpath/util/ClassLoaderUtilTest.class");
+                    final URL classUrl = getParent().getResource("org/apache/commons/jxpath/util/ClassLoaderUtilTest.class");
                     final ByteArrayOutputStream out = new ByteArrayOutputStream();
                     InputStream in = null;
                     try {
-                        in = clazzUrl.openStream();
+                        in = classUrl.openStream();
                         final byte[] buffer = new byte[2048];
                         for (int read = in.read(buffer); read > -1; read = in.read(buffer)) {
                             out.write(buffer, 0, read);
                         }
                     } catch (final IOException e) {
-                        throw new ClassNotFoundException("Could not read class from resource " + clazzUrl + ".", e);
+                        throw new ClassNotFoundException("Could not read class from resource " + classUrl + ".", e);
                     } finally {
                         try {
                             in.close();
