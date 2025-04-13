@@ -50,7 +50,7 @@ public final class ClassLoaderUtil {
     }
 
     /**
-     * Add primitive type abbreviation to maps of abbreviations.
+     * Adds primitive type abbreviation to map of abbreviations.
      *
      * @param primitive    Canonical name of primitive type
      * @param abbreviation Corresponding abbreviation of primitive type
@@ -60,7 +60,7 @@ public final class ClassLoaderUtil {
     }
 
     /**
-     * Returns the class represented by {@code className} using the {@code classLoader}. This implementation supports names like "{@code java.lang.String[]}" as
+     * Gets the class represented by {@code className} using the {@code classLoader}. This implementation supports names like "{@code java.lang.String[]}" as
      * well as "{@code [Ljava.lang.String;}".
      *
      * @param <T> The expected class type.
@@ -83,7 +83,7 @@ public final class ClassLoaderUtil {
     }
 
     /**
-     * Returns the class represented by {@code className} using the current thread's context class loader. This implementation supports names like
+     * Gets the class represented by {@code className} using the current thread's context class loader. This implementation supports names like
      * "{@code java.lang.String[]}" as well as "{@code [Ljava.lang.String;}".
      *
      * @param <T> The expected class type.
@@ -131,7 +131,7 @@ public final class ClassLoaderUtil {
     }
 
     /**
-     * Constructs a new instance.
+     * New need to constructs new instances.
      */
     private ClassLoaderUtil() {
         // empty
