@@ -290,7 +290,7 @@ public class CoreFunction extends Operation {
      *
      * @param context evaluation context
      * @return Boolean
-     * @since 1.4
+     * @since 1.4.0
      */
     protected Object functionEndsWith(final EvalContext context) {
         assertArgCount(2);

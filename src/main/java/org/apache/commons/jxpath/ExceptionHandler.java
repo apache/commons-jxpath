@@ -20,7 +20,7 @@ package org.apache.commons.jxpath;
 /**
  * Exception handler interface. Actually handles Throwables.
  *
- * @since 1.4
+ * @since 1.4.0
  */
 public interface ExceptionHandler {
 
