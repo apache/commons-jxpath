@@ -18,6 +18,7 @@
 package org.apache.commons.jxpath.ri.model.dynabeans;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.jxpath.ri.QName;
@@ -31,17 +32,6 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
 public class DynaBeanPointer extends PropertyOwnerPointer {
 
     private static final long serialVersionUID = -9135052498044877965L;
-
-    /**
-     * Tests whether two objects are == || .equals().
-     *
-     * @param o1 first object
-     * @param o2 second object
-     * @return boolean
-     */
-    private static boolean equalObjects(final Object o1, final Object o2) {
-        return o1 == o2 || o1 != null && o1.equals(o2);
-    }
 
     /**
      * Qualified name.
@@ -93,7 +83,7 @@ public class DynaBeanPointer extends PropertyOwnerPointer {
             return false;
         }
         final DynaBeanPointer other = (DynaBeanPointer) object;
-        if (!(equalObjects(parent, other.parent) && equalObjects(qName, other.qName))) {
+        if (!(Objects.equals(parent, other.parent) && Objects.equals(qName, other.qName))) {
             return false;
         }
         final int iThis = index == WHOLE_COLLECTION ? 0 : index;
