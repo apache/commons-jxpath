@@ -866,7 +866,7 @@ public abstract class JXPathContext {
      * Sets the ExceptionHandler used by this context, if any.
      *
      * @param exceptionHandler to set
-     * @since 1.4
+     * @since 1.4.0
      */
     public void setExceptionHandler(final ExceptionHandler exceptionHandler) {
         throw new UnsupportedOperationException("ExceptionHandler registration is not implemented by " + getClass());

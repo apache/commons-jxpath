@@ -159,7 +159,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      *
      * @param factory NodePointerFactory to remove
      * @return true if this implementation contained the specified element
-     * @since 1.4.0
+     * @since 1.4.0.0
      */
     public static boolean removeNodePointerFactory(final NodePointerFactory factory) {
         synchronized (nodeFactories) {

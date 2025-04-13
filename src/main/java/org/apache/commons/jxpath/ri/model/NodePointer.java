@@ -685,7 +685,7 @@ public abstract class NodePointer implements Pointer {
      */
     public void handle(final Throwable t, final NodePointer originator) {
         if (exceptionHandler != null) {
-            exceptionHandler.handle(t, originator);
+            exceptionHandler.accept(t, originator);
             return;
         }
         if (parent != null) {

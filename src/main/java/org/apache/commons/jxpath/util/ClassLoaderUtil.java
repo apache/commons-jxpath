@@ -27,8 +27,9 @@ import java.util.Objects;
  * context class loader results in a {@code java.lang.ClassNotFoundException}.
  *
  * See org.apache.commons.lang3.ClassUtils
+ * @since 1.4.0
  */
-public class ClassLoaderUtil {
+public final class ClassLoaderUtil {
 
     /**
      * Maps a primitive class name to its corresponding abbreviation used in array class names.
@@ -49,7 +50,7 @@ public class ClassLoaderUtil {
     }
 
     /**
-     * Add primitive type abbreviation to maps of abbreviations.
+     * Adds primitive type abbreviation to map of abbreviations.
      *
      * @param primitive    Canonical name of primitive type
      * @param abbreviation Corresponding abbreviation of primitive type
@@ -59,22 +60,7 @@ public class ClassLoaderUtil {
     }
 
     /**
-     * Returns the (initialized) class represented by {@code className} using the {@code classLoader}. This implementation supports names like
-     * "{@code java.lang.String[]}" as well as "{@code [Ljava.lang.String;}".
-     *
-     * @param <T> The expected class type.
-     * @param classLoader the class loader to use to load the class
-     * @param className   the class name
-     * @return the class represented by {@code className} using the {@code classLoader}
-     * @throws ClassNotFoundException if the class is not found
-     */
-    public static <T> Class<T> getClass(final ClassLoader classLoader, final String className) throws ClassNotFoundException {
-        return getClass(classLoader, className, true);
-    }
-
-    // Class loading
-    /**
-     * Returns the class represented by {@code className} using the {@code classLoader}. This implementation supports names like "{@code java.lang.String[]}" as
+     * Gets the class represented by {@code className} using the {@code classLoader}. This implementation supports names like "{@code java.lang.String[]}" as
      * well as "{@code [Ljava.lang.String;}".
      *
      * @param <T> The expected class type.
@@ -85,7 +71,7 @@ public class ClassLoaderUtil {
      * @throws ClassNotFoundException if the class is not found
      */
     @SuppressWarnings("unchecked") // assume the call site knows what it's doing.
-    public static <T> Class<T> getClass(final ClassLoader classLoader, final String className, final boolean initialize) throws ClassNotFoundException {
+    private static <T> Class<T> getClass(final ClassLoader classLoader, final String className, final boolean initialize) throws ClassNotFoundException {
         Class<T> clazz;
         if (abbreviationMap.containsKey(className)) {
             final String clsName = "[" + abbreviationMap.get(className);
@@ -97,20 +83,7 @@ public class ClassLoaderUtil {
     }
 
     /**
-     * Returns the (initialized) class represented by {@code className} using the current thread's context class loader. This implementation supports names like
-     * "{@code java.lang.String[]}" as well as "{@code [Ljava.lang.String;}".
-     *
-     * @param <T> The expected class type.
-     * @param className the class name
-     * @return the class represented by {@code className} using the current thread's context class loader
-     * @throws ClassNotFoundException if the class is not found
-     */
-    public static <T> Class<T> getClass(final String className) throws ClassNotFoundException {
-        return getClass(className, true);
-    }
-
-    /**
-     * Returns the class represented by {@code className} using the current thread's context class loader. This implementation supports names like
+     * Gets the class represented by {@code className} using the current thread's context class loader. This implementation supports names like
      * "{@code java.lang.String[]}" as well as "{@code [Ljava.lang.String;}".
      *
      * @param <T> The expected class type.
@@ -158,12 +131,9 @@ public class ClassLoaderUtil {
     }
 
     /**
-     * Constructs a new instance.
-     *
-     * @deprecated Constructor will be private in the next major version.
+     * New need to constructs new instances.
      */
-    @Deprecated
-    public ClassLoaderUtil() {
+    private ClassLoaderUtil() {
         // empty
     }
 }

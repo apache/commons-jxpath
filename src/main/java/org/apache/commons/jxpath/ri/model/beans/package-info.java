@@ -14,8 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Implementation of "model" APIs for JavaBeans, Dynamic Property Objects, collections and null.
+ *
+ * @see <a href="https://commons.apache.org/proper/commons-jxpath/apidocs/index.html">User's Guide</a>.
  */
-
 package org.apache.commons.jxpath.ri.model.beans;
