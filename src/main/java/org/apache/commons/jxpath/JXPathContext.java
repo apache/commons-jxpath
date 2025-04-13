@@ -91,7 +91,10 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * Address addr = (Address) context.getValue("homeAddress");
  * </pre>
  *
- * <h3>Example 3: Collection Subscripts</h3> JXPath can extract elements from arrays and collections.
+ * <h3>Example 3: Collection Subscripts</h3>
+ * <p>
+ * JXPath can extract elements from arrays and collections.
+ * </p>
  *
  * <pre>
  * public class Integers {
@@ -109,7 +112,8 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * A collection can be an arbitrary array or an instance of java.util. Collection.
  * <p>
- * Note: in XPath the first element of a collection has index 1, not 0.<br>
+ * Note: in XPath the first element of a collection has index 1, not 0.
+ * </p>
  *
  * <h3>Example 4: Map Element Access</h3>
  *
@@ -136,7 +140,9 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * String homeZipCode = (String)context.getValue("addresses/home/zipCode");
  * </pre>
  *
+ * <p>
  * Often you will need to use the alternative syntax for accessing Map elements:
+ * </p>
  *
  * <pre>
  *
@@ -192,9 +198,12 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * </pre>
  *
- * <h3>Example 7: Creating objects</h3> JXPath can be used to create new objects. First, create a subclass of {@link AbstractFactory AbstractFactory} and
+ * <h3>Example 7: Creating objects</h3>
+ * <p>
+ * JXPath can be used to create new objects. First, create a subclass of {@link AbstractFactory AbstractFactory} and
  * install it on the JXPathContext. Then call {@link JXPathContext#createPath createPathAndSetValue()} instead of "setValue". JXPathContext will invoke your
  * AbstractFactory when it discovers that an intermediate node of the path is <strong>null</strong>. It will not override existing nodes.
+ * </p>
  *
  * <pre>
  * public class AddressFactory extends AbstractFactory {
@@ -213,7 +222,10 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * context.createPathAndSetValue("address/zipCode", "90190");
  * </pre>
  *
- * <h3>Example 8: Using Variables</h3> JXPath supports the notion of variables. The XPath syntax for accessing variables is <em>"$varName"</em>.
+ * <h3>Example 8: Using Variables</h3>
+ * <p>
+ * JXPath supports the notion of variables. The XPath syntax for accessing variables is <em>"$varName"</em>.
+ * </p>
  *
  * <pre>
  * public class Author {
@@ -231,16 +243,21 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * Book secondBook = (Book)context.getValue("books[$index]");
  * </pre>
  *
+ * <p>
  * You can also set variables using JXPath:
+ * </p>
  *
  * <pre>
  * context.setValue("$index", Integer.valueOf(3));
  * </pre>
  *
+ * <p>
  * Note: you can only <em>change</em> the value of an existing variable this way, you cannot <em>define</em> a new variable.
+ * </p>
  *
  * <p>
  * When a variable contains a JavaBean or a collection, you can traverse the bean or collection as well:
+ * </p>
  *
  * <pre>
  * ...
@@ -254,8 +271,11 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * String title = (String)context.getValue("$books[2]/title);
  * </pre>
  *
- * <h3>Example 9: Using Nested Contexts</h3> If you need to use the same set of variable while interpreting XPaths with different beans, it makes sense to put
+ * <h3>Example 9: Using Nested Contexts</h3>
+ * <p>
+ * If you need to use the same set of variable while interpreting XPaths with different beans, it makes sense to put
  * the variables in a separate context and specify that context as a parent context every time you allocate a new JXPathContext for a JavaBean.
+ * </p>
  *
  * <pre>
  * JXPathContext varContext = JXPathContext.newContext(null);
@@ -264,40 +284,54 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * Iterator javaBooks = context.iterate("books[title = $title]");
  * </pre>
  *
- * <h3>Using Custom Variable Pools</h3> By default, JXPathContext creates a HashMap of variables. However, you can substitute a custom implementation of the
+ * <h3>Using Custom Variable Pools</h3>
+ * <p>
+ * By default, JXPathContext creates a HashMap of variables. However, you can substitute a custom implementation of the
  * Variables interface to make JXPath work with an alternative source of variables. For example, you can define implementations of Variables that cover a
  * servlet context, HTTP request or any similar structure.
+ * </p>
  *
  * <h3>Example 10: Using Standard Extension Functions</h3> Using the standard extension functions, you can call methods on objects, static methods on classes
  * and create objects using any constructor. The class names should be fully qualified.
  * <p>
  * Here's how you can create new objects:
+ * </p>
  *
  * <pre>
  *
  * Book book = (Book) context.getValue("org.apache.commons.jxpath.example.Book.new ('John Updike')");
  * </pre>
  *
+ * <p>
  * Here's how you can call static methods:
+ * </p>
  *
  * <pre>
  *
  * Book book = (Book) context.getValue("org. apache.commons.jxpath.example.Book.getBestBook('John Updike')");
  * </pre>
  *
+ * <p>
  * Here's how you can call regular methods:
+ * </p>
  *
  * <pre>
  *
  * String firstName = (String) context.getValue("getAuthorsFirstName($book)");
  * </pre>
  *
+ * <p>
  * As you can see, the target of the method is specified as the first parameter of the function.
+ * </p>
  *
- * <h3>Example 11: Using Custom Extension Functions</h3> Collections of custom extension functions can be implemented as {@link Functions Functions} objects or
+ * <h3>Example 11: Using Custom Extension Functions</h3>
+ * <p>
+ * Collections of custom extension functions can be implemented as {@link Functions Functions} objects or
  * as Java classes, whose methods become extenstion functions.
+ * </p>
  * <p>
  * Let's say the following class implements various formatting operations:
+ * </p>
  *
  * <pre>
  * public class Formats {
@@ -308,7 +342,9 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * }
  * </pre>
  *
+ * <p>
  * We can register this class with a JXPathContext:
+ * </p>
  *
  * <pre>
  * context.setFunctions(new ClassFunctions(Formats.class, "format"));
@@ -319,20 +355,25 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  *
  * </pre>
  *
+ * <p>
  * You can also register whole packages of Java classes using PackageFunctions.
+ * </p>
  * <p>
  * Also, see {@link FunctionLibrary FunctionLibrary}, which is a class that allows you to register multiple sets of extension functions with the same
  * JXPathContext.
+ * </p>
  *
  * <h2>Configuring JXPath</h2>
  *
+ * <p>
  * JXPath uses JavaBeans introspection to discover properties of JavaBeans. You can provide alternative property lists by supplying custom JXPathBeanInfo
  * classes (see {@link JXPathBeanInfo JXPathBeanInfo}).
+ * </p>
  *
  * <h2>Notes</h2>
  * <ul>
  * <li>JXPath does not support DOM attributes for non-DOM objects. Even though XPaths like "para[@type='warning']" are legitimate, they will always produce
- * empty results. The only attribute supported for JavaBeans is "name". The XPath "foo/bar" is equivalent to "foo[@name='bar']".
+ * empty results. The only attribute supported for JavaBeans is "name". The XPath "foo/bar" is equivalent to "foo[@name='bar']".</li>
  *
  * <li id='matches_no_property_in_the_graph'>The term <b>matches no property in the graph</b> is used throughout the documentation. It describes a property or
  * path that can be determined as not belonging to the graph. Determining whether a property or path belongs to the graph depends on the type of object being
@@ -351,11 +392,17 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * </li>
  * </ul>
  *
- * See <a href="http://www.w3schools.com/xpath">XPath Tutorial by W3Schools</a><br>
- * . Also see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0</a><br>
- * <br>
+ * <p>
+ * See also:
+ * </p>
+ * <ul>
+ * <li>See <a href="http://www.w3schools.com/xpath">XPath Tutorial by W3Schools</a></li>
+ * <li>See also <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0</a></li>
+ * </ul>
  *
- * You will also find more information and examples in <a href="https://commons.apache.org/jxpath/users-guide.html"> JXPath User's Guide</a>
+ * <p>
+ * You will also find more information and examples in the <a href="https://commons.apache.org/proper/jxpath/apidocs/index.html">JXPath User's Guide</a>
+ * </p>
  */
 public abstract class JXPathContext {
 
