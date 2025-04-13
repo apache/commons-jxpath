@@ -19,6 +19,6 @@
  * Reference implementation of JXPath. It comes with a JavaCC-based parser for XPath expressions, a parse tree and a fast interpreter, which applies XPaths to
  * graphs of Java objects.
  *
- * @see <a href="https://commons.apache.org/proper/commons-jxpath/apidocs/index.html">User's Guide</a>.
+ * @see <a href="https://commons.apache.org/proper/commons-jxpath/apidocs/index.html">User Guide</a>
  */
 package org.apache.commons.jxpath.ri;

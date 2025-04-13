@@ -19,6 +19,6 @@
  * Public, abstract part of JXPath: interfaces and configuration. If you are a user of JXPath and don't plan to modify its implementation, this is the only
  * package you'll need to use. Start with the {@link org.apache.commons.jxpath.JXPathContext} class.
  *
- * @see <a href="https://commons.apache.org/proper/commons-jxpath/apidocs/index.html">User's Guide</a>.
+ * @see <a href="https://commons.apache.org/proper/commons-jxpath/apidocs/index.html">User Guide</a>
  */
 package org.apache.commons.jxpath;

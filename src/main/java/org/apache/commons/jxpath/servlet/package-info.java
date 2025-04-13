@@ -19,6 +19,6 @@
  * Implementations of JXPathContexts bound to various servlet scopes: PageContext, ServletRequest, HttpSession and ServletContext. Start with the
  * {@link org.apache.commons.jxpath.servlet.JXPathServletContexts} class.
  *
- * @see <a href="https://commons.apache.org/proper/commons-jxpath/apidocs/index.html">User's Guide</a>.
+ * @see <a href="https://commons.apache.org/proper/commons-jxpath/apidocs/index.html">User Guide</a>
  */
 package org.apache.commons.jxpath.servlet;

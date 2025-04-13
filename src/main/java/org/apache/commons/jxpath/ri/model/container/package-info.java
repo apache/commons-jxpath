@@ -18,6 +18,6 @@
 /**
  * Implementation of "model" APIs for Containers.
  *
- * @see <a href="https://commons.apache.org/proper/commons-jxpath/apidocs/index.html">User's Guide</a>.
+ * @see <a href="https://commons.apache.org/proper/commons-jxpath/apidocs/index.html">User Guide</a>
  */
 package org.apache.commons.jxpath.ri.model.container;
