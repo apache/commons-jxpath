@@ -50,7 +50,7 @@
     <commons.release.version>1.4.0</commons.release.version>
     <commons.release.next>1.4.1</commons.release.next>
     <commons.release.isDistModule>true</commons.release.isDistModule>
-    <commons.rc.version>RC1</commons.rc.version>
+    <commons.rc.version>RC2</commons.rc.version>
     <commons.bc.version>1.3</commons.bc.version>
     <commons.release.desc>(Java 8 or above)</commons.release.desc>
     <commons.jira.id>JXPATH</commons.jira.id>
