@@ -146,6 +146,12 @@ The <action> type attribute can be add,update,fix,remove.
       <action issue="JXPATH-123" dev="mbenson" type="add">
         XPath function "ends-with" is not implemented (although "starts-with" is).
       </action>
+      <action dev="ggregory" type="update">public class org.apache.commons.jxpath.JXPathContextFactoryConfigurationError is Serializable incompatible.</action>
+      <action dev="ggregory" type="update">public abstract class org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer is Serializable incompatible.</action>
+      <action dev="ggregory" type="update">public abstract class org.apache.commons.jxpath.ri.model.beans.PropertyPointer is Serializable incompatible.</action>
+      <action dev="ggregory" type="update">public abstract class org.apache.commons.jxpath.ri.model.NodePointer is Serializable incompatible.</action>
+      <action dev="ggregory" type="update">public class org.apache.commons.jxpath.ri.parser.ParseException is Serializable incompatible.</action>
+      <action dev="ggregory" type="update">public class org.apache.commons.jxpath.XMLDocumentContainer is Serializable incompatible.</action>
       <!-- UPDATE -->
       <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
         Bump commons-parent from 54 to 81 #45, #49, #64, #110, #121, #403, #167, #173, #176, #181, #185, #188, #196.
