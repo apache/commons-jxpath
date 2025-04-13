@@ -45,7 +45,6 @@ o          Replace try-catch constructs in tests with assertThrows #215. Thanks 
 o          Use generics internally. Thanks to Gary Gregory. 
 o          NodeSet.getPointers() is now typed with generics. Thanks to Gary Gregory. 
 o          ServletContextHandler.collectPropertyNames(HashSet, Object) is now typed with generics. Thanks to Gary Gregory. 
-o          Deprecate ClassLoaderUtil.ClassLoaderUtil(). Thanks to Gary Gregory. 
 o          Deprecate MethodLookupUtils.MethodLookupUtils(). Thanks to Gary Gregory. 
 o          Deprecate KeyManagerUtils.KeyManagerUtils(). Thanks to Gary Gregory. 
 o          Deprecate TypeUtils.TypeUtils(). Thanks to Gary Gregory. 
@@ -82,6 +81,12 @@ o          org.apache.commons.jxpath.util.ClassLoaderUtil.getClass(String, boole
 Changes
 -------
 
+o          public class org.apache.commons.jxpath.JXPathContextFactoryConfigurationError is Serializable incompatible. 
+o          public abstract class org.apache.commons.jxpath.ri.model.beans.PropertyOwnerPointer is Serializable incompatible. 
+o          public abstract class org.apache.commons.jxpath.ri.model.beans.PropertyPointer is Serializable incompatible. 
+o          public abstract class org.apache.commons.jxpath.ri.model.NodePointer is Serializable incompatible. 
+o          public class org.apache.commons.jxpath.ri.parser.ParseException is Serializable incompatible. 
+o          public class org.apache.commons.jxpath.XMLDocumentContainer is Serializable incompatible. 
 o          Bump commons-parent from 54 to 81 #45, #49, #64, #110, #121, #403, #167, #173, #176, #181, #185, #188, #196. Thanks to Dependabot, Gary Gregory. 
 o JXPATH-184:  Bump Java to 8. Thanks to britter, Gary Gregory. 
 o          Bump JUnit 3.8.1 to 4.13.2. Thanks to britter, Gary Gregory. 
@@ -109,4 +114,3 @@ Have fun!
 -Apache Commons Team
 
 ------------------------------------------------------------------------------
-
