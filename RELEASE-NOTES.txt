@@ -115,7 +115,7 @@ patches, or suggestions for improvement, see the Apache Commons JXPath website:
 
 https://commons.apache.org/proper/commons-jxpath/
 
-Download page: https://commons.apache.org/proper/commons-jxpath/download_io.cgi
+Download page: https://commons.apache.org/proper/commons-jxpath/download_jxpath.cgi
 
 Have fun!
 -Apache Commons Team
