@@ -100,7 +100,14 @@ o          Bump org.codehaus.mojo:taglist-maven-plugin from 3.0.0 to 3.2.1 #161,
 Removed
 -------
 
-o          Remove obsolete Apache RAT file. Thanks to Gary Gregory. o          Remove obsolete Apache Ant files. Thanks to Gary Gregory. o          Remove obsolete src/conf/MANIFEST.MF file. Thanks to Gary Gregory. o          Remove obsolete maven-surefire-plugin configuration. Configuration is done in the parent POM. Thanks to Gary Gregory. o          Remove obsolete maven-assembly-plugin configuration. Configuration is done in the parent POM. Thanks to Gary Gregory. o          Remove obsolete STATUS.html files. Thanks to Gary Gregory. o          Remove unused package-private class org.apache.commons.jxpath.util.BasicTypeConverter.ValueNodeSet. Thanks to Gary Gregory. 
+o          Remove obsolete Apache RAT file. Thanks to Gary Gregory.
+o          Remove obsolete Apache Ant files. Thanks to Gary Gregory.
+o          Remove obsolete src/conf/MANIFEST.MF file. Thanks to Gary Gregory.
+o          Remove obsolete maven-surefire-plugin configuration. Configuration is done in the parent POM. Thanks to Gary Gregory.
+o          Remove obsolete maven-assembly-plugin configuration. Configuration is done in the parent POM. Thanks to Gary Gregory.
+o          Remove obsolete STATUS.html files. Thanks to Gary Gregory.
+o          Remove unused package-private class org.apache.commons.jxpath.util.BasicTypeConverter.ValueNodeSet. Thanks to Gary Gregory.
+
 Historical list of changes: https://commons.apache.org/proper/commons-jxpath/changes.html
 
 For complete information on Apache Commons JXPath, including instructions on how to submit bug reports,
