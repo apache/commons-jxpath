@@ -27,7 +27,7 @@
   <name>Apache Commons JXPath</name>
   <!-- when cutting a release, be sure to modify the commons.release.version property,
     found at /project/properties/commons.release.version in this document -->
-  <version>1.4.0</version>
+  <version>1.4.1-SNAPSHOT</version>
   <description>A Java-based implementation of XPath 1.0 that, in addition to XML processing, can inspect/modify Java object graphs (the library's explicit purpose) and even mixed Java/XML structures.</description>
   <url>https://commons.apache.org/proper/commons-jxpath/</url>
   <issueManagement>
@@ -44,7 +44,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
-    <project.build.outputTimestamp>2025-04-13T20:04:44Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-04-18T12:24:36Z</project.build.outputTimestamp>
     <commons.componentid>jxpath</commons.componentid>
     <commons.module.name>org.apache.commons.jxpath</commons.module.name>
     <commons.release.version>1.4.0</commons.release.version>
