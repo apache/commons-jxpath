@@ -52,6 +52,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">POM assembly:single does not generate binary convenience files (tar/zip).</action>
       <!-- ADD -->
       <!-- UPDATE -->
+      <action dev="ggregory" type="update" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 81 to 83 #239.</action>
     </release>
     <release version="1.4.0" date="2025-04-12" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
