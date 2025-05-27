@@ -49,10 +49,10 @@ The <action> type attribute can be add,update,fix,remove.
     <!-- The release date is the date RC is cut -->
     <release version="1.4.1" date="YYYY-MM-DD" description="This is a maintenance release. Java 8 or later is required.">
       <!-- FIX -->
-      <action dev="ggregory" type="fix" due-to="Gary Gregory">POM assembly:single does not generate binary convenience files (tar/zip).</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">POM assembly:single does not generate binary convenience files (tar/zip).</action>
       <!-- ADD -->
       <!-- UPDATE -->
-      <action dev="ggregory" type="update" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 81 to 84 #239.</action>
+      <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 81 to 84 #239.</action>
       <action type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-beanutils:commons-beanutils from 1.10.1 to 1.11.0.</action>
     </release>
     <release version="1.4.0" date="2025-04-12" description="This is a feature and maintenance release. Java 8 or later is required.">
