@@ -62,7 +62,7 @@ public class JXPath118Test {
     }
 
     @Test
-    public void testJXPATH118IssueWithAsPath() throws Exception {
+    void testJXPATH118IssueWithAsPath() throws Exception {
         final Object contextBean = new SomeChildClass();
         final JXPathContext context = JXPathContext.newContext(contextBean);
         final Iterator<Pointer> iteratePointers = context.iteratePointers("//*");

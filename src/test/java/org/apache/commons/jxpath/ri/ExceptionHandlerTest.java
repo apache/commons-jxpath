@@ -64,7 +64,7 @@ public class ExceptionHandlerTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testHandleBarBaz() throws Exception {
+    void testHandleBarBaz() throws Exception {
         Throwable t = assertThrows(Throwable.class, () -> context.getValue("bar/baz"), "expected Throwable");
         while (t != null) {
             if ("baz unavailable".equals(t.getMessage())) {
@@ -76,7 +76,7 @@ public class ExceptionHandlerTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testHandleFoo() throws Exception {
+    void testHandleFoo() throws Exception {
         Throwable t = assertThrows(Throwable.class, () -> context.getValue("foo"), "expected Throwable");
         while (t != null) {
             if ("foo unavailable".equals(t.getMessage())) {

@@ -60,7 +60,7 @@ public class JXPathServletContextTest {
     }
 
     @Test
-    public void testPageContext() {
+    void testPageContext() {
         final MockServletContext servletContext = new MockServletContext();
         servletContext.setAttribute("app", "app");
         final MockServletConfig servletConfig = new MockServletConfig();
@@ -101,7 +101,7 @@ public class JXPathServletContextTest {
     }
 
     @Test
-    public void testServletContext() {
+    void testServletContext() {
         final ServletContext context = getServletContext();
         final JXPathContext appContext = JXPathServletContexts.getApplicationContext(context);
         assertSame(appContext, JXPathServletContexts.getApplicationContext(context), "Cached context not property returned");
@@ -117,7 +117,7 @@ public class JXPathServletContextTest {
     }
 
     @Test
-    public void testServletRequest() {
+    void testServletRequest() {
         final ServletContext context = getServletContext();
         final MockHttpSession session = new MockHttpSession();
         session.setupServletContext(context);
@@ -153,7 +153,7 @@ public class JXPathServletContextTest {
     }
 
     @Test
-    public void testServletRequestWithoutSession() {
+    void testServletRequestWithoutSession() {
         final ServletContext context = getServletContext();
         final MockHttpServletRequest request = new MockHttpServletRequest();
         final JXPathContext reqContext = JXPathServletContexts.getRequestContext(request, context);

@@ -60,17 +60,17 @@ public class ExternalXMLNamespaceTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAttributeDOM() {
+    void testAttributeDOM() {
         doTestAttribute(DocumentContainer.MODEL_DOM);
     }
 
     @Test
-    public void testCreateAndSetAttributeDOM() {
+    void testCreateAndSetAttributeDOM() {
         doTestCreateAndSetAttribute(DocumentContainer.MODEL_DOM);
     }
 
     @Test
-    public void testElementDOM() {
+    void testElementDOM() {
         doTestElement(DocumentContainer.MODEL_DOM);
     }
 }

@@ -45,7 +45,7 @@ public class JXPath151Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testMapValueEquality() {
+    void testMapValueEquality() {
         assertXPathValue(context, "map/b != map/a", Boolean.TRUE);
         assertXPathValue(context, "map/a != map/b", Boolean.TRUE);
         assertXPathValue(context, "map/a != map/c", Boolean.FALSE);
@@ -56,7 +56,7 @@ public class JXPath151Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testMapValueEqualityUsingNameAttribute() {
+    void testMapValueEqualityUsingNameAttribute() {
         assertXPathValue(context, "map[@name = 'b'] != map[@name = 'c']", Boolean.TRUE);
         assertXPathValue(context, "map[@name = 'a'] != map[@name = 'b']", Boolean.TRUE);
         assertXPathValue(context, "map[@name = 'a'] != map[@name = 'c']", Boolean.FALSE);

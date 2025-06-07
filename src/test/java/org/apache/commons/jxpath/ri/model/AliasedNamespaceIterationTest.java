@@ -51,12 +51,12 @@ public class AliasedNamespaceIterationTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIterateDOM() {
+    void testIterateDOM() {
         doTestIterate(DocumentContainer.MODEL_DOM);
     }
 
     @Test
-    public void testIterateJDOM() {
+    void testIterateJDOM() {
         doTestIterate(DocumentContainer.MODEL_JDOM);
     }
 }

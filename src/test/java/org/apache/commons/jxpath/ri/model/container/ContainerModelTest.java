@@ -82,7 +82,7 @@ public class ContainerModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testContainerMapWithCollection() {
+    void testContainerMapWithCollection() {
         final ListContainer container = new ListContainer();
         final List list = (List) container.getValue();
         final Map map = new HashMap();
@@ -96,7 +96,7 @@ public class ContainerModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testContainerPropertyWithCollection() {
+    void testContainerPropertyWithCollection() {
         final Bean bean = new Bean();
         final List list = (List) bean.getContainer().getValue();
         final JXPathContext context = JXPathContext.newContext(bean);
@@ -108,7 +108,7 @@ public class ContainerModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testContainerRootWithCollection() {
+    void testContainerRootWithCollection() {
         final ArrayContainer container = new ArrayContainer();
         final String[] array = (String[]) container.getValue();
         final JXPathContext context = JXPathContext.newContext(container);
@@ -121,7 +121,7 @@ public class ContainerModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testContainerVariableWithCollection() {
+    void testContainerVariableWithCollection() {
         final ArrayContainer container = new ArrayContainer();
         final String[] array = (String[]) container.getValue();
         final JXPathContext context = JXPathContext.newContext(null);

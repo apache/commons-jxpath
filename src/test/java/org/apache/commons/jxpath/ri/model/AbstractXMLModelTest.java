@@ -79,7 +79,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisAncestor() {
+    void testAxisAncestor() {
         // ancestor::
         assertXPathValue(context, "vendor/product/price:sale/saleEnds/" + "ancestor::price:sale/saleEnds", "never");
         // ancestor:: with a wildcard
@@ -87,13 +87,13 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisAncestorOrSelf() {
+    void testAxisAncestorOrSelf() {
         // ancestor-or-self::
         assertXPathValue(context, "vendor/product/price:sale/" + "ancestor-or-self::price:sale/saleEnds", "never");
     }
 
     @Test
-    public void testAxisAttribute() {
+    void testAxisAttribute() {
         // attribute::
         assertXPathValue(context, "vendor/location/@id", "100");
         // attribute:: produces the correct pointer
@@ -142,7 +142,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisChild() {
+    void testAxisChild() {
         assertXPathValue(context, "vendor/location/address/street", "Orchard Road");
         // child:: - first child does not match, need to search
         assertXPathValue(context, "vendor/location/address/city", "Fruit Market");
@@ -179,12 +179,12 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisChildIndexPredicate() {
+    void testAxisChildIndexPredicate() {
         assertXPathValue(context, "vendor/location[2]/address/street", "Tangerine Drive");
     }
 
     @Test
-    public void testAxisDescendant() {
+    void testAxisDescendant() {
         // descendant::
         assertXPathValue(context, "//street", "Orchard Road");
         // descendent:: with a namespace and wildcard
@@ -196,7 +196,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 //
 //    @Test
-//    public void testAxisDescendantDocumentOrder() {
+//    void testAxisDescendantDocumentOrder() {
 //        Iterator iter = context.iteratePointers("//*");
 //        while (iter.hasNext()) {
 //            System.err.println(iter.next());
@@ -204,7 +204,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
 //    }
 
     @Test
-    public void testAxisFollowing() {
+    void testAxisFollowing() {
         assertXPathValueIterator(context, "vendor/contact/following::location//street", list("Orchard Road", "Tangerine Drive"));
         // following:: with a namespace
         assertXPathValue(context, "//location/following::price:sale/saleEnds", "never");
@@ -212,7 +212,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisFollowingSibling() {
+    void testAxisFollowingSibling() {
         // following-sibling::
         assertXPathValue(context, "vendor/location[.//employeeCount = 10]/" + "following-sibling::location//street", "Tangerine Drive");
         // following-sibling:: produces the correct pointer
@@ -221,7 +221,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisNamespace() {
+    void testAxisNamespace() {
         // namespace::
         assertXPathValueAndPointer(context, "vendor/product/prix/namespace::price", "priceNS", "/vendor[1]/product[1]/prix[1]/namespace::price");
         // namespace::*
@@ -233,7 +233,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisParent() {
+    void testAxisParent() {
         // parent::
         assertXPathPointer(context, "//street/..", "/vendor[1]/location[1]/address[1]");
         // parent:: (note reverse document order)
@@ -243,7 +243,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisPreceding() {
+    void testAxisPreceding() {
         // preceding::
         assertXPathPointer(context, "//location[2]/preceding-sibling::location//street", "/vendor[1]/location[1]/address[1]/street[1]");
         assertXPathPointer(context, "//location[2]/preceding::*[1]", "/vendor[1]/location[1]/employeeCount[1]");
@@ -252,13 +252,13 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisPrecedingSibling() {
+    void testAxisPrecedingSibling() {
         // preceding-sibling:: produces the correct pointer
         assertXPathPointer(context, "//location[2]/preceding-sibling::location//street", "/vendor[1]/location[1]/address[1]/street[1]");
     }
 
     @Test
-    public void testAxisSelf() {
+    void testAxisSelf() {
         // self:: with a namespace
         assertXPathValue(context, "//price:sale/self::price:sale/saleEnds", "never");
         // self:: with an unmatching name
@@ -266,14 +266,14 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testBooleanFunction() {
+    void testBooleanFunction() {
         assertXPathValue(context, "boolean(vendor//saleEnds[../@stores = 'all'])", Boolean.TRUE);
         assertXPathValue(context, "boolean(vendor//promotion[../@stores = 'all'])", Boolean.TRUE);
         assertXPathValue(context, "boolean(vendor//promotion[../@stores = 'some'])", Boolean.FALSE);
     }
 
     @Test
-    public void testContainer() {
+    void testContainer() {
         assertXPathValue(context, "$container/vendor//street", "Orchard Road");
         assertXPathValue(context, "$container//street", "Orchard Road");
         assertXPathPointer(context, "$container//street", "$container/vendor[1]/location[1]/address[1]/street[1]");
@@ -285,7 +285,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
      * Test JXPathContext.createPath() with various arguments
      */
     @Test
-    public void testCreatePath() {
+    void testCreatePath() {
         // Create a DOM element
         assertXPathCreatePath(context, "/vendor[1]/location[3]", "", "/vendor[1]/location[3]");
         // Create a DOM element with contents
@@ -303,7 +303,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
      * Test JXPath.createPathAndSetValue() with various arguments
      */
     @Test
-    public void testCreatePathAndSetValue() {
+    void testCreatePathAndSetValue() {
         // Create a XML element
         assertXPathCreatePathAndSetValue(context, "vendor/location[3]", "", "/vendor[1]/location[3]");
         // Create a DOM element with contents
@@ -320,26 +320,26 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testDocument() {
+    void testDocument() {
         assertXPathValue(context, "$document/vendor/location[1]//street", "Orchard Road");
         assertXPathPointer(context, "$document/vendor/location[1]//street", "$document/vendor[1]/location[1]/address[1]/street[1]");
         assertXPathValue(context, "$document/vendor//street", "Orchard Road");
     }
 
     @Test
-    public void testDocumentOrder() {
+    void testDocumentOrder() {
         assertDocumentOrder(context, "vendor/location", "vendor/location/address/street", -1);
         assertDocumentOrder(context, "vendor/location[@id = '100']", "vendor/location[@id = '101']", -1);
         assertDocumentOrder(context, "vendor//price:amount", "vendor/location", 1);
     }
 
     @Test
-    public void testElementInVariable() {
+    void testElementInVariable() {
         assertXPathValue(context, "$element", "Orchard Road");
     }
 
     @Test
-    public void testFunctionsLastAndPosition() {
+    void testFunctionsLastAndPosition() {
         assertXPathPointer(context, "vendor//location[last()]", "/vendor[1]/location[2]");
     }
 
@@ -355,7 +355,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testLang() {
+    void testLang() {
         // xml:lang built-in attribute
         assertXPathValue(context, "//product/prix/@xml:lang", "fr");
         // lang() used the built-in xml:lang attribute
@@ -365,7 +365,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testNamespaceMapping() {
+    void testNamespaceMapping() {
         context.registerNamespace("rate", "priceNS");
         context.registerNamespace("goods", "productNS");
         assertEquals("priceNS", context.getNamespaceURI("price"), "Context node namespace resolution");
@@ -387,19 +387,19 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testNodes() {
+    void testNodes() {
         final Pointer pointer = context.getPointer("/vendor[1]/contact[1]");
         assertNotEquals(pointer.getNode(), pointer.getValue());
     }
 
     @Test
-    public void testNodeTypeComment() {
+    void testNodeTypeComment() {
         // comment()
         assertXPathValue(context, "//product/comment()", "We are not buying this product, ever");
     }
 
     @Test
-    public void testNodeTypeProcessingInstruction() {
+    void testNodeTypeProcessingInstruction() {
         // processing-instruction() without an argument
         assertXPathValue(context, "//product/processing-instruction()", "do not show anybody");
         // processing-instruction() with an argument
@@ -411,7 +411,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testNodeTypeText() {
+    void testNodeTypeText() {
         // text()
         // Note that this is questionable as the XPath spec tells us "." is short for self::node() and text() is by definition _not_ a node:
         assertXPathValue(context, "//product/text()[. != '']", "We love this product.");
@@ -423,7 +423,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
      * Test JXPathContext.removePath() with various arguments
      */
     @Test
-    public void testRemovePath() {
+    void testRemovePath() {
         // Remove XML nodes
         context.removePath("vendor/location[@id = '101']//street/text()");
         assertEquals("", context.getValue("vendor/location[@id = '101']//street"), "Remove DOM text");
@@ -434,7 +434,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testSetValue() {
+    void testSetValue() {
         assertXPathSetValue(context, "vendor/location[@id = '100']", "New Text");
         assertXMLSignature(context, "vendor/location[@id = '100']", "<E>New Text</E>", false, false, true, false);
         assertXPathSetValue(context, "vendor/location[@id = '101']", "Replacement Text");
@@ -442,7 +442,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testTypeConversions() {
+    void testTypeConversions() {
         // Implicit conversion to number
         assertXPathValue(context, "vendor/location/employeeCount + 1", Double.valueOf(11));
         // Implicit conversion to boolean
@@ -450,7 +450,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testUnion() {
+    void testUnion() {
         assertXPathValue(context, "/vendor[1]/contact[1] | /vendor[1]/contact[4]", "John");
         assertXPathValue(context, "/vendor[1]/contact[4] | /vendor[1]/contact[1]", "John");
     }

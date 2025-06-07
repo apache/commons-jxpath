@@ -46,22 +46,22 @@ public class XMLUpperCaseElementsTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testBasicGetDOM() {
+    void testBasicGetDOM() {
         assertXPathValue(createContext(DocumentContainer.MODEL_DOM), "/Vendor[1]/Contact[1]", "John");
     }
 
     @Test
-    public void testBasicGetJDOM() {
+    void testBasicGetJDOM() {
         assertXPathValue(createContext(DocumentContainer.MODEL_JDOM), "/Vendor[1]/Contact[1]", "John");
     }
 
     @Test
-    public void testBasicIterateDOM() {
+    void testBasicIterateDOM() {
         assertXPathValueIterator(createContext(DocumentContainer.MODEL_DOM), "/Vendor/Contact", list("John", "Jack", "Jim", "Jack Black"));
     }
 
     @Test
-    public void testBasicIterateJDOM() {
+    void testBasicIterateJDOM() {
         assertXPathValueIterator(createContext(DocumentContainer.MODEL_JDOM), "/Vendor/Contact", list("John", "Jack", "Jim", "Jack Black"));
     }
 }

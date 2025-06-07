@@ -111,7 +111,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
      * Test adding pointers.
      */
     @Test
-    public void testAdd() {
+    void testAdd() {
         addPointers("/bean/integers");
         assertEquals(list("/bean/integers[1]", "/bean/integers[2]", "/bean/integers[3]", "/bean/integers[4]").toString(), nodeSet.getPointers().toString());
         assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(4)), nodeSet.getValues());
@@ -122,7 +122,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
      * Demonstrate when nodes != values: in XML models.
      */
     @Test
-    public void testNodes() {
+    void testNodes() {
         addPointers("/document/vendor/contact");
         assertEquals(
                 list("/document/vendor[1]/contact[1]", "/document/vendor[1]/contact[2]", "/document/vendor[1]/contact[3]", "/document/vendor[1]/contact[4]")
@@ -137,7 +137,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
      * Test removing a pointer.
      */
     @Test
-    public void testRemove() {
+    void testRemove() {
         addPointers("/bean/integers");
         removePointers("/bean/integers[4]");
         assertEquals(list("/bean/integers[1]", "/bean/integers[2]", "/bean/integers[3]").toString(), nodeSet.getPointers().toString());

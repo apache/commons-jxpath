@@ -142,7 +142,7 @@ public class ClassLoaderUtilTest {
      * @throws ReflectiveOperationException on test failures.
      */
     @Test
-    public void testClassLoadFailWithoutContextClassLoader() throws ReflectiveOperationException {
+    void testClassLoadFailWithoutContextClassLoader() throws ReflectiveOperationException {
         Thread.currentThread().setContextClassLoader(null);
         final ClassLoader cl = new TestClassLoader(getClass().getClassLoader());
         executeTestMethodUnderClassLoader(cl, "callExampleMessageMethodAndAssertClassNotFoundJXPathException");
@@ -154,7 +154,7 @@ public class ClassLoaderUtilTest {
      * @throws ReflectiveOperationException on test failures.
      */
     @Test
-    public void testClassLoadSuccessWithContextClassLoader() throws ReflectiveOperationException {
+    void testClassLoadSuccessWithContextClassLoader() throws ReflectiveOperationException {
         Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
         final ClassLoader cl = new TestClassLoader(getClass().getClassLoader());
         executeTestMethodUnderClassLoader(cl, "callExampleMessageMethodAndAssertSuccess");
@@ -164,7 +164,7 @@ public class ClassLoaderUtilTest {
      * Tests that JXPath can dynamically load a class, which is visible to its class loader, when there is no context class loader set.
      */
     @Test
-    public void testClassLoadSuccessWithoutContextClassLoader() {
+    void testClassLoadSuccessWithoutContextClassLoader() {
         Thread.currentThread().setContextClassLoader(null);
         callExampleMessageMethodAndAssertSuccess();
     }
@@ -173,7 +173,7 @@ public class ClassLoaderUtilTest {
      * Tests that JXPath will use its class loader to dynamically load a requested class when the context class loader is set but unable to load the class.
      */
     @Test
-    public void testCurrentClassLoaderFallback() {
+    void testCurrentClassLoaderFallback() {
         final ClassLoader cl = new TestClassLoader(getClass().getClassLoader());
         Thread.currentThread().setContextClassLoader(cl);
         callExampleMessageMethodAndAssertSuccess();

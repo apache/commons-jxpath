@@ -112,7 +112,7 @@ public class ExtensionFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAllocation() {
+    void testAllocation() {
         // Allocate new object using the default constructor
         assertXPathValue(context, "string(test:new())", "foo=0; bar=null");
         // Allocate new object using PackageFunctions and class name
@@ -128,14 +128,14 @@ public class ExtensionFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testBCNodeSetHack() {
+    void testBCNodeSetHack() {
         TypeUtils.setTypeConverter(new JXPath11CompatibleTypeConverter());
         assertXPathValue(context, "test:isInstance(//strings, $List.class)", Boolean.FALSE);
         assertXPathValue(context, "test:isInstance(//strings, $NodeSet.class)", Boolean.TRUE);
     }
 
     @Test
-    public void testCollectionMethodCall() {
+    void testCollectionMethodCall() {
         final List list = new ArrayList();
         list.add("foo");
         context.getVariables().declareVariable("myList", list);
@@ -148,7 +148,7 @@ public class ExtensionFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCollectionReturn() {
+    void testCollectionReturn() {
         assertXPathValueIterator(context, "test:collection()/name", list("foo", "bar"));
         assertXPathPointerIterator(context, "test:collection()/name", list("/.[1]/name", "/.[2]/name"));
         assertXPathValue(context, "test:collection()/name", "foo");
@@ -163,27 +163,27 @@ public class ExtensionFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testConstructorLookup() {
+    void testConstructorLookup() {
         final Object[] args = { Integer.valueOf(1), "x" };
         final Function func = functions.getFunction("test", "new", args);
         assertEquals("foo=1; bar=x", func.invoke(new Context(null), args).toString(), "test:new(1, x)");
     }
 
     @Test
-    public void testConstructorLookupWithExpressionContext() {
+    void testConstructorLookupWithExpressionContext() {
         final Object[] args = { "baz" };
         final Function func = functions.getFunction("test", "new", args);
         assertEquals("foo=1; bar=baz", func.invoke(new Context(Integer.valueOf(1)), args).toString(), "test:new('baz')");
     }
 
     @Test
-    public void testEstablishNodeSetBaseline() {
+    void testEstablishNodeSetBaseline() {
         assertXPathValue(context, "test:isInstance(//strings, $List.class)", Boolean.TRUE);
         assertXPathValue(context, "test:isInstance(//strings, $NodeSet.class)", Boolean.FALSE);
     }
 
     @Test
-    public void testExpressionContext() {
+    void testExpressionContext() {
         // Execute an extension function for each node while searching
         // The function uses ExpressionContext to get to the current
         // node.
@@ -203,7 +203,7 @@ public class ExtensionFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testMethodCall() {
+    void testMethodCall() {
         assertXPathValue(context, "length('foo')", Integer.valueOf(3));
         // We are just calling a method - prefix is ignored
         assertXPathValue(context, "call:substring('foo', 1, 2)", "o");
@@ -218,28 +218,28 @@ public class ExtensionFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testMethodLookup() {
+    void testMethodLookup() {
         final Object[] args = { new TestFunctions() };
         final Function func = functions.getFunction("test", "getFoo", args);
         assertEquals("0", func.invoke(new Context(null), args).toString(), "test:getFoo($test, 1, x)");
     }
 
     @Test
-    public void testMethodLookupWithExpressionContext() {
+    void testMethodLookupWithExpressionContext() {
         final Object[] args = { new TestFunctions() };
         final Function func = functions.getFunction("test", "instancePath", args);
         assertEquals("1", func.invoke(new Context(Integer.valueOf(1)), args), "test:instancePath()");
     }
 
     @Test
-    public void testMethodLookupWithExpressionContextAndArgument() {
+    void testMethodLookupWithExpressionContextAndArgument() {
         final Object[] args = { new TestFunctions(), "*" };
         final Function func = functions.getFunction("test", "pathWithSuffix", args);
         assertEquals("1*", func.invoke(new Context(Integer.valueOf(1)), args), "test:pathWithSuffix('*')");
     }
 
     @Test
-    public void testNodeSetReturn() {
+    void testNodeSetReturn() {
         assertXPathValueIterator(context, "test:nodeSet()/name", list("Name 1", "Name 2"));
         assertXPathValueIterator(context, "test:nodeSet()", list(testBean.getBeans()[0], testBean.getBeans()[1]));
         assertXPathPointerIterator(context, "test:nodeSet()/name", list("/beans[1]/name", "/beans[2]/name"));
@@ -250,7 +250,7 @@ public class ExtensionFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testStaticMethodCall() {
+    void testStaticMethodCall() {
         assertXPathValue(context, "string(test:build(8, 'goober'))", "foo=8; bar=goober");
         // Call a static method using PackageFunctions and class name
         assertXPathValue(context, "string(jxpathtest:TestFunctions.build(8, 'goober'))", "foo=8; bar=goober");
@@ -264,21 +264,21 @@ public class ExtensionFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testStaticMethodLookup() {
+    void testStaticMethodLookup() {
         final Object[] args = { Integer.valueOf(1), "x" };
         final Function func = functions.getFunction("test", "build", args);
         assertEquals("foo=1; bar=x", func.invoke(new Context(null), args).toString(), "test:build(1, x)");
     }
 
     @Test
-    public void testStaticMethodLookupWithConversion() {
+    void testStaticMethodLookupWithConversion() {
         final Object[] args = { "7", Integer.valueOf(1) };
         final Function func = functions.getFunction("test", "build", args);
         assertEquals("foo=7; bar=1", func.invoke(new Context(null), args).toString(), "test:build('7', 1)");
     }
 
     @Test
-    public void testStaticMethodLookupWithExpressionContext() {
+    void testStaticMethodLookupWithExpressionContext() {
         final Object[] args = {};
         final Function func = functions.getFunction("test", "path", args);
         assertEquals("1", func.invoke(new Context(Integer.valueOf(1)), args), "test:path()");

@@ -56,7 +56,7 @@ public class JXPath113Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue113() throws Exception {
+    void testIssue113() throws Exception {
         final Document doc = JAXP.getDocument("<xml/>");
         final JXPathContext context = JXPathContext.newContext(doc);
         final List result = context.selectNodes("//following-sibling::node()");

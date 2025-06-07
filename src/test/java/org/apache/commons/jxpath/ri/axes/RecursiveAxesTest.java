@@ -45,7 +45,7 @@ public class RecursiveAxesTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testInfiniteDescent() {
+    void testInfiniteDescent() {
         // Existing scalar property
         assertXPathPointer(context, "//.[name = 'three']", "/first/first/second");
     }

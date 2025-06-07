@@ -88,19 +88,19 @@ public class JXPath177Test {
     }
 
     @Test
-    public void testJx177() {
+    void testJx177() {
         doTest("name", "ROOT name");
         doTest("/x/name", "X name");
         doTest("$__root/x/name", "X name");
     }
 
     @Test
-    public void testJx177_Union1() {
+    void testJx177_Union1() {
         doTest("$__root/x/name|name", "X name");
     }
 
     @Test
-    public void testJx177_Union2() {
+    void testJx177_Union2() {
         doTest("$__root/x/unexisting|name", "ROOT name");
     }
 }

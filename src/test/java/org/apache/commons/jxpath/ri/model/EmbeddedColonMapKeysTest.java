@@ -42,13 +42,13 @@ public class EmbeddedColonMapKeysTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testSelectNodes() throws Exception {
+    void testSelectNodes() throws Exception {
         assertXPathValueIterator(context, "/.[@name='foo:key']", list("value"));
         assertXPathValueIterator(context, "/foo:key", list());
     }
 
     @Test
-    public void testSelectSingleNode() throws Exception {
+    void testSelectSingleNode() throws Exception {
         assertXPathValue(context, "/.[@name='foo:key']", "value");
         assertXPathValueLenient(context, "/foo:key", null);
     }

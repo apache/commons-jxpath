@@ -48,7 +48,7 @@ public class JXPath172DynamicTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_nestedpropertyDoesNotExist_Lenient() {
+    void testIssue172_nestedpropertyDoesNotExist_Lenient() {
         final JXPathContext context = getContext(null, true);
         final Object bRet = context.selectSingleNode("value.unexisting");
         assertNull(bRet);
@@ -58,7 +58,7 @@ public class JXPath172DynamicTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_nestedpropertyDoesNotExist_NotLenient() {
+    void testIssue172_nestedpropertyDoesNotExist_NotLenient() {
         final JXPathContext context = getContext(null, false);
         final Object bRet = context.selectSingleNode("value.unexisting");
         assertNull(bRet);
@@ -68,7 +68,7 @@ public class JXPath172DynamicTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_propertyDoesNotExist() {
+    void testIssue172_propertyDoesNotExist() {
         final JXPathContext context = getContext(null, false);
         final Object bRet = context.selectSingleNode("unexisting");
         assertNull(bRet);
@@ -78,7 +78,7 @@ public class JXPath172DynamicTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_propertyDoesNotExist_Lenient() {
+    void testIssue172_propertyDoesNotExist_Lenient() {
         final JXPathContext context = getContext(null, true);
         final Object bRet = context.selectSingleNode("unexisting");
         assertNull(bRet);
@@ -88,7 +88,7 @@ public class JXPath172DynamicTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_propertyExistAndIsNotNull() {
+    void testIssue172_propertyExistAndIsNotNull() {
         final JXPathContext context = getContext("ciao", false);
         final Object bRet = context.selectSingleNode("value");
         assertNotNull(bRet, "null!!");
@@ -100,7 +100,7 @@ public class JXPath172DynamicTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_propertyExistAndIsNull() {
+    void testIssue172_propertyExistAndIsNull() {
         final JXPathContext context = getContext(null, false);
         final Object bRet = context.selectSingleNode("value");
         assertNull(bRet, "not null!!");

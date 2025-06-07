@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class ContextDependencyTest extends AbstractJXPathTest {
 
     @Test
-    public void testContextDependency() {
+    void testContextDependency() {
         testContextDependency("1", false);
         testContextDependency("$x", false);
         testContextDependency("/foo", false);
@@ -42,7 +42,7 @@ public class ContextDependencyTest extends AbstractJXPathTest {
         testContextDependency("test:func(3, foo)", true);
     }
 
-    public void testContextDependency(final String xpath, final boolean expected) {
+    void testContextDependency(final String xpath, final boolean expected) {
         final Expression expr = (Expression) Parser.parseExpression(xpath, new TreeCompiler());
         assertEquals(expected, expr.isContextDependent(), "Context dependency <" + xpath + ">");
     }

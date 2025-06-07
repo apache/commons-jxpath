@@ -52,7 +52,7 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCoreFunctions() {
+    void testCoreFunctions() {
         assertXPathValue(context, "string(2)", "2");
         assertXPathValue(context, "string($nan)", "NaN");
         assertXPathValue(context, "string(-$nan)", "NaN");
@@ -115,7 +115,7 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testExtendedKeyFunction() {
+    void testExtendedKeyFunction() {
         context.setKeyManager(new ExtendedKeyManager() {
 
             @Override
@@ -156,7 +156,7 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testFormatNumberFunction() {
+    void testFormatNumberFunction() {
         final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDigit('D');
         context.setDecimalFormatSymbols("test", symbols);
@@ -169,7 +169,7 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIDFunction() {
+    void testIDFunction() {
         context.setIdentityManager((context, id) -> {
             NodePointer ptr = (NodePointer) context.getPointer("/document");
             ptr = ptr.getValuePointer();
@@ -180,7 +180,7 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testKeyFunction() {
+    void testKeyFunction() {
         context.setKeyManager((context, key, value) -> NodePointer.newNodePointer(null, "42", null));
         assertXPathValue(context, "key('a', 'b')", "42");
     }

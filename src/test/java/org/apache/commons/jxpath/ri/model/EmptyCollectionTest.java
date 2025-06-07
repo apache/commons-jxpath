@@ -45,32 +45,32 @@ public class EmptyCollectionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testEmptyArray() {
+    void testEmptyArray() {
         assertXPathPointerIterator(JXPathContext.newContext(new Object[0]), "/*", list());
     }
 
     @Test
-    public void testEmptyChildArray() {
+    void testEmptyChildArray() {
         assertXPathPointerIterator(JXPathContext.newContext(new HasChild(new Object[0])), "/child/*", list());
     }
 
     @Test
-    public void testEmptyChildList() {
+    void testEmptyChildList() {
         assertXPathPointerIterator(JXPathContext.newContext(new HasChild(Collections.EMPTY_LIST)), "/child/*", Collections.EMPTY_LIST);
     }
 
     @Test
-    public void testEmptyChildSet() {
+    void testEmptyChildSet() {
         assertXPathPointerIterator(JXPathContext.newContext(new HasChild(Collections.EMPTY_SET)), "/child/*", Collections.EMPTY_SET);
     }
 
     @Test
-    public void testEmptyList() {
+    void testEmptyList() {
         assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_LIST), "/*", Collections.EMPTY_LIST);
     }
 
     @Test
-    public void testEmptySet() {
+    void testEmptySet() {
         assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_SET), "/*", Collections.EMPTY_SET);
     }
 }

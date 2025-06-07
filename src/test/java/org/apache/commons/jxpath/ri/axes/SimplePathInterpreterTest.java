@@ -126,7 +126,7 @@ public class SimplePathInterpreterTest {
     }
 
     @Test
-    public void testDoPredicateIndex() {
+    void testDoPredicateIndex() {
         // Existing dynamic property + existing property + index
         assertValueAndPointer("/map[@name='Key2'][@name='strings'][2]", "String 2", "/map[@name='Key2']/strings[2]", "BbDdBb", "BbDdBbB");
         // existingProperty[@name=collectionProperty][index]
@@ -178,7 +178,7 @@ public class SimplePathInterpreterTest {
     }
 
     @Test
-    public void testDoPredicateName() {
+    void testDoPredicateName() {
         // existingProperty[@name=existingProperty]
         assertValueAndPointer("/nestedBean[@name='int']", Integer.valueOf(1), "/nestedBean/int", "BbBb", "BbBbB");
         // /self::node()[@name=existingProperty]
@@ -225,7 +225,7 @@ public class SimplePathInterpreterTest {
     }
 
     @Test
-    public void testDoPredicatesStandard() {
+    void testDoPredicatesStandard() {
         // bean/map/collection/node
         assertValueAndPointer("map[@name='Key3'][@name='fruitco']", context.getValue("/vendor"), "/map[@name='Key3'][3]", "BbDdCM");
         // bean/map/collection/missingNode
@@ -243,7 +243,7 @@ public class SimplePathInterpreterTest {
     }
 
     @Test
-    public void testDoStepNoPredicatesPropertyOwner() {
+    void testDoStepNoPredicatesPropertyOwner() {
         // Existing scalar property
         assertValueAndPointer("/int", Integer.valueOf(1), "/int", "Bb", "BbB");
         // self::
@@ -277,7 +277,7 @@ public class SimplePathInterpreterTest {
     }
 
     @Test
-    public void testDoStepNoPredicatesStandard() {
+    void testDoStepNoPredicatesStandard() {
         // Existing DOM node
         assertValueAndPointer("/vendor/location/address/city", "Fruit Market", "/vendor/location[2]/address[1]/city[1]", "BbMMMM");
         // Missing DOM node
@@ -289,7 +289,7 @@ public class SimplePathInterpreterTest {
     }
 
     @Test
-    public void testDoStepPredicatesPropertyOwner() {
+    void testDoStepPredicatesPropertyOwner() {
         // missingProperty[@name=foo]
         assertNullPointer("/foo[@name='foo']", "/foo[@name='foo']", "BnNn");
         // missingProperty[index]
@@ -297,7 +297,7 @@ public class SimplePathInterpreterTest {
     }
 
     @Test
-    public void testDoStepPredicatesStandard() {
+    void testDoStepPredicatesStandard() {
         // Looking for an actual XML attribute called "name"
         // nodeProperty/name[@name=value]
         assertValueAndPointer("/vendor/contact[@name='jack']", "Jack", "/vendor/contact[2]", "BbMM");
@@ -312,7 +312,7 @@ public class SimplePathInterpreterTest {
     }
 
     @Test
-    public void testInterpretExpressionPath() {
+    void testInterpretExpressionPath() {
         context.getVariables().declareVariable("array", new String[] { "Value1" });
         context.getVariables().declareVariable("testnull", new TestNull());
         assertNullPointer("$testnull/nothing[2]", "$testnull/nothing[2]", "VBbE");

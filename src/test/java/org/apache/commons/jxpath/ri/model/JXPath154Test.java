@@ -38,12 +38,12 @@ public class JXPath154Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testInnerEmptyNamespaceDOM() {
+    void testInnerEmptyNamespaceDOM() {
         doTest("b:foo/test", DocumentContainer.MODEL_DOM, "/b:foo[1]/test[1]");
     }
 
     @Test
-    public void testInnerEmptyNamespaceJDOM() {
+    void testInnerEmptyNamespaceJDOM() {
         doTest("b:foo/test", DocumentContainer.MODEL_JDOM, "/b:foo[1]/test[1]");
     }
 }

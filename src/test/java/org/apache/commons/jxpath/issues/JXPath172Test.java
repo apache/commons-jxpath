@@ -61,7 +61,7 @@ public class JXPath172Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_NestedPropertyUnexisting() {
+    void testIssue172_NestedPropertyUnexisting() {
         final JXPathContext context = getContext(null, true);
         final Object bRet = context.selectSingleNode("value.child");
         assertNull(bRet, "not null!!");
@@ -72,7 +72,7 @@ public class JXPath172Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_propertyDoesNotExist_NotLenient() {
+    void testIssue172_propertyDoesNotExist_NotLenient() {
         final JXPathContext context = getContext(null, false);
         assertThrows(JXPathNotFoundException.class, () -> context.selectSingleNode("unexisting"));
         assertThrows(JXPathNotFoundException.class, () -> context.getPointer("unexisting"));
@@ -80,7 +80,7 @@ public class JXPath172Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_propertyExistAndIsNotNull() {
+    void testIssue172_propertyExistAndIsNotNull() {
         final JXPathContext context = getContext("ciao", false);
         final Object bRet = context.selectSingleNode("value");
         assertNotNull(bRet, "null!!");
@@ -92,7 +92,7 @@ public class JXPath172Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_propertyExistAndIsNull() {
+    void testIssue172_propertyExistAndIsNull() {
         final JXPathContext context = getContext(null, false);
         final Object bRet = context.selectSingleNode("value");
         assertNull(bRet, "not null!!");
@@ -103,7 +103,7 @@ public class JXPath172Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue172_PropertyUnexisting() {
+    void testIssue172_PropertyUnexisting() {
         final JXPathContext context = getContext(null, true);
         final Object bRet = context.selectSingleNode("unexisting");
         assertNull(bRet, "not null!!");

@@ -43,7 +43,7 @@ public class CoreOperationTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testEmptyNodeSetOperations() {
+    void testEmptyNodeSetOperations() {
         assertXPathValue(context, "/idonotexist = 0", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "/idonotexist != 0", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "/idonotexist < 0", Boolean.FALSE, Boolean.class);
@@ -59,7 +59,7 @@ public class CoreOperationTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testInfoSetTypes() {
+    void testInfoSetTypes() {
         // Numbers
         assertXPathValue(context, "1", Double.valueOf(1.0));
         assertXPathPointer(context, "1", "1");
@@ -98,7 +98,7 @@ public class CoreOperationTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testNan() {
+    void testNan() {
         assertXPathValue(context, "$nan > $nan", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan < $nan", Boolean.FALSE, Boolean.class);
         assertXPathValue(context, "$nan >= $nan", Boolean.FALSE, Boolean.class);
@@ -123,7 +123,7 @@ public class CoreOperationTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testNodeSetOperations() {
+    void testNodeSetOperations() {
         assertXPathValue(context, "$array > 0", Boolean.TRUE, Boolean.class);
         assertXPathValue(context, "$array >= 0", Boolean.TRUE, Boolean.class);
         assertXPathValue(context, "$array = 0", Boolean.FALSE, Boolean.class);

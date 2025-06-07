@@ -51,7 +51,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
      * Testing the pseudo-attribute "name" that dynamic property objects appear to have.
      */
     @Test
-    public void testAttributeName() {
+    void testAttributeName() {
         assertXPathValue(context, "map[@name = 'Key1']", "Value 1");
         assertXPathPointer(context, "map[@name = 'Key1']", "/map[@name='Key1']");
         assertXPathPointerLenient(context, "map[@name = 'Key&quot;&apos;&quot;&apos;1']", "/map[@name='Key&quot;&apos;&quot;&apos;1']");
@@ -69,7 +69,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisChild() {
+    void testAxisChild() {
         assertXPathValue(context, "map/Key1", "Value 1");
         assertXPathPointer(context, "map/Key1", "/map[@name='Key1']");
         assertXPathValue(context, "map/Key2/name", "Name 6");
@@ -77,12 +77,12 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAxisDescendant() {
+    void testAxisDescendant() {
         assertXPathValue(context, "//Key1", "Value 1");
     }
 
     @Test
-    public void testCollectionOfMaps() {
+    void testCollectionOfMaps() {
         final TestBean bean = (TestBean) context.getContextBean();
         final List list = new ArrayList();
         bean.getMap().put("stuff", list);
@@ -100,7 +100,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCreatePath() {
+    void testCreatePath() {
         final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
         // Calls factory.createObject(..., testBean, "map"), then
@@ -109,7 +109,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCreatePathAndSetValue() {
+    void testCreatePathAndSetValue() {
         final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
         // Calls factory.createObject(..., testBean, "map"), then
@@ -118,7 +118,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCreatePathAndSetValueCollectionElement() {
+    void testCreatePathAndSetValueCollectionElement() {
         final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
         assertXPathCreatePathAndSetValue(context, "/map/TestKey3[2]", "Test1", "/map[@name='TestKey3'][2]");
@@ -127,7 +127,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCreatePathAndSetValueCreateBean() {
+    void testCreatePathAndSetValueCreateBean() {
         final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
         // Calls factory.createObject(..., testBean, "map"), then
@@ -137,7 +137,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCreatePathAndSetValueNewCollectionElement() {
+    void testCreatePathAndSetValueNewCollectionElement() {
         final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
         // Create an element of a dynamic map element, which is a collection
@@ -148,7 +148,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCreatePathCollectionElement() {
+    void testCreatePathCollectionElement() {
         final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
         assertXPathCreatePath(context, "/map/TestKey3[2]", null, "/map[@name='TestKey3'][2]");
@@ -157,7 +157,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCreatePathCreateBean() {
+    void testCreatePathCreateBean() {
         final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
         // Calls factory.createObject(..., testBean, "map"), then
@@ -167,7 +167,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCreatePathNewCollectionElement() {
+    void testCreatePathNewCollectionElement() {
         final TestBean bean = (TestBean) context.getContextBean();
         bean.setMap(null);
         // Create an element of a dynamic map element, which is a collection
@@ -178,7 +178,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testMapOfMaps() {
+    void testMapOfMaps() {
         final TestBean bean = (TestBean) context.getContextBean();
         final Map fruit = new HashMap();
         fruit.put("apple", "green");
@@ -197,7 +197,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testRemovePath() {
+    void testRemovePath() {
         final TestBean bean = (TestBean) context.getContextBean();
         bean.getMap().put("TestKey1", "test");
         // Remove dynamic property
@@ -206,7 +206,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testRemovePathArrayElement() {
+    void testRemovePathArrayElement() {
         final TestBean bean = (TestBean) context.getContextBean();
         bean.getMap().put("TestKey2", new String[] { "temp1", "temp2" });
         context.removePath("map[@name = 'TestKey2'][1]");
@@ -214,7 +214,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testSetCollection() {
+    void testSetCollection() {
         // See if we can assign a whole collection
         context.setValue("map/Key1", new Integer[] { Integer.valueOf(7), Integer.valueOf(8) });
         // And then an element in that collection
@@ -225,7 +225,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
      * The key does not exist, but the assignment should succeed anyway, because you should always be able to store anything in a Map.
      */
     @Test
-    public void testSetNewKey() {
+    void testSetNewKey() {
         // Using a "simple" path
         assertXPathSetValue(context, "map/Key4", Integer.valueOf(7));
         // Using a "non-simple" path
@@ -234,7 +234,7 @@ public class DynamicPropertiesModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testSetPrimitiveValue() {
+    void testSetPrimitiveValue() {
         assertXPathSetValue(context, "map/Key1", Integer.valueOf(6));
     }
 }

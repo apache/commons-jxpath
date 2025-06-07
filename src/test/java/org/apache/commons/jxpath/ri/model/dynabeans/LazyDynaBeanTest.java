@@ -31,14 +31,14 @@ import org.junit.jupiter.api.Test;
 public class LazyDynaBeanTest extends AbstractJXPathTest {
 
     @Test
-    public void testLazyProperty() throws JXPathNotFoundException {
+    void testLazyProperty() throws JXPathNotFoundException {
         final LazyDynaBean bean = new LazyDynaBean();
         final JXPathContext context = JXPathContext.newContext(bean);
         context.getValue("nosuch");
     }
 
     @Test
-    public void testStrictLazyDynaBeanPropertyFactory() {
+    void testStrictLazyDynaBeanPropertyFactory() {
         final StrictLazyDynaBeanPointerFactory factory = new StrictLazyDynaBeanPointerFactory();
         JXPathContextReferenceImpl.addNodePointerFactory(factory);
         assertThrows(JXPathNotFoundException.class, this::testLazyProperty);

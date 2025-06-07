@@ -40,7 +40,7 @@ public class BeanModelTest extends AbstractBeanModelTest {
     }
 
     @Test
-    public void testIndexedProperty() {
+    void testIndexedProperty() {
         final JXPathContext context = JXPathContext.newContext(null, new TestIndexedPropertyBean());
         assertXPathValueAndPointer(context, "indexed[1]", Integer.valueOf(0), "/indexed[1]");
     }

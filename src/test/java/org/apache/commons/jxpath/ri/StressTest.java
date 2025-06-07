@@ -54,7 +54,7 @@ public class StressTest {
     private static Throwable exception;
 
     @Test
-    public void testThreads() throws Throwable {
+    void testThreads() throws Throwable {
         context = JXPathContext.newContext(null, Double.valueOf(100));
         final Thread[] threadArray = new Thread[THREAD_COUNT];
         for (int i = 0; i < THREAD_COUNT; i++) {

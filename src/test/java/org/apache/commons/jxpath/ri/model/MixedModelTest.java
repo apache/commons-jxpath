@@ -69,37 +69,37 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testBeanBean() {
+    void testBeanBean() {
         assertXPathValueAndPointer(context, "bean/int", Integer.valueOf(1), "/bean/int");
     }
 
     @Test
-    public void testBeanContainer() {
+    void testBeanContainer() {
         assertXPathValueAndPointer(context, "container/vendor/location/address/city", "Fruit Market", "/container/vendor[1]/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testBeanDocument() {
+    void testBeanDocument() {
         assertXPathValueAndPointer(context, "document/vendor/location/address/city", "Fruit Market", "/document/vendor[1]/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testBeanElement() {
+    void testBeanElement() {
         assertXPathValueAndPointer(context, "element/location/address/city", "Fruit Market", "/element/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testBeanList() {
+    void testBeanList() {
         assertXPathValueAndPointer(context, "list[1]", "string", "/list[1]");
     }
 
     @Test
-    public void testBeanMap() {
+    void testBeanMap() {
         assertXPathValueAndPointer(context, "map/string", "string", "/map[@name='string']");
     }
 
     @Test
-    public void testBeanPrimitive() {
+    void testBeanPrimitive() {
         assertXPathValueAndPointer(context, "string", "string", "/string");
     }
 
@@ -107,7 +107,7 @@ public class MixedModelTest extends AbstractJXPathTest {
      * Scott Heaberlin's test - collection of collections
      */
     @Test
-    public void testCollectionPointer() {
+    void testCollectionPointer() {
         final List list = new ArrayList();
         final Map map = new HashMap();
         map.put("KeyOne", "SomeStringOne");
@@ -131,7 +131,7 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCreatePath() {
+    void testCreatePath() {
         context = JXPathContext.newContext(new TestBean());
         context.setFactory(new TestMixedModelFactory());
         final TestBean bean = (TestBean) context.getContextBean();
@@ -142,7 +142,7 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCreatePathAndSetValueWithMatrix() {
+    void testCreatePathAndSetValueWithMatrix() {
         context.setValue("matrix", null);
         // Calls factory.createObject(..., TestMixedModelBean, "matrix")
         // Calls factory.createObject(..., nestedBean, "strings", 2)
@@ -150,7 +150,7 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testErrorProperty() {
+    void testErrorProperty() {
         context.getVariables().declareVariable("e", new ExceptionPropertyTestBean());
         assertThrows(Throwable.class, () -> assertXPathValue(context, "$e/errorString", null), "Legitimate exception accessing property");
         assertXPathPointer(context, "$e/errorString", "$e/errorString");
@@ -163,7 +163,7 @@ public class MixedModelTest extends AbstractJXPathTest {
      * Test JXPath.iterate() with map containing an array
      */
     @Test
-    public void testIterateArray() {
+    void testIterateArray() {
         final Map map = new HashMap();
         map.put("foo", new String[] { "a", "b", "c" });
         final JXPathContext context = JXPathContext.newContext(map);
@@ -171,7 +171,7 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIteratePointersArray() {
+    void testIteratePointersArray() {
         final Map map = new HashMap();
         map.put("foo", new String[] { "a", "b", "c" });
         final JXPathContext context = JXPathContext.newContext(map);
@@ -185,7 +185,7 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIteratePointersArrayElementWithVariable() {
+    void testIteratePointersArrayElementWithVariable() {
         final Map map = new HashMap();
         map.put("foo", new String[] { "a", "b", "c" });
         final JXPathContext context = JXPathContext.newContext(map);
@@ -200,7 +200,7 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIterateVector() {
+    void testIterateVector() {
         final Map map = new HashMap();
         final Vector vec = new Vector();
         vec.add(new HashMap());
@@ -211,27 +211,27 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testListBean() {
+    void testListBean() {
         assertXPathValueAndPointer(context, "list[2]/int", Integer.valueOf(1), "/list[2]/int");
     }
 
     @Test
-    public void testListContainer() {
+    void testListContainer() {
         assertXPathValueAndPointer(context, "list[7]/vendor/location/address/city", "Fruit Market", "/list[7]/vendor[1]/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testListDocument() {
+    void testListDocument() {
         assertXPathValueAndPointer(context, "list[5]/vendor/location/address/city", "Fruit Market", "/list[5]/vendor[1]/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testListElement() {
+    void testListElement() {
         assertXPathValueAndPointer(context, "list[6]/location/address/city", "Fruit Market", "/list[6]/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testListList() {
+    void testListList() {
         /**
          * @todo: what is this supposed to do? Should we stick to XPath, in which case [1] is simply ignored, or Java, in which case it is supposed to extract
          *        the first element from the list?
@@ -244,54 +244,54 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testListMap() {
+    void testListMap() {
         assertXPathValueAndPointer(context, "list[3]/string", "string", "/list[3][@name='string']");
     }
 
     @Test
-    public void testListPrimitive() {
+    void testListPrimitive() {
         assertXPathValueAndPointer(context, "list[1]", "string", "/list[1]");
     }
 
     @Test
-    public void testMapBean() {
+    void testMapBean() {
         assertXPathValueAndPointer(context, "map/bean/int", Integer.valueOf(1), "/map[@name='bean']/int");
     }
 
     @Test
-    public void testMapContainer() {
+    void testMapContainer() {
         assertXPathValueAndPointer(context, "map/container/vendor/location/address/city", "Fruit Market",
                 "/map[@name='container']" + "/vendor[1]/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testMapDocument() {
+    void testMapDocument() {
         assertXPathValueAndPointer(context, "map/document/vendor/location/address/city", "Fruit Market",
                 "/map[@name='document']" + "/vendor[1]/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testMapElement() {
+    void testMapElement() {
         assertXPathValueAndPointer(context, "map/element/location/address/city", "Fruit Market", "/map[@name='element']/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testMapList() {
+    void testMapList() {
         assertXPathValueAndPointer(context, "map/list[1]", "string", "/map[@name='list'][1]");
     }
 
     @Test
-    public void testMapMap() {
+    void testMapMap() {
         assertXPathValueAndPointer(context, "map/map/string", "string", "/map[@name='map'][@name='string']");
     }
 
     @Test
-    public void testMapPrimitive() {
+    void testMapPrimitive() {
         assertXPathValueAndPointer(context, "map/string", "string", "/map[@name='string']");
     }
 
     @Test
-    public void testMatrix() {
+    void testMatrix() {
         assertXPathValueAndPointer(context, "$matrix[1]/.[1]", Integer.valueOf(3), "$matrix[1]/.[1]");
         context.setValue("$matrix[1]/.[1]", Integer.valueOf(2));
         assertXPathValueAndPointer(context, "matrix[1]/.[1]", Integer.valueOf(3), "/matrix[1]/.[1]");
@@ -304,7 +304,7 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testNull() {
+    void testNull() {
         assertXPathPointerLenient(context, "$null", "$null");
         assertXPathPointerLenient(context, "$null[3]", "$null[3]");
         assertXPathPointerLenient(context, "$testnull/nothing", "$testnull/nothing");
@@ -320,48 +320,48 @@ public class MixedModelTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testRootAsCollection() {
+    void testRootAsCollection() {
         assertXPathValue(context, ".[1]/string", "string");
     }
 
     @Test
-    public void testVar() {
+    void testVar() {
         context.getVariables().declareVariable("foo:bar", "baz");
         assertXPathValueAndPointer(context, "$foo:bar", "baz", "$foo:bar");
     }
 
     @Test
-    public void testVarBean() {
+    void testVarBean() {
         assertXPathValueAndPointer(context, "$bean/int", Integer.valueOf(1), "$bean/int");
     }
 
     @Test
-    public void testVarContainer() {
+    void testVarContainer() {
         assertXPathValueAndPointer(context, "$container/vendor/location/address/city", "Fruit Market", "$container/vendor[1]/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testVarDocument() {
+    void testVarDocument() {
         assertXPathValueAndPointer(context, "$document/vendor/location/address/city", "Fruit Market", "$document/vendor[1]/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testVarElement() {
+    void testVarElement() {
         assertXPathValueAndPointer(context, "$element/location/address/city", "Fruit Market", "$element/location[2]/address[1]/city[1]");
     }
 
     @Test
-    public void testVarList() {
+    void testVarList() {
         assertXPathValueAndPointer(context, "$list[1]", "string", "$list[1]");
     }
 
     @Test
-    public void testVarMap() {
+    void testVarMap() {
         assertXPathValueAndPointer(context, "$map/string", "string", "$map[@name='string']");
     }
 
     @Test
-    public void testVarPrimitive() {
+    void testVarPrimitive() {
         assertXPathValueAndPointer(context, "$string", "string", "$string");
     }
 }

@@ -91,14 +91,14 @@ public class DOMModelTest extends AbstractXMLModelTest {
     }
 
     @Test
-    public void testGetElementDescendantOrSelf() {
+    void testGetElementDescendantOrSelf() {
         final JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
         assertInstanceOf(Element.class, childContext.getContextBean());
         assertXPathNodeType(childContext, "//vendor", Element.class);
     }
 
     @Test
-    public void testGetNode() {
+    void testGetNode() {
         assertXPathNodeType(context, "/", Document.class);
         assertXPathNodeType(context, "/vendor/location", Element.class);
         assertXPathNodeType(context, "//location/@name", Attr.class);
