@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests JXPath with JDOM
  */
-public class JDOMModelTest extends AbstractXMLModelTest {
+class JDOMModelTest extends AbstractXMLModelTest {
 
     private void appendXMLSignature(final StringBuilder buffer, final List children, final boolean elements, final boolean attributes, final boolean text,
             final boolean pi) {

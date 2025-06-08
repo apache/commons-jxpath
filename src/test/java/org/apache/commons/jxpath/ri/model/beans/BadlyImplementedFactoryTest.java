@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Badly-implemented Factory test. From JIRA JXPATH-68.
  */
-public class BadlyImplementedFactoryTest {
+class BadlyImplementedFactoryTest {
 
     private JXPathContext context;
 

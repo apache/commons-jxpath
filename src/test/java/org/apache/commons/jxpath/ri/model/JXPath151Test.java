@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.TestBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class JXPath151Test extends AbstractJXPathTest {
+class JXPath151Test extends AbstractJXPathTest {
 
     private JXPathContext context;
 

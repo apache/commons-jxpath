@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class JXPath113Test extends AbstractJXPathTest {
+class JXPath113Test extends AbstractJXPathTest {
 
     static class JAXP {
 

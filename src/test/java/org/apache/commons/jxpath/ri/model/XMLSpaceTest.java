@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for text trimming from JXPATH-83.
  */
-public class XMLSpaceTest extends AbstractJXPathTest {
+class XMLSpaceTest extends AbstractJXPathTest {
 
     protected JXPathContext context;
 

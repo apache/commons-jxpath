@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests BasicTypeConverter
  */
-public class BasicTypeConverterTest {
+class BasicTypeConverterTest {
 
     public void assertConversion(final Object from, final Class toType, final Object expected) {
         final boolean can = TypeUtils.canConvert(from, toType);

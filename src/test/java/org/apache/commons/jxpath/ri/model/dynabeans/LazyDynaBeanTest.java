@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  */
-public class LazyDynaBeanTest extends AbstractJXPathTest {
+class LazyDynaBeanTest extends AbstractJXPathTest {
 
     @Test
     void testLazyProperty() throws JXPathNotFoundException {

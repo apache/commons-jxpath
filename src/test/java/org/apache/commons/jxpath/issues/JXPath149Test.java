@@ -21,7 +21,7 @@ import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.JXPathContext;
 import org.junit.jupiter.api.Test;
 
-public class JXPath149Test extends AbstractJXPathTest {
+class JXPath149Test extends AbstractJXPathTest {
 
     @Test
     void testComplexOperationWithVariables() {

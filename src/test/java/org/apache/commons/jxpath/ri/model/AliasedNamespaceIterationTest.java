@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test aliased/doubled XML namespace iteration; JXPATH-125.
  */
-public class AliasedNamespaceIterationTest extends AbstractJXPathTest {
+class AliasedNamespaceIterationTest extends AbstractJXPathTest {
 
     protected JXPathContext context;
 

@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for the protection mechanism that stops infinite recursion in descent down a recursive graph.
  */
-public class RecursiveAxesTest extends AbstractJXPathTest {
+class RecursiveAxesTest extends AbstractJXPathTest {
 
     private RecursiveBean bean;
     private JXPathContext context;

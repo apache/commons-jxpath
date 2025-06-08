@@ -41,7 +41,7 @@ import com.mockrunner.mock.web.MockServletContext;
 
 /**
  */
-public class JXPathServletContextTest {
+class JXPathServletContextTest {
 
     private void checkPointerIterator(final JXPathContext context) {
         final Iterator<Pointer> it = context.iteratePointers("/*");

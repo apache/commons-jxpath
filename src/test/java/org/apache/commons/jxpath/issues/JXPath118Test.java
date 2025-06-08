@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Testcase proving JXPATH-118 issue with asPath() returning wrong names.
  */
-public class JXPath118Test {
+class JXPath118Test {
 
     public static class SomeChildClass {
 

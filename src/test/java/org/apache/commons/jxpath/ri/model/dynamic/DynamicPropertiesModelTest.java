@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 /**
  * TODO more iterator testing with maps
  */
-public class DynamicPropertiesModelTest extends AbstractJXPathTest {
+class DynamicPropertiesModelTest extends AbstractJXPathTest {
 
     private JXPathContext context;
 

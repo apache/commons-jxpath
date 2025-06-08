@@ -29,7 +29,7 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
 import org.junit.jupiter.api.Test;
 
-public class JXPath172DynamicTest extends AbstractJXPathTest {
+class JXPath172DynamicTest extends AbstractJXPathTest {
 
     /**
      * Helper, returns a {@link JXPathContext} filled with a Map whose "value" key is associated to the passed {@code val} value.

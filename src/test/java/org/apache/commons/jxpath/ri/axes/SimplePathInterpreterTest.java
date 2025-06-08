@@ -42,7 +42,7 @@ import org.apache.commons.jxpath.ri.model.dynamic.DynamicPropertyPointer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class SimplePathInterpreterTest {
+class SimplePathInterpreterTest {
 
     private TestBeanWithNode bean;
     private JXPathContext context;

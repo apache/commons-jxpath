@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests JXPath with containers as root or value of a variable, property, etc.
  */
-public class ContainerModelTest extends AbstractJXPathTest {
+class ContainerModelTest extends AbstractJXPathTest {
 
     private static final class ArrayContainer implements Container {
 

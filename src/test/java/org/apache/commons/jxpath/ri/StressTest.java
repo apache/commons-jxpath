@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test thread safety.
  */
-public class StressTest {
+class StressTest {
 
     private static final class StressRunnable implements Runnable {
 

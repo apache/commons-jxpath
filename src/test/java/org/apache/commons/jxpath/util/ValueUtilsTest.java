@@ -27,7 +27,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-public class ValueUtilsTest {
+class ValueUtilsTest {
 
     @Test
     void testGetValueFromArray() {

@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for uppercase element matching, etc. showing JXPATH-136 is not reproducible.
  */
-public class XMLUpperCaseElementsTest extends AbstractJXPathTest {
+class XMLUpperCaseElementsTest extends AbstractJXPathTest {
 
     protected JXPathContext context;
 

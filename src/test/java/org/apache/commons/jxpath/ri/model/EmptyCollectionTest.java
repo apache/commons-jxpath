@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Be sure empty lists/sets/arrays work.
  */
-public class EmptyCollectionTest extends AbstractJXPathTest {
+class EmptyCollectionTest extends AbstractJXPathTest {
 
     public static class HasChild {
 

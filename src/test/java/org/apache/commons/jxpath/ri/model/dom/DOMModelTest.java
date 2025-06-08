@@ -33,7 +33,7 @@ import org.w3c.dom.NodeList;
 /**
  * Tests JXPath with DOM
  */
-public class DOMModelTest extends AbstractXMLModelTest {
+class DOMModelTest extends AbstractXMLModelTest {
 
     private void appendXMLSignature(final StringBuilder buffer, final NodeList children, final boolean elements, final boolean attributes, final boolean text,
             final boolean pi) {

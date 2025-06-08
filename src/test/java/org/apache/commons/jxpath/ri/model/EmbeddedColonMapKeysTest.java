@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * JXPATH-104 test.
  */
-public class EmbeddedColonMapKeysTest extends AbstractJXPathTest {
+class EmbeddedColonMapKeysTest extends AbstractJXPathTest {
 
     private JXPathContext context;
 

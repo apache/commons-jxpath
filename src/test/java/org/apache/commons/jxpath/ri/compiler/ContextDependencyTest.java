@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests the determination of whether an expression is context dependent.
  */
-public class ContextDependencyTest extends AbstractJXPathTest {
+class ContextDependencyTest extends AbstractJXPathTest {
 
     @Test
     void testContextDependency() {

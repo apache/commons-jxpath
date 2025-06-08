@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
  * Tests JXPath with JavaBeans
  *
  */
-public class BeanModelTest extends AbstractBeanModelTest {
+class BeanModelTest extends AbstractBeanModelTest {
 
     @Override
     protected Object createContextBean() {

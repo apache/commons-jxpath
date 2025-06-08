@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.ri.model.beans.BeanPropertyPointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPropertyPointer;
 import org.junit.jupiter.api.Test;
 
-public class JXPath172Test extends AbstractJXPathTest {
+class JXPath172Test extends AbstractJXPathTest {
 
     public static class TestBean172 {
 

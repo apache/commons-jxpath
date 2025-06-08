@@ -42,7 +42,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests JXPath with mixed model: beans, maps, DOM etc.
  */
-public class MixedModelTest extends AbstractJXPathTest {
+class MixedModelTest extends AbstractJXPathTest {
 
     private JXPathContext context;
 

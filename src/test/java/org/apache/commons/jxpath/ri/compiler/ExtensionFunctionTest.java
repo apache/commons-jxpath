@@ -48,7 +48,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test extension functions.
  */
-public class ExtensionFunctionTest extends AbstractJXPathTest {
+class ExtensionFunctionTest extends AbstractJXPathTest {
 
     private static final class Context implements ExpressionContext {
 

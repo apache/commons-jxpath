@@ -24,7 +24,7 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.xml.DocumentContainer;
 import org.junit.jupiter.api.Test;
 
-public class JXPath154Test extends AbstractJXPathTest {
+class JXPath154Test extends AbstractJXPathTest {
 
     protected JXPathContext context;
 

@@ -48,7 +48,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test compiler.
  */
-public class JXPathCompiledExpressionTest extends AbstractJXPathTest {
+class JXPathCompiledExpressionTest extends AbstractJXPathTest {
 
     private void assertXPathExpression(final String xpath, final Class expectedClass) {
         assertXPathExpression(xpath, expectedClass, xpath);

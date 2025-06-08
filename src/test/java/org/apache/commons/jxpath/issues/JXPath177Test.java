@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.Variables;
 import org.junit.jupiter.api.Test;
 
-public class JXPath177Test {
+class JXPath177Test {
 
     private static final class JXPathVariablesResolver implements Variables {
 

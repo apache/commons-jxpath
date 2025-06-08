@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test basic functionality of JXPath - core functions.
  */
-public class CoreFunctionTest extends AbstractJXPathTest {
+class CoreFunctionTest extends AbstractJXPathTest {
 
     private JXPathContext context;
 

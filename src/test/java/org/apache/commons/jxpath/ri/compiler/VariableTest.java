@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test basic functionality of JXPath - infoset types, operations.
  */
-public class VariableTest extends AbstractJXPathTest {
+class VariableTest extends AbstractJXPathTest {
 
     private JXPathContext context;
 

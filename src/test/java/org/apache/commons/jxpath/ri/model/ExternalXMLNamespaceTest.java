@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test externally registered XML namespaces; JXPATH-97.
  */
-public class ExternalXMLNamespaceTest extends AbstractJXPathTest {
+class ExternalXMLNamespaceTest extends AbstractJXPathTest {
 
     protected JXPathContext context;
 
