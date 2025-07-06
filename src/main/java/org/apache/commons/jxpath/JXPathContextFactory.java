@@ -27,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
+import org.apache.commons.lang3.SystemProperties;
 
 /**
  * Defines a factory API that enables applications to obtain a {@link JXPathContext} instance. To acquire a JXPathContext, first call the static
@@ -56,11 +57,7 @@ public abstract class JXPathContextFactory {
     private static boolean debug;
 
     static {
-        try {
-            debug = System.getProperty("jxpath.debug") != null;
-        } catch (final SecurityException ignore) { // NOPMD
-            // This is ok
-        }
+        debug = SystemProperties.getProperty("jxpath.debug") != null;
     }
 
     /**
