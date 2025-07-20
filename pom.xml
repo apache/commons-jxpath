@@ -315,7 +315,7 @@
               <linksource>true</linksource>
               <links>
                 <link>${commons.javadoc.javaee.link}</link>
-                <link>https://commons.apache.org/proper/commons-lang/apidocs</link>
+                <!-- <link>https://commons.apache.org/proper/commons-lang/apidocs</link> -->
                 <!-- http://www.jdom.org/docs/apidocs/ is not a secure link -->
                 <link>https://javadoc.io/doc/org.jdom/jdom/1.1</link>
               </links>
