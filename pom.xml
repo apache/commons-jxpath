@@ -300,7 +300,7 @@
     <profile>
       <id>java-8</id>
       <activation>
-        <jdk>8</jdk>
+        <jdk>1.8</jdk>
       </activation>
       <properties>
         <!-- Javadoc 8 expects a package-list file in the Javadoc root but current Java versions generate an element-list file. -->
