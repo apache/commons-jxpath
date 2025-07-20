@@ -18,6 +18,8 @@
 
 package org.apache.commons.jxpath.ri.parser;
 
+import org.apache.commons.lang3.SystemProperties;
+
 /**
  * This exception is thrown when parse errors are encountered. You can explicitly create objects of this exception type by calling the method
  * generateParseException in the generated parser.
@@ -52,7 +54,7 @@ public class ParseException extends Exception {
     /**
      * The end of line string for this machine.
      */
-    protected String eol = System.getProperty("line.separator", "\n");
+    protected String eol = SystemProperties.getLineSeparator(() -> "\n");
 
     /**
      * The following constructors are for use by you for whatever purpose you can think of. Constructing the exception in this manner makes the exception behave

@@ -69,20 +69,16 @@ public abstract class JXPathContextFactory {
      */
     private static String findFactory(final String property, final String defaultFactory) {
         // Use the factory ID system property first
-        try {
-            final String systemProp = System.getProperty(property);
-            if (systemProp != null) {
-                if (debug) {
-                    System.err.println("JXPath: found system property" + systemProp);
-                }
-                return systemProp;
+        final String systemProp = SystemProperties.getProperty(property);
+        if (systemProp != null) {
+            if (debug) {
+                System.err.println("JXPath: found system property" + systemProp);
             }
-        } catch (final SecurityException ignore) { // NOPMD
-            // Ignore
+            return systemProp;
         }
         // try to read from $java.home/lib/xml.properties
         try {
-            final Path javaHome = Paths.get(System.getProperty("java.home"));
+            final Path javaHome = Paths.get(SystemProperties.getJavaHome());
             final Path configFile = javaHome.resolve(Paths.get("lib", "jxpath.properties"));
             if (Files.exists(configFile)) {
                 final Properties props = new Properties();
