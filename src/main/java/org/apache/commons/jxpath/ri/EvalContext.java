@@ -153,7 +153,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
      */
     public NodeSet getNodeSet() {
         if (position != 0) {
-            throw new JXPathException("Simultaneous operations: " + "should not request pointer list while " + "iterating over an EvalContext");
+            throw new JXPathException("Simultaneous operations: should not request pointer list while iterating over an EvalContext");
         }
         final BasicNodeSet set = new BasicNodeSet();
         while (nextSet()) {

@@ -388,7 +388,7 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
         while (it.hasNext()) {
             actual.add(it.next().getValue());
         }
-        assertEquals(list(Integer.valueOf(5), Integer.valueOf(6)), actual, "Iterating <" + "beans/int" + ">");
+        assertEquals(list(Integer.valueOf(5), Integer.valueOf(6)), actual, "Iterating <beans/int>");
     }
 
     /**
@@ -430,7 +430,7 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
         while (it.hasNext()) {
             actual.add(it.next().asPath());
         }
-        assertEquals(list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"), actual, "Iterating 'hasNext'/'next'<" + "/integers" + ">");
+        assertEquals(list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"), actual, "Iterating 'hasNext'/'next'</integers>");
     }
 
     @Test
@@ -441,7 +441,7 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
         for (int i = 0; i < 4; i++) {
             actual.add(it.next().toString());
         }
-        assertEquals(list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"), actual, "Iterating 'next'<" + "/integers" + ">");
+        assertEquals(list("/integers[1]", "/integers[2]", "/integers[3]", "/integers[4]"), actual, "Iterating 'next'</integers>");
     }
 
     private void testMultiple(final int propertyIndex, final int offset, final boolean useStartLocation, final boolean reverse, final int expected) {
@@ -568,7 +568,7 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
         assertXPathSetValue(context, "beans[2]", null);
         // Now, assign it a whole bean
         context.setValue("beans[2]", new NestedTestBean("Name 9"));
-        assertEquals("Name 9", context.getValue("beans[2]/name"), "Modified <" + "beans[2]/name" + ">");
+        assertEquals("Name 9", context.getValue("beans[2]/name"), "Modified <beans[2]/name>");
     }
 
     @Test

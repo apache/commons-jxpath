@@ -181,7 +181,7 @@ class MixedModelTest extends AbstractJXPathTest {
             final Pointer ptr = it.next();
             actual.add(context.getValue(ptr.asPath()));
         }
-        assertEquals(list("a", "b", "c"), actual, "Iterating pointers <" + "foo" + ">");
+        assertEquals(list("a", "b", "c"), actual, "Iterating pointers <foo>");
     }
 
     @Test
@@ -196,7 +196,7 @@ class MixedModelTest extends AbstractJXPathTest {
             final Pointer ptr = it.next();
             actual.add(context.getValue(ptr.asPath()));
         }
-        assertEquals(list("b"), actual, "Iterating pointers <" + "foo" + ">");
+        assertEquals(list("b"), actual, "Iterating pointers <foo>");
     }
 
     @Test
@@ -261,13 +261,13 @@ class MixedModelTest extends AbstractJXPathTest {
     @Test
     void testMapContainer() {
         assertXPathValueAndPointer(context, "map/container/vendor/location/address/city", "Fruit Market",
-                "/map[@name='container']" + "/vendor[1]/location[2]/address[1]/city[1]");
+                "/map[@name='container']/vendor[1]/location[2]/address[1]/city[1]");
     }
 
     @Test
     void testMapDocument() {
         assertXPathValueAndPointer(context, "map/document/vendor/location/address/city", "Fruit Market",
-                "/map[@name='document']" + "/vendor[1]/location[2]/address[1]/city[1]");
+                "/map[@name='document']/vendor[1]/location[2]/address[1]/city[1]");
     }
 
     @Test

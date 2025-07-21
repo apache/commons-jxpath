@@ -90,7 +90,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
         // DynaBean factory is only registered if BeanUtils are on the classpath
         final NodePointerFactory dynaBeanFactory = (NodePointerFactory) allocateConditionally(
-                "org.apache.commons.jxpath.ri.model.dynabeans." + "DynaBeanPointerFactory", "org.apache.commons.beanutils.DynaBean");
+                "org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanPointerFactory", "org.apache.commons.beanutils.DynaBean");
         if (dynaBeanFactory != null) {
             nodeFactories.add(dynaBeanFactory);
         }
@@ -219,7 +219,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     private void checkSimplePath(final Expression expr) {
         if (!(expr instanceof LocationPath) || !((LocationPath) expr).isSimplePath()) {
             throw new JXPathInvalidSyntaxException(
-                    "JXPath can only create a path if it uses exclusively " + "the child:: and attribute:: axes and has " + "no context-dependent predicates");
+                    "JXPath can only create a path if it uses exclusively the child:: and attribute:: axes and has no context-dependent predicates");
         }
     }
 

@@ -655,7 +655,7 @@ public abstract class JXPathContext {
         if (manager != null) {
             return KeyManagerUtils.getExtendedKeyManager(manager).getNodeSetByKey(this, key, value);
         }
-        throw new JXPathException("Cannot find an element by key - " + "no KeyManager has been specified");
+        throw new JXPathException("Cannot find an element by key - no KeyManager has been specified");
     }
 
     /**
@@ -695,7 +695,7 @@ public abstract class JXPathContext {
         if (manager != null) {
             return manager.getPointerByID(this, id);
         }
-        throw new JXPathException("Cannot find an element by ID - " + "no IdentityManager has been specified");
+        throw new JXPathException("Cannot find an element by ID - no IdentityManager has been specified");
     }
 
     /**
@@ -710,7 +710,7 @@ public abstract class JXPathContext {
         if (manager != null) {
             return manager.getPointerByKey(this, key, value);
         }
-        throw new JXPathException("Cannot find an element by key - " + "no KeyManager has been specified");
+        throw new JXPathException("Cannot find an element by key - no KeyManager has been specified");
     }
 
     /**

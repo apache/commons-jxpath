@@ -67,7 +67,7 @@ public class HttpSessionHandler extends ServletContextHandler {
         final HttpSessionAndServletContext handle = (HttpSessionAndServletContext) bean;
         final HttpSession session = handle.getSession();
         if (session == null) {
-            throw new JXPathException("Cannot set session attribute: " + "there is no session");
+            throw new JXPathException("Cannot set session attribute: there is no session");
         }
         session.setAttribute(property, value);
     }

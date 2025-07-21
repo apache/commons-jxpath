@@ -59,7 +59,7 @@ public class PropertyIterator implements NodeIterator {
                 startWith = startWith.getImmediateParentPointer();
             }
             if (startWith == null) {
-                throw new JXPathException("PropertyIerator startWith parameter is " + "not a child of the supplied parent");
+                throw new JXPathException("PropertyIerator startWith parameter is not a child of the supplied parent");
             }
             this.startPropertyIndex = ((PropertyPointer) startWith).getPropertyIndex();
             this.startIndex = startWith.getIndex();

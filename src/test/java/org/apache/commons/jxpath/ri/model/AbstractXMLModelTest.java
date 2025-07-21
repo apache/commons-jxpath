@@ -81,15 +81,15 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     @Test
     void testAxisAncestor() {
         // ancestor::
-        assertXPathValue(context, "vendor/product/price:sale/saleEnds/" + "ancestor::price:sale/saleEnds", "never");
+        assertXPathValue(context, "vendor/product/price:sale/saleEnds/ancestor::price:sale/saleEnds", "never");
         // ancestor:: with a wildcard
-        assertXPathValue(context, "vendor/product/price:sale/saleEnds/ancestor::price:*" + "/saleEnds", "never");
+        assertXPathValue(context, "vendor/product/price:sale/saleEnds/ancestor::price:*/saleEnds", "never");
     }
 
     @Test
     void testAxisAncestorOrSelf() {
         // ancestor-or-self::
-        assertXPathValue(context, "vendor/product/price:sale/" + "ancestor-or-self::price:sale/saleEnds", "never");
+        assertXPathValue(context, "vendor/product/price:sale/ancestor-or-self::price:sale/saleEnds", "never");
     }
 
     @Test
@@ -214,9 +214,9 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     @Test
     void testAxisFollowingSibling() {
         // following-sibling::
-        assertXPathValue(context, "vendor/location[.//employeeCount = 10]/" + "following-sibling::location//street", "Tangerine Drive");
+        assertXPathValue(context, "vendor/location[.//employeeCount = 10]/following-sibling::location//street", "Tangerine Drive");
         // following-sibling:: produces the correct pointer
-        assertXPathPointer(context, "vendor/location[.//employeeCount = 10]/" + "following-sibling::location//street",
+        assertXPathPointer(context, "vendor/location[.//employeeCount = 10]/following-sibling::location//street",
                 "/vendor[1]/location[2]/address[1]/street[1]");
     }
 
@@ -239,7 +239,7 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
         // parent:: (note reverse document order)
         assertXPathPointerIterator(context, "//street/..", list("/vendor[1]/location[2]/address[1]", "/vendor[1]/location[1]/address[1]"));
         // parent:: with a namespace and wildcard
-        assertXPathValue(context, "vendor/product/price:sale/saleEnds/parent::price:*" + "/saleEnds", "never");
+        assertXPathValue(context, "vendor/product/price:sale/saleEnds/parent::price:*/saleEnds", "never");
     }
 
     @Test

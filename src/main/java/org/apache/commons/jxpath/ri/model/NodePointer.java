@@ -354,7 +354,7 @@ public abstract class NodePointer implements Pointer {
      */
     public NodePointer createChild(final JXPathContext context, final QName qName, final int index) {
         throw new JXPathException(
-                "Cannot create an object for path " + asPath() + "/" + qName + "[" + (index + 1) + "]" + ", operation is not allowed for this type of node");
+                "Cannot create an object for path " + asPath() + "/" + qName + "[" + (index + 1) + "], operation is not allowed for this type of node");
     }
 
     /**
@@ -369,7 +369,7 @@ public abstract class NodePointer implements Pointer {
      */
     public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
         throw new JXPathException(
-                "Cannot create an object for path " + asPath() + "/" + qName + "[" + (index + 1) + "]" + ", operation is not allowed for this type of node");
+                "Cannot create an object for path " + asPath() + "/" + qName + "[" + (index + 1) + "], operation is not allowed for this type of node");
     }
 
     /**

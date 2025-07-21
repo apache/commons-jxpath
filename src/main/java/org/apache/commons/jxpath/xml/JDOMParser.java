@@ -37,7 +37,7 @@ public class JDOMParser extends XMLParser2 {
     @Override
     public Object parseXML(final InputStream stream) {
         if (!isNamespaceAware()) {
-            throw new JXPathException("JDOM parser configuration error. JDOM " + "does not support the namespaceAware=false setting.");
+            throw new JXPathException("JDOM parser configuration error. JDOM does not support the namespaceAware=false setting.");
         }
         try {
             final SAXBuilder builder = new SAXBuilder();

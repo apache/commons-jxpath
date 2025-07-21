@@ -58,7 +58,7 @@ class VariableTest extends AbstractJXPathTest {
         // The factory needs to create a collection
         assertXPathCreatePathAndSetValue(context, "$stringArray[2]", "Value2", "$stringArray[2]");
         // See if the factory populated the first element as well
-        assertEquals("Value1", context.getValue("$stringArray[1]"), "Created <" + "$stringArray[1]" + ">");
+        assertEquals("Value1", context.getValue("$stringArray[1]"), "Created <$stringArray[1]>");
     }
 
     @Test
@@ -90,7 +90,7 @@ class VariableTest extends AbstractJXPathTest {
         // Does not involve factory at all - just expands the collection
         assertXPathCreatePathAndSetValue(context, "$array[2]", "Value2", "$array[2]");
         // Make sure it is still the same array
-        assertEquals("Value1", context.getValue("$array[1]"), "Created <" + "$array[1]" + ">");
+        assertEquals("Value1", context.getValue("$array[1]"), "Created <$array[1]>");
     }
 
     @Test
@@ -105,7 +105,7 @@ class VariableTest extends AbstractJXPathTest {
         // The factory needs to create a collection
         assertXPathCreatePath(context, "$stringArray[2]", "", "$stringArray[2]");
         // See if the factory populated the first element as well
-        assertEquals("Value1", context.getValue("$stringArray[1]"), "Created <" + "$stringArray[1]" + ">");
+        assertEquals("Value1", context.getValue("$stringArray[1]"), "Created <$stringArray[1]>");
     }
 
     @Test
@@ -131,7 +131,7 @@ class VariableTest extends AbstractJXPathTest {
         // Does not involve factory at all - just expands the collection
         assertXPathCreatePath(context, "$array[2]", "", "$array[2]");
         // Make sure it is still the same array
-        assertEquals("Value1", context.getValue("$array[1]"), "Created <" + "$array[1]" + ">");
+        assertEquals("Value1", context.getValue("$array[1]"), "Created <$array[1]>");
     }
 
     @Test
