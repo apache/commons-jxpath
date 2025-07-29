@@ -98,9 +98,8 @@ class ValueUtilsTest {
 
     @Test
     void testGetDynamicPropertyHandlerConcurrently() throws InterruptedException, ExecutionException {
-        // This test is to ensure that the dynamic property handler can be accessed concurrently
-        // without throwing any exceptions. It does not assert any specific behavior, but rather
-        // ensures that no exceptions are thrown during concurrent access.
+        // This test ensures that ValueUtils::getDynamicPropertyHandler can be accessed concurrently
+        // It does not assert any specific behavior, but rather ensures that no exceptions are thrown on concurrent access
         int nThreads = 200; // Number of threads to simulate concurrent access
         List<Future<?>> futures = new ArrayList<>();
         ExecutorService threadPool = Executors.newFixedThreadPool(nThreads);
@@ -112,7 +111,7 @@ class ValueUtilsTest {
         threadPool.awaitTermination(1, TimeUnit.SECONDS);
 
         for (Future<?> future : futures) {
-            future.get(); // This will throw an exception if any thread encountered an issue
+            future.get(); // This will throw if any thread threw
         }
     }
 
