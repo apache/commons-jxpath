@@ -37,6 +37,43 @@ import org.junit.jupiter.api.Test;
 
 class ValueUtilsTest {
 
+    public static class DummyHandler implements DynamicPropertyHandler {
+
+        @Override
+        public Object getProperty(final Object object, final String propertyName) {
+            return null;
+        }
+
+        @Override
+        public String[] getPropertyNames(final Object object) {
+            return new String[0];
+        }
+
+        @Override
+        public void setProperty(final Object object, final String propertyName, final Object value) {
+
+        }
+    }
+
+    @Test
+    void testGetDynamicPropertyHandlerConcurrently() throws InterruptedException, ExecutionException {
+        // This test ensures that ValueUtils::getDynamicPropertyHandler can be accessed concurrently
+        // It does not assert any specific behavior, but rather ensures that no exceptions are thrown on concurrent access
+        final int nThreads = 200; // Number of threads to simulate concurrent access
+        final List<Future<?>> futures = new ArrayList<>();
+        final ExecutorService threadPool = Executors.newFixedThreadPool(nThreads);
+        for (int i = 0; i < nThreads; i++) {
+            futures.add(threadPool.submit(() -> ValueUtils.getDynamicPropertyHandler(DummyHandler.class)));
+        }
+
+        threadPool.shutdown();
+        threadPool.awaitTermination(1, TimeUnit.SECONDS);
+
+        for (final Future<?> future : futures) {
+            future.get(); // This will throw if any thread threw
+        }
+    }
+
     @Test
     void testGetValueFromArray() {
         final Object data = new Object();
@@ -94,42 +131,5 @@ class ValueUtilsTest {
     @Test
     void testGetValueFromSetTooSmall() {
         assertNull(ValueUtils.getValue(Collections.EMPTY_SET, 2));
-    }
-
-    @Test
-    void testGetDynamicPropertyHandlerConcurrently() throws InterruptedException, ExecutionException {
-        // This test ensures that ValueUtils::getDynamicPropertyHandler can be accessed concurrently
-        // It does not assert any specific behavior, but rather ensures that no exceptions are thrown on concurrent access
-        int nThreads = 200; // Number of threads to simulate concurrent access
-        List<Future<?>> futures = new ArrayList<>();
-        ExecutorService threadPool = Executors.newFixedThreadPool(nThreads);
-        for (int i = 0; i < nThreads; i++) {
-            futures.add(threadPool.submit(() -> ValueUtils.getDynamicPropertyHandler(DummyHandler.class)));
-        }
-
-        threadPool.shutdown();
-        threadPool.awaitTermination(1, TimeUnit.SECONDS);
-
-        for (Future<?> future : futures) {
-            future.get(); // This will throw if any thread threw
-        }
-    }
-
-    public static class DummyHandler implements DynamicPropertyHandler {
-
-        @Override
-        public Object getProperty(Object object, String propertyName) {
-            return null;
-        }
-
-        @Override
-        public String[] getPropertyNames(Object object) {
-            return new String[0];
-        }
-
-        @Override
-        public void setProperty(Object object, String propertyName, Object value) {
-
-        }
     }
 }
