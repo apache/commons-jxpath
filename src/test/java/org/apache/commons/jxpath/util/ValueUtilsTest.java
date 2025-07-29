@@ -20,11 +20,19 @@ package org.apache.commons.jxpath.util;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.junit.jupiter.api.Test;
 
 class ValueUtilsTest {
@@ -86,5 +94,42 @@ class ValueUtilsTest {
     @Test
     void testGetValueFromSetTooSmall() {
         assertNull(ValueUtils.getValue(Collections.EMPTY_SET, 2));
+    }
+
+    @Test
+    void testGetDynamicPropertyHandlerConcurrently() throws InterruptedException, ExecutionException {
+        // This test ensures that ValueUtils::getDynamicPropertyHandler can be accessed concurrently
+        // It does not assert any specific behavior, but rather ensures that no exceptions are thrown on concurrent access
+        int nThreads = 200; // Number of threads to simulate concurrent access
+        List<Future<?>> futures = new ArrayList<>();
+        ExecutorService threadPool = Executors.newFixedThreadPool(nThreads);
+        for (int i = 0; i < nThreads; i++) {
+            futures.add(threadPool.submit(() -> ValueUtils.getDynamicPropertyHandler(DummyHandler.class)));
+        }
+
+        threadPool.shutdown();
+        threadPool.awaitTermination(1, TimeUnit.SECONDS);
+
+        for (Future<?> future : futures) {
+            future.get(); // This will throw if any thread threw
+        }
+    }
+
+    public static class DummyHandler implements DynamicPropertyHandler {
+
+        @Override
+        public Object getProperty(Object object, String propertyName) {
+            return null;
+        }
+
+        @Override
+        public String[] getPropertyNames(Object object) {
+            return new String[0];
+        }
+
+        @Override
+        public void setProperty(Object object, String propertyName, Object value) {
+
+        }
     }
 }
