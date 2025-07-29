@@ -26,10 +26,10 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
@@ -40,7 +40,7 @@ import org.apache.commons.jxpath.JXPathException;
  */
 public class ValueUtils {
 
-    private static Map<Class, DynamicPropertyHandler> dynamicPropertyHandlerMap = new HashMap<>();
+    private static Map<Class, DynamicPropertyHandler> dynamicPropertyHandlerMap = new ConcurrentHashMap<>();
     private static final int UNKNOWN_LENGTH_MAX_COUNT = 16000;
 
     /**
