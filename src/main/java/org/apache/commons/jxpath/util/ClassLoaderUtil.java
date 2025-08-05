@@ -24,7 +24,7 @@ import java.util.Objects;
 /**
  * Port of class loading methods from {@code org.apache.commons.lang3.ClassUtils} from the Apache Commons Lang Component. Some adjustments made to remove
  * dependency on {@code org.apache.commons.lang3.StringUtils}. Also modified to fall back on the current class loader when an attempt to load a class with the
- * context class loader results in a {@code java.lang.ClassNotFoundException}.
+ * context class loader results in a {@link ClassNotFoundException}.
  *
  * See org.apache.commons.lang3.ClassUtils
  * @since 1.4.0
