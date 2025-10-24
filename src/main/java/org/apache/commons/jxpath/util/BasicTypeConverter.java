@@ -291,8 +291,7 @@ public class BasicTypeConverter implements TypeConverter {
     protected boolean canCreateCollection(final Class type) {
         if (!type.isInterface() && (type.getModifiers() & Modifier.ABSTRACT) == 0) {
             try {
-                type.getConstructor();
-                return true;
+                return type.getConstructor() != null;
             } catch (final Exception e) {
                 return false;
             }
