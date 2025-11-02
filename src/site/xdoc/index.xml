@@ -58,11 +58,11 @@ while (it.hasNext()){
           </p>
           <p>
             If you want to find out more about XPath, a good place to start
-            is an excellent XPath Tutorial by <a href="http://www.w3schools.com/xpath">W3Schools</a>
+            is an excellent XPath Tutorial by <a href="https://www.w3schools.com/xpath">W3Schools</a>
           </p>
           <p>
             The official definition of XPath by W3C can be found at
-            <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0</a>
+            <a href="https://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0</a>
           </p>
           <p>
             Primary applications of JXPath are in scripting: JSP and similar template/script based technologies.
@@ -91,7 +91,7 @@ while (it.hasNext()){
       </section>
 
       <section name="Releases">
-        <p>See the <a href="http://commons.apache.org/jxpath/download_jxpath.cgi">JXPath Downloads</a>
+        <p>See the <a href="https://commons.apache.org/jxpath/download_jxpath.cgi">JXPath Downloads</a>
            page for current/previous releases.
         </p>
       </section>

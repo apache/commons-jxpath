@@ -396,8 +396,8 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * See also:
  * </p>
  * <ul>
- * <li>See <a href="http://www.w3schools.com/xpath">XPath Tutorial by W3Schools</a></li>
- * <li>See also <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0</a></li>
+ * <li>See <a href="https://www.w3schools.com/xpath">XPath Tutorial by W3Schools</a></li>
+ * <li>See also <a href="https://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0</a></li>
  * </ul>
  *
  * <p>
