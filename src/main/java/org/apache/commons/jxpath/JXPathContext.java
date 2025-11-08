@@ -375,10 +375,10 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * <li>JXPath does not support DOM attributes for non-DOM objects. Even though XPaths like "para[@type='warning']" are legitimate, they will always produce
  * empty results. The only attribute supported for JavaBeans is "name". The XPath "foo/bar" is equivalent to "foo[@name='bar']".</li>
  *
- * <li id='matches_no_property_in_the_graph'>The term <b>matches no property in the graph</b> is used throughout the documentation. It describes a property or
- * path that can be determined as not belonging to the graph. Determining whether a property or path belongs to the graph depends on the type of object being
- * used as {@code cotextBean} (see {@link #newContext(Object)}). It is only possible strongly typed models where a specific Java model is used as context. It is
- * not possible with dynamic models such Maps or DOM implementations.
+ * <li id='matches_no_property_in_the_graph'>The term <strong>matches no property in the graph</strong> is used throughout the documentation. It describes a
+ * property or path that can be determined as not belonging to the graph. Determining whether a property or path belongs to the graph depends on the type of
+ * object being used as {@code cotextBean} (see {@link #newContext(Object)}). It is only possible strongly typed models where a specific Java model is used
+ * as context. It is not possible with dynamic models such Maps or DOM implementations.
  * <p>
  * When a XPath does not match a property in the graph, the methods of this class that retrieve a pointer will generally behave in the following way, depending
  * on the last value configured with {@link #setLenient(boolean)}:
