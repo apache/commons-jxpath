@@ -31,7 +31,6 @@
   <description>A Java-based implementation of XPath 1.0 that, in addition to XML processing, can inspect/modify Java object graphs (the library's explicit purpose) and even mixed Java/XML structures.</description>
   <url>https://commons.apache.org/proper/commons-jxpath/</url>
   <issueManagement>
-    <system>jira</system>
     <url>https://issues.apache.org/jira/browse/JXPATH</url>
   </issueManagement>
   <inceptionYear>2001</inceptionYear>
