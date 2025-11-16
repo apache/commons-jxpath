@@ -36,6 +36,7 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.jxpath.util.TypeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
@@ -136,7 +137,7 @@ public class DOMNodePointer extends NodePointer {
                 aNode = aNode.getParentNode();
             }
         }
-        return "".equals(uri) ? null : uri;
+        return StringUtils.isEmpty(uri) ? null : uri;
     }
 
     /**

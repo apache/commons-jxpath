@@ -48,7 +48,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
                 final String uri = nsPointer.getNamespaceURI();
                 if (uri.equals(namespaceURI)) {
                     final String prefix = nsPointer.getName().getName();
-                    if (!"".equals(prefix)) {
+                    if (!prefix.isEmpty()) {
                         return prefix;
                     }
                 }
