@@ -51,6 +51,7 @@ The <action> type attribute can be add,update,fix,remove.
       <!-- FIX -->
       <action type="fix" dev="ggregory" due-to="Gary Gregory">POM assembly:single does not generate binary convenience files (tar/zip).</action>
       <action type="fix" dev="ggregory" due-to="Dima1224, Gary Gregory">Make dynamicPropertyHandlerMap in ValueUtils thread-safe #251.</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">Refactor JXPathIntrospector internal static maps to use concurrent classes instead of synchronization.</action>
       <!-- ADD -->
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 81 to 91 #239, #262, #265.</action>

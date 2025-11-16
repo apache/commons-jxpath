@@ -17,10 +17,10 @@
 
 package org.apache.commons.jxpath;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
 
@@ -29,8 +29,8 @@ import org.apache.commons.jxpath.util.ClassLoaderUtil;
  */
 public class JXPathIntrospector {
 
-    private static Map<Class, JXPathBeanInfo> byClass = Collections.synchronizedMap(new HashMap<>());
-    private static Map<Class, JXPathBeanInfo> byInterface = Collections.synchronizedMap(new HashMap<>());
+    private static ConcurrentMap<Class, JXPathBeanInfo> byClass = new ConcurrentHashMap<>();
+    private static ConcurrentMap<Class, JXPathBeanInfo> byInterface = new ConcurrentHashMap<>();
     static {
         registerAtomicClass(Class.class);
         registerAtomicClass(Boolean.TYPE);
@@ -130,20 +130,16 @@ public class JXPathIntrospector {
      * @return JXPathBeanInfo
      */
     public static JXPathBeanInfo getBeanInfo(final Class beanClass) {
-        JXPathBeanInfo beanInfo = byClass.get(beanClass);
-        if (beanInfo == null) {
-            beanInfo = findDynamicBeanInfo(beanClass);
-            if (beanInfo == null) {
-                beanInfo = findInformant(beanClass);
-                if (beanInfo == null) {
-                    beanInfo = new JXPathBasicBeanInfo(beanClass);
+        return byClass.computeIfAbsent(beanClass, k -> {
+            JXPathBeanInfo value = findDynamicBeanInfo(beanClass);
+            if (value == null) {
+                value = findInformant(beanClass);
+                if (value == null) {
+                    value = new JXPathBasicBeanInfo(beanClass);
                 }
             }
-            synchronized (byClass) {
-                byClass.put(beanClass, beanInfo);
-            }
-        }
-        return beanInfo;
+            return value;
+        });
     }
 
     /**
@@ -175,9 +171,7 @@ public class JXPathIntrospector {
      * @param beanClass to register
      */
     public static void registerAtomicClass(final Class beanClass) {
-        synchronized (byClass) {
-            byClass.put(beanClass, new JXPathBasicBeanInfo(beanClass, true));
-        }
+        byClass.computeIfAbsent(beanClass, k -> new JXPathBasicBeanInfo(beanClass, true));
     }
 
     /**
@@ -190,13 +184,9 @@ public class JXPathIntrospector {
     public static void registerDynamicClass(final Class beanClass, final Class dynamicPropertyHandlerClass) {
         final JXPathBasicBeanInfo bi = new JXPathBasicBeanInfo(beanClass, dynamicPropertyHandlerClass);
         if (beanClass.isInterface()) {
-            synchronized (byInterface) {
-                byInterface.put(beanClass, bi);
-            }
+            byInterface.put(beanClass, bi);
         } else {
-            synchronized (byClass) {
-                byClass.put(beanClass, bi);
-            }
+            byClass.put(beanClass, bi);
         }
     }
 
