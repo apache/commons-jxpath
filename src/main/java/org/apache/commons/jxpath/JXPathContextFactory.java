@@ -27,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.apache.commons.jxpath.util.ClassLoaderUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemProperties;
 
 /**
@@ -109,7 +110,7 @@ public abstract class JXPathContextFactory {
                     }
                     try (BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
                         final String factory = rd.readLine();
-                        if (factory != null && !"".equals(factory)) {
+                        if (StringUtils.isNotEmpty(factory)) {
                             if (debug) {
                                 System.err.println("JXPath: loaded from services: " + factory);
                             }
