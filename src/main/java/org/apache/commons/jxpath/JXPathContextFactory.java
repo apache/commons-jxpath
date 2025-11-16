@@ -107,13 +107,14 @@ public abstract class JXPathContextFactory {
                     if (debug) {
                         System.err.println("JXPath: found  " + serviceId);
                     }
-                    final BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                    final String factory = rd.readLine();
-                    if (factory != null && !"".equals(factory)) {
-                        if (debug) {
-                            System.err.println("JXPath: loaded from services: " + factory);
+                    try (BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+                        final String factory = rd.readLine();
+                        if (factory != null && !"".equals(factory)) {
+                            if (debug) {
+                                System.err.println("JXPath: loaded from services: " + factory);
+                            }
+                            return factory;
                         }
-                        return factory;
                     }
                 }
             }
