@@ -133,7 +133,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
      *
      * @return Pointer
      */
-    public Pointer getNamespaceContextPointer() {
+    public synchronized Pointer getNamespaceContextPointer() {
         if (pointer == null && parent != null) {
             return parent.getNamespaceContextPointer();
         }
@@ -201,7 +201,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
      *
      * @param pointer the Pointer to set.
      */
-    public void setNamespaceContextPointer(final NodePointer pointer) {
+    public synchronized void setNamespaceContextPointer(final NodePointer pointer) {
         this.pointer = pointer;
     }
 }
