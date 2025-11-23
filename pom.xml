@@ -71,9 +71,9 @@
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
         <configuration>
-          <excludes>
-            <exclude>src/java/org/apache/commons/jxpath/ri/parser/*</exclude>
-          </excludes>
+          <inputExcludes>
+            <inputExclude>src/java/org/apache/commons/jxpath/ri/parser/*</inputExclude>
+          </inputExcludes>
         </configuration>
       </plugin>
       <plugin>
@@ -277,9 +277,9 @@
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
         <configuration>
-          <excludes>
-            <exclude>src/java/org/apache/commons/jxpath/ri/parser/*</exclude>
-          </excludes>
+          <inputExcludes>
+            <inputExclude>src/java/org/apache/commons/jxpath/ri/parser/*</inputExclude>
+          </inputExcludes>
         </configuration>
       </plugin>
     </plugins>

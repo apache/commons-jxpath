@@ -53,6 +53,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action type="fix" dev="ggregory" due-to="Dima1224, Gary Gregory">Make dynamicPropertyHandlerMap in ValueUtils thread-safe #251.</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory">Refactor JXPathIntrospector internal static maps to use concurrent classes instead of synchronization.</action>
       <action type="fix" dev="ggregory" due-to="Gary Gregory">Fix inconsistent synchronization of NamespaceResolver.pointer; locked 50% of time (SpotBugs: MT_CORRECTNESS IS2_INCONSISTENT_SYNC).</action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">Fix Apache RAT plugin console warnings.</action>
       <!-- ADD -->
       <!-- UPDATE -->
       <action type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 81 to 93 #239, #262, #265, #282.</action>
