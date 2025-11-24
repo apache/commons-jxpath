@@ -55,6 +55,7 @@
     <commons.jira.id>JXPATH</commons.jira.id>
     <commons.jira.pid>12310480</commons.jira.pid>
     <commons.osgi.import>*;resolution:=optional</commons.osgi.import>
+    <commons.jdom.version>1.1.3</commons.jdom.version>
     <!-- JaCoCo: Don't make code coverage worse than: -->
     <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
     <commons.jacoco.classRatio>0.91</commons.jacoco.classRatio>
@@ -94,7 +95,7 @@
             <link>${commons.javadoc.javaee.link}</link>
             <link>https://commons.apache.org/proper/commons-lang/apidocs</link>
             <!-- http://www.jdom.org/docs/apidocs/ is not a secure link -->
-            <link>https://javadoc.io/doc/org.jdom/jdom/1.1</link>
+            <link>https://javadoc.io/doc/org.jdom/jdom/${commons.jdom.version}</link>
           </links>
           <excludePackageNames>org.apache.commons.jxpath.ri.parser</excludePackageNames>
         </configuration>
@@ -170,7 +171,7 @@
     <dependency>
       <groupId>org.jdom</groupId>
       <artifactId>jdom</artifactId>
-      <version>1.1.3</version>
+      <version>${commons.jdom.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -268,7 +269,7 @@
             <link>${commons.javadoc.javaee.link}</link>
             <link>https://commons.apache.org/proper/commons-lang/apidocs</link>
             <!-- http://www.jdom.org/docs/apidocs/ is not a secure link -->
-            <link>https://javadoc.io/doc/org.jdom/jdom/1.1.3</link>
+            <link>https://javadoc.io/doc/org.jdom/jdom/${commons.jdom.version}</link>
           </links>
           <excludePackageNames>org.apache.commons.jxpath.ri.parser</excludePackageNames>
         </configuration>
