@@ -385,9 +385,9 @@ import org.apache.commons.jxpath.util.KeyManagerUtils;
  * </p>
  *
  * <ol style='list-style:upper-alpha'>
- * <li>If {@code lenient} is {@code false} (default) - methods will throw {@link JXPathNotFoundException}.
+ * <li>If {@code lenient} is {@code false} (default) - methods will throw {@link JXPathNotFoundException}.</li>
  * <li>If {@code lenient} is {@code true} - methods will throw no exception and return a value appropriate for that method to express the absence: might be a
- * Java {@code null} or a {@link Pointer} whose {@link Pointer#getValue()} returns {@code null}, depends on the method.
+ * Java {@code null} or a {@link Pointer} whose {@link Pointer#getValue()} returns {@code null}, depends on the method.</li>
  * </ol>
  * </li>
  * </ul>
@@ -514,9 +514,9 @@ public abstract class JXPathContext {
      * <p>
      * Will throw an exception if one of the following conditions occurs:
      * <ul>
-     * <li>Elements of the XPath aleady exist, but the path does not in fact describe an existing property
-     * <li>The AbstractFactory fails to create an instance for an intermediate element.
-     * <li>The property is not writable (no public, non-static set method)
+     * <li>Elements of the XPath aleady exist, but the path does not in fact describe an existing property</li>
+     * <li>The AbstractFactory fails to create an instance for an intermediate element.</li>
+     * <li>The property is not writable (no public, non-static set method)</li>
      * </ul>
      *
      * @param xpath indicating position to create
@@ -674,8 +674,8 @@ public abstract class JXPathContext {
      * configured with {@link #setLenient(boolean)}:
      * </p>
      * <ul>
-     * <li>{@code false} (default) the method will throw a {@link JXPathNotFoundException}.
-     * <li>{@code true} the method returns a pointer whose {@link Pointer#getValue()} method will always return null.
+     * <li>{@code false} (default) the method will throw a {@link JXPathNotFoundException}.</li>
+     * <li>{@code true} the method returns a pointer whose {@link Pointer#getValue()} method will always return null.</li>
      * </ul>
      *
      * @param xpath desired
@@ -945,8 +945,8 @@ public abstract class JXPathContext {
     /**
      * Modifies the value of the property described by the supplied xpath. Will throw an exception if one of the following conditions occurs:
      * <ul>
-     * <li>The XPath does not in fact describe an existing property
-     * <li>The property is not writable (no public, non-static set method)
+     * <li>The XPath does not in fact describe an existing property</li>
+     * <li>The property is not writable (no public, non-static set method)</li>
      * </ul>
      *
      * @param xpath indicating position

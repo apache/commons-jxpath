@@ -45,9 +45,9 @@ public interface CompiledExpression {
      * <p>
      * Will throw an exception if one of the following conditions occurs:
      * <ul>
-     * <li>Elements of the XPath aleady exist, by the path does not in fact describe an existing property
-     * <li>The AbstractFactory fails to create an instance for an intermediate element.
-     * <li>The property is not writable (no public, non-static set method)
+     * <li>Elements of the XPath aleady exist, by the path does not in fact describe an existing property</li>
+     * <li>The AbstractFactory fails to create an instance for an intermediate element.</li>
+     * <li>The property is not writable (no public, non-static set method)</li>
      * </ul>
      *
      * @param context base
@@ -118,8 +118,8 @@ public interface CompiledExpression {
     /**
      * Modifies the value of the property described by the supplied xpath. Will throw an exception if one of the following conditions occurs:
      * <ul>
-     * <li>The XPath does not in fact describe an existing property
-     * <li>The property is not writable (no public, non-static set method)
+     * <li>The XPath does not in fact describe an existing property</li>
+     * <li>The property is not writable (no public, non-static set method)</li>
      * </ul>
      *
      * @param context base

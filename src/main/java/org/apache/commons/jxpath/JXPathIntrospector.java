@@ -122,8 +122,8 @@ public class JXPathIntrospector {
      * <p>
      * The process of creation of JXPathBeanInfo is as follows:
      * <ul>
-     * <li>If class named {@code <beanClass>XBeanInfo} exists, an instance of that class is allocated.
-     * <li>Otherwise, an instance of {@link JXPathBasicBeanInfo JXPathBasicBeanInfo} is allocated.
+     * <li>If class named {@code <beanClass>XBeanInfo} exists, an instance of that class is allocated.</li>
+     * <li>Otherwise, an instance of {@link JXPathBasicBeanInfo JXPathBasicBeanInfo} is allocated.</li>
      * </ul>
      *
      * @param beanClass whose info to get
