@@ -205,9 +205,9 @@ public class SimpleCharStream {
     }
 
     /**
-     * @deprecated
      * @return the end column.
      * @see #getEndColumn
+     * @deprecated
      */
     @Deprecated
     public int getColumn() {
@@ -230,9 +230,9 @@ public class SimpleCharStream {
     }
 
     /**
-     * @deprecated
      * @return the line number.
      * @see #getEndLine
+     * @deprecated
      */
     @Deprecated
     public int getLine() {
