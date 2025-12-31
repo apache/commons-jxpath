@@ -27,6 +27,7 @@ import java.util.Objects;
  * context class loader results in a {@link ClassNotFoundException}.
  *
  * See org.apache.commons.lang3.ClassUtils
+ *
  * @since 1.4.0
  */
 public final class ClassLoaderUtil {
