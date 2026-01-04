@@ -232,6 +232,7 @@ class MixedModelTest extends AbstractJXPathTest {
 
     @Test
     void testListList() {
+
         /**
          * @todo: what is this supposed to do? Should we stick to XPath, in which case [1] is simply ignored, or Java, in which case it is supposed to extract
          *        the first element from the list?

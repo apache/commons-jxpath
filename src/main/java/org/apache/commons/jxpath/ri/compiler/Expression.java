@@ -43,7 +43,6 @@ public abstract class Expression {
         private final QName qname;
         private final Locale locale;
 
-        // to what method does the following comment refer?
         /**
          * Constructs a new PointerIterator
          *
@@ -117,8 +116,10 @@ public abstract class Expression {
 
     /** Zero */
     protected static final Double ZERO = Double.valueOf(0);
+
     /** One */
     protected static final Double ONE = Double.valueOf(1);
+
     /** NaN */
     protected static final Double NOT_A_NUMBER = Double.valueOf(Double.NaN);
     private boolean contextDependencyKnown;

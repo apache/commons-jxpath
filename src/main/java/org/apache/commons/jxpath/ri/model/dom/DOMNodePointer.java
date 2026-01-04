@@ -52,8 +52,10 @@ import org.w3c.dom.ProcessingInstruction;
 public class DOMNodePointer extends NodePointer {
 
     private static final long serialVersionUID = -8751046933894857319L;
+
     /** XML namespace URI */
     public static final String XML_NAMESPACE_URI = "http://www.w3.org/XML/1998/namespace";
+
     /** XMLNS namespace URI */
     public static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
 

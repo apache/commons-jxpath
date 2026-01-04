@@ -44,8 +44,10 @@ public abstract class NodePointer implements Pointer {
 
     /** Serialization version */
     private static final long serialVersionUID = 8117201322861007777L;
+
     /** Whole collection index. */
     public static final int WHOLE_COLLECTION = Integer.MIN_VALUE;
+
     /** Constant to indicate unknown namespace */
     public static final String UNKNOWN_NAMESPACE = "<<unknown namespace>>";
 

@@ -48,8 +48,10 @@ import org.jdom.Text;
 public class JDOMNodePointer extends NodePointer {
 
     private static final long serialVersionUID = -6346532297491082651L;
+
     /** XML ns uri */
     public static final String XML_NAMESPACE_URI = "http://www.w3.org/XML/1998/namespace";
+
     /** XMLNS ns uri */
     public static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
 

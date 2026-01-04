@@ -41,19 +41,23 @@ public class TestBean {
         beans[1] = new NestedTestBean("Name 2");
         beans[1].setInt(3);
     }
+
     /**
      * A boolean property.
      */
     private boolean bool = false;
     private int integer = 1;
+
     /**
      * A read-only array of integers
      */
     private int[] array = { 1, 2, 3, 4 };
+
     /**
      * A heterogeneous list: String, Integer, NestedTestBean
      */
     private ArrayList list;
+
     /**
      * A Map
      */
@@ -63,11 +67,13 @@ public class TestBean {
         map.put("Key1", "Value 1");
         map.put("Key2", new NestedTestBean("Name 6"));
     }
+
     /**
      * A nested read-only java bean
      */
     private NestedTestBean nestedBean = new NestedTestBean("Name 0");
     private final NestedTestBean object = new NestedTestBean("Name 5");
+
     /**
      * A heterogeneous set: String, Integer, NestedTestBean
      */

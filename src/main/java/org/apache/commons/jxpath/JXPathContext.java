@@ -460,18 +460,25 @@ public abstract class JXPathContext {
 
     /** Parent context */
     protected JXPathContext parentContext;
+
     /** Context bean */
     protected Object contextBean;
+
     /** Variables */
     protected Variables vars;
+
     /** Functions */
     protected Functions functions;
+
     /** AbstractFactory */
     protected AbstractFactory factory;
+
     /** IdentityManager */
     protected IdentityManager idManager;
+
     /** KeyManager */
     protected KeyManager keyManager;
+
     /** Decimal format map */
     protected HashMap<String, DecimalFormatSymbols> decimalFormats;
     private Locale locale;

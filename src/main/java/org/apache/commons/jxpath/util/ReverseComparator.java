@@ -26,6 +26,7 @@ import java.util.Comparator;
 public final class ReverseComparator implements Comparator, Serializable {
 
     private static final long serialVersionUID = -2795475743948616649L;
+
     /**
      * Singleton reverse comparator instance.
      */

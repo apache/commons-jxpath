@@ -33,6 +33,7 @@ class BasicNodeSetTest extends AbstractJXPathTest {
 
     /** JXPathContext */
     protected JXPathContext context;
+
     /** BasicNodeSet */
     protected BasicNodeSet nodeSet;
 

@@ -26,18 +26,25 @@ public abstract class CoreOperation extends Operation {
 
     /** Or precedence */
     protected static final int OR_PRECEDENCE = 0;
+
     /** And precedence */
     protected static final int AND_PRECEDENCE = 1;
+
     /** Compare precedence */
     protected static final int COMPARE_PRECEDENCE = 2;
+
     /** Relational expression precedence */
     protected static final int RELATIONAL_EXPR_PRECEDENCE = 3;
+
     /** Add/subtract precedence */
     protected static final int ADD_PRECEDENCE = 4;
+
     /** Multiply/divide/mod precedence */
     protected static final int MULTIPLY_PRECEDENCE = 5;
+
     /** Negate precedence */
     protected static final int NEGATE_PRECEDENCE = 6;
+
     /** Union precedence */
     protected static final int UNION_PRECEDENCE = 7;
 

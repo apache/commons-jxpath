@@ -35,6 +35,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /** DOM constant */
     public static final String MODEL_DOM = "DOM";
+
     /** JDOM constant */
     public static final String MODEL_JDOM = "JDOM";
     private static final long serialVersionUID = -8713290334113427066L;

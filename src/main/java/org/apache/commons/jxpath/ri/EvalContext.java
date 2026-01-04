@@ -44,8 +44,10 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
 
     /** Parent context */
     protected EvalContext parentContext;
+
     /** Root context */
     protected RootContext rootContext;
+
     /** Position */
     protected int position;
     private boolean startedSetIteration;
