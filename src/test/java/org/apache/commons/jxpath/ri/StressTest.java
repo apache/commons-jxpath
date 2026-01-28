@@ -67,6 +67,7 @@ class StressTest {
             try {
                 element.join();
             } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
                 fail("Interrupted");
             }
         }
