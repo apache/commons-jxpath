@@ -39,6 +39,10 @@ public class DOMParser extends XMLParser2 {
     public Object parseXML(final InputStream stream) {
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            factory.setXIncludeAware(false);
             factory.setValidating(isValidating());
             factory.setNamespaceAware(isNamespaceAware());
             factory.setIgnoringElementContentWhitespace(isIgnoringElementContentWhitespace());
