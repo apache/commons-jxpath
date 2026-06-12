@@ -20,7 +20,8 @@ package org.apache.commons.jxpath.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.JXPathException;
@@ -39,14 +40,14 @@ public class DocumentContainer extends XMLParser2 implements Container {
     /** JDOM constant */
     public static final String MODEL_JDOM = "JDOM";
     private static final long serialVersionUID = -8713290334113427066L;
-    private static HashMap<String, String> parserClasses = new HashMap<>();
+    private static final Map<String, String> parserClasses = new ConcurrentHashMap<>();
 
     static {
         parserClasses.put(MODEL_DOM, "org.apache.commons.jxpath.xml.DOMParser");
         parserClasses.put(MODEL_JDOM, "org.apache.commons.jxpath.xml.JDOMParser");
     }
 
-    private static HashMap<String, XMLParser> parsers = new HashMap<>();
+    private static final Map<String, XMLParser> parsers = new ConcurrentHashMap<>();
 
     /**
      * Maps a model type to a parser.
