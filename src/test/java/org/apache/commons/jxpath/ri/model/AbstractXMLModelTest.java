@@ -360,6 +360,8 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
         assertXPathValue(context, "//product/prix/@xml:lang", "fr");
         // lang() used the built-in xml:lang attribute
         assertXPathValue(context, "//product/prix[lang('fr')]", "934.99");
+        // a leading prefix that is not a whole subtag must not match xml:lang="fr"
+        assertXPathValue(context, "count(//product/prix[lang('f')])", Double.valueOf(0));
         // Default language
         assertXPathValue(context, "//product/price:sale[lang('en')]/saleEnds", "never");
     }
