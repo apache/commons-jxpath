@@ -17,6 +17,8 @@
 
 package org.apache.commons.jxpath.ri;
 
+import java.util.regex.Pattern;
+
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.VariablePointer;
@@ -29,6 +31,27 @@ public class InfoSetUtil {
     private static final Double ZERO = Double.valueOf(0);
     private static final Double ONE = Double.valueOf(1);
     private static final Double NOT_A_NUMBER = Double.valueOf(Double.NaN);
+
+    /**
+     * The lexical space a string may occupy to be converted to a number per the XPath 1.0 Number production: optional surrounding whitespace and an optional
+     * leading minus around {@code Digits ('.' Digits?)? | '.' Digits}. {@link Double#parseDouble(String)} additionally accepts Java-only forms (a leading
+     * {@code +}, exponents, {@code d}/{@code f} type suffixes, hexadecimal floats and the {@code Infinity}/{@code NaN} words), none of which are XPath numbers
+     * and all of which must convert to NaN.
+     */
+    private static final Pattern XPATH_NUMBER = Pattern.compile("[ \t\r\n]*-?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)[ \t\r\n]*");
+
+    /**
+     * Converts a string to a double using XPath rules, returning NaN for any string outside the XPath number lexical space.
+     *
+     * @param string value to convert
+     * @return double value or NaN
+     */
+    private static double parseNumber(final String string) {
+        if (XPATH_NUMBER.matcher(string).matches()) {
+            return Double.parseDouble(string.trim());
+        }
+        return Double.NaN;
+    }
 
     /**
      * Converts the supplied object to boolean.
@@ -81,11 +104,7 @@ public class InfoSetUtil {
             if (object.equals("")) {
                 return 0.0;
             }
-            try {
-                return Double.parseDouble((String) object);
-            } catch (final NumberFormatException ex) {
-                return Double.NaN;
-            }
+            return parseNumber((String) object);
         }
         if (object instanceof NodePointer) {
             return doubleValue(((NodePointer) object).getValue());
@@ -112,11 +131,8 @@ public class InfoSetUtil {
             return ((Boolean) object).booleanValue() ? ONE : ZERO;
         }
         if (object instanceof String) {
-            try {
-                return Double.valueOf((String) object);
-            } catch (final NumberFormatException ex) {
-                return NOT_A_NUMBER;
-            }
+            final double value = parseNumber((String) object);
+            return Double.isNaN(value) ? NOT_A_NUMBER : Double.valueOf(value);
         }
         if (object instanceof EvalContext) {
             final EvalContext ctx = (EvalContext) object;
