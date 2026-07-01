@@ -750,12 +750,27 @@ public abstract class NodePointer implements Pointer {
      * Check whether our locale matches the specified language.
      *
      * @param lang String language to check
-     * @return true if the selected locale name starts with the specified prefix <em>lang</em>, case-insensitive.
+     * @return true if the selected locale name matches <em>lang</em> under the XPath {@code lang()} rules, case-insensitive.
      */
     public boolean isLanguage(final String lang) {
         final Locale loc = getLocale();
         final String name = loc.toString().replace('_', '-');
-        return name.toUpperCase(Locale.ENGLISH).startsWith(lang.toUpperCase(Locale.ENGLISH));
+        return isLanguage(name, lang);
+    }
+
+    /**
+     * Tests whether the language tag {@code value} matches {@code lang} under the XPath 1.0 {@code lang()} rules: the comparison is case-insensitive and
+     * {@code lang} must equal the whole tag or a leading subtag delimited by {@code '-'}. So {@code "en"} matches {@code "en"} and {@code "en-US"} but not
+     * {@code "english"}, and the bare prefix {@code "e"} matches neither.
+     *
+     * @param value the language tag to test, for example an {@code xml:lang} value or a locale name
+     * @param lang  the language being tested for
+     * @return whether {@code value} is {@code lang} or a sublanguage of it
+     */
+    protected static boolean isLanguage(final String value, final String lang) {
+        final String name = value.toUpperCase(Locale.ENGLISH);
+        final String target = lang.toUpperCase(Locale.ENGLISH);
+        return name.equals(target) || name.startsWith(target + "-");
     }
 
     /**
