@@ -76,7 +76,7 @@
 </li>
 <li>[<a href='https://issues.apache.org/jira/browse/JXPATH-90'>JXPATH-90</a>] -         Upper boundary check is missing from substring(&lt;string&gt;, &lt;number&gt;)
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-93'>JXPATH-93</a>] -         Binary operators behaviour involving node-sets is incorrect
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-93'>JXPATH-93</a>] -         Binary operators behavior involving node-sets is incorrect
 </li>
 <li>[<a href='https://issues.apache.org/jira/browse/JXPATH-94'>JXPATH-94</a>] -         equality test for multi-valued variables does not conform to spec
 </li>
