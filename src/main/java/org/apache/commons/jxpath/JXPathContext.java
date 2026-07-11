@@ -830,7 +830,7 @@ public abstract class JXPathContext {
      * Finds all nodes that match the specified XPath.
      *
      * @param xpath the xpath to be evaluated
-     * @return a list of found objects
+     * @return A list of found objects
      */
     public List selectNodes(final String xpath) {
         final ArrayList list = new ArrayList();

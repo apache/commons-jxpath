@@ -111,7 +111,7 @@ public class FunctionLibrary implements Functions {
     /**
      * Gets a set containing all namespaces used by the aggregated Functions.
      *
-     * @return a set containing all namespaces used by the aggregated Functions.
+     * @return A set containing all namespaces used by the aggregated Functions.
      */
     @Override
     public Set<String> getUsedNamespaces() {

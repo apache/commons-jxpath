@@ -425,7 +425,7 @@ public class BasicTypeConverter implements TypeConverter {
      * Convert null to a primitive type.
      *
      * @param toType destination class
-     * @return a wrapper
+     * @return A wrapper
      */
     protected Object convertNullToPrimitive(final Class toType) {
         if (toType == boolean.class) {

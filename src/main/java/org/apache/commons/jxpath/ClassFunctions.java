@@ -73,7 +73,7 @@ public class ClassFunctions implements Functions {
      * @param namespace  if it is not the namespace specified in the constructor, the method returns null
      * @param name       is a function name or "new" for a constructor.
      * @param parameters Object[] of parameters
-     * @return a MethodFunction, a ConstructorFunction or null if there is no such function.
+     * @return A MethodFunction, a ConstructorFunction or null if there is no such function.
      */
     @Override
     public Function getFunction(final String namespace, final String name, Object[] parameters) {
@@ -108,7 +108,7 @@ public class ClassFunctions implements Functions {
     /**
      * Returns a set of one namespace - the one specified in the constructor.
      *
-     * @return a singleton
+     * @return A singleton
      */
     @Override
     public Set<String> getUsedNamespaces() {

@@ -94,7 +94,7 @@ public class PackageFunctions implements Functions {
      *                   <li><strong>subpackage.subpackage.Classname.methodname</strong>, if looking for a static method of a class in a subpackage</li>
      *                   </ul>
      * @param parameters Object[] of parameters
-     * @return a MethodFunction, a ConstructorFunction or null if no function is found
+     * @return A MethodFunction, a ConstructorFunction or null if no function is found
      */
     @Override
     public Function getFunction(final String namespace, final String name, Object[] parameters) {
