@@ -53,7 +53,7 @@ public class BasicVariables implements Variables {
      * Returns the value of the variable if it is defined, otherwise, throws IllegalArgumentException
      *
      * @param varName is a variable name without the "$" sign
-     * @return the value of the variable
+     * @return The value of the variable
      */
     @Override
     public Object getVariable(final String varName) {

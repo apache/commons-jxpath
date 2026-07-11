@@ -205,7 +205,7 @@ public class SimpleCharStream {
     }
 
     /**
-     * @return the end column.
+     * @return The end column.
      * @see #getEndColumn
      * @deprecated
      */
@@ -230,7 +230,7 @@ public class SimpleCharStream {
     }
 
     /**
-     * @return the line number.
+     * @return The line number.
      * @see #getEndLine
      * @deprecated
      */

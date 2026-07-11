@@ -407,7 +407,7 @@ public class ValueUtils {
      *
      * @param collection to edit
      * @param index      int
-     * @return the resulting collection
+     * @return The resulting collection
      */
     public static Object remove(Object collection, final int index) {
         collection = getValue(collection);

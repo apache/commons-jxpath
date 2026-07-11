@@ -97,7 +97,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     /**
      * Gets the DynamicPropertyHandler class for a dynamic class.
      *
-     * @return the DynamicPropertyHandler class for a dynamic class.
+     * @return The DynamicPropertyHandler class for a dynamic class.
      */
     @Override
     public Class getDynamicPropertyHandlerClass() {

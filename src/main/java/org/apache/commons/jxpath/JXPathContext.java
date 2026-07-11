@@ -848,7 +848,7 @@ public abstract class JXPathContext {
      * its textual contents.
      *
      * @param xpath the xpath to be evaluated
-     * @return the found object
+     * @return The found object
      */
     public Object selectSingleNode(final String xpath) {
         final Pointer pointer = getPointer(xpath);

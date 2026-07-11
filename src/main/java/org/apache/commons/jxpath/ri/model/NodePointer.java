@@ -493,7 +493,7 @@ public abstract class NodePointer implements Pointer {
      * If the pointer represents a collection, the index identifies an element of that collection. The default value of {@code index} is
      * {@code WHOLE_COLLECTION}, which just means that the pointer is not indexed at all. Note: the index on NodePointer starts with 0, not 1.
      *
-     * @return the index.
+     * @return The index.
      */
     public int getIndex() {
         return index;
@@ -502,7 +502,7 @@ public abstract class NodePointer implements Pointer {
     /**
      * If the pointer represents a collection (or collection element), returns the length of the collection. Otherwise returns 1 (even if the value is null).
      *
-     * @return the length.
+     * @return The length.
      */
     public abstract int getLength();
 

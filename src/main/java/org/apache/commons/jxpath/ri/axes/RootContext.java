@@ -162,7 +162,7 @@ public class RootContext extends EvalContext {
      * Sets the next registered value.
      *
      * @param value Object
-     * @return the id that can reclaim value.
+     * @return The id that can reclaim value.
      */
     public int setRegisteredValue(final Object value) {
         if (registers == null) {

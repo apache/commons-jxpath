@@ -69,7 +69,7 @@ public final class ClassLoaderUtil {
      * @param classLoader the class loader to use to load the class
      * @param className   the class name
      * @param initialize  whether the class must be initialized
-     * @return the class represented by {@code className} using the {@code classLoader}
+     * @return The class represented by {@code className} using the {@code classLoader}
      * @throws ClassNotFoundException if the class is not found
      */
     @SuppressWarnings("unchecked") // assume the call site knows what it's doing.
@@ -91,7 +91,7 @@ public final class ClassLoaderUtil {
      * @param <T> The expected class type.
      * @param className  the class name
      * @param initialize whether the class must be initialized
-     * @return the class represented by {@code className} using the current thread's context class loader
+     * @return The class represented by {@code className} using the current thread's context class loader
      * @throws ClassNotFoundException if the class is not found
      */
     public static <T> Class<T> getClass(final String className, final boolean initialize) throws ClassNotFoundException {
@@ -111,7 +111,7 @@ public final class ClassLoaderUtil {
      * Converts a class name to a JLS style class name.
      *
      * @param className the class name
-     * @return the converted name
+     * @return The converted name
      */
     private static String toCanonicalName(String className) {
         Objects.requireNonNull(className, "className");
