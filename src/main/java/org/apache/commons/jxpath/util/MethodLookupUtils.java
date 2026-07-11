@@ -37,7 +37,7 @@ public class MethodLookupUtils {
     /**
      * Look up a constructor.
      *
-     * @param targetClass the class constructed
+     * @param targetClass The class constructed
      * @param parameters  arguments
      * @return Constructor found if any.
      */
@@ -157,7 +157,7 @@ public class MethodLookupUtils {
     /**
      * Look up a static method.
      *
-     * @param targetClass the owning class
+     * @param targetClass The owning class
      * @param name        method name
      * @param parameters  method parameters
      * @return Method found if any

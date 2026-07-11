@@ -62,7 +62,7 @@ public class VariablePointerFactory implements NodePointerFactory {
     /**
      * VariableContextWrapper factory method.
      *
-     * @param context the JXPathContext to wrap.
+     * @param context The JXPathContext to wrap.
      * @return VariableContextWrapper.
      */
     public static VariableContextWrapper contextWrapper(final JXPathContext context) {

@@ -111,7 +111,7 @@ public class TokenMgrError extends Error {
      * @param errorLine   line number when the error occurred
      * @param errorColumn column number when the error occurred
      * @param errorAfter  prefix that was seen before this error occurred
-     * @param curChar     the offending character
+     * @param curChar     The offending character
      * @return TODO
      */
     protected static String LexicalError(final boolean EOFSeen, final int lexState, final int errorLine, final int errorColumn, final String errorAfter,

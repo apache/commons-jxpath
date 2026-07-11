@@ -145,7 +145,7 @@ public class DOMNodePointer extends NodePointer {
     /**
      * Gets any prefix from the specified node.
      *
-     * @param node the node to check
+     * @param node The node to check
      * @return String xml prefix
      */
     public static String getPrefix(final Node node) {

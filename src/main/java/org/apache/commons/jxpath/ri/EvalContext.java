@@ -356,7 +356,7 @@ public abstract class EvalContext implements ExpressionContext, Iterator {
     /**
      * Sort a list of pointers based on document order.
      *
-     * @param l the list to sort.
+     * @param l The list to sort.
      */
     protected void sortPointers(final List l) {
         switch (getDocumentOrder()) {

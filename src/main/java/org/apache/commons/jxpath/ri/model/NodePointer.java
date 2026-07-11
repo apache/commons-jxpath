@@ -220,7 +220,7 @@ public abstract class NodePointer implements Pointer {
      * Returns a NodeIterator that iterates over all attributes of the current node matching the supplied node name (could have a wildcard). May return null if
      * the object does not support the attributes.
      *
-     * @param qname the attribute name to test
+     * @param qname The attribute name to test
      * @return NodeIterator
      */
     public NodeIterator attributeIterator(final QName qname) {
@@ -233,7 +233,7 @@ public abstract class NodePointer implements Pointer {
      *
      * @param test      NodeTest to filter children
      * @param reverse   specified iteration direction
-     * @param startWith the NodePointer to start with
+     * @param startWith The NodePointer to start with
      * @return NodeIterator
      */
     public NodeIterator childIterator(final NodeTest test, final boolean reverse, final NodePointer startWith) {
@@ -337,8 +337,8 @@ public abstract class NodePointer implements Pointer {
     /**
      * Called to create a non-existing attribute
      *
-     * @param context the owning JXPathCOntext
-     * @param qName    the QName at which an attribute should be created
+     * @param context The owning JXPathCOntext
+     * @param qName    The QName at which an attribute should be created
      * @return created NodePointer
      */
     public NodePointer createAttribute(final JXPathContext context, final QName qName) {
@@ -349,8 +349,8 @@ public abstract class NodePointer implements Pointer {
      * Called by a child pointer when it needs to create a parent object for a non-existent collection element. It may have to expand the collection, then
      * create an element object and return a new pointer describing the newly created element.
      *
-     * @param context the owning JXPathCOntext
-     * @param qName    the QName at which a child should be created
+     * @param context The owning JXPathCOntext
+     * @param qName    The QName at which a child should be created
      * @param index   child index.
      * @return created NodePointer
      */
@@ -363,8 +363,8 @@ public abstract class NodePointer implements Pointer {
      * Called by a child pointer if that child needs to assign the value supplied in the createPath(context, value) call to a non-existent node. This method may
      * have to expand the collection in order to assign the element.
      *
-     * @param context the owning JXPathCOntext
-     * @param qName    the QName at which a child should be created
+     * @param context The owning JXPathCOntext
+     * @param qName    The QName at which a child should be created
      * @param index   child index.
      * @param value   node value to set
      * @return created NodePointer
@@ -378,7 +378,7 @@ public abstract class NodePointer implements Pointer {
      * Called by a child pointer when it needs to create a parent object. Must create an object described by this pointer and return a new pointer that properly
      * describes the new object.
      *
-     * @param context the owning JXPathContext
+     * @param context The owning JXPathContext
      * @return created NodePointer
      */
     public NodePointer createPath(final JXPathContext context) {
@@ -388,8 +388,8 @@ public abstract class NodePointer implements Pointer {
     /**
      * Called directly by JXPathContext. Must create path and set value.
      *
-     * @param context the owning JXPathContext
-     * @param value   the new value to set
+     * @param context The owning JXPathContext
+     * @param value   The new value to set
      * @return created NodePointer
      */
     public NodePointer createPath(final JXPathContext context, final Object value) {
@@ -735,7 +735,7 @@ public abstract class NodePointer implements Pointer {
     /**
      * Returns true if the supplied prefix represents the default namespace in the context of the current node.
      *
-     * @param prefix the prefix to check
+     * @param prefix The prefix to check
      * @return {@code true} if prefix is default
      */
     protected boolean isDefaultNamespace(final String prefix) {
@@ -834,7 +834,7 @@ public abstract class NodePointer implements Pointer {
     /**
      * Sets the exceptionHandler of this NodePointer.
      *
-     * @param exceptionHandler the ExceptionHandler to set
+     * @param exceptionHandler The ExceptionHandler to set
      */
     public void setExceptionHandler(final ExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
@@ -861,7 +861,7 @@ public abstract class NodePointer implements Pointer {
     /**
      * Converts the value to the required type and changes the corresponding object to that value.
      *
-     * @param value the value to set
+     * @param value The value to set
      */
     @Override
     public abstract void setValue(Object value);
@@ -869,7 +869,7 @@ public abstract class NodePointer implements Pointer {
     /**
      * Checks if this Pointer matches the supplied NodeTest.
      *
-     * @param test the NodeTest to execute
+     * @param test The NodeTest to execute
      * @return true if a match
      */
     public boolean testNode(final NodeTest test) {

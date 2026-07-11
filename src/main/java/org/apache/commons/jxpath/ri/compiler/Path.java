@@ -56,7 +56,7 @@ public abstract class Path extends Expression {
     /**
      * Tests whether the elements of the specified array are "basic" predicates.
      *
-     * @param predicates the Expression[] to check
+     * @param predicates The Expression[] to check
      * @return boolean
      */
     protected boolean areBasicPredicates(final Expression[] predicates) {
@@ -231,7 +231,7 @@ public abstract class Path extends Expression {
      * A Step is "simple" if it takes one of these forms: ".", "/foo", "@bar", "/foo[3]". If there are predicates, they should be context independent for the
      * step to still be considered simple.
      *
-     * @param step the step to check
+     * @param step The step to check
      * @return boolean
      */
     protected boolean isSimpleStep(final Step step) {

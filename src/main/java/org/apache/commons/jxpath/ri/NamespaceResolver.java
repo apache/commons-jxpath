@@ -119,7 +119,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
     /**
      * Gets the nearest prefix found that matches an externally-registered namespace.
      *
-     * @param namespaceURI the ns URI to check.
+     * @param namespaceURI The ns URI to check.
      * @return String prefix if found.
      * @since JXPath 1.3
      */
@@ -155,7 +155,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
     /**
      * Gets the prefix associated with the specifed namespace URI.
      *
-     * @param namespaceURI the ns URI to check.
+     * @param namespaceURI The ns URI to check.
      * @return String prefix
      */
     public synchronized String getPrefix(final String namespaceURI) {
@@ -199,7 +199,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
     /**
      * Register a namespace for the expression context.
      *
-     * @param pointer the Pointer to set.
+     * @param pointer The Pointer to set.
      */
     public synchronized void setNamespaceContextPointer(final NodePointer pointer) {
         this.pointer = pointer;

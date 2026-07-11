@@ -66,8 +66,8 @@ public final class ClassLoaderUtil {
      * well as "{@code [Ljava.lang.String;}".
      *
      * @param <T> The expected class type.
-     * @param classLoader the class loader to use to load the class
-     * @param className   the class name
+     * @param classLoader The class loader to use to load the class
+     * @param className   The class name
      * @param initialize  whether the class must be initialized
      * @return The class represented by {@code className} using the {@code classLoader}
      * @throws ClassNotFoundException if the class is not found
@@ -89,7 +89,7 @@ public final class ClassLoaderUtil {
      * "{@code java.lang.String[]}" as well as "{@code [Ljava.lang.String;}".
      *
      * @param <T> The expected class type.
-     * @param className  the class name
+     * @param className  The class name
      * @param initialize whether the class must be initialized
      * @return The class represented by {@code className} using the current thread's context class loader
      * @throws ClassNotFoundException if the class is not found
@@ -110,7 +110,7 @@ public final class ClassLoaderUtil {
     /**
      * Converts a class name to a JLS style class name.
      *
-     * @param className the class name
+     * @param className The class name
      * @return The converted name
      */
     private static String toCanonicalName(String className) {

@@ -28,7 +28,7 @@ public class CoreOperationNegate extends CoreOperation {
     /**
      * Constructs a new CoreOperationNegate.
      *
-     * @param arg the Expression to negate
+     * @param arg The Expression to negate
      */
     public CoreOperationNegate(final Expression arg) {
         super(new Expression[] { arg });

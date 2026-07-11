@@ -103,8 +103,8 @@ public class ClassLoaderUtilTest {
     /**
      * Loads this class through the given class loader and then invokes the indicated no argument static method of the class.
      *
-     * @param cl         the class loader under which to invoke the method.
-     * @param methodName the name of the static no argument method on this class to invoke.
+     * @param cl         The class loader under which to invoke the method.
+     * @param methodName The name of the static no argument method on this class to invoke.
      * @throws ReflectiveOperationException on test failures.
      */
     private void executeTestMethodUnderClassLoader(final ClassLoader cl, final String methodName) throws ReflectiveOperationException {

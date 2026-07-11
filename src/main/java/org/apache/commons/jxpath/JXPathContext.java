@@ -723,7 +723,7 @@ public abstract class JXPathContext {
     /**
      * Gets the prefix associated with the specifed namespace URI.
      *
-     * @param namespaceURI the ns URI to check.
+     * @param namespaceURI The ns URI to check.
      * @return String prefix
      * @since JXPath 1.3
      */
@@ -829,7 +829,7 @@ public abstract class JXPathContext {
     /**
      * Finds all nodes that match the specified XPath.
      *
-     * @param xpath the xpath to be evaluated
+     * @param xpath The xpath to be evaluated
      * @return A list of found objects
      */
     public List selectNodes(final String xpath) {
@@ -847,7 +847,7 @@ public abstract class JXPathContext {
      * result as {@code getValue()} on object models like JavaBeans, but a different result for DOM/JDOM etc., because it returns the Node itself, rather than
      * its textual contents.
      *
-     * @param xpath the xpath to be evaluated
+     * @param xpath The xpath to be evaluated
      * @return The found object
      */
     public Object selectSingleNode(final String xpath) {
@@ -859,7 +859,7 @@ public abstract class JXPathContext {
      * Sets {@link DecimalFormatSymbols} for a given name. The DecimalFormatSymbols can be referenced as the third, optional argument in the invocation of
      * {@code format-number (number,format,decimal-format-name)} function. By default, JXPath uses the symbols for the current locale.
      *
-     * @param name    the format name or null for default format.
+     * @param name    The format name or null for default format.
      * @param symbols DecimalFormatSymbols
      */
     public synchronized void setDecimalFormatSymbols(final String name, final DecimalFormatSymbols symbols) {

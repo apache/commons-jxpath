@@ -39,7 +39,7 @@ public interface NodeIterator {
     /**
      * Sets the new current position.
      *
-     * @param position the position to set
+     * @param position The position to set
      * @return {@code true} if there is a node at {@code position}.
      */
     boolean setPosition(int position);

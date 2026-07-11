@@ -67,7 +67,7 @@ public class XMLDocumentContainer implements Container {
     /**
      * Constructs a new XMLDocumentContainer.
      *
-     * @param xmlURL a URL for an XML file. Use getClass().getResource(resourceName) to load XML from a resource file.
+     * @param xmlURL A URL for an XML file. Use getClass().getResource(resourceName) to load XML from a resource file.
      */
     public XMLDocumentContainer(final URL xmlURL) {
         this.xmlURL = xmlURL;

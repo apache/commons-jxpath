@@ -63,7 +63,7 @@ public class Parser {
      * Parses the XPath expression. Throws a JXPathException in case of a syntax error.
      *
      * @param expression to parse
-     * @param compiler   the compiler
+     * @param compiler   The compiler
      * @return parsed Object
      */
     public static Object parseExpression(final String expression, final Compiler compiler) {

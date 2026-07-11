@@ -41,7 +41,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
     /**
      * Constructs a new JDOMNamespaceIterator.
      *
-     * @param parent the parent NodePointer.
+     * @param parent The parent NodePointer.
      */
     public JDOMNamespaceIterator(final NodePointer parent) {
         this.parent = parent;
@@ -59,7 +59,7 @@ public class JDOMNamespaceIterator implements NodeIterator {
     /**
      * Collect the namespaces from a JDOM Element.
      *
-     * @param element the source Element
+     * @param element The source Element
      */
     private void collectNamespaces(final Element element) {
         Namespace ns = element.getNamespace();

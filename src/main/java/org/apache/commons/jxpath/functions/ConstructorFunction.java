@@ -36,7 +36,7 @@ public class ConstructorFunction implements Function {
     /**
      * Constructs a new ConstructorFunction.
      *
-     * @param constructor the constructor to call.
+     * @param constructor The constructor to call.
      */
     public ConstructorFunction(final Constructor constructor) {
         this.constructor = constructor;
