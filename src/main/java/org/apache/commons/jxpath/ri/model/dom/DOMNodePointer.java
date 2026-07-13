@@ -679,7 +679,7 @@ public class DOMNodePointer extends NodePointer {
     @Override
     public boolean isLanguage(final String lang) {
         final String current = getLanguage();
-        return current == null ? super.isLanguage(lang) : current.toUpperCase(Locale.ENGLISH).startsWith(lang.toUpperCase(Locale.ENGLISH));
+        return current == null ? super.isLanguage(lang) : isLanguage(current, lang);
     }
 
     @Override

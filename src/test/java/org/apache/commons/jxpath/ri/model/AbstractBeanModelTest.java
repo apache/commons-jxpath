@@ -78,7 +78,10 @@ public abstract class AbstractBeanModelTest extends AbstractJXPathTest {
         assertXPathValue(context, "@xml:lang", "en-US");
         assertXPathValue(context, "count(@xml:*)", Double.valueOf(1));
         assertXPathValue(context, "lang('en')", Boolean.TRUE);
+        assertXPathValue(context, "lang('en-US')", Boolean.TRUE);
         assertXPathValue(context, "lang('fr')", Boolean.FALSE);
+        // lang() must match a whole subtag, not any leading prefix
+        assertXPathValue(context, "lang('e')", Boolean.FALSE);
     }
 
     /**
