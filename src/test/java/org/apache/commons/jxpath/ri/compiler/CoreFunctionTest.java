@@ -115,6 +115,24 @@ class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
+    void testNumberConversionIsXPathConformant() {
+        // Java number literals that are outside the XPath 1.0 number grammar must convert to NaN.
+        assertXPathValue(context, "number('1e3')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "number('5d')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "number('5f')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "number('+5')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "number('Infinity')", Double.valueOf(Double.NaN));
+        // Valid XPath numbers still convert.
+        assertXPathValue(context, "number('1')", Double.valueOf(1));
+        assertXPathValue(context, "number('1.5')", Double.valueOf(1.5));
+        assertXPathValue(context, "number('-.5')", Double.valueOf(-0.5));
+        assertXPathValue(context, "number(' 42 ')", Double.valueOf(42));
+        // doubleValue() agrees: a non-XPath number is NaN, so numeric comparisons are false.
+        assertXPathValue(context, "'5d' >= 5", Boolean.FALSE);
+        assertXPathValue(context, "'1e3' = 1000", Boolean.FALSE);
+    }
+
+    @Test
     void testExtendedKeyFunction() {
         context.setKeyManager(new ExtendedKeyManager() {
 
