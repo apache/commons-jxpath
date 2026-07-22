@@ -61,7 +61,7 @@ public class XMLDocumentContainer implements Container {
      * @param source XML source
      */
     public XMLDocumentContainer(final Source source) {
-        this.source = Objects.requireNonNull(source);
+        this.source = Objects.requireNonNull(source, "source");
     }
 
     /**
