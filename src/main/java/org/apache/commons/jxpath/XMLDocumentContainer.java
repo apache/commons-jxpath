@@ -20,6 +20,7 @@ package org.apache.commons.jxpath;
 import java.net.URL;
 import java.util.Objects;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -85,7 +86,11 @@ public class XMLDocumentContainer implements Container {
             try {
                 if (source != null) {
                     final DOMResult result = new DOMResult();
-                    final Transformer trans = TransformerFactory.newInstance().newTransformer();
+                    final TransformerFactory factory = TransformerFactory.newInstance();
+                    factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+                    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                    final Transformer trans = factory.newTransformer();
                     trans.transform(source, result);
                     document = result.getNode();
                 } else {
