@@ -101,7 +101,7 @@ public abstract class NodePointer implements Pointer {
      * @param indent  indentation level
      */
     private static void printDeep(final NodePointer pointer, final String indent) {
-        if (indent.length() == 0) {
+        if (indent.isEmpty()) {
             System.err.println("POINTER: " + pointer + "(" + pointer.getClass().getName() + ")");
         } else {
             System.err.println(indent + " of " + pointer + "(" + pointer.getClass().getName() + ")");
