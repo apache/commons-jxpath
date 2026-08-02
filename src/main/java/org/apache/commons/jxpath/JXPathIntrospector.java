@@ -148,7 +148,7 @@ public class JXPathIntrospector {
      * @param sibling   Class
      * @param className to instantiate
      * @return new Object
-     * @throws Exception if instantiation fails
+     * @throws Exception Thrown if instantiation fails
      */
     private static Object instantiate(final Class sibling, final String className) throws Exception {
         // First check with sibling's classloader (if any).
