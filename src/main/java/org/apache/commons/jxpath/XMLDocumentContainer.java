@@ -22,10 +22,10 @@ import java.util.Objects;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.apache.commons.xml.secure.SecureTransformerFactory;
 
 /**
  * An XML document container reads and parses XML only when it is accessed. JXPath traverses Containers transparently - you use the same paths to access objects
@@ -85,7 +85,7 @@ public class XMLDocumentContainer implements Container {
             try {
                 if (source != null) {
                     final DOMResult result = new DOMResult();
-                    final Transformer trans = TransformerFactory.newInstance().newTransformer();
+                    final Transformer trans = SecureTransformerFactory.newInstance().newTransformer();
                     trans.transform(source, result);
                     document = result.getNode();
                 } else {
