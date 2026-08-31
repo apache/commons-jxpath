@@ -18,9 +18,11 @@
 package org.apache.commons.jxpath.xml;
 
 import java.io.InputStream;
+import java.io.StringReader;
 
 import org.apache.commons.jxpath.JXPathException;
 import org.jdom.input.SAXBuilder;
+import org.xml.sax.InputSource;
 
 /**
  * An implementation of the XMLParser interface that produces a JDOM Document.
@@ -41,6 +43,11 @@ public class JDOMParser extends XMLParser2 {
         }
         try {
             final SAXBuilder builder = new SAXBuilder();
+            builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            builder.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            // SAXBuilder.setExpandEntities(true) re-enables external general entity
+            // resolution, so refuse external lookups with a no-op resolver instead.
+            builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
             builder.setExpandEntities(isExpandEntityReferences());
             builder.setIgnoringElementContentWhitespace(isIgnoringElementContentWhitespace());
             builder.setValidation(isValidating());
