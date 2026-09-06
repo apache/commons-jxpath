@@ -19,8 +19,13 @@ package org.apache.commons.jxpath.xml;
 
 import java.io.InputStream;
 
+import javax.xml.parsers.SAXParserFactory;
+
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.xml.secure.SecureSAXParserFactory;
+import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.xml.sax.XMLReader;
 
 /**
  * An implementation of the XMLParser interface that produces a JDOM Document.
@@ -40,7 +45,19 @@ public class JDOMParser extends XMLParser2 {
             throw new JXPathException("JDOM parser configuration error. JDOM does not support the namespaceAware=false setting.");
         }
         try {
-            final SAXBuilder builder = new SAXBuilder();
+            // JDOM builds its reader through JAXP internally; hand it one from the secure factory instead.
+            final SAXBuilder builder = new SAXBuilder() {
+                @Override
+                protected XMLReader createParser() throws JDOMException {
+                    try {
+                        final SAXParserFactory factory = SecureSAXParserFactory.newNSInstance();
+                        factory.setValidating(isValidating());
+                        return factory.newSAXParser().getXMLReader();
+                    } catch (final Exception ex) {
+                        throw new JDOMException("Unable to create a new XML reader", ex);
+                    }
+                }
+            };
             builder.setExpandEntities(isExpandEntityReferences());
             builder.setIgnoringElementContentWhitespace(isIgnoringElementContentWhitespace());
             builder.setValidation(isValidating());

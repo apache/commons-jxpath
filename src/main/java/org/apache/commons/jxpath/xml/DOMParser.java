@@ -22,6 +22,7 @@ import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.xml.secure.SecureDocumentBuilderFactory;
 
 /**
  * An implementation of the XMLParser interface that produces a DOM Document.
@@ -38,7 +39,7 @@ public class DOMParser extends XMLParser2 {
     @Override
     public Object parseXML(final InputStream stream) {
         try {
-            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory factory = SecureDocumentBuilderFactory.newInstance();
             factory.setValidating(isValidating());
             factory.setNamespaceAware(isNamespaceAware());
             factory.setIgnoringElementContentWhitespace(isIgnoringElementContentWhitespace());
