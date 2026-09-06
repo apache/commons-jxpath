@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,7 +29,7 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Constructs a new NodeNameTest.
-     * 
+     *
      * @param qname name to match
      */
     public NodeNameTest(final QName qname) {
@@ -38,7 +38,7 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Constructs a new NodeNameTest.
-     * 
+     *
      * @param qname        name to match
      * @param namespaceURI uri to match
      */
@@ -49,7 +49,7 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Gets the ns URI.
-     * 
+     *
      * @return String
      */
     public String getNamespaceURI() {
@@ -58,7 +58,7 @@ public class NodeNameTest extends NodeTest {
 
     /**
      * Gets the node name.
-     * 
+     *
      * @return QName
      */
     public QName getNodeName() {
@@ -66,8 +66,8 @@ public class NodeNameTest extends NodeTest {
     }
 
     /**
-     * Learn whether this is a wildcard test.
-     * 
+     * Tests whether this is a wildcard test.
+     *
      * @return {@code true} if the node name is "*".
      */
     public boolean isWildcard() {

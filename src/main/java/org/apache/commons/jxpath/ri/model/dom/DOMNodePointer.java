@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,6 +36,7 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.jxpath.util.TypeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
@@ -51,14 +52,16 @@ import org.w3c.dom.ProcessingInstruction;
 public class DOMNodePointer extends NodePointer {
 
     private static final long serialVersionUID = -8751046933894857319L;
+
     /** XML namespace URI */
     public static final String XML_NAMESPACE_URI = "http://www.w3.org/XML/1998/namespace";
+
     /** XMLNS namespace URI */
     public static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
 
     /**
      * Test string equality.
-     * 
+     *
      * @param s1 String 1
      * @param s2 String 2
      * @return true if == or .equals()
@@ -74,7 +77,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Find the nearest occurrence of the specified attribute on the specified and enclosing elements.
-     * 
+     *
      * @param n        current node
      * @param attrName attribute name
      * @return attribute value
@@ -95,7 +98,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the local name of the specified node.
-     * 
+     *
      * @param node node to check
      * @return String local name
      */
@@ -111,7 +114,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the ns uri of the specified node.
-     * 
+     *
      * @param node Node to check
      * @return String ns uri
      */
@@ -136,13 +139,13 @@ public class DOMNodePointer extends NodePointer {
                 aNode = aNode.getParentNode();
             }
         }
-        return "".equals(uri) ? null : uri;
+        return StringUtils.isEmpty(uri) ? null : uri;
     }
 
     /**
      * Gets any prefix from the specified node.
-     * 
-     * @param node the node to check
+     *
+     * @param node The node to check
      * @return String xml prefix
      */
     public static String getPrefix(final Node node) {
@@ -157,7 +160,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Test a Node.
-     * 
+     *
      * @param node to test
      * @param test to execute
      * @return true if node passes test
@@ -207,29 +210,47 @@ public class DOMNodePointer extends NodePointer {
         return false;
     }
 
+    /**
+     * A DOM node supporting {@link #getImmediateNode()}.
+     */
     private final Node node;
+
+    /**
+     * Supports {@link #getDefaultNamespaceURI()}.
+     */
     private Map<String, String> namespaces;
+
+    /**
+     * Supports {@link #getNamespaceURI(String)}.
+     */
     private String defaultNamespace;
-    private String id;
+
+    /**
+     * Optional ID.
+     */
+    private final String id;
+
+    /**
+     * Supports {@link #getNamespaceResolver()}.
+     */
     private NamespaceResolver localNamespaceResolver;
 
     /**
      * Constructs a new DOMNodePointer.
-     * 
-     * @param node   pointed at
-     * @param locale Locale
+     *
+     * @param node   A node.
+     * @param locale Locale.
      */
     public DOMNodePointer(final Node node, final Locale locale) {
-        super(null, locale);
-        this.node = node;
+        this(node, locale, null);
     }
 
     /**
      * Constructs a new DOMNodePointer.
-     * 
-     * @param node   pointed at
-     * @param locale Locale
-     * @param id     string id
+     *
+     * @param node   A node.
+     * @param locale Locale.
+     * @param id     String ID.
      */
     public DOMNodePointer(final Node node, final Locale locale, final String id) {
         super(null, locale);
@@ -239,13 +260,14 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Constructs a new DOMNodePointer.
-     * 
+     *
      * @param parent pointer
      * @param node   pointed
      */
     public DOMNodePointer(final NodePointer parent, final Node node) {
         super(parent);
         this.node = node;
+        this.id = null;
     }
 
     @Override
@@ -311,8 +333,8 @@ public class DOMNodePointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return new DOMAttributeIterator(this, name);
+    public NodeIterator attributeIterator(final QName qName) {
+        return new DOMAttributeIterator(this, qName);
     }
 
     @Override
@@ -363,12 +385,12 @@ public class DOMNodePointer extends NodePointer {
     }
 
     @Override
-    public NodePointer createAttribute(final JXPathContext context, final QName name) {
+    public NodePointer createAttribute(final JXPathContext context, final QName qName) {
         if (!(node instanceof Element)) {
-            return super.createAttribute(context, name);
+            return super.createAttribute(context, qName);
         }
         final Element element = (Element) node;
-        final String prefix = name.getPrefix();
+        final String prefix = qName.getPrefix();
         if (prefix != null) {
             String ns = null;
             final NamespaceResolver nsr = getNamespaceResolver();
@@ -378,37 +400,37 @@ public class DOMNodePointer extends NodePointer {
             if (ns == null) {
                 throw new JXPathException("Unknown namespace prefix: " + prefix);
             }
-            element.setAttributeNS(ns, name.toString(), "");
-        } else if (!element.hasAttribute(name.getName())) {
-            element.setAttribute(name.getName(), "");
+            element.setAttributeNS(ns, qName.toString(), "");
+        } else if (!element.hasAttribute(qName.getName())) {
+            element.setAttribute(qName.getName(), "");
         }
-        final NodeIterator it = attributeIterator(name);
+        final NodeIterator it = attributeIterator(qName);
         it.setPosition(1);
         return it.getNodePointer();
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, int index) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, int index) {
         if (index == WHOLE_COLLECTION) {
             index = 0;
         }
-        final boolean success = getAbstractFactory(context).createObject(context, this, node, name.toString(), index);
+        final boolean success = getAbstractFactory(context).createObject(context, this, node, qName.toString(), index);
         if (success) {
             NodeTest nodeTest;
-            final String prefix = name.getPrefix();
+            final String prefix = qName.getPrefix();
             final String namespaceURI = prefix == null ? null : context.getNamespaceURI(prefix);
-            nodeTest = new NodeNameTest(name, namespaceURI);
+            nodeTest = new NodeNameTest(qName, namespaceURI);
             final NodeIterator it = childIterator(nodeTest, false, null);
             if (it != null && it.setPosition(index + 1)) {
                 return it.getNodePointer();
             }
         }
-        throw new JXPathAbstractFactoryException("Factory could not create a child node for path: " + asPath() + "/" + name + "[" + (index + 1) + "]");
+        throw new JXPathAbstractFactoryException("Factory could not create a child node for path: " + asPath() + "/" + qName + "[" + (index + 1) + "]");
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
-        final NodePointer ptr = createChild(context, name, index);
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
+        final NodePointer ptr = createChild(context, qName, index);
         ptr.setValue(value);
         return ptr;
     }
@@ -455,7 +477,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the language attribute for this node.
-     * 
+     *
      * @return String language name
      */
     protected String getLanguage() {
@@ -542,7 +564,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Locates a node by ID.
-     * 
+     *
      * @param context starting context
      * @param id      to find
      * @return Pointer
@@ -556,7 +578,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets relative position of this among like-named siblings.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionByQName() {
@@ -573,7 +595,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets relative position of this among all siblings.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionOfElement() {
@@ -590,7 +612,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the relative position of this among same-target processing instruction siblings.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionOfPI() {
@@ -608,7 +630,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the relative position of this among sibling text nodes.
-     * 
+     *
      * @return 1..n
      */
     private int getRelativePositionOfTextNode() {
@@ -650,14 +672,14 @@ public class DOMNodePointer extends NodePointer {
     /**
      * Returns true if the xml:lang attribute for the current node or its parent has the specified prefix <em>lang</em>. If no node has this prefix, calls
      * {@code super.isLanguage(lang)}.
-     * 
+     *
      * @param lang ns to test
      * @return boolean
      */
     @Override
     public boolean isLanguage(final String lang) {
         final String current = getLanguage();
-        return current == null ? super.isLanguage(lang) : current.toUpperCase(Locale.ENGLISH).startsWith(lang.toUpperCase(Locale.ENGLISH));
+        return current == null ? super.isLanguage(lang) : isLanguage(current, lang);
     }
 
     @Override
@@ -694,7 +716,7 @@ public class DOMNodePointer extends NodePointer {
     /**
      * Sets contents of the node to the specified value. If the value is a String, the contents of the node are replaced with this text. If the value is an
      * Element or Document, the children of the node are replaced with the children of the passed node.
-     * 
+     *
      * @param value to set
      */
     @Override
@@ -736,7 +758,7 @@ public class DOMNodePointer extends NodePointer {
 
     /**
      * Gets the string value of the specified node.
-     * 
+     *
      * @param node Node to check
      * @return String
      */

@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class JDOMPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object bean) {
+    public NodePointer createNodePointer(final NodePointer parent, final QName qName, final Object bean) {
         if (bean instanceof Document) {
             return new JDOMNodePointer(parent, bean);
         }
@@ -52,7 +52,7 @@ public class JDOMPointerFactory implements NodePointerFactory {
     }
 
     @Override
-    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
+    public NodePointer createNodePointer(final QName qName, final Object bean, final Locale locale) {
         if (bean instanceof Document) {
             return new JDOMNodePointer(bean, locale);
         }

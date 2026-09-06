@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for the protection mechanism that stops infinite recursion in descent down a recursive graph.
  */
-public class RecursiveAxesTest extends AbstractJXPathTest {
+class RecursiveAxesTest extends AbstractJXPathTest {
 
     private RecursiveBean bean;
     private JXPathContext context;
@@ -45,7 +45,7 @@ public class RecursiveAxesTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testInfiniteDescent() {
+    void testInfiniteDescent() {
         // Existing scalar property
         assertXPathPointer(context, "//.[name = 'three']", "/first/first/second");
     }

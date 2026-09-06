@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
  * Tests JXPath with JavaBeans
  *
  */
-public class BeanModelTest extends AbstractBeanModelTest {
+class BeanModelTest extends AbstractBeanModelTest {
 
     @Override
     protected Object createContextBean() {
@@ -40,7 +40,7 @@ public class BeanModelTest extends AbstractBeanModelTest {
     }
 
     @Test
-    public void testIndexedProperty() {
+    void testIndexedProperty() {
         final JXPathContext context = JXPathContext.newContext(null, new TestIndexedPropertyBean());
         assertXPathValueAndPointer(context, "indexed[1]", Integer.valueOf(0), "/indexed[1]");
     }

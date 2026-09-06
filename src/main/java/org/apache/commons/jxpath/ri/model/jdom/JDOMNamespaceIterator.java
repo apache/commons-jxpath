@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,8 +40,8 @@ public class JDOMNamespaceIterator implements NodeIterator {
 
     /**
      * Constructs a new JDOMNamespaceIterator.
-     * 
-     * @param parent the parent NodePointer.
+     *
+     * @param parent The parent NodePointer.
      */
     public JDOMNamespaceIterator(final NodePointer parent) {
         this.parent = parent;
@@ -58,8 +58,8 @@ public class JDOMNamespaceIterator implements NodeIterator {
 
     /**
      * Collect the namespaces from a JDOM Element.
-     * 
-     * @param element the source Element
+     *
+     * @param element The source Element
      */
     private void collectNamespaces(final Element element) {
         Namespace ns = element.getNamespace();
@@ -68,8 +68,8 @@ public class JDOMNamespaceIterator implements NodeIterator {
             prefixes.add(ns.getPrefix());
         }
         final List others = element.getAdditionalNamespaces();
-        for (int i = 0; i < others.size(); i++) {
-            ns = (Namespace) others.get(i);
+        for (final Object other : others) {
+            ns = (Namespace) other;
             if (ns != null && !prefixes.contains(ns.getPrefix())) {
                 namespaces.add(ns);
                 prefixes.add(ns.getPrefix());

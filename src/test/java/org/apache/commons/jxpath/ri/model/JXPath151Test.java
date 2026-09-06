@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ import org.apache.commons.jxpath.TestBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class JXPath151Test extends AbstractJXPathTest {
+class JXPath151Test extends AbstractJXPathTest {
 
     private JXPathContext context;
 
@@ -45,7 +45,7 @@ public class JXPath151Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testMapValueEquality() {
+    void testMapValueEquality() {
         assertXPathValue(context, "map/b != map/a", Boolean.TRUE);
         assertXPathValue(context, "map/a != map/b", Boolean.TRUE);
         assertXPathValue(context, "map/a != map/c", Boolean.FALSE);
@@ -56,7 +56,7 @@ public class JXPath151Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testMapValueEqualityUsingNameAttribute() {
+    void testMapValueEqualityUsingNameAttribute() {
         assertXPathValue(context, "map[@name = 'b'] != map[@name = 'c']", Boolean.TRUE);
         assertXPathValue(context, "map[@name = 'a'] != map[@name = 'b']", Boolean.TRUE);
         assertXPathValue(context, "map[@name = 'a'] != map[@name = 'c']", Boolean.FALSE);

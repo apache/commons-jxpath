@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,19 +34,20 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
      * <p>
      * {@code Pointer  ptr = ctx.getPointer("//employees[firstName = 'John']")
      * }
+     * </p>
      * <p>
      * The value of {@code ptr.asPath()} will look something like {@code "/departments[2]/employees[3]"}, so, basically, it represents the concrete location(s)
      * of the result of a search performed by JXPath. If an object in the pointer's path is a Dynamic Property object (like a Map), the asPath method generates
      * an XPath that looks like this: {@code "
      * /departments[@name = 'HR']/employees[3]"}.
-     * 
+     *
      * @return String path
      */
     String asPath();
 
     /**
      * Pointers are cloneable.
-     * 
+     *
      * @return cloned Object
      */
     Object clone();
@@ -54,16 +55,17 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
     /**
      * Returns the raw value of the object, property or collection element this pointer represents. Never converts the object to a canonical type: returns it as
      * is.
-     *
+     * <p>
      * For example, for an XML element, getNode() will return the element itself rather than the text it contains.
-     * 
+     * </p>
+     *
      * @return Object node
      */
     Object getNode();
 
     /**
      * Returns the node this pointer is based on.
-     * 
+     *
      * @return Object
      */
     Object getRootNode();
@@ -71,16 +73,17 @@ public interface Pointer extends Cloneable, Comparable, Serializable {
     /**
      * Returns the value of the object, property or collection element this pointer represents. May convert the value to one of the canonical InfoSet types:
      * String, Number, Boolean, Set.
-     *
+     * <p>
      * For example, in the case of an XML element, getValue() will return the text contained by the element rather than the element itself.
-     * 
+     * </p>
+     *
      * @return Object value
      */
     Object getValue();
 
     /**
      * Modifies the value of the object, property or collection element this pointer represents.
-     * 
+     *
      * @param value value to set
      */
     void setValue(Object value);

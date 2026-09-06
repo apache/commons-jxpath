@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,14 +28,14 @@ import org.apache.commons.jxpath.ri.axes.SelfContext;
 
 /**
  * Base implementation of Expression for the operations "&gt;", "&gt;=", "&lt;", "&lt;=".
- * 
+ *
  * @since JXPath 1.3
  */
 public abstract class CoreOperationRelationalExpression extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationRelationalExpression.
-     * 
+     *
      * @param args arguments
      */
     protected CoreOperationRelationalExpression(final Expression[] args) {
@@ -44,7 +44,7 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
 
     /**
      * Compare left to right.
-     * 
+     *
      * @param left  left operand
      * @param right right operand
      * @return operation success/failure
@@ -84,8 +84,8 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
     }
 
     /**
-     * Learn whether any element returned from an Iterator matches a given value.
-     * 
+     * Tests whether any element returned from an Iterator matches a given value.
+     *
      * @param it    Iterator
      * @param value to look for
      * @return whether a match was found
@@ -101,8 +101,8 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
     }
 
     /**
-     * Learn whether any element returned from an Iterator matches a given value.
-     * 
+     * Tests whether any element returned from an Iterator matches a given value.
+     *
      * @param it    Iterator
      * @param value to look for
      * @return whether a match was found
@@ -119,15 +119,15 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
 
     /**
      * Template method for subclasses to evaluate the result of a comparison.
-     * 
+     *
      * @param compare result of comparison to evaluate
      * @return ultimate operation success/failure
      */
     protected abstract boolean evaluateCompare(int compare);
 
     /**
-     * Learn whether there is an intersection between two Iterators.
-     * 
+     * Tests whether there is an intersection between two Iterators.
+     *
      * @param lit left Iterator
      * @param rit right Iterator
      * @return whether a match was found
@@ -157,7 +157,7 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
 
     /**
      * Reduce an operand for comparison.
-     * 
+     *
      * @param o Object to reduce
      * @return reduced operand
      */

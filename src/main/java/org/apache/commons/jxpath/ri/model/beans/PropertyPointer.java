@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,20 +31,27 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public abstract class PropertyPointer extends NodePointer {
 
     private static final long serialVersionUID = 1L;
+
     /**
      * Marks a property as unspecified.
      */
     public static final int UNSPECIFIED_PROPERTY = Integer.MIN_VALUE;
     private static final Object UNINITIALIZED = new Object();
+
     /** Property index */
     protected int propertyIndex = UNSPECIFIED_PROPERTY;
+
     /** Owning object */
     protected Object bean;
+
+    /**
+     * Supports {@link #getImmediateNode()}.
+     */
     private Object value = UNINITIALIZED;
 
     /**
      * Takes a JavaBean, a descriptor of a property of that object and an offset within that property (starting with 0).
-     * 
+     *
      * @param parent parent pointer
      */
     public PropertyPointer(final NodePointer parent) {
@@ -57,20 +64,20 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index) {
         final PropertyPointer prop = (PropertyPointer) clone();
-        if (name != null) {
-            prop.setPropertyName(name.toString());
+        if (qName != null) {
+            prop.setPropertyName(qName.toString());
         }
         prop.setIndex(index);
         return prop.createPath(context);
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
         final PropertyPointer prop = (PropertyPointer) clone();
-        if (name != null) {
-            prop.setPropertyName(name.toString());
+        if (qName != null) {
+            prop.setPropertyName(qName.toString());
         }
         prop.setIndex(index);
         return prop.createPath(context, value);
@@ -121,7 +128,7 @@ public abstract class PropertyPointer extends NodePointer {
 
     /**
      * Gets the parent bean.
-     * 
+     *
      * @return Object
      */
     public Object getBean() {
@@ -141,7 +148,7 @@ public abstract class PropertyPointer extends NodePointer {
 
     /**
      * Returns a NodePointer that can be used to access the currently selected property value.
-     * 
+     *
      * @return NodePointer
      */
     @Override
@@ -151,7 +158,7 @@ public abstract class PropertyPointer extends NodePointer {
 
     /**
      * If the property contains a collection, then the length of that collection, otherwise - 1.
-     * 
+     *
      * @return int length
      */
     @Override
@@ -167,14 +174,14 @@ public abstract class PropertyPointer extends NodePointer {
 
     /**
      * Count the number of properties represented.
-     * 
+     *
      * @return int
      */
     public abstract int getPropertyCount();
 
     /**
      * Gets the property index.
-     * 
+     *
      * @return int index
      */
     public int getPropertyIndex() {
@@ -183,14 +190,14 @@ public abstract class PropertyPointer extends NodePointer {
 
     /**
      * Gets the property name.
-     * 
+     *
      * @return String property name.
      */
     public abstract String getPropertyName();
 
     /**
      * Gets the names of the included properties.
-     * 
+     *
      * @return String[]
      */
     public abstract String[] getPropertyNames();
@@ -209,8 +216,8 @@ public abstract class PropertyPointer extends NodePointer {
     }
 
     /**
-     * Learn whether this pointer references an actual property.
-     * 
+     * Tests whether this pointer references an actual property.
+     *
      * @return true if actual
      */
     protected abstract boolean isActualProperty();
@@ -229,7 +236,7 @@ public abstract class PropertyPointer extends NodePointer {
 
     /**
      * Sets the property index.
-     * 
+     *
      * @param index property index
      */
     public void setPropertyIndex(final int index) {
@@ -241,7 +248,7 @@ public abstract class PropertyPointer extends NodePointer {
 
     /**
      * Sets the property name.
-     * 
+     *
      * @param propertyName property name to set.
      */
     public abstract void setPropertyName(String propertyName);

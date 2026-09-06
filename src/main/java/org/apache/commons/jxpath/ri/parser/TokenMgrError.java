@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,18 +30,22 @@ public class TokenMgrError extends Error {
      *
      */
     private static final long serialVersionUID = 1L;
+
     /**
      * Lexical error occurred.
      */
     static final int LEXICAL_ERROR = 0;
+
     /**
      * An attempt wass made to create a second instance of a static token manager.
      */
     static final int STATIC_LEXER_ERROR = 1;
+
     /**
      * Tried to change to an invalid lexical state.
      */
     static final int INVALID_LEXICAL_STATE = 2;
+
     /**
      * Detected (and bailed out of) an infinite loop in the token manager.
      */
@@ -107,13 +111,13 @@ public class TokenMgrError extends Error {
      * @param errorLine   line number when the error occurred
      * @param errorColumn column number when the error occurred
      * @param errorAfter  prefix that was seen before this error occurred
-     * @param curChar     the offending character
+     * @param curChar     The offending character
      * @return TODO
      */
     protected static String LexicalError(final boolean EOFSeen, final int lexState, final int errorLine, final int errorColumn, final String errorAfter,
             final char curChar) {
         return "Lexical error at line " + errorLine + ", column " + errorColumn + ".  Encountered: "
-                + (EOFSeen ? "<EOF> " : "\"" + addEscapes(String.valueOf(curChar)) + "\"" + " (" + (int) curChar + "), ") + "after : \""
+                + (EOFSeen ? "<EOF> " : "\"" + addEscapes(String.valueOf(curChar)) + "\" (" + (int) curChar + "), ") + "after : \""
                 + addEscapes(errorAfter) + "\"";
     }
 

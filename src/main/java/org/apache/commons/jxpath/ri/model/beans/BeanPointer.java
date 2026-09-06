@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,17 +31,17 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class BeanPointer extends PropertyOwnerPointer {
 
     private static final long serialVersionUID = -8227317938284982440L;
-    
+
     /**
      * Qualified name.
      */
-    private final QName name;
-    
+    private final QName qName;
+
     /**
      * Bean.
      */
     private final Object bean;
-    
+
     /**
      * Bean info.
      */
@@ -49,30 +49,30 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     /**
      * BeanPointer a new BeanPointer.
-     * 
+     *
      * @param parent   pointer
-     * @param name     is the name given to the first node
+     * @param qName     is the name given to the first node
      * @param bean     pointed
      * @param beanInfo JXPathBeanInfo
      */
-    public BeanPointer(final NodePointer parent, final QName name, final Object bean, final JXPathBeanInfo beanInfo) {
+    public BeanPointer(final NodePointer parent, final QName qName, final Object bean, final JXPathBeanInfo beanInfo) {
         super(parent);
-        this.name = name;
+        this.qName = qName;
         this.bean = bean;
         this.beanInfo = beanInfo;
     }
 
     /**
      * Constructs a new BeanPointer.
-     * 
-     * @param name     is the name given to the first node
+     *
+     * @param qName     is the name given to the first node
      * @param bean     pointed
      * @param beanInfo JXPathBeanInfo
      * @param locale   Locale
      */
-    public BeanPointer(final QName name, final Object bean, final JXPathBeanInfo beanInfo, final Locale locale) {
+    public BeanPointer(final QName qName, final Object bean, final JXPathBeanInfo beanInfo, final Locale locale) {
         super(null, locale);
-        this.name = name;
+        this.qName = qName;
         this.bean = bean;
         this.beanInfo = beanInfo;
     }
@@ -117,7 +117,7 @@ public class BeanPointer extends PropertyOwnerPointer {
         if (parent != other.parent && (parent == null || !parent.equals(other.parent))) {
             return false;
         }
-        if (name == null && other.name != null || name != null && !name.equals(other.name)) {
+        if (qName == null && other.qName != null || qName != null && !qName.equals(other.qName)) {
             return false;
         }
         final int iThis = index == WHOLE_COLLECTION ? 0 : index;
@@ -138,7 +138,7 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @return 1
      */
     @Override
@@ -148,7 +148,7 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     @Override
     public QName getName() {
-        return name;
+        return qName;
     }
 
     @Override
@@ -158,12 +158,12 @@ public class BeanPointer extends PropertyOwnerPointer {
 
     @Override
     public int hashCode() {
-        return name == null ? 0 : name.hashCode();
+        return qName == null ? 0 : qName.hashCode();
     }
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @return false
      */
     @Override

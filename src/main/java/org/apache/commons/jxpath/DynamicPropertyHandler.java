@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ public interface DynamicPropertyHandler {
 
     /**
      * Returns the value of the specified dynamic property.
-     * 
+     *
      * @param object       to search
      * @param propertyName to retrieve
      * @return Object
@@ -44,7 +44,7 @@ public interface DynamicPropertyHandler {
 
     /**
      * Returns a list of dynamic property names for the supplied object.
-     * 
+     *
      * @param object to inspect
      * @return String[]
      */
@@ -52,7 +52,7 @@ public interface DynamicPropertyHandler {
 
     /**
      * Modifies the value of the specified dynamic property.
-     * 
+     *
      * @param object       to modify
      * @param propertyName to modify
      * @param value        to set

@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Be sure empty lists/sets/arrays work.
  */
-public class EmptyCollectionTest extends AbstractJXPathTest {
+class EmptyCollectionTest extends AbstractJXPathTest {
 
     public static class HasChild {
 
@@ -45,32 +45,32 @@ public class EmptyCollectionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testEmptyArray() {
+    void testEmptyArray() {
         assertXPathPointerIterator(JXPathContext.newContext(new Object[0]), "/*", list());
     }
 
     @Test
-    public void testEmptyChildArray() {
+    void testEmptyChildArray() {
         assertXPathPointerIterator(JXPathContext.newContext(new HasChild(new Object[0])), "/child/*", list());
     }
 
     @Test
-    public void testEmptyChildList() {
+    void testEmptyChildList() {
         assertXPathPointerIterator(JXPathContext.newContext(new HasChild(Collections.EMPTY_LIST)), "/child/*", Collections.EMPTY_LIST);
     }
 
     @Test
-    public void testEmptyChildSet() {
+    void testEmptyChildSet() {
         assertXPathPointerIterator(JXPathContext.newContext(new HasChild(Collections.EMPTY_SET)), "/child/*", Collections.EMPTY_SET);
     }
 
     @Test
-    public void testEmptyList() {
+    void testEmptyList() {
         assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_LIST), "/*", Collections.EMPTY_LIST);
     }
 
     @Test
-    public void testEmptySet() {
+    void testEmptySet() {
         assertXPathPointerIterator(JXPathContext.newContext(Collections.EMPTY_SET), "/*", Collections.EMPTY_SET);
     }
 }

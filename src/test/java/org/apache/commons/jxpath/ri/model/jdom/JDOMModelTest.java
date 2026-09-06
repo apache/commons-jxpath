@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests JXPath with JDOM
  */
-public class JDOMModelTest extends AbstractXMLModelTest {
+class JDOMModelTest extends AbstractXMLModelTest {
 
     private void appendXMLSignature(final StringBuilder buffer, final List children, final boolean elements, final boolean attributes, final boolean text,
             final boolean pi) {
@@ -85,14 +85,14 @@ public class JDOMModelTest extends AbstractXMLModelTest {
     }
 
     @Test
-    public void testGetElementDescendantOrSelf() {
+    void testGetElementDescendantOrSelf() {
         final JXPathContext childContext = context.getRelativeContext(context.getPointer("/vendor"));
         assertInstanceOf(Element.class, childContext.getContextBean());
         assertXPathNodeType(childContext, "//vendor", Element.class);
     }
 
     @Test
-    public void testGetNode() {
+    void testGetNode() {
         assertXPathNodeType(context, "/", Document.class);
         assertXPathNodeType(context, "/vendor/location", Element.class);
         assertXPathNodeType(context, "//location/@name", Attribute.class);

@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,12 +36,20 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public class CollectionPointer extends NodePointer {
 
     private static final long serialVersionUID = 8620254915563256588L;
+
+    /**
+     * The collection itself supporting {@link #getBaseValue()}.
+     */
     private Object collection;
+
+    /**
+     * Supports {@link #getValuePointer()}.
+     */
     private NodePointer valuePointer;
 
     /**
      * Constructs a new CollectionPointer.
-     * 
+     *
      * @param parent     parent NodePointer
      * @param collection value
      */
@@ -52,7 +60,7 @@ public class CollectionPointer extends NodePointer {
 
     /**
      * Constructs a new CollectionPointer.
-     * 
+     *
      * @param collection value
      * @param locale     Locale
      */
@@ -83,8 +91,8 @@ public class CollectionPointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return index == WHOLE_COLLECTION ? new CollectionAttributeNodeIterator(this, name) : getValuePointer().attributeIterator(name);
+    public NodeIterator attributeIterator(final QName qName) {
+        return index == WHOLE_COLLECTION ? new CollectionAttributeNodeIterator(this, qName) : getValuePointer().attributeIterator(qName);
     }
 
     @Override
@@ -101,14 +109,14 @@ public class CollectionPointer extends NodePointer {
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index) {
         final NodePointer ptr = (NodePointer) clone();
         ptr.setIndex(index);
         return ptr.createPath(context);
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
         final NodePointer ptr = (NodePointer) clone();
         ptr.setIndex(index);
         return ptr.createPath(context, value);

@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,10 +23,10 @@ import java.util.List;
  * If an extenstion function has an argument of type ExpressionContext, it can gain access to the current node of an XPath expression context.
  * <p>
  * Example: <blockquote>
- * 
+ *
  * <pre>
  * public class MyExtenstionFunctions {
- * 
+ *
  *     public static String objectType(ExpressionContext context) {
  *         Object value = context.getContextNodePointer().getValue();
  *         if (value == null) {
@@ -36,15 +36,15 @@ import java.util.List;
  *     }
  * }
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * You can then register this extension function using a {@link ClassFunctions ClassFunctions} object and call it like this: <blockquote>
- * 
+ *
  * <pre>
  * "/descendent-or-self::node()[ns:objectType() = 'java.util.Date']"
  * </pre>
- * 
+ *
  * </blockquote> This expression will find all nodes of the graph that are dates.
  */
 public interface ExpressionContext {
@@ -54,7 +54,7 @@ public interface ExpressionContext {
      *
      * @return A list representing the current context nodes.
      */
-    List getContextNodeList();
+    List<Pointer> getContextNodeList();
 
     /**
      * Gets the current context node.
@@ -72,7 +72,7 @@ public interface ExpressionContext {
 
     /**
      * Returns the current context position.
-     * 
+     *
      * @return int
      */
     int getPosition();

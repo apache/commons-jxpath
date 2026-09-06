@@ -4,3 +4,8 @@ target
 /.classpath
 /.project
 /.settings/
+/.DS_Store
+
+# NetBeans files
+nb-configuration.xml
+nbactions.xml

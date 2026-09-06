@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class JXPath113Test extends AbstractJXPathTest {
+class JXPath113Test extends AbstractJXPathTest {
 
     static class JAXP {
 
@@ -56,7 +56,7 @@ public class JXPath113Test extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIssue113() throws Exception {
+    void testIssue113() throws Exception {
         final Document doc = JAXP.getDocument("<xml/>");
         final JXPathContext context = JXPathContext.newContext(doc);
         final List result = context.selectNodes("//following-sibling::node()");

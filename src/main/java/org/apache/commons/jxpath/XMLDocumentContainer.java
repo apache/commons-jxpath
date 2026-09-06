@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,10 +22,10 @@ import java.util.Objects;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 
 import org.apache.commons.jxpath.xml.DocumentContainer;
+import org.apache.commons.xml.secure.SecureTransformerFactory;
 
 /**
  * An XML document container reads and parses XML only when it is accessed. JXPath traverses Containers transparently - you use the same paths to access objects
@@ -61,13 +61,13 @@ public class XMLDocumentContainer implements Container {
      * @param source XML source
      */
     public XMLDocumentContainer(final Source source) {
-        this.source = Objects.requireNonNull(source);
+        this.source = Objects.requireNonNull(source, "source");
     }
 
     /**
      * Constructs a new XMLDocumentContainer.
      *
-     * @param xmlURL a URL for an XML file. Use getClass().getResource(resourceName) to load XML from a resource file.
+     * @param xmlURL A URL for an XML file. Use getClass().getResource(resourceName) to load XML from a resource file.
      */
     public XMLDocumentContainer(final URL xmlURL) {
         this.xmlURL = xmlURL;
@@ -85,7 +85,7 @@ public class XMLDocumentContainer implements Container {
             try {
                 if (source != null) {
                     final DOMResult result = new DOMResult();
-                    final Transformer trans = TransformerFactory.newInstance().newTransformer();
+                    final Transformer trans = SecureTransformerFactory.newInstance().newTransformer();
                     trans.transform(source, result);
                     document = result.getNode();
                 } else {

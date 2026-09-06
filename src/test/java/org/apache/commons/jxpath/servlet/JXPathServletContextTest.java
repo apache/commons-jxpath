@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ import com.mockrunner.mock.web.MockServletContext;
 
 /**
  */
-public class JXPathServletContextTest {
+class JXPathServletContextTest {
 
     private void checkPointerIterator(final JXPathContext context) {
         final Iterator<Pointer> it = context.iteratePointers("/*");
@@ -60,7 +60,7 @@ public class JXPathServletContextTest {
     }
 
     @Test
-    public void testPageContext() {
+    void testPageContext() {
         final MockServletContext servletContext = new MockServletContext();
         servletContext.setAttribute("app", "app");
         final MockServletConfig servletConfig = new MockServletConfig();
@@ -101,7 +101,7 @@ public class JXPathServletContextTest {
     }
 
     @Test
-    public void testServletContext() {
+    void testServletContext() {
         final ServletContext context = getServletContext();
         final JXPathContext appContext = JXPathServletContexts.getApplicationContext(context);
         assertSame(appContext, JXPathServletContexts.getApplicationContext(context), "Cached context not property returned");
@@ -117,7 +117,7 @@ public class JXPathServletContextTest {
     }
 
     @Test
-    public void testServletRequest() {
+    void testServletRequest() {
         final ServletContext context = getServletContext();
         final MockHttpSession session = new MockHttpSession();
         session.setupServletContext(context);
@@ -153,7 +153,7 @@ public class JXPathServletContextTest {
     }
 
     @Test
-    public void testServletRequestWithoutSession() {
+    void testServletRequestWithoutSession() {
         final ServletContext context = getServletContext();
         final MockHttpServletRequest request = new MockHttpServletRequest();
         final JXPathContext reqContext = JXPathServletContexts.getRequestContext(request, context);

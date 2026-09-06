@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests BasicTypeConverter
  */
-public class BasicTypeConverterTest {
+class BasicTypeConverterTest {
 
     public void assertConversion(final Object from, final Class toType, final Object expected) {
         final boolean can = TypeUtils.canConvert(from, toType);
@@ -53,34 +53,34 @@ public class BasicTypeConverterTest {
     }
 
     @Test
-    public void testArrayToArray() {
+    void testArrayToArray() {
         assertConversion(new int[] { 1, 2 }, String[].class, Arrays.asList(new String[] { "1", "2" }));
     }
 
     @Test
-    public void testArrayToList() {
+    void testArrayToList() {
         assertConversion(new int[] { 1, 2 }, List.class, Arrays.asList(new Object[] { Integer.valueOf(1), Integer.valueOf(2) }));
     }
 
     @Test
-    public void testBeanUtilsConverter() {
+    void testBeanUtilsConverter() {
         assertConversion("12", BigDecimal.class, new BigDecimal(12));
     }
 
     @Test
-    public void testInvalidConversion() {
+    void testInvalidConversion() {
         assertThrows(Exception.class, () -> TypeUtils.convert("'foo'", Date.class), "Type conversion exception");
     }
 
     @Test
-    public void testListToArray() {
+    void testListToArray() {
         assertConversion(Arrays.asList(new Integer[] { Integer.valueOf(1), Integer.valueOf(2) }), String[].class, Arrays.asList(new String[] { "1", "2" }));
         assertConversion(Arrays.asList(new String[] { "1", "2" }), int[].class, Arrays.asList(new Integer[] { Integer.valueOf(1), Integer.valueOf(2) }));
     }
 
     // succeeds in current version
     @Test
-    public void testNodeSetToInteger() {
+    void testNodeSetToInteger() {
         assertConversion(new NodeSet() {
 
             @Override
@@ -101,7 +101,7 @@ public class BasicTypeConverterTest {
     }
 
     @Test
-    public void testNodeSetToString() {
+    void testNodeSetToString() {
         assertConversion(new NodeSet() {
 
             @Override
@@ -125,7 +125,7 @@ public class BasicTypeConverterTest {
     }
 
     @Test
-    public void testPointerToString() {
+    void testPointerToString() {
         assertConversion(new Pointer() {
 
             private static final long serialVersionUID = 1L;
@@ -167,17 +167,17 @@ public class BasicTypeConverterTest {
     }
 
     @Test
-    public void testPrimitiveToString() {
+    void testPrimitiveToString() {
         assertConversion(Integer.valueOf(1), String.class, "1");
     }
 
     @Test
-    public void testSingletonArrayToString() {
+    void testSingletonArrayToString() {
         assertConversion(new String[] { "Earth" }, String.class, "Earth");
     }
 
     @Test
-    public void testSingletonCollectionToString() {
+    void testSingletonCollectionToString() {
         assertConversion(Collections.singleton("Earth"), String.class, "Earth");
     }
 }

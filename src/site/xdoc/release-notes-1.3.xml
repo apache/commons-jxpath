@@ -7,7 +7,7 @@
   (the "License"); you may not use this file except in compliance with
   the License.  You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+       https://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,7 +76,7 @@
 </li>
 <li>[<a href='https://issues.apache.org/jira/browse/JXPATH-90'>JXPATH-90</a>] -         Upper boundary check is missing from substring(&lt;string&gt;, &lt;number&gt;)
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-93'>JXPATH-93</a>] -         Binary operators behaviour involving node-sets is incorrect
+<li>[<a href='https://issues.apache.org/jira/browse/JXPATH-93'>JXPATH-93</a>] -         Binary operators behavior involving node-sets is incorrect
 </li>
 <li>[<a href='https://issues.apache.org/jira/browse/JXPATH-94'>JXPATH-94</a>] -         equality test for multi-valued variables does not conform to spec
 </li>

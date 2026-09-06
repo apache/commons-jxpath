@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class DOMNamespaceIterator implements NodeIterator {
 
     /**
      * Constructs a new DOMNamespaceIterator.
-     * 
+     *
      * @param parent parent pointer
      */
     public DOMNamespaceIterator(final NodePointer parent) {
@@ -49,7 +49,7 @@ public class DOMNamespaceIterator implements NodeIterator {
 
     /**
      * Collect namespaces from attribute nodes.
-     * 
+     *
      * @param attributes attribute list
      * @param node       target node
      */
@@ -88,7 +88,7 @@ public class DOMNamespaceIterator implements NodeIterator {
             index = 0;
         }
         String prefix = "";
-        final Attr attr = (Attr) attributes.get(index);
+        final Attr attr = attributes.get(index);
         final String name = attr.getPrefix();
         if (name != null && name.equals("xmlns")) {
             prefix = DOMNodePointer.getLocalName(attr);

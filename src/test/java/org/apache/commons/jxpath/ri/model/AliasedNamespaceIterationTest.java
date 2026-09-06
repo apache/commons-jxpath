@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test aliased/doubled XML namespace iteration; JXPATH-125.
  */
-public class AliasedNamespaceIterationTest extends AbstractJXPathTest {
+class AliasedNamespaceIterationTest extends AbstractJXPathTest {
 
     protected JXPathContext context;
 
@@ -51,12 +51,12 @@ public class AliasedNamespaceIterationTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIterateDOM() {
+    void testIterateDOM() {
         doTestIterate(DocumentContainer.MODEL_DOM);
     }
 
     @Test
-    public void testIterateJDOM() {
+    void testIterateJDOM() {
         doTestIterate(DocumentContainer.MODEL_JDOM);
     }
 }

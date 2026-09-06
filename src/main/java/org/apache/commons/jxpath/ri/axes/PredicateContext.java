@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class PredicateContext extends EvalContext {
 
     /**
      * Constructs a new PredicateContext.
-     * 
+     *
      * @param parentContext parent context
      * @param expression    compiled Expression
      */
@@ -148,7 +148,7 @@ public class PredicateContext extends EvalContext {
 
     /**
      * Basic setPosition
-     * 
+     *
      * @param position to set
      * @return whether valid
      */
@@ -166,7 +166,7 @@ public class PredicateContext extends EvalContext {
 
     /**
      * Used for an optimized access to dynamic properties using the "map[@name = 'name']" syntax
-     * 
+     *
      * @return whether valid
      */
     private boolean setupDynamicPropertyPointer() {

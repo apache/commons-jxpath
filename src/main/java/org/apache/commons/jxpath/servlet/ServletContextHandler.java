@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ public class ServletContextHandler implements DynamicPropertyHandler {
 
     /**
      * Collect the property names from bean, storing in set.
-     * 
+     *
      * @param set  destination
      * @param bean to read
      */
@@ -63,7 +63,7 @@ public class ServletContextHandler implements DynamicPropertyHandler {
     public String[] getPropertyNames(final Object context) {
         final HashSet<String> set = new HashSet<>(DEFAULT_PROPERTY_COUNT);
         collectPropertyNames(set, context);
-        return (String[]) set.toArray(new String[set.size()]);
+        return set.toArray(new String[set.size()]);
     }
 
     @Override

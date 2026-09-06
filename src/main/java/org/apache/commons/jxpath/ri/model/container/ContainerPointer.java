@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,12 +32,20 @@ import org.apache.commons.jxpath.util.ValueUtils;
 public class ContainerPointer extends NodePointer {
 
     private static final long serialVersionUID = 6140752946621686118L;
+
+    /**
+     * A Container.
+     */
     private final Container container;
+
+    /**
+     * Supports {@link #getImmediateValuePointer()}.
+     */
     private NodePointer valuePointer;
 
     /**
      * Constructs a new ContainerPointer.
-     * 
+     *
      * @param container Container object
      * @param locale    Locale
      */
@@ -48,7 +56,7 @@ public class ContainerPointer extends NodePointer {
 
     /**
      * Constructs a new ContainerPointer.
-     * 
+     *
      * @param parent    parent pointer
      * @param container Container object
      */
@@ -63,8 +71,8 @@ public class ContainerPointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return getValuePointer().attributeIterator(name);
+    public NodeIterator attributeIterator(final QName qName) {
+        return getValuePointer().attributeIterator(qName);
     }
 
     @Override
@@ -141,7 +149,7 @@ public class ContainerPointer extends NodePointer {
 
     /**
      * This type of node is auxiliary.
-     * 
+     *
      * @return {@code true}.
      */
     @Override

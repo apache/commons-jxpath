@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -65,7 +65,7 @@ public final class JXPathServletContexts {
 
     /**
      * Returns a JXPathContext bound to the "application" scope. Caches that context within the servlet context itself.
-     * 
+     *
      * @param servletContext operative
      * @return JXPathContext
      */
@@ -81,7 +81,7 @@ public final class JXPathServletContexts {
 
     /**
      * Returns a JXPathContext bound to the "page" scope. Caches that context within the PageContext itself.
-     * 
+     *
      * @param pageContext as described
      * @return JXPathContext
      */
@@ -98,7 +98,7 @@ public final class JXPathServletContexts {
 
     /**
      * Returns a JXPathContext bound to the "request" scope. Caches that context within the request itself.
-     * 
+     *
      * @param request        as described
      * @param servletContext operative
      * @return JXPathContext
@@ -132,7 +132,7 @@ public final class JXPathServletContexts {
 
     /**
      * Returns a JXPathContext bound to the "session" scope. Caches that context within the session itself.
-     * 
+     *
      * @param session        as described
      * @param servletContext operative
      * @return JXPathContext
@@ -148,7 +148,7 @@ public final class JXPathServletContexts {
         }
         return context;
     }
-    
+
     /**
      * Constructs a new instance.
      *

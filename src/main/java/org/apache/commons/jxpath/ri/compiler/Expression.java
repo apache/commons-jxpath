@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,7 @@ import org.apache.commons.jxpath.util.ValueUtils;
 
 /**
  * Common superclass for several types of nodes in the parse tree. Provides APIs for optimization of evaluation of expressions. Specifically, an expression only
- * needs to executed once during the evaluation of an xpath if that expression is context-independent. Expression.isContextDependent() provides that hint.
+ * needs to executed once during the evaluation of an XPath if that expression is context-independent. Expression.isContextDependent() provides that hint.
  */
 public abstract class Expression {
 
@@ -43,10 +43,9 @@ public abstract class Expression {
         private final QName qname;
         private final Locale locale;
 
-        // to what method does the following comment refer?
         /**
          * Constructs a new PointerIterator
-         * 
+         *
          * @param it     underlying Iterator
          * @param qname  name
          * @param locale Locale
@@ -88,7 +87,7 @@ public abstract class Expression {
 
         /**
          * Constructs a new ValueIterator.
-         * 
+         *
          * @param it underlying Iterator, may contain pointers
          */
         public ValueIterator(final Iterator it) {
@@ -117,8 +116,10 @@ public abstract class Expression {
 
     /** Zero */
     protected static final Double ZERO = Double.valueOf(0);
+
     /** One */
     protected static final Double ONE = Double.valueOf(1);
+
     /** NaN */
     protected static final Double NOT_A_NUMBER = Double.valueOf(Double.NaN);
     private boolean contextDependencyKnown;
@@ -133,7 +134,7 @@ public abstract class Expression {
 
     /**
      * Evaluates the expression. If the result is a node set, returns the first element of the node set.
-     * 
+     *
      * @param context evaluation context
      * @return Object
      */
@@ -141,14 +142,14 @@ public abstract class Expression {
 
     /**
      * Implemented by subclasses and result is cached by isContextDependent()
-     * 
+     *
      * @return calculated context-dependentness as boolean
      */
     public abstract boolean computeContextDependent();
 
     /**
      * Evaluates the expression. If the result is a node set, returns the first element of the node set.
-     * 
+     *
      * @param context evaluation context
      * @return Object
      */
@@ -156,7 +157,7 @@ public abstract class Expression {
 
     /**
      * Returns true if this expression should be re-evaluated each time the current position in the context changes.
-     * 
+     *
      * @return boolean
      */
     public synchronized boolean isContextDependent() {
@@ -169,7 +170,7 @@ public abstract class Expression {
 
     /**
      * Iterate over the values from the specified context.
-     * 
+     *
      * @param context evaluation context
      * @return value Iterator
      */
@@ -186,7 +187,7 @@ public abstract class Expression {
 
     /**
      * Iterate over the pointers from the specified context.
-     * 
+     *
      * @param context evaluation context
      * @return pointer Iterator
      */

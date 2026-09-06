@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ public class ExpressionPath extends Path {
 
     /**
      * Constructs a new ExpressionPath.
-     * 
+     *
      * @param expression Expression
      * @param predicates to execute
      * @param steps      navigation
@@ -56,7 +56,7 @@ public class ExpressionPath extends Path {
 
     /**
      * Returns true if the root expression or any of the predicates or the path steps are context dependent.
-     * 
+     *
      * @return boolean
      */
     @Override
@@ -81,7 +81,7 @@ public class ExpressionPath extends Path {
 
     /**
      * Walks an expression path (a path that starts with an expression)
-     * 
+     *
      * @param evalContext base context
      * @param firstMatch  whether to return the first match found
      * @return Object found
@@ -120,7 +120,7 @@ public class ExpressionPath extends Path {
 
     /**
      * Gets the expression.
-     * 
+     *
      * @return Expression
      */
     public Expression getExpression() {
@@ -129,7 +129,7 @@ public class ExpressionPath extends Path {
 
     /**
      * Predicates are the expressions in brackets that may follow the root expression of the path.
-     * 
+     *
      * @return Expression[]
      */
     public Expression[] getPredicates() {
@@ -138,7 +138,7 @@ public class ExpressionPath extends Path {
 
     /**
      * Recognized paths formatted as {@code $x[3]/foo[2]}. The evaluation of such "simple" paths is optimized and streamlined.
-     * 
+     *
      * @return boolean
      */
     public synchronized boolean isSimpleExpressionPath() {

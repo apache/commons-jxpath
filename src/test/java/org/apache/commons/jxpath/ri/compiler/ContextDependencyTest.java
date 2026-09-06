@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,10 +26,10 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests the determination of whether an expression is context dependent.
  */
-public class ContextDependencyTest extends AbstractJXPathTest {
+class ContextDependencyTest extends AbstractJXPathTest {
 
     @Test
-    public void testContextDependency() {
+    void testContextDependency() {
         testContextDependency("1", false);
         testContextDependency("$x", false);
         testContextDependency("/foo", false);
@@ -42,7 +42,7 @@ public class ContextDependencyTest extends AbstractJXPathTest {
         testContextDependency("test:func(3, foo)", true);
     }
 
-    public void testContextDependency(final String xpath, final boolean expected) {
+    void testContextDependency(final String xpath, final boolean expected) {
         final Expression expr = (Expression) Parser.parseExpression(xpath, new TreeCompiler());
         assertEquals(expected, expr.isContextDependent(), "Context dependency <" + xpath + ">");
     }

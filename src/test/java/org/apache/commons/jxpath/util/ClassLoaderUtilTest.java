@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,17 +19,16 @@ package org.apache.commons.jxpath.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,41 +47,26 @@ public class ClassLoaderUtilTest {
      */
     private static final class TestClassLoader extends ClassLoader {
 
-        private Class testCaseClass = null;
+        private Class<?> testCaseClass = null;
 
         public TestClassLoader(final ClassLoader classLoader) {
             super(classLoader);
         }
 
         @Override
-        public synchronized Class loadClass(final String name, final boolean resolved) throws ClassNotFoundException {
+        public synchronized Class<?> loadClass(final String name, final boolean resolved) throws ClassNotFoundException {
             if (EXAMPLE_CLASS_NAME.equals(name)) {
                 throw new ClassNotFoundException();
             }
             if (TEST_CASE_CLASS_NAME.equals(name)) {
                 if (testCaseClass == null) {
-                    final URL clazzUrl = getParent().getResource("org/apache/commons/jxpath/util/ClassLoaderUtilTest.class");
-                    final ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    InputStream in = null;
+                    final URL classUrl = getParent().getResource("org/apache/commons/jxpath/util/ClassLoaderUtilTest.class");
+                    byte[] clazzBytes;
                     try {
-                        in = clazzUrl.openStream();
-                        final byte[] buffer = new byte[2048];
-                        for (int read = in.read(buffer); read > -1; read = in.read(buffer)) {
-                            out.write(buffer, 0, read);
-                        }
+                        clazzBytes = IOUtils.toByteArray(classUrl);
                     } catch (final IOException e) {
-                        throw new ClassNotFoundException("Could not read class from resource " + clazzUrl + ".", e);
-                    } finally {
-                        try {
-                            in.close();
-                        } catch (final Exception e) {
-                        }
-                        try {
-                            out.close();
-                        } catch (final Exception e) {
-                        }
+                        throw new ClassNotFoundException(classUrl.toString(), e);
                     }
-                    final byte[] clazzBytes = out.toByteArray();
                     this.testCaseClass = this.defineClass(TEST_CASE_CLASS_NAME, clazzBytes, 0, clazzBytes.length);
                 }
                 return this.testCaseClass;
@@ -111,13 +95,7 @@ public class ClassLoaderUtilTest {
      */
     public static void callExampleMessageMethodAndAssertSuccess() {
         final JXPathContext context = JXPathContext.newContext(new Object());
-        Object value;
-        try {
-            value = context.selectSingleNode(EXAMPLE_CLASS_NAME + ".getMessage()");
-            assertEquals("an example class", value);
-        } catch (final Exception e) {
-            fail(e.getMessage());
-        }
+        assertEquals("an example class", context.selectSingleNode(EXAMPLE_CLASS_NAME + ".getMessage()"));
     }
 
     private ClassLoader orginalContextClassLoader;
@@ -125,26 +103,15 @@ public class ClassLoaderUtilTest {
     /**
      * Loads this class through the given class loader and then invokes the indicated no argument static method of the class.
      *
-     * @param cl         the class loader under which to invoke the method.
-     * @param methodName the name of the static no argument method on this class to invoke.
+     * @param cl         The class loader under which to invoke the method.
+     * @param methodName The name of the static no argument method on this class to invoke.
+     * @throws ReflectiveOperationException on test failures.
      */
-    private void executeTestMethodUnderClassLoader(final ClassLoader cl, final String methodName) {
-        Class testClass = null;
+    private void executeTestMethodUnderClassLoader(final ClassLoader cl, final String methodName) throws ReflectiveOperationException {
+        final Class<?> testClass = cl.loadClass(TEST_CASE_CLASS_NAME);
+        final Method testMethod = testClass.getMethod(methodName, ArrayUtils.EMPTY_CLASS_ARRAY);
         try {
-            testClass = cl.loadClass(TEST_CASE_CLASS_NAME);
-        } catch (final ClassNotFoundException e) {
-            fail(e.getMessage());
-        }
-        Method testMethod = null;
-        try {
-            testMethod = testClass.getMethod(methodName, null);
-        } catch (final SecurityException | NoSuchMethodException e) {
-            fail(e.getMessage());
-        }
-        try {
-            testMethod.invoke(null, null);
-        } catch (final IllegalArgumentException | IllegalAccessException e) {
-            fail(e.getMessage());
+            testMethod.invoke(null, (Object[]) null);
         } catch (final InvocationTargetException e) {
             if (e.getCause() instanceof RuntimeException) {
                 // Allow the runtime exception to propagate up.
@@ -171,9 +138,11 @@ public class ClassLoaderUtilTest {
 
     /**
      * Tests that JXPath cannot dynamically load a class, which is not visible to its class loader, when the context class loader is null.
+     *
+     * @throws ReflectiveOperationException on test failures.
      */
     @Test
-    public void testClassLoadFailWithoutContextClassLoader() {
+    void testClassLoadFailWithoutContextClassLoader() throws ReflectiveOperationException {
         Thread.currentThread().setContextClassLoader(null);
         final ClassLoader cl = new TestClassLoader(getClass().getClassLoader());
         executeTestMethodUnderClassLoader(cl, "callExampleMessageMethodAndAssertClassNotFoundJXPathException");
@@ -181,9 +150,11 @@ public class ClassLoaderUtilTest {
 
     /**
      * Tests that JXPath can dynamically load a class, which is not visible to its class loader, when the context class loader is set and can load the class.
+     *
+     * @throws ReflectiveOperationException on test failures.
      */
     @Test
-    public void testClassLoadSuccessWithContextClassLoader() {
+    void testClassLoadSuccessWithContextClassLoader() throws ReflectiveOperationException {
         Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
         final ClassLoader cl = new TestClassLoader(getClass().getClassLoader());
         executeTestMethodUnderClassLoader(cl, "callExampleMessageMethodAndAssertSuccess");
@@ -193,7 +164,7 @@ public class ClassLoaderUtilTest {
      * Tests that JXPath can dynamically load a class, which is visible to its class loader, when there is no context class loader set.
      */
     @Test
-    public void testClassLoadSuccessWithoutContextClassLoader() {
+    void testClassLoadSuccessWithoutContextClassLoader() {
         Thread.currentThread().setContextClassLoader(null);
         callExampleMessageMethodAndAssertSuccess();
     }
@@ -202,7 +173,7 @@ public class ClassLoaderUtilTest {
      * Tests that JXPath will use its class loader to dynamically load a requested class when the context class loader is set but unable to load the class.
      */
     @Test
-    public void testCurrentClassLoaderFallback() {
+    void testCurrentClassLoaderFallback() {
         final ClassLoader cl = new TestClassLoader(getClass().getClassLoader());
         Thread.currentThread().setContextClassLoader(cl);
         callExampleMessageMethodAndAssertSuccess();

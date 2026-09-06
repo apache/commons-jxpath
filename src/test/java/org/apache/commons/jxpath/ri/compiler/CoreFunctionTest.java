@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test basic functionality of JXPath - core functions.
  */
-public class CoreFunctionTest extends AbstractJXPathTest {
+class CoreFunctionTest extends AbstractJXPathTest {
 
     private JXPathContext context;
 
@@ -52,7 +52,7 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testCoreFunctions() {
+    void testCoreFunctions() {
         assertXPathValue(context, "string(2)", "2");
         assertXPathValue(context, "string($nan)", "NaN");
         assertXPathValue(context, "string(-$nan)", "NaN");
@@ -115,7 +115,25 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testExtendedKeyFunction() {
+    void testNumberConversionIsXPathConformant() {
+        // Java number literals that are outside the XPath 1.0 number grammar must convert to NaN.
+        assertXPathValue(context, "number('1e3')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "number('5d')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "number('5f')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "number('+5')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "number('Infinity')", Double.valueOf(Double.NaN));
+        // Valid XPath numbers still convert.
+        assertXPathValue(context, "number('1')", Double.valueOf(1));
+        assertXPathValue(context, "number('1.5')", Double.valueOf(1.5));
+        assertXPathValue(context, "number('-.5')", Double.valueOf(-0.5));
+        assertXPathValue(context, "number(' 42 ')", Double.valueOf(42));
+        // doubleValue() agrees: a non-XPath number is NaN, so numeric comparisons are false.
+        assertXPathValue(context, "'5d' >= 5", Boolean.FALSE);
+        assertXPathValue(context, "'1e3' = 1000", Boolean.FALSE);
+    }
+
+    @Test
+    void testExtendedKeyFunction() {
         context.setKeyManager(new ExtendedKeyManager() {
 
             @Override
@@ -156,7 +174,7 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testFormatNumberFunction() {
+    void testFormatNumberFunction() {
         final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDigit('D');
         context.setDecimalFormatSymbols("test", symbols);
@@ -169,7 +187,7 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testIDFunction() {
+    void testIDFunction() {
         context.setIdentityManager((context, id) -> {
             NodePointer ptr = (NodePointer) context.getPointer("/document");
             ptr = ptr.getValuePointer();
@@ -180,7 +198,7 @@ public class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testKeyFunction() {
+    void testKeyFunction() {
         context.setKeyManager((context, key, value) -> NodePointer.newNodePointer(null, "42", null));
         assertXPathValue(context, "key('a', 'b')", "42");
     }

@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,8 @@ package org.apache.commons.jxpath.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.JXPathException;
@@ -35,17 +36,18 @@ public class DocumentContainer extends XMLParser2 implements Container {
 
     /** DOM constant */
     public static final String MODEL_DOM = "DOM";
+
     /** JDOM constant */
     public static final String MODEL_JDOM = "JDOM";
     private static final long serialVersionUID = -8713290334113427066L;
-    private static HashMap<String, String> parserClasses = new HashMap<>();
+    private static final Map<String, String> parserClasses = new ConcurrentHashMap<>();
 
     static {
         parserClasses.put(MODEL_DOM, "org.apache.commons.jxpath.xml.DOMParser");
         parserClasses.put(MODEL_JDOM, "org.apache.commons.jxpath.xml.JDOMParser");
     }
 
-    private static HashMap<String, XMLParser> parsers = new HashMap<>();
+    private static final Map<String, XMLParser> parsers = new ConcurrentHashMap<>();
 
     /**
      * Maps a model type to a parser.
@@ -60,8 +62,7 @@ public class DocumentContainer extends XMLParser2 implements Container {
                 throw new JXPathException("Unsupported XML model: " + model);
             }
             try {
-                final Class<XMLParser> clazz = ClassLoaderUtil.getClass(className, true);
-                return clazz.getConstructor().newInstance();
+                return ClassLoaderUtil.<XMLParser>getClass(className, true).getConstructor().newInstance();
             } catch (final Exception ex) {
                 throw new JXPathException("Cannot allocate XMLParser: " + className, ex);
             }

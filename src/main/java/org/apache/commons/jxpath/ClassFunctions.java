@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,11 +30,11 @@ import org.apache.commons.jxpath.util.MethodLookupUtils;
  * Extension functions provided by a Java class.
  *
  * Let's say we declared a ClassFunction like this: <blockquote>
- * 
+ *
  * <pre>
  * new ClassFunctions(Integer.class, "int")
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * We can now use XPaths like:
@@ -58,7 +58,7 @@ public class ClassFunctions implements Functions {
 
     /**
      * Constructs a new ClassFunctions.
-     * 
+     *
      * @param functionClass Class providing the functions
      * @param namespace     assigned ns
      */
@@ -73,7 +73,7 @@ public class ClassFunctions implements Functions {
      * @param namespace  if it is not the namespace specified in the constructor, the method returns null
      * @param name       is a function name or "new" for a constructor.
      * @param parameters Object[] of parameters
-     * @return a MethodFunction, a ConstructorFunction or null if there is no such function.
+     * @return A MethodFunction, a ConstructorFunction or null if there is no such function.
      */
     @Override
     public Function getFunction(final String namespace, final String name, Object[] parameters) {
@@ -108,7 +108,7 @@ public class ClassFunctions implements Functions {
     /**
      * Returns a set of one namespace - the one specified in the constructor.
      *
-     * @return a singleton
+     * @return A singleton
      */
     @Override
     public Set<String> getUsedNamespaces() {

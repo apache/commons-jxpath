@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,40 +29,51 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class NullPointer extends PropertyOwnerPointer {
 
     private static final long serialVersionUID = 2193425983220679887L;
-    private QName name;
-    private String id;
+
+    /**
+     * The name of this node
+     */
+    private final QName qName;
+
+    /**
+     * Optional ID, may be null.
+     */
+    private final String id;
 
     /**
      * Constructs a new NullPointer.
-     * 
-     * @param locale Locale
-     * @param id     String
+     *
+     * @param locale Locale.
+     * @param id     ID.
      */
     public NullPointer(final Locale locale, final String id) {
         super(null, locale);
         this.id = id;
+        this.qName = null;
     }
 
     /**
      * Used for the root node.
-     * 
+     *
      * @param parent parent pointer
-     * @param name   node name
+     * @param qName  node name
      */
-    public NullPointer(final NodePointer parent, final QName name) {
+    public NullPointer(final NodePointer parent, final QName qName) {
         super(parent);
-        this.name = name;
+        this.qName = qName;
+        this.id = null;
     }
 
     /**
      * Constructs a new NullPointer.
-     * 
-     * @param name   node name
+     *
+     * @param qName  node name
      * @param locale Locale
      */
-    public NullPointer(final QName name, final Locale locale) {
+    public NullPointer(final QName qName, final Locale locale) {
         super(null, locale);
-        this.name = name;
+        this.qName = qName;
+        this.id = null;
     }
 
     @Override
@@ -74,13 +85,13 @@ public class NullPointer extends PropertyOwnerPointer {
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
-        return createPath(context).createChild(context, name, index);
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index) {
+        return createPath(context).createChild(context, qName, index);
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
-        return createPath(context).createChild(context, name, index, value);
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
+        return createPath(context).createChild(context, qName, index, value);
     }
 
     @Override
@@ -108,7 +119,7 @@ public class NullPointer extends PropertyOwnerPointer {
             return false;
         }
         final NullPointer other = (NullPointer) object;
-        return name == other.name || name != null && name.equals(other.name);
+        return qName == other.qName || qName != null && qName.equals(other.qName);
     }
 
     @Override
@@ -123,7 +134,7 @@ public class NullPointer extends PropertyOwnerPointer {
 
     @Override
     public QName getName() {
-        return name;
+        return qName;
     }
 
     @Override
@@ -133,7 +144,7 @@ public class NullPointer extends PropertyOwnerPointer {
 
     @Override
     public int hashCode() {
-        return name == null ? 0 : name.hashCode();
+        return qName == null ? 0 : qName.hashCode();
     }
 
     @Override

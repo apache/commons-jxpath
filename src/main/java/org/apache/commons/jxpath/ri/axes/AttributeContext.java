@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class AttributeContext extends EvalContext {
 
     /**
      * Constructs a new AttributeContext.
-     * 
+     *
      * @param parentContext represents the previous step on the path
      * @param nodeTest      is the name of the attribute we are looking for
      */
@@ -58,16 +58,16 @@ public class AttributeContext extends EvalContext {
         super.setPosition(getCurrentPosition() + 1);
         if (!setStarted) {
             setStarted = true;
-            QName name;
+            QName qName;
             if (nodeTest instanceof NodeNameTest) {
-                name = ((NodeNameTest) nodeTest).getNodeName();
+                qName = ((NodeNameTest) nodeTest).getNodeName();
             } else if (nodeTest instanceof NodeTypeTest && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE) {
-                name = WILDCARD;
+                qName = WILDCARD;
             } else {
                 iterator = null;
                 return false;
             }
-            iterator = parentContext.getCurrentNodePointer().attributeIterator(name);
+            iterator = parentContext.getCurrentNodePointer().attributeIterator(qName);
         }
         if (iterator == null) {
             return false;

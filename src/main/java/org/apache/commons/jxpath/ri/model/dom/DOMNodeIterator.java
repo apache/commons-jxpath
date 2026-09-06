@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Constructs a new DOMNodeIterator.
-     * 
+     *
      * @param parent    parent pointer
      * @param nodeTest  test
      * @param reverse   whether to iterate in reverse
@@ -67,7 +67,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Sets the next position.
-     * 
+     *
      * @return whether valid
      */
     private boolean next() {
@@ -96,7 +96,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Sets the previous position.
-     * 
+     *
      * @return whether valid
      */
     private boolean previous() {
@@ -138,7 +138,7 @@ public class DOMNodeIterator implements NodeIterator {
 
     /**
      * Test child.
-     * 
+     *
      * @return result of the test
      */
     private boolean testChild() {

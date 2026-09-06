@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,52 +38,12 @@ import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 
 /**
- * The default implementation of TypeConverter.
+ * The default implementation of {@link TypeConverter}.
  */
 public class BasicTypeConverter implements TypeConverter {
 
     /**
-     * NodeSet implementation
-     */
-    static final class ValueNodeSet implements NodeSet {
-
-        private final List values;
-        private List<Pointer> pointers;
-
-        /**
-         * Constructs a new ValueNodeSet.
-         * 
-         * @param values to return
-         */
-        public ValueNodeSet(final List values) {
-            this.values = values;
-        }
-
-        @Override
-        public List getNodes() {
-            return Collections.unmodifiableList(values);
-        }
-
-        @Override
-        public List<Pointer> getPointers() {
-            if (pointers == null) {
-                pointers = new ArrayList();
-                for (int i = 0; i < values.size(); i++) {
-                    pointers.add(new ValuePointer(values.get(i)));
-                }
-                pointers = Collections.unmodifiableList(pointers);
-            }
-            return pointers;
-        }
-
-        @Override
-        public List getValues() {
-            return Collections.unmodifiableList(values);
-        }
-    }
-
-    /**
-     * Value pointer
+     * Value {@link Pointer}.
      */
     static final class ValuePointer implements Pointer {
 
@@ -92,7 +52,7 @@ public class BasicTypeConverter implements TypeConverter {
 
         /**
          * Constructs a new ValuePointer.
-         * 
+         *
          * @param object value
          */
         public ValuePointer(final Object object) {
@@ -151,7 +111,7 @@ public class BasicTypeConverter implements TypeConverter {
         }
     }
 
-    
+
     /**
      * Constructs a new instance.
      */
@@ -161,9 +121,9 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Create a collection of a given type.
-     * 
-     * @param type destination class
-     * @return Collection
+     *
+     * @param type destination class.
+     * @return A new Collection.
      */
     protected Collection allocateCollection(final Class type) {
         if (!type.isInterface() && (type.getModifiers() & Modifier.ABSTRACT) == 0) {
@@ -184,10 +144,10 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Allocate a number of a given type and value.
-     * 
+     *
      * @param type  destination class
      * @param value double
-     * @return Number
+     * @return Number A Number, possibly cached.
      */
     protected Number allocateNumber(Class type, final double value) {
         type = TypeUtils.wrapPrimitive(type);
@@ -213,8 +173,7 @@ public class BasicTypeConverter implements TypeConverter {
             return BigInteger.valueOf((long) value);
         }
         if (type == BigDecimal.class) {
-            // TODO ? https://pmd.sourceforge.io/pmd-6.50.0/pmd_rules_java_errorprone.html#avoiddecimalliteralsinbigdecimalconstructor
-            return new BigDecimal(value); // NOPMD
+            return new BigDecimal(Double.toString(value));
         }
         final String className = type.getName();
         Class initialValueType = null;
@@ -235,11 +194,11 @@ public class BasicTypeConverter implements TypeConverter {
     }
 
     /**
-     * Returns true if it can convert the supplied object to the specified class.
-     * 
+     * Tests whether this instance can convert the supplied object to the specified class.
+     *
      * @param object to check
      * @param toType prospective destination class
-     * @return boolean
+     * @return boolean whether this instance can convert the supplied object to the specified class.
      */
     @Override
     public boolean canConvert(final Object object, final Class toType) {
@@ -324,16 +283,15 @@ public class BasicTypeConverter implements TypeConverter {
     }
 
     /**
-     * Learn whether this BasicTypeConverter can create a collection of the specified type.
-     * 
+     * Tests whether this BasicTypeConverter can create a collection of the specified type.
+     *
      * @param type prospective destination class
      * @return boolean
      */
     protected boolean canCreateCollection(final Class type) {
         if (!type.isInterface() && (type.getModifiers() & Modifier.ABSTRACT) == 0) {
             try {
-                type.getConstructor();
-                return true;
+                return type.getConstructor() != null;
             } catch (final Exception e) {
                 return false;
             }
@@ -343,7 +301,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Converts the supplied object to the specified type. Throws a runtime exception if the conversion is not possible.
-     * 
+     *
      * @param object to convert
      * @param toType destination class
      * @return converted object
@@ -465,9 +423,9 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Convert null to a primitive type.
-     * 
+     *
      * @param toType destination class
-     * @return a wrapper
+     * @return A wrapper
      */
     protected Object convertNullToPrimitive(final Class toType) {
         if (toType == boolean.class) {
@@ -499,7 +457,7 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Convert a string to a primitive type.
-     * 
+     *
      * @param object String
      * @param toType destination class
      * @return wrapper
@@ -535,19 +493,20 @@ public class BasicTypeConverter implements TypeConverter {
 
     /**
      * Gets an unmodifiable version of a collection.
-     * 
+     *
+     * @param <E> The type of elements in this collection.
      * @param collection to wrap
      * @return Collection
      */
-    protected Collection unmodifiableCollection(final Collection collection) {
+    protected <E> Collection<E> unmodifiableCollection(final Collection<E> collection) {
         if (collection instanceof List) {
-            return Collections.unmodifiableList((List) collection);
+            return Collections.unmodifiableList((List<E>) collection);
         }
         if (collection instanceof SortedSet) {
-            return Collections.unmodifiableSortedSet((SortedSet) collection);
+            return Collections.unmodifiableSortedSet((SortedSet<E>) collection);
         }
         if (collection instanceof Set) {
-            return Collections.unmodifiableSet((Set) collection);
+            return Collections.unmodifiableSet((Set<E>) collection);
         }
         return Collections.unmodifiableCollection(collection);
     }

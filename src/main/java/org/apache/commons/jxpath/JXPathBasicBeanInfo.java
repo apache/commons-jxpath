@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,8 +35,7 @@ import java.util.HashMap;
 public class JXPathBasicBeanInfo implements JXPathBeanInfo {
 
     private static final long serialVersionUID = -3863803443111484155L;
-    private static final Comparator PROPERTY_DESCRIPTOR_COMPARATOR = (left, right) -> ((PropertyDescriptor) left).getName()
-            .compareTo(((PropertyDescriptor) right).getName());
+    private static final Comparator<PropertyDescriptor> PROPERTY_DESCRIPTOR_COMPARATOR = Comparator.comparing(PropertyDescriptor::getName);
 
     /**
      * Whether objects of this class are treated as atomic objects which have no properties of their own.
@@ -61,7 +60,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     /**
      * PropertyDescriptor for the specified name or null if there is no such property.
      */
-    private transient HashMap propertyDescriptorMap;
+    private transient HashMap<String, PropertyDescriptor> propertyDescriptorMap;
 
     /**
      * Constructs a new JXPathBasicBeanInfo.
@@ -98,7 +97,7 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     /**
      * Gets the DynamicPropertyHandler class for a dynamic class.
      *
-     * @return the DynamicPropertyHandler class for a dynamic class.
+     * @return The DynamicPropertyHandler class for a dynamic class.
      */
     @Override
     public Class getDynamicPropertyHandlerClass() {
@@ -108,13 +107,13 @@ public class JXPathBasicBeanInfo implements JXPathBeanInfo {
     @Override
     public synchronized PropertyDescriptor getPropertyDescriptor(final String propertyName) {
         if (propertyDescriptorMap == null) {
-            propertyDescriptorMap = new HashMap();
+            propertyDescriptorMap = new HashMap<>();
             final PropertyDescriptor[] pds = getPropertyDescriptors();
             for (final PropertyDescriptor pd : pds) {
                 propertyDescriptorMap.put(pd.getName(), pd);
             }
         }
-        return (PropertyDescriptor) propertyDescriptorMap.get(propertyName);
+        return propertyDescriptorMap.get(propertyName);
     }
 
     @Override

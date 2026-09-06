@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test thread safety.
  */
-public class StressTest {
+class StressTest {
 
     private static final class StressRunnable implements Runnable {
 
@@ -54,7 +54,7 @@ public class StressTest {
     private static Throwable exception;
 
     @Test
-    public void testThreads() throws Throwable {
+    void testThreads() throws Throwable {
         context = JXPathContext.newContext(null, Double.valueOf(100));
         final Thread[] threadArray = new Thread[THREAD_COUNT];
         for (int i = 0; i < THREAD_COUNT; i++) {
@@ -67,6 +67,7 @@ public class StressTest {
             try {
                 element.join();
             } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
                 fail("Interrupted");
             }
         }

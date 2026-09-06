@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,7 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.Variables;
 import org.junit.jupiter.api.Test;
 
-public class JXPath177Test {
+class JXPath177Test {
 
     private static final class JXPathVariablesResolver implements Variables {
 
@@ -88,19 +88,19 @@ public class JXPath177Test {
     }
 
     @Test
-    public void testJx177() {
+    void testJx177() {
         doTest("name", "ROOT name");
         doTest("/x/name", "X name");
         doTest("$__root/x/name", "X name");
     }
 
     @Test
-    public void testJx177_Union1() {
+    void testJx177_Union1() {
         doTest("$__root/x/name|name", "X name");
     }
 
     @Test
-    public void testJx177_Union2() {
+    void testJx177_Union2() {
         doTest("$__root/x/unexisting|name", "ROOT name");
     }
 }

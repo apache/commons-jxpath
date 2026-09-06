@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
                 final String uri = nsPointer.getNamespaceURI();
                 if (uri.equals(namespaceURI)) {
                     final String prefix = nsPointer.getName().getName();
-                    if (!"".equals(prefix)) {
+                    if (!prefix.isEmpty()) {
                         return prefix;
                     }
                 }
@@ -62,10 +62,10 @@ public class NamespaceResolver implements Cloneable, Serializable {
     protected final NamespaceResolver parent;
 
     /** Namespace map. */
-    protected HashMap namespaceMap = new HashMap();
+    protected HashMap<String, String> namespaceMap = new HashMap<>();
 
     /** Reverse lookup map */
-    protected HashMap reverseMap = new HashMap();
+    protected HashMap<String, String> reverseMap = new HashMap<>();
 
     /** Node pointer. */
     protected NodePointer pointer;
@@ -112,19 +112,19 @@ public class NamespaceResolver implements Cloneable, Serializable {
      * @since JXPath 1.3
      */
     protected synchronized String getExternallyRegisteredNamespaceURI(final String prefix) {
-        final String uri = (String) namespaceMap.get(prefix);
+        final String uri = namespaceMap.get(prefix);
         return uri == null && parent != null ? parent.getExternallyRegisteredNamespaceURI(prefix) : uri;
     }
 
     /**
      * Gets the nearest prefix found that matches an externally-registered namespace.
      *
-     * @param namespaceURI the ns URI to check.
+     * @param namespaceURI The ns URI to check.
      * @return String prefix if found.
      * @since JXPath 1.3
      */
     protected synchronized String getExternallyRegisteredPrefix(final String namespaceURI) {
-        final String prefix = (String) reverseMap.get(namespaceURI);
+        final String prefix = reverseMap.get(namespaceURI);
         return prefix == null && parent != null ? parent.getExternallyRegisteredPrefix(namespaceURI) : prefix;
     }
 
@@ -133,7 +133,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
      *
      * @return Pointer
      */
-    public Pointer getNamespaceContextPointer() {
+    public synchronized Pointer getNamespaceContextPointer() {
         if (pointer == null && parent != null) {
             return parent.getNamespaceContextPointer();
         }
@@ -155,7 +155,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
     /**
      * Gets the prefix associated with the specifed namespace URI.
      *
-     * @param namespaceURI the ns URI to check.
+     * @param namespaceURI The ns URI to check.
      * @return String prefix
      */
     public synchronized String getPrefix(final String namespaceURI) {
@@ -164,7 +164,7 @@ public class NamespaceResolver implements Cloneable, Serializable {
     }
 
     /**
-     * Learn whether this NamespaceResolver has been sealed.
+     * Tests whether this NamespaceResolver has been sealed.
      *
      * @return boolean
      */
@@ -199,9 +199,9 @@ public class NamespaceResolver implements Cloneable, Serializable {
     /**
      * Register a namespace for the expression context.
      *
-     * @param pointer the Pointer to set.
+     * @param pointer The Pointer to set.
      */
-    public void setNamespaceContextPointer(final NodePointer pointer) {
+    public synchronized void setNamespaceContextPointer(final NodePointer pointer) {
         this.pointer = pointer;
     }
 }

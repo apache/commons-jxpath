@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationCompare.
-     * 
+     *
      * @param arg1 left operand
      * @param arg2 right operand
      */
@@ -46,7 +46,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
 
     /**
      * Constructs a new CoreOperationCompare.
-     * 
+     *
      * @param arg1   left operand
      * @param arg2   right operand
      * @param invert whether to invert (not) the comparison
@@ -62,8 +62,8 @@ public abstract class CoreOperationCompare extends CoreOperation {
     }
 
     /**
-     * Learn whether it contains value.
-     * 
+     * Tests whether it contains value.
+     *
      * @param it    Iterator to check
      * @param value for which to look
      * @return whether value was found
@@ -80,7 +80,7 @@ public abstract class CoreOperationCompare extends CoreOperation {
 
     /**
      * Compares two values.
-     * 
+     *
      * @param context evaluation context
      * @param left    operand
      * @param right   operand
@@ -120,8 +120,8 @@ public abstract class CoreOperationCompare extends CoreOperation {
     }
 
     /**
-     * Learn whether l equals r in XPath terms.
-     * 
+     * Tests whether l equals r in XPath terms.
+     *
      * @param l left operand
      * @param r right operand
      * @return whether l = r
@@ -158,8 +158,8 @@ public abstract class CoreOperationCompare extends CoreOperation {
     }
 
     /**
-     * Learn whether lit intersects rit.
-     * 
+     * Tests whether lit intersects rit.
+     *
      * @param lit left Iterator
      * @param rit right Iterator
      * @return boolean

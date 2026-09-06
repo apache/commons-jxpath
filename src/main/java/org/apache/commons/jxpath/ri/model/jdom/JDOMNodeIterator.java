@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ public class JDOMNodeIterator implements NodeIterator {
 
     /**
      * Constructs a new JDOMNodeIterator.
-     * 
+     *
      * @param parent    pointer
      * @param nodeTest  test
      * @param reverse   whether to iterate in reverse
@@ -83,7 +83,7 @@ public class JDOMNodeIterator implements NodeIterator {
 
     /**
      * Iterate to next pointer.
-     * 
+     *
      * @return whether valid
      */
     private boolean next() {
@@ -125,7 +125,7 @@ public class JDOMNodeIterator implements NodeIterator {
     /**
      * This is actually never invoked during the normal evaluation of xpaths - an iterator is always going forward, never backwards. So, this is implemented
      * only for completeness and perhaps for those who use these iterators outside of XPath evaluation.
-     * 
+     *
      * @return boolean
      */
     private boolean previous() {
@@ -165,7 +165,7 @@ public class JDOMNodeIterator implements NodeIterator {
 
     /**
      * Test a child node.
-     * 
+     *
      * @return whether test passes.
      */
     private boolean testChild() {

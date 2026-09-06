@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,25 +31,25 @@ public interface NodePointerFactory {
      * Create a NodePointer for the supplied child object.
      *
      * @param parent parent node
-     * @param name   String node name
+     * @param qName  node name
      * @param object child object
      * @return null if this factory does not recognize objects of the supplied type.
      */
-    NodePointer createNodePointer(NodePointer parent, QName name, Object object);
+    NodePointer createNodePointer(NodePointer parent, QName qName, Object object);
 
     /**
      * Create a NodePointer for the supplied object. The node will represent the "root" object for a path.
      *
-     * @param name   String node name
+     * @param qName  node name
      * @param object child object
      * @param locale Locale
      * @return null if this factory does not recognize objects of the supplied type.
      */
-    NodePointer createNodePointer(QName name, Object object, Locale locale);
+    NodePointer createNodePointer(QName qName, Object object, Locale locale);
 
     /**
      * The factory order number determines its position between other factories.
-     * 
+     *
      * @return int order
      */
     int getOrder();

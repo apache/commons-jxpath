@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,11 +36,11 @@ import org.apache.commons.jxpath.util.TypeUtils;
  * a class prefix is a package name (hence the name of this class).
  *
  * Let's say, we declared a PackageFunction like this: <blockquote>
- * 
+ *
  * <pre>
  * new PackageFunctions("java.util.", "util")
  * </pre>
- * 
+ *
  * </blockquote>
  *
  * We can now use XPaths like:
@@ -72,7 +72,7 @@ public class PackageFunctions implements Functions {
 
     /**
      * Constructs a new PackageFunctions.
-     * 
+     *
      * @param classPrefix class prefix
      * @param namespace   namespace String
      */
@@ -94,7 +94,7 @@ public class PackageFunctions implements Functions {
      *                   <li><strong>subpackage.subpackage.Classname.methodname</strong>, if looking for a static method of a class in a subpackage</li>
      *                   </ul>
      * @param parameters Object[] of parameters
-     * @return a MethodFunction, a ConstructorFunction or null if no function is found
+     * @return A MethodFunction, a ConstructorFunction or null if no function is found
      */
     @Override
     public Function getFunction(final String namespace, final String name, Object[] parameters) {
@@ -144,7 +144,7 @@ public class PackageFunctions implements Functions {
         }
         final String className = fullName.substring(0, inx);
         final String methodName = fullName.substring(inx + 1);
-        Class functionClass;
+        Class<?> functionClass;
         try {
             functionClass = ClassLoaderUtil.getClass(className, true);
         } catch (final ClassNotFoundException ex) {
@@ -166,7 +166,7 @@ public class PackageFunctions implements Functions {
 
     /**
      * Returns the namespace specified in the constructor
-     * 
+     *
      * @return (singleton) namespace Set
      */
     @Override

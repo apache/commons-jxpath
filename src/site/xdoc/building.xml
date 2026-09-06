@@ -7,7 +7,7 @@ The ASF licenses this file to You under the Apache License, Version 2.0
 (the "License"); you may not use this file except in compliance with
 the License.  You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+     https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,9 +24,9 @@ limitations under the License.
 <!-- ================================================== -->
 <section name="Overview">
 <p>
-  Commons JXPath uses <a href="http://maven.apache.org/maven-1.x/">Maven 1</a>,
-  <a href="http://maven.apache.org">Maven 2</a> (preferred), or
-  <a href="http://ant.apache.org">Ant</a> as a build system.
+  Commons JXPath uses <a href="https://maven.apache.org/maven-1.x/">Maven 1</a>,
+  <a href="https://maven.apache.org">Maven 2</a> (preferred), or
+  <a href="https://ant.apache.org">Ant</a> as a build system.
 </p>
 </section>
 <section name="Maven 2 Goals">

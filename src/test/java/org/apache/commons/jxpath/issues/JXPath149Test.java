@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,10 +21,10 @@ import org.apache.commons.jxpath.AbstractJXPathTest;
 import org.apache.commons.jxpath.JXPathContext;
 import org.junit.jupiter.api.Test;
 
-public class JXPath149Test extends AbstractJXPathTest {
+class JXPath149Test extends AbstractJXPathTest {
 
     @Test
-    public void testComplexOperationWithVariables() {
+    void testComplexOperationWithVariables() {
         final JXPathContext context = JXPathContext.newContext(null);
         context.getVariables().declareVariable("a", Integer.valueOf(0));
         context.getVariables().declareVariable("b", Integer.valueOf(0));

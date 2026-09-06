@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ public class ChildContext extends EvalContext {
 
     /**
      * Constructs a new ChildContext.
-     * 
+     *
      * @param parentContext           parent EvalContext
      * @param nodeTest                NodeTest
      * @param startFromParentLocation whether to start from parent location
@@ -60,7 +60,7 @@ public class ChildContext extends EvalContext {
      * This method is called on the last context on the path when only one value is needed. Note that this will return the whole property, even if it is a
      * collection. It will not extract the first element of the collection. For example, "books" will return the collection of books rather than the first book
      * from that collection.
-     * 
+     *
      * @return Pointer
      */
     @Override

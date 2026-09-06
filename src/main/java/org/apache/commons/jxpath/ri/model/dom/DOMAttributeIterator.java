@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,25 +35,25 @@ import org.w3c.dom.Node;
 public class DOMAttributeIterator implements NodeIterator {
 
     private final NodePointer parent;
-    private final QName name;
+    private final QName qName;
     private final List<Attr> attributes;
     private int position;
 
     /**
      * Constructs a new DOMAttributeIterator.
-     * 
+     *
      * @param parent pointer
-     * @param name   to test
+     * @param qName   to test
      */
-    public DOMAttributeIterator(final NodePointer parent, final QName name) {
+    public DOMAttributeIterator(final NodePointer parent, final QName qName) {
         this.parent = parent;
-        this.name = name;
+        this.qName = qName;
         attributes = new ArrayList<>();
         final Node node = (Node) parent.getNode();
         if (node.getNodeType() == Node.ELEMENT_NODE) {
-            final String lname = name.getName();
+            final String lname = qName.getName();
             if (!lname.equals("*")) {
-                final Attr attr = getAttribute((Element) node, name);
+                final Attr attr = getAttribute((Element) node, qName);
                 if (attr != null) {
                     attributes.add(attr);
                 }
@@ -72,19 +72,19 @@ public class DOMAttributeIterator implements NodeIterator {
 
     /**
      * Gets the named attribute.
-     * 
+     *
      * @param element to search
-     * @param name    to match
+     * @param qName    to match
      * @return Attr found
      */
-    private Attr getAttribute(final Element element, final QName name) {
-        final String testPrefix = name.getPrefix();
+    private Attr getAttribute(final Element element, final QName qName) {
+        final String testPrefix = qName.getPrefix();
         String testNS = null;
         if (testPrefix != null) {
             testNS = parent.getNamespaceResolver().getNamespaceURI(testPrefix);
         }
         if (testNS != null) {
-            Attr attr = element.getAttributeNodeNS(testNS, name.getName());
+            Attr attr = element.getAttributeNodeNS(testNS, qName.getName());
             if (attr != null) {
                 return attr;
             }
@@ -100,7 +100,7 @@ public class DOMAttributeIterator implements NodeIterator {
             }
             return null;
         }
-        return element.getAttributeNode(name.getName());
+        return element.getAttributeNode(qName.getName());
     }
 
     @Override
@@ -115,7 +115,7 @@ public class DOMAttributeIterator implements NodeIterator {
         if (index < 0) {
             index = 0;
         }
-        return new DOMAttributePointer(parent, (Attr) attributes.get(index));
+        return new DOMAttributePointer(parent, attributes.get(index));
     }
 
     @Override
@@ -131,7 +131,7 @@ public class DOMAttributeIterator implements NodeIterator {
 
     /**
      * Test an attribute.
-     * 
+     *
      * @param attr to test
      * @return whether test succeeded
      */
@@ -144,9 +144,9 @@ public class DOMAttributeIterator implements NodeIterator {
         if (nodePrefix == null && nodeLocalName.equals("xmlns")) {
             return false;
         }
-        final String testLocalName = name.getName();
+        final String testLocalName = qName.getName();
         if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)) {
-            final String testPrefix = name.getPrefix();
+            final String testPrefix = qName.getPrefix();
             if (testPrefix == null || Objects.equals(testPrefix, nodePrefix)) {
                 return true;
             }

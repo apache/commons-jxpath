@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,10 +30,10 @@ import org.apache.commons.jxpath.ri.parser.XPathParser;
 public class Parser {
 
     private static final XPathParser PARSER = new XPathParser(new StringReader(""));
-    
+
     /**
      * Add escapes to the specified String.
-     * 
+     *
      * @param string incoming String
      * @return String
      */
@@ -44,7 +44,7 @@ public class Parser {
 
     /**
      * Describe a parse position.
-     * 
+     *
      * @param expression to parse
      * @param position   parse position
      * @return String
@@ -61,9 +61,9 @@ public class Parser {
 
     /**
      * Parses the XPath expression. Throws a JXPathException in case of a syntax error.
-     * 
+     *
      * @param expression to parse
-     * @param compiler   the compiler
+     * @param compiler   The compiler
      * @return parsed Object
      */
     public static Object parseExpression(final String expression, final Compiler compiler) {

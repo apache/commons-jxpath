@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,10 +29,11 @@ import org.w3c.dom.Element;
 /**
  * Test BasicNodeSet
  */
-public class BasicNodeSetTest extends AbstractJXPathTest {
+class BasicNodeSetTest extends AbstractJXPathTest {
 
     /** JXPathContext */
     protected JXPathContext context;
+
     /** BasicNodeSet */
     protected BasicNodeSet nodeSet;
 
@@ -50,7 +51,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
 
     /**
      * Do assertions on DOM element names.
-     * 
+     *
      * @param names    List of expected names
      * @param elements List of DOM elements
      */
@@ -65,7 +66,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
 
     /**
      * Do assertions on DOM element values.
-     * 
+     *
      * @param values   List of expected values
      * @param elements List of DOM elements
      */
@@ -111,7 +112,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
      * Test adding pointers.
      */
     @Test
-    public void testAdd() {
+    void testAdd() {
         addPointers("/bean/integers");
         assertEquals(list("/bean/integers[1]", "/bean/integers[2]", "/bean/integers[3]", "/bean/integers[4]").toString(), nodeSet.getPointers().toString());
         assertEquals(list(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(4)), nodeSet.getValues());
@@ -122,7 +123,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
      * Demonstrate when nodes != values: in XML models.
      */
     @Test
-    public void testNodes() {
+    void testNodes() {
         addPointers("/document/vendor/contact");
         assertEquals(
                 list("/document/vendor[1]/contact[1]", "/document/vendor[1]/contact[2]", "/document/vendor[1]/contact[3]", "/document/vendor[1]/contact[4]")
@@ -137,7 +138,7 @@ public class BasicNodeSetTest extends AbstractJXPathTest {
      * Test removing a pointer.
      */
     @Test
-    public void testRemove() {
+    void testRemove() {
         addPointers("/bean/integers");
         removePointers("/bean/integers[4]");
         assertEquals(list("/bean/integers[1]", "/bean/integers[2]", "/bean/integers[3]").toString(), nodeSet.getPointers().toString());

@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,14 +31,14 @@ public class BeanAttributeIterator extends PropertyIterator {
 
     /**
      * Constructs a new BeanAttributeIterator.
-     * 
+     *
      * @param parent parent pointer
-     * @param name   name of this bean
+     * @param qName   name of this bean
      */
-    public BeanAttributeIterator(final PropertyOwnerPointer parent, final QName name) {
-        super(parent, name.getPrefix() == null && (name.getName() == null || name.getName().equals("*")) ? null : name.toString(), false, null);
+    public BeanAttributeIterator(final PropertyOwnerPointer parent, final QName qName) {
+        super(parent, qName.getPrefix() == null && (qName.getName() == null || qName.getName().equals("*")) ? null : qName.toString(), false, null);
         this.parent = parent;
-        includeXmlLang = name.getPrefix() != null && name.getPrefix().equals("xml") && (name.getName().equals("lang") || name.getName().equals("*"));
+        includeXmlLang = qName.getPrefix() != null && qName.getPrefix().equals("xml") && (qName.getName().equals("lang") || qName.getName().equals("*"));
     }
 
     @Override

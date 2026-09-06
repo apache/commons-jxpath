@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,7 +46,7 @@ public abstract class Path extends Expression {
 
     /**
      * Constructs a new Path.
-     * 
+     *
      * @param steps that compose the Path
      */
     public Path(final Step[] steps) {
@@ -54,9 +54,9 @@ public abstract class Path extends Expression {
     }
 
     /**
-     * Learn whether the elements of the specified array are "basic" predicates.
-     * 
-     * @param predicates the Expression[] to check
+     * Tests whether the elements of the specified array are "basic" predicates.
+     *
+     * @param predicates The Expression[] to check
      * @return boolean
      */
     protected boolean areBasicPredicates(final Expression[] predicates) {
@@ -82,7 +82,7 @@ public abstract class Path extends Expression {
 
     /**
      * Build a context from a chain of contexts.
-     * 
+     *
      * @param context              evaluation context
      * @param stepCount            number of steps to descend
      * @param createInitialContext whether to create the initial context
@@ -124,7 +124,7 @@ public abstract class Path extends Expression {
 
     /**
      * Different axes are serviced by different contexts. This method allocates the right context for the supplied step.
-     * 
+     *
      * @param context  evaluation context
      * @param axis     code
      * @param nodeTest node test
@@ -173,7 +173,7 @@ public abstract class Path extends Expression {
 
     /**
      * Given a root context, walks a path therefrom and builds a context that contains all nodes matching the path.
-     * 
+     *
      * @param context evaluation context
      * @return EvaluationContext
      */
@@ -183,7 +183,7 @@ public abstract class Path extends Expression {
 
     /**
      * Given a root context, walks a path therefrom and finds the pointer to the first element matching the path.
-     * 
+     *
      * @param context evaluation context
      * @return Pointer
      */
@@ -200,7 +200,7 @@ public abstract class Path extends Expression {
 
     /**
      * Gets the steps.
-     * 
+     *
      * @return Step[]
      */
     public Step[] getSteps() {
@@ -209,7 +209,7 @@ public abstract class Path extends Expression {
 
     /**
      * Recognizes paths formatted as {@code foo/bar[3]/baz[@name = 'biz']}. The evaluation of such "simple" paths is optimized and streamlined.
-     * 
+     *
      * @return {@code true} if this path is simple
      */
     public synchronized boolean isSimplePath() {
@@ -230,8 +230,8 @@ public abstract class Path extends Expression {
     /**
      * A Step is "simple" if it takes one of these forms: ".", "/foo", "@bar", "/foo[3]". If there are predicates, they should be context independent for the
      * step to still be considered simple.
-     * 
-     * @param step the step to check
+     *
+     * @param step The step to check
      * @return boolean
      */
     protected boolean isSimpleStep(final Step step) {
@@ -270,7 +270,7 @@ public abstract class Path extends Expression {
      * child:: or attribute:: and try to evaluate the truncated path. If it finds exactly one node - create a NullPointer and return. If it fails, chop off
      * another step and repeat. If it finds more than one location - return null.
      * </p>
-     * 
+     *
      * @param context evaluation context
      * @return Pointer
      */

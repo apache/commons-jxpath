@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,7 +31,7 @@ public abstract class XMLParser2 implements XMLParser {
     private boolean ignoreComments;
     private boolean coalescing;
 
-    
+
     /**
      * Constructs a new instance for subclasses.
      */
@@ -40,8 +40,8 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser is coalescing.
-     * 
+     * Tests whether the underlying parser is coalescing.
+     *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isCoalescing()
      */
@@ -50,8 +50,8 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser expands entity references.
-     * 
+     * Tests whether the underlying parser expands entity references.
+     *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isExpandEntityReferences()
      */
@@ -60,8 +60,8 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser ignores comments.
-     * 
+     * Tests whether the underlying parser ignores comments.
+     *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isIgnoringComments()
      */
@@ -70,8 +70,8 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser is ignoring whitespace.
-     * 
+     * Tests whether the underlying parser is ignoring whitespace.
+     *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isIgnoringElementContentWhitespace()
      */
@@ -80,8 +80,8 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser is ns-aware.
-     * 
+     * Tests whether the underlying parser is ns-aware.
+     *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isNamespaceAware()
      */
@@ -90,8 +90,8 @@ public abstract class XMLParser2 implements XMLParser {
     }
 
     /**
-     * Learn whether the underlying parser is validating.
-     * 
+     * Tests whether the underlying parser is validating.
+     *
      * @return boolean
      * @see javax.xml.parsers.DocumentBuilderFactory#isValidating()
      */
@@ -104,7 +104,7 @@ public abstract class XMLParser2 implements XMLParser {
 
     /**
      * Sets whether the underlying parser is coalescing.
-     * 
+     *
      * @param coalescing flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setCoalescing(boolean)
      */
@@ -114,7 +114,7 @@ public abstract class XMLParser2 implements XMLParser {
 
     /**
      * Sets whether the underlying parser expands entity references.
-     * 
+     *
      * @param expandEntityRef flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setExpandEntityReferences(boolean)
      */
@@ -124,7 +124,7 @@ public abstract class XMLParser2 implements XMLParser {
 
     /**
      * Sets whether the underlying parser ignores comments.
-     * 
+     *
      * @param ignoreComments flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setIgnoringComments(boolean)
      */
@@ -134,7 +134,7 @@ public abstract class XMLParser2 implements XMLParser {
 
     /**
      * Sets whether the underlying parser is ignoring whitespace.
-     * 
+     *
      * @param whitespace flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setIgnoringElementContentWhitespace(boolean)
      */
@@ -144,7 +144,7 @@ public abstract class XMLParser2 implements XMLParser {
 
     /**
      * Sets whether the underlying parser is ns-aware.
-     * 
+     *
      * @param namespaceAware flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setNamespaceAware(boolean)
      */
@@ -154,7 +154,7 @@ public abstract class XMLParser2 implements XMLParser {
 
     /**
      * Sets whether the underlying parser should be validating.
-     * 
+     *
      * @param validating flag
      * @see javax.xml.parsers.DocumentBuilderFactory#setValidating(boolean)
      */

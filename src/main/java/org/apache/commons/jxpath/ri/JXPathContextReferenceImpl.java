@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -65,7 +65,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      */
     public static final boolean USE_SOFT_CACHE = true;
     private static final Compiler COMPILER = new TreeCompiler();
-    private static Map compiled = new HashMap();
+    private static Map<String, Object> compiled = new HashMap<>();
     private static int cleanupCount;
     private static NodePointerFactory[] nodeFactoryArray;
     // The frequency of the cache cleanup
@@ -90,7 +90,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         }
         // DynaBean factory is only registered if BeanUtils are on the classpath
         final NodePointerFactory dynaBeanFactory = (NodePointerFactory) allocateConditionally(
-                "org.apache.commons.jxpath.ri.model.dynabeans." + "DynaBeanPointerFactory", "org.apache.commons.beanutils.DynaBean");
+                "org.apache.commons.jxpath.ri.model.dynabeans.DynaBeanPointerFactory", "org.apache.commons.beanutils.DynaBean");
         if (dynaBeanFactory != null) {
             nodeFactories.add(dynaBeanFactory);
         }
@@ -101,7 +101,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     /**
      * Call this with a custom NodePointerFactory to add support for additional types of objects. Make sure the factory returns a name that puts it in the right
      * position on the list of factories.
-     * 
+     *
      * @param factory NodePointerFactory to add
      */
     public static void addNodePointerFactory(final NodePointerFactory factory) {
@@ -113,7 +113,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Checks if existenceCheckClass exists on the class path. If so, allocates an instance of the specified class, otherwise returns null.
-     * 
+     *
      * @param className               to instantiate
      * @param existenceCheckClassName guard class
      * @return className instance
@@ -125,8 +125,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             } catch (final ClassNotFoundException ex) {
                 return null;
             }
-            final Class<NodePointerFactory> cls = ClassLoaderUtil.getClass(className, true);
-            return cls.getConstructor().newInstance();
+            return ClassLoaderUtil.getClass(className, true).getConstructor().newInstance();
         } catch (final Exception ex) {
             throw new JXPathException("Cannot allocate " + className, ex);
         }
@@ -148,7 +147,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the registered NodePointerFactories.
-     * 
+     *
      * @return NodePointerFactory[]
      */
     public static NodePointerFactory[] getNodePointerFactories() {
@@ -160,7 +159,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      *
      * @param factory NodePointerFactory to remove
      * @return true if this implementation contained the specified element
-     * @since 1.4.0
+     * @since 1.4.0.0
      */
     public static boolean removeNodePointerFactory(final NodePointerFactory factory) {
         synchronized (nodeFactories) {
@@ -177,7 +176,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Constructs a new JXPathContextReferenceImpl.
-     * 
+     *
      * @param parentContext parent context
      * @param contextBean   Object
      */
@@ -187,7 +186,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Constructs a new JXPathContextReferenceImpl.
-     * 
+     *
      * @param parentContext  parent context
      * @param contextBean    Object
      * @param contextPointer context pointer
@@ -214,19 +213,19 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Checks if the path follows the JXPath restrictions on the type of path that can be passed to create... methods.
-     * 
+     *
      * @param expr Expression to check
      */
     private void checkSimplePath(final Expression expr) {
         if (!(expr instanceof LocationPath) || !((LocationPath) expr).isSimplePath()) {
             throw new JXPathInvalidSyntaxException(
-                    "JXPath can only create a path if it uses exclusively " + "the child:: and attribute:: axes and has " + "no context-dependent predicates");
+                    "JXPath can only create a path if it uses exclusively the child:: and attribute:: axes and has no context-dependent predicates");
         }
     }
 
     /**
      * Compile the given expression.
-     * 
+     *
      * @param xpath to compile
      * @return Expression
      */
@@ -235,9 +234,9 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         synchronized (compiled) {
             if (USE_SOFT_CACHE) {
                 expr = null;
-                final SoftReference ref = (SoftReference) compiled.get(xpath);
+                final SoftReference<Expression> ref = (SoftReference) compiled.get(xpath);
                 if (ref != null) {
-                    expr = (Expression) ref.get();
+                    expr = ref.get();
                 }
             } else {
                 expr = (Expression) compiled.get(xpath);
@@ -250,16 +249,16 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         synchronized (compiled) {
             if (USE_SOFT_CACHE) {
                 if (cleanupCount++ >= CLEANUP_THRESHOLD) {
-                    final Iterator it = compiled.entrySet().iterator();
+                    final Iterator<Entry<String, Object>> it = compiled.entrySet().iterator();
                     while (it.hasNext()) {
-                        final Entry me = (Entry) it.next();
-                        if (((SoftReference) me.getValue()).get() == null) {
+                        final Entry<String, ?> me = it.next();
+                        if (((SoftReference<Expression>) me.getValue()).get() == null) {
                             it.remove();
                         }
                     }
                     cleanupCount = 0;
                 }
-                compiled.put(xpath, new SoftReference(expr));
+                compiled.put(xpath, new SoftReference<>(expr));
             } else {
                 compiled.put(xpath, expr);
             }
@@ -307,7 +306,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Create the given path.
-     * 
+     *
      * @param xpath String
      * @param expr  compiled Expression
      * @return resulting Pointer
@@ -328,13 +327,13 @@ public class JXPathContextReferenceImpl extends JXPathContext {
             }
             return ((NodePointer) pointer).createPath(this);
         } catch (final Throwable ex) {
-            throw new JXPathException("Exception trying to create xpath " + xpath, ex);
+            throw new JXPathException("Exception trying to create XPath " + xpath, ex);
         }
     }
 
     /**
      * Create the given path setting its value to value.
-     * 
+     *
      * @param xpath String
      * @param expr  compiled Expression
      * @param value Object
@@ -344,7 +343,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         try {
             return setValue(xpath, expr, value, true);
         } catch (final Throwable ex) {
-            throw new JXPathException("Exception trying to create xpath " + xpath, ex);
+            throw new JXPathException("Exception trying to create XPath " + xpath, ex);
         }
     }
 
@@ -355,7 +354,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the absolute root context.
-     * 
+     *
      * @return EvalContext
      */
     public EvalContext getAbsoluteRootContext() {
@@ -364,7 +363,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets absolute root pointer.
-     * 
+     *
      * @return NodePointer
      */
     private NodePointer getAbsoluteRootPointer() {
@@ -375,7 +374,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
      * Returns a static instance of TreeCompiler.
      *
      * Override this to return an alternate compiler.
-     * 
+     *
      * @return Compiler
      */
     protected Compiler getCompiler() {
@@ -389,7 +388,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the evaluation context.
-     * 
+     *
      * @return EvalContext
      */
     private EvalContext getEvalContext() {
@@ -398,7 +397,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the named Function.
-     * 
+     *
      * @param functionName name
      * @param parameters   function args
      * @return Function
@@ -429,7 +428,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the namespace resolver.
-     * 
+     *
      * @return NamespaceResolver
      */
     public NamespaceResolver getNamespaceResolver() {
@@ -449,7 +448,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets a pointer to the specified path/expression.
-     * 
+     *
      * @param xpath String
      * @param expr  compiled Expression
      * @return Pointer
@@ -470,7 +469,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.apache.commons.jxpath.JXPathContext#getPrefix(java.lang.String)
      */
     @Override
@@ -488,8 +487,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns the resulting object. Primitive types are wrapped into objects.
-     * 
+     * Traverses the XPath and returns the resulting object. Primitive types are wrapped into objects.
+     *
      * @param xpath expression
      * @return Object found
      */
@@ -532,7 +531,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Calls getValue(xpath), converts the result to the required type and returns the result of the conversion.
-     * 
+     *
      * @param xpath        expression
      * @param requiredType Class
      * @return Object
@@ -545,7 +544,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the value indicated.
-     * 
+     *
      * @param xpath String
      * @param expr  Expression
      * @return Object
@@ -577,7 +576,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets the value indicated.
-     * 
+     *
      * @param xpath        expression
      * @param expr         compiled Expression
      * @param requiredType Class
@@ -597,18 +596,18 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Gets a VariablePointer for the given variable name.
-     * 
-     * @param name variable name
+     *
+     * @param qName variable name
      * @return NodePointer
      */
-    public NodePointer getVariablePointer(final QName name) {
-        return NodePointer.newNodePointer(name, VariablePointerFactory.contextWrapper(this), getLocale());
+    public NodePointer getVariablePointer(final QName qName) {
+        return NodePointer.newNodePointer(qName, VariablePointerFactory.contextWrapper(this), getLocale());
     }
 
     /**
-     * Traverses the xpath and returns a Iterator of all results found for the path. If the xpath matches no properties in the graph, the Iterator will not be
+     * Traverses the XPath and returns a Iterator of all results found for the path. If the XPath matches no properties in the graph, the Iterator will not be
      * null.
-     * 
+     *
      * @param xpath expression
      * @return Iterator
      */
@@ -618,9 +617,9 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns a Iterator of all results found for the path. If the xpath matches no properties in the graph, the Iterator will not be
+     * Traverses the XPath and returns a Iterator of all results found for the path. If the XPath matches no properties in the graph, the Iterator will not be
      * null.
-     * 
+     *
      * @param xpath expression
      * @param expr  compiled Expression
      * @return Iterator
@@ -630,26 +629,26 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Traverses the xpath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the xpath matches no properties in the graph,
+     * Traverses the XPath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the XPath matches no properties in the graph,
      * the Iterator be empty, but not null.
-     * 
+     *
      * @param xpath expression
      * @return Iterator
      */
     @Override
-    public Iterator iteratePointers(final String xpath) {
+    public Iterator<Pointer> iteratePointers(final String xpath) {
         return iteratePointers(xpath, compileExpression(xpath));
     }
 
     /**
-     * Traverses the xpath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the xpath matches no properties in the graph,
+     * Traverses the XPath and returns an Iterator of Pointers. A Pointer provides easy access to a property. If the XPath matches no properties in the graph,
      * the Iterator be empty, but not null.
-     * 
+     *
      * @param xpath expression
      * @param expr  compiled Expression
      * @return Iterator
      */
-    public Iterator iteratePointers(final String xpath, final Expression expr) {
+    public Iterator<Pointer> iteratePointers(final String xpath, final Expression expr) {
         return expr.iteratePointers(getEvalContext());
     }
 
@@ -668,7 +667,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Remove all matching nodes.
-     * 
+     *
      * @param xpath expression
      * @param expr  compiled Expression
      */
@@ -700,7 +699,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
 
     /**
      * Remove the specified path.
-     * 
+     *
      * @param xpath expression
      * @param expr  compiled Expression
      */
@@ -711,7 +710,7 @@ public class JXPathContextReferenceImpl extends JXPathContext {
                 pointer.remove();
             }
         } catch (final Throwable ex) {
-            throw new JXPathException("Exception trying to remove xpath " + xpath, ex);
+            throw new JXPathException("Exception trying to remove XPath " + xpath, ex);
         }
     }
 
@@ -734,8 +733,8 @@ public class JXPathContextReferenceImpl extends JXPathContext {
     }
 
     /**
-     * Sets the value of xpath to value.
-     * 
+     * Sets the value of XPath to value.
+     *
      * @param xpath path
      * @param expr  compiled Expression
      * @param value Object
@@ -744,13 +743,13 @@ public class JXPathContextReferenceImpl extends JXPathContext {
         try {
             setValue(xpath, expr, value, false);
         } catch (final Throwable ex) {
-            throw new JXPathException("Exception trying to set value with xpath " + xpath, ex);
+            throw new JXPathException("Exception trying to set value with XPath " + xpath, ex);
         }
     }
 
     /**
      * Sets the specified value.
-     * 
+     *
      * @param xpath  path
      * @param expr   compiled Expression
      * @param value  destination value

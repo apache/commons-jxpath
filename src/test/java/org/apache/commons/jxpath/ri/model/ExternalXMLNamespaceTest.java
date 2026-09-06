@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test externally registered XML namespaces; JXPATH-97.
  */
-public class ExternalXMLNamespaceTest extends AbstractJXPathTest {
+class ExternalXMLNamespaceTest extends AbstractJXPathTest {
 
     protected JXPathContext context;
 
@@ -60,17 +60,17 @@ public class ExternalXMLNamespaceTest extends AbstractJXPathTest {
     }
 
     @Test
-    public void testAttributeDOM() {
+    void testAttributeDOM() {
         doTestAttribute(DocumentContainer.MODEL_DOM);
     }
 
     @Test
-    public void testCreateAndSetAttributeDOM() {
+    void testCreateAndSetAttributeDOM() {
         doTestCreateAndSetAttribute(DocumentContainer.MODEL_DOM);
     }
 
     @Test
-    public void testElementDOM() {
+    void testElementDOM() {
         doTestElement(DocumentContainer.MODEL_DOM);
     }
 }

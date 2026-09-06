@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,17 +28,17 @@ import org.junit.jupiter.api.Test;
 
 /**
  */
-public class LazyDynaBeanTest extends AbstractJXPathTest {
+class LazyDynaBeanTest extends AbstractJXPathTest {
 
     @Test
-    public void testLazyProperty() throws JXPathNotFoundException {
+    void testLazyProperty() throws JXPathNotFoundException {
         final LazyDynaBean bean = new LazyDynaBean();
         final JXPathContext context = JXPathContext.newContext(bean);
         context.getValue("nosuch");
     }
 
     @Test
-    public void testStrictLazyDynaBeanPropertyFactory() {
+    void testStrictLazyDynaBeanPropertyFactory() {
         final StrictLazyDynaBeanPointerFactory factory = new StrictLazyDynaBeanPointerFactory();
         JXPathContextReferenceImpl.addNodePointerFactory(factory);
         assertThrows(JXPathNotFoundException.class, this::testLazyProperty);

@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,21 +27,21 @@ public interface NodeSet {
 
     /**
      * Returns a list of nodes.
-     * 
+     *
      * @return List
      */
     List getNodes();
 
     /**
      * Returns a list of pointers for all nodes in the set.
-     * 
+     *
      * @return List
      */
     List<Pointer> getPointers();
 
     /**
      * Returns a list of values of all contained pointers.
-     * 
+     *
      * @return List
      */
     List getValues();

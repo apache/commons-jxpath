@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,8 +36,8 @@ public class MethodLookupUtils {
 
     /**
      * Look up a constructor.
-     * 
-     * @param targetClass the class constructed
+     *
+     * @param targetClass The class constructed
      * @param parameters  arguments
      * @return Constructor found if any.
      */
@@ -90,7 +90,7 @@ public class MethodLookupUtils {
 
     /**
      * Look up a method.
-     * 
+     *
      * @param targetClass owning class
      * @param name        method name
      * @param parameters  method parameters
@@ -156,8 +156,8 @@ public class MethodLookupUtils {
 
     /**
      * Look up a static method.
-     * 
-     * @param targetClass the owning class
+     *
+     * @param targetClass The owning class
      * @param name        method name
      * @param parameters  method parameters
      * @return Method found if any
@@ -213,7 +213,7 @@ public class MethodLookupUtils {
 
     /**
      * Return a match code of objects to types.
-     * 
+     *
      * @param types      Class[] of expected types
      * @param parameters Object[] to attempt to match
      * @return int code
@@ -242,7 +242,7 @@ public class MethodLookupUtils {
 
     /**
      * Return a match code between an object and type.
-     * 
+     *
      * @param expected class to test
      * @param object   object to test
      * @return int code
@@ -263,7 +263,7 @@ public class MethodLookupUtils {
         }
         return NO_MATCH;
     }
-    
+
     /**
      * Constructs a new instance.
      *

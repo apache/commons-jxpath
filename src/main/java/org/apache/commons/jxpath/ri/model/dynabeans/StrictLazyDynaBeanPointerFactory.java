@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,6 +30,8 @@ import org.apache.commons.jxpath.ri.model.beans.PropertyPointer;
  * Implemented in response to [JXPATH-144]. Optionally pluggable {@code NodePointerFactory} that returns a special type of {@code NodePointer} for
  * {@code LazyDynaBean}s. The {@code PropertyPointer}s returned by these will respect {@link LazyDynaClass#isDynaProperty(String)} when determining
  * {@link PropertyPointer#isActual()}.
+ *
+ * @since 1.4.0
  */
 public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
 
@@ -45,23 +47,23 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
          * Constructs a new StrictLazyDynaBeanPointer instance.
          *
          * @param parent       pointer
-         * @param name         is the name given to the first node
+         * @param qName        is the name given to the first node
          * @param lazyDynaBean pointed
          */
-        public StrictLazyDynaBeanPointer(final NodePointer parent, final QName name, final LazyDynaBean lazyDynaBean) {
-            super(parent, name, lazyDynaBean);
+        public StrictLazyDynaBeanPointer(final NodePointer parent, final QName qName, final LazyDynaBean lazyDynaBean) {
+            super(parent, qName, lazyDynaBean);
             this.lazyDynaBean = lazyDynaBean;
         }
 
         /**
          * Constructs a new StrictLazyDynaBeanPointer instance.
          *
-         * @param name         is the name given to the first node
+         * @param qName        is the name given to the first node
          * @param lazyDynaBean pointed
          * @param locale       Locale
          */
-        public StrictLazyDynaBeanPointer(final QName name, final LazyDynaBean lazyDynaBean, final Locale locale) {
-            super(name, lazyDynaBean, locale);
+        public StrictLazyDynaBeanPointer(final QName qName, final LazyDynaBean lazyDynaBean, final Locale locale) {
+            super(qName, lazyDynaBean, locale);
             this.lazyDynaBean = lazyDynaBean;
         }
 
@@ -93,16 +95,16 @@ public class StrictLazyDynaBeanPointerFactory implements NodePointerFactory {
      * {@inheritDoc}
      */
     @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name, final Object object) {
-        return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(parent, name, (LazyDynaBean) object) : null;
+    public NodePointer createNodePointer(final NodePointer parent, final QName qName, final Object object) {
+        return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(parent, qName, (LazyDynaBean) object) : null;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public NodePointer createNodePointer(final QName name, final Object object, final Locale locale) {
-        return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(name, (LazyDynaBean) object, locale) : null;
+    public NodePointer createNodePointer(final QName qName, final Object object, final Locale locale) {
+        return object instanceof LazyDynaBean ? new StrictLazyDynaBeanPointer(qName, (LazyDynaBean) object, locale) : null;
     }
 
     /**

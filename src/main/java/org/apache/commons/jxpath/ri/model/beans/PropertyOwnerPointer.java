@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,11 +36,15 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     private static final long serialVersionUID = 1L;
     private static final Object UNINITIALIZED = new Object();
+
+    /**
+     * Supports {@link #getImmediateNode}.
+     */
     private Object value = UNINITIALIZED;
 
     /**
      * Constructs a new PropertyOwnerPointer.
-     * 
+     *
      * @param parent pointer
      */
     protected PropertyOwnerPointer(final NodePointer parent) {
@@ -49,7 +53,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     /**
      * Constructs a new PropertyOwnerPointer.
-     * 
+     *
      * @param parent parent pointer
      * @param locale Locale
      */
@@ -58,8 +62,8 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     @Override
-    public NodeIterator attributeIterator(final QName name) {
-        return new BeanAttributeIterator(this, name);
+    public NodeIterator attributeIterator(final QName qName) {
+        return new BeanAttributeIterator(this, qName);
     }
 
     @Override
@@ -87,7 +91,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     /**
      * Create a NodeIterator.
-     * 
+     *
      * @param property  property name
      * @param reverse   whether to iterate in reverse
      * @param startWith first pointer to return
@@ -110,14 +114,14 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     /**
      * Gets a PropertyPointer for this PropertyOwnerPointer.
-     * 
+     *
      * @return PropertyPointer
      */
     public abstract PropertyPointer getPropertyPointer();
 
     /**
-     * Learn whether dynamic property declaration is supported.
-     * 
+     * Tests whether dynamic property declaration is supported.
+     *
      * @return true if the property owner can set a property "does not exist". A good example is a Map. You can always assign a value to any key even if it has
      *         never been "declared".
      */
@@ -126,14 +130,14 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     }
 
     /**
-     * Learn whether {@code name} is a valid child name for this PropertyOwnerPointer.
-     * 
-     * @param name the QName to test
+     * Tests whether {@code name} is a valid child name for this PropertyOwnerPointer.
+     *
+     * @param qName The QName to test
      * @return {@code true} if {@code QName} is a valid property name.
      * @since JXPath 1.3
      */
-    public boolean isValidProperty(final QName name) {
-        return isDefaultNamespace(name.getPrefix());
+    public boolean isValidProperty(final QName qName) {
+        return isDefaultNamespace(qName.getPrefix());
     }
 
     /**
@@ -143,7 +147,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
     public void remove() {
         this.value = null;
         if (parent == null) {
-            throw new UnsupportedOperationException("Cannot remove an object that is not " + "some other object's property or a collection element");
+            throw new UnsupportedOperationException("Cannot remove an object that is not some other object's property or a collection element");
         }
         parent.remove();
     }
@@ -158,7 +162,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
 
     /**
      * Throws an exception if you try to change the root element, otherwise forwards the call to the parent pointer.
-     * 
+     *
      * @param value to set
      */
     @Override
@@ -169,7 +173,7 @@ public abstract class PropertyOwnerPointer extends NodePointer {
         }
         if (!parent.isContainer()) {
             if (index == WHOLE_COLLECTION) {
-                throw new UnsupportedOperationException("Cannot setValue of an object that is not " + "some other object's property");
+                throw new UnsupportedOperationException("Cannot setValue of an object that is not some other object's property");
             }
             throw new JXPathInvalidAccessException("The specified collection element does not exist: " + this);
         }

@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class TypeUtils {
 
     /**
      * Returns true if the global converter can convert the supplied object to the specified type.
-     * 
+     *
      * @param object object to test
      * @param toType target class
      * @return boolean
@@ -50,7 +50,7 @@ public class TypeUtils {
 
     /**
      * Converts the supplied object to the specified type. May throw a RuntimeException.
-     * 
+     *
      * @param object object to convert
      * @param toType target class
      * @return resulting Object
@@ -61,7 +61,7 @@ public class TypeUtils {
 
     /**
      * Returns the current type converter.
-     * 
+     *
      * @return TypeConverter
      */
     public static TypeConverter getTypeConverter() {
@@ -70,7 +70,7 @@ public class TypeUtils {
 
     /**
      * Install an alternative type converter.
-     * 
+     *
      * @param converter new TypeConverter
      */
     public static synchronized void setTypeConverter(final TypeConverter converter) {
@@ -79,9 +79,9 @@ public class TypeUtils {
 
     /**
      * Return the appropriate wrapper type for the specified class.
-     * 
+     *
      * @param p Class for which to retrieve a wrapper class.
-     * @return the wrapper if {@code p} is primitive, else {@code p}.
+     * @return The wrapper if {@code p} is primitive, else {@code p}.
      * @since JXPath 1.3
      */
     public static Class wrapPrimitive(final Class p) {

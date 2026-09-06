@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ public class ExtensionFunction extends Operation {
 
     /**
      * Constructs a new ExtensionFunction.
-     * 
+     *
      * @param functionName name of the function
      * @param args         Expression[] of function args
      */
@@ -51,7 +51,7 @@ public class ExtensionFunction extends Operation {
 
     /**
      * An extension function gets the current context, therefore it MAY be context dependent.
-     * 
+     *
      * @return true
      */
     @Override
@@ -78,7 +78,7 @@ public class ExtensionFunction extends Operation {
 
     /**
      * Convert any incoming context to a value.
-     * 
+     *
      * @param object Object to convert
      * @return context value or {@code object} unscathed.
      */
@@ -88,7 +88,7 @@ public class ExtensionFunction extends Operation {
 
     /**
      * Gets the function name
-     * 
+     *
      * @return QName
      */
     public QName getFunctionName() {

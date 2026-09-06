@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,8 +24,8 @@ package org.apache.commons.jxpath.ri;
  * Since objects returned by Compiler methods are passed as arguments to other Compiler methods, the descriptions of these methods use virtual types. There are
  * four virtual object types: EXPRESSION, QNAME, STEP and NODE_TEST.
  * <p>
- * The following example illustrates this notion. This sequence compiles the xpath "foo[round(1 div 2)]/text()": <blockquote>
- * 
+ * The following example illustrates this notion. This sequence compiles the XPath "foo[round(1 div 2)]/text()": <blockquote>
+ *
  * <pre>
  *      Object qname1 = compiler.qname(null, "foo")
  *      Object expr1 = compiler.number("1");
@@ -40,7 +40,7 @@ package org.apache.commons.jxpath.ri;
  *      Object step2 = compiler.nodeTypeTest(Compiler.AXIS_CHILD, test2, null);
  *      Object expr5 = compiler.locationPath(false, new Object[]{step1, step2});
  * </pre>
- * 
+ *
  * </blockquote>
  */
 public interface Compiler {
@@ -281,7 +281,7 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object that represents a string constant.
-     * 
+     *
      * @param value String literal
      * @return Object
      */
@@ -358,7 +358,7 @@ public interface Compiler {
 
     /**
      * Produces an EXPRESSION object that represents a numeric constant.
-     * 
+     *
      * @param value numeric String
      * @return Object
      */
@@ -382,7 +382,7 @@ public interface Compiler {
 
     /**
      * Produces an QNAME that represents a name with an optional prefix.
-     * 
+     *
      * @param prefix String prefix
      * @param name   String name
      * @return Object

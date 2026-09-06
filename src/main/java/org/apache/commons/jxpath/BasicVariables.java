@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,7 @@ public class BasicVariables implements Variables {
      * Contains the values of declared variables
      */
     private final HashMap vars = new HashMap();
-    
+
     /**
      * Constructs a new instance.
      */
@@ -53,7 +53,7 @@ public class BasicVariables implements Variables {
      * Returns the value of the variable if it is defined, otherwise, throws IllegalArgumentException
      *
      * @param varName is a variable name without the "$" sign
-     * @return the value of the variable
+     * @return The value of the variable
      */
     @Override
     public Object getVariable(final String varName) {

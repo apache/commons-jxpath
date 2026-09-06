@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ public class AncestorContext extends EvalContext {
 
     /**
      * Constructs a new AncestorContext.
-     * 
+     *
      * @param parentContext represents the previous step on the path
      * @param includeSelf   differentiates between "ancestor::" and "ancestor-or-self::" axes
      * @param nodeTest      is the name of the element(s) we are looking for

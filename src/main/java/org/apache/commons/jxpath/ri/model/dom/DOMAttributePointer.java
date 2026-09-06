@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,16 +26,20 @@ import org.apache.commons.jxpath.util.TypeUtils;
 import org.w3c.dom.Attr;
 
 /**
- * A Pointer that points to a DOM node. Because the underlying DOM Attr is not Serializable, neither is this pointer class truly so.
+ * A Pointer that points to a DOM {@link Attr} node. Because the underlying DOM Attr is not Serializable, neither is this pointer class truly so.
  */
 public class DOMAttributePointer extends NodePointer {
 
     private static final long serialVersionUID = 1115085175427555951L;
+
+    /**
+     * A DOM {@link Attr} node.
+     */
     private final Attr attr;
 
     /**
      * Constructs a new DOMAttributePointer.
-     * 
+     *
      * @param parent pointer
      * @param attr   pointed
      */
@@ -131,7 +135,7 @@ public class DOMAttributePointer extends NodePointer {
 
     /**
      * Sets the value of this attribute.
-     * 
+     *
      * @param value to set
      */
     @Override

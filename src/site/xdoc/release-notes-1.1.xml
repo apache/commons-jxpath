@@ -7,7 +7,7 @@
   (the "License"); you may not use this file except in compliance with
   the License.  You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+       https://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +49,7 @@
         </li>
         <li>
           Support for DynaBeans
-          (see <a href="http://commons.apache.org/beanutils">Jakarta
+          (see <a href="https://commons.apache.org/beanutils">Jakarta
           Commons BeanUtils</a>).
           <br/>
         </li>
@@ -67,7 +67,7 @@
           In order to provide full conformance with the standard, we also
           needed to introduce the format customization mechanism known in
           XSLT as <code>&lt;xsl:decimal-format&gt;</code> (see
-          <a href="http://www.w3schools.com/xsl/el_decimal-format.asp">
+          <a href="https://www.w3schools.com/xsl/el_decimal-format.asp">
           W3Schools tutorial</a>).  The new methods of JXPathContext:
           <code>setDecimalFormatSymbols()</code> and
           <code>getDecimalFormatSymbols()</code> fulfill that requirement.

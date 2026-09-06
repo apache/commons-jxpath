@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,12 +30,20 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 public class NullPropertyPointer extends PropertyPointer {
 
     private static final long serialVersionUID = 5296593071854982754L;
+
+    /**
+     * The property name.
+     */
     private String propertyName = "*";
+
+    /**
+     * Whether this property is named.
+     */
     private boolean byNameAttribute;
 
     /**
      * Constructs a new NullPropertyPointer.
-     * 
+     *
      * @param parent pointer
      */
     public NullPropertyPointer(final NodePointer parent) {
@@ -60,7 +68,7 @@ public class NullPropertyPointer extends PropertyPointer {
 
     /**
      * Create a "bad factory" JXPathAbstractFactoryException for the specified AbstractFactory.
-     * 
+     *
      * @param factory AbstractFactory
      * @return JXPathAbstractFactoryException
      */
@@ -70,13 +78,13 @@ public class NullPropertyPointer extends PropertyPointer {
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index) {
-        return createPath(context).createChild(context, name, index);
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index) {
+        return createPath(context).createChild(context, qName, index);
     }
 
     @Override
-    public NodePointer createChild(final JXPathContext context, final QName name, final int index, final Object value) {
-        return createPath(context).createChild(context, name, index, value);
+    public NodePointer createChild(final JXPathContext context, final QName qName, final int index, final Object value) {
+        return createPath(context).createChild(context, qName, index, value);
     }
 
     @Override
@@ -193,7 +201,7 @@ public class NullPropertyPointer extends PropertyPointer {
 
     /**
      * Sets the name attribute.
-     * 
+     *
      * @param attributeValue value to set
      */
     public void setNameAttributeValue(final String attributeValue) {
