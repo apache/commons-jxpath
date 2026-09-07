@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>104</version>
+    <version>105</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-jxpath</groupId>
@@ -198,6 +198,10 @@
         <exclusion>
           <groupId>jboss</groupId>
           <artifactId>jboss-jee</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
         </exclusion>
         <exclusion>
           <groupId>nekohtml</groupId>
