@@ -283,4 +283,13 @@ class ExtensionFunctionTest extends AbstractJXPathTest {
         final Function func = functions.getFunction("test", "path", args);
         assertEquals("1", func.invoke(new Context(Integer.valueOf(1)), args), "test:path()");
     }
+
+    @Test
+    void testUnionOperatorArgument() {
+        // JXPATH-204: UnionContext computes its node list lazily (only inside
+        // setPosition()), so a custom function invoked with a union ('|')
+        // expression as an argument used to see an empty NodeSet instead of
+        // the union's actual nodes.
+        assertXPathValue(context, "test:countPointers(/beans[1] | /beans[2])", Integer.valueOf(2));
+    }
 }
