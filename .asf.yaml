@@ -16,6 +16,8 @@
 github:
   description: "Apache Commons JXPath"
   homepage: https://commons.apache.org/jxpath/
+  autolink_jira:
+    - JXPATH
   
   pull_requests:
     # allow auto-merge
