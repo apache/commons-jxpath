@@ -137,16 +137,9 @@ public abstract class CoreOperationCompare extends CoreOperation {
         if (l instanceof Boolean || r instanceof Boolean) {
             result = l == r || InfoSetUtil.booleanValue(l) == InfoSetUtil.booleanValue(r);
         } else if (l instanceof Number || r instanceof Number) {
-            // if either side is NaN, no comparison returns true:
-            final double ld = InfoSetUtil.doubleValue(l);
-            if (Double.isNaN(ld)) {
-                return false;
-            }
-            final double rd = InfoSetUtil.doubleValue(r);
-            if (Double.isNaN(rd)) {
-                return false;
-            }
-            result = ld == rd;
+            // Numbers are compared per IEEE 754 (XPath 1.0 section 3.4): NaN is not
+            // equal to anything, including itself, so "=" is false and "!=" is true.
+            result = InfoSetUtil.doubleValue(l) == InfoSetUtil.doubleValue(r);
         } else {
             if (l instanceof String || r instanceof String) {
                 l = InfoSetUtil.stringValue(l);
