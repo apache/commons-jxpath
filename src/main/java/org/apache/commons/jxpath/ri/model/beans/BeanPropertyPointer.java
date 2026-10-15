@@ -153,6 +153,10 @@ public class BeanPropertyPointer extends PropertyPointer {
         if (hint == -1) {
             return 1;
         }
+        if (hint == 1 && getBaseValue() == null) {
+            // A null array or collection has no elements.
+            return 0;
+        }
         return super.getLength();
     }
 
