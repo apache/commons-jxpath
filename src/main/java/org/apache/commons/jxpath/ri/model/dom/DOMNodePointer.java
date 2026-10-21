@@ -305,7 +305,7 @@ public class DOMNodePointer extends NodePointer {
                     } else {
                         buffer.append("node()");
                         buffer.append('[');
-                        buffer.append(getRelativePositionOfElement());
+                        buffer.append(getRelativePositionAmongSiblings());
                     }
                     buffer.append(']');
                 }
@@ -594,17 +594,15 @@ public class DOMNodePointer extends NodePointer {
     }
 
     /**
-     * Gets relative position of this among all siblings.
+     * Gets relative position of this among all siblings, whatever their type, which is the position {@code node()[n]} selects.
      *
      * @return 1..n
      */
-    private int getRelativePositionOfElement() {
+    private int getRelativePositionAmongSiblings() {
         int count = 1;
         Node n = node.getPreviousSibling();
         while (n != null) {
-            if (n.getNodeType() == Node.ELEMENT_NODE) {
-                count++;
-            }
+            count++;
             n = n.getPreviousSibling();
         }
         return count;
