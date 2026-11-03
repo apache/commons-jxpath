@@ -49,6 +49,17 @@ public class UnionContext extends NodeSetContext {
     }
 
     @Override
+    public Object getValue() {
+        // JXPATH-204: the node set is built lazily inside setPosition(), so
+        // force it to be populated before delegating, otherwise callers that
+        // read the value without first iterating (e.g. an extension
+        // function receiving this context as an argument) see an empty
+        // NodeSet.
+        getContextNodeList();
+        return super.getValue();
+    }
+
+    @Override
     public boolean setPosition(final int position) {
         if (!prepared) {
             prepared = true;
