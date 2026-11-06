@@ -398,38 +398,43 @@ public abstract class NodePointer implements Pointer {
     }
 
     /**
-     * Return a string escaping single and double quotes.
+     * Return a string escaping single and double quotes, as well as any ampersand that would otherwise be read back as the start of an {@code &apos;},
+     * {@code &quot;} or {@code &amp;} sequence. Without the latter, two distinct names, one containing a quote and one containing the corresponding entity
+     * sequence, would produce the same path.
      *
      * @param string string to treat
      * @return string with any necessary changes made.
      */
     protected String escape(final String string) {
-        final char[] c = { '\'', '"' };
-        final String[] esc = { "&apos;", "&quot;" };
         StringBuilder sb = null;
-        for (int i = 0; sb == null && i < c.length; i++) {
-            if (string.indexOf(c[i]) >= 0) {
-                sb = new StringBuilder(string);
-            }
-        }
-        if (sb == null) {
-            return string;
-        }
-        for (int i = 0; i < c.length; i++) {
-            if (string.indexOf(c[i]) < 0) {
-                continue;
-            }
-            int pos = 0;
-            while (pos < sb.length()) {
-                if (sb.charAt(pos) == c[i]) {
-                    sb.replace(pos, pos + 1, esc[i]);
-                    pos += esc[i].length();
-                } else {
-                    pos++;
+        for (int i = 0; i < string.length(); i++) {
+            final char c = string.charAt(i);
+            String entity = null;
+            switch (c) {
+            case '\'':
+                entity = "&apos;";
+                break;
+            case '"':
+                entity = "&quot;";
+                break;
+            case '&':
+                if (string.startsWith("apos;", i + 1) || string.startsWith("quot;", i + 1) || string.startsWith("amp;", i + 1)) {
+                    entity = "&amp;";
                 }
+                break;
+            default:
+                break;
+            }
+            if (entity != null) {
+                if (sb == null) {
+                    sb = new StringBuilder(string.length() * 2).append(string, 0, i);
+                }
+                sb.append(entity);
+            } else if (sb != null) {
+                sb.append(c);
             }
         }
-        return sb.toString();
+        return sb == null ? string : sb.toString();
     }
 
     /**
