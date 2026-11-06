@@ -98,7 +98,7 @@ public class InfoSetUtil {
             return ((Number) object).doubleValue();
         }
         if (object instanceof Boolean) {
-            return ((Boolean) object).booleanValue() ? 0.0 : 1.0;
+            return ((Boolean) object).booleanValue() ? 1.0 : 0.0;
         }
         if (object instanceof String) {
             if (object.equals("")) {
