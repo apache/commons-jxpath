@@ -721,7 +721,7 @@ public abstract class JXPathContext {
     }
 
     /**
-     * Gets the prefix associated with the specifed namespace URI.
+     * Gets the prefix associated with the specified namespace URI.
      *
      * @param namespaceURI The ns URI to check.
      * @return String prefix
