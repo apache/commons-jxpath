@@ -650,7 +650,7 @@ public class CoreFunction extends Operation {
             assertArgCount(1);
             s = InfoSetUtil.stringValue(getArg1().computeValue(context));
         }
-        return Double.valueOf(s.length());
+        return Double.valueOf(s.codePointCount(0, s.length()));
     }
 
     /**
@@ -665,19 +665,20 @@ public class CoreFunction extends Operation {
         assertArgRange(minArgs, maxArgs);
         final int ac = getArgumentCount();
         final String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
+        final int s1Length = s1.codePointCount(0, s1.length());
         double from = InfoSetUtil.doubleValue(getArg2().computeValue(context));
         if (Double.isNaN(from)) {
             return "";
         }
         from = Math.round(from);
-        if (from > s1.length() + 1) {
+        if (from > s1Length + 1) {
             return "";
         }
         if (ac == 2) {
             if (from < 1) {
                 from = 1;
             }
-            return s1.substring((int) from - 1);
+            return s1.substring(s1.offsetByCodePoints(0, (int) from - 1));
         }
         double length = InfoSetUtil.doubleValue(getArg3().computeValue(context));
         length = Math.round(length);
@@ -688,16 +689,16 @@ public class CoreFunction extends Operation {
         if (to < 1) {
             return "";
         }
-        if (to > s1.length() + 1) {
+        if (to > s1Length + 1) {
             if (from < 1) {
                 from = 1;
             }
-            return s1.substring((int) from - 1);
+            return s1.substring(s1.offsetByCodePoints(0, (int) from - 1));
         }
         if (from < 1) {
             from = 1;
         }
-        return s1.substring((int) from - 1, (int) (to - 1));
+        return s1.substring(s1.offsetByCodePoints(0, (int) from - 1), s1.offsetByCodePoints(0, (int) (to - 1)));
     }
 
     /**
@@ -770,20 +771,27 @@ public class CoreFunction extends Operation {
         final String s1 = InfoSetUtil.stringValue(getArg1().computeValue(context));
         final String s2 = InfoSetUtil.stringValue(getArg2().computeValue(context));
         final String s3 = InfoSetUtil.stringValue(getArg3().computeValue(context));
-        final char[] chars = s1.toCharArray();
-        int out = 0;
-        for (int in = 0; in < chars.length; in++) {
-            final char c = chars[in];
-            final int inx = s2.indexOf(c);
+        final int[] codePoints = s1.codePoints().toArray();
+        final int[] fromCodePoints = s2.codePoints().toArray();
+        final int[] toCodePoints = s3.codePoints().toArray();
+        final StringBuilder buffer = new StringBuilder(s1.length());
+        for (final int c : codePoints) {
+            int inx = -1;
+            for (int i = 0; i < fromCodePoints.length; i++) {
+                if (fromCodePoints[i] == c) {
+                    inx = i;
+                    break;
+                }
+            }
             if (inx != -1) {
-                if (inx < s3.length()) {
-                    chars[out++] = s3.charAt(inx);
+                if (inx < toCodePoints.length) {
+                    buffer.appendCodePoint(toCodePoints[inx]);
                 }
             } else {
-                chars[out++] = c;
+                buffer.appendCodePoint(c);
             }
         }
-        return new String(chars, 0, out);
+        return buffer.toString();
     }
 
     /**
