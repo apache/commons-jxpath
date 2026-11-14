@@ -751,9 +751,21 @@ public abstract class JXPathContext {
     /**
      * Evaluates the xpath, converts the result to the specified class and returns the resulting object.
      *
+     * <p>
+     * The XPath selects the value before it is converted to the requested type. For example, this selects the context object and converts it to a Double:
+     * </p>
+     * <pre>
+     * JXPathContext context = JXPathContext.newContext(java.math.BigDecimal.ONE);
+     * Double value = (Double) context.getValue(".", Double.class); // value is 1.0
+     * </pre>
+     * <p>
+     * An expression such as {@code doubleValue} performs default property lookup rather than invoking the Java method {@code doubleValue()}.
+     * Use a property or Map entry path in place of {@code .} to convert a nested numeric value.
+     * </p>
+     *
      * @param xpath        to evaluate
      * @param requiredType required type
-     * @return Object found
+     * @return the converted value
      */
     public abstract Object getValue(String xpath, Class requiredType);
 
