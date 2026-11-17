@@ -133,6 +133,21 @@ class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
+    void testStringFunctionsCountCodePoints() {
+        // U+1D11E MUSICAL SYMBOL G CLEF is one XPath character but two UTF-16 chars.
+        context.getVariables().declareVariable("clef", "𝄞abc");
+        assertXPathValue(context, "string-length($clef)", Double.valueOf(4));
+        assertXPathValue(context, "substring($clef, 2)", "abc");
+        assertXPathValue(context, "substring($clef, 1, 1)", "𝄞");
+        assertXPathValue(context, "substring($clef, 2, 2)", "ab");
+        assertXPathValue(context, "substring($clef, 0, 2)", "𝄞");
+        assertXPathValue(context, "substring($clef, 5)", "");
+        assertXPathValue(context, "translate($clef, 'a', '-')", "𝄞-bc");
+        assertXPathValue(context, "translate($clef, substring($clef, 1, 1), 'x')", "xabc");
+        assertXPathValue(context, "translate('abc', 'b', $clef)", "a𝄞c");
+    }
+
+    @Test
     void testExtendedKeyFunction() {
         context.setKeyManager(new ExtendedKeyManager() {
 
