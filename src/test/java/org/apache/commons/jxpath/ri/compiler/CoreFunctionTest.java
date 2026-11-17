@@ -115,6 +115,19 @@ class CoreFunctionTest extends AbstractJXPathTest {
     }
 
     @Test
+    void testBooleanToNumberConversionIsXPathConformant() {
+        // XPath number(true())=1 and number(false())=0; the numeric coercion used by arithmetic,
+        // relational operators and floor/ceiling/round must agree with number(), not invert it.
+        assertXPathValue(context, "$bool_true + 1", Double.valueOf(2));
+        assertXPathValue(context, "$bool_false + 1", Double.valueOf(1));
+        assertXPathValue(context, "floor($bool_true)", Double.valueOf(1));
+        assertXPathValue(context, "ceiling($bool_false)", Double.valueOf(0));
+        assertXPathValue(context, "round($bool_true)", Double.valueOf(1));
+        assertXPathValue(context, "$bool_true > 0.5", Boolean.TRUE);
+        assertXPathValue(context, "$bool_false > 0.5", Boolean.FALSE);
+    }
+
+    @Test
     void testNumberConversionIsXPathConformant() {
         // Java number literals that are outside the XPath 1.0 number grammar must convert to NaN.
         assertXPathValue(context, "number('1e3')", Double.valueOf(Double.NaN));
