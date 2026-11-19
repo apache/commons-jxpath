@@ -153,6 +153,30 @@ class JXPathServletContextTest {
     }
 
     @Test
+    void testServletRequestParameterDoesNotShadowAttributes() {
+        final ServletContext context = getServletContext();
+        final MockHttpSession session = new MockHttpSession();
+        session.setupServletContext(context);
+        session.setUpIsNew(true);
+        session.setAttribute("role", "user");
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setSession(session);
+        request.setAttribute("attr", "OK");
+        request.setupAddParameter("attr", "forged");
+        request.setupAddParameter("role", "admin");
+        request.setupAddParameter("app", "forged");
+        request.setupAddParameter("parm", "OK");
+        assertSame(session, request.getSession(), "Request session");
+        final JXPathContext reqContext = JXPathServletContexts.getRequestContext(request, context);
+        assertEquals("OK", reqContext.getValue("attr"), "Request attribute shadowed by parameter");
+        assertEquals("user", reqContext.getValue("role"), "Session attribute shadowed by parameter");
+        assertEquals("OK", reqContext.getValue("app"), "Application attribute shadowed by parameter");
+        assertEquals("OK", reqContext.getValue("parm"), "Request Context Parameter");
+        reqContext.setValue("parm", "set");
+        assertEquals("set", reqContext.getValue("parm"), "Request attribute written via setValue not read back");
+    }
+
+    @Test
     void testServletRequestWithoutSession() {
         final ServletContext context = getServletContext();
         final MockHttpServletRequest request = new MockHttpServletRequest();
