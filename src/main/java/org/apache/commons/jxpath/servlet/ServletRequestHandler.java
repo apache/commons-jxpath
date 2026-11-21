@@ -54,6 +54,14 @@ public class ServletRequestHandler extends HttpSessionHandler {
     public Object getProperty(final Object bean, final String property) {
         final ServletRequestAndContext handle = (ServletRequestAndContext) bean;
         final ServletRequest servletRequest = handle.getServletRequest();
+        Object object = servletRequest.getAttribute(property);
+        if (object != null) {
+            return object;
+        }
+        object = super.getProperty(bean, property);
+        if (object != null) {
+            return object;
+        }
         final String[] strings = servletRequest.getParameterValues(property);
         if (strings != null) {
             if (strings.length == 0) {
@@ -64,11 +72,7 @@ public class ServletRequestHandler extends HttpSessionHandler {
             }
             return strings;
         }
-        final Object object = servletRequest.getAttribute(property);
-        if (object != null) {
-            return object;
-        }
-        return super.getProperty(bean, property);
+        return null;
     }
 
     @Override
