@@ -68,6 +68,24 @@ class DynamicPropertiesModelTest extends AbstractJXPathTest {
         assertXPathValueAndPointer(context, "/map[@name='Key:4:5']", null, "/map[@name='Key:4:5']");
     }
 
+    /**
+     * A property name containing a literal "&amp;apos;" sequence must produce a pointer path distinct from the path of a property name containing an actual
+     * quote, and each path must evaluate back to its own entry.
+     */
+    @Test
+    void testAttributeNameEntityRoundTrip() {
+        final Map map = (Map) context.getValue("map");
+        map.put("Key'7", "quoted");
+        map.put("Key&apos;7", "entity");
+        map.put("Tom & Jerry", "cartoon");
+        assertXPathValueAndPointer(context, "map[@name = \"Key'7\"]", "quoted", "/map[@name='Key&apos;7']");
+        assertXPathValueAndPointer(context, "map[@name = 'Key&amp;apos;7']", "entity", "/map[@name='Key&amp;apos;7']");
+        // a lone ampersand needs no escaping
+        assertXPathValueAndPointer(context, "map[@name = 'Tom & Jerry']", "cartoon", "/map[@name='Tom & Jerry']");
+        assertEquals("quoted", context.getValue(context.getPointer("map[@name = \"Key'7\"]").asPath()));
+        assertEquals("entity", context.getValue(context.getPointer("map[@name = 'Key&amp;apos;7']").asPath()));
+    }
+
     @Test
     void testAxisChild() {
         assertXPathValue(context, "map/Key1", "Value 1");

@@ -61,17 +61,34 @@ PARSER_BEGIN(XPathParser)
         }
 
         private String unescape(String string){
-            int index = string.indexOf("&apos;");
-            while (index != -1){
-                string = string.substring(0, index) + "\'" + string.substring(index + 6);
-                index = string.indexOf("&apos;");
+            int index = string.indexOf('&');
+            if (index == -1){
+                return string;
             }
-            index = string.indexOf("&quot;");
+            StringBuilder sb = new StringBuilder(string.length());
+            int pos = 0;
             while (index != -1){
-                string = string.substring(0, index) + "\"" + string.substring(index + 6);
-                index = string.indexOf("&quot;");
+                sb.append(string, pos, index);
+                if (string.startsWith("&apos;", index)){
+                    sb.append('\'');
+                    pos = index + 6;
+                }
+                else if (string.startsWith("&quot;", index)){
+                    sb.append('"');
+                    pos = index + 6;
+                }
+                else if (string.startsWith("&amp;", index)){
+                    sb.append('&');
+                    pos = index + 5;
+                }
+                else {
+                    sb.append('&');
+                    pos = index + 1;
+                }
+                index = string.indexOf('&', pos);
             }
-            return string;
+            sb.append(string, pos, string.length());
+            return sb.toString();
         }
     }
 
