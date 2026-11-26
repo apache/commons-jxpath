@@ -19,7 +19,6 @@ package org.apache.commons.jxpath.ri.model.dom;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
@@ -147,13 +146,19 @@ public class DOMAttributeIterator implements NodeIterator {
         final String testLocalName = qName.getName();
         if (testLocalName.equals("*") || testLocalName.equals(nodeLocalName)) {
             final String testPrefix = qName.getPrefix();
-            if (testPrefix == null || Objects.equals(testPrefix, nodePrefix)) {
+            if (testPrefix == null) {
                 return true;
             }
             if (nodePrefix == null) {
                 return false;
             }
-            return Objects.equals(parent.getNamespaceURI(testPrefix), parent.getNamespaceURI(nodePrefix));
+            final String nodeNS = parent.getNamespaceURI(nodePrefix);
+            if (nodeNS == null) {
+                return testPrefix.equals(nodePrefix);
+            }
+            // Resolve the test prefix in the expression context first, as getAttribute() does
+            final String testNS = parent.getNamespaceResolver().getNamespaceURI(testPrefix);
+            return nodeNS.equals(testNS != null ? testNS : parent.getNamespaceURI(testPrefix));
         }
         return false;
     }

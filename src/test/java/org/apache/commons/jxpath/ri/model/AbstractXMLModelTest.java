@@ -389,6 +389,20 @@ public abstract class AbstractXMLModelTest extends AbstractJXPathTest {
     }
 
     @Test
+    void testNamespaceMappingAttribute() {
+        // Vendor.xml binds "price" to priceNS; the prefix registered on the context must win
+        context.registerNamespace("rate", "priceNS");
+        context.registerNamespace("price", "otherNS");
+        assertXPathValue(context, "count(vendor/product/rate:amount/@price:discount)", Double.valueOf(0));
+        assertXPathValue(context, "count(vendor/product/rate:amount/@price:*)", Double.valueOf(0));
+        // "value" is bound to priceNS in the document, but to productNS on the context
+        context.registerNamespace("value", "productNS");
+        assertXPathValue(context, "count(vendor/product/rate:amount/@value:*)", Double.valueOf(0));
+        assertXPathValue(context, "vendor/product/rate:amount/@rate:discount", "10%");
+        assertXPathValueIterator(context, "vendor/product/rate:amount/@rate:*", list("10%"));
+    }
+
+    @Test
     void testNodes() {
         final Pointer pointer = context.getPointer("/vendor[1]/contact[1]");
         assertNotEquals(pointer.getNode(), pointer.getValue());
