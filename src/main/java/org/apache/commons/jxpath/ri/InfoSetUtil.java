@@ -94,6 +94,9 @@ public class InfoSetUtil {
      * @return double
      */
     public static double doubleValue(final Object object) {
+        if (object == null) {
+            return 0.0;
+        }
         if (object instanceof Number) {
             return ((Number) object).doubleValue();
         }
@@ -101,9 +104,6 @@ public class InfoSetUtil {
             return ((Boolean) object).booleanValue() ? 0.0 : 1.0;
         }
         if (object instanceof String) {
-            if (object.equals("")) {
-                return 0.0;
-            }
             return parseNumber((String) object);
         }
         if (object instanceof NodePointer) {

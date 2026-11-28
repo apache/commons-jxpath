@@ -202,4 +202,35 @@ class CoreFunctionTest extends AbstractJXPathTest {
         context.setKeyManager((context, key, value) -> NodePointer.newNodePointer(null, "42", null));
         assertXPathValue(context, "key('a', 'b')", "42");
     }
+
+    @Test
+    void testEmptyStringNumericComparison() {
+        assertXPathValue(context, "'' = 0", Boolean.FALSE);
+        assertXPathValue(context, "0 = ''", Boolean.FALSE);
+        assertXPathValue(context, "'' < 0", Boolean.FALSE);
+        assertXPathValue(context, "0 < ''", Boolean.FALSE);
+        assertXPathValue(context, "'' >= 0", Boolean.FALSE);
+        assertXPathValue(context, "0 >= ''", Boolean.FALSE);
+    }
+
+    @Test
+    void testEmptyStringCoercionToNaN() {
+        assertXPathValue(context, "number('')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "'' + 1", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "floor('')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "ceiling('')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "round('')", Double.valueOf(Double.NaN));
+        assertXPathValue(context, "string('')", "");
+        assertXPathValue(context, "concat('', 'a')", "a");
+        assertXPathValue(context, "'' = ''", Boolean.TRUE);
+        assertXPathValue(context, "'0' = 0", Boolean.TRUE);
+        assertXPathValue(context, "' ' = 0", Boolean.FALSE);
+    }
+
+    @Test
+    void testValidZeroComparisonsRemainUnaffected() {
+        assertXPathValue(context, "0 = 0", Boolean.TRUE);
+        assertXPathValue(context, "0.0 = 0", Boolean.TRUE);
+        assertXPathValue(context, "'0' = '0'", Boolean.TRUE);
+    }
 }
